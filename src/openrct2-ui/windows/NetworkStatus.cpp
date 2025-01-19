@@ -27,7 +27,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_network_status_widgets[] = {
         MakeWidget({  0, 0}, {400, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                   ), // panel / background
-        MakeWidget({  1, 1}, {397, 14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
+        MakeWidget({  1, 1}, {397, 14}, WindowWidgetType::Caption,  WindowColour::Primary, kStringIdNone,    STR_WINDOW_TITLE_TIP), // title bar
         MakeWidget({388, 2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button
     };
     // clang-format on

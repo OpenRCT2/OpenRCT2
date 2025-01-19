@@ -1142,7 +1142,7 @@ namespace OpenRCT2
     {
         CursorID cursorId = CursorID::Arrow;
         auto ft = Formatter();
-        ft.Add<StringId>(STR_NONE);
+        ft.Add<StringId>(kStringIdNone);
         SetMapTooltip(ft);
 
         auto* windowMgr = GetWindowManager();
@@ -1348,16 +1348,16 @@ namespace OpenRCT2
                 if (_clickRepeatTicks.has_value())
                 {
                     // The initial amount of time in ticks to wait until the first click repeat.
-                    constexpr auto ticksUntilRepeats = 16U;
+                    constexpr auto kTicksUntilRepeats = 16u;
 
                     // The amount of ticks between each click repeat.
-                    constexpr auto eventDelayInTicks = 3U;
+                    constexpr auto kEventDelayInTicks = 3u;
 
                     // The amount of ticks since the last click repeat.
                     const auto clickRepeatsDelta = gCurrentRealTimeTicks - _clickRepeatTicks.value();
 
                     // Handle click repeat, only start this when at least 16 ticks elapsed.
-                    if (clickRepeatsDelta >= ticksUntilRepeats && (clickRepeatsDelta & eventDelayInTicks) == 0)
+                    if (clickRepeatsDelta >= kTicksUntilRepeats && (clickRepeatsDelta & kEventDelayInTicks) == 0)
                     {
                         if (WidgetIsHoldable(*w, widgetIndex))
                         {
@@ -1365,7 +1365,7 @@ namespace OpenRCT2
                         }
 
                         // Subtract initial delay from here on we want the event each third tick.
-                        _clickRepeatTicks = gCurrentRealTimeTicks - ticksUntilRepeats;
+                        _clickRepeatTicks = gCurrentRealTimeTicks - kTicksUntilRepeats;
                     }
                 }
 
@@ -1397,7 +1397,7 @@ namespace OpenRCT2
                         {
                             dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                             dropdownCleanup = dropdown_index == -1
-                                || (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
+                                || (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
                                 || gDropdownItems[dropdown_index].IsSeparator();
                             w = nullptr; // To be closed right next
                         }
@@ -1531,7 +1531,7 @@ namespace OpenRCT2
                     OpenRCT2String{ kColourToTip.at(ColourDropDownIndexToColour(dropdown_index)), {} }, screenCoords);
             }
 
-            if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
+            if (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
             {
                 return;
             }

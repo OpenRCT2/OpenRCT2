@@ -373,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CHAT_UNAVAILABLE, STR_NONE, {});
+                        ContextShowError(STR_CHAT_UNAVAILABLE, kStringIdNone, {});
                     }
                     break;
             }
@@ -1179,7 +1179,7 @@ namespace OpenRCT2::Ui::Windows
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
         if (!customMenuItems.empty())
         {
-            gDropdownItems[i++].Format = STR_EMPTY;
+            gDropdownItems[i++].Format = kStringIdEmpty;
             for (const auto& item : customMenuItems)
             {
                 if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
@@ -1253,7 +1253,7 @@ namespace OpenRCT2::Ui::Windows
         gDropdownItems[3].Format = STR_TOGGLE_OPTION;
         if (Config::Get().general.DebuggingTools)
         {
-            gDropdownItems[4].Format = STR_EMPTY;
+            gDropdownItems[4].Format = kStringIdEmpty;
             gDropdownItems[5].Format = STR_TOGGLE_OPTION;
             gDropdownItems[5].Args = STR_SPEED_HYPER;
             num_items = 6;
@@ -1340,7 +1340,7 @@ namespace OpenRCT2::Ui::Windows
         {
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_ABOUT;
             gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
@@ -1348,7 +1348,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
             gDropdownItems[numItems++].Format = STR_OPTIONS;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
 
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 gDropdownItems[numItems++].Format = STR_QUIT_ROLLERCOASTER_DESIGNER;
@@ -1360,12 +1360,12 @@ namespace OpenRCT2::Ui::Windows
         else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         {
             gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_ABOUT;
             gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
@@ -1373,7 +1373,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
             gDropdownItems[numItems++].Format = STR_OPTIONS;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_QUIT_SCENARIO_EDITOR;
             gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
         }
@@ -1381,13 +1381,13 @@ namespace OpenRCT2::Ui::Windows
         {
             gDropdownItems[numItems++].Format = STR_NEW_GAME;
             gDropdownItems[numItems++].Format = STR_LOAD_GAME;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_SAVE_GAME;
             gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_ABOUT;
             gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
@@ -1395,7 +1395,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
             gDropdownItems[numItems++].Format = STR_OPTIONS;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_QUIT_TO_MENU;
             gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
         }

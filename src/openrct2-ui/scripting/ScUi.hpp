@@ -238,15 +238,15 @@ namespace OpenRCT2::Scripting
         {
             try
             {
-                constexpr int32_t MaxLengthAllowed = 4096;
+                constexpr int32_t kMaxLengthAllowed = 4096;
                 auto plugin = _scriptEngine.GetExecInfo().GetCurrentPlugin();
                 auto title = desc["title"].as_string();
                 auto description = desc["description"].as_string();
                 auto initialValue = AsOrDefault(desc["initialValue"], "");
-                auto maxLength = AsOrDefault(desc["maxLength"], MaxLengthAllowed);
+                auto maxLength = AsOrDefault(desc["maxLength"], kMaxLengthAllowed);
                 auto callback = desc["callback"];
                 WindowTextInputOpen(
-                    title, description, initialValue, std::clamp(maxLength, 0, MaxLengthAllowed),
+                    title, description, initialValue, std::clamp(maxLength, 0, kMaxLengthAllowed),
                     [this, plugin, callback](std::string_view value) {
                         auto dukValue = ToDuk(_scriptEngine.GetContext(), value);
                         _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);

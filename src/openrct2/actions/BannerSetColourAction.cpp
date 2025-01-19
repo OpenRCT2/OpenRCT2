@@ -92,7 +92,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
     if (banner == nullptr)
     {
         LOG_ERROR("Invalid banner index %u", index);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
 
     if (isExecuting)

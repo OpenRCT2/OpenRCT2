@@ -156,7 +156,7 @@ GameActions::Result MapCanConstructWithClearAt(
     if (tileElement == nullptr)
     {
         res.Error = GameActions::Status::Unknown;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = kStringIdNone;
         return res;
     }
 
@@ -321,7 +321,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
         }
@@ -344,7 +344,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             auto* wallEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(STR_EMPTY);
+            StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
         }
@@ -353,7 +353,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
         }

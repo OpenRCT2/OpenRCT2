@@ -69,7 +69,7 @@ GameActions::Result RideSetPriceAction::Query() const
     if (_price < kRideMinPrice || _price > kRideMaxPrice)
     {
         LOG_ERROR("Attempting to set an invalid price for rideIndex %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_EMPTY);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, kStringIdEmpty);
     }
 
     return GameActions::Result();
@@ -98,7 +98,7 @@ GameActions::Result RideSetPriceAction::Execute() const
     if (_price < kRideMinPrice || _price > kRideMaxPrice)
     {
         LOG_ERROR("Attempting to set an invalid price for rideIndex %u", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_EMPTY);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, kStringIdEmpty);
     }
 
     if (!ride->overall_view.IsNull())

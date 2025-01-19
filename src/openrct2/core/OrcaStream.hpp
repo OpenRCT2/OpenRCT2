@@ -36,8 +36,11 @@ namespace OpenRCT2
             WRITING,
         };
 
-        static constexpr uint32_t COMPRESSION_NONE = 0;
-        static constexpr uint32_t COMPRESSION_GZIP = 1;
+        enum class CompressionType : uint32_t
+        {
+            none,
+            gzip,
+        };
 
     private:
 #pragma pack(push, 1)
@@ -48,7 +51,7 @@ namespace OpenRCT2
             uint32_t MinVersion{};
             uint32_t NumChunks{};
             uint64_t UncompressedSize{};
-            uint32_t Compression{};
+            CompressionType Compression{};
             uint64_t CompressedSize{};
             std::array<uint8_t, 8> FNV1a{};
             uint8_t padding[20];
@@ -99,7 +102,7 @@ namespace OpenRCT2
                 } while (bytesLeft > 0);
 
                 // Uncompress
-                if (_header.Compression == COMPRESSION_GZIP)
+                if (_header.Compression == CompressionType::gzip)
                 {
                     auto uncompressedData = Compression::ungzip(_buffer.GetData(), _buffer.GetLength());
                     if (_header.UncompressedSize != uncompressedData.size())
@@ -113,7 +116,7 @@ namespace OpenRCT2
             else
             {
                 _header = {};
-                _header.Compression = COMPRESSION_GZIP;
+                _header.Compression = CompressionType::gzip;
 
                 _buffer = MemoryStream{};
             }
@@ -135,7 +138,7 @@ namespace OpenRCT2
 
                 // Compress data
                 std::optional<std::vector<uint8_t>> compressedBytes;
-                if (_header.Compression == COMPRESSION_GZIP)
+                if (_header.Compression == CompressionType::gzip)
                 {
                     compressedBytes = Compression::gzip(uncompressedData, uncompressedSize);
                     if (compressedBytes)
@@ -145,7 +148,7 @@ namespace OpenRCT2
                     else
                     {
                         // Compression failed
-                        _header.Compression = COMPRESSION_NONE;
+                        _header.Compression = CompressionType::none;
                     }
                 }
 

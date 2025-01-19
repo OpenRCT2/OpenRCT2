@@ -84,7 +84,7 @@ GameActions::Result TrackDesignAction::Query() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
     {
-        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
     }
 
     const auto rideIndex = r.GetData<RideId>();
@@ -158,7 +158,7 @@ GameActions::Result TrackDesignAction::Execute() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
     {
-        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
     }
 
     const auto rideIndex = r.GetData<RideId>();

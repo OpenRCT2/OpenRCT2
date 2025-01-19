@@ -105,7 +105,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
                 {
-                    if (GetNumFreeEntities() != MAX_ENTITIES || GetGameState().Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)
+                    if (GetNumFreeEntities() != kMaxEntities || GetGameState().Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)
                     {
                         HidePreviousStepButton();
                     }
@@ -141,7 +141,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
                 if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    || (GetNumFreeEntities() == MAX_ENTITIES && !(gameState.Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)))
+                    || (GetNumFreeEntities() == kMaxEntities && !(gameState.Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)))
                 {
                     ((this)->*(_previousButtonMouseUp[EnumValue(gameState.EditorStep)]))();
                 }

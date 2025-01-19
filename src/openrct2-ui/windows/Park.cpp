@@ -869,8 +869,8 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             // Show a tooltip if the park is pay per ride.
-            widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
-            widgets[WIDX_PRICE].tooltip = STR_NONE;
+            widgets[WIDX_PRICE_LABEL].tooltip = kStringIdNone;
+            widgets[WIDX_PRICE].tooltip = kStringIdNone;
 
             if (!Park::EntranceFeeUnlocked())
             {

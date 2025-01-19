@@ -120,13 +120,13 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_editor_objective_options_main_widgets[] = {
         MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-        MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
+        MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeSpinnerWidgets({158,  65}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
         MakeSpinnerWidgets({158,  82}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
         MakeWidget        ({370,  99}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
         MakeWidget        ({370, 116}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
-        MakeWidget        ({ 98, 133}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
+        MakeWidget        ({ 98, 133}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
         MakeWidget        ({266, 134}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
         MakeWidget        ({370, 150}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP),
     };
@@ -493,7 +493,7 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
                     if (gameState.ScenarioObjective.Currency >= ObjectiveCurrencyLoanAndValueMax)
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -504,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_MONTHLY_FOOD_INCOME:
                     if (gameState.ScenarioObjective.Currency >= ObjectiveCurrencyFoodMax)
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -515,7 +515,7 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
                     if (gameState.ScenarioObjective.MinimumLength >= ObjectiveLengthMax)
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -526,7 +526,7 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                     if (gameState.ScenarioObjective.MinimumExcitement >= ObjectiveExcitementMax)
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -537,7 +537,7 @@ namespace OpenRCT2::Ui::Windows
                 default:
                     if (gameState.ScenarioObjective.NumGuests >= ObjectiveGuestsMax)
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -558,7 +558,7 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
                     if (gameState.ScenarioObjective.Currency <= ObjectiveCurrencyLoanAndValueMin)
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -569,7 +569,7 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_MONTHLY_FOOD_INCOME:
                     if (gameState.ScenarioObjective.Currency <= ObjectiveCurrencyFoodMin)
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
                     if (gameState.ScenarioObjective.MinimumLength <= ObjectiveLengthMin)
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -591,7 +591,7 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                     if (gameState.ScenarioObjective.MinimumExcitement <= ObjectiveExcitementMin)
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -602,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
                 default:
                     if (gameState.ScenarioObjective.NumGuests <= ObjectiveGuestsMin)
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     else
                     {
@@ -618,7 +618,7 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = GetGameState();
             if (gameState.ScenarioObjective.Year >= ObjectiveYearMax)
             {
-                ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
             }
             else
             {
@@ -632,7 +632,7 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = GetGameState();
             if (gameState.ScenarioObjective.Year <= ObjectiveYearMin)
             {
-                ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
             }
             else
             {

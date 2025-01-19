@@ -24,7 +24,7 @@ using json_t = nlohmann::json;
 namespace OpenRCT2::Json
 {
     // Don't try to load JSON files that exceed 64 MiB
-    constexpr uint64_t MAX_JSON_SIZE = 64 * 1024 * 1024;
+    constexpr uint64_t kMaxJSONSize = 64 * 1024 * 1024;
 
     /**
      * Read JSON file and parse contents
@@ -33,7 +33,7 @@ namespace OpenRCT2::Json
      * @return A JSON representation of the file
      * @note This function will throw an exception if the JSON file cannot be parsed
      */
-    json_t ReadFromFile(u8string_view path, size_t maxSize = MAX_JSON_SIZE);
+    json_t ReadFromFile(u8string_view path, size_t maxSize = kMaxJSONSize);
 
     /**
      * Read JSON file and parse the contents

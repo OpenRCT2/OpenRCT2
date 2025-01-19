@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget _textInputWidgets[] = {
-        WINDOW_SHIM(STR_NONE, WW, WH),
+        WINDOW_SHIM(kStringIdNone, WW, WH),
         MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
         MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK),
     };
@@ -46,10 +46,10 @@ namespace OpenRCT2::Ui::Windows
         WidgetIdentifier _parentWidget{};
 
         std::string _title;
-        StringId _titleStringId = STR_NONE;
+        StringId _titleStringId = kStringIdNone;
 
         std::string _description;
-        StringId _descriptionStringId = STR_NONE;
+        StringId _descriptionStringId = kStringIdNone;
         Formatter _descriptionArgs;
 
         std::function<void(std::string_view)> _callback;
@@ -101,9 +101,9 @@ namespace OpenRCT2::Ui::Windows
 
         void SetTitle(std::string_view title, std::string_view description)
         {
-            _titleStringId = STR_NONE;
+            _titleStringId = kStringIdNone;
             _title = title;
-            _descriptionStringId = STR_NONE;
+            _descriptionStringId = kStringIdNone;
             _description = description;
         }
 
@@ -182,7 +182,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_BACKGROUND].bottom = newHeight - 1;
 
             // Set window title argument
-            if (_titleStringId == STR_NONE)
+            if (_titleStringId == kStringIdNone)
             {
                 auto ft = Formatter::Common();
                 ft.Add<const char*>(_title.c_str());
@@ -203,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
 
             int32_t no_lines = 0;
 
-            if (_descriptionStringId == STR_NONE)
+            if (_descriptionStringId == kStringIdNone)
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(_description.c_str());

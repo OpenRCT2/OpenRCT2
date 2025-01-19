@@ -896,7 +896,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
         const WindowThemeDesc* desc = GetWindowThemeDescriptor(wc);
         if (desc == nullptr)
         {
-            return STR_EMPTY;
+            return kStringIdEmpty;
         }
         return desc->WindowName;
     }

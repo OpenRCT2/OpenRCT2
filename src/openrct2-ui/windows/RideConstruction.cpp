@@ -2248,7 +2248,7 @@ namespace OpenRCT2::Ui::Windows
 
             _currentTrackPrice = kMoney64Undefined;
             _trackPlaceCost = kMoney64Undefined;
-            _trackPlaceErrorMessage = STR_NONE;
+            _trackPlaceErrorMessage = kStringIdNone;
             RideConstructionInvalidateCurrentTrack();
             if (WindowRideConstructionUpdateState(
                     &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, &properties))
@@ -2284,7 +2284,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 _trackPlaceCost = res.Cost;
-                _trackPlaceErrorMessage = STR_NONE;
+                _trackPlaceErrorMessage = kStringIdNone;
             }
 
             if (res.Error != GameActions::Status::Ok)
@@ -3624,7 +3624,7 @@ namespace OpenRCT2::Ui::Windows
                 if (mazeSetTrackResult.Error == GameActions::Status::Ok)
                 {
                     _trackPlaceCost = mazeSetTrackResult.Cost;
-                    _trackPlaceErrorMessage = STR_NONE;
+                    _trackPlaceErrorMessage = kStringIdNone;
                 }
                 else
                 {

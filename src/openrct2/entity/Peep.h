@@ -25,7 +25,7 @@ constexpr uint8_t kPeepMinEnergy = 32;
 constexpr uint8_t kPeepMaxEnergy = 128;
 constexpr uint8_t kPeepMaxEnergyTarget = 255; // Oddly, this differs from max energy!
 
-constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * kCoordsZStep;
+constexpr auto kPeepClearanceHeight = 4 * kCoordsZStep;
 
 class Formatter;
 struct TileElement;

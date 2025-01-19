@@ -372,7 +372,7 @@ namespace OpenRCT2::Ui::Windows
             if (!Path::CreateDirectory(destPath))
             {
                 LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
-                ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+                ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
                 return;
             }
 
@@ -381,7 +381,7 @@ namespace OpenRCT2::Ui::Windows
             if (File::Exists(destPath))
             {
                 LOG_INFO("%s already exists, prompting user for a different track design name", destPath.c_str());
-                ContextShowError(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
+                ContextShowError(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, kStringIdNone, {});
                 WindowTextInputRawOpen(
                     this, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN,
                     STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME, {}, _trackName.c_str(), 255);
@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+                    ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
                 }
             }
         }
@@ -405,7 +405,7 @@ namespace OpenRCT2::Ui::Windows
         auto trackDesign = TrackDesignImport(path);
         if (trackDesign == nullptr)
         {
-            ContextShowError(STR_UNABLE_TO_LOAD_FILE, STR_NONE, {});
+            ContextShowError(STR_UNABLE_TO_LOAD_FILE, kStringIdNone, {});
             return nullptr;
         }
 

@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui
     {
     public:
         std::string Id;
-        StringId LocalisedName = STR_NONE;
+        StringId LocalisedName = kStringIdNone;
         std::string CustomName;
         std::vector<ShortcutInput> Default;
         std::vector<ShortcutInput> Current;

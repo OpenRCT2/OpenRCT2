@@ -152,7 +152,7 @@ GameActions::Result RideSetSettingAction::Query() const
             if (!GetGameState().Cheats.allowArbitraryRideTypeChanges)
             {
                 LOG_ERROR("Arbitrary ride type changes not allowed.");
-                return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
             }
             break;
         default:

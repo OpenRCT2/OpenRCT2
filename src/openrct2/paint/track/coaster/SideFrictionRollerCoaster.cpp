@@ -1727,8 +1727,8 @@ static void SideFrictionRCTrackDiagFlat(
         { 21846, 21847, 21848, 21849 },
     };
     const ImageIndex additionalImages[2][kNumOrthogonalDirections] = {
-        { 21826, ImageIndexUndefined, 21827, ImageIndexUndefined },
-        { 21850, ImageIndexUndefined, 21851, ImageIndexUndefined },
+        { 21826, kImageIndexUndefined, 21827, kImageIndexUndefined },
+        { 21850, kImageIndexUndefined, 21851, kImageIndexUndefined },
     };
 
     TrackPaintUtilDiagTilesPaint(

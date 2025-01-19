@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
                     auto guestRide = GetRide(RideId::FromUnderlying(index));
                     if (guestRide != nullptr)
                     {
-                        ft.Add<StringId>(STR_NONE);
+                        ft.Add<StringId>(kStringIdNone);
                         guestRide->FormatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::GuestsThinking;
@@ -459,7 +459,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (_selectedFilter)
                 {
-                    if (_filterArguments.GetFirstStringId() != STR_NONE)
+                    if (_filterArguments.GetFirstStringId() != kStringIdNone)
                     {
                         format = GetFilterString(*_selectedFilter);
                     }
@@ -808,9 +808,9 @@ namespace OpenRCT2::Ui::Windows
         {
             auto guestViewType = _selectedFilter == GuestFilterType::Guests ? GuestViewType::Actions : GuestViewType::Thoughts;
             auto peepArgs = GetArgumentsFromPeep(peep, guestViewType);
-            if (_filterArguments.GetFirstStringId() == STR_NONE && _selectedFilter == GuestFilterType::GuestsThinking)
+            if (_filterArguments.GetFirstStringId() == kStringIdNone && _selectedFilter == GuestFilterType::GuestsThinking)
             {
-                Formatter(peepArgs.args).Add<StringId>(STR_NONE);
+                Formatter(peepArgs.args).Add<StringId>(kStringIdNone);
             }
             return _filterArguments == peepArgs;
         }
@@ -865,7 +865,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Remove empty group (basically guests with no thoughts)
             auto foundGroup = std::find_if(std::begin(_groups), std::end(_groups), [](GuestGroup& group) {
-                return group.Arguments.GetFirstStringId() == STR_EMPTY;
+                return group.Arguments.GetFirstStringId() == kStringIdEmpty;
             });
             if (foundGroup != std::end(_groups))
             {

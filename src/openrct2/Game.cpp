@@ -437,7 +437,7 @@ void GameNotifyMapChanged()
  */
 void ResetAllSpriteQuadrantPlacements()
 {
-    for (EntityId::UnderlyingType i = 0; i < MAX_ENTITIES; i++)
+    for (EntityId::UnderlyingType i = 0; i < kMaxEntities; i++)
     {
         auto* spr = GetEntity(EntityId::FromUnderlying(i));
         if (spr != nullptr && spr->Type != EntityType::Null)

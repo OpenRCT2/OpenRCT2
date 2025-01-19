@@ -56,7 +56,7 @@ namespace OpenRCT2
     // converted from uint16_t values at 0x009A41EC - 0x009A4230
     // these are percentage coordinates of the viewport to centre to, if a window is obscuring a location, the next is tried
     // clang-format off
-static constexpr float window_scroll_locations[][2] = {
+static constexpr float kWindowScrollLocations[][2] = {
     { 0.5f, 0.5f },
     { 0.75f, 0.5f },
     { 0.25f, 0.5f },
@@ -598,8 +598,8 @@ static constexpr float window_scroll_locations[][2] = {
                 bool found = false;
                 while (!found)
                 {
-                    auto x2 = w.viewport->pos.x + static_cast<int32_t>(w.viewport->width * window_scroll_locations[i][0]);
-                    auto y2 = w.viewport->pos.y + static_cast<int32_t>(w.viewport->height * window_scroll_locations[i][1]);
+                    auto x2 = w.viewport->pos.x + static_cast<int32_t>(w.viewport->width * kWindowScrollLocations[i][0]);
+                    auto y2 = w.viewport->pos.y + static_cast<int32_t>(w.viewport->height * kWindowScrollLocations[i][1]);
 
                     auto it = WindowGetIterator(&w);
                     for (; it != g_window_list.end(); it++)
@@ -622,7 +622,7 @@ static constexpr float window_scroll_locations[][2] = {
                     {
                         found = true;
                     }
-                    if (i >= static_cast<int32_t>(std::size(window_scroll_locations)))
+                    if (i >= static_cast<int32_t>(std::size(kWindowScrollLocations)))
                     {
                         i = 0;
                         found = true;
@@ -635,8 +635,8 @@ static constexpr float window_scroll_locations[][2] = {
                 if (!(w.flags & WF_NO_SCROLLING))
                 {
                     w.savedViewPos = screenCoords
-                        - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->ViewWidth() * window_scroll_locations[i][0]),
-                                          static_cast<int32_t>(w.viewport->ViewHeight() * window_scroll_locations[i][1]) };
+                        - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->ViewWidth() * kWindowScrollLocations[i][0]),
+                                          static_cast<int32_t>(w.viewport->ViewHeight() * kWindowScrollLocations[i][1]) };
                     w.flags |= WF_SCROLLING_TO_LOCATION;
                 }
             }
@@ -1240,7 +1240,7 @@ static constexpr float window_scroll_locations[][2] = {
 
     void WindowFollowSprite(WindowBase& w, EntityId spriteIndex)
     {
-        if (spriteIndex.ToUnderlying() < MAX_ENTITIES || spriteIndex.IsNull())
+        if (spriteIndex.ToUnderlying() < kMaxEntities || spriteIndex.IsNull())
         {
             w.viewport_smart_follow_sprite = spriteIndex;
         }

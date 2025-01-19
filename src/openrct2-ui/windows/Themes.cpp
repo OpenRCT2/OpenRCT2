@@ -529,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RCT1_RIDE_LIGHTS:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -541,7 +541,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RCT1_PARK_LIGHTS:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -553,7 +553,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RCT1_SCENARIO_FONT:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -566,7 +566,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RCT1_BOTTOM_TOOLBAR:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -597,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_DELETE_BUTTON:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -607,7 +607,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RENAME_BUTTON:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -673,12 +673,12 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            ContextShowError(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE, {});
+                            ContextShowError(STR_THEMES_ERR_NAME_ALREADY_EXISTS, kStringIdNone, {});
                         }
                     }
                     else
                     {
-                        ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+                        ContextShowError(STR_ERROR_INVALID_CHARACTERS, kStringIdNone, {});
                     }
                     break;
             }

@@ -55,7 +55,7 @@ namespace OpenRCT2::Scripting
 
     int32_t ScMap::numEntities_get() const
     {
-        return MAX_ENTITIES;
+        return kMaxEntities;
     }
 
     std::vector<std::shared_ptr<ScRide>> ScMap::rides_get() const
@@ -88,7 +88,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScMap::getEntity(int32_t id) const
     {
-        if (id >= 0 && id < MAX_ENTITIES)
+        if (id >= 0 && id < kMaxEntities)
         {
             auto spriteId = EntityId::FromUnderlying(id);
             auto sprite = GetEntity(spriteId);

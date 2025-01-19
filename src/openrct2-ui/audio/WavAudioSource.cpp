@@ -20,11 +20,11 @@ namespace OpenRCT2::Audio
     class WavAudioSource final : public SDLAudioSource
     {
     private:
-        static constexpr uint32_t DATA = 0x61746164;
-        static constexpr uint32_t FMT = 0x20746D66;
-        static constexpr uint32_t RIFF = 0x46464952;
-        static constexpr uint32_t WAVE = 0x45564157;
-        static constexpr uint16_t pcmformat = 0x0001;
+        static constexpr uint32_t kChunkIdDATA = 0x61746164;
+        static constexpr uint32_t kChunkIdFMT = 0x20746D66;
+        static constexpr uint32_t kChunkIdRIFF = 0x46464952;
+        static constexpr uint32_t kChunkIdWAVE = 0x45564157;
+        static constexpr uint16_t kPCMFormat = 0x0001;
 
         SDL_RWops* _rw{};
         AudioFormat _format = {};
@@ -36,7 +36,7 @@ namespace OpenRCT2::Audio
             : _rw(rw)
         {
             auto chunkId = SDL_ReadLE32(rw);
-            if (chunkId != RIFF)
+            if (chunkId != kChunkIdRIFF)
             {
                 SDL_RWclose(rw);
                 throw std::runtime_error("Not a WAV file");
@@ -45,13 +45,13 @@ namespace OpenRCT2::Audio
             // Read and discard chunk size
             SDL_ReadLE32(rw);
             auto chunkFormat = SDL_ReadLE32(rw);
-            if (chunkFormat != WAVE)
+            if (chunkFormat != kChunkIdWAVE)
             {
                 SDL_RWclose(rw);
                 throw std::runtime_error("Not in WAVE format");
             }
 
-            auto fmtChunkSize = FindChunk(rw, FMT);
+            auto fmtChunkSize = FindChunk(rw, kChunkIdFMT);
             if (!fmtChunkSize)
             {
                 SDL_RWclose(rw);
@@ -61,7 +61,7 @@ namespace OpenRCT2::Audio
             auto chunkStart = SDL_RWtell(rw);
 
             auto encoding = SDL_ReadLE16(rw);
-            if (encoding != pcmformat)
+            if (encoding != kPCMFormat)
             {
                 SDL_RWclose(rw);
                 throw std::runtime_error("Not in PCM format");
@@ -87,7 +87,7 @@ namespace OpenRCT2::Audio
 
             SDL_RWseek(rw, chunkStart + fmtChunkSize, RW_SEEK_SET);
 
-            auto dataChunkSize = FindChunk(rw, DATA);
+            auto dataChunkSize = FindChunk(rw, kChunkIdDATA);
             if (dataChunkSize == 0)
             {
                 SDL_RWclose(rw);
@@ -155,11 +155,12 @@ namespace OpenRCT2::Audio
             {
                 return subchunkSize;
             }
-            constexpr uint32_t FACT = 0x74636166;
-            constexpr uint32_t LIST = 0x5453494c;
-            constexpr uint32_t BEXT = 0x74786562;
-            constexpr uint32_t JUNK = 0x4B4E554A;
-            while (subchunkId == FACT || subchunkId == LIST || subchunkId == BEXT || subchunkId == JUNK)
+            constexpr uint32_t kChunkIdFACT = 0x74636166;
+            constexpr uint32_t kChunkIdLIST = 0x5453494c;
+            constexpr uint32_t kChunkIdBEXT = 0x74786562;
+            constexpr uint32_t kChunkIdJUNK = 0x4B4E554A;
+            while (subchunkId == kChunkIdFACT || subchunkId == kChunkIdLIST || subchunkId == kChunkIdBEXT
+                   || subchunkId == kChunkIdJUNK)
             {
                 SDL_RWseek(rw, subchunkSize, RW_SEEK_CUR);
                 subchunkId = SDL_ReadLE32(rw);

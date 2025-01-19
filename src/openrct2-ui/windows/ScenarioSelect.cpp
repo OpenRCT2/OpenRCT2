@@ -548,7 +548,7 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 // Category heading
-                StringId headingStringId = STR_NONE;
+                StringId headingStringId = kStringIdNone;
                 if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
                 {
                     if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
@@ -582,7 +582,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                if (headingStringId != STR_NONE)
+                if (headingStringId != kStringIdNone)
                 {
                     ScenarioListItem headerItem;
                     headerItem.type = ListItemType::Heading;

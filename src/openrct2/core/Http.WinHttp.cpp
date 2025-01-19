@@ -22,7 +22,7 @@
 
 namespace OpenRCT2::Http
 {
-    static constexpr char OPENRCT2_USER_AGENT[] = "OpenRCT2/" OPENRCT2_VERSION;
+    static constexpr char kOpenRCT2UserAgent[] = "OpenRCT2/" kOpenRCT2Version;
 
     static void ThrowWin32Exception(const char* methodName)
     {
@@ -75,10 +75,10 @@ namespace OpenRCT2::Http
         std::map<std::string, std::string> headers;
         std::wstring wKey, wValue;
 
-        constexpr int32_t STATE_EXPECT_KEY = 0;
-        constexpr int32_t STATE_EXPECT_WHITESPACE_VALUE = 1;
-        constexpr int32_t STATE_EXPECT_VALUE = 2;
-        int32_t state = STATE_EXPECT_KEY;
+        constexpr int32_t kStateExpectKey = 0;
+        constexpr int32_t kStateExpectWhitespaceValue = 1;
+        constexpr int32_t kStateExpectValue = 2;
+        int32_t state = kStateExpectKey;
         int32_t index = 0;
         for (auto c : buffer)
         {
@@ -95,24 +95,24 @@ namespace OpenRCT2::Http
                 wKey.clear();
                 wValue.clear();
                 index++;
-                state = STATE_EXPECT_KEY;
+                state = kStateExpectKey;
                 continue;
             }
-            if (state == STATE_EXPECT_KEY && c == ':')
+            if (state == kStateExpectKey && c == ':')
             {
-                state = STATE_EXPECT_WHITESPACE_VALUE;
+                state = kStateExpectWhitespaceValue;
             }
             else if (state == 1 && c == ' ')
             {
-                state = STATE_EXPECT_VALUE;
+                state = kStateExpectValue;
             }
-            else if (state == STATE_EXPECT_KEY)
+            else if (state == kStateExpectKey)
             {
                 wKey.push_back(c);
             }
             else
             {
-                state = STATE_EXPECT_VALUE;
+                state = kStateExpectValue;
                 wValue.push_back(c);
             }
         }
@@ -166,7 +166,7 @@ namespace OpenRCT2::Http
             if (!WinHttpCrackUrl(wUrl.c_str(), 0, 0, &url))
                 throw std::invalid_argument("Unable to parse URI.");
 
-            auto userAgent = String::toWideChar(OPENRCT2_USER_AGENT);
+            auto userAgent = String::toWideChar(kOpenRCT2UserAgent);
             hSession = WinHttpOpen(
                 userAgent.c_str(), WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
             if (hSession == nullptr)

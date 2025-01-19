@@ -73,7 +73,7 @@ GameActions::Result RideSetStatusAction::Query() const
         LOG_ERROR("Invalid ride status %u for ride %u", EnumValue(_status), _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = kStringIdNone;
         return res;
     }
 

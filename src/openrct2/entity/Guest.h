@@ -185,7 +185,7 @@ enum class PeepNauseaTolerance : uint8_t
     High
 };
 
-static constexpr uint16_t PeepThoughtItemNone = std::numeric_limits<uint16_t>::max();
+static constexpr uint16_t kPeepThoughtItemNone = std::numeric_limits<uint16_t>::max();
 
 struct PeepThought
 {

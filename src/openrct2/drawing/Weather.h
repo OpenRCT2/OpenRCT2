@@ -19,7 +19,7 @@ namespace OpenRCT2::Drawing
 }
 
 // clang-format off
-static constexpr uint8_t RainPattern[] =
+static constexpr uint8_t kRainPattern[] =
 {
     32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
     0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
@@ -27,7 +27,7 @@ static constexpr uint8_t RainPattern[] =
     0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
 };
 
-static constexpr uint8_t SnowPattern[] =
+static constexpr uint8_t kSnowPattern[] =
 {
     32, 32, 0, 32, 0, 32, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
     0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,

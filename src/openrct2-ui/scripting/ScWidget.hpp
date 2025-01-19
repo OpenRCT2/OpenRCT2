@@ -506,7 +506,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr && (widget->type == WindowWidgetType::FlatBtn || widget->type == WindowWidgetType::ImgBtn))
             {
-                if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+                if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
                 {
                     return LegacyIconIndex(widget->image.GetIndex());
                 }

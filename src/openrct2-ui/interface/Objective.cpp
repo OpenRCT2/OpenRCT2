@@ -37,7 +37,7 @@ namespace OpenRCT2::Ui
     {
         if (objective.Type == OBJECTIVE_BUILD_THE_BEST)
         {
-            StringId rideTypeString = STR_NONE;
+            StringId rideTypeString = kStringIdNone;
             auto rideTypeId = objective.RideId;
             if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
             {

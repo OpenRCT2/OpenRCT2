@@ -160,12 +160,12 @@ int32_t GfxClipString(utf8* text, int32_t width, FontStyle fontStyle)
  */
 int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines)
 {
-    constexpr size_t NULL_INDEX = std::numeric_limits<size_t>::max();
+    constexpr size_t kNullIndex = std::numeric_limits<size_t>::max();
     u8string buffer;
 
     size_t currentLineIndex = 0;
-    size_t splitIndex = NULL_INDEX;
-    size_t bestSplitIndex = NULL_INDEX;
+    size_t splitIndex = kNullIndex;
+    size_t bestSplitIndex = kNullIndex;
     size_t numLines = 0;
     int32_t maxWidth = 0;
 
@@ -182,14 +182,14 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
                 buffer.append(cb);
 
                 auto lineWidth = GfxGetStringWidth(&buffer[currentLineIndex], fontStyle);
-                if (lineWidth <= width || (splitIndex == NULL_INDEX && bestSplitIndex == NULL_INDEX))
+                if (lineWidth <= width || (splitIndex == kNullIndex && bestSplitIndex == kNullIndex))
                 {
                     if (codepoint == ' ')
                     {
                         // Mark line split here
                         splitIndex = buffer.size() - 1;
                     }
-                    else if (splitIndex == NULL_INDEX)
+                    else if (splitIndex == kNullIndex)
                     {
                         // Mark line split here (this is after first character of line)
                         bestSplitIndex = buffer.size();
@@ -198,7 +198,7 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
                 else
                 {
                     // Insert new line before current word
-                    if (splitIndex == NULL_INDEX)
+                    if (splitIndex == kNullIndex)
                     {
                         splitIndex = bestSplitIndex;
                     }
@@ -210,8 +210,8 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
                     numLines++;
 
                     currentLineIndex = splitIndex + 1;
-                    splitIndex = NULL_INDEX;
-                    bestSplitIndex = NULL_INDEX;
+                    splitIndex = kNullIndex;
+                    bestSplitIndex = kNullIndex;
 
                     // Trim the beginning of the new line
                     while (buffer[currentLineIndex] == ' ')
@@ -230,8 +230,8 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
             numLines++;
 
             currentLineIndex = buffer.size();
-            splitIndex = NULL_INDEX;
-            bestSplitIndex = NULL_INDEX;
+            splitIndex = kNullIndex;
+            bestSplitIndex = kNullIndex;
         }
         else
         {

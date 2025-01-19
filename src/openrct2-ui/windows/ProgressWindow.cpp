@@ -220,7 +220,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format)
         {
-            if (format == STR_NONE)
+            if (format == kStringIdNone)
                 _progressFormat = STR_STRING_M_OF_N;
             else
                 _progressFormat = format;

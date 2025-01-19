@@ -82,7 +82,7 @@ namespace OpenRCT2
             StringId text;
             utf8* string;
         };
-        StringId tooltip{ STR_NONE };
+        StringId tooltip{ kStringIdNone };
 
         // New properties
         WidgetFlags flags{};

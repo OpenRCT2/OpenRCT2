@@ -95,8 +95,8 @@ bool CommandLineArgEnumerator::TryPopString(const char** result)
 
 namespace OpenRCT2::CommandLine
 {
-    constexpr const char* HelpText = "openrct2 -ha shows help for all commands. "
-                                     "openrct2 <command> -h will show help and details for a given command.";
+    constexpr const char* kHelpText = "openrct2 -ha shows help for all commands. "
+                                      "openrct2 <command> -h will show help and details for a given command.";
 
     static void PrintHelpFor(const CommandLineCommand* commands);
     static void PrintOptions(const CommandLineOptionDefinition* options);
@@ -143,7 +143,7 @@ namespace OpenRCT2::CommandLine
         }
         else
         {
-            Console::WriteLine(HelpText);
+            Console::WriteLine(kHelpText);
         }
     }
 

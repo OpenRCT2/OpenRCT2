@@ -20,7 +20,7 @@
 #include <iterator>
 
 // TODO: Create constants in sprites.h
-static constexpr uint32_t _VehicleCrashParticleSprites[kCrashedVehicleParticleNumberTypes] = {
+static constexpr uint32_t kVehicleCrashParticleSprites[kCrashedVehicleParticleNumberTypes] = {
     22577, 22589, 22601, 22613, 22625,
 };
 
@@ -177,7 +177,7 @@ void VehicleCrashParticle::Paint(PaintSession& session, int32_t imageDirection) 
         return;
     }
 
-    uint32_t imageId = _VehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
+    uint32_t imageId = kVehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
     auto image = ImageId(imageId, colour[0], colour[1]);
     PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 0 });
 }

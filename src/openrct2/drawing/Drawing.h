@@ -159,25 +159,25 @@ enum
 
 using DrawBlendOp = uint8_t;
 
-constexpr DrawBlendOp BLEND_NONE = 0;
+constexpr DrawBlendOp kBlendNone = 0;
 
 /**
  * Only supported by BITMAP. RLE images always encode transparency via the encoding.
  * Pixel value of 0 represents transparent.
  */
-constexpr DrawBlendOp BLEND_TRANSPARENT = 1 << 0;
+constexpr DrawBlendOp kBlendTransparent = 1 << 0;
 
 /**
  * Whether to use the pixel value from the source image.
  * This is usually only unset for glass images where there the src is only a transparency mask.
  */
-constexpr DrawBlendOp BLEND_SRC = 1 << 1;
+constexpr DrawBlendOp kBlendSrc = 1 << 1;
 
 /**
  * Whether to use the pixel value of the destination image for blending.
  * This is used for any image that filters the target image, e.g. glass or water.
  */
-constexpr DrawBlendOp BLEND_DST = 2 << 2;
+constexpr DrawBlendOp kBlendDst = 2 << 2;
 
 enum
 {
@@ -417,7 +417,7 @@ struct DrawSpriteArgs
 template<DrawBlendOp TBlendOp>
 bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
 {
-    if constexpr (TBlendOp & BLEND_TRANSPARENT)
+    if constexpr (TBlendOp & kBlendTransparent)
     {
         // Ignore transparent pixels
         if (*src == 0)
@@ -426,10 +426,10 @@ bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& pale
         }
     }
 
-    if constexpr (((TBlendOp & BLEND_SRC) != 0) && ((TBlendOp & BLEND_DST) != 0))
+    if constexpr (((TBlendOp & kBlendSrc) != 0) && ((TBlendOp & kBlendDst) != 0))
     {
         auto pixel = paletteMap.Blend(*src, *dst);
-        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        if constexpr (TBlendOp & kBlendTransparent)
         {
             if (pixel == 0)
             {
@@ -439,10 +439,10 @@ bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& pale
         *dst = pixel;
         return true;
     }
-    else if constexpr ((TBlendOp & BLEND_SRC) != 0)
+    else if constexpr ((TBlendOp & kBlendSrc) != 0)
     {
         auto pixel = paletteMap[*src];
-        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        if constexpr (TBlendOp & kBlendTransparent)
         {
             if (pixel == 0)
             {
@@ -452,10 +452,10 @@ bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& pale
         *dst = pixel;
         return true;
     }
-    else if constexpr ((TBlendOp & BLEND_DST) != 0)
+    else if constexpr ((TBlendOp & kBlendDst) != 0)
     {
         auto pixel = paletteMap[*dst];
-        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        if constexpr (TBlendOp & kBlendTransparent)
         {
             if (pixel == 0)
             {

@@ -62,7 +62,7 @@ private:
     };
 
     // Index file format version which when incremented forces a rebuild
-    static constexpr uint8_t FILE_INDEX_VERSION = 4;
+    static constexpr uint8_t kFileIndexVersion = 4;
 
     std::string const _name;
     uint32_t const _magicNumber;
@@ -224,7 +224,7 @@ private:
                 // Read header, check if we need to re-scan
                 auto header = fs.ReadValue<FileIndexHeader>();
                 if (header.HeaderSize == sizeof(FileIndexHeader) && header.MagicNumber == _magicNumber
-                    && header.VersionA == FILE_INDEX_VERSION && header.VersionB == _version && header.LanguageId == language
+                    && header.VersionA == kFileIndexVersion && header.VersionB == _version && header.LanguageId == language
                     && header.Stats.TotalFiles == stats.TotalFiles && header.Stats.TotalFileSize == stats.TotalFileSize
                     && header.Stats.FileDateModifiedChecksum == stats.FileDateModifiedChecksum
                     && header.Stats.PathChecksum == stats.PathChecksum)
@@ -265,7 +265,7 @@ private:
             // Write header
             FileIndexHeader header;
             header.MagicNumber = _magicNumber;
-            header.VersionA = FILE_INDEX_VERSION;
+            header.VersionA = kFileIndexVersion;
             header.VersionB = _version;
             header.LanguageId = language;
             header.Stats = stats;

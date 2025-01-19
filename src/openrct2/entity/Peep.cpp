@@ -400,7 +400,7 @@ void Peep::StateReset()
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static constexpr CoordsXY walkingOffsetByDirection[kNumOrthogonalDirections] = {
+static constexpr CoordsXY kWalkingOffsetByDirection[kNumOrthogonalDirections] = {
     { -2, 0 },
     { 0, 2 },
     { 2, 0 },
@@ -517,7 +517,7 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
     Orientation = nextDirection * 8;
 
     CoordsXY loc = { x, y };
-    loc += walkingOffsetByDirection[nextDirection];
+    loc += kWalkingOffsetByDirection[nextDirection];
 
     UpdateWalkingAnimation();
 
@@ -662,7 +662,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     }
     if (tileElement == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
     }
 
     // Set the coordinate of destination to be exactly
@@ -1452,7 +1452,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             else
             {
-                ft.Add<StringId>(STR_ON_RIDE).Add<StringId>(STR_NONE);
+                ft.Add<StringId>(STR_ON_RIDE).Add<StringId>(kStringIdNone);
             }
             break;
         }
@@ -1466,7 +1466,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             else
             {
-                ft.Add<StringId>(STR_NONE);
+                ft.Add<StringId>(kStringIdNone);
             }
             break;
         }
@@ -1560,7 +1560,7 @@ void Peep::FormatActionTo(Formatter& ft) const
                 }
                 else
                 {
-                    ft.Add<StringId>(STR_NONE);
+                    ft.Add<StringId>(kStringIdNone);
                 }
             }
             break;
@@ -1574,7 +1574,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             else
             {
-                ft.Add<StringId>(STR_NONE);
+                ft.Add<StringId>(kStringIdNone);
             }
             break;
         }
@@ -1588,7 +1588,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             else
             {
-                ft.Add<StringId>(STR_NONE);
+                ft.Add<StringId>(kStringIdNone);
             }
             break;
         }
@@ -1602,14 +1602,14 @@ void Peep::FormatActionTo(Formatter& ft) const
             }
             else
             {
-                ft.Add<StringId>(STR_NONE);
+                ft.Add<StringId>(kStringIdNone);
             }
             break;
         }
     }
 }
 
-static constexpr StringId _staffNames[] = {
+static constexpr StringId kStaffNames[] = {
     STR_HANDYMAN_X,
     STR_MECHANIC_X,
     STR_SECURITY_GUARD_X,
@@ -1642,12 +1642,12 @@ void Peep::FormatNameTo(Formatter& ft) const
         else if (isStaff)
         {
             auto staffNameIndex = static_cast<uint8_t>(staff->AssignedStaffType);
-            if (staffNameIndex >= std::size(_staffNames))
+            if (staffNameIndex >= std::size(kStaffNames))
             {
                 staffNameIndex = 0;
             }
 
-            ft.Add<StringId>(_staffNames[staffNameIndex]);
+            ft.Add<StringId>(kStaffNames[staffNameIndex]);
             ft.Add<uint32_t>(PeepId);
         }
         else

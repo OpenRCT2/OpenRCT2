@@ -42,7 +42,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WindowTitle = STR_NONE;
+    static constexpr StringId WindowTitle = kStringIdNone;
     static constexpr int32_t WindowHeight = 382;
     static constexpr int32_t WindowWidth = 601;
     static constexpr int32_t RideListItemsMax = 384;
@@ -640,7 +640,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
             auto obj = objMgr.GetLoadedObject<RideObject>(rideSelection.EntryIndex);
-            return obj == nullptr ? ImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
+            return obj == nullptr ? kImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
         }
 
         void PopulateRideList()

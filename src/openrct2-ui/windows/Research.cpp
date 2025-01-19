@@ -441,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
 
         if (gameState.ResearchLastItem.has_value())
         {
-            StringId lastDevelopmentFormat = STR_EMPTY;
+            StringId lastDevelopmentFormat = kStringIdEmpty;
             auto ft = Formatter();
             if (gameState.ResearchLastItem->type == Research::EntryType::Scenery)
             {

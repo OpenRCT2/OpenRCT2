@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget(
             { 27, 17 }, { 44, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_LAND_TOOL_SIZE_0,
-            STR_NONE), // preview box
+            kStringIdNone), // preview box
         MakeRemapWidget(
             { 28, 18 }, { 16, 16 }, WindowWidgetType::TrnBtn, WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,
             STR_ADJUST_SMALLER_LAND_TIP), // decrement size
@@ -104,7 +104,8 @@ namespace OpenRCT2::Ui::Windows
                     Formatter ft;
                     ft.Add<uint16_t>(kLandToolMinimumSize);
                     ft.Add<uint16_t>(kLandToolMaximumSize);
-                    TextInputOpen(WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+                    TextInputOpen(
+                        WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, kStringIdNone, kStringIdNone, 3);
                     break;
                 }
                 case WIDX_SMALL_SCENERY:

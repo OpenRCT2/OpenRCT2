@@ -40,7 +40,7 @@ namespace OpenRCT2::Ui::Windows
     struct EntranceSelection
     {
         ObjectEntryIndex entryIndex = OBJECT_ENTRY_INDEX_NULL;
-        StringId stringId = STR_NONE;
+        StringId stringId = kStringIdNone;
         ImageIndex imageId = kSpriteIdNull;
     };
 
@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
     static Widget _widgets[] = {
         WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowHeight),
         MakeWidget     ({                 0, 43 }, { kWindowWidth, kWindowHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
-        MakeTab        ({                 3, 17 },                                                                                           STR_NONE                                         ),
+        MakeTab        ({                 3, 17 },                                                                                           kStringIdNone                                         ),
         MakeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
         MakeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 ),
     };

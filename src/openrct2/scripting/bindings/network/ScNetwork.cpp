@@ -114,7 +114,7 @@ namespace OpenRCT2::Scripting
     std::shared_ptr<ScPlayer> ScNetwork::getPlayer(int32_t id) const
     {
     #ifndef DISABLE_NETWORK
-        if (GetTargetAPIVersion() < API_VERSION_77_NETWORK_IDS)
+        if (GetTargetAPIVersion() < kApiVersionNetworkIDs)
         {
             auto index = id;
             auto numPlayers = NetworkGetNumPlayers();
@@ -173,7 +173,7 @@ namespace OpenRCT2::Scripting
     std::shared_ptr<ScPlayerGroup> ScNetwork::getGroup(int32_t id) const
     {
     #ifndef DISABLE_NETWORK
-        if (GetTargetAPIVersion() < API_VERSION_77_NETWORK_IDS)
+        if (GetTargetAPIVersion() < kApiVersionNetworkIDs)
         {
             auto index = id;
             auto numGroups = NetworkGetNumGroups();
@@ -206,7 +206,7 @@ namespace OpenRCT2::Scripting
     void ScNetwork::removeGroup(int32_t id)
     {
     #ifndef DISABLE_NETWORK
-        if (GetTargetAPIVersion() < API_VERSION_77_NETWORK_IDS)
+        if (GetTargetAPIVersion() < kApiVersionNetworkIDs)
         {
             auto index = id;
             auto numGroups = NetworkGetNumGroups();
@@ -232,7 +232,7 @@ namespace OpenRCT2::Scripting
     void ScNetwork::kickPlayer(int32_t id)
     {
     #ifndef DISABLE_NETWORK
-        if (GetTargetAPIVersion() < API_VERSION_77_NETWORK_IDS)
+        if (GetTargetAPIVersion() < kApiVersionNetworkIDs)
         {
             auto index = id;
             auto numPlayers = NetworkGetNumPlayers();

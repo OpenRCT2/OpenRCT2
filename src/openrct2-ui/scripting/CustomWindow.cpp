@@ -641,7 +641,7 @@ namespace OpenRCT2::Ui::Windows
                     widget--;
                     auto selectedIndex = widgetDesc->SelectedIndex;
                     const auto& items = widgetDesc->Items;
-                    const auto numItems = std::min<size_t>(items.size(), Dropdown::ItemsMaxSize);
+                    const auto numItems = std::min<size_t>(items.size(), Dropdown::kItemsMaxSize);
                     for (size_t i = 0; i < numItems; i++)
                     {
                         gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
@@ -901,7 +901,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.top = 17;
                 widget.bottom = 43;
                 widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
-                widget.tooltip = STR_NONE;
+                widget.tooltip = kStringIdNone;
                 widgetList.push_back(widget);
                 _info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
             }
@@ -958,7 +958,7 @@ namespace OpenRCT2::Ui::Windows
             widget.right = desc.X + desc.Width - 1;
             widget.bottom = desc.Y + desc.Height - 1;
             widget.content = std::numeric_limits<uint32_t>::max();
-            widget.tooltip = STR_NONE;
+            widget.tooltip = kStringIdNone;
             widget.sztooltip = const_cast<utf8*>(desc.Tooltip.c_str());
             widget.flags |= WIDGET_FLAGS::TOOLTIP_IS_STRING;
             if (desc.IsDisabled)
@@ -1030,7 +1030,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.top = desc.Y + 1;
                 widget.bottom = desc.Y + desc.Height - 2;
                 widget.text = STR_DROPDOWN_GLYPH;
-                widget.tooltip = STR_NONE;
+                widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
                 widgetList.push_back(widget);
@@ -1081,7 +1081,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.top = desc.Y + 1;
                 widget.bottom = desc.Y + desc.Height - 2;
                 widget.text = STR_NUMERIC_UP;
-                widget.tooltip = STR_NONE;
+                widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
                 widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;
@@ -1103,7 +1103,7 @@ namespace OpenRCT2::Ui::Windows
             else if (desc.Type == "viewport")
             {
                 widget.type = WindowWidgetType::Viewport;
-                widget.text = STR_NONE;
+                widget.text = kStringIdNone;
                 widgetList.push_back(widget);
             }
         }

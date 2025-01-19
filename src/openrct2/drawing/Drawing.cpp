@@ -286,7 +286,7 @@ enum
     SPR_PALETTE_GLASS_VOID,
 };
 
-static constexpr FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
+static constexpr FilterPaletteID kGlassPaletteIds[COLOUR_COUNT] = {
     FilterPaletteID::PaletteGlassBlack,
     FilterPaletteID::PaletteGlassGrey,
     FilterPaletteID::PaletteGlassWhite,
@@ -347,7 +347,7 @@ static constexpr FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
 // clang-format off
-static constexpr uint16_t palette_to_g1_offset[kPaletteTotalOffsets] = {
+static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,
@@ -728,7 +728,7 @@ void LoadPalette()
     auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
     if (water_type != nullptr)
     {
-        Guard::Assert(water_type->image_id != ImageIndexUndefined, "Failed to load water palette");
+        Guard::Assert(water_type->image_id != kImageIndexUndefined, "Failed to load water palette");
         palette = water_type->image_id;
     }
 
@@ -849,7 +849,7 @@ std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
 {
     if (paletteId < kPaletteTotalOffsets)
     {
-        return palette_to_g1_offset[paletteId];
+        return kPaletteToG1Offset[paletteId];
     }
     return std::nullopt;
 }
@@ -887,7 +887,7 @@ DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& s
 
 FilterPaletteID GetGlassPaletteId(colour_t c)
 {
-    return GlassPaletteIds[c];
+    return kGlassPaletteIds[c];
 }
 
 void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int32_t start_index, int32_t num_colours)

@@ -722,7 +722,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            ft.Add<StringId>(STR_NONE);
+                            ft.Add<StringId>(kStringIdNone);
                         }
                         break;
                     }

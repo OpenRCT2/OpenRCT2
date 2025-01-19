@@ -259,7 +259,7 @@ namespace OpenRCT2::Scripting
                 }
                 else
                 {
-                    customTool.Filter = ViewportInteractionItemAll;
+                    customTool.Filter = kViewportInteractionItemAll;
                 }
 
                 customTool.onStart = dukValue["onStart"];

@@ -705,7 +705,7 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].Format = STR_NONE;
+                gDropdownItems[numPathTypes].Format = kStringIdNone;
                 Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::FootpathSurface, i });
                 numPathTypes++;
@@ -730,7 +730,7 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].Format = STR_NONE;
+                gDropdownItems[numPathTypes].Format = kStringIdNone;
                 Dropdown::SetImage(
                     numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
                 _dropdownEntries.push_back({ ObjectType::Paths, i });
@@ -764,7 +764,7 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numRailingsTypes;
                 }
 
-                gDropdownItems[numRailingsTypes].Format = STR_NONE;
+                gDropdownItems[numRailingsTypes].Format = kStringIdNone;
                 Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::FootpathRailings, i });
                 numRailingsTypes++;

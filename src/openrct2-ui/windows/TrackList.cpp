@@ -154,7 +154,7 @@ namespace OpenRCT2::Ui::Windows
                 if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED
                     && (_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable)))
                 {
-                    ContextShowError(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
+                    ContextShowError(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, kStringIdNone, {});
                 }
 
                 auto intent = Intent(WindowClass::TrackDesignPlace);
@@ -377,7 +377,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            StringId stringId = STR_NONE;
+            StringId stringId = kStringIdNone;
             const auto* entry = GetRideEntryByIndex(_window_track_list_item.EntryIndex);
 
             if (entry != nullptr)

@@ -82,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_loadsave_widgets[] =
     {
-        WINDOW_SHIM(STR_NONE, WW, WH),
+        WINDOW_SHIM(kStringIdNone, WW, WH),
         MakeWidget({                0,      15 }, {       WW,  WH - 15 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
         MakeWidget({                4,      36 }, {       84,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
         MakeWidget({               88,      36 }, {       84,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
@@ -284,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if (!IsValidPath(path))
         {
-            ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+            ContextShowError(STR_ERROR_INVALID_CHARACTERS, kStringIdNone, {});
             return;
         }
 
@@ -444,7 +444,7 @@ namespace OpenRCT2::Ui::Windows
     {
         OpenRCT2::Ui::FileDialogDesc desc = {};
         u8string extension;
-        StringId title = STR_NONE;
+        StringId title = kStringIdNone;
         switch (_type & 0x0E)
         {
             case LOADSAVETYPE_GAME:
@@ -923,7 +923,7 @@ namespace OpenRCT2::Ui::Windows
             const auto drawButtonCaption = [dpi, this](
                                                Widget& widget, StringId strId, FileBrowserSort ascSort,
                                                FileBrowserSort descSort) {
-                StringId indicatorId = STR_NONE;
+                StringId indicatorId = kStringIdNone;
                 if (Config::Get().general.LoadSaveSort == ascSort)
                     indicatorId = STR_UP;
                 else if (Config::Get().general.LoadSaveSort == descSort)
@@ -974,12 +974,13 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_NEW_FILE:
                     WindowTextInputOpen(
-                        this, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, {}, STR_STRING,
+                        this, WIDX_NEW_FILE, kStringIdNone, STR_FILEBROWSER_FILE_NAME_PROMPT, {}, STR_STRING,
                         reinterpret_cast<uintptr_t>(_defaultPath.c_str()), 64);
                     break;
 
                 case WIDX_NEW_FOLDER:
-                    WindowTextInputRawOpen(this, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
+                    WindowTextInputRawOpen(
+                        this, WIDX_NEW_FOLDER, kStringIdNone, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
                     break;
 
                 case WIDX_BROWSE:
@@ -1121,7 +1122,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (!Platform::IsFilenameValid(text))
             {
-                ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+                ContextShowError(STR_ERROR_INVALID_CHARACTERS, kStringIdNone, {});
                 return;
             }
 
@@ -1132,7 +1133,7 @@ namespace OpenRCT2::Ui::Windows
                     const u8string path = Path::Combine(_directory, text);
                     if (!Path::CreateDirectory(path))
                     {
-                        ContextShowError(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE, {});
+                        ContextShowError(STR_UNABLE_TO_CREATE_FOLDER, kStringIdNone, {});
                         return;
                     }
 

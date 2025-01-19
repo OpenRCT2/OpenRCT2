@@ -156,7 +156,7 @@ namespace OpenRCT2::Ui::Windows
                     ServerListFetchServersBegin();
                     break;
                 case WIDX_ADD_SERVER:
-                    TextInputOpen(widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, STR_NONE, 0, 128);
+                    TextInputOpen(widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, kStringIdNone, 0, 128);
                     break;
                 case WIDX_START_SERVER:
                     ContextOpenWindow(WindowClass::ServerStart);
@@ -265,7 +265,7 @@ namespace OpenRCT2::Ui::Windows
                 selected_list_item = itemIndex;
                 _showNetworkVersionTooltip = showNetworkVersionTooltip;
 
-                listWidget.tooltip = showNetworkVersionTooltip ? static_cast<StringId>(STR_NETWORK_VERSION_TIP) : STR_NONE;
+                listWidget.tooltip = showNetworkVersionTooltip ? static_cast<StringId>(STR_NETWORK_VERSION_TIP) : kStringIdNone;
                 WindowTooltipClose();
 
                 Invalidate();
@@ -465,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                 }
 
-                auto status = STR_NONE;
+                auto status = kStringIdNone;
                 try
                 {
                     auto entries = wanF.get();
@@ -499,7 +499,7 @@ namespace OpenRCT2::Ui::Windows
                         _serverList.WriteFavourites(); // Update favourites in case favourited server info changes
                         _numPlayersOnline = _serverList.GetTotalPlayerCount();
                         _statusText = STR_X_PLAYERS_ONLINE;
-                        if (statusText != STR_NONE)
+                        if (statusText != kStringIdNone)
                         {
                             _statusText = statusText;
                         }
@@ -584,7 +584,7 @@ namespace OpenRCT2::Ui::Windows
 
         if (!NetworkBeginClient(address, port))
         {
-            ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
+            ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, kStringIdNone, {});
         }
     }
 } // namespace OpenRCT2::Ui::Windows

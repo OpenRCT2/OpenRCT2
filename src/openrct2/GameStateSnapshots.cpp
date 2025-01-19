@@ -23,8 +23,8 @@
 #include "entity/Staff.h"
 #include "ride/Vehicle.h"
 
-static constexpr size_t MaximumGameStateSnapshots = 32;
-static constexpr uint32_t InvalidTick = 0xFFFFFFFF;
+static constexpr size_t kMaximumGameStateSnapshots = 32;
+static constexpr uint32_t kInvalidTick = 0xFFFFFFFF;
 
 #pragma pack(push, 1)
 union EntitySnapshot
@@ -48,7 +48,7 @@ struct GameStateSnapshot_t
         return *this;
     }
 
-    uint32_t tick = InvalidTick;
+    uint32_t tick = kInvalidTick;
     uint32_t srand0 = 0;
 
     OpenRCT2::MemoryStream storedSprites;
@@ -187,7 +187,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, MAX_ENTITIES, true);
+            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, kMaxEntities, true);
 
         // LOG_INFO("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -213,7 +213,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     std::vector<EntitySnapshot> BuildSpriteList(GameStateSnapshot_t& snapshot) const
     {
         std::vector<EntitySnapshot> spriteList;
-        spriteList.resize(MAX_ENTITIES);
+        spriteList.resize(kMaxEntities);
 
         for (auto& sprite : spriteList)
         {
@@ -222,7 +222,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         }
 
         snapshot.SerialiseSprites(
-            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, MAX_ENTITIES, false);
+            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, kMaxEntities, false);
 
         return spriteList;
     }
@@ -789,7 +789,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     }
 
 private:
-    CircularBuffer<std::unique_ptr<GameStateSnapshot_t>, MaximumGameStateSnapshots> _snapshots;
+    CircularBuffer<std::unique_ptr<GameStateSnapshot_t>, kMaximumGameStateSnapshots> _snapshots;
 };
 
 std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots()

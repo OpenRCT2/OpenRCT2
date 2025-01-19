@@ -715,7 +715,7 @@ void ScriptEngine::LoadPlugin(std::shared_ptr<Plugin>& plugin)
         if (!plugin->IsLoaded())
         {
             const auto& metadata = plugin->GetMetadata();
-            if (metadata.MinApiVersion <= OPENRCT2_PLUGIN_API_VERSION)
+            if (metadata.MinApiVersion <= kPluginApiVersion)
             {
                 ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
                 plugin->Load();
@@ -1087,7 +1087,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
         }
 
         std::vector<DukValue> pluginCallArgs;
-        if (customActionInfo.Owner->GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
+        if (customActionInfo.Owner->GetTargetAPIVersion() <= kApiVersionCustomActionArgs)
         {
             pluginCallArgs = { *dukArgs };
         }
@@ -1847,7 +1847,7 @@ int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
     if (plugin == nullptr)
     {
         // For in-game console, default to the current API version
-        return OPENRCT2_PLUGIN_API_VERSION;
+        return kPluginApiVersion;
     }
 
     return plugin->GetTargetAPIVersion();

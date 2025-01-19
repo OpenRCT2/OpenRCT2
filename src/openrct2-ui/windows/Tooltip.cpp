@@ -195,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
             gTooltipWidget.window_number = widgetWindow->number;
             gTooltipWidget.widget_index = widgetIndex;
             result = widgetWindow->OnTooltip(widgetIndex, stringId);
-            if (result.str == STR_NONE)
+            if (result.str == kStringIdNone)
                 return;
         }
 
