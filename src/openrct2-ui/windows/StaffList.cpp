@@ -87,8 +87,8 @@ namespace OpenRCT2::Ui::Windows
         MakeTab   ({ 65, 17},                                                                          STR_STAFF_SECURITY_TAB_TIP                         ), // security guards tab
         MakeTab   ({ 96, 17},                                                                          STR_STAFF_ENTERTAINERS_TAB_TIP                     ), // entertainers tab
         MakeWidget({  3, 72}, {WW - 6,     195}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                    ), // staff list
-        MakeWidget({130, 58}, {    12,      12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, STR_NONE,        STR_UNIFORM_COLOUR_TIP            ), // uniform colour picker
-        MakeWidget({165, 17}, {   145,      13}, WindowWidgetType::Button,    WindowColour::Primary  , STR_NONE,        STR_HIRE_STAFF_TIP                ), // hire button
+        MakeWidget({130, 58}, {    12,      12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kStringIdNone,        STR_UNIFORM_COLOUR_TIP            ), // uniform colour picker
+        MakeWidget({165, 17}, {   145,      13}, WindowWidgetType::Button,    WindowColour::Primary  , kStringIdNone,        STR_HIRE_STAFF_TIP                ), // hire button
         MakeWidget({243, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),    STR_QUICK_FIRE_STAFF     ), // quick fire staff
         MakeWidget({267, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PATROL_BTN),  STR_SHOW_PATROL_AREA_TIP ), // show staff patrol area tool
         MakeWidget({291, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_MAP),         STR_SHOW_STAFF_ON_MAP_TIP), // show staff on map button
@@ -483,7 +483,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<StringId>(GetStaffNamingConvention(GetSelectedStaffType()).Plural);
-                    ContextShowError(STR_NO_THING_IN_PARK_YET, STR_NONE, ft);
+                    ContextShowError(STR_NO_THING_IN_PARK_YET, kStringIdNone, ft);
                 }
             }
         }

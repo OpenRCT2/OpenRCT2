@@ -506,7 +506,7 @@ namespace OpenRCT2::Ui
                 {
                     ft.Add<StringId>(STR_BROKEN);
                 }
-                ft.Add<StringId>(pathAddEntry != nullptr ? pathAddEntry->name : STR_NONE);
+                ft.Add<StringId>(pathAddEntry != nullptr ? pathAddEntry->name : kStringIdNone);
                 SetMapTooltip(ft);
                 return info;
             }

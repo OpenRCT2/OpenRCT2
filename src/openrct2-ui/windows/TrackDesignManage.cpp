@@ -159,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
         }
         else if (text.empty())
         {
-            ContextShowError(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE, {});
+            ContextShowError(STR_CANT_RENAME_TRACK_DESIGN, kStringIdNone, {});
             return;
         }
         else if (!Platform::IsFilenameValid(text))

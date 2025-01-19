@@ -324,7 +324,7 @@ namespace OpenRCT2::TileInspector
                 if (newBanner == nullptr)
                 {
                     LOG_ERROR("No free banners available");
-                    return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
+                    return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, kStringIdNone);
                 }
                 auto newId = newBanner->id;
                 // Copy the banners style

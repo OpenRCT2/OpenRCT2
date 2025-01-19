@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
             StringId stringId;
             auto ft = GetMapTooltip();
             std::memcpy(&stringId, ft.Data(), sizeof(StringId));
-            if (stringId == STR_NONE)
+            if (stringId == kStringIdNone)
             {
                 // TODO: this string probably shouldn't be reused for this
                 DrawTextWrapped(

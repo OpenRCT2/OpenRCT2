@@ -87,10 +87,10 @@ enum
     CMDLINE_TYPE_STRING,
 };
 
-constexpr char NAC = '\0';
+constexpr char kNAC = '\0';
 
 constexpr CommandLineExample kExampleTableEnd = CommandLineExample{ nullptr, nullptr };
-constexpr CommandLineOptionDefinition kOptionTableEnd = CommandLineOptionDefinition{ UINT8_MAX, nullptr, NAC, nullptr,
+constexpr CommandLineOptionDefinition kOptionTableEnd = CommandLineOptionDefinition{ UINT8_MAX, nullptr, kNAC, nullptr,
                                                                                      nullptr };
 constexpr CommandLineCommand kCommandTableEnd = CommandLineCommand{ nullptr, nullptr, nullptr, nullptr, nullptr };
 

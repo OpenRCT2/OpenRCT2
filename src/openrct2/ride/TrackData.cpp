@@ -4479,58 +4479,58 @@ namespace OpenRCT2::TrackMetaData
     }
 
     static constexpr StringId RideConfigurationStringIds[] = {
-        STR_EMPTY,                         // 0
+        kStringIdEmpty,                    // 0
         STR_STATION_PLATFORM,              // 1
-        STR_EMPTY,                         // 2
-        STR_EMPTY,                         // 3
-        STR_EMPTY,                         // 4
-        STR_EMPTY,                         // 5
-        STR_EMPTY,                         // 6
-        STR_EMPTY,                         // 7
-        STR_EMPTY,                         // 8
-        STR_EMPTY,                         // 9
-        STR_EMPTY,                         // 10
-        STR_EMPTY,                         // 11
-        STR_EMPTY,                         // 12
-        STR_EMPTY,                         // 13
-        STR_EMPTY,                         // 14
-        STR_EMPTY,                         // 15
-        STR_EMPTY,                         // 16
-        STR_EMPTY,                         // 17
-        STR_EMPTY,                         // 18
-        STR_EMPTY,                         // 19
-        STR_EMPTY,                         // 20
-        STR_EMPTY,                         // 21
-        STR_EMPTY,                         // 22
-        STR_EMPTY,                         // 23
-        STR_EMPTY,                         // 24
-        STR_EMPTY,                         // 25
-        STR_EMPTY,                         // 26
-        STR_EMPTY,                         // 27
-        STR_EMPTY,                         // 28
-        STR_EMPTY,                         // 29
-        STR_EMPTY,                         // 30
-        STR_EMPTY,                         // 31
-        STR_EMPTY,                         // 32
-        STR_EMPTY,                         // 33
-        STR_EMPTY,                         // 34
-        STR_EMPTY,                         // 35
-        STR_EMPTY,                         // 36
-        STR_EMPTY,                         // 37
+        kStringIdEmpty,                    // 2
+        kStringIdEmpty,                    // 3
+        kStringIdEmpty,                    // 4
+        kStringIdEmpty,                    // 5
+        kStringIdEmpty,                    // 6
+        kStringIdEmpty,                    // 7
+        kStringIdEmpty,                    // 8
+        kStringIdEmpty,                    // 9
+        kStringIdEmpty,                    // 10
+        kStringIdEmpty,                    // 11
+        kStringIdEmpty,                    // 12
+        kStringIdEmpty,                    // 13
+        kStringIdEmpty,                    // 14
+        kStringIdEmpty,                    // 15
+        kStringIdEmpty,                    // 16
+        kStringIdEmpty,                    // 17
+        kStringIdEmpty,                    // 18
+        kStringIdEmpty,                    // 19
+        kStringIdEmpty,                    // 20
+        kStringIdEmpty,                    // 21
+        kStringIdEmpty,                    // 22
+        kStringIdEmpty,                    // 23
+        kStringIdEmpty,                    // 24
+        kStringIdEmpty,                    // 25
+        kStringIdEmpty,                    // 26
+        kStringIdEmpty,                    // 27
+        kStringIdEmpty,                    // 28
+        kStringIdEmpty,                    // 29
+        kStringIdEmpty,                    // 30
+        kStringIdEmpty,                    // 31
+        kStringIdEmpty,                    // 32
+        kStringIdEmpty,                    // 33
+        kStringIdEmpty,                    // 34
+        kStringIdEmpty,                    // 35
+        kStringIdEmpty,                    // 36
+        kStringIdEmpty,                    // 37
         STR_S_BEND_LEFT,                   // 38
         STR_S_BEND_RIGHT,                  // 39
         STR_VERTICAL_LOOP_LEFT,            // 40
         STR_VERTICAL_LOOP_RIGHT,           // 41
-        STR_EMPTY,                         // 42
-        STR_EMPTY,                         // 43
-        STR_EMPTY,                         // 44
-        STR_EMPTY,                         // 45
-        STR_EMPTY,                         // 46
-        STR_EMPTY,                         // 47
-        STR_EMPTY,                         // 48
-        STR_EMPTY,                         // 49
-        STR_EMPTY,                         // 50
-        STR_EMPTY,                         // 51
+        kStringIdEmpty,                    // 42
+        kStringIdEmpty,                    // 43
+        kStringIdEmpty,                    // 44
+        kStringIdEmpty,                    // 45
+        kStringIdEmpty,                    // 46
+        kStringIdEmpty,                    // 47
+        kStringIdEmpty,                    // 48
+        kStringIdEmpty,                    // 49
+        kStringIdEmpty,                    // 50
+        kStringIdEmpty,                    // 51
         STR_IN_LINE_TWIST_LEFT,            // 52
         STR_IN_LINE_TWIST_RIGHT,           // 53
         STR_IN_LINE_TWIST_LEFT,            // 54
@@ -4541,31 +4541,31 @@ namespace OpenRCT2::TrackMetaData
         STR_HALF_CORKSCREW_RIGHT,          // 59
         STR_HALF_CORKSCREW_LEFT,           // 60
         STR_HALF_CORKSCREW_RIGHT,          // 61
-        STR_EMPTY,                         // 62
-        STR_EMPTY,                         // 63
-        STR_EMPTY,                         // 64
-        STR_EMPTY,                         // 65
+        kStringIdEmpty,                    // 62
+        kStringIdEmpty,                    // 63
+        kStringIdEmpty,                    // 64
+        kStringIdEmpty,                    // 65
         STR_ENTRY_EXIT_PLATFORM,           // 66
         STR_VERTICAL_TOWER,                // 67
-        STR_EMPTY,                         // 68
-        STR_EMPTY,                         // 69
-        STR_EMPTY,                         // 70
-        STR_EMPTY,                         // 71
-        STR_EMPTY,                         // 72
-        STR_EMPTY,                         // 73
-        STR_EMPTY,                         // 74
-        STR_EMPTY,                         // 75
-        STR_EMPTY,                         // 76
-        STR_EMPTY,                         // 77
-        STR_EMPTY,                         // 78
-        STR_EMPTY,                         // 79
-        STR_EMPTY,                         // 80
-        STR_EMPTY,                         // 81
-        STR_EMPTY,                         // 82
+        kStringIdEmpty,                    // 68
+        kStringIdEmpty,                    // 69
+        kStringIdEmpty,                    // 70
+        kStringIdEmpty,                    // 71
+        kStringIdEmpty,                    // 72
+        kStringIdEmpty,                    // 73
+        kStringIdEmpty,                    // 74
+        kStringIdEmpty,                    // 75
+        kStringIdEmpty,                    // 76
+        kStringIdEmpty,                    // 77
+        kStringIdEmpty,                    // 78
+        kStringIdEmpty,                    // 79
+        kStringIdEmpty,                    // 80
+        kStringIdEmpty,                    // 81
+        kStringIdEmpty,                    // 82
         STR_S_BEND_LEFT,                   // 83
         STR_S_BEND_RIGHT,                  // 84
-        STR_EMPTY,                         // 85
-        STR_EMPTY,                         // 86
+        kStringIdEmpty,                    // 85
+        kStringIdEmpty,                    // 86
         STR_HELIX_UP_SMALL,                // 87
         STR_HELIX_UP_SMALL,                // 88
         STR_HELIX_DOWN_SMALL,              // 89
@@ -4574,13 +4574,13 @@ namespace OpenRCT2::TrackMetaData
         STR_HELIX_UP_LARGE,                // 92
         STR_HELIX_DOWN_LARGE,              // 93
         STR_HELIX_DOWN_LARGE,              // 94
-        STR_EMPTY,                         // 95
-        STR_EMPTY,                         // 96
-        STR_EMPTY,                         // 97
-        STR_EMPTY,                         // 98
+        kStringIdEmpty,                    // 95
+        kStringIdEmpty,                    // 96
+        kStringIdEmpty,                    // 97
+        kStringIdEmpty,                    // 98
         STR_BRAKES,                        // 99
         STR_BOOSTER,                       // 100
-        STR_EMPTY,                         // 101
+        kStringIdEmpty,                    // 101
         STR_HELIX_UP_LARGE,                // 102
         STR_HELIX_UP_LARGE,                // 103
         STR_HELIX_DOWN_LARGE,              // 104
@@ -4589,78 +4589,78 @@ namespace OpenRCT2::TrackMetaData
         STR_HELIX_UP_RIGHT,                // 107
         STR_HELIX_DOWN_LEFT,               // 108
         STR_HELIX_DOWN_RIGHT,              // 109
-        STR_EMPTY,                         // TrackElemType::Up25LeftBanked
-        STR_EMPTY,                         // TrackElemType::Up25RighBanked
+        kStringIdEmpty,                    // TrackElemType::Up25LeftBanked
+        kStringIdEmpty,                    // TrackElemType::Up25RighBanked
         STR_WATERFALLS,                    // 112
         STR_RAPIDS,                        // 113
         STR_ON_RIDE_PHOTO_SECTION,         // 114
-        STR_EMPTY,                         // TrackElemType::Down25LeftBanked
-        STR_EMPTY,                         // TrackElemType::Down25RightBanked
+        kStringIdEmpty,                    // TrackElemType::Down25LeftBanked
+        kStringIdEmpty,                    // TrackElemType::Down25RightBanked
         STR_WATER_SPLASH,                  // 117
-        STR_EMPTY,                         // 118
-        STR_EMPTY,                         // 119
+        kStringIdEmpty,                    // 118
+        kStringIdEmpty,                    // 119
         STR_WHIRLPOOL,                     // 120
-        STR_EMPTY,                         // 121
-        STR_EMPTY,                         // 122
+        kStringIdEmpty,                    // 121
+        kStringIdEmpty,                    // 122
         STR_CABLE_LIFT_HILL,               // 123
         STR_SLOPE_UP_TO_VERTICAL,          // 124
         STR_VERTICAL_TRACK,                // 125
-        STR_EMPTY,                         // 126
-        STR_EMPTY,                         // 127
-        STR_EMPTY,                         // 128
-        STR_EMPTY,                         // 129
-        STR_EMPTY,                         // 130
-        STR_EMPTY,                         // 131
+        kStringIdEmpty,                    // 126
+        kStringIdEmpty,                    // 127
+        kStringIdEmpty,                    // 128
+        kStringIdEmpty,                    // 129
+        kStringIdEmpty,                    // 130
+        kStringIdEmpty,                    // 131
         STR_HOLDING_BRAKE_FOR_DROP,        // 132
-        STR_EMPTY,                         // 133
-        STR_EMPTY,                         // 134
-        STR_EMPTY,                         // 135
-        STR_EMPTY,                         // 136
-        STR_EMPTY,                         // 137
-        STR_EMPTY,                         // 138
-        STR_EMPTY,                         // 139
-        STR_EMPTY,                         // 140
-        STR_EMPTY,                         // 141
-        STR_EMPTY,                         // 142
-        STR_EMPTY,                         // 143
-        STR_EMPTY,                         // 144
-        STR_EMPTY,                         // 145
-        STR_EMPTY,                         // 146
-        STR_EMPTY,                         // 147
-        STR_EMPTY,                         // 148
-        STR_EMPTY,                         // 149
-        STR_EMPTY,                         // 150
-        STR_EMPTY,                         // 151
-        STR_EMPTY,                         // 152
-        STR_EMPTY,                         // 153
-        STR_EMPTY,                         // 154
-        STR_EMPTY,                         // 155
-        STR_EMPTY,                         // 156
-        STR_EMPTY,                         // 157
-        STR_EMPTY,                         // 158
-        STR_EMPTY,                         // 159
-        STR_EMPTY,                         // 160
-        STR_EMPTY,                         // 161
-        STR_EMPTY,                         // 162
-        STR_EMPTY,                         // 163
-        STR_EMPTY,                         // 164
-        STR_EMPTY,                         // 165
-        STR_EMPTY,                         // 166
-        STR_EMPTY,                         // 167
-        STR_EMPTY,                         // 168
-        STR_EMPTY,                         // 169
-        STR_EMPTY,                         // 170
-        STR_EMPTY,                         // 171
+        kStringIdEmpty,                    // 133
+        kStringIdEmpty,                    // 134
+        kStringIdEmpty,                    // 135
+        kStringIdEmpty,                    // 136
+        kStringIdEmpty,                    // 137
+        kStringIdEmpty,                    // 138
+        kStringIdEmpty,                    // 139
+        kStringIdEmpty,                    // 140
+        kStringIdEmpty,                    // 141
+        kStringIdEmpty,                    // 142
+        kStringIdEmpty,                    // 143
+        kStringIdEmpty,                    // 144
+        kStringIdEmpty,                    // 145
+        kStringIdEmpty,                    // 146
+        kStringIdEmpty,                    // 147
+        kStringIdEmpty,                    // 148
+        kStringIdEmpty,                    // 149
+        kStringIdEmpty,                    // 150
+        kStringIdEmpty,                    // 151
+        kStringIdEmpty,                    // 152
+        kStringIdEmpty,                    // 153
+        kStringIdEmpty,                    // 154
+        kStringIdEmpty,                    // 155
+        kStringIdEmpty,                    // 156
+        kStringIdEmpty,                    // 157
+        kStringIdEmpty,                    // 158
+        kStringIdEmpty,                    // 159
+        kStringIdEmpty,                    // 160
+        kStringIdEmpty,                    // 161
+        kStringIdEmpty,                    // 162
+        kStringIdEmpty,                    // 163
+        kStringIdEmpty,                    // 164
+        kStringIdEmpty,                    // 165
+        kStringIdEmpty,                    // 166
+        kStringIdEmpty,                    // 167
+        kStringIdEmpty,                    // 168
+        kStringIdEmpty,                    // 169
+        kStringIdEmpty,                    // 170
+        kStringIdEmpty,                    // 171
         STR_REVERSER_TURNTABLE,            // 172
         STR_SPINNING_TUNNEL,               // 173
         STR_BARREL_ROLL_LEFT,              // 174
         STR_BARREL_ROLL_RIGHT,             // 175
         STR_BARREL_ROLL_LEFT,              // 176
         STR_BARREL_ROLL_RIGHT,             // 177
-        STR_EMPTY,                         // 178
-        STR_EMPTY,                         // 179
-        STR_EMPTY,                         // 180
-        STR_EMPTY,                         // 181
+        kStringIdEmpty,                    // 178
+        kStringIdEmpty,                    // 179
+        kStringIdEmpty,                    // 180
+        kStringIdEmpty,                    // 181
         STR_LAUNCHED_LIFT_HILL,            // 182
         STR_LARGE_HALF_LOOP_LEFT,          // 183
         STR_LARGE_HALF_LOOP_RIGHT,         // 184
@@ -4696,56 +4696,56 @@ namespace OpenRCT2::TrackMetaData
         STR_VERTICAL_TRACK,                // 214
         STR_SLOPE_TO_LEVEL,                // 215
         STR_BLOCK_BRAKES,                  // 216
-        STR_EMPTY,                         // 217
-        STR_EMPTY,                         // 218
-        STR_EMPTY,                         // 219
-        STR_EMPTY,                         // 220
-        STR_EMPTY,                         // 221
-        STR_EMPTY,                         // 222
-        STR_EMPTY,                         // 223
-        STR_EMPTY,                         // 224
-        STR_EMPTY,                         // 225
-        STR_EMPTY,                         // 226
-        STR_EMPTY,                         // 227
-        STR_EMPTY,                         // 228
-        STR_EMPTY,                         // 229
-        STR_EMPTY,                         // 230
-        STR_EMPTY,                         // 231
-        STR_EMPTY,                         // 232
-        STR_EMPTY,                         // 233
-        STR_EMPTY,                         // 234
-        STR_EMPTY,                         // 235
-        STR_EMPTY,                         // 236
-        STR_EMPTY,                         // 237
-        STR_EMPTY,                         // 238
-        STR_EMPTY,                         // 239
-        STR_EMPTY,                         // 240
-        STR_EMPTY,                         // 241
-        STR_EMPTY,                         // 242
-        STR_EMPTY,                         // 243
-        STR_EMPTY,                         // 244
-        STR_EMPTY,                         // 245
-        STR_EMPTY,                         // 246
-        STR_EMPTY,                         // 247
-        STR_EMPTY,                         // 248
-        STR_EMPTY,                         // 249
-        STR_EMPTY,                         // 250
-        STR_EMPTY,                         // 251
-        STR_EMPTY,                         // 252
+        kStringIdEmpty,                    // 217
+        kStringIdEmpty,                    // 218
+        kStringIdEmpty,                    // 219
+        kStringIdEmpty,                    // 220
+        kStringIdEmpty,                    // 221
+        kStringIdEmpty,                    // 222
+        kStringIdEmpty,                    // 223
+        kStringIdEmpty,                    // 224
+        kStringIdEmpty,                    // 225
+        kStringIdEmpty,                    // 226
+        kStringIdEmpty,                    // 227
+        kStringIdEmpty,                    // 228
+        kStringIdEmpty,                    // 229
+        kStringIdEmpty,                    // 230
+        kStringIdEmpty,                    // 231
+        kStringIdEmpty,                    // 232
+        kStringIdEmpty,                    // 233
+        kStringIdEmpty,                    // 234
+        kStringIdEmpty,                    // 235
+        kStringIdEmpty,                    // 236
+        kStringIdEmpty,                    // 237
+        kStringIdEmpty,                    // 238
+        kStringIdEmpty,                    // 239
+        kStringIdEmpty,                    // 240
+        kStringIdEmpty,                    // 241
+        kStringIdEmpty,                    // 242
+        kStringIdEmpty,                    // 243
+        kStringIdEmpty,                    // 244
+        kStringIdEmpty,                    // 245
+        kStringIdEmpty,                    // 246
+        kStringIdEmpty,                    // 247
+        kStringIdEmpty,                    // 248
+        kStringIdEmpty,                    // 249
+        kStringIdEmpty,                    // 250
+        kStringIdEmpty,                    // 251
+        kStringIdEmpty,                    // 252
         STR_QUARTER_LOOP,                  // 253
         STR_QUARTER_LOOP,                  // 254
         STR_QUARTER_LOOP,                  // 255
         STR_SPINNING_CONTROL_TOGGLE_TRACK, // 256
-        STR_EMPTY,                         // TrackElemType::FlatTrack1x4A
+        kStringIdEmpty,                    // TrackElemType::FlatTrack1x4A
         STR_BASE_SIZE_2_X_2,               // TrackElemType::FlatTrack2x2
         STR_BASE_SIZE_4_X_4,               // TrackElemType::FlatTrack4x4
         STR_BASE_SIZE_2_X_4,               // TrackElemType::FlatTrack2x4
         STR_BASE_SIZE_5_X_1,               // TrackElemType::FlatTrack1x5
-        STR_EMPTY,                         // TrackElemType::FlatTrack1x1A
-        STR_EMPTY,                         // TrackElemType::FlatTrack1x4B
-        STR_EMPTY,                         // TrackElemType::FlatTrack1x1B
-        STR_EMPTY,                         // TrackElemType::FlatTrack1x4C
-        STR_EMPTY,                         // TrackElemType::FlatTrack3x3
+        kStringIdEmpty,                    // TrackElemType::FlatTrack1x1A
+        kStringIdEmpty,                    // TrackElemType::FlatTrack1x4B
+        kStringIdEmpty,                    // TrackElemType::FlatTrack1x1B
+        kStringIdEmpty,                    // TrackElemType::FlatTrack1x4C
+        kStringIdEmpty,                    // TrackElemType::FlatTrack3x3
         STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewUp
         STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewUp
         STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewDown
@@ -4772,58 +4772,58 @@ namespace OpenRCT2::TrackMetaData
         STR_LARGE_HALF_LOOP_RIGHT,         // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
         STR_HALF_LOOP,                     // TrackElemType::FlyerHalfLoopInvertedUp
         STR_HALF_LOOP,                     // TrackElemType::FlyerHalfLoopUninvertedDown
-        STR_EMPTY,                         // TrackElemType::LeftEighthToDiagUp25
-        STR_EMPTY,                         // TrackElemType::RightEighthToDiagUp25
-        STR_EMPTY,                         // TrackElemType::LeftEighthToDiagDown25
-        STR_EMPTY,                         // TrackElemType::RightEighthToDiagDown25
-        STR_EMPTY,                         // TrackElemType::LeftEighthToOrthogonalUp25
-        STR_EMPTY,                         // TrackElemType::RightEighthToOrthogonalUp25
-        STR_EMPTY,                         // TrackElemType::LeftEighthToOrthogonalDown25
-        STR_EMPTY,                         // TrackElemType::RightEighthToOrthogonalDown25
-        STR_EMPTY,                         // TrackElemType::DiagUp25ToLeftBankedUp25
-        STR_EMPTY,                         // TrackElemType::DiagUp25ToRightBankedUp25
-        STR_EMPTY,                         // TrackElemType::DiagLeftBankedUp25ToUp25
-        STR_EMPTY,                         // TrackElemType::DiagRightBankedUp25ToUp25
-        STR_EMPTY,                         // TrackElemType::DiagDown25ToLeftBankedDown25
-        STR_EMPTY,                         // TrackElemType::DiagDown25ToRightBankedDown25
-        STR_EMPTY,                         // TrackElemType::DiagLeftBankedDown25ToDown25
-        STR_EMPTY,                         // TrackElemType::DiagRightBankedDown25ToDown25
-        STR_EMPTY,                         // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
-        STR_EMPTY,                         // TrackElemType::DiagRightBankedFlatToRightBankedUp25
-        STR_EMPTY,                         // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
-        STR_EMPTY,                         // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
-        STR_EMPTY,                         // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
-        STR_EMPTY,                         // TrackElemType::DiagRightBankedFlatToRightBankedDown25
-        STR_EMPTY,                         // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
-        STR_EMPTY,                         // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
-        STR_EMPTY,                         // TrackElemType::DiagFlatToLeftBankedUp25
-        STR_EMPTY,                         // TrackElemType::DiagFlatToRightBankedUp25
-        STR_EMPTY,                         // TrackElemType::DiagLeftBankedUp25ToFlat
-        STR_EMPTY,                         // TrackElemType::DiagRightBankedUp25ToFlat
-        STR_EMPTY,                         // TrackElemType::DiagFlatToLeftBankedDown25
-        STR_EMPTY,                         // TrackElemType::DiagFlatToRightBankedDown25
-        STR_EMPTY,                         // TrackElemType::DiagLeftBankedDown25ToFlat
-        STR_EMPTY,                         // TrackElemType::DiagRightBankedDown25ToFlat
-        STR_EMPTY,                         // TrackElemType::Up25LeftBanked
-        STR_EMPTY,                         // TrackElemType::Up25RightBanked
-        STR_EMPTY,                         // TrackElemType::Down25LeftBanked
-        STR_EMPTY,                         // TrackElemType::Down25RightBanked
-        STR_EMPTY,                         // TrackElemType::LeftEighthBankToDiagUp25
-        STR_EMPTY,                         // TrackElemType::RightEighthBankToDiagUp25
-        STR_EMPTY,                         // TrackElemType::LeftEighthBankToDiagDown25
-        STR_EMPTY,                         // TrackElemType::RightEighthBankToDiagDown25
-        STR_EMPTY,                         // TrackElemType::LeftEighthBankToOrthogonalUp25
-        STR_EMPTY,                         // TrackElemType::RightEighthBankToOrthogonalUp25
-        STR_EMPTY,                         // TrackElemType::LeftEighthBankToOrthogonalDown25
-        STR_EMPTY,                         // TrackElemType::RightEighthBankToOrthogonalDown25
+        kStringIdEmpty,                    // TrackElemType::LeftEighthToDiagUp25
+        kStringIdEmpty,                    // TrackElemType::RightEighthToDiagUp25
+        kStringIdEmpty,                    // TrackElemType::LeftEighthToDiagDown25
+        kStringIdEmpty,                    // TrackElemType::RightEighthToDiagDown25
+        kStringIdEmpty,                    // TrackElemType::LeftEighthToOrthogonalUp25
+        kStringIdEmpty,                    // TrackElemType::RightEighthToOrthogonalUp25
+        kStringIdEmpty,                    // TrackElemType::LeftEighthToOrthogonalDown25
+        kStringIdEmpty,                    // TrackElemType::RightEighthToOrthogonalDown25
+        kStringIdEmpty,                    // TrackElemType::DiagUp25ToLeftBankedUp25
+        kStringIdEmpty,                    // TrackElemType::DiagUp25ToRightBankedUp25
+        kStringIdEmpty,                    // TrackElemType::DiagLeftBankedUp25ToUp25
+        kStringIdEmpty,                    // TrackElemType::DiagRightBankedUp25ToUp25
+        kStringIdEmpty,                    // TrackElemType::DiagDown25ToLeftBankedDown25
+        kStringIdEmpty,                    // TrackElemType::DiagDown25ToRightBankedDown25
+        kStringIdEmpty,                    // TrackElemType::DiagLeftBankedDown25ToDown25
+        kStringIdEmpty,                    // TrackElemType::DiagRightBankedDown25ToDown25
+        kStringIdEmpty,                    // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
+        kStringIdEmpty,                    // TrackElemType::DiagRightBankedFlatToRightBankedUp25
+        kStringIdEmpty,                    // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
+        kStringIdEmpty,                    // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
+        kStringIdEmpty,                    // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
+        kStringIdEmpty,                    // TrackElemType::DiagRightBankedFlatToRightBankedDown25
+        kStringIdEmpty,                    // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
+        kStringIdEmpty,                    // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
+        kStringIdEmpty,                    // TrackElemType::DiagFlatToLeftBankedUp25
+        kStringIdEmpty,                    // TrackElemType::DiagFlatToRightBankedUp25
+        kStringIdEmpty,                    // TrackElemType::DiagLeftBankedUp25ToFlat
+        kStringIdEmpty,                    // TrackElemType::DiagRightBankedUp25ToFlat
+        kStringIdEmpty,                    // TrackElemType::DiagFlatToLeftBankedDown25
+        kStringIdEmpty,                    // TrackElemType::DiagFlatToRightBankedDown25
+        kStringIdEmpty,                    // TrackElemType::DiagLeftBankedDown25ToFlat
+        kStringIdEmpty,                    // TrackElemType::DiagRightBankedDown25ToFlat
+        kStringIdEmpty,                    // TrackElemType::Up25LeftBanked
+        kStringIdEmpty,                    // TrackElemType::Up25RightBanked
+        kStringIdEmpty,                    // TrackElemType::Down25LeftBanked
+        kStringIdEmpty,                    // TrackElemType::Down25RightBanked
+        kStringIdEmpty,                    // TrackElemType::LeftEighthBankToDiagUp25
+        kStringIdEmpty,                    // TrackElemType::RightEighthBankToDiagUp25
+        kStringIdEmpty,                    // TrackElemType::LeftEighthBankToDiagDown25
+        kStringIdEmpty,                    // TrackElemType::RightEighthBankToDiagDown25
+        kStringIdEmpty,                    // TrackElemType::LeftEighthBankToOrthogonalUp25
+        kStringIdEmpty,                    // TrackElemType::RightEighthBankToOrthogonalUp25
+        kStringIdEmpty,                    // TrackElemType::LeftEighthBankToOrthogonalDown25
+        kStringIdEmpty,                    // TrackElemType::RightEighthBankToOrthogonalDown25
         STR_BRAKES,                        // TrackElemType::DiagBrakes
         STR_BLOCK_BRAKES,                  // TrackElemType::DiagBlockBrakes
         STR_BRAKES,                        // TrackElemType::Down25Brakes
         STR_BOOSTER,                       // TrackElemType::DiagBooster
-        STR_EMPTY,                         // TrackElemType::DiagFlatToUp60LongBase,
-        STR_EMPTY,                         // TrackElemType::DiagUp60ToFlatLongBase,
-        STR_EMPTY,                         // TrackElemType::DiagFlatToDown60LongBase,
-        STR_EMPTY,                         // TrackElemType::DiagDown60ToFlatLongBase,
+        kStringIdEmpty,                    // TrackElemType::DiagFlatToUp60LongBase,
+        kStringIdEmpty,                    // TrackElemType::DiagUp60ToFlatLongBase,
+        kStringIdEmpty,                    // TrackElemType::DiagFlatToDown60LongBase,
+        kStringIdEmpty,                    // TrackElemType::DiagDown60ToFlatLongBase,
         STR_DIVE_LOOP_LEFT,                // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
         STR_DIVE_LOOP_RIGHT,               // TrackElemType::RightEighthDiveLoopUpToOrthogonal
         STR_DIVE_LOOP_LEFT,                // TrackElemType::LeftEighthDiveLoopDownToDiag

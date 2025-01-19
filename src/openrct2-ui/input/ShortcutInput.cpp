@@ -20,7 +20,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
-constexpr uint32_t UsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
+constexpr uint32_t kUsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
 
 static uint32_t ParseModifier(std::string_view text)
 {
@@ -202,7 +202,7 @@ std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
     auto r = _keys.find(key);
     if (r != _keys.end())
     {
-        if (localised && r->second.second != STR_NONE)
+        if (localised && r->second.second != kStringIdNone)
         {
             return LanguageGetString(r->second.second);
         }
@@ -379,7 +379,7 @@ static bool HasModifier(uint32_t shortcut, uint32_t actual, uint32_t left, uint3
 
 static bool CompareModifiers(uint32_t shortcut, uint32_t actual)
 {
-    shortcut &= UsefulModifiers;
+    shortcut &= kUsefulModifiers;
     return HasModifier(shortcut, actual, KMOD_LCTRL, KMOD_RCTRL) && HasModifier(shortcut, actual, KMOD_LSHIFT, KMOD_RSHIFT)
         && HasModifier(shortcut, actual, KMOD_LALT, KMOD_RALT) && HasModifier(shortcut, actual, KMOD_LGUI, KMOD_RGUI);
 }
@@ -399,7 +399,7 @@ bool ShortcutInput::Matches(const InputEvent& e) const
 std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
 {
     // Assume any side modifier (more specific configurations can be done by manually editing config file)
-    auto modifiers = e.Modifiers & UsefulModifiers;
+    auto modifiers = e.Modifiers & kUsefulModifiers;
     for (auto mod : { KMOD_CTRL, KMOD_SHIFT, KMOD_ALT, KMOD_GUI })
     {
         if (modifiers & mod)

@@ -47,22 +47,22 @@ void PeepPickupAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result PeepPickupAction::Query() const
 {
-    if (_entityId.ToUnderlying() >= MAX_ENTITIES || _entityId.IsNull())
+    if (_entityId.ToUnderlying() >= kMaxEntities || _entityId.IsNull())
     {
         LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
     }
 
     if (!_loc.IsNull() && !LocationValid(_loc))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
     }
 
     auto* const peep = TryGetEntity<Peep>(_entityId);
     if (peep == nullptr)
     {
         LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
     }
 
     auto res = GameActions::Result();
@@ -74,7 +74,7 @@ GameActions::Result PeepPickupAction::Query() const
             res.Position = peep->GetLocation();
             if (!peep->CanBePickedUp())
             {
-                return GameActions::Result(GameActions::Status::Disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+                return GameActions::Result(GameActions::Status::Disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
             }
             Peep* existing = NetworkGetPickupPeep(_owner);
             if (existing != nullptr)
@@ -99,7 +99,7 @@ GameActions::Result PeepPickupAction::Query() const
             res.Position = _loc;
             if (NetworkGetPickupPeep(_owner) != peep)
             {
-                return GameActions::Result(GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+                return GameActions::Result(GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
             }
 
             if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2.Error != GameActions::Status::Ok)
@@ -109,7 +109,7 @@ GameActions::Result PeepPickupAction::Query() const
             break;
         default:
             LOG_ERROR("Invalid peep pickup type %u", _type);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
     }
     return res;
 }
@@ -120,7 +120,7 @@ GameActions::Result PeepPickupAction::Execute() const
     if (peep == nullptr)
     {
         LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
     }
 
     auto res = GameActions::Result();
@@ -178,7 +178,7 @@ GameActions::Result PeepPickupAction::Execute() const
             break;
         default:
             LOG_ERROR("Invalid peep pickup type %u", _type);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
     }
     return res;
 }

@@ -186,7 +186,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    StringId warningMessage = STR_NONE;
+    StringId warningMessage = kStringIdNone;
 
     RideGetStartOfTrack(&trackElement);
 

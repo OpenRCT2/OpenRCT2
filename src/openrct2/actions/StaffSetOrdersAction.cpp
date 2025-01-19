@@ -45,7 +45,7 @@ void StaffSetOrdersAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffSetOrdersAction::Query() const
 {
-    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
+    if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
     {
         LOG_ERROR("Invalid sprite index %u", _spriteIndex);
         return GameActions::Result(

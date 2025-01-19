@@ -151,7 +151,7 @@ namespace OpenRCT2::Ui::Windows
                     if (mainWindow != nullptr)
                     {
                         auto info = GetMapCoordinatesFromPos(
-                            { windowPos.x + (width / 2), windowPos.y + (height / 2) }, ViewportInteractionItemAll);
+                            { windowPos.x + (width / 2), windowPos.y + (height / 2) }, kViewportInteractionItemAll);
                         WindowScrollToLocation(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                     }
                     break;

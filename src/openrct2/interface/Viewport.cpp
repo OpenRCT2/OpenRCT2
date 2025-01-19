@@ -315,14 +315,14 @@ namespace OpenRCT2
             auto mapSizeMinus2 = GetMapSizeMinus2();
             if (pos.x > mapSizeMinus2.x && pos.y > mapSizeMinus2.y)
             {
-                static constexpr CoordsXY corr[] = {
+                static constexpr CoordsXY kCorr[] = {
                     { -1, -1 },
                     { 1, -1 },
                     { 1, 1 },
                     { -1, 1 },
                 };
-                pos.x += corr[rotation].x * height;
-                pos.y += corr[rotation].y * height;
+                pos.x += kCorr[rotation].x * height;
+                pos.y += kCorr[rotation].y * height;
             }
         }
 

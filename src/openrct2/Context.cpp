@@ -411,14 +411,14 @@ namespace OpenRCT2
 
             CrashInit();
 
-            if (String::equals(Config::Get().general.LastRunVersion, OPENRCT2_VERSION))
+            if (String::equals(Config::Get().general.LastRunVersion, kOpenRCT2Version))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                Config::Get().general.LastRunVersion = OPENRCT2_VERSION;
+                Config::Get().general.LastRunVersion = kOpenRCT2Version;
                 Config::Save();
             }
 
@@ -665,7 +665,7 @@ namespace OpenRCT2
             ContextOpenIntent(&intent);
         }
 
-        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) override
+        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = kStringIdNone) override
         {
             if (_forcedUpdateTimer.GetElapsedTime() < kForcedUpdateInterval)
                 return;
@@ -741,7 +741,7 @@ namespace OpenRCT2
                     SetActiveScene(GetTitleScene());
                 }
                 auto windowManager = _uiContext->GetWindowManager();
-                windowManager->ShowError(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE, {});
+                windowManager->ShowError(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, kStringIdNone, {});
             }
             return false;
         }
@@ -867,14 +867,14 @@ namespace OpenRCT2
                     auto windowManager = _uiContext->GetWindowManager();
                     auto ft = Formatter();
                     ft.Add<uint32_t>(result.TargetVersion);
-                    ft.Add<uint32_t>(OpenRCT2::PARK_FILE_CURRENT_VERSION);
+                    ft.Add<uint32_t>(OpenRCT2::kParkFileCurrentVersion);
                     windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
                 }
                 else if (HasObjectsThatUseFallbackImages())
                 {
                     Console::Error::WriteLine("Park has objects which require RCT1 linked. Fallback images will be used.");
                     auto windowManager = _uiContext->GetWindowManager();
-                    windowManager->ShowError(STR_PARK_USES_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter());
+                    windowManager->ShowError(STR_PARK_USES_FALLBACK_IMAGES_WARNING, kStringIdEmpty, Formatter());
                 }
 
                 CloseProgress();
@@ -909,7 +909,7 @@ namespace OpenRCT2
                     SetActiveScene(GetTitleScene());
                 }
                 auto windowManager = _uiContext->GetWindowManager();
-                windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
+                windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, kStringIdNone, {});
             }
             catch (const UnsupportedVersionException& e)
             {
@@ -921,7 +921,7 @@ namespace OpenRCT2
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 Formatter ft;
-                /*if (e.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION)
+                /*if (e.TargetVersion < kParkFileMinSupportedVersion)
                 {
                     ft.Add<uint32_t>(e.TargetVersion);
                     windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_OLD_MESSAGE, ft);
@@ -931,14 +931,14 @@ namespace OpenRCT2
                     if (e.MinVersion == e.TargetVersion)
                     {
                         ft.Add<uint32_t>(e.TargetVersion);
-                        ft.Add<uint32_t>(OpenRCT2::PARK_FILE_CURRENT_VERSION);
+                        ft.Add<uint32_t>(OpenRCT2::kParkFileCurrentVersion);
                         windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE_2, ft);
                     }
                     else
                     {
                         ft.Add<uint32_t>(e.TargetVersion);
                         ft.Add<uint32_t>(e.MinVersion);
-                        ft.Add<uint32_t>(OpenRCT2::PARK_FILE_CURRENT_VERSION);
+                        ft.Add<uint32_t>(OpenRCT2::kParkFileCurrentVersion);
                         windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE, ft);
                     }
                 }

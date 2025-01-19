@@ -28,7 +28,7 @@
 
 using namespace OpenRCT2;
 
-constexpr static StringId SetVehicleTypeErrorTitle[] = {
+constexpr static StringId kSetVehicleTypeErrorTitle[] = {
     STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
     STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
     STR_RIDE_SET_VEHICLE_TYPE_FAIL,
@@ -68,7 +68,7 @@ GameActions::Result RideSetVehicleAction::Query() const
     {
         LOG_ERROR("Invalid ride vehicle type %d", _type);
     }
-    auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
+    auto errTitle = kSetVehicleTypeErrorTitle[EnumValue(_type)];
 
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
@@ -104,7 +104,7 @@ GameActions::Result RideSetVehicleAction::Query() const
             if (rideEntry == nullptr)
             {
                 LOG_ERROR("Ride entry not found for _value %d", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
             }
 
             // Validate preset
@@ -127,7 +127,7 @@ GameActions::Result RideSetVehicleAction::Query() const
 
 GameActions::Result RideSetVehicleAction::Execute() const
 {
-    auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
+    auto errTitle = kSetVehicleTypeErrorTitle[EnumValue(_type)];
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
@@ -155,7 +155,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             if (rideEntry == nullptr)
             {
                 LOG_ERROR("Ride entry not found for index %d", ride->subtype);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
             }
             uint8_t clampValue = _value;
             static_assert(sizeof(clampValue) == sizeof(ride->proposed_num_cars_per_train));
@@ -178,7 +178,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             if (rideEntry == nullptr)
             {
                 LOG_ERROR("Ride entry not found for index %d", ride->subtype);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
             }
 
             RideSetVehicleColoursToRandomPreset(*ride, _colour);
@@ -201,7 +201,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
 
         default:
             LOG_ERROR("Invalid ride vehicle setting %d", _type);
-            return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
     }
 
     ride->num_circuits = 1;

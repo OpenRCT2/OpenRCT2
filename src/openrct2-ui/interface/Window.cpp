@@ -37,7 +37,7 @@ namespace OpenRCT2
     using namespace OpenRCT2::Ui;
 
     // The amount of pixels to scroll per wheel click
-    constexpr int32_t WindowScrollPixels = 17;
+    constexpr int32_t kWindowScrollPixels = 17;
 
     static int32_t _previousAbsoluteWheel = 0;
 
@@ -259,7 +259,7 @@ namespace OpenRCT2
         auto cursorState = ContextGetCursorState();
         int32_t absolute_wheel = cursorState->wheel;
         int32_t relative_wheel = absolute_wheel - _previousAbsoluteWheel;
-        int32_t pixel_scroll = relative_wheel * WindowScrollPixels;
+        int32_t pixel_scroll = relative_wheel * kWindowScrollPixels;
         _previousAbsoluteWheel = absolute_wheel;
 
         if (relative_wheel == 0)

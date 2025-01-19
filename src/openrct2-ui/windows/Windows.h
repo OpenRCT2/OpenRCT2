@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
 
     // ProgressWindow
     WindowBase* ProgressWindowOpen(const std::string& text, CloseCallback onClose = nullptr);
-    void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE);
+    void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount, StringId format = kStringIdNone);
     void ProgressWindowClose();
 
     // PatrolArea

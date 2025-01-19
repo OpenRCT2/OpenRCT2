@@ -57,8 +57,8 @@ namespace OpenRCT2::GameActions
         using StringVariant = std::variant<std::string, StringId>;
 
         OpenRCT2::GameActions::Status Error = OpenRCT2::GameActions::Status::Ok;
-        StringVariant ErrorTitle = STR_NONE;
-        StringVariant ErrorMessage = STR_NONE;
+        StringVariant ErrorTitle = kStringIdNone;
+        StringVariant ErrorMessage = kStringIdNone;
         std::array<uint8_t, 32> ErrorMessageArgs{};
         CoordsXYZ Position = { kLocationNull, kLocationNull, kLocationNull };
         money64 Cost = 0;

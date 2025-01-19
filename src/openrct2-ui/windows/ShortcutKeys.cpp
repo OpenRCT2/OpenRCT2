@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui::Windows
         struct ShortcutStringPair
         {
             std::string ShortcutId;
-            ::StringId StringId = STR_NONE;
+            ::StringId StringId = kStringIdNone;
             std::string CustomString;
             std::string Binding;
         };
@@ -454,7 +454,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t x = 3;
             for (size_t i = 0; i < _tabs.size(); i++)
             {
-                auto tab = MakeTab({ x, 17 }, STR_NONE);
+                auto tab = MakeTab({ x, 17 }, kStringIdNone);
                 widgets.push_back(tab);
                 x += 31;
             }

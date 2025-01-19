@@ -348,7 +348,7 @@ static constexpr Widget window_cheats_weather_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238,  50},   WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_CHEAT_WEATHER_GROUP                                      ), // Weather group
-    MakeWidget        ({126,  62}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                        STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
+    MakeWidget        ({126,  62}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                        STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
     MakeWidget        ({225,  63}, { 11,  12},   WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
     MakeWidget        ({ 11,  80}, CHEAT_CHECK,  WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP), // Freeze weather
     MakeWidget        ({  5, 102}, {238,  37},   WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_FAUNA                                                    ), // Fauna group

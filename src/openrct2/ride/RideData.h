@@ -297,7 +297,7 @@ struct TrackDrawerEntry
     RideTrackGroups extraTrackGroups{};
 
     ImageIndex icon = kSpriteIdNull;
-    StringId tooltip = STR_NONE;
+    StringId tooltip = kStringIdNone;
 
     void GetAvailableTrackGroups(RideTrackGroups& res) const;
     bool SupportsTrackGroup(const TrackGroup trackGroup) const;
@@ -491,7 +491,7 @@ struct RideTypeDescriptor
     UpkeepCostsDescriptor UpkeepCosts{};
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts{};
-    money64 DefaultPrices[OpenRCT2::RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    money64 DefaultPrices[OpenRCT2::RCT2::ObjectLimits::kMaxShopItemsPerRideEntry]{};
     std::string_view DefaultMusic{};
     /** rct2: 0x0097D7CB */
     ShopItemIndex PhotoItem{};

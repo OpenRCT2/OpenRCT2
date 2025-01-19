@@ -18,7 +18,7 @@ namespace OpenRCT2::Ui
     class OpenGLShader final
     {
     private:
-        static constexpr uint64_t MaxSourceSize = 8 * 1024 * 1024; // 8 MiB
+        static constexpr uint64_t kMaxSourceSize = 8 * 1024 * 1024; // 8 MiB
 
         GLenum _type;
         GLuint _id = 0;

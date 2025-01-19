@@ -25,7 +25,7 @@ namespace OpenRCT2::Audio
     class AudioContext final : public IAudioContext
     {
     private:
-        static constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
+        static constexpr size_t kStreamMinSize = 2 * 1024 * 1024; // 2 MiB
 
         std::unique_ptr<AudioMixer> _audioMixer;
 
@@ -110,7 +110,7 @@ namespace OpenRCT2::Audio
 
                 // Load whole stream into memory if small enough
                 auto dataLength = source->GetLength();
-                if (dataLength < STREAM_MIN_SIZE)
+                if (dataLength < kStreamMinSize)
                 {
                     auto& targetFormat = _audioMixer->GetFormat();
                     source = source->ToMemory(targetFormat);

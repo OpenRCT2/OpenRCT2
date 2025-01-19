@@ -503,9 +503,9 @@ namespace OpenRCT2::Audio
 
     float DStoMixerPan(int32_t pan)
     {
-        constexpr int32_t DSBPAN_LEFT = -10000;
-        constexpr int32_t DSBPAN_RIGHT = 10000;
-        return ((static_cast<float>(pan) + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
+        constexpr int32_t kDSBPanLeft = -10000;
+        constexpr int32_t kDSBPanRight = 10000;
+        return ((static_cast<float>(pan) + -kDSBPanLeft) / kDSBPanRight) / 2;
     }
 
     double DStoMixerRate(int32_t frequency)

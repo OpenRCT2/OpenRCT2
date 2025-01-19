@@ -15,9 +15,9 @@
 
 namespace OpenRCT2::Ui
 {
-    constexpr char rawTransparent = ' ';
-    constexpr char rawWhite = '.';
-    constexpr char rawBlack = 'X';
+    constexpr char kRawTransparent = ' ';
+    constexpr char kRawWhite = '.';
+    constexpr char kRawBlack = 'X';
 
     constexpr static CursorData cursorFromBitMap(int x, int y, std::string_view bitmap)
     {
@@ -35,15 +35,15 @@ namespace OpenRCT2::Ui
             uint8_t dataBit{}, maskBit{};
             switch (rawPixel)
             {
-                case rawBlack:
+                case kRawBlack:
                     dataBit = 1;
                     maskBit = 1;
                     break;
-                case rawWhite:
+                case kRawWhite:
                     dataBit = 0;
                     maskBit = 1;
                     break;
-                case rawTransparent:
+                case kRawTransparent:
                     dataBit = 0;
                     maskBit = 0;
                     break;
@@ -947,7 +947,7 @@ namespace OpenRCT2::Ui
         "     X.X                        "
         "      X                         ");
 
-    static constexpr const CursorData* RawCursorData[] = {
+    static constexpr const CursorData* kRawCursorData[] = {
         nullptr,                    // CursorID::Arrow
         &kBlankCursorData,          // CursorID::Blank
         &kUpArrowCursorData,        // CursorID::UpArrow
@@ -983,7 +983,7 @@ namespace OpenRCT2::Ui
         const CursorData* result = nullptr;
         if (cursorId != CursorID::Undefined && cursorId != CursorID::Count)
         {
-            result = RawCursorData[EnumValue(cursorId)];
+            result = kRawCursorData[EnumValue(cursorId)];
         }
         return result;
     }

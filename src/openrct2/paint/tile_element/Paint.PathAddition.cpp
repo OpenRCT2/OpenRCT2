@@ -43,7 +43,7 @@ static ImageIndex GetFootpathLampImage(const PathAdditionEntry& pathAdditionEntr
 {
     auto offset = GetEdgeImageOffset(edge);
     if (offset == 0)
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     return pathAdditionEntry.image + offset + (isBroken ? 4 : 0);
 }
 
@@ -51,7 +51,7 @@ static ImageIndex GetFootpathBinImage(const PathAdditionEntry& pathAdditionEntry
 {
     auto offset = GetEdgeImageOffset(edge);
     if (offset == 0)
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
 
     auto stateOffset = isBroken ? 4 : (isFull ? 8 : 0);
     return pathAdditionEntry.image + offset + stateOffset;
@@ -61,7 +61,7 @@ static ImageIndex GetFootpathBenchImage(const PathAdditionEntry& pathAdditionEnt
 {
     auto offset = GetEdgeImageOffset(edge);
     if (offset == 0)
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     return pathAdditionEntry.image + offset + (isBroken ? 4 : 0);
 }
 

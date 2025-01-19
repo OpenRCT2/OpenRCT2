@@ -26,7 +26,7 @@
 
 namespace OpenRCT2::Guard
 {
-    constexpr const utf8* ASSERTION_MESSAGE = "An assertion failed, please report this to the OpenRCT2 developers.";
+    static constexpr const utf8* kAssertionMessage = "An assertion failed, please report this to the OpenRCT2 developers.";
 
     // The default behaviour when an assertion is raised.
     static ASSERT_BEHAVIOUR _assertBehaviour =
@@ -67,7 +67,7 @@ namespace OpenRCT2::Guard
         if (expression)
             return;
 
-        Console::Error::WriteLine(ASSERTION_MESSAGE);
+        Console::Error::WriteLine(kAssertionMessage);
         Console::Error::WriteLine("Version: %s", gVersionInfoFull);
 
         // This is never freed, but acceptable considering we are about to crash out
@@ -130,7 +130,7 @@ namespace OpenRCT2::Guard
     [[nodiscard]] static std::wstring CreateDialogAssertMessage(std::string_view formattedMessage)
     {
         StringBuilder sb;
-        sb.Append(ASSERTION_MESSAGE);
+        sb.Append(kAssertionMessage);
         sb.Append("\n\n");
         sb.Append("Version: ");
         sb.Append(gVersionInfoFull);

@@ -83,7 +83,7 @@ namespace OpenRCT2::Scripting
         images.resize(count);
 
         auto base = GfxObjectAllocateImages(images.data(), count);
-        if (base == ImageIndexUndefined)
+        if (base == kImageIndexUndefined)
         {
             return {};
         }

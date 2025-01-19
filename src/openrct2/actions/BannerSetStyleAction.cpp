@@ -93,7 +93,7 @@ GameActions::Result BannerSetStyleAction::Query() const
             if (tileElement->AsBanner() == nullptr)
             {
                 LOG_ERROR("Tile element was not a banner.");
-                return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+                return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
             break;
         default:
@@ -125,7 +125,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
     if (tileElement == nullptr)
     {
         LOG_ERROR("Banner tile element not found for bannerIndex &u", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
 
     switch (_type)

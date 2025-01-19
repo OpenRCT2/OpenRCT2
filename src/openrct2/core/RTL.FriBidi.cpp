@@ -21,11 +21,11 @@ extern "C" {
     #include <fribidi/fribidi.h>
 }
 
-static constexpr uint16_t BufferLength = 1024;
+static constexpr uint16_t kBufferLength = 1024;
 
 std::string FixRTL(std::string& input)
 {
-    FriBidiChar utf32String[BufferLength] = { 0 };
+    FriBidiChar utf32String[kBufferLength] = { 0 };
     auto len = static_cast<FriBidiStrIndex>(input.length() + 1);
     fribidi_charset_to_unicode(FRIBIDI_CHAR_SET_UTF8, input.c_str(), len, utf32String);
 
@@ -38,13 +38,13 @@ std::string FixRTL(std::string& input)
         }
     }
 
-    FriBidiChar reorderedStr[BufferLength] = { 0 };
+    FriBidiChar reorderedStr[kBufferLength] = { 0 };
     // All our strings start in LTR direction due to the "STR_0001: prefix", even fully Arabic ones.
     FriBidiCharType pbase_dir = FRIBIDI_TYPE_LTR;
 
     fribidi_log2vis(utf32String, utf32len, &pbase_dir, reorderedStr, nullptr, nullptr, nullptr);
 
-    char outputString[BufferLength];
+    char outputString[kBufferLength];
     fribidi_unicode_to_charset(FRIBIDI_CHAR_SET_UTF8, reorderedStr, len, outputString);
 
     return std::string(outputString);

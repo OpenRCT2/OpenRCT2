@@ -56,7 +56,7 @@ GameActions::Result SignSetStyleAction::Query() const
     if (banner == nullptr)
     {
         LOG_ERROR("Banner not found for bannerIndex %u", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
 
     if (_isLarge)
@@ -65,13 +65,13 @@ GameActions::Result SignSetStyleAction::Query() const
         if (tileElement == nullptr)
         {
             LOG_ERROR("Banner tile element not found for bannerIndex %u", _bannerIndex);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
         if (tileElement->GetType() != TileElementType::LargeScenery)
         {
             LOG_ERROR(
                 "Tile element has type %u, expected %d (LargeScenery)", tileElement->GetType(), TileElementType::LargeScenery);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
     }
     else
@@ -81,7 +81,7 @@ GameActions::Result SignSetStyleAction::Query() const
         if (wallElement == nullptr)
         {
             LOG_ERROR("Wall element not found for bannerIndex", _bannerIndex);
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
     }
 
@@ -94,7 +94,7 @@ GameActions::Result SignSetStyleAction::Execute() const
     if (banner == nullptr)
     {
         LOG_ERROR("Invalid banner id %u", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
 
     CoordsXY coords = banner->position.ToCoordsXY();
@@ -106,7 +106,7 @@ GameActions::Result SignSetStyleAction::Execute() const
                 { coords, tileElement->GetBaseZ(), tileElement->GetDirection() },
                 tileElement->AsLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
         {
-            return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
     }
     else

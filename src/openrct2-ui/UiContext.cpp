@@ -63,7 +63,7 @@ using namespace OpenRCT2::Ui;
 class UiContext final : public IUiContext
 {
 private:
-    constexpr static uint32_t TOUCH_DOUBLE_TIMEOUT = 300;
+    constexpr static uint32_t kTouchDoubleTimeout = 300;
 
     const std::unique_ptr<IPlatformUiContext> _platformUiContext;
     const std::unique_ptr<IWindowManager> _windowManager;
@@ -176,12 +176,12 @@ public:
 
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
-        static constexpr int32_t _sdlFullscreenFlags[] = {
+        static constexpr int32_t kSDLFullscreenFlags[] = {
             0,
             SDL_WINDOW_FULLSCREEN,
             SDL_WINDOW_FULLSCREEN_DESKTOP,
         };
-        uint32_t windowFlags = _sdlFullscreenFlags[EnumValue(mode)];
+        uint32_t windowFlags = kSDLFullscreenFlags[EnumValue(mode)];
 
         // HACK Changing window size when in fullscreen usually has no effect
         if (mode == FULLSCREEN_MODE::FULLSCREEN)
@@ -475,7 +475,7 @@ public:
 
                     _cursorState.touchIsDouble
                         = (!_cursorState.touchIsDouble
-                           && e.tfinger.timestamp - _cursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
+                           && e.tfinger.timestamp - _cursorState.touchDownTimestamp < kTouchDoubleTimeout);
 
                     if (_cursorState.touchIsDouble)
                     {

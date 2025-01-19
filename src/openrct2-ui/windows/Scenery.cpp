@@ -66,7 +66,7 @@ using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_NONE;
+    static constexpr StringId WINDOW_TITLE = kStringIdNone;
     constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
     constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;
     constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
@@ -627,7 +627,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
             }
-            return { STR_NONE, Formatter() };
+            return { kStringIdNone, Formatter() };
         }
 
         void OnPrepareDraw() override

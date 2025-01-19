@@ -81,10 +81,10 @@ void InputManager::QueueInputEvent(InputEvent&& e)
 
 void InputManager::CheckJoysticks()
 {
-    constexpr uint32_t CHECK_INTERVAL_MS = 5000;
+    constexpr uint32_t kCheckInternalMs = 5000;
 
     auto tick = SDL_GetTicks();
-    if (tick > _lastJoystickCheck + CHECK_INTERVAL_MS)
+    if (tick > _lastJoystickCheck + kCheckInternalMs)
     {
         _lastJoystickCheck = tick;
 

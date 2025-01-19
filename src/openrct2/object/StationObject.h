@@ -27,8 +27,8 @@ public:
     static constexpr ObjectType kObjectType = ObjectType::Station;
 
     StringId NameStringId{};
-    ImageIndex BaseImageId = ImageIndexUndefined;
-    ImageIndex ShelterImageId = ImageIndexUndefined;
+    ImageIndex BaseImageId = kImageIndexUndefined;
+    ImageIndex ShelterImageId = kImageIndexUndefined;
     uint32_t Flags{};
     int32_t Height{};
     uint8_t ScrollingMode{};

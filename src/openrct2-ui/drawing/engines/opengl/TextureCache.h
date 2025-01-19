@@ -54,11 +54,11 @@ namespace OpenRCT2::Ui
 
     // This is the maximum width and height of each atlas, basically the
     // granularity at which new atlases are allocated (2048 -> 4 MB of VRAM)
-    constexpr int32_t TEXTURE_CACHE_MAX_ATLAS_SIZE = 2048;
+    constexpr int32_t kTextureCacheMaxAtlasSize = 2048;
 
     // Pixel dimensions of smallest supported slots in texture atlases
     // Must be a power of 2!
-    constexpr int32_t TEXTURE_CACHE_SMALLEST_SLOT = 32;
+    constexpr int32_t kTextureCacheSmallestSlot = 32;
 
     struct BasicTextureInfo
     {
@@ -155,9 +155,9 @@ namespace OpenRCT2::Ui
         {
             int32_t actualSize = std::max(actualWidth, actualHeight);
 
-            if (actualSize < TEXTURE_CACHE_SMALLEST_SLOT)
+            if (actualSize < kTextureCacheSmallestSlot)
             {
-                actualSize = TEXTURE_CACHE_SMALLEST_SLOT;
+                actualSize = kTextureCacheSmallestSlot;
             }
 
             return static_cast<int32_t>(ceil(log2f(static_cast<float>(actualSize))));

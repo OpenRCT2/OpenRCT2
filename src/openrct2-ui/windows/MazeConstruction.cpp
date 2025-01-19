@@ -295,7 +295,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 ft.Increment(4);
-                ft.Add<StringId>(STR_NONE);
+                ft.Add<StringId>(kStringIdNone);
             }
         }
 

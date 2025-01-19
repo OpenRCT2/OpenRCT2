@@ -121,7 +121,7 @@ namespace OpenRCT2::GameActions
     static constexpr void Register(GameActionRegistry& registry, const char* name)
     {
         GameActionFactory factory = []() -> GameAction* { return new T(); };
-        Register<T::TYPE>(registry, factory, name);
+        Register<T::kType>(registry, factory, name);
     }
 
     static constexpr GameActionRegistry BuildRegistry()

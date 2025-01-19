@@ -109,7 +109,7 @@ enum class ViewportVisibility : uint8_t
 
 namespace OpenRCT2
 {
-    constexpr uint16_t ViewportInteractionItemAll = std::numeric_limits<uint16_t>::max();
+    constexpr uint16_t kViewportInteractionItemAll = std::numeric_limits<uint16_t>::max();
 
     struct InteractionInfo
     {

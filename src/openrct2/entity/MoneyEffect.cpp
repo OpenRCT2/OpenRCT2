@@ -25,7 +25,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr CoordsXY _moneyEffectMoveOffset[] = {
+static constexpr CoordsXY kMoneyEffectMoveOffset[] = {
     { 1, -1 },
     { 1, 1 },
     { -1, 1 },
@@ -132,8 +132,8 @@ void MoneyEffect::Update()
     {
         newZ += 1;
     }
-    newY += _moneyEffectMoveOffset[GetCurrentRotation()].y;
-    newX += _moneyEffectMoveOffset[GetCurrentRotation()].x;
+    newY += kMoneyEffectMoveOffset[GetCurrentRotation()].y;
+    newX += kMoneyEffectMoveOffset[GetCurrentRotation()].x;
 
     MoveTo({ newX, newY, newZ });
 

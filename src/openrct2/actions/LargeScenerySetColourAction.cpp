@@ -100,7 +100,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         LOG_ERROR(
             "Could not find large scenery at: x = %d, y = %d, z = %d, direction = %d, tileIndex = %u", _loc.x, _loc.y, _loc.z,
             _loc.direction, _tileIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
 
     if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(largeElement->IsGhost()))
@@ -113,7 +113,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
     if (sceneryEntry == nullptr)
     {
         LOG_ERROR("Scenery element doesn't have scenery entry");
-        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
     // Work out the base tile coordinates (Tile with index 0)
     auto rotatedBaseCoordsOffset = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
@@ -147,7 +147,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
             LOG_ERROR(
                 "Large scenery element not found at: x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z,
                 _loc.direction);
-            return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
         if (isExecuting)
         {

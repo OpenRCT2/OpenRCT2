@@ -18,14 +18,14 @@
     #include <android/log.h>
     #include <jni.h>
 
-    #define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+    #define kOpenRCT2UserAgent "OpenRCT2/" kOpenRCT2Version
 
 namespace OpenRCT2::Http
 {
     Response Do(const Request& req)
     {
         std::map<std::string, std::string> headers = req.header;
-        headers["User-Agent"] = OPENRCT2_USER_AGENT;
+        headers["User-Agent"] = kOpenRCT2UserAgent;
         // Lambda to convert jstring to string
         auto jstringToString = [](JNIEnv* env, jstring jstr) -> std::string {
             if (jstr == nullptr)

@@ -117,7 +117,7 @@ static Ride _previewRide{};
 struct StationIndexWithMessage
 {
     ::StationIndex StationIndex;
-    StringId Message = STR_NONE;
+    StringId Message = kStringIdNone;
 };
 
 // Static function declarations
@@ -852,7 +852,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
         else
         {
             ft.Add<StringId>(STR_RACE_WON_BY);
-            ft.Add<StringId>(STR_NONE);
+            ft.Add<StringId>(kStringIdNone);
         }
     }
     else if (!GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
@@ -997,13 +997,13 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign(TrackDesignState& tds) cons
 {
     if (!(lifecycle_flags & RIDE_LIFECYCLE_TESTED))
     {
-        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
         return nullptr;
     }
 
     if (!RideHasRatings(*this))
     {
-        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
         return nullptr;
     }
 
@@ -1016,7 +1016,7 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign(TrackDesignState& tds) cons
     }
     if (errMessage.HasMessage())
     {
-        ContextShowError(errMessage.Message, STR_EMPTY, {});
+        ContextShowError(errMessage.Message, kStringIdEmpty, {});
     }
 
     return td;
@@ -2157,7 +2157,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     measurement->last_use_tick = GetGameState().CurrentTicks;
     if (measurement->flags & 1)
     {
-        return { measurement.get(), { STR_EMPTY, {} } };
+        return { measurement.get(), { kStringIdEmpty, {} } };
     }
 
     auto ft = Formatter();

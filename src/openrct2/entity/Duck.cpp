@@ -60,16 +60,15 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
 {
     8, 9, 10, 11, 12, 13
 };
-
-static constexpr const uint8_t * kDuckAnimations[] =
-{
-    kDuckAnimationFlyToWater,    // FLY_TO_WATER
-    kkDuckAnimationswim,         // SWIM
-    kDuckAnimationDrink,         // DRINK
-    kDuckAnimationDoubleDrink,   // DOUBLE_DRINK
-    kDuckAnimationFlyAway,       // FLY_AWAY
-};
 // clang-format on
+
+static constexpr const uint8_t* kDuckAnimations[] = {
+    kDuckAnimationFlyToWater,  //  DuckStae::FlyToWater,
+    kkDuckAnimationswim,       //  DuckStae::Swim,
+    kDuckAnimationDrink,       //  DuckStae::Drink,
+    kDuckAnimationDoubleDrink, //  DuckStae::DoubleDrink,
+    kDuckAnimationFlyAway,     //  DuckStae::FlyAway,
+};
 
 template<>
 bool EntityBase::Is<Duck>() const

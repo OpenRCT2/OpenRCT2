@@ -450,7 +450,7 @@ namespace OpenRCT2::RCT2
             // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
             // This is not always the case in OpenRCT2, so we use the actual ride ID.
             if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-                gameState.ScenarioObjective.RideId = _s6.ObjectiveGuests - RCT2_RIDE_STRING_START;
+                gameState.ScenarioObjective.RideId = _s6.ObjectiveGuests - kRCT2RideStringStart;
             else
                 gameState.ScenarioObjective.NumGuests = _s6.ObjectiveGuests;
             ImportMarketingCampaigns();
@@ -1809,7 +1809,7 @@ namespace OpenRCT2::RCT2
             ObjectEntryIndex railingCount = 0;
             for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
             {
-                for (int16_t i = 0; i < RCT2ObjectEntryGroupCounts[objectType]; i++, objectIt++)
+                for (int16_t i = 0; i < kRCT2ObjectEntryGroupCounts[objectType]; i++, objectIt++)
                 {
                     auto entry = ObjectEntryDescriptor(_s6.Objects[objectIt]);
                     if (entry.HasValue())
@@ -2081,7 +2081,7 @@ namespace OpenRCT2::RCT2
             auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->Type);
             if (srcThought->Item == RCT12PeepThoughtItemNone)
-                dstThought->item = PeepThoughtItemNone;
+                dstThought->item = kPeepThoughtItemNone;
             else
                 dstThought->item = srcThought->Item;
             dstThought->freshness = srcThought->Freshness;

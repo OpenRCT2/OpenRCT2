@@ -42,8 +42,8 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget _savePromptWidgets[] = {
-        WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
-        MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, STR_EMPTY                ), // question/label
+        WINDOW_SHIM_WHITE(kStringIdNone, WW_SAVE, WH_SAVE),
+        MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, kStringIdEmpty                ), // question/label
         MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
         MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
         MakeWidget({174, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_CANCEL   ), // cancel

@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui::Windows
         {
             StringId stringId;
             std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
-            if (stringId == STR_NONE)
+            if (stringId == kStringIdNone)
             {
                 return;
             }
@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto& im = GetInputManager();
         auto* wm = GetWindowManager();
-        if (_cursorHoldDuration < 25 || stringId == STR_NONE || im.IsModifierKeyPressed(ModifierKey::ctrl)
+        if (_cursorHoldDuration < 25 || stringId == kStringIdNone || im.IsModifierKeyPressed(ModifierKey::ctrl)
             || im.IsModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::Error) != nullptr)
         {
             WindowCloseByClass(WindowClass::MapTooltip);

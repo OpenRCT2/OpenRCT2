@@ -612,7 +612,7 @@ private:
                                 std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                                 highscore->name = name;
                                 highscore->company_value = scBasic.CompanyValue;
-                                highscore->timestamp = DATETIME64_MIN;
+                                highscore->timestamp = kDatetime64Min;
                                 break;
                             }
                         }
@@ -624,7 +624,7 @@ private:
                         std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                         highscore->name = name;
                         highscore->company_value = scBasic.CompanyValue;
-                        highscore->timestamp = DATETIME64_MIN;
+                        highscore->timestamp = kDatetime64Min;
                     }
                 }
             }

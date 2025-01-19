@@ -103,7 +103,7 @@ GameActions::Result TrackPlaceAction::Query() const
     if (_rideType != ride->type && !gameState.Cheats.allowArbitraryRideTypeChanges)
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, kStringIdNone);
     }
 
     if (_rideType > RIDE_TYPE_COUNT)

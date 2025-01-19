@@ -227,7 +227,7 @@ namespace OpenRCT2::Ui
         // Get the widget
         auto& widget = w.widgets[widgetIndex];
 
-        if (widget.type != WindowWidgetType::Tab && widget.image.GetIndex() == ImageIndexUndefined)
+        if (widget.type != WindowWidgetType::Tab && widget.image.GetIndex() == kImageIndexUndefined)
             return;
 
         if (widget.type == WindowWidgetType::Tab)
@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui
             if (WidgetIsDisabled(w, widgetIndex))
                 return;
 
-            if (widget.image.GetIndex() == ImageIndexUndefined)
+            if (widget.image.GetIndex() == kImageIndexUndefined)
             {
                 // Set standard tab sprite to use.
                 widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
@@ -346,7 +346,7 @@ namespace OpenRCT2::Ui
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
 
-        if (widget.text == STR_NONE)
+        if (widget.text == kStringIdNone)
             return;
 
         auto colour = w.colours[widget.colour];
@@ -391,7 +391,7 @@ namespace OpenRCT2::Ui
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
 
-        if (widget.text == STR_NONE || widget.content == kWidgetContentEmpty)
+        if (widget.text == kStringIdNone || widget.content == kWidgetContentEmpty)
             return;
 
         auto colour = w.colours[widget.colour];
@@ -457,7 +457,7 @@ namespace OpenRCT2::Ui
         {
             if (widget.string == nullptr || widget.string[0] == '\0')
             {
-                stringId = STR_NONE;
+                stringId = kStringIdNone;
                 formatArgs = nullptr;
             }
             else
@@ -485,7 +485,7 @@ namespace OpenRCT2::Ui
 
         // Text
         auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
-        if (stringId != STR_NONE)
+        if (stringId != kStringIdNone)
         {
             auto colour = w.colours[widget.colour].withFlag(ColourFlag::translucent, false);
             if (WidgetIsDisabled(w, widgetIndex))
@@ -561,7 +561,7 @@ namespace OpenRCT2::Ui
                 FilterPaletteID::PaletteDarken3);
 
         // Draw text
-        if (widget->text == STR_NONE)
+        if (widget->text == kStringIdNone)
             return;
 
         topLeft = w.windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
@@ -606,7 +606,7 @@ namespace OpenRCT2::Ui
         // Draw the button
         GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
 
-        if (widget.text == STR_NONE)
+        if (widget.text == kStringIdNone)
             return;
 
         topLeft = w.windowPos + ScreenCoordsXY{ widget.midX() - 1, std::max<int32_t>(widget.top, widget.midY() - 5) };
@@ -652,7 +652,7 @@ namespace OpenRCT2::Ui
         }
 
         // draw the text
-        if (widget.text == STR_NONE)
+        if (widget.text == kStringIdNone)
             return;
 
         auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);

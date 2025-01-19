@@ -421,7 +421,7 @@ namespace OpenRCT2::Editor
         const bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
         if (isTrackDesignerManager)
         {
-            return { ObjectType::None, STR_NONE };
+            return { ObjectType::None, kStringIdNone };
         }
 
         if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
@@ -465,7 +465,7 @@ namespace OpenRCT2::Editor
             }
         }
 
-        return { ObjectType::None, STR_NONE };
+        return { ObjectType::None, kStringIdNone };
     }
 
     /**
@@ -509,7 +509,7 @@ namespace OpenRCT2::Editor
             return { false, STR_PEEP_SPAWNS_NOT_SET };
         }
 
-        return { true, STR_NONE };
+        return { true, kStringIdNone };
     }
 
     uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index)

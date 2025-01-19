@@ -82,7 +82,7 @@ static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* res
     try
     {
         auto magic = stream->ReadValue<uint32_t>();
-        if (magic == OpenRCT2::PARK_FILE_MAGIC)
+        if (magic == OpenRCT2::kParkFileMagic)
         {
             result->Type = FILE_TYPE::PARK;
             result->Version = 0;

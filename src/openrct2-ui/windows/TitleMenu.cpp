@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
                             if (!hasCustomItems)
                             {
                                 hasCustomItems = true;
-                                gDropdownItems[i++].Format = STR_EMPTY;
+                                gDropdownItems[i++].Format = kStringIdEmpty;
                             }
 
                             gDropdownItems[i].Format = STR_STRING;

@@ -684,7 +684,7 @@ namespace OpenRCT2::Ui::Windows
 
             gPickupPeepImage = ImageId();
 
-            auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
+            auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionItemAll);
             if (info.interactionType == ViewportInteractionItem::None)
                 return;
 
@@ -859,7 +859,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        widgets[WIDX_COSTUME_BOX].text = STR_EMPTY;
+                        widgets[WIDX_COSTUME_BOX].text = kStringIdEmpty;
                         widgets[WIDX_COSTUME_BOX].flags &= ~WIDGET_FLAGS::TEXT_IS_STRING;
                     }
 

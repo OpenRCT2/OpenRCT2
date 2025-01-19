@@ -39,7 +39,7 @@ void StaffFireAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffFireAction::Query() const
 {
-    if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
+    if (_spriteId.ToUnderlying() >= kMaxEntities || _spriteId.IsNull())
     {
         LOG_ERROR("Invalid spriteId %u", _spriteId);
         return GameActions::Result(
@@ -55,11 +55,11 @@ GameActions::Result StaffFireAction::Query() const
 
     if (staff->State == PeepState::Fixing)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_FIXING, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_FIXING, kStringIdNone);
     }
     else if (staff->State == PeepState::Inspecting)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_INSPECTING, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_INSPECTING, kStringIdNone);
     }
 
     return GameActions::Result();

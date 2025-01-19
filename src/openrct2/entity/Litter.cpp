@@ -141,7 +141,7 @@ static const StringId litterNames[12] = {
 StringId Litter::GetName() const
 {
     if (EnumValue(SubType) >= std::size(litterNames))
-        return STR_NONE;
+        return kStringIdNone;
     return litterNames[EnumValue(SubType)];
 }
 
@@ -165,7 +165,7 @@ struct LitterSprite
 };
 
 /** rct2: 0x0097EF6C */
-static constexpr LitterSprite _litterSprites[] = {
+static constexpr LitterSprite kLitterSprites[] = {
     { SPR_LITTER_SICK, 0x1 },
     { SPR_LITTER_SICK_ALT, 0x1 },
     { SPR_LITTER_EMPTY_CAN, 0x1 },
@@ -192,9 +192,9 @@ void Litter::Paint(PaintSession& session, int32_t imageDirection) const
     imageDirection >>= 3;
     // Some litter types have only 1 direction so remove
     // anything that isn't required.
-    imageDirection &= _litterSprites[EnumValue(SubType)].direction_mask;
+    imageDirection &= kLitterSprites[EnumValue(SubType)].direction_mask;
 
-    uint32_t image_id = imageDirection + _litterSprites[EnumValue(SubType)].base_id;
+    uint32_t image_id = imageDirection + kLitterSprites[EnumValue(SubType)].base_id;
 
     // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
     // bound_box_offset_z to make sure litter is drawn on top of railways

@@ -18,7 +18,7 @@
 using colour_t = uint8_t;
 enum class FilterPaletteID : int32_t;
 
-static constexpr ImageIndex ImageIndexUndefined = std::numeric_limits<ImageIndex>::max();
+static constexpr ImageIndex kImageIndexUndefined = std::numeric_limits<ImageIndex>::max();
 
 enum class ImageCatalogue
 {
@@ -43,22 +43,22 @@ struct ImageId
 {
 private:
     // clang-format off
-    static constexpr uint32_t MASK_INDEX       = 0b00000000000001111111111111111111;
-    static constexpr uint32_t MASK_REMAP       = 0b00000111111110000000000000000000;
-    static constexpr uint32_t MASK_PRIMARY     = 0b00000000111110000000000000000000;
-    static constexpr uint32_t MASK_SECONDARY   = 0b00011111000000000000000000000000;
-    static constexpr uint32_t FLAG_PRIMARY     = 0b00100000000000000000000000000000;
-    static constexpr uint32_t FLAG_BLEND       = 0b01000000000000000000000000000000;
-    static constexpr uint32_t FLAG_SECONDARY   = 0b10000000000000000000000000000000;
-    static constexpr uint32_t SHIFT_REMAP      = 19;
-    static constexpr uint32_t SHIFT_PRIMARY    = 19;
-    static constexpr uint32_t SHIFT_SECONDARY  = 24;
-    static constexpr uint32_t INDEX_UNDEFINED  = 0b00000000000001111111111111111111;
-    static constexpr uint32_t VALUE_UNDEFINED  = INDEX_UNDEFINED;
+    static constexpr uint32_t kMaskIndex       = 0b00000000000001111111111111111111;
+    static constexpr uint32_t kMaskRemap       = 0b00000111111110000000000000000000;
+    static constexpr uint32_t kMaskPrimary     = 0b00000000111110000000000000000000;
+    static constexpr uint32_t kMaskSecondary   = 0b00011111000000000000000000000000;
+    static constexpr uint32_t kFlagPrimary     = 0b00100000000000000000000000000000;
+    static constexpr uint32_t kFlagBlend       = 0b01000000000000000000000000000000;
+    static constexpr uint32_t kFlagSecondary   = 0b10000000000000000000000000000000;
+    static constexpr uint32_t kShiftRemap      = 19;
+    static constexpr uint32_t kShiftPrimary    = 19;
+    static constexpr uint32_t kShiftSecondary  = 24;
+    static constexpr uint32_t kIndexUndefined  = 0b00000000000001111111111111111111;
+    static constexpr uint32_t kValueUndefined  = kIndexUndefined;
 
-    static constexpr uint8_t  NEW_FLAG_PRIMARY      = 1;
-    static constexpr uint8_t  NEW_FLAG_BLEND        = 2;
-    static constexpr uint8_t  NEW_FLAG_SECONDARY    = 4;
+    static constexpr uint8_t  kNewFlagPrimary      = 1;
+    static constexpr uint8_t  kNewFlagBlend        = 2;
+    static constexpr uint8_t  kNewFlagSecondary    = 4;
     // clang-format on
 
     // NONE = No remap
@@ -68,7 +68,7 @@ private:
     // PRIMARY | SECONDARY = Remap with primary and secondary colours
     // SECONDARY = Remap with primary, secondary and tertiary colours
 
-    ImageIndex _index = ImageIndexUndefined;
+    ImageIndex _index = kImageIndexUndefined;
     uint8_t _primary = 0;
     uint8_t _secondary = 0;
     uint8_t _tertiary = 0;
@@ -78,7 +78,7 @@ public:
     ImageId() = default;
 
     explicit constexpr ImageId(ImageIndex index)
-        : _index(index == INDEX_UNDEFINED ? ImageIndexUndefined : index)
+        : _index(index == kIndexUndefined ? kImageIndexUndefined : index)
     {
     }
 
@@ -104,32 +104,32 @@ public:
 
     bool HasValue() const
     {
-        return GetIndex() != ImageIndexUndefined;
+        return GetIndex() != kImageIndexUndefined;
     }
 
     bool HasPrimary() const
     {
-        return (_flags & NEW_FLAG_PRIMARY) || (_flags & NEW_FLAG_SECONDARY);
+        return (_flags & kNewFlagPrimary) || (_flags & kNewFlagSecondary);
     }
 
     bool HasSecondary() const
     {
-        return _flags & NEW_FLAG_SECONDARY;
+        return _flags & kNewFlagSecondary;
     }
 
     bool HasTertiary() const
     {
-        return !(_flags & NEW_FLAG_PRIMARY) && (_flags & NEW_FLAG_SECONDARY);
+        return !(_flags & kNewFlagPrimary) && (_flags & kNewFlagSecondary);
     }
 
     bool IsRemap() const
     {
-        return (_flags & NEW_FLAG_PRIMARY) && !(_flags & NEW_FLAG_SECONDARY);
+        return (_flags & kNewFlagPrimary) && !(_flags & kNewFlagSecondary);
     }
 
     bool IsBlended() const
     {
-        return _flags & NEW_FLAG_BLEND;
+        return _flags & kNewFlagBlend;
     }
 
     ImageIndex GetIndex() const
@@ -184,8 +184,8 @@ public:
         result._primary = paletteId;
         result._secondary = 0;
         result._tertiary = 0;
-        result._flags |= NEW_FLAG_PRIMARY;
-        result._flags &= ~NEW_FLAG_SECONDARY;
+        result._flags |= kNewFlagPrimary;
+        result._flags &= ~kNewFlagSecondary;
         return result;
     }
 
@@ -193,7 +193,7 @@ public:
     {
         ImageId result = *this;
         result._primary = colour;
-        result._flags |= NEW_FLAG_PRIMARY;
+        result._flags |= kNewFlagPrimary;
         return result;
     }
 
@@ -201,7 +201,7 @@ public:
     {
         ImageId result = *this;
         result._secondary = colour;
-        result._flags |= NEW_FLAG_SECONDARY;
+        result._flags |= kNewFlagSecondary;
         return result;
     }
 
@@ -209,7 +209,7 @@ public:
     {
         ImageId result = *this;
         result._secondary = 0;
-        result._flags &= ~NEW_FLAG_SECONDARY;
+        result._flags &= ~kNewFlagSecondary;
         return result;
     }
 
@@ -217,9 +217,9 @@ public:
     {
         ImageId result = *this;
         result._tertiary = tertiary;
-        result._flags &= ~NEW_FLAG_PRIMARY;
-        result._flags |= NEW_FLAG_SECONDARY;
-        if (!(_flags & NEW_FLAG_SECONDARY))
+        result._flags &= ~kNewFlagPrimary;
+        result._flags |= kNewFlagSecondary;
+        if (!(_flags & kNewFlagSecondary))
         {
             // Tertiary implies primary and secondary, so if colour was remap (8-bit primary) then
             // we need to zero the secondary colour.
@@ -239,7 +239,7 @@ public:
         result._primary = static_cast<uint8_t>(palette);
         result._secondary = 0;
         result._tertiary = 0;
-        result._flags = NEW_FLAG_BLEND;
+        result._flags = kNewFlagBlend;
         return result;
     }
 
@@ -247,9 +247,9 @@ public:
     {
         ImageId result = *this;
         if (value)
-            result._flags |= NEW_FLAG_BLEND;
+            result._flags |= kNewFlagBlend;
         else
-            result._flags &= ~NEW_FLAG_BLEND;
+            result._flags &= ~kNewFlagBlend;
         return result;
     }
 
