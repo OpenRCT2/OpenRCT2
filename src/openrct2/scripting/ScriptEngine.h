@@ -117,7 +117,7 @@ namespace OpenRCT2::Scripting
     private:
         InteractiveConsole& _console;
         IPlatformEnvironment& _env;
-        JSRuntime* _runtime = nullptr;
+        static JSRuntime* _runtime;
         JSContext* _replContext = nullptr;
         bool _initialised{};
         bool _hotReloadingInitialised{};
@@ -203,7 +203,7 @@ namespace OpenRCT2::Scripting
         void SetParkStorageFromJSON(std::string_view value);
 
         void Initialise();
-        static void InitialiseContext(JSContext* ctx);
+        void InitialiseContext(JSContext* ctx) const;
         void LoadTransientPlugins();
         void UnloadTransientPlugins();
         void StopUnloadRegisterAllPlugins();
@@ -287,6 +287,51 @@ namespace OpenRCT2::Scripting
 
     std::string Stringify(JSContext* context, JSValue value);
     std::string ProcessString(JSValue value);
+
+    class ScBase
+    {
+    private:
+        JSClassID classId = JS_INVALID_CLASS_ID;
+        virtual const JSClassDef* GetClassDef() = 0;
+        virtual std::span<const JSCFunctionListEntry> GetClassFuncs() = 0;
+
+    protected:
+        [[nodiscard]] JSValue MakeWithOpaque(JSContext* ctx, void* opaque)
+        {
+            JSValue obj = JS_NewObjectClass(ctx, classId);
+            if (JS_IsException(obj))
+                throw std::runtime_error("Failed to create new object for class.");
+            JS_SetOpaque(obj, opaque);
+
+            // Note: Usually one would set a class prototype rather than setting the functions as properties on every creation.
+            //       However, that causes the attached functions to not be "own properties" which make them a little less
+            //       visible to the user, and also does not match the previous behaviour with the DukTape engine.
+            const auto funcs = GetClassFuncs();
+            JS_SetPropertyFunctionList(ctx, obj, funcs.data(), funcs.size());
+            return obj;
+        }
+
+        template<typename T>
+        [[nodiscard]] T GetOpaque(JSValue obj) const
+        {
+            return static_cast<T>(JS_GetOpaque(obj, classId));
+        }
+
+    public:
+        virtual ~ScBase() = default;
+        void Register(JSContext* ctx)
+        {
+            if (classId == JS_INVALID_CLASS_ID)
+            {
+                // Note: Technically JS_NewClassID is meant to be called once during the lifetime of the program
+                //       whereas JS_NewClass is meant to be called for each runtime.
+                //       If we ever have any more runtimes, this flow would be wrong.
+                JSRuntime* rt = JS_GetRuntime(ctx);
+                JS_NewClassID(rt, &classId);
+                JS_NewClass(rt, classId, GetClassDef());
+            }
+        }
+    };
 
 } // namespace OpenRCT2::Scripting
 
