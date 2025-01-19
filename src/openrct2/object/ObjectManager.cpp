@@ -503,11 +503,6 @@ private:
                 sgObject->UpdateEntryIndexes();
             }
         }
-
-        // HACK Scenery window will lose its tabs after changing the scenery group indexing
-        //      for now just close it, but it will be better to later tell it to invalidate the tabs
-        auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::Scenery);
     }
 
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
