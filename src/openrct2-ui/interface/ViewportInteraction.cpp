@@ -11,7 +11,7 @@
 
 #include "../ProvisionalElements.h"
 #include "../UiStringIds.h"
-#include "../windows/Window.h"
+#include "../windows/Windows.h"
 #include "Viewport.h"
 #include "Window.h"
 

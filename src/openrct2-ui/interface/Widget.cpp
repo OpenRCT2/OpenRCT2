@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <cmath>
 #include <openrct2-ui/UiStringIds.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>

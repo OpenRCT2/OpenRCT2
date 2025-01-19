@@ -2,6 +2,7 @@
 
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "../windows/Windows.h"
 
 #include <cassert>
 #include <numeric>

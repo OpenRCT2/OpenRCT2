@@ -15,7 +15,7 @@
     #include "../interface/Widget.h"
     #include "../scripting/ScGraphicsContext.hpp"
     #include "../scripting/ScWidget.hpp"
-    #include "../windows/Window.h"
+    #include "../windows/Windows.h"
     #include "CustomListView.h"
     #include "ScUi.hpp"
     #include "ScWindow.hpp"
