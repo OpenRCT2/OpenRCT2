@@ -456,3 +456,10 @@ TrackDrawerEntry getTrackDrawerEntry(const RideTypeDescriptor& rtd, bool isInver
 
     return descriptor.Regular;
 }
+
+int32_t RideTypeDescriptor::GetUnifiedBoosterSpeed(int32_t compressedSpeed) const
+{
+    // BoosterSpeedFactor has valid values of 1, 2, 4 representing a 1/2, 1, and 2 multiplier of legacy speed to unified
+    // speed.
+    return compressedSpeed * LegacyBoosterSettings.BoosterSpeedFactor / 2;
+}

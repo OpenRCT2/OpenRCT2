@@ -1545,7 +1545,7 @@ namespace OpenRCT2::Ui::Windows
                 uint16_t brakeSpeed2 = ((_currentBrakeSpeed * 9) >> 2) & 0xFFFF;
                 if (TrackTypeIsBooster(_selectedTrackType) || TrackTypeIsBooster(_currentlySelectedTrack.trackType))
                 {
-                    brakeSpeed2 = GetBoosterSpeed(currentRide->type, brakeSpeed2);
+                    brakeSpeed2 = GetUnifiedBoosterSpeed(currentRide->type, brakeSpeed2);
                 }
                 ft.Add<uint16_t>(brakeSpeed2);
             }

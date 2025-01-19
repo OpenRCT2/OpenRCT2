@@ -5463,10 +5463,9 @@ bool RideHasRatings(const Ride& ride)
     return !ride.ratings.isNull();
 }
 
-int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
+int32_t GetUnifiedBoosterSpeed(ride_type_t rideType, int32_t relativeSpeed)
 {
-    // BoosterSpeedFactor has valid values of 1, 2, 4 representing a 1/2, 1, and 2 multiplier.
-    return rawSpeed * GetRideTypeDescriptor(rideType).LegacyBoosterSettings.BoosterSpeedFactor / 2;
+    return GetRideTypeDescriptor(rideType).GetUnifiedBoosterSpeed(relativeSpeed);
 }
 
 void FixInvalidVehicleSpriteSizes()

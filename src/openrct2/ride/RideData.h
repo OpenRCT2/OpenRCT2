@@ -536,6 +536,11 @@ struct RideTypeDescriptor
     bool SupportsTrackGroup(const TrackGroup trackGroup) const;
     ResearchCategory GetResearchCategory() const;
     bool SupportsRideMode(RideMode rideMode) const;
+    /**
+     * Converts booster speed from the ride type's speed regime (Junior, Default, Giga) to to the unified values used by the
+     * vehicle. See https://github.com/OpenRCT2/OpenRCT2/discussions/23119 for more information about unified speed.
+     */
+    int32_t GetUnifiedBoosterSpeed(int32_t relativeSpeed) const;
 };
 
 extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
