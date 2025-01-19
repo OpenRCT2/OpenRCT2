@@ -11,9 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING_REFACTOR
 
-    #include <quickjs.h>
-
     #include <optional>
+    #include <quickjs.h>
     #include <string>
     #include <string_view>
     #include <vector>
