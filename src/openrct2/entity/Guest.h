@@ -261,7 +261,7 @@ struct Guest : Peep
     static constexpr auto cEntityType = EntityType::Guest;
 
 public:
-    uint8_t GuestNumRides;
+    uint16_t GuestNumRides;
     EntityId GuestNextInQueue;
     int32_t ParkEntryTime;
     RideId GuestHeadingToRideId;
@@ -299,9 +299,9 @@ public:
     uint8_t LitterCount;
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t DisgustingCount;
-    uint8_t AmountOfFood;
-    uint8_t AmountOfDrinks;
-    uint8_t AmountOfSouvenirs;
+    uint16_t AmountOfFood;
+    uint16_t AmountOfDrinks;
+    uint16_t AmountOfSouvenirs;
     uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
     uint8_t VoucherType;
     union

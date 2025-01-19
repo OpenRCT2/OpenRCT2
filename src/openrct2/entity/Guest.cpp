@@ -1695,13 +1695,13 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         }
     }
 
-    if (shopItemDescriptor.IsFood())
+    if (shopItemDescriptor.IsFood() && AmountOfFood < std::numeric_limits<decltype(AmountOfFood)>::max())
         AmountOfFood++;
 
-    if (shopItemDescriptor.IsDrink())
+    if (shopItemDescriptor.IsDrink() && AmountOfDrinks < std::numeric_limits<decltype(AmountOfDrinks)>::max())
         AmountOfDrinks++;
 
-    if (shopItemDescriptor.IsSouvenir())
+    if (shopItemDescriptor.IsSouvenir() && AmountOfSouvenirs < std::numeric_limits<decltype(AmountOfSouvenirs)>::max())
         AmountOfSouvenirs++;
 
     money64* expend_type = &PaidOnSouvenirs;
@@ -1764,7 +1764,7 @@ void Guest::OnEnterRide(Ride& ride)
     ride.UpdateSatisfaction(rideSatisfaction);
 
     // Update various peep stats.
-    if (GuestNumRides < 255)
+    if (GuestNumRides < std::numeric_limits<decltype(GuestNumRides)>::max())
         GuestNumRides++;
 
     SetHasRidden(ride);
