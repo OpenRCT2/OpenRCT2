@@ -1708,18 +1708,18 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     if (shopItemDescriptor.IsSouvenir() && AmountOfSouvenirs < std::numeric_limits<decltype(AmountOfSouvenirs)>::max())
         AmountOfSouvenirs++;
 
-    money64* expend_type = &PaidOnSouvenirs;
+    money64* expendType = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
     if (shopItemDescriptor.IsFood())
     {
-        expend_type = &PaidOnFood;
+        expendType = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (shopItemDescriptor.IsDrink())
     {
-        expend_type = &PaidOnDrink;
+        expendType = &PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
@@ -1735,7 +1735,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     }
     else if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
     {
-        SpendMoney(*expend_type, price, expenditure);
+        SpendMoney(*expendType, price, expenditure);
     }
     ride.total_profit += (price - shopItemDescriptor.Cost);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
