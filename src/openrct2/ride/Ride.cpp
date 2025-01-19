@@ -605,7 +605,7 @@ bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t*
     OriginZ += trackCoordinate.zEnd;
 
     uint8_t directionStart = ((trackCoordinate.rotationEnd + rotation) & kTileElementDirectionMask)
-        | (TrackPieceDirectionIsDiagonal(trackCoordinate.rotationBegin) * kDirectionDiagonalMask);
+        | (TrackPieceDirectionIsDiagonal(trackCoordinate.rotationEnd) * kDirectionDiagonalMask);
 
     return TrackBlockGetNextFromZero({ coords, OriginZ }, *ride, directionStart, output, z, direction, false);
 }
