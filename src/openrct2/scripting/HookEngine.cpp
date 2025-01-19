@@ -130,7 +130,7 @@ void HookEngine::Call(HookType type, const JSValue arg, bool isGameStateMutable)
 void HookEngine::Call(
     HookType type, const std::initializer_list<std::pair<std::string_view, std::any>>& args, bool isGameStateMutable)
 {
-    //TODO (mber)
+    // TODO (mber)
     throw std::runtime_error("HookEngine::Call() not implemented");
     /*
     auto& hookList = GetHookList(type);
