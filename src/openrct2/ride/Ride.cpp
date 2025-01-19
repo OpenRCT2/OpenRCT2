@@ -538,7 +538,7 @@ bool TrackBlockGetNextFromZero(
 
         const auto& nextTrackCoordinate = ted.coordinates;
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
-            | (TrackPieceDirectionIsDiagonal(nextTrackCoordinate.rotationBegin) ? 0 : kDirectionDiagonalMask);
+            | (TrackPieceDirectionIsDiagonal(nextTrackCoordinate.rotationBegin) * kDirectionDiagonalMask);
 
         if (nextRotation != direction_start)
             continue;
@@ -605,7 +605,7 @@ bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t*
     OriginZ += trackCoordinate.zEnd;
 
     uint8_t directionStart = ((trackCoordinate.rotationEnd + rotation) & kTileElementDirectionMask)
-        | (TrackPieceDirectionIsDiagonal(trackCoordinate.rotationBegin) ? 0 : kDirectionDiagonalMask);
+        | (TrackPieceDirectionIsDiagonal(trackCoordinate.rotationBegin) * kDirectionDiagonalMask);
 
     return TrackBlockGetNextFromZero({ coords, OriginZ }, *ride, directionStart, output, z, direction, false);
 }
@@ -661,7 +661,7 @@ bool TrackBlockGetPreviousFromZero(
 
         const auto& nextTrackCoordinate = ted.coordinates;
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationEnd)
-            | (TrackPieceDirectionIsDiagonal(nextTrackCoordinate.rotationEnd) ? 0 : kDirectionDiagonalMask);
+            | (TrackPieceDirectionIsDiagonal(nextTrackCoordinate.rotationEnd) * kDirectionDiagonalMask);
 
         if (nextRotation != directionStart)
             continue;
@@ -671,7 +671,7 @@ bool TrackBlockGetPreviousFromZero(
             continue;
 
         nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
-            | (TrackPieceDirectionIsDiagonal(nextTrackCoordinate.rotationBegin) ? 0 : kDirectionDiagonalMask);
+            | (TrackPieceDirectionIsDiagonal(nextTrackCoordinate.rotationBegin) * kDirectionDiagonalMask);
         outTrackBeginEnd->begin_element = tileElement;
         outTrackBeginEnd->begin_x = trackPos.x;
         outTrackBeginEnd->begin_y = trackPos.y;
