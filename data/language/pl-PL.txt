@@ -2169,7 +2169,6 @@ STR_3136    :Uwaga: Ten projekt trasy będzie wybudowany z alternatywnymi wagona
 STR_3137    :Wybierz najbliższą scenerię
 STR_3138    :Zresetuj wybór
 STR_3139    :Wyciągarka nie może działać w tym trybie
-STR_3140    :Wyciągarka musi znajdować się na początku trasy
 STR_3141    :Wielokrotne pętle nie są dostępne w parze z wyciągarką
 STR_3142    :{WINDOW_COLOUR_2}Pojemność: {BLACK}{STRINGID}
 STR_3143    :Pokaż ludzi
@@ -3788,3 +3787,6 @@ STR_6723    :Należy wybrać co najmniej jeden obiekt animacji komika
 STR_6724    :Teksty scenariuszy
 STR_6725    :X:
 STR_6726    :Y:
+STR_6727    :Pętla nurkująca (w lewo)
+STR_6728    :Pętla nurkująca (w prawo)
+STR_6729    :Wyciągarka linowa musi znajdować się bezpośrednio po stacji lub hamulcu blokowym

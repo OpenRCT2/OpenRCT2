@@ -2169,7 +2169,6 @@ STR_3136    :Averto: Ĉi tiu desegnaĵo estos konstruita per alternativa tipo de
 STR_3137    :Elekti Proksiman Pejzaĝon
 STR_3138    :Vakigi Elektaĵon
 STR_3139    :Kablolifto ne funkciiĝas kun ĉi tiu reĝimo de funkciado
-STR_3140    :Kablolifto-monteto devas komenci tuj post stacio
 STR_3141    :Reĝimo de multaj cirkvitoj ne eblas kun kablolifto-monteto
 STR_3142    :{WINDOW_COLOUR_2}Kapacito: {BLACK}{STRINGID}
 STR_3143    :Montri homojn sur mapo
@@ -2201,7 +2200,7 @@ STR_3188    :Trotuaro-Surskribaĵoj
 STR_3189    :Heredaĵaj trotuaroj
 STR_3190    :Trotuaro-Diversaĵoj
 STR_3191    :Pejzaĝo-Grupoj
-STR_3192    :Parkeniro
+STR_3192    :Parkeniroj
 STR_3193    :Akvo
 STR_3195    :Listo da Inventaĵoj
 STR_3196    :{WINDOW_COLOUR_2}Inventaĵo-Kategorio: {BLACK}{STRINGID}
@@ -2606,7 +2605,7 @@ STR_5368    :Restarigi staton de akcidentoj
 STR_5371    :Elektado de objektoj
 STR_5372    :Inversigi trenadon per dekstra musobutono
 STR_5373    :Nomo {STRINGID}
-STR_5374    :Dato {STRINGID}
+STR_5374    :Dato modifita {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Nomo jam ekzistas
@@ -3736,8 +3735,8 @@ STR_6671    :Montri ‘faktajn’ nomojn de dungitaro
 STR_6672    :Baskuligi inter montrado de ‘faktaj’ dungitonomoj kaj dungitonumeroj
 STR_6673    :Travidebla
 STR_6674    :{MONTH}, Jaro {COMMA16}
-STR_6675    :Nomoj de Gastoj
-STR_6676    :Almenaŭ unu objecto de gastonomo elektendas
+STR_6675    :Nomoj de Hometoj
+STR_6676    :Almenaŭ unu objecto de hometonomo elektendas
 STR_6677    :Aldoni strandojn ĉirkaŭ amasoj de akvo
 STR_6678    :Fonto de altmapo:
 STR_6679    :Ebenaĵo
@@ -3774,3 +3773,18 @@ STR_6709    :Entajpu glatan fortecon inter {COMMA16} kaj {COMMA16}
 STR_6710    :Stabila ordigo
 STR_6711    :Dosiernomo:
 STR_6712    :Konservi
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Dosiernomo
+STR_6715    :Dato modifita
+STR_6716    :Dosiergrando
+STR_6717    :Dosiergrando {STRINGID}
+STR_6718    :Animacioj de Hometoj
+STR_6719    :Almenaŭ unu animacio-objekto de gasto elektendas
+STR_6720    :Almenaŭ unu animacio-objekto de faktoto elektendas
+STR_6721    :Almenaŭ unu animacio-objekto de mekanikisto elektendas
+STR_6722    :Almenaŭ unu animacio-objekto de gardisto elektendas
+STR_6723    :Almenaŭ unu animacio-objekto de amuzisto elektendas
+STR_6724    :Scenaro-Tekstoj
+STR_6725    :X:
+STR_6726    :Y:
+STR_6729    :Kablolifto-monteto devas komenci tuj post stacio aŭ bremso de blokparto
