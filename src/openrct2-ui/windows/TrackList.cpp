@@ -265,8 +265,9 @@ namespace OpenRCT2::Ui::Windows
             // try to load the track manager again, and an infinite loop will result.
             if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0)
             {
-                WindowCloseByNumber(WindowClass::ManageTrackDesign, number);
-                WindowCloseByNumber(WindowClass::TrackDeletePrompt, number);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseByNumber(WindowClass::ManageTrackDesign, number);
+                windowMgr->CloseByNumber(WindowClass::TrackDeletePrompt, number);
                 Editor::LoadTrackManager();
             }
         }
@@ -757,7 +758,9 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* TrackListOpen(const RideSelection item)
     {
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseConstructionWindows();
+
         ScreenCoordsXY screenPos{};
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
@@ -769,7 +772,7 @@ namespace OpenRCT2::Ui::Windows
         {
             screenPos = { 0, kTopToolbarHeight + 2 };
         }
-        auto* windowMgr = GetWindowManager();
+
         return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
     }
 

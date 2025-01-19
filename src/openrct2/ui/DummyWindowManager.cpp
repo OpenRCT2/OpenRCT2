@@ -77,6 +77,18 @@ namespace OpenRCT2::Ui
             return nullptr;
         }
 
+        void Close(WindowBase& window) override {};
+        void CloseSurplus(int32_t cap, WindowClass avoid_classification) override {};
+        void CloseByClass(WindowClass cls) override {};
+        void CloseByNumber(WindowClass cls, rct_windownumber number) override {};
+        void CloseByNumber(WindowClass cls, EntityId number) override {};
+        void CloseTop() override {};
+        void CloseAll() override {};
+        void CloseAllExceptClass(WindowClass cls) override {};
+        void CloseAllExceptFlags(uint16_t flags) override {};
+        void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override {};
+        void CloseConstructionWindows() override {};
+
         WindowBase* FindByClass(WindowClass cls) override
         {
             return nullptr;

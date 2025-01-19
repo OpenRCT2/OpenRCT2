@@ -279,7 +279,8 @@ namespace OpenRCT2::Ui::Windows
                     gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            WindowCloseByClass(WindowClass::NewCampaign);
+                            auto* windowMgr = Ui::GetWindowManager();
+                            windowMgr->CloseByClass(WindowClass::NewCampaign);
                         }
                     });
                     GameActions::Execute(&gameAction);
@@ -409,7 +410,7 @@ namespace OpenRCT2::Ui::Windows
             if (w->GetCampaignType() == campaignType)
                 return w;
 
-            WindowClose(*w);
+            w->Close();
         }
 
         w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);

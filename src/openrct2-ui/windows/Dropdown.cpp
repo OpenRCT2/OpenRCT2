@@ -402,7 +402,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowDropdownClose()
     {
-        WindowCloseByClass(WindowClass::Dropdown);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Dropdown);
     }
 
     /**

@@ -470,7 +470,8 @@ namespace OpenRCT2::Ui::Windows
                             return;
                         }
 
-                        WindowCloseByClass(WindowClass::PatrolArea);
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::PatrolArea);
 
                         auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
                             staff->Id, {}, StaffSetPatrolAreaMode::ClearAll);
@@ -481,7 +482,8 @@ namespace OpenRCT2::Ui::Windows
                         auto staffId = EntityId::FromUnderlying(number);
                         if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                         {
-                            WindowCloseByClass(WindowClass::PatrolArea);
+                            auto* windowMgr = Ui::GetWindowManager();
+                            windowMgr->CloseByClass(WindowClass::PatrolArea);
                         }
                         else
                         {

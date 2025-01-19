@@ -421,8 +421,9 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        WindowCloseByClass(WindowClass::EditorObjectSelection);
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+        windowMgr->CloseConstructionWindows();
 
         gTrackDesignSceneryToggle = false;
         _currentTrackPieceDirection = 2;
@@ -431,7 +432,6 @@ namespace OpenRCT2::Ui::Windows
         int32_t screenHeight = ContextGetHeight();
         auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
 
-        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);
         window->SetupTrack(path, std::move(trackDesign));
 

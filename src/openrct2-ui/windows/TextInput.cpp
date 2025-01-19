@@ -136,7 +136,7 @@ namespace OpenRCT2::Ui::Windows
                 auto parentWindow = GetParentWindow();
                 if (parentWindow == nullptr)
                 {
-                    WindowClose(*this);
+                    Close();
                     return;
                 }
             }
@@ -157,12 +157,12 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CLOSE:
                     ContextStopTextInput();
                     ExecuteCallback(false);
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_OKAY:
                     ContextStopTextInput();
                     ExecuteCallback(true);
-                    WindowClose(*this);
+                    Close();
             }
         }
 
@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ContextStopTextInput();
             ExecuteCallback(true);
-            WindowClose(*this);
+            Close();
         }
 
         static int32_t CalculateWindowHeight(std::string_view text)
@@ -374,7 +374,7 @@ namespace OpenRCT2::Ui::Windows
         const_utf8string existing_text, int32_t maxLength)
     {
         auto* windowMgr = GetWindowManager();
-        WindowCloseByClass(WindowClass::Textinput);
+        windowMgr->CloseByClass(WindowClass::Textinput);
 
         auto height = TextInputWindow::CalculateWindowHeight(existing_text);
         auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);

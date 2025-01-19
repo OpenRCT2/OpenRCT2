@@ -368,7 +368,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -670,7 +670,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -916,7 +916,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:

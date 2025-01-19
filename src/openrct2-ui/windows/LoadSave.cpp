@@ -293,8 +293,9 @@ namespace OpenRCT2::Ui::Windows
 
         // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
         // no windows are open (besides the toolbars and LoadSave window).
-        WindowCloseByClass(WindowClass::RideConstruction);
-        WindowCloseAllExceptClass(WindowClass::Loadsave);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::RideConstruction);
+        windowMgr->CloseAllExceptClass(WindowClass::Loadsave);
 
         auto& gameState = GetGameState();
 
@@ -305,7 +306,7 @@ namespace OpenRCT2::Ui::Windows
                 if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
                 {
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     GfxInvalidateScreen();
                 }
                 else
@@ -325,7 +326,7 @@ namespace OpenRCT2::Ui::Windows
                     gIsAutosaveLoaded = false;
                     gFirstTimeSaving = false;
 
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     GfxInvalidateScreen();
 
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
@@ -359,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
                 if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
                 {
                     gCurrentLoadedPath = pathBuffer;
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     GfxInvalidateScreen();
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 }
@@ -382,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (success)
                 {
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
 
                     auto* context = OpenRCT2::GetContext();
@@ -403,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
                 auto intent = Intent(WindowClass::InstallTrack);
                 intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
                 ContextOpenIntent(&intent);
-                WindowCloseByClass(WindowClass::Loadsave);
+                windowMgr->CloseByClass(WindowClass::Loadsave);
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 break;
             }
@@ -421,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (success)
                 {
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     WindowRideMeasurementsDesignCancel();
                     InvokeCallback(MODAL_RESULT_OK, path);
                 }
@@ -434,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             case (LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP):
-                WindowCloseByClass(WindowClass::Loadsave);
+                windowMgr->CloseByClass(WindowClass::Loadsave);
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 break;
         }
@@ -769,7 +770,10 @@ namespace OpenRCT2::Ui::Windows
         void OnClose() override
         {
             _listItems.clear();
-            WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
+
             Config::Save();
 
             // Unpause the game if not on title scene, nor in network play.
@@ -1457,7 +1461,8 @@ namespace OpenRCT2::Ui::Windows
 
                     // As the LoadSaveWindow::Select function can change the order of the
                     // windows we can't use WindowClose(w).
-                    WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
                     break;
                 }
 
@@ -1483,9 +1488,9 @@ namespace OpenRCT2::Ui::Windows
 
     static WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path)
     {
-        WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
-        auto* windowMgr = GetWindowManager();
         return windowMgr->Create<OverwritePromptWindow>(
             WindowClass::LoadsaveOverwritePrompt, OVERWRITE_WW, OVERWRITE_WH,
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name, path);

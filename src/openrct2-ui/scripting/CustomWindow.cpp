@@ -580,8 +580,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                {
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->Close(*this);
                     break;
+                }
                 default:
                 {
                     if (widgetIndex >= WIDX_TAB_0
@@ -1485,7 +1488,8 @@ namespace OpenRCT2::Ui::Windows
 
         for (auto& window : customWindows)
         {
-            WindowClose(*window.get());
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->Close(*window.get());
         }
     }
 

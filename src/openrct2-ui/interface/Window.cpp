@@ -423,18 +423,21 @@ namespace OpenRCT2
         }
         else
         {
-            WindowClose(*this);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->Close(*this);
         }
     }
 
     void Window::CloseOthers()
     {
-        WindowCloseAllExceptNumberAndClass(number, classification);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseAllExceptNumberAndClass(number, classification);
     }
 
     void Window::CloseOthersOfThisClass()
     {
-        WindowCloseByClass(classification);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(classification);
     }
 
     CloseWindowModifier Window::GetCloseModifier()
@@ -597,7 +600,8 @@ namespace OpenRCT2::Ui::Windows
         _currentTextBox.widget_index = callWidget;
         _textBoxFrameNo = 0;
 
-        WindowCloseByClass(WindowClass::Textinput);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Textinput);
 
         _textBoxInput = existingText;
 

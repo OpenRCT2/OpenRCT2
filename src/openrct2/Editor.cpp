@@ -245,7 +245,8 @@ namespace OpenRCT2::Editor
     {
         // #4996: Make sure the object selection window closes here to prevent unload objects
         //        after we have loaded a new park.
-        WindowCloseAll();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseAll();
 
         if (!GetContext()->LoadParkFromFile(path))
             return false;

@@ -295,19 +295,19 @@ namespace OpenRCT2::Ui::Windows
                 auto getRide = GetRide(rideId);
                 if (getRide != nullptr)
                 {
-                    WindowCloseByClass(WindowClass::Error);
-                    Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::Error);
 
+                    Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
                     _currentRideIndex = rideId;
 
-                    auto* windowMgr = GetWindowManager();
                     if (TrackDesignAreEntranceAndExitPlaced())
                     {
                         auto intent = Intent(WindowClass::Ride);
                         intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                         ContextOpenIntent(&intent);
                         auto* wnd = windowMgr->FindByClass(WindowClass::TrackDesignPlace);
-                        WindowClose(*wnd);
+                        windowMgr->Close(*wnd);
                     }
                     else
                     {
@@ -734,9 +734,9 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseConstructionWindows();
 
-        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
         if (window != nullptr)
         {

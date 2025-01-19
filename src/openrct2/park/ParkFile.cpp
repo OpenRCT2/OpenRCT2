@@ -52,7 +52,7 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
-#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
@@ -2643,7 +2643,8 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
     gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
     if (!gIsAutosave)
     {
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseConstructionWindows();
     }
 
     PrepareMapForSave();

@@ -96,7 +96,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
 
                 case WIDX_PREVIEW:

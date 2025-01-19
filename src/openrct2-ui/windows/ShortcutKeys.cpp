@@ -81,7 +81,7 @@ namespace OpenRCT2::Ui::Windows
             if (registeredShortcut != nullptr)
             {
                 auto* windowMgr = GetWindowManager();
-                WindowCloseByClass(WindowClass::ChangeKeyboardShortcut);
+                windowMgr->CloseByClass(WindowClass::ChangeKeyboardShortcut);
                 auto* w = windowMgr->Create<ChangeShortcutWindow>(
                     WindowClass::ChangeKeyboardShortcut, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
                 if (w != nullptr)
@@ -198,7 +198,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnClose() override
         {
-            WindowCloseByClass(WindowClass::ResetShortcutKeysPrompt);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::ResetShortcutKeysPrompt);
         }
 
         void OnResize() override

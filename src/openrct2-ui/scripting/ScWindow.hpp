@@ -305,7 +305,8 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WindowClose(*w);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->Close(*w);
             }
         }
 

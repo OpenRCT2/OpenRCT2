@@ -16,7 +16,6 @@
 #include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
@@ -158,11 +157,11 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     {
         if (windowMgr->FindByClass(WindowClass::TitleLogo) != nullptr)
         {
-            WindowCloseByClass(WindowClass::TitleLogo);
-            WindowCloseByClass(WindowClass::TitleOptions);
-            WindowCloseByClass(WindowClass::TitleMenu);
-            WindowCloseByClass(WindowClass::TitleExit);
-            WindowCloseByClass(WindowClass::TitleVersion);
+            windowMgr->CloseByClass(WindowClass::TitleLogo);
+            windowMgr->CloseByClass(WindowClass::TitleOptions);
+            windowMgr->CloseByClass(WindowClass::TitleMenu);
+            windowMgr->CloseByClass(WindowClass::TitleExit);
+            windowMgr->CloseByClass(WindowClass::TitleVersion);
         }
         else
         {
@@ -173,9 +172,9 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     {
         if (windowMgr->FindByClass(WindowClass::TopToolbar) != nullptr)
         {
-            WindowCloseByClass(WindowClass::Dropdown);
-            WindowCloseByClass(WindowClass::TopToolbar);
-            WindowCloseByClass(WindowClass::BottomToolbar);
+            windowMgr->CloseByClass(WindowClass::Dropdown);
+            windowMgr->CloseByClass(WindowClass::TopToolbar);
+            windowMgr->CloseByClass(WindowClass::BottomToolbar);
         }
         else
         {
@@ -376,7 +375,7 @@ static void ShortcutOpenCheatWindow()
     WindowBase* window = windowMgr->FindByClass(WindowClass::Cheats);
     if (window != nullptr)
     {
-        WindowClose(*window);
+        windowMgr->Close(*window);
         return;
     }
     ContextOpenWindow(WindowClass::Cheats);
@@ -748,15 +747,19 @@ void ShortcutManager::RegisterDefaultShortcuts()
 {
     // clang-format off
     // Interface
-    RegisterShortcut(ShortcutId::kInterfaceCloseTop, STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW, "BACKSPACE", WindowCloseTop);
+    RegisterShortcut(ShortcutId::kInterfaceCloseTop, STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW, "BACKSPACE", []() {
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseTop();
+    });
     RegisterShortcut(ShortcutId::kInterfaceCloseAll, STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS, "SHIFT+BACKSPACE", []() {
+        auto* windowMgr = GetWindowManager();
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
         {
-            WindowCloseAll();
+            windowMgr->CloseAll();
         }
         else if (GetGameState().EditorStep == EditorStep::LandscapeEditor)
         {
-            WindowCloseTop();
+            windowMgr->CloseTop();
         }
     });
     RegisterShortcut(ShortcutId::kInterfaceRotateConstruction, STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT, "Z", ShortcutRotateConstructionObject);
@@ -767,7 +770,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
             auto window = windowMgr->FindByClass(WindowClass::Error);
             if (window != nullptr)
             {
-                WindowClose(*window);
+                windowMgr->Close(*window);
             }
             else if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
             {
@@ -904,7 +907,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
             auto window = windowMgr->FindByClass(WindowClass::DebugPaint);
             if (window != nullptr)
             {
-                WindowClose(*window);
+                windowMgr->Close(*window);
             }
             else
             {

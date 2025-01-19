@@ -380,15 +380,6 @@ namespace OpenRCT2
 
     void WindowSetWindowLimit(int32_t value);
 
-    void WindowClose(WindowBase& window);
-    void WindowCloseByClass(WindowClass cls);
-    void WindowCloseByNumber(WindowClass cls, rct_windownumber number);
-    void WindowCloseByNumber(WindowClass cls, EntityId number);
-    void WindowCloseTop();
-    void WindowCloseAll();
-    void WindowCloseAllExceptClass(WindowClass cls);
-    void WindowCloseAllExceptFlags(uint16_t flags);
-    void WindowCloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls);
     void WindowInvalidateByClass(WindowClass cls);
     void WindowInvalidateByNumber(WindowClass cls, rct_windownumber number);
     void WindowInvalidateByNumber(WindowClass cls, EntityId id);
@@ -421,8 +412,6 @@ namespace OpenRCT2
     bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex);
     bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
     void ToolCancel();
-
-    void WindowCloseConstructionWindows();
 
     void WindowUpdateViewportRideMusic();
 

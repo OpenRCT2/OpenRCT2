@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::SavePrompt);
         if (window != nullptr)
         {
-            WindowClose(*window);
+            windowMgr->Close(*window);
         }
 
         if (EnumValue(prompt_mode) >= std::size(window_save_prompt_labels))

@@ -206,7 +206,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             WindowBase* constructionWindow = windowMgr->FindByNumber(WindowClass::RideConstruction, _rideIndex.ToUnderlying());
             if (constructionWindow != nullptr)
             {
-                WindowClose(*constructionWindow);
+                windowMgr->Close(*constructionWindow);
             }
 
             if (_status == RideStatus::Testing)

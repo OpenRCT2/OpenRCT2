@@ -209,7 +209,9 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             _network.Close();
 #endif
-            WindowCloseAll();
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
 
             // Unload objects after closing all windows, this is to overcome windows like
             // the object selection window which loads objects when closed.

@@ -370,7 +370,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ToolCancel();
                     if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
-                        WindowCloseByClass(WindowClass::RideConstruction);
+                    {
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::RideConstruction);
+                    }
                 }
                 else
                 {

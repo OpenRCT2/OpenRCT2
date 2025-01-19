@@ -52,6 +52,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Track.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -173,8 +174,11 @@ void ScenarioReset(GameState_t& gameState)
 static void ScenarioEnd()
 {
     GameResetSpeed();
-    WindowCloseByClass(WindowClass::Dropdown);
-    WindowCloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByClass(WindowClass::Dropdown);
+    windowMgr->CloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
+
     ContextOpenWindowView(WV_PARK_OBJECTIVE);
 }
 

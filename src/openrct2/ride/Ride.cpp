@@ -4030,7 +4030,8 @@ ResultWithMessage Ride::Test(bool isApplying)
         return { false };
     }
 
-    WindowCloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
 
     StationIndex stationIndex = {};
     auto message = ChangeStatusDoStationChecks(stationIndex);
@@ -4117,7 +4118,8 @@ ResultWithMessage Ride::Open(bool isApplying)
     // with auto open on.
     if (isToolActive(WindowClass::RideConstruction, static_cast<rct_windownumber>(id.ToUnderlying())))
     {
-        WindowCloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
     }
 
     StationIndex stationIndex = {};

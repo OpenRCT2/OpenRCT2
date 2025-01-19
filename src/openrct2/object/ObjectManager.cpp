@@ -17,10 +17,10 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/JobPool.h"
 #include "../core/Memory.hpp"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
+#include "../ui/WindowManager.h"
 #include "BannerSceneryEntry.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -503,10 +503,6 @@ private:
                 sgObject->UpdateEntryIndexes();
             }
         }
-
-        // HACK Scenery window will lose its tabs after changing the scenery group indexing
-        //      for now just close it, but it will be better to later tell it to invalidate the tabs
-        WindowCloseByClass(WindowClass::Scenery);
     }
 
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)

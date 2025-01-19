@@ -286,7 +286,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!windowMgr->FindByClass(WindowClass::LandRights))
                         ContextOpenWindow(WindowClass::LandRights);
                     else
-                        WindowCloseByClass(WindowClass::LandRights);
+                        windowMgr->CloseByClass(WindowClass::LandRights);
                     break;
                 }
                 case WIDX_BUILD_PARK_ENTRANCE:
@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!windowMgr->FindByClass(WindowClass::EditorParkEntrance))
                         ContextOpenWindow(WindowClass::EditorParkEntrance);
                     else
-                        WindowCloseByClass(WindowClass::EditorParkEntrance);
+                        windowMgr->CloseByClass(WindowClass::EditorParkEntrance);
                     break;
                 }
                 case WIDX_PEOPLE_STARTING_POSITION:

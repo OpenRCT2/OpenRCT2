@@ -108,7 +108,8 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
         {
             auto windowPos = w->windowPos;
-            WindowClose(*w);
+            windowMgr->Close(*w);
+
             newWindow = windowMgr->Create<DemolishRidePromptWindow>(
                 WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
         }
