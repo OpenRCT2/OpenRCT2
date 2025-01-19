@@ -13,7 +13,7 @@
 
     #include "../interface/Viewport.h"
     #include "../interface/Widget.h"
-    #include "../interface/Window.h"
+    #include "../windows/Windows.h"
 
     #include <numeric>
     #include <openrct2/Context.h>

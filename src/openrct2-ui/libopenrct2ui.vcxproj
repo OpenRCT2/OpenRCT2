@@ -101,7 +101,7 @@
     <ClInclude Include="UiContext.h" />
     <ClInclude Include="UiStringIds.h" />
     <ClInclude Include="WindowManager.h" />
-    <ClInclude Include="windows\Window.h" />
+    <ClInclude Include="windows\Windows.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="audio\AudioChannel.cpp" />

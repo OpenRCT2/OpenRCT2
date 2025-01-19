@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Window.h"
+#include "Windows.h"
 
 #include <algorithm>
 #include <openrct2-ui/UiContext.h>

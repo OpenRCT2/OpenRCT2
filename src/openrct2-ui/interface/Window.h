@@ -55,32 +55,6 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Ui::Windows
 {
-    void RideConstructionToolupdateEntranceExit(const ScreenCoordsXY& screenCoords);
-    void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords);
-    void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords);
-    void UpdateGhostTrackAndArrow();
-    void WindowRideConstructionKeyboardShortcutTurnLeft();
-    void WindowRideConstructionKeyboardShortcutTurnRight();
-    void WindowRideConstructionKeyboardShortcutUseTrackDefault();
-    void WindowRideConstructionKeyboardShortcutSlopeDown();
-    void WindowRideConstructionKeyboardShortcutSlopeUp();
-    void WindowRideConstructionKeyboardShortcutChainLiftToggle();
-    void WindowRideConstructionKeyboardShortcutBankLeft();
-    void WindowRideConstructionKeyboardShortcutBankRight();
-    void WindowRideConstructionKeyboardShortcutPreviousTrack();
-    void WindowRideConstructionKeyboardShortcutNextTrack();
-    void WindowRideConstructionKeyboardShortcutBuildCurrent();
-    void WindowRideConstructionKeyboardShortcutDemolishCurrent();
-
-    void WindowFootpathKeyboardShortcutTurnLeft();
-    void WindowFootpathKeyboardShortcutTurnRight();
-    void WindowFootpathKeyboardShortcutSlopeDown();
-    void WindowFootpathKeyboardShortcutSlopeUp();
-    void WindowFootpathKeyboardShortcutBuildCurrent();
-    void WindowFootpathKeyboardShortcutDemolishCurrent();
-
-    void WindowTileInspectorKeyboardShortcutToggleInvisibility();
-
     extern const StringId ColourSchemeNames[4];
 
     WindowBase* WindowGetListening();

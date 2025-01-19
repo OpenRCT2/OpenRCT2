@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../windows/Window.h"
+    #include "../windows/Windows.h"
     #include "CustomMenu.h"
     #include "ScImageManager.hpp"
     #include "ScTileSelection.hpp"

@@ -11,7 +11,7 @@
 #include "../interface/Dropdown.h"
 #include "../interface/Widget.h"
 #include "../interface/Window.h"
-#include "Window.h"
+#include "Windows.h"
 
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
