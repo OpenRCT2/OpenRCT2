@@ -11,10 +11,9 @@
 
 #ifdef ENABLE_SCRIPTING_REFACTOR
 
-    #include <quickjs.h>
-
     #include <any>
     #include <memory>
+    #include <quickjs.h>
     #include <string>
     #include <tuple>
     #include <vector>

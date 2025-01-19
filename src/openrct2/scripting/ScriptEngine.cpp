@@ -414,14 +414,17 @@ void ScriptEngine::Initialise()
 {
     if (_initialised)
         throw std::runtime_error("Script engine already initialised.");
-    _runtime = JS_NewRuntime();
     if (!_runtime)
-        throw "QuickJS: cannot allocate JS runtime\n";
+    {
+        _runtime = JS_NewRuntime();
+        if (!_runtime)
+            throw "QuickJS: cannot allocate JS runtime\n";
 
     #ifndef NDEBUG
-    // Dump JS engine memory leaks
-    JS_SetDumpFlags(_runtime, 0x4000);
+        // Dump JS engine memory leaks
+        JS_SetDumpFlags(_runtime, 0x4000);
     #endif
+    }
 
     _replContext = JS_NewContext(_runtime);
     if (!_replContext)
@@ -436,14 +439,17 @@ void ScriptEngine::Initialise()
     ClearParkStorage();
 }
 
-void ScriptEngine::InitialiseContext(JSContext* ctx)
+JSRuntime* ScriptEngine::_runtime = nullptr;
+ScConsole Scripting::gScConsole;
+
+void ScriptEngine::InitialiseContext(JSContext* ctx) const
 {
     // TODO (mber) register C functions
     // ScCheats::Register(ctx);
     // ScClimate::Register(ctx);
     // ScClimateState::Register(ctx);
     // ScConfiguration::Register(ctx);
-    // ScConsole::Register(ctx);
+    gScConsole.Register(ctx);
     // ScContext::Register(ctx);
     // ScDate::Register(ctx);
     // ScDisposable::Register(ctx);
@@ -493,10 +499,11 @@ void ScriptEngine::InitialiseContext(JSContext* ctx)
     // ScMechanic::Register(ctx);
     // ScSecurity::Register(ctx);
     // ScPlugin::Register(ctx);
-    //
+
+    JSValue glb = JS_GetGlobalObject(ctx);
     // dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
     // dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
-    // dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
+    JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
     // dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
     // dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
     // dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
@@ -506,6 +513,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx)
     // dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     // dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
     // dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
+    JS_FreeValue(ctx, glb);
 
     RegisterConstants(ctx);
 }
