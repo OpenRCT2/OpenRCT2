@@ -1772,8 +1772,7 @@ void Guest::OnEnterRide(Ride& ride)
     ride.updateSatisfaction(rideSatisfaction);
 
     // Update various peep stats.
-    if (GuestNumRides < std::numeric_limits<decltype(GuestNumRides)>::max())
-        GuestNumRides++;
+    GuestNumRides = AddClamp<decltype(GuestNumRides)>(GuestNumRides, 1);
 
     SetHasRidden(ride);
     GuestUpdateFavouriteRide(*this, ride, satisfaction);
