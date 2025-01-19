@@ -1010,7 +1010,7 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
     Guard::Assert(!gOpenRCT2NoGraphics, "GfxGetG1Element called on headless instance");
 
     auto offset = static_cast<size_t>(image_id);
-    if (offset == 0x7FFFF || offset == kImageIndexUndefined)
+    if (offset == kImageIndexUndefined)
     {
         return nullptr;
     }

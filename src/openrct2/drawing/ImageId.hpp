@@ -42,9 +42,9 @@ FilterPaletteID GetGlassPaletteId(colour_t);
 struct ImageId
 {
 private:
-    static constexpr uint8_t kNewFlagPrimary = 1;
-    static constexpr uint8_t kNewFlagBlend = 2;
-    static constexpr uint8_t kNewFlagSecondary = 4;
+    static constexpr uint8_t kFlagPrimary = 1;
+    static constexpr uint8_t kFlagBlend = 2;
+    static constexpr uint8_t kFlagSecondary = 4;
 
     // NONE = No remap
     // BLENDED = No source copy, remap destination only (glass)
@@ -63,7 +63,7 @@ public:
     ImageId() = default;
 
     explicit constexpr ImageId(ImageIndex index)
-        : _index(index == kIndexUndefined ? kImageIndexUndefined : index)
+        : _index(index)
     {
     }
 
@@ -94,27 +94,27 @@ public:
 
     bool HasPrimary() const
     {
-        return (_flags & kNewFlagPrimary) || (_flags & kNewFlagSecondary);
+        return (_flags & kFlagPrimary) || (_flags & kFlagSecondary);
     }
 
     bool HasSecondary() const
     {
-        return _flags & kNewFlagSecondary;
+        return _flags & kFlagSecondary;
     }
 
     bool HasTertiary() const
     {
-        return !(_flags & kNewFlagPrimary) && (_flags & kNewFlagSecondary);
+        return !(_flags & kFlagPrimary) && (_flags & kFlagSecondary);
     }
 
     bool IsRemap() const
     {
-        return (_flags & kNewFlagPrimary) && !(_flags & kNewFlagSecondary);
+        return (_flags & kFlagPrimary) && !(_flags & kFlagSecondary);
     }
 
     bool IsBlended() const
     {
-        return _flags & kNewFlagBlend;
+        return _flags & kFlagBlend;
     }
 
     ImageIndex GetIndex() const
@@ -169,8 +169,8 @@ public:
         result._primary = paletteId;
         result._secondary = 0;
         result._tertiary = 0;
-        result._flags |= kNewFlagPrimary;
-        result._flags &= ~kNewFlagSecondary;
+        result._flags |= kFlagPrimary;
+        result._flags &= ~kFlagSecondary;
         return result;
     }
 
@@ -178,7 +178,7 @@ public:
     {
         ImageId result = *this;
         result._primary = colour;
-        result._flags |= kNewFlagPrimary;
+        result._flags |= kFlagPrimary;
         return result;
     }
 
@@ -186,7 +186,7 @@ public:
     {
         ImageId result = *this;
         result._secondary = colour;
-        result._flags |= kNewFlagSecondary;
+        result._flags |= kFlagSecondary;
         return result;
     }
 
@@ -194,7 +194,7 @@ public:
     {
         ImageId result = *this;
         result._secondary = 0;
-        result._flags &= ~kNewFlagSecondary;
+        result._flags &= ~kFlagSecondary;
         return result;
     }
 
@@ -202,9 +202,9 @@ public:
     {
         ImageId result = *this;
         result._tertiary = tertiary;
-        result._flags &= ~kNewFlagPrimary;
-        result._flags |= kNewFlagSecondary;
-        if (!(_flags & kNewFlagSecondary))
+        result._flags &= ~kFlagPrimary;
+        result._flags |= kFlagSecondary;
+        if (!(_flags & kFlagSecondary))
         {
             // Tertiary implies primary and secondary, so if colour was remap (8-bit primary) then
             // we need to zero the secondary colour.
@@ -224,7 +224,7 @@ public:
         result._primary = static_cast<uint8_t>(palette);
         result._secondary = 0;
         result._tertiary = 0;
-        result._flags = kNewFlagBlend;
+        result._flags = kFlagBlend;
         return result;
     }
 
@@ -232,9 +232,9 @@ public:
     {
         ImageId result = *this;
         if (value)
-            result._flags |= kNewFlagBlend;
+            result._flags |= kFlagBlend;
         else
-            result._flags &= ~kNewFlagBlend;
+            result._flags &= ~kFlagBlend;
         return result;
     }
 
