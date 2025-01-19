@@ -161,7 +161,7 @@ namespace OpenRCT2
 
         TrackElemType::PoweredLift,
 
-
+        // Heart Line pieces
         TrackElemType::HeartLineTransferUp,
         TrackElemType::HeartLineTransferDown,
         TrackElemType::LeftHeartLineRoll,
