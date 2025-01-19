@@ -21,6 +21,7 @@ constexpr int32_t kCoordsZStep = 8;
 constexpr int32_t kCoordsZPerTinyZ = 16;
 
 constexpr auto kNumOrthogonalDirections = 4;
+constexpr auto kDirectionDiagonalMask = (1 << 2);
 
 constexpr int32_t kCoordsNull = 0xFFFF8000;
 
