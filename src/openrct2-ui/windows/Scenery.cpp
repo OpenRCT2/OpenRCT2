@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
     // clang-format off
-    static Widget WindowSceneryBaseWidgets[] = {
+    static constexpr Widget WindowSceneryBaseWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
         MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
         MakeWidget     ({  2,  62}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
@@ -122,7 +122,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
         MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
         MakeWidget     ({539,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RESTRICT_SCENERY,   STR_RESTRICT_SCENERY_TIP ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -205,7 +204,6 @@ namespace OpenRCT2::Ui::Windows
         };
 
         std::vector<SceneryTabInfo> _tabEntries;
-        std::vector<Widget> _widgets;
         int32_t _requiredWidth;
         int32_t _actualMinHeight;
         ScenerySelection _selectedScenery;
@@ -1362,15 +1360,7 @@ namespace OpenRCT2::Ui::Windows
         void PrepareWidgets()
         {
             // Add the base widgets
-            _widgets.clear();
-            for (const auto& widget : WindowSceneryBaseWidgets)
-            {
-                _widgets.push_back(widget);
-            }
-
-            // Remove WWT_LAST
-            auto lastWidget = _widgets.back();
-            _widgets.pop_back();
+            SetWidgets(WindowSceneryBaseWidgets);
 
             // Add tabs
             _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
@@ -1407,7 +1397,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                _widgets.push_back(widget);
+                widgets.push_back(widget);
 
                 tabsInThisRow++;
                 if (tabsInThisRow >= maxTabsInThisRow)
@@ -1420,35 +1410,31 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            _widgets.push_back(lastWidget);
-
             // Shift base widgets based on number of tab rows
             int32_t shiftAmount = (GetTabRowCount() - 1) * TabHeight;
             if (shiftAmount > 0)
             {
-                _widgets[WIDX_SCENERY_LIST].top += shiftAmount;
-                _widgets[WIDX_SCENERY_LIST].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_FILTER_TEXT_BOX].top += shiftAmount;
-                _widgets[WIDX_FILTER_TEXT_BOX].bottom += shiftAmount;
-                _widgets[WIDX_FILTER_CLEAR_BUTTON].top += shiftAmount;
-                _widgets[WIDX_FILTER_CLEAR_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_LIST].top += shiftAmount;
+                widgets[WIDX_SCENERY_LIST].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_FILTER_TEXT_BOX].top += shiftAmount;
+                widgets[WIDX_FILTER_TEXT_BOX].bottom += shiftAmount;
+                widgets[WIDX_FILTER_CLEAR_BUTTON].top += shiftAmount;
+                widgets[WIDX_FILTER_CLEAR_BUTTON].bottom += shiftAmount;
             }
-
-            widgets = _widgets.data();
         }
 
         ScenerySelection GetSceneryIdByCursorPos(const ScreenCoordsXY& screenCoords) const

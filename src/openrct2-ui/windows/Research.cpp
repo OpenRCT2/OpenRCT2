@@ -67,7 +67,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Widgets
 
     // clang-format off
-    static Widget window_research_development_widgets[] = {
+    static constexpr Widget window_research_development_widgets[] = {
         WINDOW_SHIM(STR_RESEARCH_AND_DEVELOPMENT, WW_DEVELOPMENT, WH_DEVELOPMENT),
         MakeWidget({  0,  43}, {     WW_DEVELOPMENT, 153}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
         MakeTab   ({  3,  17},                                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
@@ -75,10 +75,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({  3,  47}, {WW_DEVELOPMENT - 10,  70}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
         MakeWidget({  3, 124}, {WW_DEVELOPMENT - 10,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_LAST_DEVELOPMENT                                          ),
         MakeWidget({265, 161}, {                 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary , 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
-        kWidgetsEnd,
     };
 
-    static Widget window_research_funding_widgets[] = {
+    static constexpr Widget window_research_funding_widgets[] = {
         WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_FUNDING, WH_FUNDING),
         MakeWidget({  0,  43}, {     WW_FUNDING, 164}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                                    ),
         MakeTab   ({  3,  17},                                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
@@ -94,10 +93,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({  8, 160}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
         MakeWidget({  8, 173}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
         MakeWidget({  8, 186}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
-        kWidgetsEnd,
     };
 
-    static Widget *window_research_page_widgets[] = {
+    static constexpr std::span<const Widget> window_research_page_widgets[] = {
         window_research_development_widgets,
         window_research_funding_widgets,
     };
@@ -122,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
+            SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
             width = WW_DEVELOPMENT;
             height = WH_DEVELOPMENT;
             ResearchUpdateUncompletedTypes();
@@ -135,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
             RemoveViewport();
 
             hold_down_widgets = 0;
-            widgets = window_research_page_widgets[newPageIndex];
+            SetWidgets(window_research_page_widgets[newPageIndex]);
             disabled_widgets = 0;
             pressed_widgets = 0;
 
@@ -230,14 +228,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            auto* targetWidgets = window_research_page_widgets[page];
-
-            if (widgets != targetWidgets)
-            {
-                widgets = targetWidgets;
-                InitScrollWidgets();
-            }
-
             for (auto i = 0; i < WINDOW_RESEARCH_PAGE_COUNT; i++)
             {
                 SetWidgetPressed(WIDX_TAB_1 + i, false);

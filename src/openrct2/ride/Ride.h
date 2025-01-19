@@ -28,6 +28,7 @@
 #include <array>
 #include <limits>
 #include <memory>
+#include <span>
 #include <string_view>
 
 struct IObjectManager;
@@ -293,8 +294,8 @@ private:
 public:
     RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0));
     const RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0)) const;
-    std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& GetStations();
-    const std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& GetStations() const;
+    std::span<RideStation> GetStations();
+    std::span<const RideStation> GetStations() const;
     StationIndex GetStationIndex(const RideStation* station) const;
 
     // Returns the logical station number from the given station. Index 0 = station 1, index 1 = station 2. It accounts for gaps

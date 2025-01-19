@@ -93,7 +93,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 65, 17 }, STR_STAFF_STATS_TIP)                                                /* Tab 3 */
 
     // clang-format off
-    static Widget _staffOverviewWidgets[] = {
+    static constexpr Widget _staffOverviewWidgets[] = {
         MAIN_STAFF_WIDGETS,
         MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
         MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
@@ -102,11 +102,10 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
         MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
         MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    ), // Fire Button
-        kWidgetsEnd,
     };
 
     //0x9AF910
-    static Widget _staffOptionsWidgets[] = {
+    static constexpr Widget _staffOptionsWidgets[] = {
         MAIN_STAFF_WIDGETS,
         MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
         MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
@@ -114,17 +113,15 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget     ({      5, 101}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 4
         MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                            ), // Costume Dropdown
         MakeWidget     ({WW - 17,  51}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
-        kWidgetsEnd,
     };
     // clang-format on
 
     // 0x9AF9F4
-    static Widget _staffStatsWidgets[] = {
+    static constexpr Widget _staffStatsWidgets[] = {
         MAIN_STAFF_WIDGETS,
-        kWidgetsEnd,
     };
 
-    static Widget* window_staff_page_widgets[] = {
+    static constexpr std::span<const Widget> window_staff_page_widgets[] = {
         _staffOverviewWidgets,
         _staffOptionsWidgets,
         _staffStatsWidgets,
@@ -341,11 +338,6 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::Staff));
 
-            if (window_staff_page_widgets[page] != widgets)
-            {
-                widgets = window_staff_page_widgets[page];
-                InitScrollWidgets();
-            }
             SetPressedTab();
             DisableWidgets();
 
@@ -1086,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            for (WidgetIndex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != kWidgetsEnd.type; widgetIndex++)
+            for (WidgetIndex widgetIndex = WIDX_TAB_1; widgetIndex < widgets.size(); widgetIndex++)
             {
                 SetWidgetDisabled(widgetIndex, false);
             }
@@ -1132,7 +1124,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             pressed_widgets = 0;
             hold_down_widgets = 0;
-            widgets = window_staff_page_widgets[page];
+            SetWidgets(window_staff_page_widgets[page]);
 
             RemoveViewport();
 

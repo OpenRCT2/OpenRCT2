@@ -234,7 +234,7 @@ GameActions::Result TrackRemoveAction::Query() const
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        int8_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
+        int16_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
         if (_support_height < 0)
         {
             _support_height = 10;
@@ -410,7 +410,7 @@ GameActions::Result TrackRemoveAction::Execute() const
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        int8_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
+        int16_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
         if (_support_height < 0)
         {
             _support_height = 10;

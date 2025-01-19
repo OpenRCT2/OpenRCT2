@@ -13,7 +13,11 @@
 
 #include <memory>
 
-class Intent;
+namespace OpenRCT2
+{
+    class Intent;
+}
+
 struct ParkLoadResult;
 
 enum class GameCommand : int32_t
@@ -165,7 +169,7 @@ void PauseToggle();
 bool GameIsPaused();
 bool GameIsNotPaused();
 void SaveGame();
-std::unique_ptr<Intent> CreateSaveGameAsIntent();
+std::unique_ptr<OpenRCT2::Intent> CreateSaveGameAsIntent();
 void SaveGameAs();
 void SaveGameCmd(u8string_view name = {});
 void SaveGameWithName(u8string_view name);

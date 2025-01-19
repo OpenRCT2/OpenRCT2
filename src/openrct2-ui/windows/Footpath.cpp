@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_footpath_widgets[] = {
+    static constexpr Widget window_footpath_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW_WINDOW, WH_WINDOW),
 
         // Type group
@@ -152,7 +152,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 3, 361}, {100, 54}, WindowWidgetType::Groupbox, WindowColour::Primary                                                                                      ),
         MakeWidget({13, 372}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_LAND),    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
         MakeWidget({57, 372}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_BRIDGE),  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    ),
-        kWidgetsEnd,
     };
 
 #pragma endregion
@@ -215,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_footpath_widgets;
+            SetWidgets(window_footpath_widgets);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersRight(*this);
@@ -275,13 +274,13 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_FOOTPATH_TYPE:
-                    WindowFootpathShowFootpathTypesDialog(&window_footpath_widgets[widgetIndex], false);
+                    WindowFootpathShowFootpathTypesDialog(&widgets[widgetIndex], false);
                     break;
                 case WIDX_QUEUELINE_TYPE:
-                    WindowFootpathShowFootpathTypesDialog(&window_footpath_widgets[widgetIndex], true);
+                    WindowFootpathShowFootpathTypesDialog(&widgets[widgetIndex], true);
                     break;
                 case WIDX_RAILINGS_TYPE:
-                    WindowFootpathShowRailingsTypesDialog(&window_footpath_widgets[widgetIndex]);
+                    WindowFootpathShowRailingsTypesDialog(&widgets[widgetIndex]);
                     break;
                 case WIDX_DIRECTION_NW:
                     WindowFootpathMousedownDirection(0);
@@ -452,17 +451,17 @@ namespace OpenRCT2::Ui::Windows
                                                                   : (1uLL << WIDX_FOOTPATH_TYPE);
 
             // Enable / disable construct button
-            window_footpath_widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
+            widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
                 ? WindowWidgetType::ImgBtn
                 : WindowWidgetType::Empty;
 
             if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
             {
-                window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
             }
             else
             {
-                window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
+                widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
             }
         }
 
@@ -517,22 +516,19 @@ namespace OpenRCT2::Ui::Windows
 
                     // Draw construction image
                     screenCoords = this->windowPos
-                        + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                          window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60 };
+                        + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 60 };
                     GfxDrawSprite(dpi, ImageId(image), screenCoords);
                 }
 
                 // Draw build this... label
                 screenCoords = this->windowPos
-                    + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                      window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23 };
+                    + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 23 };
                 DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
             }
 
             // Draw cost
             screenCoords = this->windowPos
-                + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                  window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
+                + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 12 };
             if (_windowFootpathCost != kMoney64Undefined)
             {
                 if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))

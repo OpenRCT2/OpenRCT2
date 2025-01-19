@@ -5,27 +5,36 @@
 #include "Cursors.h"
 #include "Viewport.h"
 
-void WindowBase::SetLocation(const CoordsXYZ& coords)
+namespace OpenRCT2
 {
-    WindowScrollToLocation(*this, coords);
-    flags &= ~WF_SCROLLING_TO_LOCATION;
-}
+    void WindowBase::SetLocation(const CoordsXYZ& coords)
+    {
+        WindowScrollToLocation(*this, coords);
+        flags &= ~WF_SCROLLING_TO_LOCATION;
+    }
 
-void WindowBase::Invalidate()
-{
-    GfxSetDirtyBlocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
-}
+    void WindowBase::Invalidate()
+    {
+        GfxSetDirtyBlocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
+    }
 
-void WindowBase::RemoveViewport()
-{
-    if (viewport == nullptr)
-        return;
+    void WindowBase::RemoveViewport()
+    {
+        if (viewport == nullptr)
+            return;
 
-    ViewportRemove(viewport);
-    viewport = nullptr;
-}
+        ViewportRemove(viewport);
+        viewport = nullptr;
+    }
 
-CursorID WindowBase::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
-{
-    return CursorID::Arrow;
-}
+    void WindowBase::SetWidgets(const std::span<const Widget> newWidgets)
+    {
+        widgets.clear();
+        widgets.insert(widgets.end(), newWidgets.begin(), newWidgets.end());
+    }
+
+    CursorID WindowBase::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
+    {
+        return CursorID::Arrow;
+    }
+} // namespace OpenRCT2

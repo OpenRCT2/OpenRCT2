@@ -78,7 +78,7 @@ namespace OpenRCT2::Ui::Windows
     const uint16_t kWindowHeaderWidth = 152;
 
     // clang-format off
-    static Widget _themesWidgets[] = {
+    static constexpr Widget _themesWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  0, 43}, {320,  64},               WindowWidgetType::Resize,       WindowColour::Secondary                                                                                ), // tab content panel
         MakeTab   ({  3, 17},                                                                                    STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
@@ -104,7 +104,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, 69}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
         MakeWidget({ 10, 84}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
         MakeWidget({ 10, 99}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         ), // rct1 bottom toolbar
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -265,7 +264,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = _themesWidgets;
+            SetWidgets(_themesWidgets);
 
             WindowThemesInitVars();
 

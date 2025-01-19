@@ -22,9 +22,8 @@
 namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
-    static Widget window_map_tooltip_widgets[] = {
+    static constexpr Widget window_map_tooltip_widgets[] = {
         MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -40,7 +39,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_map_tooltip_widgets;
+            SetWidgets(window_map_tooltip_widgets);
         }
 
         void OnUpdate() override

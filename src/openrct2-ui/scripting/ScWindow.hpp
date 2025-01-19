@@ -218,11 +218,9 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetIndex widgetIndex = 0;
-                for (auto widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
+                for (WidgetIndex widgetIndex = 0; widgetIndex < w->widgets.size(); widgetIndex++)
                 {
                     result.push_back(ScWidget::ToDukValue(ctx, w, widgetIndex));
-                    widgetIndex++;
                 }
             }
             return result;

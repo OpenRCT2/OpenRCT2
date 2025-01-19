@@ -51,7 +51,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 155;
 
     // clang-format off
-    static Widget _viewClippingWidgets[] = {
+    static constexpr Widget _viewClippingWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
         MakeWidget        ({      5,  36}, {WW - 10,  48}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
@@ -60,8 +60,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({      5,  90}, {WW - 10,  60}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                       ),
         MakeWidget        ({     11, 105}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
         MakeWidget        ({     11, 126}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
-
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -346,7 +344,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            this->widgets = _viewClippingWidgets;
+            SetWidgets(_viewClippingWidgets);
             this->hold_down_widgets = (1uLL << WIDX_CLIP_HEIGHT_INCREASE) | (1uL << WIDX_CLIP_HEIGHT_DECREASE);
             WindowInitScrollWidgets(*this);
 

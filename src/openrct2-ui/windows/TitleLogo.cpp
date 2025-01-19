@@ -23,9 +23,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LOGO
     };
 
-    static Widget _titleLogoWidgets[] = {
+    static constexpr Widget _titleLogoWidgets[] = {
         MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
 
     class TitleLogoWindow final : public Window
@@ -37,7 +36,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnOpen() override
         {
-            widgets = _titleLogoWidgets;
+            SetWidgets(_titleLogoWidgets);
             WindowInitScrollWidgets(*this);
             colours[0] = ColourWithFlags{ COLOUR_GREY }.withFlag(ColourFlag::translucent, true);
             colours[1] = ColourWithFlags{ COLOUR_GREY }.withFlag(ColourFlag::translucent, true);

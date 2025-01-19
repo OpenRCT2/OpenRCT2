@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui
         }
         WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) override
         {
-            return -1;
+            return kWidgetIndexNull;
         }
     };
 

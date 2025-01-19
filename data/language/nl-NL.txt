@@ -2607,7 +2607,7 @@ STR_5368    :Crashstatus weg
 STR_5371    :Objectselectie
 STR_5372    :Sleeprichting van rechtermuisknop omkeren
 STR_5373    :Naam {STRINGID}
-STR_5374    :Datum {STRINGID}
+STR_5374    :Gewijzigd {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Naam bestaat al
@@ -3773,3 +3773,8 @@ STR_6709    :Voer een afrondsterkte in tussen {COMMA16} en {COMMA16}
 STR_6710    :Stabiel sorteren
 STR_6711    :Bestandsnaam:
 STR_6712    :Opslaan
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Naam
+STR_6715    :Gewijzigd
+STR_6716    :Grootte
+STR_6717    :Grootte {STRINGID}

@@ -43,7 +43,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     // clang-format off
-    static Widget _viewportWidgets[] =
+    static constexpr Widget _viewportWidgets[] =
     {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
@@ -52,7 +52,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
         MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
         MakeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP), // rotate
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -76,7 +75,7 @@ namespace OpenRCT2::Ui::Windows
         {
             GetFreeViewportNumber();
 
-            widgets = _viewportWidgets;
+            SetWidgets(_viewportWidgets);
 
             // Create viewport
             ViewportCreate(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));

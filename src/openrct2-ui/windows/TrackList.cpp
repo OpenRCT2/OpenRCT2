@@ -55,7 +55,7 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
     // clang-format off
-    static Widget _trackListWidgets[] = {
+    static constexpr Widget _trackListWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader,  WindowColour::Primary, STR_SELECT_OTHER_RIDE                                       ),
         MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                            ),
@@ -64,7 +64,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                              ),
         MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
         MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -218,8 +217,8 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             String::set(_filterString, sizeof(_filterString), "");
-            _trackListWidgets[WIDX_FILTER_STRING].string = _filterString;
-            widgets = _trackListWidgets;
+            SetWidgets(_trackListWidgets);
+            widgets[WIDX_FILTER_STRING].string = _filterString;
 
             LoadDesignsList(_window_track_list_item);
 

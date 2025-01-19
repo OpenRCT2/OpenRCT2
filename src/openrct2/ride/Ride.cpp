@@ -1046,12 +1046,12 @@ const RideStation& Ride::GetStation(StationIndex stationIndex) const
     return stations[stationIndex.ToUnderlying()];
 }
 
-std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& Ride::GetStations()
+std::span<RideStation> Ride::GetStations()
 {
     return stations;
 }
 
-const std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& Ride::GetStations() const
+std::span<const RideStation> Ride::GetStations() const
 {
     return stations;
 }
@@ -3561,7 +3561,6 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
                 }
                 [[fallthrough]];
             case TrackElemType::EndStation:
-            case TrackElemType::CableLiftHill:
             case TrackElemType::BlockBrakes:
                 *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
                 return;
@@ -3681,12 +3680,8 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
         cableLiftTileElement = MapGetTrackElementAt(CableLiftLoc);
         if (cableLiftTileElement != nullptr)
         {
-            cableLiftTileElement = MapGetTrackElementAt(CableLiftLoc);
-            if (cableLiftTileElement != nullptr)
-            {
-                CoordsXYZ location = CableLiftLoc;
-                cableLiftPreviousBlock = TrackGetPreviousBlock(location, reinterpret_cast<TileElement*>(cableLiftTileElement));
-            }
+            CoordsXYZ location = CableLiftLoc;
+            cableLiftPreviousBlock = TrackGetPreviousBlock(location, reinterpret_cast<TileElement*>(cableLiftTileElement));
         }
     }
 
@@ -3762,6 +3757,24 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
     }
 }
 
+static bool RideGetStationTile(const Ride& ride, CoordsXYE* output)
+{
+    for (const auto& station : ride.GetStations())
+    {
+        CoordsXYZ trackStart = station.GetStart();
+        if (trackStart.IsNull())
+            continue;
+
+        TileElement* tileElement = MapGetTrackElementAtOfType(trackStart, TrackElemType::EndStation);
+        if (tileElement == nullptr)
+            continue;
+
+        *output = { trackStart.x, trackStart.y, tileElement };
+        return true;
+    }
+    return false;
+}
+
 /**
  * Checks and initialises the cable lift track returns false if unable to find
  * appropriate track.
@@ -3769,100 +3782,65 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
  */
 static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isApplying)
 {
-    CoordsXYZ location;
-    location.SetNull();
-    for (const auto& station : ride.GetStations())
-    {
-        location = station.GetStart();
-        if (!location.IsNull())
-            break;
-    }
+    // Despawn existing cable lift tiles
+    CoordsXYE stationTile;
+    if (!RideGetStationTile(ride, &stationTile))
+        return { false, STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION_OR_BLOCK_BRAKE };
 
-    if (location.IsNull())
+    if (isApplying)
     {
-        return { false, STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION };
-    }
+        // In case circuit is incomplete, find the start of the track in order to ensure all tiles connected
+        // to the station are cleared
+        RideGetStartOfTrack(&stationTile);
 
-    bool success = false;
-    TileElement* tileElement = MapGetFirstElementAt(location);
-    if (tileElement == nullptr)
-        return { false };
-    do
-    {
-        if (tileElement->GetType() != TileElementType::Track)
-            continue;
-        if (tileElement->GetBaseZ() != location.z)
-            continue;
-
-        const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-        if (!(ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN))
+        TrackCircuitIterator it;
+        TrackCircuitIteratorBegin(&it, stationTile);
+        while (TrackCircuitIteratorNext(&it))
         {
-            continue;
+            TileElement* tileElement = it.current.element;
+            GetTrackElementOriginAndApplyChanges(
+                { { it.current, tileElement->GetBaseZ() }, tileElement->GetDirection() },
+                tileElement->AsTrack()->GetTrackType(), 0, &tileElement, TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE);
         }
-        success = true;
-        break;
-    } while (!(tileElement++)->IsLastForTile());
+    }
 
-    if (!success)
+    // Spawn new cable lift tiles
+    auto cableLiftTileElement = MapGetTrackElementAt(ride.CableLiftLoc);
+    CoordsXYE cableLiftCoords = { ride.CableLiftLoc, reinterpret_cast<TileElement*>(cableLiftTileElement) };
+    if (cableLiftTileElement == nullptr)
         return { false };
-
-    enum
-    {
-        STATE_FIND_CABLE_LIFT,
-        STATE_FIND_STATION,
-        STATE_REST_OF_TRACK
-    };
-    int32_t state = STATE_FIND_CABLE_LIFT;
 
     TrackCircuitIterator it;
-    TrackCircuitIteratorBegin(&it, { location, tileElement });
+    TrackCircuitIteratorBegin(&it, cableLiftCoords);
     while (TrackCircuitIteratorPrevious(&it))
     {
-        tileElement = it.current.element;
+        TileElement* tileElement = it.current.element;
         auto trackType = tileElement->AsTrack()->GetTrackType();
-
-        uint16_t flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE;
-        switch (state)
+        switch (trackType)
         {
-            case STATE_FIND_CABLE_LIFT:
-                // Search for a cable lift hill track element
-                if (trackType == TrackElemType::CableLiftHill)
+            case TrackElemType::Up25:
+            case TrackElemType::Up60:
+            case TrackElemType::FlatToUp25:
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up25ToUp60:
+            case TrackElemType::Up60ToUp25:
+            case TrackElemType::FlatToUp60LongBase:
+            case TrackElemType::Flat:
+                if (isApplying)
                 {
-                    flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE;
-                    state = STATE_FIND_STATION;
+                    GetTrackElementOriginAndApplyChanges(
+                        { { it.current, tileElement->GetBaseZ() }, tileElement->GetDirection() }, trackType, 0, &tileElement,
+                        TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE);
                 }
                 break;
-            case STATE_FIND_STATION:
-                // Search for the start of the hill
-                switch (trackType)
-                {
-                    case TrackElemType::Flat:
-                    case TrackElemType::Up25:
-                    case TrackElemType::Up60:
-                    case TrackElemType::FlatToUp25:
-                    case TrackElemType::Up25ToFlat:
-                    case TrackElemType::Up25ToUp60:
-                    case TrackElemType::Up60ToUp25:
-                    case TrackElemType::FlatToUp60LongBase:
-                        flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE;
-                        break;
-                    case TrackElemType::EndStation:
-                        state = STATE_REST_OF_TRACK;
-                        break;
-                    default:
-                        return { false, STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION };
-                }
-                break;
-        }
-        if (isApplying)
-        {
-            auto tmpLoc = CoordsXYZ{ it.current, tileElement->GetBaseZ() };
-            auto direction = tileElement->GetDirection();
-            trackType = tileElement->AsTrack()->GetTrackType();
-            GetTrackElementOriginAndApplyChanges({ tmpLoc, direction }, trackType, 0, &tileElement, flags);
+            case TrackElemType::EndStation:
+            case TrackElemType::BlockBrakes:
+                return { true };
+            default:
+                return { false, STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION_OR_BLOCK_BRAKE };
         }
     }
-    return { true };
+    return { false, STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION_OR_BLOCK_BRAKE };
 }
 
 /**
@@ -4791,7 +4769,7 @@ struct NecessarySpriteGroup
 OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry)
 {
     // TODO: Use a std::span when C++20 available as 6 is due to jagged array
-    static const std::array<NecessarySpriteGroup, 6> trackPieceRequiredSprites[] = {
+    static const std::array<NecessarySpriteGroup, 9> trackPieceRequiredSprites[] = {
         { SpriteGroupType::SlopeFlat, SpritePrecision::None },     // TrackGroup::flat
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::straight
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::stationEnd
@@ -4946,7 +4924,17 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBlockBrakes
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4 },  // TrackGroup::inclinedBrakes
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBooster
+        { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16, SpritePrecision::Sprites4,
+          SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::slopeSteepLong
+        { SpriteGroupType::Slopes50, SpritePrecision::Sprites4, SpriteGroupType::Slopes60Banked22, SpritePrecision::Sprites8,
+          SpriteGroupType::Slopes50Banked45, SpritePrecision::Sprites8, SpriteGroupType::Slopes50Banked67,
+          SpritePrecision::Sprites8, SpriteGroupType::Slopes50Banked90, SpritePrecision::Sprites8, SpriteGroupType::Corkscrews,
+          SpritePrecision::Sprites4, SpriteGroupType::Slopes25InlineTwists, SpritePrecision::Sprites4,
+          SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::Sprites4 }, // TrackGroup::diveLoop
     };
+
     static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));
 
     // Only check default vehicle; it's assumed the others will have correct sprites if this one does (I've yet to find an

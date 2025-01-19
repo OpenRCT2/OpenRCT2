@@ -279,7 +279,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
     // clang-format off
-    static Widget window_object_load_error_widgets[] = {
+    static constexpr Widget window_object_load_error_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                         ), // 'Object name' header
         MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
@@ -290,7 +290,6 @@ namespace OpenRCT2::Ui::Windows
     #ifndef DISABLE_HTTP
         MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_DOWNLOAD_ALL,  STR_DOWNLOAD_ALL_TIP ), // Download all button
     #endif
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -397,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_object_load_error_widgets;
+            SetWidgets(window_object_load_error_widgets);
 
             WindowInitScrollWidgets(*this);
             colours[0] = COLOUR_LIGHT_BLUE;
