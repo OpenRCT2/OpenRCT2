@@ -743,7 +743,7 @@ bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeg
     z += trackCoordinate.zBegin;
 
     rotation = ((trackCoordinate.rotationBegin + rotation) & kTileElementDirectionMask)
-        | (trackCoordinate.rotationBegin & kNumOrthogonalDirections);
+        | (TrackPieceDirectionIsDiagonal(trackCoordinate.rotationBegin) * kDirectionDiagonalMask);
 
     return TrackBlockGetPreviousFromZero({ coords, z }, *ride, rotation, outTrackBeginEnd);
 }
