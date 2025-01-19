@@ -12,6 +12,7 @@
 #include <openrct2/Identifiers.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/world/ScenerySelection.h>
+#include <optional>
 #include <string_view>
 
 class Formatter;
