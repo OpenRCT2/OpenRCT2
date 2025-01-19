@@ -3082,6 +3082,11 @@ namespace OpenRCT2::Ui::Windows
 
         window->UpdateMapSelection();
 
+        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+        {
+            VirtualFloorInvalidate();
+        }
+
         _selectedTrackType = TrackElemType::None;
         if (_rideConstructionState == RideConstructionState::Selected)
         {
