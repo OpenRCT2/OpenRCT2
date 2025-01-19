@@ -26,6 +26,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
@@ -1254,6 +1255,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* EditorScenarioOptionsOpen()
     {
-        return WindowFocusOrCreate<EditorScenarioOptionsWindow>(WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<EditorScenarioOptionsWindow>(
+            WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
     }
 } // namespace OpenRCT2::Ui::Windows

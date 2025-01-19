@@ -591,7 +591,7 @@ void PeepDecrementNumRiders(Peep* peep)
  */
 void PeepWindowStateUpdate(Peep* peep)
 {
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
         w->OnPrepareDraw();

@@ -26,6 +26,7 @@
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/RideRatings.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -977,10 +978,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* RideListOpen()
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::RideList);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::RideList);
         if (window == nullptr)
         {
-            window = WindowCreate<RideListWindow>(WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<RideListWindow>(
+                WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

@@ -25,6 +25,7 @@
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
@@ -1345,10 +1346,11 @@ static StringId window_cheats_page_titles[] = {
 
     WindowBase* CheatsOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::Cheats);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::Cheats);
         if (window == nullptr)
         {
-            window = WindowCreate<CheatsWindow>(WindowClass::Cheats, ScreenCoordsXY(32, 32), WW, WH);
+            window = windowMgr->Create<CheatsWindow>(WindowClass::Cheats, ScreenCoordsXY(32, 32), WW, WH);
         }
         return window;
     }

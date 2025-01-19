@@ -1730,7 +1730,7 @@ namespace OpenRCT2
      */
     InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         return GetMapCoordinatesFromPosWindow(window, screenCoords, flags);
     }
@@ -1783,7 +1783,7 @@ namespace OpenRCT2
         // if unknown viewport visibility, use the containing window to discover the status
         if (viewport->visibility == VisibilityCache::Unknown)
         {
-            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+            auto windowManager = Ui::GetWindowManager();
             auto owner = windowManager->GetOwner(viewport);
             if (owner != nullptr && owner->classification != WindowClass::MainWindow)
             {
@@ -1819,7 +1819,7 @@ namespace OpenRCT2
 
     static Viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         WindowBase* w = windowMgr->FindFromPoint(screenCoords);
         if (w == nullptr)
             return nullptr;
@@ -1848,7 +1848,7 @@ namespace OpenRCT2
      */
     std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
 
         // This will get the tile location but we will need the more accuracy
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);

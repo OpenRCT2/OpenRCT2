@@ -21,6 +21,7 @@
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/BannerElement.h>
@@ -312,12 +313,13 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* BannerOpen(rct_windownumber number)
     {
-        auto w = static_cast<BannerWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
+        auto* windowMgr = GetWindowManager();
+        auto w = static_cast<BannerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
 
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<BannerWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<BannerWindow>(WindowClass::Banner, WW, WH, 0);
 
         if (w != nullptr)
             w->Initialise(number);

@@ -1558,7 +1558,7 @@ namespace OpenRCT2
 
 void ContextInit()
 {
-    GetContext()->GetUiContext()->GetWindowManager()->Init();
+    GetWindowManager()->Init();
 }
 
 bool ContextLoadParkFromStream(void* stream)
@@ -1676,55 +1676,55 @@ void ContextSetCursorTrap(bool value)
 
 WindowBase* ContextOpenWindow(WindowClass wc)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->OpenWindow(wc);
 }
 
 WindowBase* ContextOpenWindowView(uint8_t wc)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->OpenView(wc);
 }
 
 WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->OpenDetails(type, id);
 }
 
 WindowBase* ContextOpenIntent(Intent* intent)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->OpenIntent(intent);
 }
 
 void ContextBroadcastIntent(Intent* intent)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     windowManager->BroadcastIntent(*intent);
 }
 
 void ContextForceCloseWindowByClass(WindowClass windowClass)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     windowManager->ForceClose(windowClass);
 }
 
 WindowBase* ContextShowError(StringId title, StringId message, const Formatter& args, const bool autoClose /* = false */)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->ShowError(title, message, args, autoClose);
 }
 
 void ContextHandleInput()
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     windowManager->HandleInput();
 }
 
 void ContextInputHandleKeyboard(bool isTitle)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     windowManager->HandleKeyboard(isTitle);
 }
 

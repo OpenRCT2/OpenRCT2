@@ -25,7 +25,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
@@ -437,13 +436,14 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* MazeConstructionOpen()
     {
-        return WindowFocusOrCreate<MazeConstructionWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<MazeConstructionWindow>(
             WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
     }
 
     void WindowMazeConstructionUpdatePressedWidgets()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr)
             return;

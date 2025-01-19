@@ -12,14 +12,12 @@
  * the window has been changed to a tab interface similar to the options window seen in Locomotion.
  */
 
-#include "../interface/Theme.h"
-
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
@@ -45,6 +43,7 @@
 #include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -2216,6 +2215,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* OptionsOpen()
     {
-        return WindowFocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

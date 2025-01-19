@@ -18,6 +18,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 
 namespace OpenRCT2::Ui::Windows
@@ -400,10 +401,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ViewClippingOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::ViewClipping);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::ViewClipping);
         if (window == nullptr)
         {
-            window = WindowCreate<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), WW, WH);
+            window = windowMgr->Create<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), WW, WH);
         }
         return window;
     }

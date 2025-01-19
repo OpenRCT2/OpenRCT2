@@ -19,6 +19,7 @@
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/Slope.h>
@@ -391,14 +392,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* EditorParkEntranceOpen()
     {
-        WindowBase* window;
-
         // Check if window is already open
-        window = WindowBringToFrontByClass(WindowClass::EditorParkEntrance);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::EditorParkEntrance);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<EditorParkEntrance>(
+        window = windowMgr->Create<EditorParkEntrance>(
             WindowClass::EditorParkEntrance, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
 
         return window;

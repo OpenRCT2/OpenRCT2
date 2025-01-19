@@ -22,6 +22,7 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -323,6 +324,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* NewsOpen()
     {
-        return WindowFocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
     }
 } // namespace OpenRCT2::Ui::Windows

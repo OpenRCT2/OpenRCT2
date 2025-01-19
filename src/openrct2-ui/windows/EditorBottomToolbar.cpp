@@ -22,6 +22,7 @@
 #include <openrct2/management/Research.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -381,7 +382,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorBottomToolbarOpen()
     {
-        auto* window = WindowCreate<EditorBottomToolbarWindow>(
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->Create<EditorBottomToolbarWindow>(
             WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), ContextGetWidth(), 32,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 

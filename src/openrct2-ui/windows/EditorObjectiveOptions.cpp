@@ -27,6 +27,7 @@
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -1169,11 +1170,12 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorObjectiveOptionsOpen()
     {
-        auto window = WindowBringToFrontByClass(WindowClass::EditorObjectiveOptions);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::EditorObjectiveOptions);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<EditorObjectiveOptionsWindow>(
+        window = windowMgr->Create<EditorObjectiveOptionsWindow>(
             WindowClass::EditorObjectiveOptions, 450, 225, WF_10 | WF_CENTRE_SCREEN);
 
         return window;

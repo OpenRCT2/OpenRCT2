@@ -11,7 +11,6 @@
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
@@ -23,6 +22,7 @@
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -879,7 +879,8 @@ namespace OpenRCT2::Ui::Windows
 
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
-        auto* window = WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+        auto* windowMgr = Ui::GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
             window->SetPage(page);
@@ -889,7 +890,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* FinancesOpen()
     {
-        return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+        auto* windowMgr = Ui::GetWindowManager();
+        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
     }
 
     WindowBase* FinancesResearchOpen()

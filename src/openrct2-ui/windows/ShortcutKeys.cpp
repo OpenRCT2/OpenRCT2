@@ -17,7 +17,6 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -81,8 +80,9 @@ namespace OpenRCT2::Ui::Windows
             auto registeredShortcut = shortcutManager.GetShortcut(shortcutId);
             if (registeredShortcut != nullptr)
             {
+                auto* windowMgr = GetWindowManager();
                 WindowCloseByClass(WindowClass::ChangeKeyboardShortcut);
-                auto w = WindowCreate<ChangeShortcutWindow>(
+                auto* w = windowMgr->Create<ChangeShortcutWindow>(
                     WindowClass::ChangeKeyboardShortcut, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
                 if (w != nullptr)
                 {
@@ -544,7 +544,7 @@ namespace OpenRCT2::Ui::Windows
 
     void ChangeShortcutWindow::NotifyShortcutKeysWindow()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
         if (w != nullptr)
         {
@@ -554,10 +554,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ShortcutKeysOpen()
     {
-        auto w = WindowBringToFrontByClass(WindowClass::KeyboardShortcutList);
+        auto* windowMgr = GetWindowManager();
+        auto w = windowMgr->BringToFrontByClass(WindowClass::KeyboardShortcutList);
         if (w == nullptr)
         {
-            w = WindowCreate<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, WW, WH, WF_RESIZABLE);
+            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, WW, WH, WF_RESIZABLE);
         }
         return w;
     }
@@ -600,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RESET_PROMPT_RESET:
                 {
-                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
                     if (w != nullptr)
                     {
@@ -619,7 +620,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ResetShortcutKeysPromptOpen()
     {
-        return WindowFocusOrCreate<ResetShortcutKeysPrompt>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<ResetShortcutKeysPrompt>(
             WindowClass::ResetShortcutKeysPrompt, RESET_PROMPT_WW, RESET_PROMPT_WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
     }
 #pragma endregion

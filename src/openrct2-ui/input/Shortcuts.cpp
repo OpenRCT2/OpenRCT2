@@ -89,7 +89,7 @@ static void ShortcutRotateConstructionObject()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
 
     // Rotate scenery
     WindowBase* w = windowMgr->FindByClass(WindowClass::Scenery);
@@ -152,7 +152,7 @@ static void ShortcutRotateConstructionObject()
 
 static void ShortcutRemoveTopBottomToolbarToggle()
 {
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
 
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
@@ -372,7 +372,7 @@ static void ShortcutOpenCheatWindow()
         return;
 
     // Check if window is already open
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* window = windowMgr->FindByClass(WindowClass::Cheats);
     if (window != nullptr)
     {
@@ -441,7 +441,7 @@ static void ShortcutOpenSceneryPicker()
         || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor))
         return;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* window_scenery = windowMgr->FindByClass(WindowClass::Scenery);
     if (window_scenery == nullptr)
         ToggleSceneryWindow();
@@ -477,7 +477,7 @@ static void ShortcutScaleDown()
 // Tile inspector shortcuts
 static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 {
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::TileInspector);
     if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
@@ -487,7 +487,7 @@ static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 
 static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 {
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::TileInspector);
     if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
@@ -497,7 +497,7 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 
 static void ShortcutToggleWallSlope()
 {
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* window = windowMgr->FindByClass(WindowClass::TileInspector);
     if (window == nullptr)
     {
@@ -529,7 +529,7 @@ static void ShortcutToggleWallSlope()
 
 static void ShortcutIncreaseElementHeight()
 {
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::TileInspector);
     if (w != nullptr)
     {
@@ -569,7 +569,7 @@ static void ShortcutIncreaseElementHeight()
 
 static void ShortcutDecreaseElementHeight()
 {
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::TileInspector);
     if (w != nullptr)
     {
@@ -633,7 +633,7 @@ static void ShortcutConstructionTurnLeft()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
@@ -650,7 +650,7 @@ static void ShortcutConstructionTurnRight()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
@@ -667,7 +667,7 @@ static void ShortcutConstructionSlopeUp()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
@@ -684,7 +684,7 @@ static void ShortcutConstructionBuildCurrent()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
@@ -701,7 +701,7 @@ static void ShortcutConstructionSlopeDown()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
@@ -718,7 +718,7 @@ static void ShortcutConstructionDemolishCurrent()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
@@ -763,7 +763,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kInterfaceCancelConstruction, STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE, "ESCAPE", []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto window = windowMgr->FindByClass(WindowClass::Error);
             if (window != nullptr)
             {
@@ -900,7 +900,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kDebugTogglePaintDebugWindow, STR_SHORTCUT_DEBUG_PAINT_TOGGLE, []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto window = windowMgr->FindByClass(WindowClass::DebugPaint);
             if (window != nullptr)
             {

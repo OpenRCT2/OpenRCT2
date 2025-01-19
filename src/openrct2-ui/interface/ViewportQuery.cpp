@@ -39,7 +39,7 @@ namespace OpenRCT2::Ui
      */
     CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         if (window == nullptr || window->viewport == nullptr)
         {
@@ -138,7 +138,7 @@ namespace OpenRCT2::Ui
     CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
     {
         // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         if (window == nullptr || window->viewport == nullptr)
         {

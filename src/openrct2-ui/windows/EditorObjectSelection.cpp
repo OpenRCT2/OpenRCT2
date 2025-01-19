@@ -39,7 +39,6 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <span>
@@ -1644,7 +1643,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorObjectSelectionOpen()
     {
-        return WindowFocusOrCreate<EditorObjectSelectionWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
             WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 
@@ -1746,7 +1746,7 @@ namespace OpenRCT2::Ui::Windows
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {

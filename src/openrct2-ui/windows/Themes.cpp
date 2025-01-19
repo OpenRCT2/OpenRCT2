@@ -21,7 +21,6 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -387,7 +386,7 @@ namespace OpenRCT2::Ui::Windows
 
             pressed_widgets = pressedWidgets | (1 << widgetIndex);
 
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::Dropdown) == nullptr)
             {
                 _classIndex = -1;
@@ -972,14 +971,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ThemesOpen()
     {
-        WindowBase* window;
-
         // Check if window is already open
-        window = WindowBringToFrontByClass(WindowClass::Themes);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::Themes);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<ThemesWindow>(WindowClass::Themes, 320, 107, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<ThemesWindow>(WindowClass::Themes, 320, 107, WF_10 | WF_RESIZABLE);
 
         return window;
     }

@@ -24,7 +24,6 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <vector>
@@ -770,12 +769,13 @@ namespace OpenRCT2::Ui::Windows
         {
             screenPos = { 0, kTopToolbarHeight + 2 };
         }
-        return WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
     }
 
     void WindowTrackDesignListReloadTracks()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignList));
         if (trackListWindow != nullptr)
         {
@@ -785,7 +785,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowTrackDesignListSetBeingUpdated(const bool beingUpdated)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignList));
         if (trackListWindow != nullptr)
         {

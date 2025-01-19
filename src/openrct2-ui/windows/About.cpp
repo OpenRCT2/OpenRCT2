@@ -12,7 +12,6 @@
 #include <SDL_clipboard.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/Version.h>
 #include <openrct2/drawing/Drawing.h>
@@ -20,6 +19,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -280,6 +280,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* AboutOpen()
     {
-        return WindowFocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

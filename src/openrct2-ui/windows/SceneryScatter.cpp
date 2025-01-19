@@ -11,11 +11,9 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
 
@@ -207,11 +205,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* SceneryScatterOpen()
     {
         // Check if window is already open
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FindByClass(WindowClass::SceneryScatter);
         if (window == nullptr)
         {
-            window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100, 0);
+            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100, 0);
         }
 
         return window;

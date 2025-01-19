@@ -26,6 +26,7 @@
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows
@@ -767,7 +768,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback)
     {
-        auto* window = static_cast<ScenarioSelectWindow*>(WindowBringToFrontByClass(WindowClass::ScenarioSelect));
+        auto* windowMgr = GetWindowManager();
+        auto* window = static_cast<ScenarioSelectWindow*>(windowMgr->BringToFrontByClass(WindowClass::ScenarioSelect));
         if (window != nullptr)
         {
             return window;
@@ -776,7 +778,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
         ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - WH) / 2) };
-        window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback);
+        window = windowMgr->Create<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

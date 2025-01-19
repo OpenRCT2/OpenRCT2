@@ -99,7 +99,7 @@ static bool ShouldShowFPS()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return true;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     return windowMgr->FindByClass(WindowClass::TopToolbar);
 }
 

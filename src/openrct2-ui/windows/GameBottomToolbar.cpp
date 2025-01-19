@@ -29,6 +29,7 @@
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -677,7 +678,8 @@ namespace OpenRCT2::Ui::Windows
         uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
         uint32_t toolbar_height = line_height * 2 + 12;
 
-        GameBottomToolbar* window = WindowCreate<GameBottomToolbar>(
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->Create<GameBottomToolbar>(
             WindowClass::BottomToolbar, ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 

@@ -28,7 +28,6 @@
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -400,7 +399,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void LandToolDrag(const ScreenCoordsXY& screenPos)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* window = windowMgr->FindFromPoint(screenPos);
             if (window == nullptr)
                 return;
@@ -873,7 +872,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* LandOpen()
     {
-        return WindowFocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }
 
     /**

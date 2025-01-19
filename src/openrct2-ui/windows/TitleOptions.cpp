@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -52,10 +53,11 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* TitleOptionsOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::TitleOptions);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::TitleOptions);
         if (window == nullptr)
         {
-            window = WindowCreate<TitleOptionsWindow>(
+            window = windowMgr->Create<TitleOptionsWindow>(
                 WindowClass::TitleOptions, ScreenCoordsXY(ContextGetWidth() - 80, 0), 80, 15,
                 WF_STICK_TO_BACK | WF_TRANSPARENT);
         }

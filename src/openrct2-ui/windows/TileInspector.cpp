@@ -33,7 +33,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Banner.h>
@@ -2440,15 +2439,16 @@ static uint64_t PageDisabledWidgets[] = {
 
     WindowBase* TileInspectorOpen()
     {
-        WindowBase* window = WindowBringToFrontByClass(WindowClass::TileInspector);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* window = windowMgr->BringToFrontByClass(WindowClass::TileInspector);
         if (window == nullptr)
-            window = WindowCreate<TileInspector>(WindowClass::TileInspector, ScreenCoordsXY(0, 29), WW, WH, WF_RESIZABLE);
+            window = windowMgr->Create<TileInspector>(WindowClass::TileInspector, ScreenCoordsXY(0, 29), WW, WH, WF_RESIZABLE);
         return window;
     }
 
     void WindowTileInspectorClearClipboard()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ClearClipboard();
@@ -2456,7 +2456,7 @@ static uint64_t PageDisabledWidgets[] = {
 
     void WindowTileInspectorKeyboardShortcutToggleInvisibility()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ToggleInvisibility();

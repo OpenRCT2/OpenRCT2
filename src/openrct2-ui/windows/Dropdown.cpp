@@ -21,6 +21,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -357,7 +358,8 @@ namespace OpenRCT2::Ui::Windows
         WindowDropdownClose();
 
         // Create the window (width/height position are set later)
-        auto* w = WindowCreate<DropdownWindow>(WindowClass::Dropdown, width, custom_height, WF_STICK_TO_FRONT);
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, width, custom_height, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetTextItems(screenPos, extray, colour, custom_height, flags, num_items, width);
@@ -390,7 +392,8 @@ namespace OpenRCT2::Ui::Windows
         WindowDropdownClose();
 
         // Create the window (width/height position are set later)
-        auto* w = WindowCreate<DropdownWindow>(WindowClass::Dropdown, itemWidth, itemHeight, WF_STICK_TO_FRONT);
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, itemWidth, itemHeight, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);

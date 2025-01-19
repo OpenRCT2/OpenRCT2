@@ -469,7 +469,7 @@ namespace OpenRCT2::Ui
 
         if (!(InputTestFlag(INPUT_FLAG_6)) || !(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::RideConstruction) == nullptr
                 && windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
             {
@@ -637,7 +637,7 @@ namespace OpenRCT2::Ui
      */
     static void ViewportInteractionRemoveFootpath(const PathElement& pathElement, const CoordsXY& mapCoords)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
             FootpathUpdateProvisional();
@@ -765,7 +765,7 @@ namespace OpenRCT2::Ui
 
     static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->FindFromPoint(screenCoords);
         if (w == nullptr)
             return nullptr;
@@ -790,7 +790,7 @@ namespace OpenRCT2::Ui
      */
     CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         if (window == nullptr || window->viewport == nullptr)
         {

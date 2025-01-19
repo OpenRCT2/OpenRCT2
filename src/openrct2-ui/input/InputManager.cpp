@@ -210,7 +210,7 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             // TODO: replace with event
             auto w = windowMgr->FindByClass(WindowClass::Textinput);
@@ -424,7 +424,7 @@ bool InputManager::HasTextInputFocus() const
     if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox() || gChatOpen)
         return true;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::Textinput);
     if (w != nullptr)
         return true;

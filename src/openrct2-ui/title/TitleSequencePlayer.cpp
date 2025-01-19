@@ -430,7 +430,7 @@ namespace OpenRCT2::Title
 
         void PrepareParkForPlayback()
         {
-            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+            auto windowManager = Ui::GetWindowManager();
             auto& gameState = GetGameState();
             windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
             ResetEntitySpatialIndices();
