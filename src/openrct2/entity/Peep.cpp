@@ -1539,7 +1539,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             ft.Add<StringId>(STR_WATERING_GARDENS);
             break;
         case PeepState::EmptyingBin:
-            ft.Add<StringId>(kStringIdEmptyING_LITTER_BIN);
+            ft.Add<StringId>(STR_EMPTYING_LITTER_BIN);
             break;
         case PeepState::Answering:
             if (SubState == 0)

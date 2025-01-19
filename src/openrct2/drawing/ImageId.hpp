@@ -42,24 +42,9 @@ FilterPaletteID GetGlassPaletteId(colour_t);
 struct ImageId
 {
 private:
-    // clang-format off
-    static constexpr uint32_t kMaskIndex       = 0b00000000000001111111111111111111;
-    static constexpr uint32_t kMaskRemap       = 0b00000111111110000000000000000000;
-    static constexpr uint32_t kMaskPrimary     = 0b00000000111110000000000000000000;
-    static constexpr uint32_t kMaskSecondary   = 0b00011111000000000000000000000000;
-    static constexpr uint32_t kFlagPrimary     = 0b00100000000000000000000000000000;
-    static constexpr uint32_t kFlagBlend       = 0b01000000000000000000000000000000;
-    static constexpr uint32_t kFlagSecondary   = 0b10000000000000000000000000000000;
-    static constexpr uint32_t kShiftRemap      = 19;
-    static constexpr uint32_t kShiftPrimary    = 19;
-    static constexpr uint32_t kShiftSecondary  = 24;
-    static constexpr uint32_t kIndexUndefined  = 0b00000000000001111111111111111111;
-    static constexpr uint32_t kValueUndefined  = kIndexUndefined;
-
-    static constexpr uint8_t  kNewFlagPrimary      = 1;
-    static constexpr uint8_t  kNewFlagBlend        = 2;
-    static constexpr uint8_t  kNewFlagSecondary    = 4;
-    // clang-format on
+    static constexpr uint8_t kNewFlagPrimary = 1;
+    static constexpr uint8_t kNewFlagBlend = 2;
+    static constexpr uint8_t kNewFlagSecondary = 4;
 
     // NONE = No remap
     // BLENDED = No source copy, remap destination only (glass)

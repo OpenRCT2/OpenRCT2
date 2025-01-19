@@ -40,7 +40,7 @@ static constexpr uint8_t kDuckAnimationFlyToWater[] =
     8, 9, 10, 11, 12, 13
 };
 
-static constexpr uint8_t kkDuckAnimationswim[] =
+static constexpr uint8_t kDuckAnimationSwim[] =
 {
     0
 };
@@ -63,11 +63,11 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
 // clang-format on
 
 static constexpr const uint8_t* kDuckAnimations[] = {
-    kDuckAnimationFlyToWater,  //  DuckStae::FlyToWater,
-    kkDuckAnimationswim,       //  DuckStae::Swim,
-    kDuckAnimationDrink,       //  DuckStae::Drink,
-    kDuckAnimationDoubleDrink, //  DuckStae::DoubleDrink,
-    kDuckAnimationFlyAway,     //  DuckStae::FlyAway,
+    kDuckAnimationFlyToWater,  //  DuckState::FlyToWater,
+    kDuckAnimationSwim,        //  DuckState::Swim,
+    kDuckAnimationDrink,       //  DuckState::Drink,
+    kDuckAnimationDoubleDrink, //  DuckState::DoubleDrink,
+    kDuckAnimationFlyAway,     //  DuckState::FlyAway,
 };
 
 template<>
