@@ -404,14 +404,14 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({165, 113}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
         MakeWidget        ({288, 114}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
         MakeWidget        ({ 23, 130}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
         MakeWidget        ({ 23, 145}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
-        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
+        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path button
         MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
-        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                     ), // Asset packs
+        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
 #ifdef __EMSCRIPTEN__
-        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     STR_NONE                                     ), // Emscripten data export
-        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     STR_NONE                                     ), // Emscripten data import
+        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
+        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
 #endif
     };
 
