@@ -12,14 +12,12 @@
  * the window has been changed to a tab interface similar to the options window seen in Locomotion.
  */
 
-#include "../interface/Theme.h"
-
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
@@ -45,6 +43,7 @@
 #include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 #ifdef __EMSCRIPTEN__
     #include <emscripten.h>
@@ -258,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({155,  83}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ),
         MakeWidget        ({288,  84}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
         MakeWidget        ({ 10,  98}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
-        MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_NONE,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
+        MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
         MakeWidget        ({ 10, 113}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine
         MakeWidget        ({155, 113}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Drawing engine
         MakeWidget        ({288, 114}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ),
@@ -283,7 +282,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, kFrameRenderingStart + 60}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
         MakeWidget({ 10, kFrameRenderingStart + 75}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
         MakeWidget({ 10, kFrameRenderingStart + 90}, {281,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
-        MakeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        MakeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
         MakeWidget({288, kFrameRenderingStart + 91}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
 
         MakeWidget({ 5,  kFrameEffectStart + 0}, {300, 94}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
@@ -405,14 +404,14 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({165, 113}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
         MakeWidget        ({288, 114}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
         MakeWidget        ({ 23, 130}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_NONE,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
         MakeWidget        ({ 23, 145}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
-        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
+        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
         MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
-        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               STR_NONE                                     ), // Asset packs
+        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                     ), // Asset packs
 #ifdef __EMSCRIPTEN__
-        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                    STR_NONE                                     ), // Emscripten data export
-        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                    STR_NONE                                     ), // Emscripten data import
+        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     STR_NONE                                     ), // Emscripten data export
+        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     STR_NONE                                     ), // Emscripten data import
 #endif
     };
 
@@ -637,7 +636,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_TAB_DISPLAY:
                 case WIDX_TAB_RENDERING:
@@ -1127,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
                         gDropdownItems[i].Args = CurrencyDescriptors[i].stringId;
                     }
 
-                    gDropdownItems[numOrdinaryCurrencies].Format = Dropdown::SeparatorString;
+                    gDropdownItems[numOrdinaryCurrencies].Format = Dropdown::kSeparatorString;
 
                     gDropdownItems[numOrdinaryCurrencies + 1].Format = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItems[numOrdinaryCurrencies + 1].Args = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
@@ -1241,7 +1240,7 @@ namespace OpenRCT2::Ui::Windows
                             if (LanguageOpen(fallbackLanguage))
                             {
                                 // It worked, so we can say it with error message in-game
-                                ContextShowError(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
+                                ContextShowError(STR_LANGUAGE_LOAD_FAILED, kStringIdNone, {});
                             }
                             // report error to console regardless
                             LOG_ERROR("Failed to open language file.");
@@ -1277,7 +1276,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Distance: metric / imperial / si
             {
-                StringId stringId = STR_NONE;
+                StringId stringId = kStringIdNone;
                 switch (Config::Get().general.MeasurementFormat)
                 {
                     case MeasurementFormat::Imperial:
@@ -1715,10 +1714,13 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_SCENARIO_UNLOCKING:
+                {
                     Config::Get().general.ScenarioUnlockingEnabled ^= 1;
                     Config::Save();
-                    WindowCloseByClass(WindowClass::ScenarioSelect);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::ScenarioSelect);
                     break;
+                }
                 case WIDX_AUTO_OPEN_SHOPS:
                     Config::Get().general.AutoOpenShops = !Config::Get().general.AutoOpenShops;
                     Config::Save();
@@ -1837,7 +1839,8 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().interface.ScenarioselectLastTab = 0;
                         Config::Save();
                         Invalidate();
-                        WindowCloseByClass(WindowClass::ScenarioSelect);
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
                     }
                     break;
             }
@@ -1944,21 +1947,21 @@ namespace OpenRCT2::Ui::Windows
                                     Config::Get().general.RCT1Path = std::move(rct1path);
                                     Config::Get().interface.ScenarioselectLastTab = 0;
                                     Config::Save();
-                                    ContextShowError(STR_RESTART_REQUIRED, STR_NONE, {});
+                                    ContextShowError(STR_RESTART_REQUIRED, kStringIdNone, {});
                                 }
                                 else
                                 {
-                                    ContextShowError(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
+                                    ContextShowError(STR_PATH_TO_RCT1_IS_WRONG_VERSION, kStringIdNone, {});
                                 }
                             }
                             else
                             {
-                                ContextShowError(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
+                                ContextShowError(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, kStringIdNone, {});
                             }
                         }
                         else
                         {
-                            ContextShowError(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
+                            ContextShowError(STR_PATH_TO_RCT1_WRONG_ERROR, kStringIdNone, {});
                         }
                     }
                     Invalidate();
@@ -2076,7 +2079,7 @@ namespace OpenRCT2::Ui::Windows
                 if (Config::Get().general.RCT1Path.empty())
                 {
                     // No tooltip if the path is empty
-                    return { STR_NONE, {} };
+                    return { kStringIdNone, {} };
                 }
 
                 auto ft = Formatter();
@@ -2240,6 +2243,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* OptionsOpen()
     {
-        return WindowFocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

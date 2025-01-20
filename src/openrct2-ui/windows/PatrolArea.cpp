@@ -12,7 +12,7 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -24,7 +24,6 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -264,7 +263,8 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft;
             ft.Add<uint16_t>(kLandToolMinimumSize);
             ft.Add<uint16_t>(kLandToolMaximumSize);
-            WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+            WindowTextInputOpen(
+                this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, kStringIdNone, kStringIdNone, 3);
         }
 
         bool PatrolAreaToolIsActive()
@@ -275,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
         bool IsStaffWindowOpen()
         {
             // If staff window for this patrol area was closed, tool is no longer active
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto staffWindow = windowMgr->FindByNumber(WindowClass::Peep, _staffId);
             return staffWindow != nullptr;
         }
@@ -294,7 +294,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* PatrolAreaOpen(EntityId staffId)
     {
-        auto w = WindowFocusOrCreate<PatrolAreaWindow>(
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->FocusOrCreate<PatrolAreaWindow>(
             WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
         if (w != nullptr)
         {
@@ -305,7 +306,7 @@ namespace OpenRCT2::Ui::Windows
 
     EntityId WindowPatrolAreaGetCurrentStaffId()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto current = reinterpret_cast<PatrolAreaWindow*>(windowMgr->FindByClass(WindowClass::PatrolArea));
         return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
     }

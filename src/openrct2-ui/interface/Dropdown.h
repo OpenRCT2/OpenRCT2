@@ -18,10 +18,10 @@ namespace OpenRCT2::Dropdown
 {
     struct Item;
 
-    constexpr StringId SeparatorString = 0;
-    constexpr StringId FormatColourPicker = 0xFFFE;
-    constexpr StringId FormatLandPicker = 0xFFFF;
-    constexpr int32_t ItemsMaxSize = 512;
+    constexpr StringId kSeparatorString = 0;
+    constexpr StringId kFormatColourPicker = 0xFFFE;
+    constexpr StringId kFormatLandPicker = 0xFFFF;
+    constexpr int32_t kItemsMaxSize = 512;
 
     enum Flag
     {
@@ -39,7 +39,7 @@ namespace OpenRCT2::Dropdown
 namespace OpenRCT2::Ui::Windows
 {
     extern int32_t gDropdownNumItems;
-    extern Dropdown::Item gDropdownItems[Dropdown::ItemsMaxSize];
+    extern Dropdown::Item gDropdownItems[Dropdown::kItemsMaxSize];
     extern bool gDropdownIsColour;
     extern int32_t gDropdownLastColourHover;
     extern int32_t gDropdownHighlightedIndex;
@@ -81,7 +81,7 @@ namespace OpenRCT2::Dropdown
 
         constexpr bool IsSeparator() const
         {
-            return Format == SeparatorString;
+            return Format == kSeparatorString;
         }
 
         constexpr bool IsDisabled() const
@@ -116,7 +116,7 @@ namespace OpenRCT2::Dropdown
 
     constexpr ItemExt Separator()
     {
-        return ItemExt(-1, Dropdown::SeparatorString, STR_EMPTY);
+        return ItemExt(-1, Dropdown::kSeparatorString, kStringIdEmpty);
     }
 
     template<int N>

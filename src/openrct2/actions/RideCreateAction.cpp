@@ -117,7 +117,7 @@ GameActions::Result RideCreateAction::Query() const
     const auto* presetList = rideEntry->vehicle_preset_list;
     if ((presetList->count > 0 && presetList->count != 255) && _colour2 >= presetList->count)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
     }
 
     auto res = GameActions::Result();
@@ -206,7 +206,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
     {
-        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
         {
             ride->price[i] = rtd.DefaultPrices[i];
         }
@@ -244,7 +244,7 @@ GameActions::Result RideCreateAction::Execute() const
             }
         }
 
-        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
         {
             if (rideEntry->shop_item[i] != ShopItem::None)
             {

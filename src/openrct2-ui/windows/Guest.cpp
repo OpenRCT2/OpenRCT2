@@ -13,7 +13,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
@@ -38,7 +38,6 @@
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -639,7 +638,7 @@ namespace OpenRCT2::Ui::Windows
                     pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;
-                        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                        auto* windowMgr = GetWindowManager();
                         WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
@@ -951,7 +950,7 @@ namespace OpenRCT2::Ui::Windows
 
             gPickupPeepImage = ImageId();
 
-            auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
+            auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionItemAll);
             if (info.interactionType == ViewportInteractionItem::None)
                 return;
 
@@ -1911,14 +1910,15 @@ namespace OpenRCT2::Ui::Windows
             return StaffOpen(peep);
         }
 
-        auto* window = static_cast<GuestWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
+        auto* windowMgr = GetWindowManager();
+        auto* window = static_cast<GuestWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
         if (window == nullptr)
         {
             int32_t windowWidth = 192;
             if (Config::Get().general.DebuggingTools)
                 windowWidth += TabWidth;
 
-            window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
+            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
             if (window == nullptr)
             {
                 return nullptr;

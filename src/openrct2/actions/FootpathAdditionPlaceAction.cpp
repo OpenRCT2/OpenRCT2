@@ -141,7 +141,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
         // Check if there is something on the path already
         if (pathElement->HasAddition())
         {
-            return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, kStringIdNone);
         }
     }
     return res;

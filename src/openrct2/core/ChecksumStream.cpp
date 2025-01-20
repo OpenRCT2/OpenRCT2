@@ -20,7 +20,7 @@ namespace OpenRCT2
         : _checksum(buf)
     {
         uint64_t* hash = reinterpret_cast<uint64_t*>(_checksum.data());
-        *hash = Seed;
+        *hash = kSeed;
     }
 
     void ChecksumStream::Write(const void* buffer, uint64_t length)
@@ -39,7 +39,7 @@ namespace OpenRCT2
     #endif
 
             *hash ^= temp;
-            *hash *= Prime;
+            *hash *= kPrime;
         }
     }
 

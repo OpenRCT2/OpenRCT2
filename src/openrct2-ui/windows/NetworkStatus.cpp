@@ -8,11 +8,10 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/network/network.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -28,7 +27,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_network_status_widgets[] = {
         MakeWidget({  0, 0}, {400, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                   ), // panel / background
-        MakeWidget({  1, 1}, {397, 14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
+        MakeWidget({  1, 1}, {397, 14}, WindowWidgetType::Caption,  WindowColour::Primary, kStringIdNone,    STR_WINDOW_TITLE_TIP), // title bar
         MakeWidget({388, 2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button
     };
     // clang-format on
@@ -136,16 +135,16 @@ namespace OpenRCT2::Ui::Windows
     {
         ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
 
         NetworkStatusWindow* window;
         if ((window = static_cast<NetworkStatusWindow*>(windowMgr->FindByClass(WindowClass::NetworkStatus))) != nullptr)
         {
-            WindowBringToFront(*window);
+            windowMgr->BringToFront(*window);
         }
         else
         {
-            window = WindowCreate<NetworkStatusWindow>(
+            window = windowMgr->Create<NetworkStatusWindow>(
                 WindowClass::NetworkStatus, 400, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 
@@ -157,7 +156,7 @@ namespace OpenRCT2::Ui::Windows
     // force close
     void WindowNetworkStatusClose()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto window = windowMgr->FindByClass(WindowClass::NetworkStatus);
         if (window == nullptr)
         {
@@ -172,8 +171,10 @@ namespace OpenRCT2::Ui::Windows
     {
         ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
 
-        auto window = WindowFocusOrCreate<NetworkStatusWindow>(
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<NetworkStatusWindow>(
             WindowClass::NetworkStatus, 400, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+
         char password[33]{};
         WindowTextInputRawOpen(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, password, 32);
         window->SetPassword(password);

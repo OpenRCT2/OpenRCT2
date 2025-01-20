@@ -24,13 +24,13 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Localisation;
 
-static constexpr uint16_t BASE_OBJECT_STRING_ID = 0x2000;
-static constexpr uint16_t MAX_OBJECT_CACHED_STRINGS = 0x5000 - BASE_OBJECT_STRING_ID;
+static constexpr uint16_t kBaseObjectStringID = 0x2000;
+static constexpr uint16_t kMaxObjectCachedStrings = 0x5000 - kBaseObjectStringID;
 
 LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
 {
-    for (StringId stringId = BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= BASE_OBJECT_STRING_ID; stringId--)
+    for (StringId stringId = kBaseObjectStringID + kMaxObjectCachedStrings; stringId >= kBaseObjectStringID; stringId--)
     {
         _availableObjectStringIds.push(stringId);
     }
@@ -41,13 +41,13 @@ LocalisationService::~LocalisationService() = default;
 
 const char* LocalisationService::GetString(StringId id) const
 {
-    if (id == STR_EMPTY)
+    if (id == kStringIdEmpty)
     {
         return "";
     }
-    else if (id >= BASE_OBJECT_STRING_ID && id < BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS)
+    else if (id >= kBaseObjectStringID && id < kBaseObjectStringID + kMaxObjectCachedStrings)
     {
-        size_t index = id - BASE_OBJECT_STRING_ID;
+        size_t index = id - kBaseObjectStringID;
         if (index < _objectStrings.size())
         {
             return _objectStrings[index].c_str();
@@ -55,7 +55,7 @@ const char* LocalisationService::GetString(StringId id) const
 
         return "(unallocated string)";
     }
-    else if (id != STR_NONE)
+    else if (id != kStringIdNone)
     {
         for (const auto& language : _loadedLanguages)
         {
@@ -147,13 +147,13 @@ StringId LocalisationService::AllocateObjectString(const std::string& target)
 {
     if (_availableObjectStringIds.empty())
     {
-        return STR_EMPTY;
+        return kStringIdEmpty;
     }
 
     auto stringId = _availableObjectStringIds.top();
     _availableObjectStringIds.pop();
 
-    size_t index = stringId - BASE_OBJECT_STRING_ID;
+    size_t index = stringId - kBaseObjectStringID;
     if (index >= _objectStrings.size())
     {
         _objectStrings.resize(index + 1);
@@ -165,9 +165,9 @@ StringId LocalisationService::AllocateObjectString(const std::string& target)
 
 void LocalisationService::FreeObjectString(StringId stringId)
 {
-    if (stringId != STR_EMPTY)
+    if (stringId != kStringIdEmpty)
     {
-        size_t index = stringId - BASE_OBJECT_STRING_ID;
+        size_t index = stringId - kBaseObjectStringID;
         if (index < _objectStrings.size())
         {
             _objectStrings[index] = {};

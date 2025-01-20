@@ -20,8 +20,8 @@
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
+#include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
 
@@ -174,7 +174,9 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
                 shortcut->Current.push_back(std::move(shortcutInput.value()));
             }
             _pendingShortcutChange.clear();
-            WindowCloseByClass(WindowClass::ChangeKeyboardShortcut);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::ChangeKeyboardShortcut);
             SaveUserBindings();
         }
     }
@@ -227,26 +229,26 @@ void ShortcutManager::LoadUserBindings()
 
 std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t binding)
 {
-    constexpr uint16_t nullBinding = 0xFFFF;
-    constexpr uint16_t shift = 0x100;
-    constexpr uint16_t ctrl = 0x200;
-    constexpr uint16_t alt = 0x400;
-    constexpr uint16_t cmd = 0x800;
+    constexpr uint16_t kNullBinding = 0xFFFF;
+    constexpr uint16_t kShift = 0x100;
+    constexpr uint16_t kCtrl = 0x200;
+    constexpr uint16_t kAlt = 0x400;
+    constexpr uint16_t kCmd = 0x800;
 
-    if (binding == nullBinding)
+    if (binding == kNullBinding)
     {
         return std::nullopt;
     }
 
     ShortcutInput result;
     result.Kind = InputDeviceKind::Keyboard;
-    if (binding & shift)
+    if (binding & kShift)
         result.Modifiers |= KMOD_SHIFT;
-    if (binding & ctrl)
+    if (binding & kCtrl)
         result.Modifiers |= KMOD_CTRL;
-    if (binding & alt)
+    if (binding & kAlt)
         result.Modifiers |= KMOD_ALT;
-    if (binding & cmd)
+    if (binding & kCmd)
         result.Modifiers |= KMOD_GUI;
     result.Button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF));
     return result;
@@ -254,14 +256,14 @@ std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t bind
 
 void ShortcutManager::LoadLegacyBindings(const fs::path& path)
 {
-    constexpr int32_t SUPPORTED_FILE_VERSION = 1;
-    constexpr int32_t MAX_LEGACY_SHORTCUTS = 85;
+    constexpr int32_t kSupportedFileVersion = 1;
+    constexpr int32_t kMaxLegacyShortcuts = 85;
 
     auto fs = FileStream(path, FILE_MODE_OPEN);
     auto version = fs.ReadValue<uint16_t>();
-    if (version == SUPPORTED_FILE_VERSION)
+    if (version == kSupportedFileVersion)
     {
-        for (size_t i = 0; i < MAX_LEGACY_SHORTCUTS; i++)
+        for (size_t i = 0; i < kMaxLegacyShortcuts; i++)
         {
             auto value = fs.ReadValue<uint16_t>();
             auto shortcutId = GetLegacyShortcutId(i);

@@ -9,8 +9,7 @@
 
 #include <mutex>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Http.h>
@@ -25,6 +24,7 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <sstream>
 #include <string>
@@ -415,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     return;
                 case WIDX_COPY_CURRENT:
                     if (selected_list_item > -1 && selected_list_item < no_list_items)
@@ -576,10 +576,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);
+        auto* windowMgr = Ui::GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::ObjectLoadError);
         if (window == nullptr)
         {
-            window = WindowCreate<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
+            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);

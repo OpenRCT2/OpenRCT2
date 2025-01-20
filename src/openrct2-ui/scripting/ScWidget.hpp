@@ -393,7 +393,7 @@ namespace OpenRCT2::Scripting
             if (_class == WindowClass::MainWindow)
                 return WindowGetMain();
 
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = Ui::GetWindowManager();
             return windowMgr->FindByNumber(_class, _number);
         }
 
@@ -506,7 +506,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr && (widget->type == WindowWidgetType::FlatBtn || widget->type == WindowWidgetType::ImgBtn))
             {
-                if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+                if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
                 {
                     return LegacyIconIndex(widget->image.GetIndex());
                 }

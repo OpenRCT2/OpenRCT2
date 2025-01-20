@@ -26,8 +26,8 @@ namespace OpenRCT2
         CACHE,         // Base directory for OpenRCT2 cache files.
         DOCUMENTATION, // Base directory for OpenRCT2 doc files.
     };
-    constexpr size_t DIRBASE_COUNT = 7;
-    using DIRBASE_VALUES = u8string[DIRBASE_COUNT];
+    constexpr size_t kDirBaseCount = 7;
+    using DIRBASE_VALUES = u8string[kDirBaseCount];
 
     enum class DIRID
     {

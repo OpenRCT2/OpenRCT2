@@ -86,7 +86,7 @@ using namespace OpenRCT2::Numerics;
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
 // and 4 different rotations of the ride. 4 * 4 * 4 = 64 locations.
 // clang-format off
-static constexpr CoordsXY SpiralSlideWalkingPath[64] = {
+static constexpr CoordsXY kSpiralSlideWalkingPath[64] = {
     {  56,   8 },
     {   8,   8 },
     {   8,  32 },
@@ -154,7 +154,7 @@ static constexpr CoordsXY SpiralSlideWalkingPath[64] = {
 };
 
 /** rct2: 0x00981F4C, 0x00981F4E */
-static constexpr CoordsXY _WatchingPositionOffsets[] = {
+static constexpr CoordsXY kWatchingPositionOffsets[] = {
     {  7,  5 },
     {  5, 25 },
     { 25,  5 },
@@ -197,7 +197,7 @@ static constexpr ride_rating NauseaMaximumThresholds[] = {
 };
 
 /** rct2: 009823AC */
-static constexpr PeepThoughtType crowded_thoughts[] = {
+static constexpr PeepThoughtType kCrowdedThoughts[] = {
     PeepThoughtType::Lost,
     PeepThoughtType::Tired,
     PeepThoughtType::BadLitter,
@@ -436,7 +436,7 @@ static struct
 };
 
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
-static constexpr ride_rating NauseaMinimumThresholds[] = {
+static constexpr ride_rating kNauseaMinimumThresholds[] = {
     0,
     0,
     200,
@@ -929,7 +929,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
      * is executed to once every four calls. */
     if (PeepFlags & PEEP_FLAGS_CROWDED)
     {
-        PeepThoughtType thought_type = crowded_thoughts[ScenarioRand() & 0xF];
+        PeepThoughtType thought_type = kCrowdedThoughts[ScenarioRand() & 0xF];
         if (thought_type != PeepThoughtType::None)
         {
             InsertNewThought(thought_type);
@@ -1455,7 +1455,7 @@ void Guest::CheckCantFindRide()
 
     GuestHeadingToRideId = RideId::GetNull();
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, Id);
 
     if (w != nullptr)
@@ -2797,7 +2797,7 @@ static int16_t PeepCalculateRideIntensityNauseaSatisfaction(Guest* peep, const R
 
     // Although it's not shown in the interface, a peep with Average or High nausea tolerance
     // has a minimum preferred nausea value. (For peeps with None or Low, this is set to zero.)
-    ride_rating minNausea = NauseaMinimumThresholds[(EnumValue(peep->NauseaTolerance) & 3)];
+    ride_rating minNausea = kNauseaMinimumThresholds[(EnumValue(peep->NauseaTolerance) & 3)];
     ride_rating maxNausea = NauseaMaximumThresholds[(EnumValue(peep->NauseaTolerance) & 3)];
     if (minNausea <= ride.ratings.nausea && maxNausea >= ride.ratings.nausea)
     {
@@ -3145,7 +3145,7 @@ static void PeepLeavePark(Guest* peep)
 
     peep->InsertNewThought(PeepThoughtType::GoHome);
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
         w->OnPrepareDraw();
@@ -3187,12 +3187,12 @@ static void PeepHeadForNearestRide(Guest* peep, bool considerOnlyCloseRides, T p
     else
     {
         // Take nearby rides into consideration
-        constexpr auto searchRadius = 10 * 32;
+        constexpr auto kSearchRadius = 10 * 32;
         int32_t cx = floor2(peep->x, 32);
         int32_t cy = floor2(peep->y, 32);
-        for (auto x = cx - searchRadius; x <= cx + searchRadius; x += kCoordsXYStep)
+        for (auto x = cx - kSearchRadius; x <= cx + kSearchRadius; x += kCoordsXYStep)
         {
-            for (auto y = cy - searchRadius; y <= cy + searchRadius; y += kCoordsXYStep)
+            for (auto y = cy - kSearchRadius; y <= cy + kSearchRadius; y += kCoordsXYStep)
             {
                 auto location = CoordsXY{ x, y };
                 if (!MapIsLocationValid(location))
@@ -3590,7 +3590,7 @@ void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD&
 
     peep->Var37 = (entrance_loc.direction << 2) | (direction_track << 4);
 
-    entrance_loc += SpiralSlideWalkingPath[peep->Var37];
+    entrance_loc += kSpiralSlideWalkingPath[peep->Var37];
 
     peep->SetDestination(entrance_loc);
     peep->CurrentCar = 0;
@@ -4715,7 +4715,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
             assert(rtd.specialType == RtdSpecialType::spiralSlide);
-            targetLoc += SpiralSlideWalkingPath[Var37];
+            targetLoc += kSpiralSlideWalkingPath[Var37];
 
             SetDestination(targetLoc);
             RideSubState = PeepRideSubState::LeaveSpiralSlide;
@@ -4729,13 +4729,13 @@ void Guest::UpdateRideApproachSpiralSlide()
     CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
     assert(rtd.specialType == RtdSpecialType::spiralSlide);
-    targetLoc += SpiralSlideWalkingPath[Var37];
+    targetLoc += kSpiralSlideWalkingPath[Var37];
 
     SetDestination(targetLoc);
 }
 
 /** rct2: 0x00981F0C, 0x00981F0E */
-static constexpr CoordsXY _SpiralSlideEnd[] = {
+static constexpr CoordsXY kSpiralSlideEnd[] = {
     { 25, 56 },
     { 56, 7 },
     { 7, -24 },
@@ -4743,7 +4743,7 @@ static constexpr CoordsXY _SpiralSlideEnd[] = {
 };
 
 /** rct2: 0x00981F1C, 0x00981F1E */
-static constexpr CoordsXY _SpiralSlideEndWaypoint[] = {
+static constexpr CoordsXY kSpiralSlideEndWaypoint[] = {
     { 8, 56 },
     { 56, 24 },
     { 24, -24 },
@@ -4797,12 +4797,12 @@ void Guest::UpdateRideOnSpiralSlide()
                 uint8_t dir = (Var37 / 4) & 3;
 
                 // Set the location that the peep walks to go on slide again
-                destination = newLocation + _SpiralSlideEndWaypoint[dir];
+                destination = newLocation + kSpiralSlideEndWaypoint[dir];
                 SetDestination(destination);
 
                 // Move the peep sprite to just at the end of the slide
-                newLocation.x += _SpiralSlideEnd[dir].x;
-                newLocation.y += _SpiralSlideEnd[dir].y;
+                newLocation.x += kSpiralSlideEnd[dir].x;
+                newLocation.y += kSpiralSlideEnd[dir].y;
 
                 MoveTo({ newLocation, z });
 
@@ -4827,7 +4827,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
     CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-    targetLoc += SpiralSlideWalkingPath[Var37];
+    targetLoc += kSpiralSlideWalkingPath[Var37];
 
     SetDestination(targetLoc);
     RideSubState = PeepRideSubState::ApproachSpiralSlide;
@@ -4868,7 +4868,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
 
         [[maybe_unused]] const auto& rtd = ride->GetRideTypeDescriptor();
         assert(rtd.specialType == RtdSpecialType::spiralSlide);
-        targetLoc += SpiralSlideWalkingPath[Var37];
+        targetLoc += kSpiralSlideWalkingPath[Var37];
 
         SetDestination(targetLoc);
         return;
@@ -4894,7 +4894,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
 }
 
 /** rct2: 0x00981FE4 */
-static constexpr uint8_t _MazeGetNewDirectionFromEdge[][4] = {
+static constexpr uint8_t kMazeGetNewDirectionFromEdge[][4] = {
     { 15, 7, 15, 7 },
     { 11, 3, 11, 3 },
     { 7, 15, 7, 15 },
@@ -4902,7 +4902,7 @@ static constexpr uint8_t _MazeGetNewDirectionFromEdge[][4] = {
 };
 
 /** rct2: 0x00981FF4 */
-static constexpr uint8_t _MazeCurrentDirectionToOpenHedge[][4] = {
+static constexpr uint8_t kMazeCurrentDirectionToOpenHedge[][4] = {
     { 1, 2, 14, 0 },
     { 4, 5, 6, 2 },
     { 6, 8, 9, 10 },
@@ -4960,7 +4960,7 @@ void Guest::UpdateRideMazePathfinding()
     uint8_t mazeReverseLastEdge = DirectionReverse(MazeLastEdge);
     for (uint8_t i = 0; i < kNumOrthogonalDirections; ++i)
     {
-        if (!(mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][i])) && i != mazeReverseLastEdge)
+        if (!(mazeEntry & (1 << kMazeCurrentDirectionToOpenHedge[Var37 / 4][i])) && i != mazeReverseLastEdge)
         {
             hedges[openCount++] = i;
         }
@@ -4968,7 +4968,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (openCount == 0)
     {
-        if ((mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][mazeReverseLastEdge])))
+        if ((mazeEntry & (1 << kMazeCurrentDirectionToOpenHedge[Var37 / 4][mazeReverseLastEdge])))
         {
             return;
         }
@@ -5018,7 +5018,7 @@ void Guest::UpdateRideMazePathfinding()
             return;
         case maze_type::hedge:
             SetDestination(targetLoc);
-            Var37 = _MazeGetNewDirectionFromEdge[Var37 / 4][chosenEdge];
+            Var37 = kMazeGetNewDirectionFromEdge[Var37 / 4][chosenEdge];
             MazeLastEdge = chosenEdge;
             break;
         case maze_type::entrance_or_exit:
@@ -5552,8 +5552,8 @@ void Guest::UpdateWalking()
     SetState(PeepState::Watching);
     SubState = 0;
 
-    int32_t destX = (x & 0xFFE0) + _WatchingPositionOffsets[Var37 & 0x1F].x;
-    int32_t destY = (y & 0xFFE0) + _WatchingPositionOffsets[Var37 & 0x1F].y;
+    int32_t destX = (x & 0xFFE0) + kWatchingPositionOffsets[Var37 & 0x1F].x;
+    int32_t destY = (y & 0xFFE0) + kWatchingPositionOffsets[Var37 & 0x1F].y;
 
     SetDestination({ destX, destY }, 3);
 
@@ -6957,7 +6957,7 @@ void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft)
         }
         else
         {
-            ft.Add<StringId>(STR_NONE);
+            ft.Add<StringId>(kStringIdNone);
         }
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR)
@@ -6972,7 +6972,7 @@ void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft)
 
 void Guest::InsertNewThought(PeepThoughtType thought_type)
 {
-    InsertNewThought(thought_type, PeepThoughtItemNone);
+    InsertNewThought(thought_type, kPeepThoughtItemNone);
 }
 
 void Guest::InsertNewThought(PeepThoughtType thought_type, ShopItem shopItem)
@@ -7043,7 +7043,7 @@ static constexpr PeepNauseaTolerance nausea_tolerance_distribution[] = {
 };
 
 /** rct2: 0x009823BC */
-static constexpr uint8_t trouser_colours[] = {
+static constexpr uint8_t kTrouserColours[] = {
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_LIGHT_BROWN,
@@ -7076,7 +7076,7 @@ static constexpr uint8_t trouser_colours[] = {
 };
 
 /** rct2: 0x009823D5 */
-static constexpr uint8_t tshirt_colours[] = {
+static constexpr uint8_t kTshirtColours[] = {
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_LIGHT_BROWN,
@@ -7296,11 +7296,11 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->Angriness = 0;
     peep->TimeLost = 0;
 
-    uint8_t tshirtColour = static_cast<uint8_t>(ScenarioRand() % std::size(tshirt_colours));
-    peep->TshirtColour = tshirt_colours[tshirtColour];
+    uint8_t tshirtColour = static_cast<uint8_t>(ScenarioRand() % std::size(kTshirtColours));
+    peep->TshirtColour = kTshirtColours[tshirtColour];
 
-    uint8_t trousersColour = static_cast<uint8_t>(ScenarioRand() % std::size(trouser_colours));
-    peep->TrousersColour = trouser_colours[trousersColour];
+    uint8_t trousersColour = static_cast<uint8_t>(ScenarioRand() % std::size(kTrouserColours));
+    peep->TrousersColour = kTrouserColours[trousersColour];
 
     /* Minimum energy is capped at 32 and maximum at 128, so this initialises
      * a peep with approx 34%-100% energy. (65 - 32) / (128 - 32) ≈ 34% */
@@ -7346,7 +7346,7 @@ enum
     PEEP_FACE_OFFSET_VERY_VERY_HAPPY,
 };
 
-static constexpr int32_t face_sprite_small[] = {
+static constexpr int32_t kFaceSpriteSmall[] = {
     SPR_PEEP_SMALL_FACE_ANGRY,
     SPR_PEEP_SMALL_FACE_VERY_VERY_SICK,
     SPR_PEEP_SMALL_FACE_VERY_SICK,
@@ -7362,7 +7362,7 @@ static constexpr int32_t face_sprite_small[] = {
     SPR_PEEP_SMALL_FACE_VERY_VERY_HAPPY,
 };
 
-static constexpr int32_t face_sprite_large[] = {
+static constexpr int32_t kFaceSpriteLarge[] = {
     SPR_PEEP_LARGE_FACE_ANGRY_0,
     SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0,
     SPR_PEEP_LARGE_FACE_VERY_SICK_0,
@@ -7420,7 +7420,7 @@ static int32_t GetFaceSpriteOffset(Guest* peep)
  */
 int32_t GetPeepFaceSpriteSmall(Guest* peep)
 {
-    return face_sprite_small[GetFaceSpriteOffset(peep)];
+    return kFaceSpriteSmall[GetFaceSpriteOffset(peep)];
 }
 
 /**
@@ -7429,7 +7429,7 @@ int32_t GetPeepFaceSpriteSmall(Guest* peep)
  */
 int32_t GetPeepFaceSpriteLarge(Guest* peep)
 {
-    return face_sprite_large[GetFaceSpriteOffset(peep)];
+    return kFaceSpriteLarge[GetFaceSpriteOffset(peep)];
 }
 
 /**
@@ -7682,7 +7682,7 @@ void Guest::RemoveRideFromMemory(RideId rideId)
         // Last slot is now free.
         auto& lastEntry = Thoughts.back();
         lastEntry.type = PeepThoughtType::None;
-        lastEntry.item = PeepThoughtItemNone;
+        lastEntry.item = kPeepThoughtItemNone;
     }
 }
 

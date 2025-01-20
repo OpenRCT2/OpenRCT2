@@ -23,7 +23,7 @@ namespace
     };
 } // namespace
 
-constexpr VDStruct VertexData[2] = {
+constexpr VDStruct kVertexData[2] = {
     { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
 };
@@ -38,7 +38,7 @@ DrawLineShader::DrawLineShader()
     glGenVertexArrays(1, &_vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(kVertexData), kVertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
     glVertexAttribPointer(

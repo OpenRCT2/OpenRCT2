@@ -9,13 +9,14 @@
 
 #include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -158,7 +159,9 @@ namespace OpenRCT2::Ui::Windows
         auto windowPos = tooltipWindow->windowPos;
         auto width = tooltipWindow->width;
         auto height = tooltipWindow->height;
-        WindowCreate(
+
+        auto* windowMgr = GetWindowManager();
+        windowMgr->Create(
             std::move(tooltipWindow), WindowClass::Tooltip, windowPos, width, height, WF_TRANSPARENT | WF_STICK_TO_FRONT);
     }
 
@@ -192,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
             gTooltipWidget.window_number = widgetWindow->number;
             gTooltipWidget.widget_index = widgetIndex;
             result = widgetWindow->OnTooltip(widgetIndex, stringId);
-            if (result.str == STR_NONE)
+            if (result.str == kStringIdNone)
                 return;
         }
 
@@ -201,7 +204,9 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowTooltipClose()
     {
-        WindowCloseByClass(WindowClass::Tooltip);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Tooltip);
+
         gTooltipCloseTimeout = 0;
         gTooltipWidget.window_classification = WindowClass::Null;
     }

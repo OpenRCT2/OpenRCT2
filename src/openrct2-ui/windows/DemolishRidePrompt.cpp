@@ -8,14 +8,12 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -103,21 +101,21 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* RideDemolishPromptOpen(const Ride& ride)
     {
-        WindowBase* w;
-        DemolishRidePromptWindow* newWindow;
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-        w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
+        DemolishRidePromptWindow* newWindow;
         if (w != nullptr)
         {
             auto windowPos = w->windowPos;
-            WindowClose(*w);
-            newWindow = WindowCreate<DemolishRidePromptWindow>(
+            windowMgr->Close(*w);
+
+            newWindow = windowMgr->Create<DemolishRidePromptWindow>(
                 WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
         }
         else
         {
-            newWindow = WindowCreate<DemolishRidePromptWindow>(
+            newWindow = windowMgr->Create<DemolishRidePromptWindow>(
                 WindowClass::DemolishRidePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
         }
 

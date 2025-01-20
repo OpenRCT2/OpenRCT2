@@ -25,11 +25,11 @@ private:
     ParkParameter _parameter{ ParkParameter::Count };
     uint64_t _value{};
 
-    constexpr static StringId _ErrorTitles[] = {
+    constexpr static StringId kErrorTitles[] = {
         STR_CANT_CLOSE_PARK,
         STR_CANT_OPEN_PARK,
-        STR_NONE,
-        STR_NONE,
+        kStringIdNone,
+        kStringIdNone,
     };
 
 public:

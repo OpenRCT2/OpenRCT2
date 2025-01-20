@@ -12,7 +12,7 @@
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
@@ -26,12 +26,13 @@
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/RideRatings.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_NONE;
+    static constexpr StringId WINDOW_TITLE = kStringIdNone;
     static constexpr int32_t WH = 240;
     static constexpr int32_t WW = 340;
 
@@ -230,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_SORT:
                     list_information_type = _windowRideListInformationType;
@@ -977,10 +978,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* RideListOpen()
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::RideList);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::RideList);
         if (window == nullptr)
         {
-            window = WindowCreate<RideListWindow>(WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<RideListWindow>(
+                WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

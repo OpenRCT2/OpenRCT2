@@ -11,7 +11,7 @@
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/PlayerKickAction.h>
 #include <openrct2/actions/PlayerSetGroupAction.h>
@@ -20,6 +20,7 @@
 #include <openrct2/network/NetworkAction.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <utility>
 
 namespace OpenRCT2::Ui::Windows
@@ -624,10 +625,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* PlayerOpen(uint8_t id)
     {
-        auto* window = static_cast<PlayerWindow*>(WindowBringToFrontByNumber(WindowClass::Player, id));
+        auto* windowMgr = GetWindowManager();
+        auto* window = static_cast<PlayerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Player, id));
         if (window == nullptr)
         {
-            window = WindowCreate<PlayerWindow>(WindowClass::Player, 240, 170, WF_RESIZABLE);
+            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, 240, 170, WF_RESIZABLE);
         }
 
         window->Init(id);

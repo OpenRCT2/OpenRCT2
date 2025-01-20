@@ -21,6 +21,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -46,8 +47,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     int32_t gDropdownNumItems;
-    Dropdown::Item gDropdownItems[Dropdown::ItemsMaxSize];
-    static ImageId _dropdownItemsImages[Dropdown::ItemsMaxSize];
+    Dropdown::Item gDropdownItems[Dropdown::kItemsMaxSize];
+    static ImageId _dropdownItemsImages[Dropdown::kItemsMaxSize];
     bool gDropdownIsColour;
     int32_t gDropdownLastColourHover;
     int32_t gDropdownHighlightedIndex;
@@ -140,26 +141,26 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     StringId item = gDropdownItems[i].Format;
-                    if (item == Dropdown::FormatLandPicker || item == Dropdown::FormatColourPicker)
+                    if (item == Dropdown::kFormatLandPicker || item == Dropdown::kFormatColourPicker)
                     {
                         // Image item
                         auto image = UseImages ? _dropdownItemsImages[i]
                                                : ImageId(static_cast<uint32_t>(gDropdownItems[i].Args));
-                        if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
+                        if (item == Dropdown::kFormatColourPicker && highlightedIndex == i)
                             image = image.WithIndexOffset(1);
                         GfxDrawSprite(dpi, image, screenCoords);
                     }
                     else
                     {
                         // Text item
-                        if (i < Dropdown::ItemsMaxSize && Dropdown::IsChecked(i))
+                        if (i < Dropdown::kItemsMaxSize && Dropdown::IsChecked(i))
                             item++;
 
                         // Calculate colour
                         ColourWithFlags colour = { colours[0].colour };
                         if (i == highlightedIndex)
                             colour.colour = COLOUR_WHITE;
-                        if (i < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(i))
+                        if (i < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(i))
                             colour = { colours[0].colour, EnumToFlag(ColourFlag::inset) };
 
                         // Draw item string
@@ -357,7 +358,8 @@ namespace OpenRCT2::Ui::Windows
         WindowDropdownClose();
 
         // Create the window (width/height position are set later)
-        auto* w = WindowCreate<DropdownWindow>(WindowClass::Dropdown, width, custom_height, WF_STICK_TO_FRONT);
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, width, custom_height, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetTextItems(screenPos, extray, colour, custom_height, flags, num_items, width);
@@ -390,7 +392,8 @@ namespace OpenRCT2::Ui::Windows
         WindowDropdownClose();
 
         // Create the window (width/height position are set later)
-        auto* w = WindowCreate<DropdownWindow>(WindowClass::Dropdown, itemWidth, itemHeight, WF_STICK_TO_FRONT);
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, itemWidth, itemHeight, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);
@@ -399,7 +402,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowDropdownClose()
     {
-        WindowCloseByClass(WindowClass::Dropdown);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Dropdown);
     }
 
     /**
@@ -510,7 +514,7 @@ static constexpr colour_t kColoursDropdownOrder[] = {
             auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
                                                                : ImageId(SPR_PALETTE_BTN, orderedColour);
 
-            gDropdownItems[i].Format = Dropdown::FormatColourPicker;
+            gDropdownItems[i].Format = Dropdown::kFormatColourPicker;
             Dropdown::SetImage(i, imageId);
         }
 

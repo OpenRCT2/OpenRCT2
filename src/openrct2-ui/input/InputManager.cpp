@@ -16,7 +16,8 @@
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/InGameConsole.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
@@ -80,10 +81,10 @@ void InputManager::QueueInputEvent(InputEvent&& e)
 
 void InputManager::CheckJoysticks()
 {
-    constexpr uint32_t CHECK_INTERVAL_MS = 5000;
+    constexpr uint32_t kCheckInternalMs = 5000;
 
     auto tick = SDL_GetTicks();
-    if (tick > _lastJoystickCheck + CHECK_INTERVAL_MS)
+    if (tick > _lastJoystickCheck + kCheckInternalMs)
     {
         _lastJoystickCheck = tick;
 
@@ -210,7 +211,7 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             // TODO: replace with event
             auto w = windowMgr->FindByClass(WindowClass::Textinput);
@@ -424,7 +425,7 @@ bool InputManager::HasTextInputFocus() const
     if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox() || gChatOpen)
         return true;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::Textinput);
     if (w != nullptr)
         return true;

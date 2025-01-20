@@ -259,10 +259,10 @@ template<GameCommand TType>
 struct GameActionBase : GameAction
 {
 public:
-    static constexpr GameCommand TYPE = TType;
+    static constexpr GameCommand kType = TType;
 
     GameActionBase()
-        : GameAction(TYPE)
+        : GameAction(kType)
     {
     }
 };

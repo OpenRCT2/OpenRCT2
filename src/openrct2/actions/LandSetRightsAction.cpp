@@ -87,7 +87,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
     {
-        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_NONE, STR_LAND_NOT_FOR_SALE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, kStringIdNone, STR_LAND_NOT_FOR_SALE);
     }
 
     // Game command modified to accept selection size

@@ -346,7 +346,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
     int32_t centreZ = TileElementHeight(_coords);
 
     auto res = GameActions::Result();
-    res.ErrorTitle = _ErrorTitles[_isLowering ? 0 : 1];
+    res.ErrorTitle = kErrorTitles[_isLowering ? 0 : 1];
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords.x, _coords.y, centreZ };
 

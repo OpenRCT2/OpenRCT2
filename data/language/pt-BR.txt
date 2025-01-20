@@ -2169,7 +2169,6 @@ STR_3136    :Aviso: Este projeto será construído com um tipo alternativo de ve
 STR_3137    :Selecionar Cenários Próximos
 STR_3138    :Reiniciar Seleção
 STR_3139    :Cabo de elevação não funciona neste modo de operação
-STR_3140    :Cabo de elevação deve estar imediatamente após a estação
 STR_3141    :Várias voltas por ingresso não são possíveis com o cabo de elevação
 STR_3142    :{WINDOW_COLOUR_2}Capacidade: {BLACK}{STRINGID}
 STR_3143    :Mostrar pessoas no mapa
@@ -3788,3 +3787,6 @@ STR_6723    :Ao menos um objeto de animação de pessoinha de animador deve ser 
 STR_6724    :Textos dos Cenários
 STR_6725    :X:
 STR_6726    :Y:
+STR_6727    :Loop em mergulho (esquerda)
+STR_6728    :Loop em mergulho (direita)
+STR_6729    :Cabo de elevação deve estar imediatamente após a estação ou freio bloqueador

@@ -12,13 +12,14 @@
     #include "../interface/Theme.h"
 
     #include <openrct2-ui/interface/Widget.h>
-    #include <openrct2-ui/windows/Window.h>
+    #include <openrct2-ui/windows/Windows.h>
     #include <openrct2/Context.h>
     #include <openrct2/ParkImporter.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/String.hpp>
     #include <openrct2/interface/Chat.h>
     #include <openrct2/network/network.h>
+    #include <openrct2/ui/WindowManager.h>
     #include <openrct2/windows/Intent.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -283,7 +284,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ServerStartOpen()
     {
-        return WindowFocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows
 

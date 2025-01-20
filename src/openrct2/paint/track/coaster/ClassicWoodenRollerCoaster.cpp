@@ -233,7 +233,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatT
     },
     {
         SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_NW_SE,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE,
     },
     {
@@ -241,7 +241,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatT
     },
     {
         SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_SE_NW,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW,
     },
 } };
@@ -255,7 +255,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatT
     },
     {
         SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_NE_SW,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_FRONT_NE_SW,
     },
     {
@@ -276,12 +276,12 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25T
     },
     {
         SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_NW_SE,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_FRONT_NW_SE,
     },
     {
         SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_NE_SW,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_FRONT_NE_SW,
     },
     {
@@ -295,12 +295,12 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kUp25T
     },
     {
         SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_NW_SE,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_FRONT_NW_SE,
     },
     {
         SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_NE_SW,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_FRONT_NE_SW,
     },
     {
@@ -314,12 +314,12 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftB
     },
     {
         SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_NW_SE,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_FRONT_NW_SE,
     },
     {
         SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_NE_SW,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_FRONT_NE_SW,
     },
     {
@@ -332,12 +332,12 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kRight
     },
     {
         SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_NW_SE,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_FRONT_NW_SE,
     },
     {
         SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_NE_SW,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_FRONT_NE_SW,
     },
     {
@@ -348,7 +348,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kRight
 static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagFlatToLeftBankImages = { {
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_LEFT_BANK_0,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_LEFT_BANK_FRONT_0,
     },
     {
@@ -356,7 +356,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagF
     },
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_LEFT_BANK_2,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_LEFT_BANK_FRONT_2,
     },
     {
@@ -367,7 +367,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagF
 static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagFlatToRightBankImages = { {
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_0,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_FRONT_0,
     },
     {
@@ -375,7 +375,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagF
     },
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_2,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_FRONT_2,
     },
     {
@@ -386,7 +386,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagF
 static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagLeftBankTo25DegUpImages = { {
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_0,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_FRONT_0,
     },
     {
@@ -394,7 +394,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagL
     },
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_2,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_FRONT_2,
     },
     {
@@ -405,7 +405,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagL
 static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagRightBankTo25DegUpImages = { {
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_0,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_FRONT_0,
     },
     {
@@ -413,7 +413,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagR
     },
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_2,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_FRONT_2,
     },
     {
@@ -424,7 +424,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagR
 static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagUp25ToLeftBankImages = { {
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_0,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_FRONT_0,
     },
     {
@@ -432,7 +432,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagU
     },
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_2,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_FRONT_2,
     },
     {
@@ -443,7 +443,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagU
 static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagLeftBankImages = { {
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_0,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_FRONT_0,
     },
     {
@@ -451,7 +451,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagL
     },
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_2,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_FRONT_2,
     },
     {
@@ -462,7 +462,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagL
 static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagUp25ToRightBankImages = { {
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_0,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_FRONT_0,
     },
     {
@@ -470,7 +470,7 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagU
     },
     {
         SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_2,
-        ImageIndexUndefined,
+        kImageIndexUndefined,
         SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_FRONT_2,
     },
     {
@@ -485,7 +485,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_1,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_0_1,
         },
         {
@@ -493,7 +493,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_0_3,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_0_3,
         },
     } },
@@ -503,7 +503,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_1,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_1_1,
         },
         {
@@ -511,7 +511,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_1_3,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_1_3,
         },
     } },
@@ -521,7 +521,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_1,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_2_1,
         },
         {
@@ -529,7 +529,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_2_3,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_2_3,
         },
     } },
@@ -539,7 +539,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_1,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_3_1,
         },
         {
@@ -547,7 +547,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_3_3,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_3_3,
         },
     } },
@@ -557,7 +557,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     { {
         {
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_0,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_0_0,
         },
         {
@@ -565,7 +565,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_0_2,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_0_2,
         },
         {
@@ -575,7 +575,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     { {
         {
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_0,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_1_0,
         },
         {
@@ -583,7 +583,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_1_2,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_1_2,
         },
         {
@@ -593,7 +593,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     { {
         {
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_0,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_2_0,
         },
         {
@@ -601,7 +601,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_2_2,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_2_2,
         },
         {
@@ -611,7 +611,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
     { {
         {
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_0,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_3_0,
         },
         {
@@ -619,7 +619,7 @@ static constexpr std::array<std::array<WoodenTrackSection, kNumOrthogonalDirecti
         },
         {
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_3_2,
-            ImageIndexUndefined,
+            kImageIndexUndefined,
             SPR_CLASSIC_WOODEN_RC_RIGHT_EIGHTH_BANK_TO_DIAG_FRONT_3_2,
         },
         {

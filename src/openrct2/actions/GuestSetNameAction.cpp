@@ -58,7 +58,7 @@ void GuestSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result GuestSetNameAction::Query() const
 {
-    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
+    if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_ERR_VALUE_OUT_OF_RANGE);
     }
@@ -67,7 +67,7 @@ GameActions::Result GuestSetNameAction::Query() const
     if (guest == nullptr)
     {
         LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, kStringIdNone);
     }
 
     return GameActions::Result();
@@ -79,7 +79,7 @@ GameActions::Result GuestSetNameAction::Execute() const
     if (guest == nullptr)
     {
         LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, kStringIdNone);
     }
 
     auto curName = guest->GetName();
@@ -90,7 +90,7 @@ GameActions::Result GuestSetNameAction::Execute() const
 
     if (!guest->SetName(_name))
     {
-        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, kStringIdNone);
     }
 
     // Easter egg functions are for guests only

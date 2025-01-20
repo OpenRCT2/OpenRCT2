@@ -52,7 +52,7 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
-#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
@@ -117,7 +117,7 @@ namespace OpenRCT2
         void ThrowIfIncompatibleVersion()
         {
             const auto& header = _os->GetHeader();
-            if (/*header.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION || */ header.MinVersion > PARK_FILE_CURRENT_VERSION)
+            if (/*header.TargetVersion < kParkFileMinSupportedVersion || */ header.MinVersion > kParkFileCurrentVersion)
             {
                 throw UnsupportedVersionException(header.MinVersion, header.TargetVersion);
             }
@@ -129,7 +129,7 @@ namespace OpenRCT2
             const auto& header = _os->GetHeader();
             minVersion = header.MinVersion;
             targetVersion = header.TargetVersion;
-            return targetVersion > PARK_FILE_CURRENT_VERSION;
+            return targetVersion > kParkFileCurrentVersion;
         }
 
         void Load(const std::string_view path)
@@ -179,9 +179,9 @@ namespace OpenRCT2
             OrcaStream os(stream, OrcaStream::Mode::WRITING);
 
             auto& header = os.GetHeader();
-            header.Magic = PARK_FILE_MAGIC;
-            header.TargetVersion = PARK_FILE_CURRENT_VERSION;
-            header.MinVersion = PARK_FILE_MIN_VERSION;
+            header.Magic = kParkFileMagic;
+            header.TargetVersion = kParkFileCurrentVersion;
+            header.MinVersion = kParkFileMinVersion;
 
             ReadWriteAuthoringChunk(os);
             ReadWriteObjectsChunk(os);
@@ -1924,7 +1924,7 @@ namespace OpenRCT2
                         cs.ReadWrite(item);
                         if (item == 255)
                         {
-                            thought.item = PeepThoughtItemNone;
+                            thought.item = kPeepThoughtItemNone;
                         }
                         else
                         {
@@ -2643,7 +2643,8 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
     gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
     if (!gIsAutosave)
     {
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseConstructionWindows();
     }
 
     PrepareMapForSave();

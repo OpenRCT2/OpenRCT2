@@ -98,11 +98,11 @@ void ScreenshotCheck()
                 Formatter ft;
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const utf8*>(filename.c_str());
-                ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft, true);
+                ContextShowError(STR_SCREENSHOT_SAVED_AS, kStringIdNone, ft, true);
             }
             else
             {
-                ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {}, true);
+                ContextShowError(STR_SCREENSHOT_FAILED, kStringIdNone, {}, true);
             }
 
             // redraw_weather();
@@ -360,12 +360,12 @@ void ScreenshotGiant()
         Formatter ft;
         ft.Add<StringId>(STR_STRING);
         ft.Add<const utf8*>(filename.c_str());
-        ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft, true);
+        ContextShowError(STR_SCREENSHOT_SAVED_AS, kStringIdNone, ft, true);
     }
     catch (const std::exception& e)
     {
         LOG_ERROR("%s", e.what());
-        ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {}, true);
+        ContextShowError(STR_SCREENSHOT_FAILED, kStringIdNone, {}, true);
     }
 
     ReleaseDPI(dpi);

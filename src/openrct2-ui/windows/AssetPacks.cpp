@@ -10,7 +10,7 @@
 #include "../UiStringIds.h"
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/AssetPack.h>
 #include <openrct2/AssetPackManager.h>
 #include <openrct2/Context.h>
@@ -19,6 +19,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -343,7 +344,9 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* AssetPacksOpen()
     {
+        auto* windowMgr = GetWindowManager();
         auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
-        return WindowFocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);
+
+        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -11,7 +11,7 @@
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -31,7 +31,6 @@
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
@@ -276,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -287,7 +286,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!windowMgr->FindByClass(WindowClass::LandRights))
                         ContextOpenWindow(WindowClass::LandRights);
                     else
-                        WindowCloseByClass(WindowClass::LandRights);
+                        windowMgr->CloseByClass(WindowClass::LandRights);
                     break;
                 }
                 case WIDX_BUILD_PARK_ENTRANCE:
@@ -295,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!windowMgr->FindByClass(WindowClass::EditorParkEntrance))
                         ContextOpenWindow(WindowClass::EditorParkEntrance);
                     else
-                        WindowCloseByClass(WindowClass::EditorParkEntrance);
+                        windowMgr->CloseByClass(WindowClass::EditorParkEntrance);
                     break;
                 }
                 case WIDX_PEOPLE_STARTING_POSITION:
@@ -356,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             // the flickering frequency is reduced by 4, compared to the original
             // it was done due to inability to reproduce original frequency
@@ -600,7 +599,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             // Set the pressed widgets
             pressed_widgets = 0;
@@ -1130,7 +1129,7 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft;
             ft.Add<int16_t>(kMinimumMapSizePractical);
             ft.Add<int16_t>(kMaximumMapSizePractical);
-            TextInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_NONE, STR_NONE, 4);
+            TextInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, kStringIdNone, kStringIdNone, 4);
         }
 
         CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
@@ -1253,7 +1252,8 @@ namespace OpenRCT2::Ui::Windows
     {
         try
         {
-            WindowBase* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
+            auto* windowMgr = GetWindowManager();
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
             w->selected_tab = 0;
             w->list_information_type = 0;
             return w;
@@ -1266,10 +1266,9 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowMapReset()
     {
-        WindowBase* w;
-
         // Check if window is even opened
-        w = WindowBringToFrontByClass(WindowClass::Map);
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->BringToFrontByClass(WindowClass::Map);
         if (w == nullptr)
         {
             return;

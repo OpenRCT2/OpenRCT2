@@ -12,7 +12,7 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -29,7 +29,6 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -279,7 +278,7 @@ namespace OpenRCT2::Ui::Windows
                 // Unable to build track
                 Audio::Play3D(Audio::SoundId::Error, trackLoc);
 
-                auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+                auto windowManager = GetWindowManager();
                 windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
                 return;
             }
@@ -296,19 +295,19 @@ namespace OpenRCT2::Ui::Windows
                 auto getRide = GetRide(rideId);
                 if (getRide != nullptr)
                 {
-                    WindowCloseByClass(WindowClass::Error);
-                    Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::Error);
 
+                    Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
                     _currentRideIndex = rideId;
 
-                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
                     if (TrackDesignAreEntranceAndExitPlaced())
                     {
                         auto intent = Intent(WindowClass::Ride);
                         intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                         ContextOpenIntent(&intent);
                         auto* wnd = windowMgr->FindByClass(WindowClass::TrackDesignPlace);
-                        WindowClose(*wnd);
+                        windowMgr->Close(*wnd);
                     }
                     else
                     {
@@ -735,9 +734,10 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseConstructionWindows();
 
-        auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
+        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
         if (window != nullptr)
         {
             window->Init(std::move(openTrackDesign));
@@ -747,7 +747,7 @@ namespace OpenRCT2::Ui::Windows
 
     void TrackPlaceClearProvisionalTemporarily()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {
@@ -757,7 +757,7 @@ namespace OpenRCT2::Ui::Windows
 
     void TrackPlaceRestoreProvisional()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {

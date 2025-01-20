@@ -9,7 +9,7 @@
 
 #include "ProvisionalElements.h"
 
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/WindowClasses.h>
@@ -30,7 +30,7 @@ namespace OpenRCT2::Ui
 
         FootpathRemoveProvisionalTemporarily();
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByClass(WindowClass::RideConstruction) != nullptr)
         {
             RideRemoveProvisionalTrackPiece();
@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui
 
         FootpathRestoreProvisional();
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByClass(WindowClass::RideConstruction) != nullptr)
         {
             RideRestoreProvisionalTrackPiece();

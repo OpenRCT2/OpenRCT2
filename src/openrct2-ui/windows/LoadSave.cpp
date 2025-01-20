@@ -13,8 +13,7 @@
 #include <memory>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Editor.h>
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
@@ -38,6 +37,7 @@
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <string>
@@ -82,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_loadsave_widgets[] =
     {
-        WINDOW_SHIM(STR_NONE, WW, WH),
+        WINDOW_SHIM(kStringIdNone, WW, WH),
         MakeWidget({                0,      15 }, {       WW,  WH - 15 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
         MakeWidget({                4,      36 }, {       84,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
         MakeWidget({               88,      36 }, {       84,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
@@ -284,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if (!IsValidPath(path))
         {
-            ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+            ContextShowError(STR_ERROR_INVALID_CHARACTERS, kStringIdNone, {});
             return;
         }
 
@@ -293,8 +293,9 @@ namespace OpenRCT2::Ui::Windows
 
         // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
         // no windows are open (besides the toolbars and LoadSave window).
-        WindowCloseByClass(WindowClass::RideConstruction);
-        WindowCloseAllExceptClass(WindowClass::Loadsave);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::RideConstruction);
+        windowMgr->CloseAllExceptClass(WindowClass::Loadsave);
 
         auto& gameState = GetGameState();
 
@@ -305,7 +306,7 @@ namespace OpenRCT2::Ui::Windows
                 if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
                 {
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     GfxInvalidateScreen();
                 }
                 else
@@ -325,7 +326,7 @@ namespace OpenRCT2::Ui::Windows
                     gIsAutosaveLoaded = false;
                     gFirstTimeSaving = false;
 
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     GfxInvalidateScreen();
 
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
@@ -359,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
                 if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
                 {
                     gCurrentLoadedPath = pathBuffer;
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     GfxInvalidateScreen();
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 }
@@ -382,7 +383,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (success)
                 {
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     InvokeCallback(MODAL_RESULT_OK, pathBuffer);
 
                     auto* context = OpenRCT2::GetContext();
@@ -403,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
                 auto intent = Intent(WindowClass::InstallTrack);
                 intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
                 ContextOpenIntent(&intent);
-                WindowCloseByClass(WindowClass::Loadsave);
+                windowMgr->CloseByClass(WindowClass::Loadsave);
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 break;
             }
@@ -421,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (success)
                 {
-                    WindowCloseByClass(WindowClass::Loadsave);
+                    windowMgr->CloseByClass(WindowClass::Loadsave);
                     WindowRideMeasurementsDesignCancel();
                     InvokeCallback(MODAL_RESULT_OK, path);
                 }
@@ -434,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             case (LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP):
-                WindowCloseByClass(WindowClass::Loadsave);
+                windowMgr->CloseByClass(WindowClass::Loadsave);
                 InvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 break;
         }
@@ -444,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
     {
         OpenRCT2::Ui::FileDialogDesc desc = {};
         u8string extension;
-        StringId title = STR_NONE;
+        StringId title = kStringIdNone;
         switch (_type & 0x0E)
         {
             case LOADSAVETYPE_GAME:
@@ -769,7 +770,10 @@ namespace OpenRCT2::Ui::Windows
         void OnClose() override
         {
             _listItems.clear();
-            WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
+
             Config::Save();
 
             // Unpause the game if not on title scene, nor in network play.
@@ -923,7 +927,7 @@ namespace OpenRCT2::Ui::Windows
             const auto drawButtonCaption = [dpi, this](
                                                Widget& widget, StringId strId, FileBrowserSort ascSort,
                                                FileBrowserSort descSort) {
-                StringId indicatorId = STR_NONE;
+                StringId indicatorId = kStringIdNone;
                 if (Config::Get().general.LoadSaveSort == ascSort)
                     indicatorId = STR_UP;
                 else if (Config::Get().general.LoadSaveSort == descSort)
@@ -974,12 +978,13 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_NEW_FILE:
                     WindowTextInputOpen(
-                        this, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, {}, STR_STRING,
+                        this, WIDX_NEW_FILE, kStringIdNone, STR_FILEBROWSER_FILE_NAME_PROMPT, {}, STR_STRING,
                         reinterpret_cast<uintptr_t>(_defaultPath.c_str()), 64);
                     break;
 
                 case WIDX_NEW_FOLDER:
-                    WindowTextInputRawOpen(this, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
+                    WindowTextInputRawOpen(
+                        this, WIDX_NEW_FOLDER, kStringIdNone, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
                     break;
 
                 case WIDX_BROWSE:
@@ -1121,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (!Platform::IsFilenameValid(text))
             {
-                ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+                ContextShowError(STR_ERROR_INVALID_CHARACTERS, kStringIdNone, {});
                 return;
             }
 
@@ -1132,7 +1137,7 @@ namespace OpenRCT2::Ui::Windows
                     const u8string path = Path::Combine(_directory, text);
                     if (!Path::CreateDirectory(path))
                     {
-                        ContextShowError(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE, {});
+                        ContextShowError(STR_UNABLE_TO_CREATE_FOLDER, kStringIdNone, {});
                         return;
                     }
 
@@ -1335,7 +1340,8 @@ namespace OpenRCT2::Ui::Windows
 
         const u8string path = GetDir(type);
 
-        auto* w = static_cast<LoadSaveWindow*>(WindowBringToFrontByClass(WindowClass::Loadsave));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::Loadsave));
         if (w == nullptr)
         {
             if (config.FileBrowserWidth < kWindowSizeMin.width || config.FileBrowserHeight < kWindowSizeMin.height
@@ -1349,7 +1355,7 @@ namespace OpenRCT2::Ui::Windows
             auto width = config.FileBrowserWidth;
             auto height = config.FileBrowserHeight;
 
-            w = WindowCreate<LoadSaveWindow>(
+            w = windowMgr->Create<LoadSaveWindow>(
                 WindowClass::Loadsave, width, height, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
                 type);
         }
@@ -1455,7 +1461,8 @@ namespace OpenRCT2::Ui::Windows
 
                     // As the LoadSaveWindow::Select function can change the order of the
                     // windows we can't use WindowClose(w).
-                    WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
                     break;
                 }
 
@@ -1481,9 +1488,10 @@ namespace OpenRCT2::Ui::Windows
 
     static WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path)
     {
-        WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
-        return WindowCreate<OverwritePromptWindow>(
+        return windowMgr->Create<OverwritePromptWindow>(
             WindowClass::LoadsaveOverwritePrompt, OVERWRITE_WW, OVERWRITE_WH,
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name, path);
     }

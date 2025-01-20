@@ -61,6 +61,7 @@
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -87,7 +88,7 @@ using namespace OpenRCT2;
 using arguments_t = std::vector<std::string>;
 using OpenRCT2::Date;
 
-static constexpr const char* ClimateNames[] = {
+static constexpr const char* kClimateNames[] = {
     "cool_and_wet",
     "warm",
     "hot_and_dry",
@@ -675,7 +676,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         else if (argv[0] == "climate")
         {
             console.WriteFormatLine(
-                "climate %s  (%d)", ClimateNames[EnumValue(gameState.Climate)], EnumValue(gameState.Climate));
+                "climate %s  (%d)", kClimateNames[EnumValue(gameState.Climate)], EnumValue(gameState.Climate));
         }
         else if (argv[0] == "game_speed")
         {
@@ -925,7 +926,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             {
                 for (newClimate = 0; newClimate < static_cast<uint8_t>(ClimateType::Count); newClimate++)
                 {
-                    if (argv[1] == ClimateNames[newClimate])
+                    if (argv[1] == kClimateNames[newClimate])
                     {
                         invalidArgs = false;
                         break;
@@ -1113,7 +1114,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
             // Automatically research the ride so it's supported by the game.
             const auto* rideEntry = GetRideEntryByIndex(groupIndex);
 
-            for (int32_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+            for (int32_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
             {
                 auto rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
@@ -1207,7 +1208,8 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
             else
             {
                 // Only this window should be open for safety reasons
-                WindowCloseAll();
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseAll();
                 ContextOpenWindow(WindowClass::EditorObjectSelection);
             }
         }
@@ -1282,7 +1284,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
 
     auto bannerCount = GetNumBanners();
 
-    console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
+    console.WriteFormatLine("Sprites: %d/%d", spriteCount, kMaxEntities);
     console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, OpenRCT2::Limits::kMaxRidesInPark);

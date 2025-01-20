@@ -117,7 +117,7 @@ static Ride _previewRide{};
 struct StationIndexWithMessage
 {
     ::StationIndex StationIndex;
-    StringId Message = STR_NONE;
+    StringId Message = kStringIdNone;
 };
 
 // Static function declarations
@@ -765,7 +765,7 @@ bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
     if (rtd.specialType == RtdSpecialType::maze)
         return false;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == id)
     {
@@ -852,7 +852,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
         else
         {
             ft.Add<StringId>(STR_RACE_WON_BY);
-            ft.Add<StringId>(STR_NONE);
+            ft.Add<StringId>(kStringIdNone);
         }
     }
     else if (!GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
@@ -997,13 +997,13 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign(TrackDesignState& tds) cons
 {
     if (!(lifecycle_flags & RIDE_LIFECYCLE_TESTED))
     {
-        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
         return nullptr;
     }
 
     if (!RideHasRatings(*this))
     {
-        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+        ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
         return nullptr;
     }
 
@@ -1016,7 +1016,7 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign(TrackDesignState& tds) cons
     }
     if (errMessage.HasMessage())
     {
-        ContextShowError(errMessage.Message, STR_EMPTY, {});
+        ContextShowError(errMessage.Message, kStringIdEmpty, {});
     }
 
     return td;
@@ -2157,7 +2157,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     measurement->last_use_tick = GetGameState().CurrentTicks;
     if (measurement->flags & 1)
     {
-        return { measurement.get(), { STR_EMPTY, {} } };
+        return { measurement.get(), { kStringIdEmpty, {} } };
     }
 
     auto ft = Formatter();
@@ -2702,7 +2702,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
 
     RideId rideIndex = input.element->AsTrack()->GetRideIndex();
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         RideConstructionInvalidateCurrentTrack();
@@ -2767,7 +2767,7 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
             return true;
     }
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
@@ -2828,7 +2828,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
     if (rtd.specialType == RtdSpecialType::maze)
         return true;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
@@ -2870,7 +2870,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
  */
 static int32_t RideCheckStationLength(const CoordsXYE& input, CoordsXYE* output)
 {
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
         && _currentRideIndex == input.element->AsTrack()->GetRideIndex())
@@ -2933,7 +2933,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
     if (ride == nullptr)
         return false;
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
@@ -3971,7 +3971,7 @@ void Ride::ConstructMissingEntranceOrExit() const
             return;
         }
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w != nullptr)
             w->OnMouseUp(entranceOrExit);
@@ -4030,7 +4030,8 @@ ResultWithMessage Ride::Test(bool isApplying)
         return { false };
     }
 
-    WindowCloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
 
     StationIndex stationIndex = {};
     auto message = ChangeStatusDoStationChecks(stationIndex);
@@ -4117,7 +4118,8 @@ ResultWithMessage Ride::Open(bool isApplying)
     // with auto open on.
     if (isToolActive(WindowClass::RideConstruction, static_cast<rct_windownumber>(id.ToUnderlying())))
     {
-        WindowCloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByNumber(WindowClass::RideConstruction, id.ToUnderlying());
     }
 
     StationIndex stationIndex = {};
@@ -5018,7 +5020,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
 
     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
     {
@@ -5463,10 +5465,9 @@ bool RideHasRatings(const Ride& ride)
     return !ride.ratings.isNull();
 }
 
-int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
+int32_t GetUnifiedBoosterSpeed(ride_type_t rideType, int32_t relativeSpeed)
 {
-    // BoosterSpeedFactor has valid values of 1, 2, 4 representing a 1/2, 1, and 2 multiplier.
-    return rawSpeed * GetRideTypeDescriptor(rideType).LegacyBoosterSettings.BoosterSpeedFactor / 2;
+    return GetRideTypeDescriptor(rideType).GetUnifiedBoosterSpeed(relativeSpeed);
 }
 
 void FixInvalidVehicleSpriteSizes()

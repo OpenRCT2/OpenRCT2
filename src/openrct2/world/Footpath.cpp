@@ -475,7 +475,7 @@ static bool FootpathDisconnectQueueFromPath(const CoordsXY& footpathPos, TileEle
             return true;
     }
 
-    for (Direction direction : ALL_DIRECTIONS)
+    for (Direction direction : kAllDirections)
     {
         if ((action < 0) && (direction == tileElement->AsPath()->GetSlopeDirection()))
             continue;
@@ -748,7 +748,7 @@ void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement,
     FootpathNeighbourListInit(&neighbourList);
 
     FootpathUpdateQueueEntranceBanner(footpathPos, tileElement);
-    for (Direction direction : ALL_DIRECTIONS)
+    for (Direction direction : kAllDirections)
     {
         Loc6A6C85({ footpathPos, tileElement }, direction, flags, true, &neighbourList);
     }

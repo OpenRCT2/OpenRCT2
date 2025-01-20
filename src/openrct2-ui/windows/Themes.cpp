@@ -11,7 +11,7 @@
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -21,7 +21,6 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -387,7 +386,7 @@ namespace OpenRCT2::Ui::Windows
 
             pressed_widgets = pressedWidgets | (1 << widgetIndex);
 
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::Dropdown) == nullptr)
             {
                 _classIndex = -1;
@@ -530,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RCT1_RIDE_LIGHTS:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -542,7 +541,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RCT1_PARK_LIGHTS:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -554,7 +553,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RCT1_SCENARIO_FONT:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -567,7 +566,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RCT1_BOTTOM_TOOLBAR:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -598,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_DELETE_BUTTON:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -608,7 +607,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RENAME_BUTTON:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -674,12 +673,12 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            ContextShowError(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE, {});
+                            ContextShowError(STR_THEMES_ERR_NAME_ALREADY_EXISTS, kStringIdNone, {});
                         }
                     }
                     else
                     {
-                        ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+                        ContextShowError(STR_ERROR_INVALID_CHARACTERS, kStringIdNone, {});
                     }
                     break;
             }
@@ -972,14 +971,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ThemesOpen()
     {
-        WindowBase* window;
-
         // Check if window is already open
-        window = WindowBringToFrontByClass(WindowClass::Themes);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::Themes);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<ThemesWindow>(WindowClass::Themes, 320, 107, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<ThemesWindow>(WindowClass::Themes, 320, 107, WF_10 | WF_RESIZABLE);
 
         return window;
     }

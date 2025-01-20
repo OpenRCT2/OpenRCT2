@@ -38,8 +38,8 @@ struct DrawScrollText
     uint8_t bitmap[64 * 40];
 };
 
-static DrawScrollText _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
-static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
+static DrawScrollText _drawScrollTextList[OpenRCT2::kMaxScrollingTextEntries];
+static uint8_t _characterBitmaps[kSpriteFontGlyphCount + SPR_G2_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
 
@@ -80,7 +80,7 @@ static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_
 
 static void ScrollingTextInitialiseScrollingText()
 {
-    for (int32_t i = 0; i < OpenRCT2::MaxScrollingTextEntries; i++)
+    for (int32_t i = 0; i < OpenRCT2::kMaxScrollingTextEntries; i++)
     {
         const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
 
@@ -105,17 +105,17 @@ static void ScrollingTextInitialiseScrollingText()
 
 void ScrollingTextInitialiseBitmaps()
 {
-    ScrollingTextInitialiseCharacterBitmaps(SPR_CHAR_START, 0, FONT_SPRITE_GLYPH_COUNT, gTinyFontAntiAliased);
-    ScrollingTextInitialiseCharacterBitmaps(SPR_G2_CHAR_BEGIN, FONT_SPRITE_GLYPH_COUNT, SPR_G2_GLYPH_COUNT, false);
+    ScrollingTextInitialiseCharacterBitmaps(SPR_CHAR_START, 0, kSpriteFontGlyphCount, gTinyFontAntiAliased);
+    ScrollingTextInitialiseCharacterBitmaps(SPR_G2_CHAR_BEGIN, kSpriteFontGlyphCount, SPR_G2_GLYPH_COUNT, false);
     ScrollingTextInitialiseScrollingText();
 }
 
 static uint8_t* FontSpriteGetCodepointBitmap(int32_t codepoint)
 {
     auto offset = FontSpriteGetCodepointOffset(codepoint);
-    if (offset >= FONT_SPRITE_GLYPH_COUNT)
+    if (offset >= kSpriteFontGlyphCount)
     {
-        return _characterBitmaps[offset - (SPR_G2_CHAR_BEGIN - SPR_CHAR_START) + FONT_SPRITE_GLYPH_COUNT];
+        return _characterBitmaps[offset - (SPR_G2_CHAR_BEGIN - SPR_CHAR_START) + kSpriteFontGlyphCount];
     }
 
     return _characterBitmaps[offset];
@@ -167,7 +167,7 @@ consteval int16_t ScrollPos(const int16_t x, const int16_t y)
 }
 
 // clang-format off
-static constexpr int16_t _scrollpos0[] = {
+static constexpr int16_t kScrollPos0[] = {
     ScrollPos( 35, 12 ),
     ScrollPos( 36, 12 ),
     ScrollPos( 37, 11 ),
@@ -194,7 +194,7 @@ static constexpr int16_t _scrollpos0[] = {
     ScrollPos( 58,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos1[] = {
+static constexpr int16_t kScrollPos1[] = {
     ScrollPos(  5,  1 ),
     ScrollPos(  6,  1 ),
     ScrollPos(  7,  2 ),
@@ -221,7 +221,7 @@ static constexpr int16_t _scrollpos1[] = {
     ScrollPos( 28, 12 ),
     -1,
 };
-static constexpr int16_t _scrollpos2[] = {
+static constexpr int16_t kScrollPos2[] = {
     ScrollPos( 12,  1 ),
     ScrollPos( 13,  1 ),
     ScrollPos( 14,  2 ),
@@ -263,7 +263,7 @@ static constexpr int16_t _scrollpos2[] = {
     ScrollPos( 50,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos3[] = {
+static constexpr int16_t kScrollPos3[] = {
     ScrollPos( 16,  0 ),
     ScrollPos( 17,  1 ),
     ScrollPos( 18,  1 ),
@@ -299,7 +299,7 @@ static constexpr int16_t _scrollpos3[] = {
     ScrollPos( 48, 16 ),
     -1,
 };
-static constexpr int16_t _scrollpos4[] = {
+static constexpr int16_t kScrollPos4[] = {
     ScrollPos( 15, 17 ),
     ScrollPos( 16, 17 ),
     ScrollPos( 17, 16 ),
@@ -336,7 +336,7 @@ static constexpr int16_t _scrollpos4[] = {
     ScrollPos( 48,  0 ),
     -1,
 };
-static constexpr int16_t _scrollpos5[] = {
+static constexpr int16_t kScrollPos5[] = {
     ScrollPos(  4, 12 ),
     ScrollPos(  5, 12 ),
     ScrollPos(  6, 11 ),
@@ -363,7 +363,7 @@ static constexpr int16_t _scrollpos5[] = {
     ScrollPos( 27,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos6[] = {
+static constexpr int16_t kScrollPos6[] = {
     ScrollPos( 36,  1 ),
     ScrollPos( 37,  1 ),
     ScrollPos( 38,  2 ),
@@ -390,7 +390,7 @@ static constexpr int16_t _scrollpos6[] = {
     ScrollPos( 59, 12 ),
     -1,
 };
-static constexpr int16_t _scrollpos7[] = {
+static constexpr int16_t kScrollPos7[] = {
     ScrollPos(  8, 11 ),
     ScrollPos(  9, 11 ),
     ScrollPos( 10, 10 ),
@@ -415,7 +415,7 @@ static constexpr int16_t _scrollpos7[] = {
     ScrollPos( 29,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos8[] = {
+static constexpr int16_t kScrollPos8[] = {
     ScrollPos( 36,  2 ),
     ScrollPos( 37,  2 ),
     ScrollPos( 38,  3 ),
@@ -438,7 +438,7 @@ static constexpr int16_t _scrollpos8[] = {
     ScrollPos( 55, 11 ),
     -1,
 };
-static constexpr int16_t _scrollpos9[] = {
+static constexpr int16_t kScrollPos9[] = {
     ScrollPos( 11,  9 ),
     ScrollPos( 12,  9 ),
     ScrollPos( 13,  9 ),
@@ -460,7 +460,7 @@ static constexpr int16_t _scrollpos9[] = {
     ScrollPos( 29,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos10[] = {
+static constexpr int16_t kScrollPos10[] = {
     ScrollPos( 34,  1 ),
     ScrollPos( 35,  2 ),
     ScrollPos( 36,  3 ),
@@ -482,7 +482,7 @@ static constexpr int16_t _scrollpos10[] = {
     ScrollPos( 52,  9 ),
     -1,
 };
-static constexpr int16_t _scrollpos11[] = {
+static constexpr int16_t kScrollPos11[] = {
     ScrollPos( 14, 10 ),
     ScrollPos( 15,  9 ),
     ScrollPos( 16,  9 ),
@@ -506,7 +506,7 @@ static constexpr int16_t _scrollpos11[] = {
     ScrollPos( 34,  0 ),
     -1,
 };
-static constexpr int16_t _scrollpos12[] = {
+static constexpr int16_t kScrollPos12[] = {
     ScrollPos( 33,  1 ),
     ScrollPos( 34,  2 ),
     ScrollPos( 35,  2 ),
@@ -530,7 +530,7 @@ static constexpr int16_t _scrollpos12[] = {
     ScrollPos( 53, 11 ),
     -1,
 };
-static constexpr int16_t _scrollpos13[] = {
+static constexpr int16_t kScrollPos13[] = {
     ScrollPos( 12, 11 ),
     ScrollPos( 13, 10 ),
     ScrollPos( 14, 10 ),
@@ -553,7 +553,7 @@ static constexpr int16_t _scrollpos13[] = {
     ScrollPos( 31,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos14[] = {
+static constexpr int16_t kScrollPos14[] = {
     ScrollPos( 33,  1 ),
     ScrollPos( 34,  2 ),
     ScrollPos( 35,  2 ),
@@ -577,7 +577,7 @@ static constexpr int16_t _scrollpos14[] = {
     ScrollPos( 53, 11 ),
     -1,
 };
-static constexpr int16_t _scrollpos15[] = {
+static constexpr int16_t kScrollPos15[] = {
     ScrollPos( 10, 10 ),
     ScrollPos( 11, 10 ),
     ScrollPos( 12,  9 ),
@@ -602,7 +602,7 @@ static constexpr int16_t _scrollpos15[] = {
     ScrollPos( 31,  0 ),
     -1,
 };
-static constexpr int16_t _scrollpos16[] = {
+static constexpr int16_t kScrollPos16[] = {
     ScrollPos( 33,  0 ),
     ScrollPos( 34,  0 ),
     ScrollPos( 35,  1 ),
@@ -627,7 +627,7 @@ static constexpr int16_t _scrollpos16[] = {
     ScrollPos( 54, 10 ),
     -1,
 };
-static constexpr int16_t _scrollpos17[] = {
+static constexpr int16_t kScrollPos17[] = {
     ScrollPos(  6, 11 ),
     ScrollPos(  7, 11 ),
     ScrollPos(  8, 10 ),
@@ -654,7 +654,7 @@ static constexpr int16_t _scrollpos17[] = {
     ScrollPos( 29,  0 ),
     -1,
 };
-static constexpr int16_t _scrollpos18[] = {
+static constexpr int16_t kScrollPos18[] = {
     ScrollPos( 34,  0 ),
     ScrollPos( 35,  0 ),
     ScrollPos( 36,  1 ),
@@ -681,7 +681,7 @@ static constexpr int16_t _scrollpos18[] = {
     ScrollPos( 57, 11 ),
     -1,
 };
-static constexpr int16_t _scrollpos19[] = {
+static constexpr int16_t kScrollPos19[] = {
     ScrollPos( 13,  1 ),
     ScrollPos( 14,  1 ),
     ScrollPos( 15,  2 ),
@@ -723,7 +723,7 @@ static constexpr int16_t _scrollpos19[] = {
     ScrollPos( 51,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos20[] = {
+static constexpr int16_t kScrollPos20[] = {
     ScrollPos( 12,  1 ),
     ScrollPos( 13,  3 ),
     ScrollPos( 14,  4 ),
@@ -764,7 +764,7 @@ static constexpr int16_t _scrollpos20[] = {
     ScrollPos( 49,  3 ),
     -1,
 };
-static constexpr int16_t _scrollpos21[] = {
+static constexpr int16_t kScrollPos21[] = {
     ScrollPos( 12,  1 ),
     ScrollPos( 13,  1 ),
     ScrollPos( 14,  2 ),
@@ -805,7 +805,7 @@ static constexpr int16_t _scrollpos21[] = {
     ScrollPos( 49,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos22[] = {
+static constexpr int16_t kScrollPos22[] = {
     ScrollPos( 16,  1 ),
     ScrollPos( 17,  1 ),
     ScrollPos( 18,  2 ),
@@ -841,7 +841,7 @@ static constexpr int16_t _scrollpos22[] = {
     ScrollPos( 48,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos23[] = {
+static constexpr int16_t kScrollPos23[] = {
     ScrollPos( 15,  1 ),
     ScrollPos( 16,  2 ),
     ScrollPos( 17,  2 ),
@@ -878,7 +878,7 @@ static constexpr int16_t _scrollpos23[] = {
     ScrollPos( 48,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos24[] = {
+static constexpr int16_t kScrollPos24[] = {
     ScrollPos(  8,  9 ),
     ScrollPos(  9,  9 ),
     ScrollPos( 10,  8 ),
@@ -901,7 +901,7 @@ static constexpr int16_t _scrollpos24[] = {
     ScrollPos( 27,  0 ),
     -1,
 };
-static constexpr int16_t _scrollpos25[] = {
+static constexpr int16_t kScrollPos25[] = {
     ScrollPos( 36,  0 ),
     ScrollPos( 37,  0 ),
     ScrollPos( 38,  1 ),
@@ -924,7 +924,7 @@ static constexpr int16_t _scrollpos25[] = {
     ScrollPos( 55,  9 ),
     -1,
 };
-static constexpr int16_t _scrollpos26[] = {
+static constexpr int16_t kScrollPos26[] = {
     ScrollPos(  4, 13 ),
     ScrollPos(  5, 13 ),
     ScrollPos(  6, 12 ),
@@ -955,7 +955,7 @@ static constexpr int16_t _scrollpos26[] = {
     ScrollPos( 31,  0 ),
     -1,
 };
-static constexpr int16_t _scrollpos27[] = {
+static constexpr int16_t kScrollPos27[] = {
     ScrollPos( 32,  0 ),
     ScrollPos( 33,  0 ),
     ScrollPos( 34,  1 ),
@@ -986,7 +986,7 @@ static constexpr int16_t _scrollpos27[] = {
     ScrollPos( 59, 13 ),
     -1,
 };
-static constexpr int16_t _scrollpos28[] = {
+static constexpr int16_t kScrollPos28[] = {
     ScrollPos(  6, 13 ),
     ScrollPos(  7, 13 ),
     ScrollPos(  8, 12 ),
@@ -1017,7 +1017,7 @@ static constexpr int16_t _scrollpos28[] = {
     ScrollPos( 33,  0 ),
     -1,
 };
-static constexpr int16_t _scrollpos29[] = {
+static constexpr int16_t kScrollPos29[] = {
     ScrollPos( 30,  0 ),
     ScrollPos( 31,  0 ),
     ScrollPos( 32,  1 ),
@@ -1048,7 +1048,7 @@ static constexpr int16_t _scrollpos29[] = {
     ScrollPos( 57, 13 ),
     -1,
 };
-static constexpr int16_t _scrollpos30[] = {
+static constexpr int16_t kScrollPos30[] = {
     ScrollPos(  2, 30 ),
     ScrollPos(  3, 30 ),
     ScrollPos(  4, 29 ),
@@ -1112,7 +1112,7 @@ static constexpr int16_t _scrollpos30[] = {
     ScrollPos( 62,  0 ),
     -1,
 };
-static constexpr int16_t _scrollpos31[] = {
+static constexpr int16_t kScrollPos31[] = {
     ScrollPos(  1,  0 ),
     ScrollPos(  2,  1 ),
     ScrollPos(  3,  1 ),
@@ -1176,7 +1176,7 @@ static constexpr int16_t _scrollpos31[] = {
     ScrollPos( 61, 30 ),
     -1,
 };
-static constexpr int16_t _scrollpos32[] = {
+static constexpr int16_t kScrollPos32[] = {
     ScrollPos( 12,  0 ),
     ScrollPos( 13,  1 ),
     ScrollPos( 14,  1 ),
@@ -1218,7 +1218,7 @@ static constexpr int16_t _scrollpos32[] = {
     ScrollPos( 50, 19 ),
     -1,
 };
-static constexpr int16_t _scrollpos33[] = {
+static constexpr int16_t kScrollPos33[] = {
     ScrollPos( 12, 20 ),
     ScrollPos( 13, 20 ),
     ScrollPos( 14, 19 ),
@@ -1261,7 +1261,7 @@ static constexpr int16_t _scrollpos33[] = {
     ScrollPos( 51,  1 ),
     -1,
 };
-static constexpr int16_t _scrollpos34[] = {
+static constexpr int16_t kScrollPos34[] = {
     ScrollPos(  2, 14 ),
     ScrollPos(  3, 14 ),
     ScrollPos(  4, 13 ),
@@ -1293,7 +1293,7 @@ static constexpr int16_t _scrollpos34[] = {
     ScrollPos( 30,  0 ),
     -1,
 };
-static constexpr int16_t _scrollpos35[] = {
+static constexpr int16_t kScrollPos35[] = {
     ScrollPos( 33,  0 ),
     ScrollPos( 34,  0 ),
     ScrollPos( 35,  1 ),
@@ -1325,7 +1325,7 @@ static constexpr int16_t _scrollpos35[] = {
     ScrollPos( 61, 14 ),
     -1,
 };
-static constexpr int16_t _scrollpos36[] = {
+static constexpr int16_t kScrollPos36[] = {
     ScrollPos(  4,  0 ),
     ScrollPos(  5,  1 ),
     ScrollPos(  6,  2 ),
@@ -1355,7 +1355,7 @@ static constexpr int16_t _scrollpos36[] = {
     ScrollPos( 30, 12 ),
     -1,
 };
-static constexpr int16_t _scrollpos37[] = {
+static constexpr int16_t kScrollPos37[] = {
     ScrollPos( 32, 13 ),
     ScrollPos( 33, 12 ),
     ScrollPos( 34, 12 ),
@@ -1386,45 +1386,45 @@ static constexpr int16_t _scrollpos37[] = {
     -1,
 };
 
-static constexpr const int16_t* _scrollPositions[kMaxScrollingTextModes] = {
-    _scrollpos0,
-    _scrollpos1,
-    _scrollpos2,
-    _scrollpos3,
-    _scrollpos4,
-    _scrollpos5,
-    _scrollpos6,
-    _scrollpos7,
-    _scrollpos8,
-    _scrollpos9,
-    _scrollpos10,
-    _scrollpos11,
-    _scrollpos12,
-    _scrollpos13,
-    _scrollpos14,
-    _scrollpos15,
-    _scrollpos16,
-    _scrollpos17,
-    _scrollpos18,
-    _scrollpos19,
-    _scrollpos20,
-    _scrollpos21,
-    _scrollpos22,
-    _scrollpos23,
-    _scrollpos24,
-    _scrollpos25,
-    _scrollpos26,
-    _scrollpos27,
-    _scrollpos28,
-    _scrollpos29,
-    _scrollpos30,
-    _scrollpos31,
-    _scrollpos32,
-    _scrollpos33,
-    _scrollpos34,
-    _scrollpos35,
-    _scrollpos36,
-    _scrollpos37,
+static constexpr const int16_t* kScrollPositions[kMaxScrollingTextModes] = {
+    kScrollPos0,
+    kScrollPos1,
+    kScrollPos2,
+    kScrollPos3,
+    kScrollPos4,
+    kScrollPos5,
+    kScrollPos6,
+    kScrollPos7,
+    kScrollPos8,
+    kScrollPos9,
+    kScrollPos10,
+    kScrollPos11,
+    kScrollPos12,
+    kScrollPos13,
+    kScrollPos14,
+    kScrollPos15,
+    kScrollPos16,
+    kScrollPos17,
+    kScrollPos18,
+    kScrollPos19,
+    kScrollPos20,
+    kScrollPos21,
+    kScrollPos22,
+    kScrollPos23,
+    kScrollPos24,
+    kScrollPos25,
+    kScrollPos26,
+    kScrollPos27,
+    kScrollPos28,
+    kScrollPos29,
+    kScrollPos30,
+    kScrollPos31,
+    kScrollPos32,
+    kScrollPos33,
+    kScrollPos34,
+    kScrollPos35,
+    kScrollPos36,
+    kScrollPos37,
 };
 // clang-format on
 
@@ -1466,7 +1466,7 @@ ImageId ScrollingTextSetup(
     utf8 scrollString[256];
     ScrollingTextFormat(scrollString, 256, scrollText);
 
-    const int16_t* scrollingModePositions = _scrollPositions[scrollingMode];
+    const int16_t* scrollingModePositions = kScrollPositions[scrollingMode];
 
     std::fill_n(scrollText->bitmap, 320 * 8, 0x00);
     if (LocalisationService_UseTrueTypeFont())

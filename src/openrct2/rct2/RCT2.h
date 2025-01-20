@@ -26,10 +26,10 @@ enum class VehicleColourSettings : uint8_t;
 
 namespace OpenRCT2::RCT2
 {
-    constexpr StringId RCT2_RIDE_STRING_START = 2;
+    constexpr StringId kRCT2RideStringStart = 2;
 
     // clang-format off
-    constexpr uint16_t RCT2_OBJECT_ENTRY_COUNT =
+    constexpr uint16_t kRCT2ObjectEntryCount =
         Limits::kMaxRideObjects +
         Limits::kMaxSmallSceneryObjects +
         Limits::kMaxLargeSceneryObjects +
@@ -42,10 +42,10 @@ namespace OpenRCT2::RCT2
         Limits::kMaxWaterObjects +
         Limits::kMaxScenarioTextObjects;
     // clang-format on
-    static_assert(RCT2_OBJECT_ENTRY_COUNT == 721);
+    static_assert(kRCT2ObjectEntryCount == 721);
 
     // clang-format off
-    constexpr int32_t RCT2ObjectEntryGroupCounts[] = {
+    constexpr int32_t kRCT2ObjectEntryGroupCounts[] = {
         Limits::kMaxRideObjects,
         Limits::kMaxSmallSceneryObjects,
         Limits::kMaxLargeSceneryObjects,
@@ -784,7 +784,7 @@ namespace OpenRCT2::RCT2
         // SC6[3]
         union
         {
-            RCTObjectEntry Objects[RCT2_OBJECT_ENTRY_COUNT];
+            RCTObjectEntry Objects[kRCT2ObjectEntryCount];
             struct
             {
                 RCTObjectEntry RideObjects[Limits::kMaxRideObjects];

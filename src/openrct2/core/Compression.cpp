@@ -18,7 +18,7 @@
 
 namespace OpenRCT2::Compression
 {
-    constexpr size_t CHUNK = 128 * 1024;
+    constexpr size_t kChunkSize = 128 * 1024;
 
     // Compress the source to gzip-compatible stream, write to dest.
     // Mainly used for compressing the crashdumps
@@ -34,8 +34,8 @@ namespace OpenRCT2::Compression
         strm.zalloc = Z_NULL;
         strm.zfree = Z_NULL;
         strm.opaque = Z_NULL;
-        unsigned char in[CHUNK];
-        unsigned char out[CHUNK];
+        unsigned char in[kChunkSize];
+        unsigned char out[kChunkSize];
         int windowBits = 15;
         int GZIP_ENCODING = 16;
         ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | GZIP_ENCODING, 8, Z_DEFAULT_STRATEGY);
@@ -46,7 +46,7 @@ namespace OpenRCT2::Compression
         }
         do
         {
-            strm.avail_in = uInt(fread(in, 1, CHUNK, source));
+            strm.avail_in = uInt(fread(in, 1, kChunkSize, source));
             if (ferror(source))
             {
                 deflateEnd(&strm);
@@ -57,7 +57,7 @@ namespace OpenRCT2::Compression
             strm.next_in = in;
             do
             {
-                strm.avail_out = CHUNK;
+                strm.avail_out = kChunkSize;
                 strm.next_out = out;
                 ret = deflate(&strm, flush);
                 if (ret == Z_STREAM_ERROR)
@@ -65,7 +65,7 @@ namespace OpenRCT2::Compression
                     LOG_ERROR("Failed to compress data");
                     return false;
                 }
-                have = CHUNK - strm.avail_out;
+                have = kChunkSize - strm.avail_out;
                 if (fwrite(out, 1, have, dest) != have || ferror(dest))
                 {
                     deflateEnd(&strm);
@@ -101,7 +101,7 @@ namespace OpenRCT2::Compression
         size_t srcRemaining = dataLen;
         do
         {
-            const auto nextBlockSize = std::min(srcRemaining, CHUNK);
+            const auto nextBlockSize = std::min(srcRemaining, kChunkSize);
             srcRemaining -= nextBlockSize;
 
             flush = srcRemaining == 0 ? Z_FINISH : Z_NO_FLUSH;
@@ -149,7 +149,7 @@ namespace OpenRCT2::Compression
         size_t srcRemaining = dataLen;
         do
         {
-            const auto nextBlockSize = std::min(srcRemaining, CHUNK);
+            const auto nextBlockSize = std::min(srcRemaining, kChunkSize);
             srcRemaining -= nextBlockSize;
 
             flush = srcRemaining == 0 ? Z_FINISH : Z_NO_FLUSH;

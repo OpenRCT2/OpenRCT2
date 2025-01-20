@@ -10,7 +10,7 @@
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
@@ -26,7 +26,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <vector>
@@ -224,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
                     auto guestRide = GetRide(RideId::FromUnderlying(index));
                     if (guestRide != nullptr)
                     {
-                        ft.Add<StringId>(STR_NONE);
+                        ft.Add<StringId>(kStringIdNone);
                         guestRide->FormatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::GuestsThinking;
@@ -460,7 +459,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (_selectedFilter)
                 {
-                    if (_filterArguments.GetFirstStringId() != STR_NONE)
+                    if (_filterArguments.GetFirstStringId() != kStringIdNone)
                     {
                         format = GetFilterString(*_selectedFilter);
                     }
@@ -809,9 +808,9 @@ namespace OpenRCT2::Ui::Windows
         {
             auto guestViewType = _selectedFilter == GuestFilterType::Guests ? GuestViewType::Actions : GuestViewType::Thoughts;
             auto peepArgs = GetArgumentsFromPeep(peep, guestViewType);
-            if (_filterArguments.GetFirstStringId() == STR_NONE && _selectedFilter == GuestFilterType::GuestsThinking)
+            if (_filterArguments.GetFirstStringId() == kStringIdNone && _selectedFilter == GuestFilterType::GuestsThinking)
             {
-                Formatter(peepArgs.args).Add<StringId>(STR_NONE);
+                Formatter(peepArgs.args).Add<StringId>(kStringIdNone);
             }
             return _filterArguments == peepArgs;
         }
@@ -866,7 +865,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Remove empty group (basically guests with no thoughts)
             auto foundGroup = std::find_if(std::begin(_groups), std::end(_groups), [](GuestGroup& group) {
-                return group.Arguments.GetFirstStringId() == STR_EMPTY;
+                return group.Arguments.GetFirstStringId() == kStringIdEmpty;
             });
             if (foundGroup != std::end(_groups))
             {
@@ -971,10 +970,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* GuestListOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::GuestList);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::GuestList);
         if (window == nullptr)
         {
-            window = WindowCreate<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
         }
         return window;
     }
@@ -994,7 +994,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowGuestListRefreshList()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->FindByClass(WindowClass::GuestList);
         if (w != nullptr)
         {

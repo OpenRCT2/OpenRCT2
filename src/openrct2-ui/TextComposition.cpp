@@ -12,9 +12,10 @@
 #include "UiContext.h"
 #include "UiStringIds.h"
 #include "interface/InGameConsole.h"
+#include "interface/Window.h"
 
 #include <SDL.h>
-#include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UTF8.h>
@@ -171,7 +172,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && _session.Length)
                     {
                         OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
-                        ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, STR_NONE, {});
+                        ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;
                 case SDLK_v:

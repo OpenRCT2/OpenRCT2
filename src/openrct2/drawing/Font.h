@@ -14,7 +14,7 @@
 
 #include <array>
 
-constexpr uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
+constexpr uint16_t kSpriteFontGlyphCount = 224;
 
 enum class FontStyle : uint8_t
 {

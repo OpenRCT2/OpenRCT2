@@ -145,7 +145,7 @@ namespace OpenRCT2
         TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
         TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
     };
-    constexpr size_t DropdownLength = DropdownOrder.size();
+    constexpr size_t kDropdownLength = DropdownOrder.size();
 
     // Update the magic number with the current number of track elements to silence
     static_assert(EnumValue(TrackElemType::Count) == 349, "Reminder to add new track element to special dropdown list");

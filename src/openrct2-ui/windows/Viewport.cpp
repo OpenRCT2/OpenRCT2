@@ -9,12 +9,13 @@
 
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Map.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -150,7 +151,7 @@ namespace OpenRCT2::Ui::Windows
                     if (mainWindow != nullptr)
                     {
                         auto info = GetMapCoordinatesFromPos(
-                            { windowPos.x + (width / 2), windowPos.y + (height / 2) }, ViewportInteractionItemAll);
+                            { windowPos.x + (width / 2), windowPos.y + (height / 2) }, kViewportInteractionItemAll);
                         WindowScrollToLocation(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                     }
                     break;
@@ -229,7 +230,9 @@ namespace OpenRCT2::Ui::Windows
         int32_t width = (screenWidth / 2);
         int32_t height = (screenHeight / 2);
 
-        auto* w = WindowCreate<ViewportWindow>(WindowClass::Viewport, std::max(WW, width), std::max(WH, height), WF_RESIZABLE);
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->Create<ViewportWindow>(
+            WindowClass::Viewport, std::max(WW, width), std::max(WH, height), WF_RESIZABLE);
 
         if (w != nullptr)
             return w;

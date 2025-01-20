@@ -58,8 +58,8 @@ static constexpr std::array _fountainDirectionsPositive = {
     CoordsXY{ 0, 0 },
     CoordsXY{ 0, kCoordsXYStep },
 };
-constexpr auto _FountainChanceOfStoppingEdgeMode = 0x3333;   // 0.200
-constexpr auto _FountainChanceOfStoppingRandomMode = 0x2000; // 0.125
+static constexpr auto kFountainChanceOfStoppingEdgeMode = 0x3333;   // 0.200
+static constexpr auto kFountainChanceOfStoppingRandomMode = 0x2000; // 0.125
 
 // rct2: 0x0097F040
 const uint8_t _fountainDirections[] = {
@@ -300,7 +300,7 @@ void JumpingFountain::GoToEdge(const CoordsXYZ& newLoc, const int32_t availableD
     }
 
     const uint32_t randomIndex = ScenarioRand();
-    if ((randomIndex & 0xFFFF) < _FountainChanceOfStoppingEdgeMode)
+    if ((randomIndex & 0xFFFF) < kFountainChanceOfStoppingEdgeMode)
     {
         return;
     }
@@ -370,7 +370,7 @@ void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections
 void JumpingFountain::Random(const CoordsXYZ& newLoc, int32_t availableDirections) const
 {
     const uint32_t randomIndex = ScenarioRand();
-    if ((randomIndex & 0xFFFF) >= _FountainChanceOfStoppingRandomMode)
+    if ((randomIndex & 0xFFFF) >= kFountainChanceOfStoppingRandomMode)
     {
         int32_t direction = randomIndex & 7;
         while (!(availableDirections & (1 << direction)))
@@ -409,8 +409,8 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
     PROFILED_FUNCTION();
 
     // TODO: Move into sprites.h
-    constexpr uint32_t JumpingFountainSnowBaseImage = 23037;
-    constexpr uint32_t JumpingFountainWaterBaseImage = 22973;
+    constexpr uint32_t kJumpingFountainSnowBaseImage = 23037;
+    constexpr uint32_t kJumpingFountainWaterBaseImage = 22973;
 
     DrawPixelInfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
@@ -433,8 +433,8 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
         isAntiClockwise = !isAntiClockwise;
     }
 
-    uint32_t baseImageId = (FountainType == JumpingFountainType::Snow) ? JumpingFountainSnowBaseImage
-                                                                       : JumpingFountainWaterBaseImage;
+    uint32_t baseImageId = (FountainType == JumpingFountainType::Snow) ? kJumpingFountainSnowBaseImage
+                                                                       : kJumpingFountainWaterBaseImage;
     auto imageId = ImageId(baseImageId + imageDirection * 16 + frame);
     constexpr std::array antiClockWiseBoundingBoxes = {
         CoordsXY{ -kCoordsXYStep, -3 },

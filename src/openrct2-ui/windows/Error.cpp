@@ -9,7 +9,7 @@
 
 #include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/OpenRCT2.h>
@@ -18,6 +18,7 @@
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -120,7 +121,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // Close any existing error windows if they exist.
-        WindowCloseByClass(WindowClass::Error);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Error);
 
         // How wide is the error string?
         int32_t width = GfxGetStringWidthNewLined(buffer.data(), FontStyle::Medium);
@@ -138,7 +140,8 @@ namespace OpenRCT2::Ui::Windows
         windowPosition.y = std::clamp(windowPosition.y, 22, ContextGetHeight() - height - 40);
 
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
-        return WindowCreate(
+
+        return windowMgr->Create(
             std::move(errorWindow), WindowClass::Error, windowPosition, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     }
 

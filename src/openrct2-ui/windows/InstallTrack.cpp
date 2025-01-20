@@ -11,7 +11,7 @@
 
 #include <memory>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
@@ -26,6 +26,7 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <string>
 #include <vector>
 
@@ -371,7 +372,7 @@ namespace OpenRCT2::Ui::Windows
             if (!Path::CreateDirectory(destPath))
             {
                 LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
-                ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+                ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
                 return;
             }
 
@@ -380,7 +381,7 @@ namespace OpenRCT2::Ui::Windows
             if (File::Exists(destPath))
             {
                 LOG_INFO("%s already exists, prompting user for a different track design name", destPath.c_str());
-                ContextShowError(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
+                ContextShowError(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, kStringIdNone, {});
                 WindowTextInputRawOpen(
                     this, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN,
                     STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME, {}, _trackName.c_str(), 255);
@@ -393,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+                    ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
                 }
             }
         }
@@ -404,7 +405,7 @@ namespace OpenRCT2::Ui::Windows
         auto trackDesign = TrackDesignImport(path);
         if (trackDesign == nullptr)
         {
-            ContextShowError(STR_UNABLE_TO_LOAD_FILE, STR_NONE, {});
+            ContextShowError(STR_UNABLE_TO_LOAD_FILE, kStringIdNone, {});
             return nullptr;
         }
 
@@ -420,8 +421,9 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        WindowCloseByClass(WindowClass::EditorObjectSelection);
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+        windowMgr->CloseConstructionWindows();
 
         gTrackDesignSceneryToggle = false;
         _currentTrackPieceDirection = 2;
@@ -430,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t screenHeight = ContextGetHeight();
         auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
 
-        auto* window = WindowFocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);
+        auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);
         window->SetupTrack(path, std::move(trackDesign));
 
         return window;

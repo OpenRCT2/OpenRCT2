@@ -12,7 +12,7 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
@@ -33,7 +33,6 @@
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepAnimations.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -381,7 +380,7 @@ namespace OpenRCT2::Ui::Windows
                         if (result->Error != GameActions::Status::Ok)
                             return;
 
-                        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                        auto* windowMgr = GetWindowManager();
                         WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
@@ -471,7 +470,8 @@ namespace OpenRCT2::Ui::Windows
                             return;
                         }
 
-                        WindowCloseByClass(WindowClass::PatrolArea);
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::PatrolArea);
 
                         auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
                             staff->Id, {}, StaffSetPatrolAreaMode::ClearAll);
@@ -482,7 +482,8 @@ namespace OpenRCT2::Ui::Windows
                         auto staffId = EntityId::FromUnderlying(number);
                         if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                         {
-                            WindowCloseByClass(WindowClass::PatrolArea);
+                            auto* windowMgr = Ui::GetWindowManager();
+                            windowMgr->CloseByClass(WindowClass::PatrolArea);
                         }
                         else
                         {
@@ -685,7 +686,7 @@ namespace OpenRCT2::Ui::Windows
 
             gPickupPeepImage = ImageId();
 
-            auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
+            auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionItemAll);
             if (info.interactionType == ViewportInteractionItem::None)
                 return;
 
@@ -860,7 +861,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        widgets[WIDX_COSTUME_BOX].text = STR_EMPTY;
+                        widgets[WIDX_COSTUME_BOX].text = kStringIdEmpty;
                         widgets[WIDX_COSTUME_BOX].flags &= ~WIDGET_FLAGS::TEXT_IS_STRING;
                     }
 
@@ -1276,13 +1277,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* StaffOpen(Peep* peep)
     {
-        auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
+        auto* windowMgr = GetWindowManager();
 
+        auto w = static_cast<StaffWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
-
+        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
         if (w == nullptr)
             return nullptr;
 

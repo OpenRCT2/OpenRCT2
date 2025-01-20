@@ -11,7 +11,7 @@
 #include <cctype>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Editor.h>
@@ -39,7 +39,6 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <span>
@@ -524,7 +523,7 @@ namespace OpenRCT2::Ui::Windows
                         gDropdownItems[DDIX_FILTER_SEPARATOR].Format = 0;
                         gDropdownItems[DDIX_FILTER_SELECTED].Format = STR_TOGGLE_OPTION;
                         gDropdownItems[DDIX_FILTER_NONSELECTED].Format = STR_TOGGLE_OPTION;
-                        gDropdownItems[DDIX_FILTER_SEPARATOR].Args = STR_NONE;
+                        gDropdownItems[DDIX_FILTER_SEPARATOR].Args = kStringIdNone;
                         gDropdownItems[DDIX_FILTER_SELECTED].Args = STR_SELECTED_ONLY;
                         gDropdownItems[DDIX_FILTER_NONSELECTED].Args = STR_NON_SELECTED_ONLY;
                     }
@@ -603,7 +602,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Used for in-game object selection cheat to prevent crashing the game
             // when windows attempt to draw objects that don't exist any more
-            WindowCloseAllExceptClass(WindowClass::EditorObjectSelection);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAllExceptClass(WindowClass::EditorObjectSelection);
 
             int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
             if (selected_object == -1)
@@ -961,7 +961,7 @@ namespace OpenRCT2::Ui::Windows
             const auto numSubTabs = static_cast<int8_t>(currentPage.subTabs.size());
             for (int8_t i = 0; i <= 6; i++)
             {
-                widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : STR_NONE;
+                widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : kStringIdNone;
                 widgets[WIDX_SUB_TAB_0 + i].type = i < numSubTabs ? WindowWidgetType::Tab : WindowWidgetType::Empty;
                 pressed_widgets &= ~(1uLL << (WIDX_SUB_TAB_0 + i));
             }
@@ -1086,7 +1086,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                                : STR_NONE;
+                                                                : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortTypeWidget.left + 1, listSortTypeWidget.top + 1 };
                 DrawTextEllipsised(dpi, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
@@ -1096,7 +1096,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                                : STR_NONE;
+                                                                : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortRideWidget.left + 1, listSortRideWidget.top + 1 };
                 DrawTextEllipsised(dpi, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
@@ -1529,7 +1529,7 @@ namespace OpenRCT2::Ui::Windows
             if (item->Type == ObjectType::Ride)
             {
                 ride_type_t rideType = 0;
-                for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+                for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
                 {
                     if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
                     {
@@ -1644,7 +1644,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorObjectSelectionOpen()
     {
-        return WindowFocusOrCreate<EditorObjectSelectionWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
             WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 
@@ -1665,8 +1666,8 @@ namespace OpenRCT2::Ui::Windows
 
     static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
     {
-        StringId result = STR_NONE;
-        for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+        StringId result = kStringIdNone;
+        for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
         {
             auto rideType = item->RideInfo.RideType[i];
             if (rideType != RIDE_TYPE_NULL)
@@ -1732,21 +1733,22 @@ namespace OpenRCT2::Ui::Windows
             LoadPalette();
         }
         if (showFallbackWarning)
-            ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
+            ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, kStringIdEmpty, Formatter::Common());
     }
 
     bool EditorObjectSelectionWindowCheck()
     {
+        auto* windowMgr = Ui::GetWindowManager();
+
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
         {
-            WindowCloseByClass(WindowClass::EditorObjectSelection);
+            windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
             return true;
         }
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {

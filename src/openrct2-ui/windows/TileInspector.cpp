@@ -14,7 +14,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/TileModifyAction.h>
@@ -33,7 +33,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Banner.h>
@@ -302,8 +301,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget(GhostFlagColumnXY,       GhostFlagColumnSize,       WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */        \
         MakeWidget(LastFlagColumnXY,        LastFlagColumnSize,        WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */ \
         /* Group boxes */ \
-        MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_NONE,                               STR_NONE ), /* Details group box */     \
-        MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, STR_NONE )  /* Properties group box */
+        MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, kStringIdNone,                               kStringIdNone ), /* Details group box */     \
+        MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, kStringIdNone )  /* Properties group box */
 
     static constexpr Widget DefaultWidgets[] = {
         MAIN_TILE_INSPECTOR_WIDGETS,
@@ -1094,7 +1093,7 @@ static uint64_t PageDisabledWidgets[] = {
                     {
                         // Details
                         // Terrain texture name
-                        StringId terrainNameId = STR_EMPTY;
+                        StringId terrainNameId = kStringIdEmpty;
                         auto surfaceStyle = tileElement->AsSurface()->GetSurfaceObject();
                         if (surfaceStyle != nullptr)
                             terrainNameId = surfaceStyle->NameStringId;
@@ -1103,7 +1102,7 @@ static uint64_t PageDisabledWidgets[] = {
                         DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_SURFACE_TERAIN, ft, { colours[1] });
 
                         // Edge texture name
-                        StringId terrainEdgeNameId = STR_EMPTY;
+                        StringId terrainEdgeNameId = kStringIdEmpty;
                         auto edgeStyle = tileElement->AsSurface()->GetEdgeObject();
                         if (edgeStyle != nullptr)
                             terrainEdgeNameId = edgeStyle->NameStringId;
@@ -2440,15 +2439,16 @@ static uint64_t PageDisabledWidgets[] = {
 
     WindowBase* TileInspectorOpen()
     {
-        WindowBase* window = WindowBringToFrontByClass(WindowClass::TileInspector);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* window = windowMgr->BringToFrontByClass(WindowClass::TileInspector);
         if (window == nullptr)
-            window = WindowCreate<TileInspector>(WindowClass::TileInspector, ScreenCoordsXY(0, 29), WW, WH, WF_RESIZABLE);
+            window = windowMgr->Create<TileInspector>(WindowClass::TileInspector, ScreenCoordsXY(0, 29), WW, WH, WF_RESIZABLE);
         return window;
     }
 
     void WindowTileInspectorClearClipboard()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ClearClipboard();
@@ -2456,7 +2456,7 @@ static uint64_t PageDisabledWidgets[] = {
 
     void WindowTileInspectorKeyboardShortcutToggleInvisibility()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ToggleInvisibility();

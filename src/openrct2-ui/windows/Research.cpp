@@ -10,7 +10,7 @@
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
@@ -21,6 +21,7 @@
 #include <openrct2/management/Research.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
@@ -304,7 +305,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ResearchOpen()
     {
-        ResearchWindow* window = WindowFocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
         window->SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
         return window;
     }
@@ -439,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
 
         if (gameState.ResearchLastItem.has_value())
         {
-            StringId lastDevelopmentFormat = STR_EMPTY;
+            StringId lastDevelopmentFormat = kStringIdEmpty;
             auto ft = Formatter();
             if (gameState.ResearchLastItem->type == Research::EntryType::Scenery)
             {

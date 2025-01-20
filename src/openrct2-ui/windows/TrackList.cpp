@@ -9,7 +9,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/ride/Construction.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/OpenRCT2.h>
@@ -24,7 +24,6 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <vector>
@@ -155,7 +154,7 @@ namespace OpenRCT2::Ui::Windows
                 if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED
                     && (_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable)))
                 {
-                    ContextShowError(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
+                    ContextShowError(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, kStringIdNone, {});
                 }
 
                 auto intent = Intent(WindowClass::TrackDesignPlace);
@@ -266,8 +265,9 @@ namespace OpenRCT2::Ui::Windows
             // try to load the track manager again, and an infinite loop will result.
             if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0)
             {
-                WindowCloseByNumber(WindowClass::ManageTrackDesign, number);
-                WindowCloseByNumber(WindowClass::TrackDeletePrompt, number);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseByNumber(WindowClass::ManageTrackDesign, number);
+                windowMgr->CloseByNumber(WindowClass::TrackDeletePrompt, number);
                 Editor::LoadTrackManager();
             }
         }
@@ -378,7 +378,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            StringId stringId = STR_NONE;
+            StringId stringId = kStringIdNone;
             const auto* entry = GetRideEntryByIndex(_window_track_list_item.EntryIndex);
 
             if (entry != nullptr)
@@ -758,7 +758,9 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* TrackListOpen(const RideSelection item)
     {
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseConstructionWindows();
+
         ScreenCoordsXY screenPos{};
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
@@ -770,12 +772,13 @@ namespace OpenRCT2::Ui::Windows
         {
             screenPos = { 0, kTopToolbarHeight + 2 };
         }
-        return WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
+
+        return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
     }
 
     void WindowTrackDesignListReloadTracks()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignList));
         if (trackListWindow != nullptr)
         {
@@ -785,7 +788,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowTrackDesignListSetBeingUpdated(const bool beingUpdated)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignList));
         if (trackListWindow != nullptr)
         {

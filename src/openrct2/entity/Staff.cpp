@@ -130,7 +130,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
     uint8_t total = 0;
     uint8_t pathcount = 0;
     uint8_t widecount = 0;
-    for (Direction adjac_dir : ALL_DIRECTIONS)
+    for (Direction adjac_dir : kAllDirections)
     {
         auto adjacPos = staffPos + CoordsXYZ{ CoordsDirectionDelta[adjac_dir].x, CoordsDirectionDelta[adjac_dir].y, 0 };
 
@@ -585,10 +585,10 @@ Direction Staff::DirectionSurface(Direction initialDirection) const
 
         direction &= 3;
 
-        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction))
+        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + kPeepClearanceHeight }, direction))
             continue;
 
-        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, DirectionReverse(direction)))
+        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + kPeepClearanceHeight }, DirectionReverse(direction)))
             continue;
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[direction];
@@ -989,7 +989,7 @@ GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
 }
 
 /** rct2: 0x009929C8 */
-static constexpr CoordsXY _MowingWaypoints[] = {
+static constexpr CoordsXY kMowingWaypoints[] = {
     { 28, 28 }, { 28, 4 }, { 20, 4 }, { 20, 28 }, { 12, 28 }, { 12, 4 }, { 4, 4 }, { 4, 28 },
 };
 
@@ -1018,13 +1018,13 @@ void Staff::UpdateMowing()
             SwitchToSpecialSprite(2);
         }
 
-        if (Var37 == std::size(_MowingWaypoints))
+        if (Var37 == std::size(kMowingWaypoints))
         {
             StateReset();
             return;
         }
 
-        auto destination = _MowingWaypoints[Var37] + NextLoc;
+        auto destination = kMowingWaypoints[Var37] + NextLoc;
         SetDestination(destination);
 
         if (Var37 != 7)
@@ -1436,7 +1436,7 @@ void Staff::UpdateAnswering()
 }
 
 /** rct2: 0x00992A5C */
-static constexpr CoordsXY _WateringUseOffsets[] = {
+static constexpr CoordsXY kWateringUseOffsets[] = {
     { 3, 16 }, { 16, 29 }, { 29, 16 }, { 16, 3 }, { 3, 29 }, { 29, 29 }, { 29, 3 }, { 3, 3 },
 };
 
@@ -1502,7 +1502,7 @@ bool Staff::UpdatePatrollingFindWatering()
             Var37 = chosen_position;
 
             SubState = 0;
-            auto destination = _WateringUseOffsets[chosen_position] + GetLocation().ToTileStart();
+            auto destination = kWateringUseOffsets[chosen_position] + GetLocation().ToTileStart();
             SetDestination(destination, 3);
 
             return true;
@@ -1599,7 +1599,7 @@ bool Staff::UpdatePatrollingFindGrass()
             Var37 = 0;
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
 
-            auto destination = _MowingWaypoints[0] + NextLoc;
+            auto destination = kMowingWaypoints[0] + NextLoc;
             SetDestination(destination, 3);
             return true;
         }
@@ -2114,7 +2114,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
 }
 
 /** rct2: 0x00992A3C */
-static constexpr CoordsXY _StationFixingOffsets[] = {
+static constexpr CoordsXY kStationFixingOffsets[] = {
     { -12, 0 },
     { 0, 12 },
     { 12, 0 },
@@ -2151,7 +2151,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
         }
 
         int32_t trackDirection = tileElement->GetDirection();
-        CoordsXY offset = _StationFixingOffsets[trackDirection];
+        CoordsXY offset = kStationFixingOffsets[trackDirection];
 
         stationPos.x += 16 + offset.x;
         if (offset.x == 0)
@@ -2258,7 +2258,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 
         // Loc6C12ED:
         auto destination = CoordsXY{ input.x + 16, input.y + 16 };
-        auto offset = _StationFixingOffsets[stationDirection];
+        auto offset = kStationFixingOffsets[stationDirection];
 
         destination.x -= offset.x;
         if (offset.x == 0)

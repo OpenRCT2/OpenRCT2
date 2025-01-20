@@ -56,7 +56,7 @@ namespace OpenRCT2
     // converted from uint16_t values at 0x009A41EC - 0x009A4230
     // these are percentage coordinates of the viewport to centre to, if a window is obscuring a location, the next is tried
     // clang-format off
-static constexpr float window_scroll_locations[][2] = {
+static constexpr float kWindowScrollLocations[][2] = {
     { 0.5f, 0.5f },
     { 0.75f, 0.5f },
     { 0.25f, 0.5f },
@@ -76,12 +76,6 @@ static constexpr float window_scroll_locations[][2] = {
     { 0.125f, 0.125f },
 };
     // clang-format on
-
-    namespace WindowCloseFlags
-    {
-        static constexpr uint32_t None = 0;
-        static constexpr uint32_t CloseSingle = (1 << 0);
-    } // namespace WindowCloseFlags
 
     static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
     static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
@@ -165,43 +159,13 @@ static constexpr float window_scroll_locations[][2] = {
             }
         });
 
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto windowManager = Ui::GetWindowManager();
         windowManager->UpdateMouseWheel();
     }
 
     void WindowNotifyLanguageChange()
     {
         WindowVisitEach([&](WindowBase* w) { w->OnLanguageChange(); });
-    }
-
-    static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
-    {
-        // find the amount of windows that are currently open
-        auto count = static_cast<int32_t>(g_window_list.size());
-        // difference between amount open and cap = amount to close
-        auto diff = count - kWindowLimitReserved - cap;
-        for (auto i = 0; i < diff; i++)
-        {
-            // iterates through the list until it finds the newest window, or a window that can be closed
-            WindowBase* foundW{};
-            for (auto& w : g_window_list)
-            {
-                if (w->flags & WF_DEAD)
-                    continue;
-                if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
-                {
-                    foundW = w.get();
-                    break;
-                }
-            }
-            // skip window if window matches specified WindowClass (as user may be modifying via options)
-            if (avoid_classification != WindowClass::Null && foundW != nullptr
-                && foundW->classification == avoid_classification)
-            {
-                continue;
-            }
-            WindowClose(*foundW);
-        }
     }
 
     /*
@@ -217,134 +181,9 @@ static constexpr float window_scroll_locations[][2] = {
         // windows if one sets a limit lower than the number of windows open
         if (val < prev)
         {
-            WindowCloseSurplus(val, WindowClass::Options);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseSurplus(val, WindowClass::Options);
         }
-    }
-
-    /**
-     * Closes the specified window.
-     *  rct2: 0x006ECD4C
-     *
-     * @param window The window to close (esi).
-     */
-    void WindowClose(WindowBase& w)
-    {
-        w.OnClose();
-
-        // Remove viewport
-        w.RemoveViewport();
-
-        // Invalidate the window (area)
-        w.Invalidate();
-
-        w.flags |= WF_DEAD;
-    }
-
-    template<typename TPred>
-    static void WindowCloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
-    {
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); ++it)
-        {
-            auto& wnd = *(*it);
-            if (wnd.flags & WF_DEAD)
-                continue;
-
-            if (pred(&wnd))
-            {
-                WindowClose(wnd);
-                if (flags & WindowCloseFlags::CloseSingle)
-                {
-                    return;
-                }
-            }
-        }
-    }
-
-    /**
-     * Closes all windows with the specified window class.
-     *  rct2: 0x006ECCF4
-     * @param cls (cl) with bit 15 set
-     */
-    void WindowCloseByClass(WindowClass cls)
-    {
-        WindowCloseByCondition([&](WindowBase* w) -> bool { return w->classification == cls; });
-    }
-
-    /**
-     * Closes all windows with specified window class and number.
-     *  rct2: 0x006ECCF4
-     * @param cls (cl) without bit 15 set
-     * @param number (dx)
-     */
-    void WindowCloseByNumber(WindowClass cls, rct_windownumber number)
-    {
-        WindowCloseByCondition(
-            [cls, number](WindowBase* w) -> bool { return w->classification == cls && w->number == number; });
-    }
-
-    // TODO: Refactor this to use variant once the new window class is done.
-    void WindowCloseByNumber(WindowClass cls, EntityId number)
-    {
-        WindowCloseByNumber(cls, static_cast<rct_windownumber>(number.ToUnderlying()));
-    }
-
-    /**
-     * Closes the top-most window
-     *
-     *  rct2: 0x006E403C
-     */
-    void WindowCloseTop()
-    {
-        WindowCloseByClass(WindowClass::Dropdown);
-
-        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        {
-            if (GetGameState().EditorStep != EditorStep::LandscapeEditor)
-                return;
-        }
-
-        auto pred = [](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); };
-        WindowCloseByCondition(pred, WindowCloseFlags::CloseSingle);
-    }
-
-    /**
-     * Closes all open windows
-     *
-     *  rct2: 0x006EE927
-     */
-    void WindowCloseAll()
-    {
-        WindowCloseByClass(WindowClass::Dropdown);
-        WindowCloseByCondition([](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
-    }
-
-    void WindowCloseAllExceptClass(WindowClass cls)
-    {
-        WindowCloseByClass(WindowClass::Dropdown);
-        WindowCloseByCondition([cls](WindowBase* w) -> bool {
-            return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
-        });
-    }
-
-    /**
-     * Closes all windows, save for those having any of the passed flags.
-     */
-    void WindowCloseAllExceptFlags(uint16_t flags)
-    {
-        WindowCloseByCondition([flags](WindowBase* w) -> bool { return !(w->flags & flags); });
-    }
-
-    /**
-     * Closes all windows except the specified window number and class.
-     * @param number (dx)
-     * @param cls (cl) without bit 15 set
-     */
-    void WindowCloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls)
-    {
-        WindowCloseByClass(WindowClass::Dropdown);
-        WindowCloseByCondition([cls, number](WindowBase* w) -> bool {
-            return (!(w->number == number && w->classification == cls) && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)));
-        });
     }
 
     /**
@@ -474,84 +313,6 @@ static constexpr float window_scroll_locations[][2] = {
 
     /**
      *
-     *  rct2: 0x006ECDA4
-     */
-    WindowBase* WindowBringToFront(WindowBase& w)
-    {
-        if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
-        {
-            auto itSourcePos = WindowGetIterator(&w);
-            if (itSourcePos != g_window_list.end())
-            {
-                // Insert in front of the first non-stick-to-front window
-                auto itDestPos = g_window_list.begin();
-                for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-                {
-                    auto& w2 = *it;
-                    if (!(w2->flags & WF_STICK_TO_FRONT))
-                    {
-                        itDestPos = it.base();
-                        break;
-                    }
-                }
-
-                g_window_list.splice(itDestPos, g_window_list, itSourcePos);
-                w.Invalidate();
-
-                if (w.windowPos.x + w.width < 20)
-                {
-                    int32_t i = 20 - w.windowPos.x;
-                    w.windowPos.x += i;
-                    if (w.viewport != nullptr)
-                        w.viewport->pos.x += i;
-                    w.Invalidate();
-                }
-            }
-        }
-        return &w;
-    }
-
-    WindowBase* WindowBringToFrontByClassWithFlags(WindowClass cls, uint16_t flags)
-    {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(cls);
-        if (w != nullptr)
-        {
-            w->flags |= flags;
-            w->Invalidate();
-            w = WindowBringToFront(*w);
-        }
-
-        return w;
-    }
-
-    WindowBase* WindowBringToFrontByClass(WindowClass cls)
-    {
-        return WindowBringToFrontByClassWithFlags(cls, WF_WHITE_BORDER_MASK);
-    }
-
-    /**
-     *
-     *  rct2: 0x006ED78A
-     * cls (cl)
-     * number (dx)
-     */
-    WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number)
-    {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-        WindowBase* w = windowMgr->FindByNumber(cls, number);
-        if (w != nullptr)
-        {
-            w->flags |= WF_WHITE_BORDER_MASK;
-            w->Invalidate();
-            w = WindowBringToFront(*w);
-        }
-
-        return w;
-    }
-
-    /**
-     *
      *  rct2: 0x006EE65A
      */
     void WindowPushOthersRight(WindowBase& window)
@@ -676,8 +437,8 @@ static constexpr float window_scroll_locations[][2] = {
                 bool found = false;
                 while (!found)
                 {
-                    auto x2 = w.viewport->pos.x + static_cast<int32_t>(w.viewport->width * window_scroll_locations[i][0]);
-                    auto y2 = w.viewport->pos.y + static_cast<int32_t>(w.viewport->height * window_scroll_locations[i][1]);
+                    auto x2 = w.viewport->pos.x + static_cast<int32_t>(w.viewport->width * kWindowScrollLocations[i][0]);
+                    auto y2 = w.viewport->pos.y + static_cast<int32_t>(w.viewport->height * kWindowScrollLocations[i][1]);
 
                     auto it = WindowGetIterator(&w);
                     for (; it != g_window_list.end(); it++)
@@ -700,7 +461,7 @@ static constexpr float window_scroll_locations[][2] = {
                     {
                         found = true;
                     }
-                    if (i >= static_cast<int32_t>(std::size(window_scroll_locations)))
+                    if (i >= static_cast<int32_t>(std::size(kWindowScrollLocations)))
                     {
                         i = 0;
                         found = true;
@@ -713,8 +474,8 @@ static constexpr float window_scroll_locations[][2] = {
                 if (!(w.flags & WF_NO_SCROLLING))
                 {
                     w.savedViewPos = screenCoords
-                        - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->ViewWidth() * window_scroll_locations[i][0]),
-                                          static_cast<int32_t>(w.viewport->ViewHeight() * window_scroll_locations[i][1]) };
+                        - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->ViewWidth() * kWindowScrollLocations[i][0]),
+                                          static_cast<int32_t>(w.viewport->ViewHeight() * kWindowScrollLocations[i][1]) };
                     w.flags |= WF_SCROLLING_TO_LOCATION;
                 }
             }
@@ -834,7 +595,8 @@ static constexpr float window_scroll_locations[][2] = {
 
         // HACK: Prevents the redraw from failing when there is
         // a window on top of the viewport.
-        WindowBringToFront(w);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->BringToFront(w);
         w.Invalidate();
     }
 
@@ -1063,7 +825,7 @@ static constexpr float window_scroll_locations[][2] = {
                     gCurrentToolWidget.widget_index);
 
                 // Abort tool event
-                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto* windowMgr = Ui::GetWindowManager();
                 WindowBase* w = windowMgr->FindByNumber(
                     gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                 if (w != nullptr)
@@ -1081,7 +843,7 @@ static constexpr float window_scroll_locations[][2] = {
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
             return;
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         WindowBase* titleWind = windowMgr->FindByClass(WindowClass::TitleMenu);
         if (titleWind != nullptr)
         {
@@ -1145,7 +907,7 @@ static constexpr float window_scroll_locations[][2] = {
             }
         }
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
 
         WindowBase* topWind = windowMgr->FindByClass(WindowClass::TopToolbar);
         if (topWind != nullptr)
@@ -1159,18 +921,6 @@ static constexpr float window_scroll_locations[][2] = {
             bottomWind->windowPos.y = height - 32;
             bottomWind->width = std::max(640, width);
         }
-    }
-
-    /**
-     *
-     *  rct2: 0x006CBCC3
-     */
-    void WindowCloseConstructionWindows()
-    {
-        WindowCloseByClass(WindowClass::RideConstruction);
-        WindowCloseByClass(WindowClass::Footpath);
-        WindowCloseByClass(WindowClass::TrackDesignList);
-        WindowCloseByClass(WindowClass::TrackDesignPlace);
     }
 
     /**
@@ -1208,7 +958,8 @@ static constexpr float window_scroll_locations[][2] = {
      */
     void TextinputCancel()
     {
-        WindowCloseByClass(WindowClass::Textinput);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Textinput);
     }
 
     bool WindowIsVisible(WindowBase& w)
@@ -1312,12 +1063,13 @@ static constexpr float window_scroll_locations[][2] = {
 
     void WindowInitAll()
     {
-        WindowCloseAllExceptFlags(0);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseAllExceptFlags(0);
     }
 
     void WindowFollowSprite(WindowBase& w, EntityId spriteIndex)
     {
-        if (spriteIndex.ToUnderlying() < MAX_ENTITIES || spriteIndex.IsNull())
+        if (spriteIndex.ToUnderlying() < kMaxEntities || spriteIndex.IsNull())
         {
             w.viewport_smart_follow_sprite = spriteIndex;
         }
@@ -1337,5 +1089,11 @@ static constexpr float window_scroll_locations[][2] = {
         }
 
         return w->viewport;
+    }
+
+    // TODO: declared in WindowManager.h; move when refactors continue
+    Ui::IWindowManager* Ui::GetWindowManager()
+    {
+        return GetContext()->GetUiContext()->GetWindowManager();
     }
 } // namespace OpenRCT2

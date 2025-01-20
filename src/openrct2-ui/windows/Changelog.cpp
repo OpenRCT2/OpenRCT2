@@ -9,8 +9,7 @@
 
 #include <fstream>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
@@ -21,6 +20,7 @@
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows
@@ -318,7 +318,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ChangelogOpen(int personality)
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::Changelog);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::Changelog);
         if (window == nullptr)
         {
             // Create a new centred window
@@ -328,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t height = (screenHeight * 4) / 5;
 
             auto pos = ChangelogWindow::GetCentrePositionForNewWindow(width, height);
-            auto* newWindow = WindowCreate<ChangelogWindow>(WindowClass::Changelog, pos, width, height, WF_RESIZABLE);
+            auto* newWindow = windowMgr->Create<ChangelogWindow>(WindowClass::Changelog, pos, width, height, WF_RESIZABLE);
             newWindow->SetPersonality(personality);
             return newWindow;
         }

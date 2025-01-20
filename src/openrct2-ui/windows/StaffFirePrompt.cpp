@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/StaffFireAction.h>
 #include <openrct2/drawing/Drawing.h>
@@ -16,6 +16,7 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -98,7 +99,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* StaffFirePromptOpen(Peep* peep)
     {
         // Check if the confirm window already exists
-        auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<StaffFirePromptWindow>(
             WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
         window->SetWindowNumber(peep->Id.ToUnderlying());
         return window;

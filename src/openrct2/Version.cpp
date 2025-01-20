@@ -26,7 +26,7 @@ const char gVersionInfoTag[] =
 #ifdef OPENRCT2_VERSION_TAG
     OPENRCT2_VERSION_TAG
 #else
-    "v" OPENRCT2_VERSION
+    "v" kOpenRCT2Version
 #endif
     ;
 
@@ -34,7 +34,7 @@ const char gVersionInfoFull[] = OPENRCT2_NAME ", "
 #ifdef OPENRCT2_VERSION_TAG
     OPENRCT2_VERSION_TAG
 #else
-                                              "v" OPENRCT2_VERSION
+                                              "v" kOpenRCT2Version
 #endif
 #if defined(OPENRCT2_BRANCH) || defined(OPENRCT2_COMMIT_SHA1_SHORT) || !defined(NDEBUG)
                                               " ("

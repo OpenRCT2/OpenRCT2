@@ -10,8 +10,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/scripting/CustomMenu.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -121,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
         {
             WindowBase* windowToOpen = nullptr;
 
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -129,12 +128,12 @@ namespace OpenRCT2::Ui::Windows
                     windowToOpen = windowMgr->FindByClass(WindowClass::ScenarioSelect);
                     if (windowToOpen != nullptr)
                     {
-                        WindowBringToFront(*windowToOpen);
+                        windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::Loadsave);
-                        WindowCloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::Loadsave);
+                        windowMgr->CloseByClass(WindowClass::ServerList);
                         ScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
                     }
                     break;
@@ -142,12 +141,12 @@ namespace OpenRCT2::Ui::Windows
                     windowToOpen = windowMgr->FindByClass(WindowClass::Loadsave);
                     if (windowToOpen != nullptr)
                     {
-                        WindowBringToFront(*windowToOpen);
+                        windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::ScenarioSelect);
-                        WindowCloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::ServerList);
                         auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
                         GameActions::Execute(&loadOrQuitAction);
                     }
@@ -156,12 +155,12 @@ namespace OpenRCT2::Ui::Windows
                     windowToOpen = windowMgr->FindByClass(WindowClass::ServerList);
                     if (windowToOpen != nullptr)
                     {
-                        WindowBringToFront(*windowToOpen);
+                        windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::ScenarioSelect);
-                        WindowCloseByClass(WindowClass::Loadsave);
+                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::Loadsave);
                         ContextOpenWindow(WindowClass::ServerList);
                     }
                     break;
@@ -195,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
                             if (!hasCustomItems)
                             {
                                 hasCustomItems = true;
-                                gDropdownItems[i++].Format = STR_EMPTY;
+                                gDropdownItems[i++].Format = kStringIdEmpty;
                             }
 
                             gDropdownItems[i].Format = STR_STRING;
@@ -287,7 +286,9 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleMenuOpen()
     {
         const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
-        return WindowCreate<TitleMenuWindow>(
+
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->Create<TitleMenuWindow>(
             WindowClass::TitleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), 0, windowHeight,
             WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
     }

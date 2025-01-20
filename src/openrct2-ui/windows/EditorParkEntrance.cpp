@@ -10,7 +10,7 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
@@ -19,6 +19,7 @@
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/Slope.h>
@@ -39,7 +40,7 @@ namespace OpenRCT2::Ui::Windows
     struct EntranceSelection
     {
         ObjectEntryIndex entryIndex = OBJECT_ENTRY_INDEX_NULL;
-        StringId stringId = STR_NONE;
+        StringId stringId = kStringIdNone;
         ImageIndex imageId = kSpriteIdNull;
     };
 
@@ -60,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
     static Widget _widgets[] = {
         WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowHeight),
         MakeWidget     ({                 0, 43 }, { kWindowWidth, kWindowHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
-        MakeTab        ({                 3, 17 },                                                                                           STR_NONE                                         ),
+        MakeTab        ({                 3, 17 },                                                                                           kStringIdNone                                         ),
         MakeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
         MakeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 ),
     };
@@ -391,14 +392,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* EditorParkEntranceOpen()
     {
-        WindowBase* window;
-
         // Check if window is already open
-        window = WindowBringToFrontByClass(WindowClass::EditorParkEntrance);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::EditorParkEntrance);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<EditorParkEntrance>(
+        window = windowMgr->Create<EditorParkEntrance>(
             WindowClass::EditorParkEntrance, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
 
         return window;

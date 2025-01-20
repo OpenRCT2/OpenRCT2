@@ -259,7 +259,7 @@ namespace OpenRCT2::Scripting
                 }
                 else
                 {
-                    customTool.Filter = ViewportInteractionItemAll;
+                    customTool.Filter = kViewportInteractionItemAll;
                 }
 
                 customTool.onStart = dukValue["onStart"];
@@ -268,7 +268,7 @@ namespace OpenRCT2::Scripting
                 customTool.onUp = dukValue["onUp"];
                 customTool.onFinish = dukValue["onFinish"];
 
-                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 auto toolbarWindow = windowMgr->FindByClass(WindowClass::TopToolbar);
                 if (toolbarWindow != nullptr)
                 {

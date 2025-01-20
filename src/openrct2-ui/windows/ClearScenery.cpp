@@ -11,14 +11,13 @@
 
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -48,7 +47,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget(
             { 27, 17 }, { 44, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_LAND_TOOL_SIZE_0,
-            STR_NONE), // preview box
+            kStringIdNone), // preview box
         MakeRemapWidget(
             { 28, 18 }, { 16, 16 }, WindowWidgetType::TrnBtn, WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,
             STR_ADJUST_SMALLER_LAND_TIP), // decrement size
@@ -105,7 +104,8 @@ namespace OpenRCT2::Ui::Windows
                     Formatter ft;
                     ft.Add<uint16_t>(kLandToolMinimumSize);
                     ft.Add<uint16_t>(kLandToolMaximumSize);
-                    TextInputOpen(WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+                    TextInputOpen(
+                        WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, kStringIdNone, kStringIdNone, 3);
                     break;
                 }
                 case WIDX_SMALL_SCENERY:
@@ -343,7 +343,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_BACKGROUND:
                 {
-                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     if (windowMgr->FindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                     {
                         auto action = GetClearAction();
@@ -380,7 +380,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ClearSceneryOpen()
     {
-        return WindowFocusOrCreate<CleanSceneryWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<CleanSceneryWindow>(
             WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }
 

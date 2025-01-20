@@ -11,7 +11,7 @@
 
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -25,7 +25,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
@@ -296,7 +295,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 ft.Increment(4);
-                ft.Add<StringId>(STR_NONE);
+                ft.Add<StringId>(kStringIdNone);
             }
         }
 
@@ -371,7 +370,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ToolCancel();
                     if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
-                        WindowCloseByClass(WindowClass::RideConstruction);
+                    {
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::RideConstruction);
+                    }
                 }
                 else
                 {
@@ -437,13 +439,14 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* MazeConstructionOpen()
     {
-        return WindowFocusOrCreate<MazeConstructionWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<MazeConstructionWindow>(
             WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
     }
 
     void WindowMazeConstructionUpdatePressedWidgets()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr)
             return;

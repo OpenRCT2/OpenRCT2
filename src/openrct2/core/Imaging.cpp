@@ -34,7 +34,7 @@
 
 namespace OpenRCT2::Imaging
 {
-    constexpr auto EXCEPTION_IMAGE_FORMAT_UNKNOWN = "Unknown image format.";
+    static constexpr auto kExceptionImageFormatUnknown = "Unknown image format.";
 
     static std::unordered_map<IMAGE_FORMAT, ImageReaderFunc> _readerImplementations;
 
@@ -306,7 +306,7 @@ namespace OpenRCT2::Imaging
                 {
                     return impl(istream, format);
                 }
-                throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
+                throw std::runtime_error(kExceptionImageFormatUnknown);
             }
         }
     }
@@ -364,7 +364,7 @@ namespace OpenRCT2::Imaging
                 break;
             }
             default:
-                throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
+                throw std::runtime_error(kExceptionImageFormatUnknown);
         }
     }
 } // namespace OpenRCT2::Imaging

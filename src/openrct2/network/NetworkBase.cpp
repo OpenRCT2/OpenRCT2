@@ -52,7 +52,7 @@ using namespace OpenRCT2;
 
 constexpr uint8_t kNetworkStreamVersion = 4;
 
-const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::to_string(kNetworkStreamVersion);
+const std::string kNetworkStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kNetworkStreamVersion);
 
 static Peep* _pickup_peep = nullptr;
 static int32_t _pickup_peep_old_x = kLocationNull;
@@ -616,7 +616,7 @@ void NetworkBase::UpdateClient()
 
                     Close();
                     ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
-                    ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
+                    ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, kStringIdNone, {});
                     break;
                 }
             }
@@ -649,7 +649,9 @@ void NetworkBase::UpdateClient()
                     intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
                     ContextOpenIntent(&intent);
                 }
-                WindowCloseByClass(WindowClass::Multiplayer);
+
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseByClass(WindowClass::Multiplayer);
                 Close();
             }
             else
@@ -3543,7 +3545,7 @@ const char* NetworkGetGroupName(uint32_t index)
 
 void NetworkChatShowConnectedMessage()
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     std::string s = windowManager->GetKeyboardShortcutString("interface.misc.multiplayer_chat");
     const char* sptr = s.c_str();
 
@@ -3578,23 +3580,23 @@ GameActions::Result NetworkSetPlayerGroup(
     NetworkGroup* fromgroup = network.GetGroupByID(actionPlayerId);
     if (player == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, kStringIdNone);
     }
 
     if (network.GetGroupByID(groupId) == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, kStringIdNone);
     }
 
     if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO, kStringIdNone);
     }
 
     if (groupId == 0 && fromgroup != nullptr && fromgroup->Id != 0)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_SET_TO_THIS_GROUP, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_SET_TO_THIS_GROUP, kStringIdNone);
     }
 
     if (isExecuting)
@@ -3642,7 +3644,7 @@ GameActions::Result NetworkModifyGroups(
                 NetworkGroup* newgroup = network.AddGroup();
                 if (newgroup == nullptr)
                 {
-                    return GameActions::Result(GameActions::Status::Unknown, STR_CANT_DO_THIS, STR_NONE);
+                    return GameActions::Result(GameActions::Status::Unknown, STR_CANT_DO_THIS, kStringIdNone);
                 }
             }
         }
@@ -3651,14 +3653,14 @@ GameActions::Result NetworkModifyGroups(
         {
             if (groupId == 0)
             {
-                return GameActions::Result(GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED, STR_NONE);
+                return GameActions::Result(GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED, kStringIdNone);
             }
             for (const auto& it : network.player_list)
             {
                 if ((it.get())->Group == groupId)
                 {
                     return GameActions::Result(
-                        GameActions::Status::Disallowed, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO, STR_NONE);
+                        GameActions::Status::Disallowed, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO, kStringIdNone);
                 }
             }
             if (isExecuting)
@@ -3671,7 +3673,7 @@ GameActions::Result NetworkModifyGroups(
         {
             if (groupId == 0)
             { // can't change admin group permissions
-                return GameActions::Result(GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED, STR_NONE);
+                return GameActions::Result(GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED, kStringIdNone);
             }
             NetworkGroup* mygroup = nullptr;
             NetworkPlayer* player = network.GetPlayerByID(actionPlayerId);
@@ -3682,7 +3684,8 @@ GameActions::Result NetworkModifyGroups(
                 if (mygroup == nullptr || !mygroup->CanPerformAction(networkPermission))
                 {
                     return GameActions::Result(
-                        GameActions::Status::Disallowed, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF, STR_NONE);
+                        GameActions::Status::Disallowed, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF,
+                        kStringIdNone);
                 }
             }
             if (isExecuting)
@@ -3717,7 +3720,7 @@ GameActions::Result NetworkModifyGroups(
             NetworkGroup* group = network.GetGroupByID(groupId);
             if (group == nullptr)
             {
-                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_GROUP, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_GROUP, kStringIdNone);
             }
 
             const char* oldName = group->GetName().c_str();
@@ -3746,7 +3749,7 @@ GameActions::Result NetworkModifyGroups(
         {
             if (groupId == 0)
             {
-                return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_SET_TO_THIS_GROUP, STR_NONE);
+                return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_SET_TO_THIS_GROUP, kStringIdNone);
             }
             if (isExecuting)
             {
@@ -3778,7 +3781,7 @@ GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuti
 
     if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_KICK_THE_HOST, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_KICK_THE_HOST, kStringIdNone);
     }
 
     if (isExecuting)
@@ -3814,7 +3817,7 @@ StringId NetworkGetActionNameStringID(uint32_t index)
         return NetworkActions::Actions[index].Name;
     }
 
-    return STR_NONE;
+    return kStringIdNone;
 }
 
 int32_t NetworkCanPerformAction(uint32_t groupindex, NetworkPermission index)

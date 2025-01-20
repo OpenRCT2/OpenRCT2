@@ -45,7 +45,7 @@ GameActions::Result ParkEntranceRemoveAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
     {
-        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_REMOVE_THIS, kStringIdNone);
     }
 
     auto res = GameActions::Result();
@@ -60,7 +60,7 @@ GameActions::Result ParkEntranceRemoveAction::Query() const
     if (ParkEntranceGetIndex(_loc) == -1)
     {
         LOG_ERROR("No park entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
     }
     return res;
 }
@@ -76,7 +76,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     if (entranceIndex == -1)
     {
         LOG_ERROR("No park entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
     }
 
     auto& gameState = GetGameState();

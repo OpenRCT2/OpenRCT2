@@ -13,7 +13,7 @@
     #include <chrono>
     #include <openrct2-ui/interface/Dropdown.h>
     #include <openrct2-ui/interface/Widget.h>
-    #include <openrct2-ui/windows/Window.h>
+    #include <openrct2-ui/windows/Windows.h>
     #include <openrct2/Context.h>
     #include <openrct2/Diagnostic.h>
     #include <openrct2/config/Config.h>
@@ -25,6 +25,7 @@
     #include <openrct2/network/network.h>
     #include <openrct2/platform/Platform.h>
     #include <openrct2/sprites.h>
+    #include <openrct2/ui/WindowManager.h>
     #include <tuple>
 
 namespace OpenRCT2::Ui::Windows
@@ -155,7 +156,7 @@ namespace OpenRCT2::Ui::Windows
                     ServerListFetchServersBegin();
                     break;
                 case WIDX_ADD_SERVER:
-                    TextInputOpen(widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, STR_NONE, 0, 128);
+                    TextInputOpen(widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, kStringIdNone, 0, 128);
                     break;
                 case WIDX_START_SERVER:
                     ContextOpenWindow(WindowClass::ServerStart);
@@ -264,7 +265,7 @@ namespace OpenRCT2::Ui::Windows
                 selected_list_item = itemIndex;
                 _showNetworkVersionTooltip = showNetworkVersionTooltip;
 
-                listWidget.tooltip = showNetworkVersionTooltip ? static_cast<StringId>(STR_NETWORK_VERSION_TIP) : STR_NONE;
+                listWidget.tooltip = showNetworkVersionTooltip ? static_cast<StringId>(STR_NETWORK_VERSION_TIP) : kStringIdNone;
                 WindowTooltipClose();
 
                 Invalidate();
@@ -464,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                 }
 
-                auto status = STR_NONE;
+                auto status = kStringIdNone;
                 try
                 {
                     auto entries = wanF.get();
@@ -498,7 +499,7 @@ namespace OpenRCT2::Ui::Windows
                         _serverList.WriteFavourites(); // Update favourites in case favourited server info changes
                         _numPlayersOnline = _serverList.GetTotalPlayerCount();
                         _statusText = STR_X_PLAYERS_ONLINE;
-                        if (statusText != STR_NONE)
+                        if (statusText != kStringIdNone)
                         {
                             _statusText = statusText;
                         }
@@ -546,11 +547,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ServerListOpen()
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::ServerList);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::ServerList);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<ServerListWindow>(
+        window = windowMgr->Create<ServerListWindow>(
             WindowClass::ServerList, WWIDTH_MIN, WHEIGHT_MIN, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 
         return window;
@@ -582,7 +584,7 @@ namespace OpenRCT2::Ui::Windows
 
         if (!NetworkBeginClient(address, port))
         {
-            ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
+            ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, kStringIdNone, {});
         }
     }
 } // namespace OpenRCT2::Ui::Windows

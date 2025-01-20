@@ -11,9 +11,10 @@
 
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Footpath.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -75,7 +76,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* MainOpen()
     {
-        return WindowCreate<MainWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->Create<MainWindow>(
             WindowClass::MainWindow, { 0, 0 }, ContextGetWidth(), ContextGetHeight(), WF_STICK_TO_BACK);
     }
 } // namespace OpenRCT2::Ui::Windows

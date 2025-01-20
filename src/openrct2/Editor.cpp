@@ -245,7 +245,8 @@ namespace OpenRCT2::Editor
     {
         // #4996: Make sure the object selection window closes here to prevent unload objects
         //        after we have loaded a new park.
-        WindowCloseAll();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseAll();
 
         if (!GetContext()->LoadParkFromFile(path))
             return false;
@@ -325,7 +326,7 @@ namespace OpenRCT2::Editor
             return;
         }
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
 
         switch (GetGameState().EditorStep)
         {
@@ -382,7 +383,7 @@ namespace OpenRCT2::Editor
 
     static void FinaliseMainView()
     {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto windowManager = Ui::GetWindowManager();
         auto& gameState = GetGameState();
         windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 
@@ -421,7 +422,7 @@ namespace OpenRCT2::Editor
         const bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
         if (isTrackDesignerManager)
         {
-            return { ObjectType::None, STR_NONE };
+            return { ObjectType::None, kStringIdNone };
         }
 
         if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
@@ -465,7 +466,7 @@ namespace OpenRCT2::Editor
             }
         }
 
-        return { ObjectType::None, STR_NONE };
+        return { ObjectType::None, kStringIdNone };
     }
 
     /**
@@ -509,7 +510,7 @@ namespace OpenRCT2::Editor
             return { false, STR_PEEP_SPAWNS_NOT_SET };
         }
 
-        return { true, STR_NONE };
+        return { true, kStringIdNone };
     }
 
     uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index)

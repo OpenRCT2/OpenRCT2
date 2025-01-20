@@ -201,7 +201,7 @@ struct Ride
     uint16_t num_customers_timeout{};
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[OpenRCT2::Limits::kCustomerHistorySize]{};
-    money64 price[OpenRCT2::RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    money64 price[OpenRCT2::RCT2::ObjectLimits::kMaxShopItemsPerRideEntry]{};
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     RatingTuple ratings{};
     money64 value{};
@@ -993,7 +993,7 @@ bool RideHasAdjacentStation(const Ride& ride);
 bool RideHasStationShelter(const Ride& ride);
 bool RideHasRatings(const Ride& ride);
 
-int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed);
+int32_t GetUnifiedBoosterSpeed(ride_type_t rideType, int32_t relativeSpeed);
 void FixInvalidVehicleSpriteSizes();
 bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category);
 

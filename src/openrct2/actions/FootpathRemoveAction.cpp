@@ -119,7 +119,7 @@ GameActions::Result FootpathRemoveAction::Execute() const
     }
     else
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, kStringIdNone);
     }
 
     res.Cost += GetRefundPrice(footpathElement);

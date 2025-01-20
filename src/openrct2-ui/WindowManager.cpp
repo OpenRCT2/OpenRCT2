@@ -10,16 +10,20 @@
 #include "WindowManager.h"
 
 #include "interface/Theme.h"
+#include "interface/Window.h"
 #include "ride/VehicleSounds.h"
-#include "windows/Window.h"
+#include "windows/Windows.h"
 
 #include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
@@ -30,11 +34,18 @@
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/Vehicle.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 using namespace OpenRCT2::Ui::Windows;
+
+namespace WindowCloseFlags
+{
+    static constexpr uint32_t None = 0;
+    static constexpr uint32_t CloseSingle = (1 << 0);
+} // namespace WindowCloseFlags
 
 class WindowManager final : public IWindowManager
 {
@@ -323,7 +334,7 @@ public:
             case INTENT_ACTION_NEW_SCENERY:
             {
                 // Check if window is already open
-                auto* window = WindowBringToFrontByClass(WindowClass::Scenery);
+                auto* window = BringToFrontByClass(WindowClass::Scenery);
                 if (window == nullptr)
                     ToggleSceneryWindow();
 
@@ -422,7 +433,7 @@ public:
                 auto w = FindByClass(WindowClass::RideConstruction);
                 if (w == nullptr || w->number != static_cast<int16_t>(rideIndex))
                 {
-                    WindowCloseConstructionWindows();
+                    CloseConstructionWindows();
                     _currentRideIndex = RideId::FromUnderlying(rideIndex);
                     OpenWindow(WindowClass::RideConstruction);
                 }
@@ -647,6 +658,437 @@ public:
         return nullptr;
     }
 
+    static bool WindowFitsBetweenOthers(const ScreenCoordsXY& loc, int32_t width, int32_t height)
+    {
+        for (auto& w : g_window_list)
+        {
+            if (w->flags & WF_DEAD)
+                continue;
+            if (w->flags & WF_STICK_TO_BACK)
+                continue;
+
+            if (loc.x + width <= w->windowPos.x)
+                continue;
+            if (loc.x >= w->windowPos.x + w->width)
+                continue;
+            if (loc.y + height <= w->windowPos.y)
+                continue;
+            if (loc.y >= w->windowPos.y + w->height)
+                continue;
+            return false;
+        }
+
+        return true;
+    }
+
+    static bool WindowFitsWithinSpace(const ScreenCoordsXY& loc, int32_t width, int32_t height)
+    {
+        if (loc.x < 0)
+            return false;
+        if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+            return false;
+        if (loc.x + width > ContextGetWidth())
+            return false;
+        if (loc.y + height > ContextGetHeight())
+            return false;
+        return WindowFitsBetweenOthers(loc, width, height);
+    }
+
+    static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t height)
+    {
+        uint16_t screenWidth = ContextGetWidth();
+        uint16_t screenHeight = ContextGetHeight();
+        int32_t unk;
+
+        unk = -(width / 4);
+        if (loc.x < unk)
+            return false;
+        unk = screenWidth + (unk * 2);
+        if (loc.x > unk)
+            return false;
+        if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+            return false;
+        unk = screenHeight - (height / 4);
+        if (loc.y > unk)
+            return false;
+        return WindowFitsBetweenOthers(loc, width, height);
+    }
+
+    static ScreenCoordsXY ClampWindowToScreen(
+        const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t screenHeight, const int32_t width,
+        const int32_t height)
+    {
+        auto screenPos = pos;
+        if (width > screenWidth || screenPos.x < 0)
+            screenPos.x = 0;
+        else if (screenPos.x + width > screenWidth)
+            screenPos.x = screenWidth - width;
+
+        auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (kTopToolbarHeight + 1);
+        if (height - toolbarAllowance > screenHeight || screenPos.y < toolbarAllowance)
+            screenPos.y = toolbarAllowance;
+        else if (screenPos.y + height - toolbarAllowance > screenHeight)
+            screenPos.y = screenHeight + toolbarAllowance - height;
+
+        return screenPos;
+    }
+
+    static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
+    {
+        auto uiContext = GetContext()->GetUiContext();
+        auto screenWidth = uiContext->GetWidth();
+        auto screenHeight = uiContext->GetHeight();
+
+        // Place window in an empty corner of the screen
+        const ScreenCoordsXY cornerPositions[] = {
+            { 0, 30 },                                           // topLeft
+            { screenWidth - width, 30 },                         // topRight
+            { 0, screenHeight - 34 - height },                   // bottomLeft
+            { screenWidth - width, screenHeight - 34 - height }, // bottomRight
+        };
+
+        for (const auto& cornerPos : cornerPositions)
+        {
+            if (WindowFitsWithinSpace(cornerPos, width, height))
+            {
+                return ClampWindowToScreen(cornerPos, screenWidth, screenHeight, width, height);
+            }
+        }
+
+        // Place window next to another
+        for (auto& w : g_window_list)
+        {
+            if (w->flags & WF_DEAD)
+                continue;
+            if (w->flags & WF_STICK_TO_BACK)
+                continue;
+
+            const ScreenCoordsXY offsets[] = {
+                { w->width + 2, 0 },
+                { -w->width - 2, 0 },
+                { 0, w->height + 2 },
+                { 0, -w->height - 2 },
+                { w->width + 2, -w->height - 2 },
+                { -w->width - 2, -w->height - 2 },
+                { w->width + 2, w->height + 2 },
+                { -w->width - 2, w->height + 2 },
+            };
+
+            for (const auto& offset : offsets)
+            {
+                auto screenPos = w->windowPos + offset;
+                if (WindowFitsWithinSpace(screenPos, width, height))
+                {
+                    return ClampWindowToScreen(screenPos, screenWidth, screenHeight, width, height);
+                }
+            }
+        }
+
+        // Overlap
+        for (auto& w : g_window_list)
+        {
+            if (w->flags & WF_DEAD)
+                continue;
+            if (w->flags & WF_STICK_TO_BACK)
+                continue;
+
+            const ScreenCoordsXY offsets[] = {
+                { w->width + 2, 0 },
+                { -w->width - 2, 0 },
+                { 0, w->height + 2 },
+                { 0, -w->height - 2 },
+            };
+
+            for (const auto& offset : offsets)
+            {
+                auto screenPos = w->windowPos + offset;
+                if (WindowFitsOnScreen(screenPos, width, height))
+                {
+                    return ClampWindowToScreen(screenPos, screenWidth, screenHeight, width, height);
+                }
+            }
+        }
+
+        // Cascade
+        auto screenPos = ScreenCoordsXY{ 0, 30 };
+        for (auto& w : g_window_list)
+        {
+            if (screenPos == w->windowPos)
+            {
+                screenPos.x += 5;
+                screenPos.y += 5;
+            }
+        }
+
+        return ClampWindowToScreen(screenPos, screenWidth, screenHeight, width, height);
+    }
+
+    static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
+    {
+        auto uiContext = GetContext()->GetUiContext();
+        auto screenWidth = uiContext->GetWidth();
+        auto screenHeight = uiContext->GetHeight();
+        return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
+    }
+
+    WindowBase* Create(
+        std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
+        uint32_t flags) override
+    {
+        if (flags & WF_AUTO_POSITION)
+        {
+            if (flags & WF_CENTRE_SCREEN)
+            {
+                pos = GetCentrePositionForNewWindow(width, height);
+            }
+            else
+            {
+                pos = GetAutoPositionForNewWindow(width, height);
+            }
+        }
+
+        // Check if there are any window slots left
+        // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
+        if (g_window_list.size() >= static_cast<size_t>(Config::Get().general.WindowLimit + kWindowLimitReserved))
+        {
+            // Close least recently used window
+            for (auto& w : g_window_list)
+            {
+                if (w->flags & WF_DEAD)
+                    continue;
+                if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+                {
+                    Close(*w.get());
+                    break;
+                }
+            }
+        }
+
+        // Find right position to insert new window
+        auto itDestPos = g_window_list.end();
+        if (flags & WF_STICK_TO_BACK)
+        {
+            for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
+            {
+                if ((*it)->flags & WF_DEAD)
+                    continue;
+                if (!((*it)->flags & WF_STICK_TO_BACK))
+                {
+                    itDestPos = it;
+                }
+            }
+        }
+        else if (!(flags & WF_STICK_TO_FRONT))
+        {
+            for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+            {
+                if ((*it)->flags & WF_DEAD)
+                    continue;
+                if (!((*it)->flags & WF_STICK_TO_FRONT))
+                {
+                    itDestPos = it.base();
+                    break;
+                }
+            }
+        }
+
+        auto itNew = g_window_list.insert(itDestPos, std::move(wp));
+        auto w = itNew->get();
+
+        // Setup window
+        w->classification = cls;
+        w->flags = flags;
+
+        // Play sounds and flash the window
+        if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        {
+            w->flags |= WF_WHITE_BORDER_MASK;
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (width / 2));
+        }
+
+        w->windowPos = pos;
+        w->width = width;
+        w->height = height;
+        w->min_width = width;
+        w->max_width = width;
+        w->min_height = height;
+        w->max_height = height;
+
+        w->focus = std::nullopt;
+
+        ColourSchemeUpdate(w);
+        w->Invalidate();
+        w->OnOpen();
+        return w;
+    }
+
+    /**
+     * Closes the specified window.
+     *  rct2: 0x006ECD4C
+     *
+     * @param window The window to close (esi).
+     */
+    void Close(WindowBase& w) override
+    {
+        w.OnClose();
+
+        // Remove viewport
+        w.RemoveViewport();
+
+        // Invalidate the window (area)
+        w.Invalidate();
+
+        w.flags |= WF_DEAD;
+    }
+
+    void CloseSurplus(int32_t cap, WindowClass avoid_classification) override
+    {
+        // find the amount of windows that are currently open
+        auto count = static_cast<int32_t>(g_window_list.size());
+        // difference between amount open and cap = amount to close
+        auto diff = count - kWindowLimitReserved - cap;
+        for (auto i = 0; i < diff; i++)
+        {
+            // iterates through the list until it finds the newest window, or a window that can be closed
+            WindowBase* foundW{};
+            for (auto& w : g_window_list)
+            {
+                if (w->flags & WF_DEAD)
+                    continue;
+                if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+                {
+                    foundW = w.get();
+                    break;
+                }
+            }
+            // skip window if window matches specified WindowClass (as user may be modifying via options)
+            if (avoid_classification != WindowClass::Null && foundW != nullptr
+                && foundW->classification == avoid_classification)
+            {
+                continue;
+            }
+            Close(*foundW);
+        }
+    }
+
+    template<typename TPred>
+    void CloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
+    {
+        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); ++it)
+        {
+            auto& wnd = *(*it);
+            if (wnd.flags & WF_DEAD)
+                continue;
+
+            if (pred(&wnd))
+            {
+                Close(wnd);
+                if (flags & WindowCloseFlags::CloseSingle)
+                {
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
+     * Closes all windows with the specified window class.
+     *  rct2: 0x006ECCF4
+     * @param cls (cl) with bit 15 set
+     */
+    void CloseByClass(WindowClass cls) override
+    {
+        CloseByCondition([&](WindowBase* w) -> bool { return w->classification == cls; });
+    }
+
+    /**
+     * Closes all windows with specified window class and number.
+     *  rct2: 0x006ECCF4
+     * @param cls (cl) without bit 15 set
+     * @param number (dx)
+     */
+    void CloseByNumber(WindowClass cls, rct_windownumber number) override
+    {
+        CloseByCondition([cls, number](WindowBase* w) -> bool { return w->classification == cls && w->number == number; });
+    }
+
+    // TODO: Refactor this to use variant once the new window class is done.
+    void CloseByNumber(WindowClass cls, EntityId number) override
+    {
+        CloseByNumber(cls, static_cast<rct_windownumber>(number.ToUnderlying()));
+    }
+
+    /**
+     * Closes the top-most window
+     *
+     *  rct2: 0x006E403C
+     */
+    void CloseTop() override
+    {
+        CloseByClass(WindowClass::Dropdown);
+
+        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        {
+            if (GetGameState().EditorStep != EditorStep::LandscapeEditor)
+                return;
+        }
+
+        auto pred = [](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); };
+        CloseByCondition(pred, WindowCloseFlags::CloseSingle);
+    }
+
+    /**
+     * Closes all open windows
+     *
+     *  rct2: 0x006EE927
+     */
+    void CloseAll() override
+    {
+        CloseByClass(WindowClass::Dropdown);
+        CloseByCondition([](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
+    }
+
+    void CloseAllExceptClass(WindowClass cls) override
+    {
+        CloseByClass(WindowClass::Dropdown);
+        CloseByCondition([cls](WindowBase* w) -> bool {
+            return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
+        });
+    }
+
+    /**
+     * Closes all windows, save for those having any of the passed flags.
+     */
+    void CloseAllExceptFlags(uint16_t flags) override
+    {
+        CloseByCondition([flags](WindowBase* w) -> bool { return !(w->flags & flags); });
+    }
+
+    /**
+     * Closes all windows except the specified window number and class.
+     * @param number (dx)
+     * @param cls (cl) without bit 15 set
+     */
+    void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override
+    {
+        CloseByClass(WindowClass::Dropdown);
+        CloseByCondition([cls, number](WindowBase* w) -> bool {
+            return (!(w->number == number && w->classification == cls) && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)));
+        });
+    }
+
+    /**
+     *
+     *  rct2: 0x006CBCC3
+     */
+    void CloseConstructionWindows() override
+    {
+        CloseByClass(WindowClass::RideConstruction);
+        CloseByClass(WindowClass::Footpath);
+        CloseByClass(WindowClass::TrackDesignList);
+        CloseByClass(WindowClass::TrackDesignPlace);
+    }
+
     /**
      * Finds the first window with the specified window class.
      *  rct2: 0x006EA8A0
@@ -761,6 +1203,82 @@ public:
 
         // Return the widget index
         return widget_index;
+    }
+
+    /**
+     *
+     *  rct2: 0x006ECDA4
+     */
+    WindowBase* BringToFront(WindowBase& w) override
+    {
+        if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        {
+            auto itSourcePos = WindowGetIterator(&w);
+            if (itSourcePos != g_window_list.end())
+            {
+                // Insert in front of the first non-stick-to-front window
+                auto itDestPos = g_window_list.begin();
+                for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+                {
+                    auto& w2 = *it;
+                    if (!(w2->flags & WF_STICK_TO_FRONT))
+                    {
+                        itDestPos = it.base();
+                        break;
+                    }
+                }
+
+                g_window_list.splice(itDestPos, g_window_list, itSourcePos);
+                w.Invalidate();
+
+                if (w.windowPos.x + w.width < 20)
+                {
+                    int32_t i = 20 - w.windowPos.x;
+                    w.windowPos.x += i;
+                    if (w.viewport != nullptr)
+                        w.viewport->pos.x += i;
+                    w.Invalidate();
+                }
+            }
+        }
+        return &w;
+    }
+
+    WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) override
+    {
+        WindowBase* w = FindByClass(cls);
+        if (w != nullptr)
+        {
+            w->flags |= flags;
+            w->Invalidate();
+            w = BringToFront(*w);
+        }
+
+        return w;
+    }
+
+    WindowBase* BringToFrontByClass(WindowClass cls) override
+    {
+        return BringToFrontByClassWithFlags(cls, WF_WHITE_BORDER_MASK);
+    }
+
+    /**
+     *
+     *  rct2: 0x006ED78A
+     * cls (cl)
+     * number (dx)
+     */
+    WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) override
+    {
+        WindowBase* w = FindByNumber(cls, number);
+        if (w != nullptr)
+        {
+            w->flags |= WF_WHITE_BORDER_MASK;
+            w->Invalidate();
+            w = BringToFront(*w);
+        }
+
+        return w;
     }
 };
 

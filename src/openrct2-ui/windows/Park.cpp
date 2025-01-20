@@ -7,17 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Theme.h"
-
 #include <array>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Objective.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -32,6 +30,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -870,8 +869,8 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             // Show a tooltip if the park is pay per ride.
-            widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
-            widgets[WIDX_PRICE].tooltip = STR_NONE;
+            widgets[WIDX_PRICE_LABEL].tooltip = kStringIdNone;
+            widgets[WIDX_PRICE].tooltip = kStringIdNone;
 
             if (!Park::EntranceFeeUnlocked())
             {
@@ -1298,7 +1297,8 @@ namespace OpenRCT2::Ui::Windows
 
     static ParkWindow* ParkWindowOpen(uint8_t page)
     {
-        auto* wnd = WindowFocusOrCreate<ParkWindow>(WindowClass::ParkInformation, 230, 174 + 9, WF_10);
+        auto* windowMgr = GetWindowManager();
+        auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(WindowClass::ParkInformation, 230, 174 + 9, WF_10);
         if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
         {
             wnd->OnMouseUp(WIDX_TAB_1 + page);

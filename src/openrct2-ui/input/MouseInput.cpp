@@ -21,7 +21,7 @@
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -246,7 +246,7 @@ namespace OpenRCT2
      */
     static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState state)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
         if (w == nullptr)
         {
@@ -286,7 +286,7 @@ namespace OpenRCT2
         Widget* widget;
         WidgetIndex widgetIndex;
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
 
         // Get window and widget under cursor position
         w = windowMgr->FindFromPoint(screenCoords);
@@ -308,11 +308,11 @@ namespace OpenRCT2
                         InputWidgetLeft(screenCoords, w, widgetIndex);
                         break;
                     case MouseState::RightPress:
-                        WindowCloseByClass(WindowClass::Tooltip);
+                        windowMgr->CloseByClass(WindowClass::Tooltip);
 
                         if (w != nullptr)
                         {
-                            w = WindowBringToFront(*w);
+                            w = windowMgr->BringToFront(*w);
                         }
 
                         if (widgetIndex != kWidgetIndexNull)
@@ -566,7 +566,7 @@ namespace OpenRCT2
         if (differentialCoords.x == 0 && differentialCoords.y == 0)
             return;
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         w = windowMgr->FindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
 
         // #3294: Window can be closed during a drag session, so just finish
@@ -780,7 +780,7 @@ namespace OpenRCT2
         const auto& widget = w.widgets[widgetIndex];
         auto& scroll = w.scrolls[scroll_id];
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             int32_t newLeft;
@@ -820,7 +820,7 @@ namespace OpenRCT2
         const auto& widget = w.widgets[widgetIndex];
         auto& scroll = w.scrolls[scroll_id];
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             int32_t newTop;
@@ -857,7 +857,7 @@ namespace OpenRCT2
      */
     static void InputScrollPartUpdateHLeft(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             auto& scroll = w.scrolls[scroll_id];
@@ -877,7 +877,7 @@ namespace OpenRCT2
     {
         const auto& widget = w.widgets[widgetIndex];
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             auto& scroll = w.scrolls[scroll_id];
@@ -903,7 +903,7 @@ namespace OpenRCT2
      */
     static void InputScrollPartUpdateVTop(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             auto& scroll = w.scrolls[scroll_id];
@@ -923,7 +923,7 @@ namespace OpenRCT2
     {
         const auto& widget = w.widgets[widgetIndex];
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             auto& scroll = w.scrolls[scroll_id];
@@ -1020,7 +1020,7 @@ namespace OpenRCT2
      */
     static void InputWidgetOverFlatbuttonInvalidate()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByNumber(gHoverWidget.window_classification, gHoverWidget.window_number);
         if (w != nullptr)
         {
@@ -1048,16 +1048,16 @@ namespace OpenRCT2
             windowNumber = w->number;
         }
 
-        WindowCloseByClass(WindowClass::Error);
-        WindowCloseByClass(WindowClass::Tooltip);
+        auto* windowMgr = GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Error);
+        windowMgr->CloseByClass(WindowClass::Tooltip);
 
         // Window might have changed position in the list, therefore find it again
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
         w = windowMgr->FindByNumber(windowClass, windowNumber);
         if (w == nullptr)
             return;
 
-        w = WindowBringToFront(*w);
+        w = windowMgr->BringToFront(*w);
         if (widgetIndex == kWidgetIndexNull)
             return;
 
@@ -1146,10 +1146,10 @@ namespace OpenRCT2
     {
         CursorID cursorId = CursorID::Arrow;
         auto ft = Formatter();
-        ft.Add<StringId>(STR_NONE);
+        ft.Add<StringId>(kStringIdNone);
         SetMapTooltip(ft);
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);
 
         if (window != nullptr)
@@ -1227,7 +1227,7 @@ namespace OpenRCT2
     {
         if (_inputFlags & INPUT_FLAG_TOOL_ACTIVE)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
 
             if (w == nullptr)
@@ -1309,7 +1309,7 @@ namespace OpenRCT2
         cursor_w_number = gPressedWidget.window_number;
         WidgetIndex cursor_widgetIndex = gPressedWidget.widget_index;
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* cursor_w = windowMgr->FindByNumber(cursor_w_class, cursor_w_number);
         if (cursor_w == nullptr)
         {
@@ -1352,16 +1352,16 @@ namespace OpenRCT2
                 if (_clickRepeatTicks.has_value())
                 {
                     // The initial amount of time in ticks to wait until the first click repeat.
-                    constexpr auto ticksUntilRepeats = 16U;
+                    constexpr auto kTicksUntilRepeats = 16u;
 
                     // The amount of ticks between each click repeat.
-                    constexpr auto eventDelayInTicks = 3U;
+                    constexpr auto kEventDelayInTicks = 3u;
 
                     // The amount of ticks since the last click repeat.
                     const auto clickRepeatsDelta = gCurrentRealTimeTicks - _clickRepeatTicks.value();
 
                     // Handle click repeat, only start this when at least 16 ticks elapsed.
-                    if (clickRepeatsDelta >= ticksUntilRepeats && (clickRepeatsDelta & eventDelayInTicks) == 0)
+                    if (clickRepeatsDelta >= kTicksUntilRepeats && (clickRepeatsDelta & kEventDelayInTicks) == 0)
                     {
                         if (WidgetIsHoldable(*w, widgetIndex))
                         {
@@ -1369,7 +1369,7 @@ namespace OpenRCT2
                         }
 
                         // Subtract initial delay from here on we want the event each third tick.
-                        _clickRepeatTicks = gCurrentRealTimeTicks - ticksUntilRepeats;
+                        _clickRepeatTicks = gCurrentRealTimeTicks - kTicksUntilRepeats;
                     }
                 }
 
@@ -1401,7 +1401,7 @@ namespace OpenRCT2
                         {
                             dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                             dropdownCleanup = dropdown_index == -1
-                                || (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
+                                || (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
                                 || gDropdownItems[dropdown_index].IsSeparator();
                             w = nullptr; // To be closed right next
                         }
@@ -1426,7 +1426,7 @@ namespace OpenRCT2
                             }
                         }
 
-                        WindowCloseByClass(WindowClass::Dropdown);
+                        windowMgr->CloseByClass(WindowClass::Dropdown);
 
                         if (dropdownCleanup)
                         {
@@ -1535,7 +1535,7 @@ namespace OpenRCT2
                     OpenRCT2String{ kColourToTip.at(ColourDropDownIndexToColour(dropdown_index)), {} }, screenCoords);
             }
 
-            if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
+            if (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
             {
                 return;
             }
@@ -1589,7 +1589,8 @@ namespace OpenRCT2
 
             if (gCurrentRealTimeTicks >= gTooltipCloseTimeout)
             {
-                WindowCloseByClass(WindowClass::Tooltip);
+                auto* windowMgr = GetWindowManager();
+                windowMgr->CloseByClass(WindowClass::Tooltip);
             }
         }
     }
@@ -1616,7 +1617,7 @@ namespace OpenRCT2
      */
     void InvalidateScroll()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByNumber(gPressedWidget.window_classification, gPressedWidget.window_number);
         if (w != nullptr)
         {

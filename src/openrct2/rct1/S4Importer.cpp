@@ -2920,7 +2920,7 @@ namespace OpenRCT2::RCT1
             auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->Type);
             if (srcThought->Item == RCT12PeepThoughtItemNone)
-                dstThought->item = PeepThoughtItemNone;
+                dstThought->item = kPeepThoughtItemNone;
             else
                 dstThought->item = srcThought->Item;
             dstThought->freshness = srcThought->Freshness;

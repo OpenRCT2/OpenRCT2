@@ -17,9 +17,8 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Cheats.h>
-#include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
@@ -374,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CHAT_UNAVAILABLE, STR_NONE, {});
+                        ContextShowError(STR_CHAT_UNAVAILABLE, kStringIdNone, {});
                     }
                     break;
             }
@@ -501,8 +500,9 @@ namespace OpenRCT2::Ui::Windows
                             break;
                         case DDIDX_QUIT_TO_MENU:
                         {
-                            WindowCloseByClass(WindowClass::ManageTrackDesign);
-                            WindowCloseByClass(WindowClass::TrackDeletePrompt);
+                            auto* windowMgr = Ui::GetWindowManager();
+                            windowMgr->CloseByClass(WindowClass::ManageTrackDesign);
+                            windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
                             auto loadOrQuitAction = LoadOrQuitAction(
                                 LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
                             GameActions::Execute(&loadOrQuitAction);
@@ -777,7 +777,7 @@ namespace OpenRCT2::Ui::Windows
         void ApplyFootpathPressed()
         {
             // Footpath button pressed down
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
                 pressed_widgets &= ~(1uLL << WIDX_PATH);
             else
@@ -998,7 +998,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* TopToolbarOpen()
     {
-        TopToolbar* window = WindowCreate<TopToolbar>(
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->Create<TopToolbar>(
             WindowClass::TopToolbar, ScreenCoordsXY(0, 0), ContextGetWidth(), kTopToolbarHeight + 1,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
@@ -1140,7 +1141,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case DDIDX_VIEW_CLIPPING:
                 {
-                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     if (windowMgr->FindByClass(WindowClass::ViewClipping) == nullptr)
                     {
                         ContextOpenWindow(WindowClass::ViewClipping);
@@ -1179,7 +1180,7 @@ namespace OpenRCT2::Ui::Windows
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
         if (!customMenuItems.empty())
         {
-            gDropdownItems[i++].Format = STR_EMPTY;
+            gDropdownItems[i++].Format = kStringIdEmpty;
             for (const auto& item : customMenuItems)
             {
                 if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
@@ -1253,7 +1254,7 @@ namespace OpenRCT2::Ui::Windows
         gDropdownItems[3].Format = STR_TOGGLE_OPTION;
         if (Config::Get().general.DebuggingTools)
         {
-            gDropdownItems[4].Format = STR_EMPTY;
+            gDropdownItems[4].Format = kStringIdEmpty;
             gDropdownItems[5].Format = STR_TOGGLE_OPTION;
             gDropdownItems[5].Args = STR_SPEED_HYPER;
             num_items = 6;
@@ -1340,7 +1341,7 @@ namespace OpenRCT2::Ui::Windows
         {
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_ABOUT;
             gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
@@ -1348,7 +1349,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
             gDropdownItems[numItems++].Format = STR_OPTIONS;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
 
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 gDropdownItems[numItems++].Format = STR_QUIT_ROLLERCOASTER_DESIGNER;
@@ -1360,12 +1361,12 @@ namespace OpenRCT2::Ui::Windows
         else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         {
             gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_ABOUT;
             gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
@@ -1373,7 +1374,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
             gDropdownItems[numItems++].Format = STR_OPTIONS;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_QUIT_SCENARIO_EDITOR;
             gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
         }
@@ -1381,13 +1382,13 @@ namespace OpenRCT2::Ui::Windows
         {
             gDropdownItems[numItems++].Format = STR_NEW_GAME;
             gDropdownItems[numItems++].Format = STR_LOAD_GAME;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_SAVE_GAME;
             gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_ABOUT;
             gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
@@ -1395,7 +1396,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
             gDropdownItems[numItems++].Format = STR_OPTIONS;
-            gDropdownItems[numItems++].Format = STR_EMPTY;
+            gDropdownItems[numItems++].Format = kStringIdEmpty;
             gDropdownItems[numItems++].Format = STR_QUIT_TO_MENU;
             gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
         }
@@ -1474,9 +1475,12 @@ namespace OpenRCT2::Ui::Windows
                 ContextOpenWindow(WindowClass::TileInspector);
                 break;
             case DDIDX_OBJECT_SELECTION:
-                WindowCloseAll();
+            {
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseAll();
                 ContextOpenWindow(WindowClass::EditorObjectSelection);
                 break;
+            }
             case DDIDX_INVENTIONS_LIST:
                 ContextOpenWindow(WindowClass::EditorInventionList);
                 break;
@@ -1509,7 +1513,7 @@ namespace OpenRCT2::Ui::Windows
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         Dropdown::SetChecked(DDIDX_DEBUG_PAINT, windowMgr->FindByClass(WindowClass::DebugPaint) != nullptr);
     }
 
@@ -1528,14 +1532,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case DDIDX_DEBUG_PAINT:
                 {
-                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     if (windowMgr->FindByClass(WindowClass::DebugPaint) == nullptr)
                     {
                         ContextOpenWindow(WindowClass::DebugPaint);
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::DebugPaint);
+                        windowMgr->CloseByClass(WindowClass::DebugPaint);
                     }
                     break;
                 }
