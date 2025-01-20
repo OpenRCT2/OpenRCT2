@@ -2517,7 +2517,14 @@ namespace OpenRCT2::Ui::Windows
             int32_t defaultIndex = -1;
             for (size_t i = 0; i < _specialElementDropdownState.Elements.size(); i++)
             {
-                OpenRCT2::TrackElemType trackPiece = _specialElementDropdownState.Elements[i].TrackType;
+                TrackElemType trackPiece = _specialElementDropdownState.Elements[i].TrackType;
+
+                // Separate elements logically
+                if (trackPiece == TrackElemType::None)
+                {
+                    gDropdownItems[i].Format = kStringIdEmpty;
+                    continue;
+                }
 
                 const auto& ted = GetTrackElementDescriptor(trackPiece);
                 StringId trackPieceStringId = ted.description;

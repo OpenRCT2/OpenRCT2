@@ -24,6 +24,8 @@ using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2
 {
+    constexpr auto kSeparator = TrackElemType::None;
+
     /**
      * Order of special track elements dropdown. Elements with the same name string must be sequential or they show up twice.
      */
@@ -31,6 +33,7 @@ namespace OpenRCT2
         TrackElemType::EndStation,
         TrackElemType::SBendLeft,
         TrackElemType::SBendRight,
+        kSeparator,
 
         // Loops
         TrackElemType::LeftVerticalLoop,
@@ -67,6 +70,7 @@ namespace OpenRCT2
         TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
         TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
         TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
+        kSeparator,
 
         // Twists
         TrackElemType::LeftTwistDownToUp,
@@ -77,6 +81,7 @@ namespace OpenRCT2
         TrackElemType::LeftFlyerTwistDown,
         TrackElemType::RightFlyerTwistUp,
         TrackElemType::RightFlyerTwistDown,
+        kSeparator,
 
         // Corkscrews
         TrackElemType::LeftCorkscrewUp,
@@ -91,6 +96,7 @@ namespace OpenRCT2
         TrackElemType::LeftLargeCorkscrewDown,
         TrackElemType::RightLargeCorkscrewUp,
         TrackElemType::RightLargeCorkscrewDown,
+        kSeparator,
 
         // Helixes
         TrackElemType::LeftHalfBankedHelixUpSmall,
@@ -109,6 +115,7 @@ namespace OpenRCT2
         TrackElemType::RightQuarterHelixLargeUp,
         TrackElemType::LeftQuarterHelixLargeDown,
         TrackElemType::RightQuarterHelixLargeDown,
+        kSeparator,
 
         // Zero-G Rolls
         TrackElemType::LeftZeroGRollUp,
@@ -119,20 +126,24 @@ namespace OpenRCT2
         TrackElemType::LeftLargeZeroGRollDown,
         TrackElemType::RightLargeZeroGRollUp,
         TrackElemType::RightLargeZeroGRollDown,
+        kSeparator,
 
         // Barrel Rolls
         TrackElemType::LeftBarrelRollUpToDown,
         TrackElemType::LeftBarrelRollDownToUp,
         TrackElemType::RightBarrelRollUpToDown,
         TrackElemType::RightBarrelRollDownToUp,
+        kSeparator,
 
         // Tower
         TrackElemType::TowerBase,
         TrackElemType::TowerSection,
+        kSeparator,
 
         // Boosters
         TrackElemType::Booster,
         TrackElemType::DiagBooster,
+        kSeparator,
 
         // Brakes
         TrackElemType::Brakes,
@@ -140,32 +151,40 @@ namespace OpenRCT2
         TrackElemType::Down25Brakes,
         TrackElemType::BlockBrakes,
         TrackElemType::DiagBlockBrakes,
+        kSeparator,
 
         // Photo sections
         TrackElemType::OnRidePhoto,
+        kSeparator,
 
         // River Rapids
         TrackElemType::Waterfall,
         TrackElemType::Rapids,
         TrackElemType::Watersplash,
         TrackElemType::Whirlpool,
+        kSeparator,
 
         TrackElemType::CableLiftHill,
+        kSeparator,
 
         TrackElemType::ReverseFreefallSlope,
         TrackElemType::ReverseFreefallVertical,
+        kSeparator,
 
         TrackElemType::BrakeForDrop,
         TrackElemType::LogFlumeReverser,
         TrackElemType::SpinningTunnel,
+        kSeparator,
 
         TrackElemType::PoweredLift,
+        kSeparator,
 
         // Heart Line pieces
         TrackElemType::HeartLineTransferUp,
         TrackElemType::HeartLineTransferDown,
         TrackElemType::LeftHeartLineRoll,
         TrackElemType::RightHeartLineRoll,
+        kSeparator,
 
         // Mini Golf pieces
         TrackElemType::MinigolfHoleA,
@@ -173,6 +192,7 @@ namespace OpenRCT2
         TrackElemType::MinigolfHoleC,
         TrackElemType::MinigolfHoleD,
         TrackElemType::MinigolfHoleE,
+        kSeparator,
 
         TrackElemType::LeftCurvedLiftHill,
         TrackElemType::RightCurvedLiftHill,
@@ -226,11 +246,11 @@ namespace OpenRCT2
         for (TrackElemType trackType : kSpecialElementsDropdownOrder)
         {
             const auto& ted = GetTrackElementDescriptor(trackType);
-            if (!IsTrackEnabled(ted.definition.group))
+            if (!IsTrackEnabled(ted.definition.group) && trackType != kSeparator)
                 continue;
-            bool entryIsDisabled;
 
             // If the current build orientation (slope, bank, diagonal) matches the track element's, show the piece as enabled
+            bool entryIsDisabled;
             if (state == RideConstructionState::Back)
             {
                 entryIsDisabled = ted.definition.pitchEnd != buildSlope || ted.definition.rollEnd != buildBank
@@ -254,7 +274,13 @@ namespace OpenRCT2
                 // If the current element is disabled, do not add current element.
                 if (entryIsDisabled)
                     continue;
+
                 auto& lastElement = list.Elements.back();
+
+                // Don't add two separators in a row
+                if (lastElement.TrackType == kSeparator && trackType == kSeparator)
+                    continue;
+
                 // If the previous element is disabled and current element is enabled, replace the previous element
                 if (lastElement.Disabled && !entryIsDisabled)
                 {
@@ -268,6 +294,15 @@ namespace OpenRCT2
             list.Elements.push_back({ trackType, entryIsDisabled });
             list.HasActiveElements |= !entryIsDisabled;
         }
+
+        // If the very last element is a separator, remove it
+        if (!list.Elements.empty())
+        {
+            auto& lastElement = list.Elements.back();
+            if (lastElement.TrackType == kSeparator)
+                list.Elements.pop_back();
+        }
+
         return list;
     }
 
