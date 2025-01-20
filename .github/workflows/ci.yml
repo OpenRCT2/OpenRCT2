@@ -648,6 +648,7 @@ jobs:
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
         with:
+          path: build/www
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-emscripten
   release:
     name: Release
