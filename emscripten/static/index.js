@@ -64,7 +64,11 @@ window_scale = 1.750000
 `);
     }
 
-    await updateAssets();
+    const assetsOK = await updateAssets();
+    if (!assetsOK)
+    {
+        return
+    }
     
     Module.FS.writeFile("/OpenRCT2/changelog.txt", `EMSCRIPTEN --- README
 
@@ -134,12 +138,26 @@ async function updateAssets() {
         console.log("Updating assets to", assetsVersion);
         document.getElementById("loadingWebassembly").innerText = "Asset update found. Downloading...";
         await clearDatabase("/OpenRCT2/");
-        await extractZip(await (await fetch("assets.zip")).blob(), () =>
-        {
+
+        // Fetch the assets.zip file
+        const response = await fetch("assets.zip");
+        if (!response.ok) {
+            if (response.status === 404) {
+                document.getElementById("loadingWebassembly").innerText = "Error! Assets file not found (404).";
+            } else {
+                document.getElementById("loadingWebassembly").innerText = `Error! Failed to download assets (status: ${response.status}).`;
+            }
+            return false;
+        } else {
+            document.getElementById("loadingWebassembly").innerText = "Downloaded assets.zip";
+        }
+
+        await extractZip(await response.blob(), () => {
             return "/OpenRCT2/";
         });
         Module.FS.writeFile("/OpenRCT2/version", assetsVersion.toString());
     }
+    return true;
 }
 
 async function extractZip(data, checkZip) {
