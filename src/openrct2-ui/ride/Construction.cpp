@@ -31,71 +31,50 @@ namespace OpenRCT2
      */
     constexpr std::array kSpecialElementsDropdownOrder = {
         TrackElemType::EndStation,
+        kSeparator,
+
+        // Brakes
+        TrackElemType::Brakes,
+        TrackElemType::DiagBrakes,
+        TrackElemType::Down25Brakes,
+        TrackElemType::BlockBrakes,
+        TrackElemType::DiagBlockBrakes,
+        kSeparator,
+
+        // Boosters
+        TrackElemType::Booster,
+        TrackElemType::DiagBooster,
+        kSeparator,
+
+        // Photo sections
+        TrackElemType::OnRidePhoto,
+        kSeparator,
+
+        // Rotation control
+        TrackElemType::RotationControlToggle,
+        kSeparator,
+
+        // (Curved) lift (hills) pieces
+        TrackElemType::LeftCurvedLiftHill,
+        TrackElemType::RightCurvedLiftHill,
+        TrackElemType::CableLiftHill,
+        TrackElemType::PoweredLift,
+        kSeparator,
+
+        // Heart Line pieces
+        TrackElemType::HeartLineTransferUp,
+        TrackElemType::HeartLineTransferDown,
+        TrackElemType::LeftHeartLineRoll,
+        TrackElemType::RightHeartLineRoll,
+        kSeparator,
+
+        // Brake for drop
+        TrackElemType::BrakeForDrop,
+        kSeparator,
+
+        // S-Bends
         TrackElemType::SBendLeft,
         TrackElemType::SBendRight,
-        kSeparator,
-
-        // Loops
-        TrackElemType::LeftVerticalLoop,
-        TrackElemType::RightVerticalLoop,
-        TrackElemType::HalfLoopUp,
-        TrackElemType::HalfLoopDown,
-        TrackElemType::LeftLargeHalfLoopUp,
-        TrackElemType::LeftLargeHalfLoopDown,
-        TrackElemType::RightLargeHalfLoopUp,
-        TrackElemType::RightLargeHalfLoopDown,
-        TrackElemType::FlyerHalfLoopUninvertedUp,
-        TrackElemType::FlyerHalfLoopInvertedDown,
-        TrackElemType::FlyerHalfLoopInvertedUp,
-        TrackElemType::FlyerHalfLoopUninvertedDown,
-        TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop,
-        TrackElemType::Up90ToInvertedFlatQuarterLoop,
-        TrackElemType::InvertedFlatToDown90QuarterLoop,
-        TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop,
-        TrackElemType::MultiDimFlatToDown90QuarterLoop,
-        TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop,
-        TrackElemType::LeftMediumHalfLoopUp,
-        TrackElemType::LeftMediumHalfLoopDown,
-        TrackElemType::RightMediumHalfLoopUp,
-        TrackElemType::RightMediumHalfLoopDown,
-        TrackElemType::LeftEighthDiveLoopUpToOrthogonal,
-        TrackElemType::LeftEighthDiveLoopDownToDiag,
-        TrackElemType::RightEighthDiveLoopUpToOrthogonal,
-        TrackElemType::RightEighthDiveLoopDownToDiag,
-        TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp,
-        TrackElemType::LeftFlyerLargeHalfLoopInvertedDown,
-        TrackElemType::LeftFlyerLargeHalfLoopInvertedUp,
-        TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown,
-        TrackElemType::RightFlyerLargeHalfLoopUninvertedUp,
-        TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
-        TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
-        TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
-        kSeparator,
-
-        // Twists
-        TrackElemType::LeftTwistDownToUp,
-        TrackElemType::LeftTwistUpToDown,
-        TrackElemType::RightTwistDownToUp,
-        TrackElemType::RightTwistUpToDown,
-        TrackElemType::LeftFlyerTwistUp,
-        TrackElemType::LeftFlyerTwistDown,
-        TrackElemType::RightFlyerTwistUp,
-        TrackElemType::RightFlyerTwistDown,
-        kSeparator,
-
-        // Corkscrews
-        TrackElemType::LeftCorkscrewUp,
-        TrackElemType::LeftCorkscrewDown,
-        TrackElemType::RightCorkscrewUp,
-        TrackElemType::RightCorkscrewDown,
-        TrackElemType::LeftFlyerCorkscrewUp,
-        TrackElemType::LeftFlyerCorkscrewDown,
-        TrackElemType::RightFlyerCorkscrewUp,
-        TrackElemType::RightFlyerCorkscrewDown,
-        TrackElemType::LeftLargeCorkscrewUp,
-        TrackElemType::LeftLargeCorkscrewDown,
-        TrackElemType::RightLargeCorkscrewUp,
-        TrackElemType::RightLargeCorkscrewDown,
         kSeparator,
 
         // Helixes
@@ -117,6 +96,88 @@ namespace OpenRCT2
         TrackElemType::RightQuarterHelixLargeDown,
         kSeparator,
 
+        // (Wooden) water splash
+        TrackElemType::Watersplash,
+        kSeparator,
+
+        // River Rapids
+        TrackElemType::Waterfall,
+        TrackElemType::Rapids, // Also used for Monster Trucks
+        TrackElemType::Whirlpool,
+        kSeparator,
+
+        // Spinning tunnel
+        TrackElemType::SpinningTunnel,
+        kSeparator,
+
+        // Reverser pieces
+        TrackElemType::LeftReverser,
+        TrackElemType::RightReverser,
+        TrackElemType::LogFlumeReverser,
+        kSeparator,
+
+        // Reverse freefall pieces
+        TrackElemType::ReverseFreefallSlope,
+        TrackElemType::ReverseFreefallVertical,
+        kSeparator,
+
+        // Air thrust pieces
+        TrackElemType::AirThrustTopCap,
+        TrackElemType::AirThrustVerticalDown,
+        TrackElemType::AirThrustVerticalDownToLevel,
+        kSeparator,
+
+        // Loops
+        TrackElemType::LeftVerticalLoop,
+        TrackElemType::RightVerticalLoop,
+        TrackElemType::HalfLoopUp,
+        TrackElemType::HalfLoopDown,
+        TrackElemType::FlyerHalfLoopUninvertedUp,
+        TrackElemType::FlyerHalfLoopInvertedDown,
+        TrackElemType::FlyerHalfLoopInvertedUp,
+        TrackElemType::FlyerHalfLoopUninvertedDown,
+        TrackElemType::LeftMediumHalfLoopUp,
+        TrackElemType::LeftMediumHalfLoopDown,
+        TrackElemType::RightMediumHalfLoopUp,
+        TrackElemType::RightMediumHalfLoopDown,
+        TrackElemType::LeftLargeHalfLoopUp,
+        TrackElemType::LeftLargeHalfLoopDown,
+        TrackElemType::RightLargeHalfLoopUp,
+        TrackElemType::RightLargeHalfLoopDown,
+        TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp,
+        TrackElemType::LeftFlyerLargeHalfLoopInvertedDown,
+        TrackElemType::LeftFlyerLargeHalfLoopInvertedUp,
+        TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown,
+        TrackElemType::RightFlyerLargeHalfLoopUninvertedUp,
+        TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
+        TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
+        TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
+        TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop,
+        TrackElemType::Up90ToInvertedFlatQuarterLoop,
+        TrackElemType::InvertedFlatToDown90QuarterLoop,
+        TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop,
+        TrackElemType::MultiDimFlatToDown90QuarterLoop,
+        TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop,
+        kSeparator,
+
+        // Twists
+        TrackElemType::LeftTwistDownToUp,
+        TrackElemType::LeftTwistUpToDown,
+        TrackElemType::RightTwistDownToUp,
+        TrackElemType::RightTwistUpToDown,
+        TrackElemType::LeftFlyerTwistUp,
+        TrackElemType::LeftFlyerTwistDown,
+        TrackElemType::RightFlyerTwistUp,
+        TrackElemType::RightFlyerTwistDown,
+        kSeparator,
+
+        // Barrel Rolls
+        TrackElemType::LeftBarrelRollUpToDown,
+        TrackElemType::LeftBarrelRollDownToUp,
+        TrackElemType::RightBarrelRollUpToDown,
+        TrackElemType::RightBarrelRollDownToUp,
+        kSeparator,
+
         // Zero-G Rolls
         TrackElemType::LeftZeroGRollUp,
         TrackElemType::LeftZeroGRollDown,
@@ -128,62 +189,31 @@ namespace OpenRCT2
         TrackElemType::RightLargeZeroGRollDown,
         kSeparator,
 
-        // Barrel Rolls
-        TrackElemType::LeftBarrelRollUpToDown,
-        TrackElemType::LeftBarrelRollDownToUp,
-        TrackElemType::RightBarrelRollUpToDown,
-        TrackElemType::RightBarrelRollDownToUp,
+        // Corkscrews
+        TrackElemType::LeftCorkscrewUp,
+        TrackElemType::LeftCorkscrewDown,
+        TrackElemType::RightCorkscrewUp,
+        TrackElemType::RightCorkscrewDown,
+        TrackElemType::LeftFlyerCorkscrewUp,
+        TrackElemType::LeftFlyerCorkscrewDown,
+        TrackElemType::RightFlyerCorkscrewUp,
+        TrackElemType::RightFlyerCorkscrewDown,
+        TrackElemType::LeftLargeCorkscrewUp,
+        TrackElemType::LeftLargeCorkscrewDown,
+        TrackElemType::RightLargeCorkscrewUp,
+        TrackElemType::RightLargeCorkscrewDown,
+        kSeparator,
+
+        // Dive loops
+        TrackElemType::LeftEighthDiveLoopUpToOrthogonal,
+        TrackElemType::LeftEighthDiveLoopDownToDiag,
+        TrackElemType::RightEighthDiveLoopUpToOrthogonal,
+        TrackElemType::RightEighthDiveLoopDownToDiag,
         kSeparator,
 
         // Tower
         TrackElemType::TowerBase,
         TrackElemType::TowerSection,
-        kSeparator,
-
-        // Boosters
-        TrackElemType::Booster,
-        TrackElemType::DiagBooster,
-        kSeparator,
-
-        // Brakes
-        TrackElemType::Brakes,
-        TrackElemType::DiagBrakes,
-        TrackElemType::Down25Brakes,
-        TrackElemType::BlockBrakes,
-        TrackElemType::DiagBlockBrakes,
-        kSeparator,
-
-        // Photo sections
-        TrackElemType::OnRidePhoto,
-        kSeparator,
-
-        // River Rapids
-        TrackElemType::Waterfall,
-        TrackElemType::Rapids,
-        TrackElemType::Watersplash,
-        TrackElemType::Whirlpool,
-        kSeparator,
-
-        TrackElemType::CableLiftHill,
-        kSeparator,
-
-        TrackElemType::ReverseFreefallSlope,
-        TrackElemType::ReverseFreefallVertical,
-        kSeparator,
-
-        TrackElemType::BrakeForDrop,
-        TrackElemType::LogFlumeReverser,
-        TrackElemType::SpinningTunnel,
-        kSeparator,
-
-        TrackElemType::PoweredLift,
-        kSeparator,
-
-        // Heart Line pieces
-        TrackElemType::HeartLineTransferUp,
-        TrackElemType::HeartLineTransferDown,
-        TrackElemType::LeftHeartLineRoll,
-        TrackElemType::RightHeartLineRoll,
         kSeparator,
 
         // Mini Golf pieces
@@ -192,16 +222,6 @@ namespace OpenRCT2
         TrackElemType::MinigolfHoleC,
         TrackElemType::MinigolfHoleD,
         TrackElemType::MinigolfHoleE,
-        kSeparator,
-
-        TrackElemType::LeftCurvedLiftHill,
-        TrackElemType::RightCurvedLiftHill,
-        TrackElemType::LeftReverser,
-        TrackElemType::RightReverser,
-        TrackElemType::AirThrustTopCap,
-        TrackElemType::AirThrustVerticalDown,
-        TrackElemType::AirThrustVerticalDownToLevel,
-        TrackElemType::RotationControlToggle,
     };
 
     // Update the magic number with the current number of track elements to silence
