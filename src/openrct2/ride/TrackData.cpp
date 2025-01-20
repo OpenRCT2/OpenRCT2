@@ -3474,7 +3474,7 @@ namespace OpenRCT2::TrackMetaData
     };
     static_assert(std::size(TrackTypeToSpinFunction) == EnumValue(TrackElemType::Count));
 
-    #pragma region GForces
+#pragma region GForces
 
     template<int32_t TConstant>
     static int32_t EvaluatorConst(const int16_t)
@@ -4480,7 +4480,7 @@ namespace OpenRCT2::TrackMetaData
         }
     }
 
-    #pragma endregion
+#pragma endregion
 
     static constexpr StringId RideConfigurationStringIds[] = {
         kStringIdEmpty,                    // 0
@@ -4835,7 +4835,7 @@ namespace OpenRCT2::TrackMetaData
     };
     static_assert(std::size(RideConfigurationStringIds) == EnumValue(TrackElemType::Count));
 
-    #pragma region trackBlocks
+#pragma region trackBlocks
 
     static constexpr SequenceDescriptor kFlatSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
@@ -13051,7 +13051,7 @@ namespace OpenRCT2::TrackMetaData
             kRightEighthDiveLoopDownToDiagSeq3, kRightEighthDiveLoopDownToDiagSeq4, kRightEighthDiveLoopDownToDiagSeq5 } },
     };
 
-    #pragma endregion
+#pragma endregion
 
     static constexpr auto BuildDescriptorTable()
     {
