@@ -1701,27 +1701,22 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         }
     }
 
-    if (shopItemDescriptor.IsFood())
-        AmountOfFood = AddClamp<decltype(AmountOfFood)>(AmountOfFood, 1);
-    else if (shopItemDescriptor.IsDrink())
-        AmountOfDrinks = AddClamp<decltype(AmountOfDrinks)>(AmountOfDrinks, 1);
-    else if (shopItemDescriptor.IsSouvenir())
-        AmountOfSouvenirs = AddClamp<decltype(AmountOfSouvenirs)>(AmountOfSouvenirs, 1);
-
     money64* expendType = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
-
     if (shopItemDescriptor.IsFood())
     {
+        AmountOfFood = AddClamp<decltype(AmountOfFood)>(AmountOfFood, 1);
         expendType = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
-
-    if (shopItemDescriptor.IsDrink())
+    else if (shopItemDescriptor.IsDrink())
     {
+        AmountOfDrinks = AddClamp<decltype(AmountOfDrinks)>(AmountOfDrinks, 1);
         expendType = &PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
+    else if (shopItemDescriptor.IsSouvenir())
+        AmountOfSouvenirs = AddClamp<decltype(AmountOfSouvenirs)>(AmountOfSouvenirs, 1);
 
     if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
         FinancePayment(shopItemDescriptor.Cost, expenditure);
