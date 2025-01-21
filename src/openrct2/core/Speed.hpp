@@ -12,7 +12,7 @@
 #include <cstdint>
 
 // Note: Only valid for 5 decimal places.
-constexpr int32_t operator"" _mph(long double speedMph)
+constexpr int32_t operator""_mph(long double speedMph)
 {
     uint32_t wholeNumber = speedMph;
     uint64_t fraction = (speedMph - wholeNumber) * 100000;

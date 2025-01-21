@@ -114,7 +114,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindowView(WV_NEW_VERSION_INFO);
                     break;
                 case WIDX_COPY_BUILD_INFO:
-                    SDL_SetClipboardText(gVersionInfoFull);
+                    OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(gVersionInfoFull);
                     break;
                 case WIDX_CONTRIBUTORS_BUTTON:
                     ContextOpenWindowView(WV_CONTRIBUTORS);

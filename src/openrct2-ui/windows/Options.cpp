@@ -45,6 +45,14 @@
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+extern "C" {
+extern void ExportPersistentData();
+extern void ImportPersistentData();
+}
+#endif
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
@@ -217,6 +225,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PATH_TO_RCT1_BUTTON,
         WIDX_PATH_TO_RCT1_CLEAR,
         WIDX_ASSET_PACKS,
+#ifdef __EMSCRIPTEN__
+        WIDX_EXPORT_EMSCRIPTEN_DATA,
+        WIDX_IMPORT_EMSCRIPTEN_DATA,
+#endif
     };
 
     // clang-format off
@@ -392,11 +404,15 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({165, 113}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
         MakeWidget        ({288, 114}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
         MakeWidget        ({ 23, 130}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
         MakeWidget        ({ 23, 145}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
-        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
+        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path button
         MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
-        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                     ), // Asset packs
+        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
+#ifdef __EMSCRIPTEN__
+        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
+        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
+#endif
     };
 
     static constexpr std::span<const Widget> window_options_page_widgets[] = {
@@ -1962,6 +1978,14 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ASSET_PACKS:
                     ContextOpenWindow(WindowClass::AssetPacks);
                     break;
+#ifdef __EMSCRIPTEN__
+                case WIDX_EXPORT_EMSCRIPTEN_DATA:
+                    ExportPersistentData();
+                    break;
+                case WIDX_IMPORT_EMSCRIPTEN_DATA:
+                    ImportPersistentData();
+                    break;
+#endif
             }
         }
 

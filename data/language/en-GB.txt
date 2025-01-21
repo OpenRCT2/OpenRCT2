@@ -3792,3 +3792,5 @@ STR_6726    :Y:
 STR_6727    :Dive Loop (left)
 STR_6728    :Dive Loop (right)
 STR_6729    :Cable lift hill must start immediately after station or block brake
+STR_6730    :Export emscripten data
+STR_6731    :Import emscripten data

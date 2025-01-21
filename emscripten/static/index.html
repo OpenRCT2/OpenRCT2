@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OpenRCT2</title>
+        <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" crossorigin=anonymous></script>
+        <script src="openrct2.js"></script>
+        <style>
+            * { padding: 0; margin: 0; }
+            canvas {
+                display: block;
+                margin: 0 auto;
+                position: fixed;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        <script src="index.js"></script>
+    </head>
+    <body>
+        <p id="loadingWebassembly">Please wait... Loading webassembly</p>
+        <div id="beforeLoad" style="display:none;">
+            <p id="statusMsg">Please select your RCT2 assets (zip file):</p>
+            <input type="file" id="selectFile"></input>
+        </div>
+        <canvas id="canvas" style="display:none;"></canvas>
+    </body>
+</html>
+

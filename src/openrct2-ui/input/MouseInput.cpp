@@ -613,6 +613,7 @@ namespace OpenRCT2
             }
         }
 
+#ifndef __EMSCRIPTEN__
         const CursorState* cursorState = ContextGetCursorState();
         if (cursorState->touch || Config::Get().general.InvertViewportDrag)
         {
@@ -622,6 +623,9 @@ namespace OpenRCT2
         {
             ContextSetCursorPosition(gInputDragLast);
         }
+#else
+        gInputDragLast = newDragCoords;
+#endif
     }
 
     static void InputViewportDragEnd()

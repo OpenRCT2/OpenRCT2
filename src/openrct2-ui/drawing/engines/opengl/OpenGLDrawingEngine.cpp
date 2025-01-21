@@ -70,7 +70,9 @@ private:
 
     int32_t _drawCount = 0;
 
+    #ifndef NO_TTF
     uint32_t _ttfGlId = 0;
+    #endif
 
     struct
     {
