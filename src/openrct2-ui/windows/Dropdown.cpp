@@ -166,7 +166,8 @@ namespace OpenRCT2::Ui::Windows
                         // Draw item string
                         auto yOffset = GetAdditionalRowPadding();
                         Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].Args));
-                        DrawTextEllipsised(dpi, { screenCoords.x, screenCoords.y + yOffset }, width - 5, item, ft, { colour });
+                        DrawTextEllipsised(
+                            dpi, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, item, ft, { colour });
                     }
                 }
             }
