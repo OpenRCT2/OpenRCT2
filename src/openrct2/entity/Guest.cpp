@@ -4695,7 +4695,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (waypoint == 2)
     {
         bool lastRide = false;
-        if (ride->status != RideStatus::Open)
+        if (ride->status != RideStatus::Open || ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             lastRide = true;
         else if (CurrentCar++ != 0)
         {
