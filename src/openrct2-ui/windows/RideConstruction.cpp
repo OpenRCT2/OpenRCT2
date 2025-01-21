@@ -2545,9 +2545,14 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
+            // TODO: temp
+            auto ddWidth = widget->width();
+            if (_specialElementDropdownState.Elements.size() > 20)
+                ddWidth -= 30;
+
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,
-                _specialElementDropdownState.Elements.size(), widget->width());
+                _specialElementDropdownState.Elements.size(), ddWidth);
 
             for (size_t i = 0; i < _specialElementDropdownState.Elements.size(); i++)
             {
