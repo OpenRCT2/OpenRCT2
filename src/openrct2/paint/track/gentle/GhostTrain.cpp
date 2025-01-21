@@ -81,42 +81,42 @@ enum
     SprGhostTrainTrackBrakesNwSe = 28882
 };
 
-static constexpr uint32_t GhostTrainTrackPiecesFlat[4] = {
+static constexpr uint32_t kGhostTrainTrackPiecesFlat[4] = {
     SprGhostTrainTrackFlatSwNe,
     SprGhostTrainTrackFlatNwSe,
     SprGhostTrainTrackFlatSwNe,
     SprGhostTrainTrackFlatNwSe,
 };
 
-static constexpr uint32_t GhostTrainTrackPiecesFlatTo25DegUp[4][2] = {
+static constexpr uint32_t kGhostTrainTrackPiecesFlatTo25DegUp[4][2] = {
     { SprGhostTrainTrackFlatTo25DegUpSwNe, SprGhostTrainTrackFlatTo25DegUpFrontSwNe },
     { SprGhostTrainTrackFlatTo25DegUpNwSe, SprGhostTrainTrackFlatTo25DegUpFrontNwSe },
     { SprGhostTrainTrackFlatTo25DegUpNeSw, SprGhostTrainTrackFlatTo25DegUpFrontNeSw },
     { SprGhostTrainTrackFlatTo25DegUpSeNw, SprGhostTrainTrackFlatTo25DegUpFrontSeNw },
 };
 
-static constexpr uint32_t GhostTrainTrackPieces25DegUpToFlat[4][2] = {
+static constexpr uint32_t kGhostTrainTrackPieces25DegUpToFlat[4][2] = {
     { SprGhostTrainTrack25DegUpToFlatSwNe, SprGhostTrainTrack25DegUpToFlatFrontSwNe },
     { SprGhostTrainTrack25DegUpToFlatNwSe, SprGhostTrainTrack25DegUpToFlatFrontNwSe },
     { SprGhostTrainTrack25DegUpToFlatNeSw, SprGhostTrainTrack25DegUpToFlatFrontNeSw },
     { SprGhostTrainTrack25DegUpToFlatSeNw, SprGhostTrainTrack25DegUpToFlatFrontSeNw },
 };
 
-static constexpr uint32_t GhostTrainTrackPieces25DegUp[4][2] = {
+static constexpr uint32_t kGhostTrainTrackPieces25DegUp[4][2] = {
     { SprGhostTrainTrack25DegUpSwNe, SprGhostTrainTrack25DegUpFrontSwNe },
     { SprGhostTrainTrack25DegUpNwSe, SprGhostTrainTrack25DegUpFrontNwSe },
     { SprGhostTrainTrack25DegUpNeSw, SprGhostTrainTrack25DegUpFrontNeSw },
     { SprGhostTrainTrack25DegUpSeNw, SprGhostTrainTrack25DegUpFrontSeNw },
 };
 
-static constexpr uint32_t GhostTrainTrackPiecesQuarterTurn1Tile[4] = {
+static constexpr uint32_t kGhostTrainTrackPiecesQuarterTurn1Tile[4] = {
     SprGhostTrainQuarterTurn1TileSwNw,
     SprGhostTrainQuarterTurn1TileNwNe,
     SprGhostTrainQuarterTurn1TileNeSe,
     SprGhostTrainQuarterTurn1TileSeSw,
 };
 
-static constexpr uint32_t GhostTrainTrackPiecesQuarterTurn3Tiles[4][3] = {
+static constexpr uint32_t kGhostTrainTrackPiecesQuarterTurn3Tiles[4][3] = {
     {
         SprGhostTrainQuarterTurn3TilesSwSePart0,
         SprGhostTrainQuarterTurn3TilesSwSePart1,
@@ -139,21 +139,21 @@ static constexpr uint32_t GhostTrainTrackPiecesQuarterTurn3Tiles[4][3] = {
     },
 };
 
-static constexpr uint32_t ghost_train_track_pieces_spinning_tunnel_track[4] = {
+static constexpr uint32_t kGhostTrainTrackPiecesSpinningTunnelTrack[4] = {
     SprGhostTrainSpinningTunnelTrackSwNe,
     SprGhostTrainSpinningTunnelTrackNwSe,
     SprGhostTrainSpinningTunnelTrackSwNe,
     SprGhostTrainSpinningTunnelTrackNwSe,
 };
 
-static constexpr uint32_t GhostTrainTrackPiecesBrakes[4] = {
+static constexpr uint32_t kGhostTrainTrackPiecesBrakes[4] = {
     SprGhostTrainTrackBrakesSwNe,
     SprGhostTrainTrackBrakesNwSe,
     SprGhostTrainTrackBrakesSwNe,
     SprGhostTrainTrackBrakesNwSe,
 };
 
-static constexpr TunnelType DoorOpeningOutwardsToImage[] = {
+static constexpr TunnelType kDoorOpeningOutwardsToImage[] = {
     TunnelType::Doors2, // Closed
     TunnelType::Doors2, // Unused?
     TunnelType::Doors3, // Half open
@@ -163,7 +163,7 @@ static constexpr TunnelType DoorOpeningOutwardsToImage[] = {
     TunnelType::Doors2, // Unused?
 };
 
-static constexpr TunnelType DoorOpeningInwardsToImage[] = {
+static constexpr TunnelType kDoorOpeningInwardsToImage[] = {
     TunnelType::Doors2, // Closed
     TunnelType::Doors2, // Unused?
     TunnelType::Doors5, // Half open
@@ -178,13 +178,13 @@ static TunnelType GetTunnelDoorsImageStraightFlat(const TrackElement& trackEleme
     switch (direction)
     {
         case 0:
-            return DoorOpeningInwardsToImage[trackElement.GetDoorAState()];
+            return kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
         case 1:
-            return DoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
+            return kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
         case 2:
-            return DoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
+            return kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
         case 3:
-            return DoorOpeningInwardsToImage[trackElement.GetDoorAState()];
+            return kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
     }
     return TunnelType::Doors2;
 }
@@ -194,7 +194,7 @@ static void PaintGhostTrainTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesFlat[direction]);
+    auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlat[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
@@ -219,10 +219,10 @@ static void PaintGhostTrainTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(GhostTrainTrackPieces25DegUp[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPieces25DegUp[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
-    imageId = session.TrackColours.WithIndex(GhostTrainTrackPieces25DegUp[direction][1]);
+    imageId = session.TrackColours.WithIndex(kGhostTrainTrackPieces25DegUp[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 23 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -263,17 +263,17 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
     TunnelType doorImage;
     if (!isBackwards)
     {
-        doorImage = DoorOpeningInwardsToImage[trackElement.GetDoorAState()];
+        doorImage = kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
     }
     else
     {
-        doorImage = DoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
+        doorImage = kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
     }
 
-    auto imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesFlatTo25DegUp[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlatTo25DegUp[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
-    imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesFlatTo25DegUp[direction][1]);
+    imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlatTo25DegUp[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 15 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -309,10 +309,10 @@ static void PaintGhostTrainTrack25DegUpToFlatShared(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(GhostTrainTrackPieces25DegUpToFlat[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPieces25DegUpToFlat[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
-    imageId = session.TrackColours.WithIndex(GhostTrainTrackPieces25DegUpToFlat[direction][1]);
+    imageId = session.TrackColours.WithIndex(kGhostTrainTrackPieces25DegUpToFlat[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 15 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -341,10 +341,10 @@ static void PaintGhostTrainTrack25DegUpToFlat(
             PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
+            PaintUtilPushTunnelRight(session, height + 8, kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
+            PaintUtilPushTunnelLeft(session, height + 8, kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 3:
             PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
@@ -374,10 +374,10 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
             PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
+            PaintUtilPushTunnelRight(session, height + 8, kDoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
+            PaintUtilPushTunnelLeft(session, height + 8, kDoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 3:
             PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
@@ -410,7 +410,7 @@ static void PaintGhostTrainStation(
     imageId = GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 3 } });
 
-    imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesFlat[direction]);
+    imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlat[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 3 } });
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
@@ -429,12 +429,12 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilRightQuarterTurn3TilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, GhostTrainTrackPiecesQuarterTurn3Tiles, nullptr,
+        session, 3, height, direction, trackSequence, session.TrackColours, kGhostTrainTrackPiecesQuarterTurn3Tiles, nullptr,
         defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesBoundOffsets);
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::LeftQuarterTurn3Tiles;
     bool isDoorA = (!isBackwards && trackSequence == 0) || (isBackwards && trackSequence == 3);
-    auto tunnelType = isDoorA ? DoorOpeningInwardsToImage[trackElement.GetDoorAState()]
-                              : DoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
+    auto tunnelType = isDoorA ? kDoorOpeningInwardsToImage[trackElement.GetDoorAState()]
+                              : kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
     TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, tunnelType);
 
     switch (trackSequence)
@@ -485,17 +485,17 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
     TunnelType tunnelStartImage, tunnelEndImage;
     if (!isBackwards)
     {
-        tunnelStartImage = DoorOpeningInwardsToImage[trackElement.GetDoorAState()];
-        tunnelEndImage = DoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
+        tunnelStartImage = kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
+        tunnelEndImage = kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
     }
     else
     {
-        tunnelStartImage = DoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
-        tunnelEndImage = DoorOpeningInwardsToImage[trackElement.GetDoorAState()];
+        tunnelStartImage = kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
+        tunnelEndImage = kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
     }
 
     TrackPaintUtilLeftQuarterTurn1TilePaint(
-        session, 3, height, 0, direction, session.TrackColours, GhostTrainTrackPiecesQuarterTurn1Tile);
+        session, 3, height, 0, direction, session.TrackColours, kGhostTrainTrackPiecesQuarterTurn1Tile);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, tunnelStartImage, 0, tunnelEndImage);
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
@@ -517,7 +517,7 @@ static void PaintGhostTrainTrackSpinningTunnel(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(ghost_train_track_pieces_spinning_tunnel_track[direction]);
+    auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesSpinningTunnelTrack[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 2, 6, height }, { 28, 20, 3 } });
 
@@ -539,7 +539,7 @@ static void PaintGhostTrainTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesBrakes[direction]);
+    auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesBrakes[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 

@@ -16,7 +16,7 @@
 #include <span>
 
 using ObjectEntryIndex = uint16_t;
-constexpr ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
+constexpr ObjectEntryIndex kObjectEntryIndexNull = std::numeric_limits<ObjectEntryIndex>::max();
 
 // First 0xF of RCTObjectEntry->flags
 enum class ObjectType : uint8_t

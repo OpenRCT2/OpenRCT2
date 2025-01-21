@@ -89,7 +89,7 @@ namespace OpenRCT2::World::MapGenerator
     static void addBeaches(Settings* settings)
     {
         auto beachTextureId = generateBeachTextureId();
-        if (beachTextureId == OBJECT_ENTRY_INDEX_NULL)
+        if (beachTextureId == kObjectEntryIndexNull)
             return;
 
         // Add sandy beaches

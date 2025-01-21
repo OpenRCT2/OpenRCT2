@@ -25,10 +25,10 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
-    constexpr int32_t DROPDOWN_ITEM_HEIGHT_TOUCH = 24;
+    constexpr int32_t kDropdownItemHeight = 12;
+    constexpr int32_t kDropdownItemHeightTouch = 24;
 
-    static constexpr std::array<uint8_t, 57> _appropriateImageDropdownItemsPerRow = {
+    static constexpr std::array<uint8_t, 57> kAppropriateImageDropdownItemsPerRow = {
         1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
         5, 4, 4, 5, 5, 5, 4, 5, 6, 5, // 20
         5, 7, 4, 5, 6, 5, 6, 6, 6, 6, // 30
@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND,
     };
 
-    static constexpr Widget window_dropdown_widgets[] = {
+    static constexpr Widget kWindowDropdownWidgets[] = {
         MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     };
 
@@ -75,7 +75,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            SetWidgets(window_dropdown_widgets);
+            SetWidgets(kWindowDropdownWidgets);
 
             // Input state
             gDropdownHighlightedIndex = -1;
@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
 
         static int32_t GetDefaultRowHeight()
         {
-            return Config::Get().interface.EnlargedUi ? DROPDOWN_ITEM_HEIGHT_TOUCH : DROPDOWN_ITEM_HEIGHT;
+            return Config::Get().interface.EnlargedUi ? kDropdownItemHeightTouch : kDropdownItemHeight;
         }
 
         static int32_t GetAdditionalRowPadding()
@@ -533,8 +533,8 @@ static constexpr colour_t kColoursDropdownOrder[] = {
     uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
     {
         // If above the table size return the last element
-        return _appropriateImageDropdownItemsPerRow[std::min<uint32_t>(
-            numItems, static_cast<uint32_t>(std::size(_appropriateImageDropdownItemsPerRow) - 1))];
+        return kAppropriateImageDropdownItemsPerRow[std::min<uint32_t>(
+            numItems, static_cast<uint32_t>(std::size(kAppropriateImageDropdownItemsPerRow) - 1))];
     }
 } // namespace OpenRCT2::Ui::Windows
 

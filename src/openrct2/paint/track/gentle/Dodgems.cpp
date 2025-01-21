@@ -30,7 +30,7 @@ enum
     SprDodgemsFenceTopLeft = 21937
 };
 
-static constexpr uint32_t DodgemsFenceSprites[] = {
+static constexpr uint32_t kDodgemsFenceSprites[] = {
     SprDodgemsFenceTopRight,
     SprDodgemsFenceBottomRight,
     SprDodgemsFenceBottomLeft,
@@ -66,7 +66,7 @@ static void PaintDodgems(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
 
         TrackPaintUtilPaintFences(
-            session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, DodgemsFenceSprites,
+            session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, kDodgemsFenceSprites,
             session.CurrentRotation);
 
         switch (direction)

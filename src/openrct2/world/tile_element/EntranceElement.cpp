@@ -17,7 +17,7 @@
 #include "../Entrance.h"
 
 // rct2: 0x0097B974
-static constexpr uint16_t EntranceDirections[] = {
+static constexpr uint16_t kEntranceDirections[] = {
     (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_ENTRANCE,
     (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_EXIT,
     (4 | 1), 0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_PARK_ENTRANCE
@@ -74,7 +74,7 @@ ObjectEntryIndex EntranceElement::GetLegacyPathEntryIndex() const
     if (HasLegacyPathEntry())
         return PathType;
 
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 const FootpathObject* EntranceElement::GetLegacyPathEntry() const
@@ -92,7 +92,7 @@ void EntranceElement::SetLegacyPathEntryIndex(ObjectEntryIndex newPathType)
 ObjectEntryIndex EntranceElement::GetSurfaceEntryIndex() const
 {
     if (HasLegacyPathEntry())
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
 
     return PathType;
 }
@@ -129,7 +129,7 @@ const PathSurfaceDescriptor* EntranceElement::GetPathSurfaceDescriptor() const
 
 int32_t EntranceElement::GetDirections() const
 {
-    return EntranceDirections[(GetEntranceType() * 8) + GetSequenceIndex()];
+    return kEntranceDirections[(GetEntranceType() * 8) + GetSequenceIndex()];
 }
 
 ObjectEntryIndex EntranceElement::getEntryIndex() const

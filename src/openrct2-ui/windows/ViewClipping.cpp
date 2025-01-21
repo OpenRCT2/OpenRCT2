@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
                     _previousClipSelectionA = gClipSelectionA;
                     _previousClipSelectionB = gClipSelectionB;
                     gClipSelectionA = { 0, 0 };
-                    gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
+                    gClipSelectionB = { kMaximumMapSizeBig - 1, kMaximumMapSizeBig - 1 };
                     GfxInvalidateScreen();
                     break;
                 case WIDX_CLIP_CLEAR:
@@ -134,7 +134,7 @@ namespace OpenRCT2::Ui::Windows
                         _toolActive = false;
                     }
                     gClipSelectionA = { 0, 0 };
-                    gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
+                    gClipSelectionB = { kMaximumMapSizeBig - 1, kMaximumMapSizeBig - 1 };
                     GfxInvalidateScreen();
                     break;
             }

@@ -95,8 +95,8 @@ namespace OpenRCT2::Ui::Windows
             WindowPushOthersBelow(*this);
 
             gLandToolSize = 1;
-            gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
-            gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
+            gLandToolTerrainSurface = kObjectEntryIndexNull;
+            gLandToolTerrainEdge = kObjectEntryIndexNull;
 
             _selectedFloorTexture = LandTool::GetSurfaceStyleFromDropdownIndex(0);
             _selectedWallTexture = LandTool::GetEdgeStyleFromDropdownIndex(0);
@@ -179,7 +179,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainSurface == type)
                     {
-                        gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainSurface = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -197,7 +197,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainEdge == type)
                     {
-                        gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainEdge = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -237,9 +237,9 @@ namespace OpenRCT2::Ui::Windows
         {
             pressed_widgets = 0;
             SetWidgetPressed(WIDX_PREVIEW, true);
-            if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
+            if (gLandToolTerrainSurface != kObjectEntryIndexNull)
                 SetWidgetPressed(WIDX_FLOOR, true);
-            if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
+            if (gLandToolTerrainEdge != kObjectEntryIndexNull)
                 SetWidgetPressed(WIDX_WALL, true);
             if (_landToolMountainMode)
                 SetWidgetPressed(WIDX_MOUNTAINMODE, true);
@@ -303,7 +303,7 @@ namespace OpenRCT2::Ui::Windows
                 // Draw paint price
                 numTiles = gLandToolSize * gLandToolSize;
                 price = 0;
-                if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
+                if (gLandToolTerrainSurface != kObjectEntryIndexNull)
                 {
                     auto& objManager = GetContext()->GetObjectManager();
                     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -314,7 +314,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
+                if (gLandToolTerrainEdge != kObjectEntryIndexNull)
                     price += numTiles * 100LL;
 
                 if (price != 0)

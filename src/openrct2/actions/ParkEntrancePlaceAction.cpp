@@ -162,7 +162,7 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
         entranceElement->setEntryIndex(_entranceType);
-        if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+        if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
         {
             entranceElement->SetSurfaceEntryIndex(gFootpathSelection.NormalSurface);
         }

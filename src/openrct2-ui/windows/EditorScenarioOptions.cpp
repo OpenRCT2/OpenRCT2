@@ -1036,7 +1036,7 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_ENTRY_PRICE_INCREASE:
-                    if (gameState.Park.EntranceFee < MAX_ENTRANCE_FEE)
+                    if (gameState.Park.EntranceFee < kMaxEntranceFee)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
                             ScenarioSetSetting::ParkChargeEntryFee, gameState.Park.EntranceFee + 1.00_GBP);

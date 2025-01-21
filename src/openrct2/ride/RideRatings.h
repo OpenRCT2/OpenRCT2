@@ -61,8 +61,8 @@ struct RideRatingUpdateState
     uint16_t StationFlags;
 };
 
-static constexpr size_t RideRatingMaxUpdateStates = 4;
-using RideRatingUpdateStates = std::array<RideRatingUpdateState, RideRatingMaxUpdateStates>;
+static constexpr size_t kRideRatingMaxUpdateStates = 4;
+using RideRatingUpdateStates = std::array<RideRatingUpdateState, kRideRatingMaxUpdateStates>;
 
 void RideRatingResetUpdateStates();
 

@@ -1126,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainSurface == type)
                     {
-                        gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainSurface = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -1143,7 +1143,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainEdge == type)
                     {
-                        gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainEdge = kObjectEntryIndexNull;
                     }
                     else
                     {

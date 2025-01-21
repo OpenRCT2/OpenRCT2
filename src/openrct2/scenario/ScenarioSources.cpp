@@ -37,7 +37,7 @@ namespace OpenRCT2::ScenarioSources
 #pragma region Scenario Data
 
     // clang-format off
-    static constexpr ScenarioAlias ScenarioAliases[] =
+    static constexpr ScenarioAlias kScenarioAliases[] =
     {
         // UK - US differences:
         { "Katie's Dreamland",                      "Katie's World"                             },
@@ -119,7 +119,7 @@ namespace OpenRCT2::ScenarioSources
     };
 
     // RCT
-    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT1[] =
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesRCT1[] =
     {
         { SC_FOREST_FRONTIERS,  "Forest Frontiers",  SCENARIO_CATEGORY_BEGINNER,    "rct1.scenario_text.forest_frontiers"  },
         { SC_DYNAMITE_DUNES,    "Dynamite Dunes",    SCENARIO_CATEGORY_BEGINNER,    "rct1.scenario_text.dynamite_dunes"    },
@@ -146,7 +146,7 @@ namespace OpenRCT2::ScenarioSources
     };
 
     // RCT: Added Attractions
-    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT1AA[] =
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesRCT1AA[] =
     {
         { SC_WHISPERING_CLIFFS,  "Whispering Cliffs",  SCENARIO_CATEGORY_BEGINNER,    "rct1aa.scenario_text.whispering_cliffs"  },
         { SC_THREE_MONKEYS_PARK, "Three Monkeys Park", SCENARIO_CATEGORY_BEGINNER,    "rct1aa.scenario_text.three_monkeys_park" },
@@ -181,7 +181,7 @@ namespace OpenRCT2::ScenarioSources
     };
 
     // RCT: Loopy Landscapes
-    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT1LL[] =
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesRCT1LL[] =
     {
         { SC_ICEBERG_ISLANDS,  "Iceberg Islands",  SCENARIO_CATEGORY_BEGINNER,    "rct1ll.scenario_text.iceberg_islands"  },
         { SC_VOLCANIA,         "Volcania",         SCENARIO_CATEGORY_BEGINNER,    "rct1ll.scenario_text.volcania"         },
@@ -216,7 +216,7 @@ namespace OpenRCT2::ScenarioSources
     };
 
     // RCT2
-    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT2[] =
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesRCT2[] =
     {
         { SC_UNIDENTIFIED, "Electric Fields",   SCENARIO_CATEGORY_BEGINNER,    "rct2.scenario_text.electric_fields"   },
         { SC_UNIDENTIFIED, "Factory Capers",    SCENARIO_CATEGORY_BEGINNER,    "rct2.scenario_text.factory_capers"    },
@@ -236,7 +236,7 @@ namespace OpenRCT2::ScenarioSources
     };
 
     // RCT2: Wacky Worlds
-    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT2WW[] =
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesRCT2WW[] =
     {
         { SC_UNIDENTIFIED, "North America - Grand Canyon",                   SCENARIO_CATEGORY_BEGINNER,    "rct2ww.scenario_text.canyon_calamities"     },
         { SC_UNIDENTIFIED, "Asia - Great Wall of China Tourism Enhancement", SCENARIO_CATEGORY_BEGINNER,    "rct2ww.scenario_text.great_wall_of_china"   },
@@ -258,7 +258,7 @@ namespace OpenRCT2::ScenarioSources
     };
 
     // RCT2: Time Twister
-    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT2TT[] =
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesRCT2TT[] =
     {
         { SC_UNIDENTIFIED, "Dark Age - Robin Hood",                 SCENARIO_CATEGORY_BEGINNER,    "rct2tt.scenario_text.sherwood_forest"               },
         { SC_UNIDENTIFIED, "Prehistoric - After the Asteroid",      SCENARIO_CATEGORY_BEGINNER,    "rct2tt.scenario_text.crater_carnage"                },
@@ -277,7 +277,7 @@ namespace OpenRCT2::ScenarioSources
     };
 
     // User Created Expansion Sets
-    static constexpr ScenarioTitleDescriptor ScenarioTitlesUCES[] =
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesUCES[] =
     {
         { SC_UNIDENTIFIED, "Lighthouse of Alexandria by Katatude for UCES",    SCENARIO_CATEGORY_TIME_MACHINE,     "uces.scenario_text.the_lighthouse_of_alexandria" },
         { SC_UNIDENTIFIED, "Cleveland's Luna Park",                            SCENARIO_CATEGORY_TIME_MACHINE,     "uces.scenario_text.luna_park_cleveland"          },
@@ -300,7 +300,7 @@ namespace OpenRCT2::ScenarioSources
     };
 
     // Real parks
-    static constexpr ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesRealParks[] =
     {
         { SC_ALTON_TOWERS,             "Alton Towers",              SCENARIO_CATEGORY_REAL, "rct1ll.scenario_text.alton_towers"            },
         { SC_HEIDE_PARK,               "Heide-Park",                SCENARIO_CATEGORY_REAL, "rct1ll.scenario_text.heidepark"               },
@@ -313,7 +313,7 @@ namespace OpenRCT2::ScenarioSources
     };
 
     // Other parks
-    static constexpr ScenarioTitleDescriptor ScenarioTitlesExtrasParks[] =
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesExtrasParks[] =
     {
         { SC_FORT_ANACHRONISM,                          "Fort Anachronism",                           SCENARIO_CATEGORY_DLC,            "rct1dlc.scenario_text.fort_anachronism"                      },
         { SC_PCPLAYER,                                  "PC Player",                                  SCENARIO_CATEGORY_DLC,            {}                                                            },
@@ -342,16 +342,16 @@ namespace OpenRCT2::ScenarioSources
         { SC_UNIDENTIFIED,                              "Tycoon Park",                                SCENARIO_CATEGORY_OTHER,          "rct2.scenario_text.tycoon_park"                              },
     };
 
-    constexpr std::span<const ScenarioTitleDescriptor> ScenarioTitlesBySource[] = {
-        ScenarioTitlesRCT1,
-        ScenarioTitlesRCT1AA,
-        ScenarioTitlesRCT1LL,
-        ScenarioTitlesRCT2,
-        ScenarioTitlesRCT2WW,
-        ScenarioTitlesRCT2TT,
-        ScenarioTitlesUCES,
-        ScenarioTitlesRealParks,
-        ScenarioTitlesExtrasParks,
+    constexpr std::span<const ScenarioTitleDescriptor> kScenarioTitlesBySource[] = {
+        kScenarioTitlesRCT1,
+        kScenarioTitlesRCT1AA,
+        kScenarioTitlesRCT1LL,
+        kScenarioTitlesRCT2,
+        kScenarioTitlesRCT2WW,
+        kScenarioTitlesRCT2TT,
+        kScenarioTitlesUCES,
+        kScenarioTitlesRealParks,
+        kScenarioTitlesExtrasParks,
     };
     // clang-format on
 
@@ -362,11 +362,11 @@ namespace OpenRCT2::ScenarioSources
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
         int32_t currentIndex = 0;
-        for (size_t i = 0; i < std::size(ScenarioTitlesBySource); i++)
+        for (size_t i = 0; i < std::size(kScenarioTitlesBySource); i++)
         {
-            for (size_t j = 0; j < std::size(ScenarioTitlesBySource[i]); j++)
+            for (size_t j = 0; j < std::size(kScenarioTitlesBySource[i]); j++)
             {
-                const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i][j];
+                const ScenarioTitleDescriptor* desc = &kScenarioTitlesBySource[i][j];
                 if (String::iequals(name, desc->Title))
                 {
                     outDesc->title = desc->Title;
@@ -395,11 +395,11 @@ namespace OpenRCT2::ScenarioSources
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
         int32_t currentIndex = 0;
-        for (size_t i = 0; i < std::size(ScenarioTitlesBySource); i++)
+        for (size_t i = 0; i < std::size(kScenarioTitlesBySource); i++)
         {
-            for (size_t j = 0; j < std::size(ScenarioTitlesBySource[i]); j++)
+            for (size_t j = 0; j < std::size(kScenarioTitlesBySource[i]); j++)
             {
-                const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i][j];
+                const ScenarioTitleDescriptor* desc = &kScenarioTitlesBySource[i][j];
                 if (id == desc->Id)
                 {
                     outDesc->title = desc->Title;
@@ -449,7 +449,7 @@ namespace OpenRCT2::ScenarioSources
 
         // American scenario titles should be converted to British name
         // Don't worry, names will be translated using language packs later
-        for (const ScenarioAlias& alias : ScenarioAliases)
+        for (const ScenarioAlias& alias : kScenarioAliases)
         {
             if (String::equals(alias.Alternative, normalisedName))
             {

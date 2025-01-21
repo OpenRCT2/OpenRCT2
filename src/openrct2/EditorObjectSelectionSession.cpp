@@ -115,7 +115,7 @@ static void SetupTrackDesignerObjects()
 
             for (auto rideType : item->RideInfo.RideType)
             {
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != kRideTypeNull)
                 {
                     if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::showInTrackDesigner))
                     {
@@ -175,7 +175,7 @@ void SetupInUseSelectionFlags()
             {
                 auto footpathEl = iter.element->AsPath();
                 auto legacyPathEntryIndex = footpathEl->GetLegacyPathEntryIndex();
-                if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (legacyPathEntryIndex == kObjectEntryIndexNull)
                 {
                     auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
                     auto railingEntryIndex = footpathEl->GetRailingsEntryIndex();
@@ -211,7 +211,7 @@ void SetupInUseSelectionFlags()
                     break;
 
                 auto legacyPathEntryIndex = parkEntranceEl->GetLegacyPathEntryIndex();
-                if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (legacyPathEntryIndex == kObjectEntryIndexNull)
                 {
                     auto surfaceEntryIndex = parkEntranceEl->GetSurfaceEntryIndex();
                     Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
@@ -250,7 +250,7 @@ void SetupInUseSelectionFlags()
         Editor::SetSelectedObject(ObjectType::Music, ride.music, ObjectSelectionFlags::InUse);
     }
 
-    ObjectEntryIndex lastIndex = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex lastIndex = kObjectEntryIndexNull;
     for (auto* peep : EntityList<Guest>())
     {
         if (peep->AnimationObjectIndex == lastIndex)
@@ -272,7 +272,7 @@ void SetupInUseSelectionFlags()
     for (auto* vehicle : TrainManager::View())
     {
         ObjectEntryIndex type = vehicle->ride_subtype;
-        if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        if (type != kObjectEntryIndexNull) // cable lifts use index null. Ignore them
         {
             Editor::SetSelectedObject(ObjectType::Ride, type, ObjectSelectionFlags::InUse);
         }
@@ -280,7 +280,7 @@ void SetupInUseSelectionFlags()
     for (auto vehicle : EntityList<Vehicle>())
     {
         ObjectEntryIndex type = vehicle->ride_subtype;
-        if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        if (type != kObjectEntryIndexNull) // cable lifts use index null. Ignore them
         {
             Editor::SetSelectedObject(ObjectType::Ride, type, ObjectSelectionFlags::InUse);
         }
@@ -518,7 +518,7 @@ void FinishObjectSelection()
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-        if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+        if (gameState.LastEntranceStyle == kObjectEntryIndexNull)
         {
             gameState.LastEntranceStyle = 0;
         }

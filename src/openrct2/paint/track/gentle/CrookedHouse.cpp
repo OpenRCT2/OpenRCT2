@@ -24,7 +24,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr BoundBoxXY CrookedHouseData[] = {
+static constexpr BoundBoxXY kCrookedHouseData[] = {
     {
         { 6, 0 },
         { 42, 24 },
@@ -77,7 +77,7 @@ static void PaintCrookedHouseStructure(
         }
     }
 
-    const auto& boundBox = CrookedHouseData[segment];
+    const auto& boundBox = kCrookedHouseData[segment];
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsParent(
         session, stationColour.WithIndex(imageIndex), { x_offset, y_offset, height + 3 },

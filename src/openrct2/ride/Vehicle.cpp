@@ -72,12 +72,12 @@ using namespace OpenRCT2::TrackMetaData;
 using namespace OpenRCT2::Math::Trigonometry;
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
-constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
-constexpr int16_t VEHICLE_MIN_SPIN_SPEED = -VEHICLE_MAX_SPIN_SPEED;
-constexpr int16_t VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING = 700;
-constexpr int16_t VEHICLE_MAX_SPIN_SPEED_WATER_RIDE = 512;
-constexpr int16_t VEHICLE_MIN_SPIN_SPEED_WATER_RIDE = -VEHICLE_MAX_SPIN_SPEED_WATER_RIDE;
-constexpr int16_t VEHICLE_STOPPING_SPIN_SPEED = 600;
+constexpr int16_t kVehicleMaxSpinSpeed = 1536;
+constexpr int16_t kVehicleMinSpinSpeed = -kVehicleMaxSpinSpeed;
+constexpr int16_t kVehicleMaxSpinSpeedForStopping = 700;
+constexpr int16_t kVehicleMaxSpinSpeedWaterRide = 512;
+constexpr int16_t kVehicleMinSpinSpeedWaterRide = -kVehicleMaxSpinSpeedWaterRide;
+constexpr int16_t kVehicleStoppingSpinSpeed = 600;
 
 constexpr uint8_t kTrackSpeedShiftAmount = 16;
 constexpr uint8_t kBoosterAccelerationShiftAmount = 16;
@@ -109,7 +109,7 @@ static constexpr OpenRCT2::Audio::SoundId _screamSet2[] = {
 };
 
 // clang-format off
-static constexpr uint8_t SpaceRingsTimeToSpriteMap[] =
+static constexpr uint8_t kSpaceRingsTimeToSpriteMap[] =
 {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
     1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4,
@@ -244,21 +244,21 @@ static constexpr uint8_t SpaceRingsTimeToSpriteMap[] =
 };
 // clang-format on
 
-static constexpr int8_t SwingingTimeToSpriteMap_0[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap0[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  3,  3,  3,  3,    3,  3,
     3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  2,  2,  2,  2,  2,  2,    2,  2,
     2,  2,  2,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  -1, -1, -1, -1, -1, -1, -1, -2, -2, -2,   -2, -2,
     -2, -2, -2, -2, -2, -2, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3,   -3, -3,
     -3, -3, -3, -3, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, 0,  0,  -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_1[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap1[] = {
     0,  0,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  3,  4,  4,  4,  4,  4,  4,  4,  4,  4,  5,    5,  5,
     5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  4,  4,  4,  4,  4,  4,  4,  4,  4,  3,    3,  3,
     3,  3,  3,  2,  2,  2,  2,  2,  1,  1,  1,  1,  0,  0,  0,  -1, -1, -1, -1, -2, -2, -2, -2, -2, -3, -3, -3,   -3, -3,
     -3, -4, -4, -4, -4, -4, -4, -4, -4, -4, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5,   -5, -5,
     -5, -4, -4, -4, -4, -4, -4, -4, -4, -4, -3, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1, -1, -1, -1, 0,  -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_2[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap2[] = {
     0,  0,  1,  1,  1,  2,  2,  2,  3,  3,  3,  3,  4,  4,  4,  4,  4,  5,  5,  5,  5,  5,  5,    6,  6,  6,
     6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,    6,  6,  6,
     6,  6,  5,  5,  5,  5,  5,  5,  4,  4,  4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  1,  1,  1,    0,  0,  0,
@@ -266,7 +266,7 @@ static constexpr int8_t SwingingTimeToSpriteMap_2[] = {
     -6, -6, -6, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6,   -6, -6, -6,
     -5, -5, -5, -5, -5, -5, -4, -4, -4, -4, -4, -3, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0,  -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_3[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap3[] = {
     0,  1,  1,  2,  2,  3,  3,  4,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,    7,  8,  8,
     8,  8,  8,  8,  8,  8,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  8,  8,  8,  8,  8,    8,  8,  8,
     7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  5,  5,  5,  5,  4,  4,  4,  3,  3,  2,  2,  1,  1,    0,  0,  -1,
@@ -274,7 +274,7 @@ static constexpr int8_t SwingingTimeToSpriteMap_3[] = {
     -8, -8, -8, -8, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -8, -8, -8, -8, -8, -8, -8,   -8, -7, -7,
     -7, -7, -7, -7, -6, -6, -6, -6, -6, -5, -5, -5, -5, -4, -4, -4, -3, -3, -2, -2, -1, -1, 0,  -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_4[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap4[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  4,  4,  4,    4,  4,  5,  5,  5,  5,  5,
     5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,    7,  7,  7,  7,  7,  7,  7,
     7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,    6,  6,  5,  5,  5,  5,  5,
@@ -284,7 +284,7 @@ static constexpr int8_t SwingingTimeToSpriteMap_4[] = {
     -7, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -5, -5,   -5, -5, -5, -5, -5, -4, -4,
     -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1, -1, -1, -1, -1, 0,  0,  -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_5[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap5[] = {
     0,   0,   1,   1,   1,   1,   2,   2,   2,   2,   3,   3,   3,   3,   4,   4,   4,   4,   5,   5,   5,    5,   6,   6,
     6,   6,   7,   7,   7,   7,   8,   8,   8,   8,   9,   9,   9,   9,   10,  10,  10,  10,  11,  11,  11,   11,  12,  12,
     12,  12,  13,  13,  13,  13,  13,  13,  14,  14,  14,  14,  14,  14,  14,  14,  14,  14,  15,  15,  15,   15,  15,  15,
@@ -299,7 +299,7 @@ static constexpr int8_t SwingingTimeToSpriteMap_5[] = {
     -11, -11, -10, -10, -10, -10, -9,  -9,  -9,  -9,  -8,  -8,  -8,  -8,  -7,  -7,  -7,  -7,  -6,  -6,  -6,   -6,  -5,  -5,
     -5,  -5,  -4,  -4,  -4,  -4,  -3,  -3,  -3,  -3,  -2,  -2,  -2,  -2,  -1,  -1,  -1,  -1,  0,   0,   -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_6[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap6[] = {
     0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,   5,   6,   6,   6,   7,    7,   7,   8,
     8,   8,   9,   9,   9,   10,  10,  10,  11,  11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,   15,  15,  15,
     16,  16,  16,  17,  17,  17,  18,  18,  18,  19,  19,  19,  20,  20,  20,  21,  21,  21,  22,  22,   22,  23,  23,
@@ -317,7 +317,7 @@ static constexpr int8_t SwingingTimeToSpriteMap_6[] = {
     -14, -13, -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9,  -9,  -9,  -8,  -8,  -8,  -7,   -7,  -7,  -6,
     -6,  -6,  -5,  -5,  -5,  -4,  -4,  -4,  -3,  -3,  -3,  -2,  -2,  -2,  -1,  -1,  -1,  0,   0,   -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_7[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap7[] = {
     0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,   5,   6,   6,   6,    7,   7,   7,
     8,   8,   8,   9,   9,   9,   10,  10,  10,  11,  11,  11,  12,  12,  12,  13,  13,  13,  14,   14,  14,  15,
     15,  15,  16,  16,  16,  17,  17,  17,  18,  18,  18,  19,  19,  19,  20,  20,  20,  21,  21,   21,  22,  22,
@@ -329,7 +329,7 @@ static constexpr int8_t SwingingTimeToSpriteMap_7[] = {
     -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9,  -9,  -9,  -8,  -8,  -8,  -7,  -7,   -7,  -6,  -6,
     -6,  -5,  -5,  -5,  -4,  -4,  -4,  -3,  -3,  -3,  -2,  -2,  -2,  -1,  -1,  -1,  0,   0,   -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_8[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap8[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  4,  4,  4,    4,  4,  5,  5,  5,  5,  5,
     5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,    7,  7,  7,  7,  7,  7,  7,
     7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,    6,  6,  5,  5,  5,  5,  5,
@@ -339,7 +339,7 @@ static constexpr int8_t SwingingTimeToSpriteMap_8[] = {
     25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27,   27, 27, 27, 27, 27, 28, 28,
     28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 0,  0,  -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_9[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap9[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  4,  4,  4,    4,  4,  5,  5,  5,  5,  5,
     5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,    7,  7,  7,  7,  7,  7,  7,
     7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,    6,  6,  5,  5,  5,  5,  5,
@@ -349,7 +349,7 @@ static constexpr int8_t SwingingTimeToSpriteMap_9[] = {
     25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27,   27, 27, 27, 27, 27, 28, 28,
     28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 0,  0,  -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_10[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap10[] = {
     0,  0,  1,  1,  1,  1,  2,  2,  2,  2,  3,  3,  3,  3,  4,  4,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  7,  7,    7,  7,
     8,  8,  8,  8,  9,  9,  9,  9,  10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14,   14, 14,
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,   16, 16,
@@ -363,7 +363,7 @@ static constexpr int8_t SwingingTimeToSpriteMap_10[] = {
     18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22, 23, 23, 23, 23, 24, 24, 24, 24, 25,   25, 25,
     25, 26, 26, 26, 26, 27, 27, 27, 27, 28, 28, 28, 28, 29, 29, 29, 29, 30, 30, 30, 30, 31, 31, 31, 31, 0,  0,  -128,
 };
-static constexpr int8_t SwingingTimeToSpriteMap_11[] = {
+static constexpr int8_t kSwingingTimeToSpriteMap11[] = {
     0,  0,  1,  1,  1,  2,  2,  2,  3,  3,  3,  4,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  7,  7,  7,  7,  8,  8,    8,
     8,  9,  9,  9,  9,  10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15,   15,
     16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22,   23,
@@ -372,9 +372,9 @@ static constexpr int8_t SwingingTimeToSpriteMap_11[] = {
 
 /** rct2: 0x0099F9D0 */
 static constexpr const int8_t* SwingingTimeToSpriteMaps[] = {
-    SwingingTimeToSpriteMap_0, SwingingTimeToSpriteMap_1, SwingingTimeToSpriteMap_2,  SwingingTimeToSpriteMap_3,
-    SwingingTimeToSpriteMap_4, SwingingTimeToSpriteMap_5, SwingingTimeToSpriteMap_6,  SwingingTimeToSpriteMap_7,
-    SwingingTimeToSpriteMap_8, SwingingTimeToSpriteMap_9, SwingingTimeToSpriteMap_10, SwingingTimeToSpriteMap_11,
+    kSwingingTimeToSpriteMap0, kSwingingTimeToSpriteMap1, kSwingingTimeToSpriteMap2,  kSwingingTimeToSpriteMap3,
+    kSwingingTimeToSpriteMap4, kSwingingTimeToSpriteMap5, kSwingingTimeToSpriteMap6,  kSwingingTimeToSpriteMap7,
+    kSwingingTimeToSpriteMap8, kSwingingTimeToSpriteMap9, kSwingingTimeToSpriteMap10, kSwingingTimeToSpriteMap11,
 };
 
 struct Unk9A36C4Struct
@@ -385,7 +385,7 @@ struct Unk9A36C4Struct
 };
 
 /** rct2: 0x009A36C4 */
-static constexpr Unk9A36C4Struct Unk9A36C4[] = {
+static constexpr Unk9A36C4Struct kUnk9A36C4[] = {
     { -1, 0, 8716 }, { -1, 0, 8716 },   { -1, 0, 8716 },  { -1, 1, 12327 },  { -1, 1, 12327 },  { -1, 1, 12327 },
     { 0, 1, 8716 },  { -1, 1, 12327 },  { 0, 1, 8716 },   { 0, 1, 8716 },    { 0, 1, 8716 },    { 1, 1, 12327 },
     { 1, 1, 12327 }, { 1, 1, 12327 },   { 1, 0, 8716 },   { 1, 1, 12327 },   { 1, 0, 8716 },    { 1, 0, 8716 },
@@ -395,7 +395,7 @@ static constexpr Unk9A36C4Struct Unk9A36C4[] = {
 };
 
 /** rct2: 0x009A37C4 */
-static constexpr CoordsXY SurroundingTiles[] = {
+static constexpr CoordsXY kSurroundingTiles[] = {
     { 0, 0 },
     { 0, +kCoordsXYStep },
     { +kCoordsXYStep, 0 },
@@ -408,7 +408,7 @@ static constexpr CoordsXY SurroundingTiles[] = {
 };
 
 /** rct2: 0x009A37E4 */
-static constexpr int32_t Unk9A37E4[] = {
+static constexpr int32_t kUnk9A37E4[] = {
     2147483647,  2106585154,  1985590284,  1636362342,  1127484953,  2106585154,  1985590284,  1636362342,  1127484953,
     58579923,    0,           -555809667,  -1073741824, -1518500249, -1859775391, -2074309916, -2147483647, 58579923,
     0,           -555809667,  -1073741824, -1518500249, -1859775391, -2074309916, 1859775393,  1073741824,  0,
@@ -419,7 +419,7 @@ static constexpr int32_t Unk9A37E4[] = {
 };
 
 /** rct2: 0x009A38D4 */
-static constexpr int32_t Unk9A38D4[] = {
+static constexpr int32_t kUnk9A38D4[] = {
     0,           417115092,   817995863,   1390684831,  1827693544,  -417115092,  -817995863,  -1390684831, -1827693544,
     2066040965,  2147483647,  2074309916,  1859775393,  1518500249,  1073741824,  555809666,   0,           -2066040965,
     -2147483647, -2074309916, -1859775393, -1518500249, -1073741824, -555809666,  1073741824,  1859775393,  2147483647,
@@ -430,25 +430,25 @@ static constexpr int32_t Unk9A38D4[] = {
 };
 
 /** rct2: 0x009A39C4 */
-static constexpr int32_t Unk9A39C4[] = {
+static constexpr int32_t kUnk9A39C4[] = {
     2147483647, 2096579710, 1946281152, 2096579710,  1946281152,  1380375879, 555809667,  -372906620, -1231746017, -1859775391,
     1380375879, 555809667,  -372906620, -1231746017, -1859775391, 0,          2096579710, 1946281152, 2096579710,  1946281152,
 };
 
-static constexpr CoordsXY AvoidCollisionMoveOffset[] = {
+static constexpr CoordsXY kAvoidCollisionMoveOffset[] = {
     { -1, 0 },
     { 0, 1 },
     { 1, 0 },
     { 0, -1 },
 };
 
-static constexpr OpenRCT2::Audio::SoundId DoorOpenSoundIds[] = {
+static constexpr OpenRCT2::Audio::SoundId kDoorOpenSoundIds[] = {
     OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
     OpenRCT2::Audio::SoundId::DoorOpen,   // DoorSoundType::door
     OpenRCT2::Audio::SoundId::Portcullis, // DoorSoundType::portcullis
 };
 
-static constexpr OpenRCT2::Audio::SoundId DoorCloseSoundIds[] = {
+static constexpr OpenRCT2::Audio::SoundId kDoorCloseSoundIds[] = {
     OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
     OpenRCT2::Audio::SoundId::DoorClose,  // DoorSoundType::door
     OpenRCT2::Audio::SoundId::Portcullis, // DoorSoundType::portcullis
@@ -704,7 +704,7 @@ bool Vehicle::OpenRestraints()
             // If the vehicle is a spinner it must be spinning slow
             // For vehicles without additional frames there are 4 rotations it can unload from
             // For vehicles with additional frames it must be facing forward
-            if (abs(vehicle->spin_speed) <= VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING && !(vehicle->spin_sprite & 0x30)
+            if (abs(vehicle->spin_speed) <= kVehicleMaxSpinSpeedForStopping && !(vehicle->spin_sprite & 0x30)
                 && (!(carEntry.flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES) || !(vehicle->spin_sprite & 0xF8)))
             {
                 vehicle->spin_speed = 0;
@@ -713,10 +713,10 @@ bool Vehicle::OpenRestraints()
             {
                 restraintsOpen = false;
 
-                if (abs(vehicle->spin_speed) < VEHICLE_STOPPING_SPIN_SPEED)
+                if (abs(vehicle->spin_speed) < kVehicleStoppingSpinSpeed)
                 {
                     // Note will look odd if spinning right.
-                    vehicle->spin_speed = VEHICLE_STOPPING_SPIN_SPEED;
+                    vehicle->spin_speed = kVehicleStoppingSpinSpeed;
                 }
                 int16_t value = vehicle->spin_speed / 256;
                 vehicle->spin_sprite += value;
@@ -1166,12 +1166,12 @@ void Vehicle::UpdateMeasurements()
 
         if (Pitch != 0)
         {
-            curRide->num_sheltered_sections |= ShelteredSectionsBits::RotatingWhileSheltered;
+            curRide->num_sheltered_sections |= ShelteredSectionsBits::kRotatingWhileSheltered;
         }
 
         if (bank_rotation != 0)
         {
-            curRide->num_sheltered_sections |= ShelteredSectionsBits::BankingWhileSheltered;
+            curRide->num_sheltered_sections |= ShelteredSectionsBits::kBankingWhileSheltered;
         }
     }
 
@@ -1219,7 +1219,7 @@ static SoundIdVolume VehicleSoundFadeInOut(
 void Vehicle::GetLiftHillSound(const Ride& curRide, SoundIdVolume& curSound)
 {
     scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    if (curRide.type < std::size(RideTypeDescriptors))
+    if (curRide.type < std::size(kRideTypeDescriptors))
     {
         // Get lift hill sound
         curSound.id = GetRideTypeDescriptor(curRide.type).LiftData.sound_id;
@@ -2945,9 +2945,9 @@ void Vehicle::UpdateCrashSetup()
         trainVehicle->sub_state = 0;
         int32_t trainX = stru_9A3AC4[trainVehicle->Orientation / 2].x;
         int32_t trainY = stru_9A3AC4[trainVehicle->Orientation / 2].y;
-        auto trainZ = Unk9A38D4[trainVehicle->Pitch] >> 23;
+        auto trainZ = kUnk9A38D4[trainVehicle->Pitch] >> 23;
 
-        int32_t ecx = Unk9A37E4[trainVehicle->Pitch] >> 15;
+        int32_t ecx = kUnk9A37E4[trainVehicle->Pitch] >> 15;
         trainX *= ecx;
         trainY *= ecx;
         trainX >>= 16;
@@ -3767,7 +3767,7 @@ void Vehicle::UpdateMotionBoatHire()
             }
 
             int32_t edi = (Orientation | (var_35 & 1)) & 0x1F;
-            loc2 = { x + Unk9A36C4[edi].x, y + Unk9A36C4[edi].y };
+            loc2 = { x + kUnk9A36C4[edi].x, y + kUnk9A36C4[edi].y };
             if (UpdateMotionCollisionDetection({ loc2, z }, nullptr))
             {
                 remaining_distance = 0;
@@ -3865,7 +3865,7 @@ void Vehicle::UpdateMotionBoatHire()
                 TrackLocation = { flooredLocation, TrackLocation.z };
             }
 
-            remaining_distance -= Unk9A36C4[edi].distance;
+            remaining_distance -= kUnk9A36C4[edi].distance;
             _vehicleCurPosition.x = loc2.x;
             _vehicleCurPosition.y = loc2.y;
             if (remaining_distance < 0x368A)
@@ -4319,7 +4319,7 @@ void Vehicle::UpdateSpaceRingsOperating()
     if (_vehicleBreakdown == 0)
         return;
 
-    uint8_t spriteType = SpaceRingsTimeToSpriteMap[current_time + 1];
+    uint8_t spriteType = kSpaceRingsTimeToSpriteMap[current_time + 1];
     if (spriteType != 255)
     {
         current_time++;
@@ -4453,7 +4453,7 @@ void Vehicle::UpdateShowingFilm()
     if (_vehicleBreakdown == 0)
         return;
 
-    totalTime = RideFilmLength[sub_state];
+    totalTime = kRideFilmLength[sub_state];
     currentTime = current_time + 1;
     if (currentTime <= totalTime)
     {
@@ -5043,8 +5043,8 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
  */
 GForces Vehicle::GetGForces() const
 {
-    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * Unk9A37E4[Pitch]) >> 32;
-    gForceVert = ((static_cast<int64_t>(gForceVert)) * Unk9A39C4[bank_rotation]) >> 32;
+    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * kUnk9A37E4[Pitch]) >> 32;
+    gForceVert = ((static_cast<int64_t>(gForceVert)) * kUnk9A39C4[bank_rotation]) >> 32;
 
     const auto& ted = GetTrackElementDescriptor(GetTrackType());
     const int32_t vertFactor = ted.verticalFactor(track_progress);
@@ -5200,10 +5200,10 @@ int32_t Vehicle::UpdateMotionDodgems()
 
         CoordsXYZ location = { x, y, z };
 
-        location.x += Unk9A36C4[oldCollisionDirection].x;
-        location.y += Unk9A36C4[oldCollisionDirection].y;
-        location.x += Unk9A36C4[oldCollisionDirection + 1].x;
-        location.y += Unk9A36C4[oldCollisionDirection + 1].y;
+        location.x += kUnk9A36C4[oldCollisionDirection].x;
+        location.y += kUnk9A36C4[oldCollisionDirection].y;
+        location.x += kUnk9A36C4[oldCollisionDirection + 1].x;
+        location.y += kUnk9A36C4[oldCollisionDirection + 1].y;
 
         if (collideSprite = DodgemsCarWouldCollideAt(location); !collideSprite.has_value())
         {
@@ -5227,15 +5227,15 @@ int32_t Vehicle::UpdateMotionDodgems()
             direction |= var_35 & 1;
 
             CoordsXY location = _vehicleCurPosition;
-            location.x += Unk9A36C4[direction].x;
-            location.y += Unk9A36C4[direction].y;
+            location.x += kUnk9A36C4[direction].x;
+            location.y += kUnk9A36C4[direction].y;
 
             if (collideSprite = DodgemsCarWouldCollideAt(location); collideSprite.has_value())
             {
                 break;
             }
 
-            remaining_distance -= Unk9A36C4[direction].distance;
+            remaining_distance -= kUnk9A36C4[direction].distance;
             _vehicleCurPosition.x = location.x;
             _vehicleCurPosition.y = location.y;
             if (remaining_distance < 13962)
@@ -5340,7 +5340,7 @@ std::optional<EntityId> Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords
     auto location = coords;
 
     RideId rideIndex = ride;
-    for (auto xy_offset : SurroundingTiles)
+    for (auto xy_offset : kSurroundingTiles)
     {
         location += xy_offset;
 
@@ -6002,7 +6002,7 @@ void Vehicle::UpdateSpinningCar()
             break;
     }
 
-    spinSpeed = std::clamp(spin_speed, VEHICLE_MIN_SPIN_SPEED, VEHICLE_MAX_SPIN_SPEED);
+    spinSpeed = std::clamp(spin_speed, kVehicleMinSpinSpeed, kVehicleMaxSpinSpeed);
     spin_speed = spinSpeed;
     spin_sprite += spinSpeed >> 8;
     // Note this actually increases the spin speed if going right!
@@ -6261,7 +6261,7 @@ static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tile
     if (doorSoundType == DoorSoundType::none)
         return;
 
-    auto soundId = DoorOpenSoundIds[EnumValue(doorSoundType)];
+    auto soundId = kDoorOpenSoundIds[EnumValue(doorSoundType)];
     OpenRCT2::Audio::Play3D(soundId, loc);
 }
 
@@ -6279,7 +6279,7 @@ static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* til
     if (doorSoundType == DoorSoundType::none)
         return;
 
-    auto soundId = DoorCloseSoundIds[EnumValue(doorSoundType)];
+    auto soundId = kDoorCloseSoundIds[EnumValue(doorSoundType)];
     Play3D(soundId, loc);
 }
 
@@ -6515,7 +6515,7 @@ void Vehicle::UpdateReverserCarBogies()
 
 bool Vehicle::IsCableLift() const
 {
-    return ride_subtype == OBJECT_ENTRY_INDEX_NULL;
+    return ride_subtype == kObjectEntryIndexNull;
 }
 
 /**
@@ -6579,7 +6579,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
 
     bool mayCollide = false;
     Vehicle* collideVehicle = nullptr;
-    for (auto xy_offset : SurroundingTiles)
+    for (auto xy_offset : kSurroundingTiles)
     {
         location += xy_offset;
 
@@ -6639,8 +6639,8 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
 
             uint32_t offsetSpriteDirection = (Orientation + 4) & 31;
             uint32_t offsetDirection = offsetSpriteDirection >> 3;
-            uint32_t next_x_diff = abs(loc.x + AvoidCollisionMoveOffset[offsetDirection].x - vehicle2->x);
-            uint32_t next_y_diff = abs(loc.y + AvoidCollisionMoveOffset[offsetDirection].y - vehicle2->y);
+            uint32_t next_x_diff = abs(loc.x + kAvoidCollisionMoveOffset[offsetDirection].x - vehicle2->x);
+            uint32_t next_y_diff = abs(loc.y + kAvoidCollisionMoveOffset[offsetDirection].y - vehicle2->y);
 
             if (next_x_diff + next_y_diff < x_diff + y_diff)
             {
@@ -7648,7 +7648,7 @@ Vehicle::UpdateMiniGolfFlagsStatus Vehicle::UpdateTrackMotionMiniGolfFlagsStatus
     if (mini_golf_flags & MiniGolfFlag::Flag2)
     {
         uint8_t nextFrame = animation_frame + 1;
-        if (nextFrame < MiniGolfPeepAnimationLengths[EnumValue(mini_golf_current_animation)])
+        if (nextFrame < kMiniGolfPeepAnimationLengths[EnumValue(mini_golf_current_animation)])
         {
             animation_frame = nextFrame;
             remaining_distance -= 0x368A;
@@ -8397,7 +8397,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
 
         if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING)
         {
-            spin_speed = std::clamp(spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
+            spin_speed = std::clamp(spin_speed, kVehicleMinSpinSpeedWaterRide, kVehicleMaxSpinSpeedWaterRide);
         }
 
         if (Pitch != 0)

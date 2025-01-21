@@ -174,7 +174,7 @@ Ride& RideGetTemporaryForPreview()
 static void RideReset(Ride& ride)
 {
     ride.id = RideId::GetNull();
-    ride.type = RIDE_TYPE_NULL;
+    ride.type = kRideTypeNull;
     ride.custom_name = {};
     ride.measurement = {};
 }
@@ -185,7 +185,7 @@ void RideDelete(RideId id)
     const auto idx = id.ToUnderlying();
 
     assert(idx < gs.Rides.size());
-    assert(gs.Rides[idx].type != RIDE_TYPE_NULL);
+    assert(gs.Rides[idx].type != kRideTypeNull);
 
     auto& ride = gs.Rides[idx];
     RideReset(ride);
@@ -213,7 +213,7 @@ Ride* GetRide(RideId index)
     }
 
     auto& ride = gameState.Rides[idx];
-    if (ride.type != RIDE_TYPE_NULL)
+    if (ride.type != kRideTypeNull)
     {
         assert(ride.id == index);
         return &ride;
@@ -1894,7 +1894,7 @@ static bool RideMusicBreakdownEffect(Ride& ride)
 
             if (ride.breakdown_sound_modifier == 255)
             {
-                ride.music_tune_id = TUNE_ID_NULL;
+                ride.music_tune_id = kTuneIDNull;
                 return true;
             }
         }
@@ -1912,7 +1912,7 @@ void CircusMusicUpdate(Ride& ride)
     if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
     {
         ride.music_position = 0;
-        ride.music_tune_id = TUNE_ID_NULL;
+        ride.music_tune_id = kTuneIDNull;
         return;
     }
 
@@ -1936,7 +1936,7 @@ void DefaultMusicUpdate(Ride& ride)
 {
     if (ride.status != RideStatus::Open || !(ride.lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
     {
-        ride.music_tune_id = TUNE_ID_NULL;
+        ride.music_tune_id = kTuneIDNull;
         return;
     }
 
@@ -1946,7 +1946,7 @@ void DefaultMusicUpdate(Ride& ride)
     }
 
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
-    if (ride.music_tune_id == TUNE_ID_NULL)
+    if (ride.music_tune_id == kTuneIDNull)
     {
         auto& objManager = GetContext()->GetObjectManager();
         auto musicObj = objManager.GetLoadedObject<MusicObject>(ride.music);
@@ -2016,7 +2016,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
         if (vehicle->velocity == 0)
             return;
 
-    if (measurement.current_item >= RideMeasurement::MAX_ITEMS)
+    if (measurement.current_item >= RideMeasurement::kMaxItems)
         return;
 
     const auto currentTicks = GetGameState().CurrentTicks;
@@ -3581,7 +3581,7 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
 ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
 {
     UpdateMaxVehicles();
-    if (subtype == OBJECT_ENTRY_INDEX_NULL)
+    if (subtype == kObjectEntryIndexNull)
     {
         return { true };
     }
@@ -4024,7 +4024,7 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
 
 ResultWithMessage Ride::Test(bool isApplying)
 {
-    if (type == RIDE_TYPE_NULL)
+    if (type == kRideTypeNull)
     {
         LOG_WARNING("Invalid ride type for ride %u", id.ToUnderlying());
         return { false };
@@ -4072,7 +4072,7 @@ ResultWithMessage Ride::Test(bool isApplying)
 ResultWithMessage Ride::Simulate(bool isApplying)
 {
     CoordsXYE trackElement, problematicTrackElement = {};
-    if (type == RIDE_TYPE_NULL)
+    if (type == kRideTypeNull)
     {
         LOG_WARNING("Invalid ride type for ride %u", id.ToUnderlying());
         return { false };
@@ -4271,7 +4271,7 @@ bool Ride::NameExists(std::string_view name, RideId excludeRideId)
 
 int32_t RideGetRandomColourPresetIndex(ride_type_t rideType)
 {
-    if (rideType >= std::size(RideTypeDescriptors))
+    if (rideType >= std::size(kRideTypeDescriptors))
     {
         return 0;
     }
@@ -5059,7 +5059,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
  */
 void Ride::UpdateMaxVehicles()
 {
-    if (subtype == OBJECT_ENTRY_INDEX_NULL)
+    if (subtype == kObjectEntryIndexNull)
         return;
 
     const auto* rideEntry = GetRideEntryByIndex(subtype);
@@ -5512,7 +5512,7 @@ ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSu
 {
     auto subType = rideSubType;
 
-    if (subType == OBJECT_ENTRY_INDEX_NULL)
+    if (subType == kObjectEntryIndexNull)
     {
         auto& objManager = GetContext()->GetObjectManager();
         auto& rideEntries = objManager.GetAllRideEntries(rideType);
@@ -5524,7 +5524,7 @@ ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSu
                 const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
                 if (rideEntry == nullptr)
                 {
-                    return OBJECT_ENTRY_INDEX_NULL;
+                    return kObjectEntryIndexNull;
                 }
 
                 // Can happen in select-by-track-type mode
@@ -5758,7 +5758,7 @@ void Ride::FormatNameTo(Formatter& ft) const
 uint64_t Ride::GetAvailableModes() const
 {
     if (GetGameState().Cheats.showAllOperatingModes)
-        return AllRideModesAvailable;
+        return kAllRideModesAvailable;
 
     return GetRideTypeDescriptor().RideModes;
 }
@@ -5770,7 +5770,7 @@ const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
 
 uint8_t Ride::GetNumShelteredSections() const
 {
-    return num_sheltered_sections & ShelteredSectionsBits::NumShelteredSectionsMask;
+    return num_sheltered_sections & ShelteredSectionsBits::kNumShelteredSectionsMask;
 }
 
 void Ride::IncreaseNumShelteredSections()
@@ -5778,7 +5778,7 @@ void Ride::IncreaseNumShelteredSections()
     auto newNumShelteredSections = GetNumShelteredSections();
     if (newNumShelteredSections != 0x1F)
         newNumShelteredSections++;
-    num_sheltered_sections &= ~ShelteredSectionsBits::NumShelteredSectionsMask;
+    num_sheltered_sections &= ~ShelteredSectionsBits::kNumShelteredSectionsMask;
     num_sheltered_sections |= newNumShelteredSections;
 }
 
@@ -5939,7 +5939,7 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
         }
     }
 
-    if (subtype != OBJECT_ENTRY_INDEX_NULL && !GetGameState().Cheats.enableAllDrawableTrackPieces)
+    if (subtype != kObjectEntryIndexNull && !GetGameState().Cheats.enableAllDrawableTrackPieces)
     {
         const auto* rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry == nullptr)

@@ -344,7 +344,7 @@ GameActions::Result TrackPlaceAction::Query() const
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_CAN_ONLY_BUILD_THIS_ON_WATER);
             }
-            waterHeight -= LAND_HEIGHT_STEP;
+            waterHeight -= kLandHeightStep;
             if (waterHeight == surfaceElement->GetBaseZ())
             {
                 uint8_t slope = surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask;

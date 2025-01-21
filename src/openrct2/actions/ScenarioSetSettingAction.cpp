@@ -193,7 +193,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::ParkChargeEntryFee:
-            gameState.Park.EntranceFee = std::clamp<money64>(_value, 0.00_GBP, MAX_ENTRANCE_FEE);
+            gameState.Park.EntranceFee = std::clamp<money64>(_value, 0.00_GBP, kMaxEntranceFee);
             WindowInvalidateByClass(WindowClass::ParkInformation);
             break;
         case ScenarioSetSetting::ForbidTreeRemoval:

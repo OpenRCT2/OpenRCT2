@@ -222,7 +222,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
         auto* trackElement = TileElementInsert<TrackElement>(_loc, 0b1111);
         Guard::Assert(trackElement != nullptr);
 
-        trackElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
+        trackElement->SetClearanceZ(_loc.z + kMazeClearanceHeight);
         trackElement->SetTrackType(TrackElemType::Maze);
         trackElement->SetRideType(ride->type);
         trackElement->SetRideIndex(_rideIndex);

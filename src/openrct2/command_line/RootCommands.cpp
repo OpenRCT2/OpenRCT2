@@ -117,7 +117,7 @@ static void PrintAbout();
 static void PrintVersion();
 static void PrintLaunchInformation();
 
-const CommandLineCommand CommandLine::RootCommands[]
+const CommandLineCommand CommandLine::kRootCommands[]
 {
     // Main commands
 #ifndef DISABLE_HTTP
@@ -142,14 +142,14 @@ const CommandLineCommand CommandLine::RootCommands[]
 #endif
 
     // Sub-commands
-    DefineSubCommand("screenshot",      CommandLine::ScreenshotCommands       ),
-    DefineSubCommand("sprite",          CommandLine::SpriteCommands           ),
-    DefineSubCommand("simulate",        CommandLine::SimulateCommands         ),
-    DefineSubCommand("parkinfo",        CommandLine::ParkInfoCommands         ),
+    DefineSubCommand("screenshot",      CommandLine::kScreenshotCommands       ),
+    DefineSubCommand("sprite",          CommandLine::kSpriteCommands           ),
+    DefineSubCommand("simulate",        CommandLine::kSimulateCommands         ),
+    DefineSubCommand("parkinfo",        CommandLine::kParkInfoCommands         ),
     kCommandTableEnd
 };
 
-const CommandLineExample CommandLine::RootExamples[]
+const CommandLineExample CommandLine::kRootExamples[]
 {
     { "./my_park.sv6",                                "open a saved park"                      },
     { "./SnowyPark.sc6",                              "install and open a scenario"            },

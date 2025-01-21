@@ -26,7 +26,7 @@ struct WallPlaceActionResult
 class WallPlaceAction final : public GameActionBase<GameCommand::PlaceWall>
 {
 private:
-    ObjectEntryIndex _wallType{ OBJECT_ENTRY_INDEX_NULL };
+    ObjectEntryIndex _wallType{ kObjectEntryIndexNull };
     CoordsXYZ _loc;
     Direction _edge{ INVALID_DIRECTION };
     int32_t _primaryColour{ COLOUR_BLACK };

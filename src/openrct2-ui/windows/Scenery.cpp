@@ -156,7 +156,7 @@ namespace OpenRCT2::Ui::Windows
         struct SceneryTabInfo
         {
             SceneryTabType Type = SCENERY_TAB_TYPE_GROUP;
-            ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
+            ObjectEntryIndex SceneryGroupIndex = kObjectEntryIndexNull;
             std::deque<ScenerySelection> Entries{};
             u8string Filter = "";
 
@@ -1246,7 +1246,7 @@ namespace OpenRCT2::Ui::Windows
 
         void InitSceneryEntry(const ScenerySelection& selection, const ObjectEntryIndex sceneryGroupIndex)
         {
-            Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, OBJECT_ENTRY_INDEX_NULL);
+            Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, kObjectEntryIndexNull);
 
             if (IsSceneryAvailableToBuild(selection))
             {
@@ -1258,7 +1258,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Add scenery to primary group (usually trees or path additions)
-                if (sceneryGroupIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (sceneryGroupIndex != kObjectEntryIndexNull)
                 {
                     auto* tabInfo = GetSceneryTabInfoForGroup(sceneryGroupIndex);
                     if (tabInfo != nullptr)
@@ -1339,9 +1339,9 @@ namespace OpenRCT2::Ui::Windows
                 if (a.SceneryGroupIndex == b.SceneryGroupIndex)
                     return false;
 
-                if (a.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (a.SceneryGroupIndex == kObjectEntryIndexNull)
                     return false;
-                if (b.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (b.SceneryGroupIndex == kObjectEntryIndexNull)
                     return true;
 
                 const auto* entryA = a.GetSceneryGroupEntry();

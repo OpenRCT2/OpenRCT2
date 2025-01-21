@@ -28,7 +28,7 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
     _legacyType.height = stream->ReadValue<uint8_t>();
     _legacyType.flags2 = stream->ReadValue<uint8_t>();
     _legacyType.price = stream->ReadValue<money16>();
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.scenery_tab_id = kObjectEntryIndexNull;
     stream->Seek(1, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
 

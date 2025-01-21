@@ -159,7 +159,7 @@ namespace OpenRCT2
 
         entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
 
-        if (ride->type == RIDE_TYPE_NULL)
+        if (ride->type == kRideTypeNull)
         {
             entranceExitCoords.SetNull();
             return entranceExitCoords;

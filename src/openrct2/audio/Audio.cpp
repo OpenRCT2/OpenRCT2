@@ -50,9 +50,9 @@ namespace OpenRCT2::Audio
 
     static std::vector<std::string> _audioDevices;
     static int32_t _currentAudioDevice = -1;
-    static ObjectEntryIndex _soundsAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-    static ObjectEntryIndex _soundsAdditionalAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-    static ObjectEntryIndex _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+    static ObjectEntryIndex _soundsAudioObjectEntryIndex = kObjectEntryIndexNull;
+    static ObjectEntryIndex _soundsAdditionalAudioObjectEntryIndex = kObjectEntryIndexNull;
+    static ObjectEntryIndex _titleAudioObjectEntryIndex = kObjectEntryIndexNull;
 
     bool gGameSoundsOff = false;
     int32_t gVolumeAdjustZoom = 0;
@@ -360,7 +360,7 @@ namespace OpenRCT2::Audio
         }
 
         // Unload the audio object
-        if (_titleAudioObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
+        if (_titleAudioObjectEntryIndex != kObjectEntryIndexNull)
         {
             auto& objManager = GetContext()->GetObjectManager();
             auto* obj = objManager.GetLoadedObject(ObjectType::Audio, _titleAudioObjectEntryIndex);
@@ -368,7 +368,7 @@ namespace OpenRCT2::Audio
             {
                 objManager.UnloadObjects({ obj->GetDescriptor() });
             }
-            _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+            _titleAudioObjectEntryIndex = kObjectEntryIndexNull;
         }
     }
 

@@ -28,7 +28,7 @@ Vehicle* CableLiftSegmentCreate(
 {
     Vehicle* current = CreateEntity<Vehicle>();
     current->ride = ride.id;
-    current->ride_subtype = OBJECT_ENTRY_INDEX_NULL;
+    current->ride_subtype = kObjectEntryIndexNull;
     if (head)
     {
         ride.cable_lift = current->Id;

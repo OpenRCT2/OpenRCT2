@@ -448,7 +448,7 @@ static MiscScenery GetAllMiscScenery()
         const auto maxObjects = GetMaxObjectsForSceneryType(sceneryType);
         for (ObjectEntryIndex i = 0; i < maxObjects; i++)
         {
-            ObjectEntryIndex linkedSceneryGroup = OBJECT_ENTRY_INDEX_NULL;
+            ObjectEntryIndex linkedSceneryGroup = kObjectEntryIndexNull;
             const auto objectType = GetObjectTypeFromSceneryType(sceneryType);
             switch (objectType)
             {
@@ -504,7 +504,7 @@ static MiscScenery GetAllMiscScenery()
 
             // An object may link itself against a scenery group, in which case it should not be marked as miscellaneous.
             bool isLinkedToKnownSceneryGroup = false;
-            if (linkedSceneryGroup != OBJECT_ENTRY_INDEX_NULL)
+            if (linkedSceneryGroup != kObjectEntryIndexNull)
             {
                 if (std::find(std::begin(sceneryGroupIds), std::end(sceneryGroupIds), linkedSceneryGroup)
                     != std::end(sceneryGroupIds))

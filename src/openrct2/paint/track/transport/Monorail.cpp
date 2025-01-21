@@ -138,7 +138,7 @@ enum
     SPR_MONORAIL_DIAG_25_DEG_UP_S_N = 23340,
 };
 
-static constexpr uint32_t monorail_track_pieces_flat[kNumOrthogonalDirections] = {
+static constexpr uint32_t kTrackPiecesFlat[kNumOrthogonalDirections] = {
     SPR_MONORAIL_FLAT_SW_NE,
     SPR_MONORAIL_FLAT_NW_SE,
     SPR_MONORAIL_FLAT_SW_NE,
@@ -414,7 +414,7 @@ static void PaintMonorailTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(monorail_track_pieces_flat[direction]);
+    auto imageId = session.TrackColours.WithIndex(kTrackPiecesFlat[direction]);
 
     if (direction == 0 || direction == 2)
     {
@@ -471,7 +471,7 @@ static void PaintMonorailStation(
         }
     }
 
-    imageId = session.TrackColours.WithIndex(monorail_track_pieces_flat[direction]);
+    imageId = session.TrackColours.WithIndex(kTrackPiecesFlat[direction]);
     if (direction == 0 || direction == 2)
     {
         PaintAddImageAsChild(session, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 2 } });

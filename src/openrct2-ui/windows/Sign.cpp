@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         bool _isSmall = false;
-        ObjectEntryIndex _sceneryEntry = OBJECT_ENTRY_INDEX_NULL;
+        ObjectEntryIndex _sceneryEntry = kObjectEntryIndexNull;
         colour_t _mainColour = {};
         colour_t _textColour = {};
 

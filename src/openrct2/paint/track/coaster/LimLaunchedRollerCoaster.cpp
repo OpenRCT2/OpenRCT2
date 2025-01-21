@@ -31,7 +31,7 @@ static constexpr uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_OPEN = 15021;
 static constexpr uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_CLOSED = 15022;
 static constexpr uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_CLOSED = 15023;
 
-static constexpr uint32_t _LimLauncherBlockBrakeImages[kNumOrthogonalDirections][2] = {
+static constexpr uint32_t kLimLauncherBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_CLOSED },
     { LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_CLOSED },
     { LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -54,7 +54,7 @@ static void LimLaunchedRCTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(_LimLauncherBlockBrakeImages[direction][isClosed]),
+            session, direction, session.TrackColours.WithIndex(kLimLauncherBlockBrakeImages[direction][isClosed]),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
@@ -1827,7 +1827,7 @@ static void LimLaunchedRCTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_LimLauncherBlockBrakeImages[direction][isClosed]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(kLimLauncherBlockBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))

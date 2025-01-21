@@ -26,14 +26,14 @@ using namespace OpenRCT2;
 
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
-static constexpr uint32_t _LatticeTriangleAltBrakeImages[kNumOrthogonalDirections][2] = {
+static constexpr uint32_t kLatticeTriangleAltBrakeImages[kNumOrthogonalDirections][2] = {
     { SPR_G2_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_OPEN_NE_SW, SPR_G2_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_CLOSED_NE_SW },
     { SPR_G2_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_OPEN_NW_SE, SPR_G2_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_CLOSED_NW_SE },
     { SPR_G2_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_OPEN_SW_NE, SPR_G2_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_CLOSED_SW_NE },
     { SPR_G2_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_OPEN_SE_NW, SPR_G2_LATTICE_TRIANGLE_TRACK_BRAKE_ALT_CLOSED_SE_NW },
 };
 
-static constexpr uint32_t _LatticeTriangleAltBlockBrakeImages[kNumOrthogonalDirections][2] = {
+static constexpr uint32_t kLatticeTriangleAltBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { SPR_G2_LATTICE_TRIANGLE_TRACK_BLOCK_BRAKE_ALT_OPEN_NE_SW, SPR_G2_LATTICE_TRIANGLE_TRACK_BLOCK_BRAKE_ALT_CLOSED_NE_SW },
     { SPR_G2_LATTICE_TRIANGLE_TRACK_BLOCK_BRAKE_ALT_OPEN_NW_SE, SPR_G2_LATTICE_TRIANGLE_TRACK_BLOCK_BRAKE_ALT_CLOSED_NW_SE },
     { SPR_G2_LATTICE_TRIANGLE_TRACK_BLOCK_BRAKE_ALT_OPEN_SW_NE, SPR_G2_LATTICE_TRIANGLE_TRACK_BLOCK_BRAKE_ALT_CLOSED_SW_NE },
@@ -74,7 +74,7 @@ static void LatticeTriangleTrackAltStation(
         {
             bool isClosed = trackElement.IsBrakeClosed();
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(_LatticeTriangleAltBlockBrakeImages[direction][isClosed]),
+                session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         else
@@ -101,7 +101,7 @@ static void LatticeTriangleTrackAltBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_LatticeTriangleAltBrakeImages[direction][isClosed]),
+        session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -120,7 +120,7 @@ static void LatticeTriangleTrackAltBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_LatticeTriangleAltBlockBrakeImages[direction][isClosed]),
+        session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBlockBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))

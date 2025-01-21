@@ -80,7 +80,7 @@ public:
     Object* GetLoadedObject(ObjectType objectType, size_t index) override
     {
         // This is sometimes done deliberately (to avoid boilerplate), so no need to log_warn for this.
-        if (index == OBJECT_ENTRY_INDEX_NULL)
+        if (index == kObjectEntryIndexNull)
         {
             return nullptr;
         }
@@ -88,7 +88,7 @@ public:
         if (index >= static_cast<size_t>(getObjectEntryGroupCount(objectType)))
         {
 #ifdef DEBUG
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 LOG_WARNING("Object index %u exceeds maximum for type %d.", index, objectType);
             }
@@ -121,7 +121,7 @@ public:
         {
             return GetLoadedObjectEntryIndex(obj);
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     ObjectEntryIndex GetLoadedObjectEntryIndex(const ObjectEntryDescriptor& descriptor) override
@@ -131,12 +131,12 @@ public:
         {
             return GetLoadedObjectEntryIndex(obj);
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) override
     {
-        ObjectEntryIndex result = OBJECT_ENTRY_INDEX_NULL;
+        ObjectEntryIndex result = kObjectEntryIndexNull;
         size_t index = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
@@ -511,7 +511,7 @@ private:
         const auto& primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object* sgObject = GetLoadedObject(primarySGEntry);
 
-        auto entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        auto entryIndex = kObjectEntryIndexNull;
         if (sgObject != nullptr)
         {
             entryIndex = GetLoadedObjectEntryIndex(sgObject);

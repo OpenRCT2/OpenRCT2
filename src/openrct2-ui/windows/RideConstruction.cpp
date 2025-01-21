@@ -77,11 +77,11 @@ namespace OpenRCT2::Ui::Windows
         SelectedLiftAndInverted liftHillAndAlternativeState, const CoordsXYZ& trackPos);
     static std::pair<bool, OpenRCT2::TrackElemType> WindowRideConstructionUpdateStateGetTrackElement();
 
-    static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+    static constexpr StringId kWindowTitle = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
     static constexpr int32_t WH = 394;
     static constexpr int32_t WW = 210;
 
-    static constexpr uint16_t ARROW_PULSE_DURATION = 200;
+    static constexpr uint16_t kArrowPulseDuration = 200;
     // Width of the group boxes, e.g. “Banking”
     static constexpr int32_t GW = WW - 6;
 
@@ -141,8 +141,8 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
 
     // clang-format off
-    static constexpr Widget _rideConstructionWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr Widget kRideConstructionWidgets[] = {
+        WINDOW_SHIM(kWindowTitle, WW, WH),
         MakeWidget        ({  3,  17}, {     GW,  57}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
         MakeWidget        ({  3,  76}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
         MakeWidget        ({  3, 120}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                                    ),
@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
     static bool _autoRotatingShop;
     static bool _gotoStartPlacementMode = false;
 
-    static constexpr StringId RideConstructionSeatAngleRotationStrings[] = {
+    static constexpr StringId kSeatAngleRotationStrings[] = {
         STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
         STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_90,  STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_45,
         STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_0,       STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_45,
@@ -237,7 +237,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            SetWidgets(_rideConstructionWidgets);
+            SetWidgets(kRideConstructionWidgets);
             number = _currentRideIndex.ToUnderlying();
 
             InitScrollWidgets();
@@ -1554,8 +1554,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Increment(2);
             }
 
-            widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings
-                [_currentSeatRotationAngle];
+            widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = kSeatAngleRotationStrings[_currentSeatRotationAngle];
 
             // Simulate button
             auto& simulateWidget = widgets[WIDX_SIMULATE];
@@ -3183,7 +3182,7 @@ namespace OpenRCT2::Ui::Windows
                 auto curTime = Platform::GetTicks();
                 if (_rideConstructionNextArrowPulse >= curTime)
                     break;
-                _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+                _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
                 _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
                 trackPos = _currentTrackBegin;
@@ -3207,7 +3206,7 @@ namespace OpenRCT2::Ui::Windows
                 auto curTime = Platform::GetTicks();
                 if (_rideConstructionNextArrowPulse >= curTime)
                     break;
-                _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+                _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
                 _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
                 direction = _currentTrackPieceDirection & 3;
@@ -3230,7 +3229,7 @@ namespace OpenRCT2::Ui::Windows
                 auto curTime = Platform::GetTicks();
                 if (_rideConstructionNextArrowPulse >= curTime)
                     break;
-                _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+                _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
                 _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
                 trackPos = CoordsXYZ{ _currentTrackBegin.x & 0xFFE0, _currentTrackBegin.y & 0xFFE0, _currentTrackBegin.z + 15 };
@@ -3590,7 +3589,7 @@ namespace OpenRCT2::Ui::Windows
             // clearance
             if (!GetGameState().Cheats.disableClearanceChecks && z > kMinimumLandZ)
             {
-                z -= LAND_HEIGHT_STEP;
+                z -= kLandHeightStep;
             }
         }
         else

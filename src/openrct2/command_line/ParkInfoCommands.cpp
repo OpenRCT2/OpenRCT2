@@ -26,7 +26,7 @@ static constexpr CommandLineOptionDefinition kNoOptions[]
 
 static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
 
-const CommandLineCommand CommandLine::ParkInfoCommands[]{
+const CommandLineCommand CommandLine::kParkInfoCommands[]{
     // Main commands
     DefineCommand("objects", "<savefile>", kNoOptions, HandleObjectsInfo),
 

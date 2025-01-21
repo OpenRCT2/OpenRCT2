@@ -410,7 +410,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         ObjectManagerUnloadAllObjects();
-        if (trackDesign->trackAndVehicle.rtdIndex == RIDE_TYPE_NULL)
+        if (trackDesign->trackAndVehicle.rtdIndex == kRideTypeNull)
         {
             LOG_ERROR("Failed to load track (ride type null): %s", path);
             return nullptr;
