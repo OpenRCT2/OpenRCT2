@@ -113,9 +113,9 @@ namespace OpenRCT2::Ui::Windows
 
                 if (gDropdownItems[i].IsSeparator())
                 {
-                    const ScreenCoordsXY leftTop = screenCoords + ScreenCoordsXY{ 0, (ItemHeight / 2) };
-                    const ScreenCoordsXY rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 1, 0 };
-                    const ScreenCoordsXY shadowOffset{ 0, 1 };
+                    const auto leftTop = screenCoords + ScreenCoordsXY{ 2, (ItemHeight / 2) - 1 };
+                    const auto rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 4, 0 };
+                    const auto shadowOffset = ScreenCoordsXY{ 0, 1 };
 
                     if (colours[0].hasFlag(ColourFlag::translucent))
                     {
