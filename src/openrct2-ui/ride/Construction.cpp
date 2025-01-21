@@ -31,7 +31,6 @@ namespace OpenRCT2
      */
     constexpr std::array kSpecialElementsDropdownOrder = {
         TrackElemType::EndStation,
-        kSeparator,
 
         // Brakes
         TrackElemType::Brakes,
@@ -39,28 +38,23 @@ namespace OpenRCT2
         TrackElemType::Down25Brakes,
         TrackElemType::BlockBrakes,
         TrackElemType::DiagBlockBrakes,
-        kSeparator,
 
         // Boosters
         TrackElemType::Booster,
         TrackElemType::DiagBooster,
-        kSeparator,
 
         // Photo sections
         TrackElemType::OnRidePhoto,
-        kSeparator,
 
         // Rotation control
         TrackElemType::RotationControlToggle,
 
         // Brake for drop
         TrackElemType::BrakeForDrop,
-        kSeparator,
 
         // Tower
         TrackElemType::TowerBase,
         TrackElemType::TowerSection,
-        kSeparator,
 
         // Mini Golf pieces
         TrackElemType::MinigolfHoleA,
@@ -68,7 +62,6 @@ namespace OpenRCT2
         TrackElemType::MinigolfHoleC,
         TrackElemType::MinigolfHoleD,
         TrackElemType::MinigolfHoleE,
-        kSeparator,
 
         // S-Bends
         TrackElemType::SBendLeft,
