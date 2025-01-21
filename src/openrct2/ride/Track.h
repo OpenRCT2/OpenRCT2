@@ -741,5 +741,5 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
 
 constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
 {
-    return direction >= kNumOrthogonalDirections;
+    return direction & kDirectionDiagonalMask;
 }
