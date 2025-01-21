@@ -165,24 +165,6 @@ namespace OpenRCT2
         TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop,
         kSeparator,
 
-        // Twists
-        TrackElemType::LeftTwistDownToUp,
-        TrackElemType::LeftTwistUpToDown,
-        TrackElemType::RightTwistDownToUp,
-        TrackElemType::RightTwistUpToDown,
-        TrackElemType::LeftFlyerTwistUp,
-        TrackElemType::LeftFlyerTwistDown,
-        TrackElemType::RightFlyerTwistUp,
-        TrackElemType::RightFlyerTwistDown,
-        kSeparator,
-
-        // Barrel Rolls
-        TrackElemType::LeftBarrelRollUpToDown,
-        TrackElemType::LeftBarrelRollDownToUp,
-        TrackElemType::RightBarrelRollUpToDown,
-        TrackElemType::RightBarrelRollDownToUp,
-        kSeparator,
-
         // Zero-G Rolls, Dive Loops
         TrackElemType::LeftZeroGRollUp,
         TrackElemType::LeftZeroGRollDown,
@@ -212,6 +194,23 @@ namespace OpenRCT2
         TrackElemType::RightLargeCorkscrewUp,
         TrackElemType::RightLargeCorkscrewDown,
         kSeparator,
+
+        // Barrel Rolls
+        TrackElemType::LeftBarrelRollUpToDown,
+        TrackElemType::LeftBarrelRollDownToUp,
+        TrackElemType::RightBarrelRollUpToDown,
+        TrackElemType::RightBarrelRollDownToUp,
+        kSeparator,
+
+        // Twists
+        TrackElemType::LeftTwistDownToUp,
+        TrackElemType::LeftTwistUpToDown,
+        TrackElemType::RightTwistDownToUp,
+        TrackElemType::RightTwistUpToDown,
+        TrackElemType::LeftFlyerTwistUp,
+        TrackElemType::LeftFlyerTwistDown,
+        TrackElemType::RightFlyerTwistUp,
+        TrackElemType::RightFlyerTwistDown,
     };
 
     // Update the magic number with the current number of track elements to silence
