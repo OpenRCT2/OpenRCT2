@@ -19,6 +19,7 @@
 constexpr uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
 constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
 constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
+constexpr auto kTrackDirectionDiagonalMask = 0b0100;
 
 constexpr uint8_t kMaximumTrackSpeed = 30;
 
@@ -738,3 +739,8 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
 bool TrackTypeHasSpeedSetting(OpenRCT2::TrackElemType trackType);
 bool TrackTypeIsHelix(OpenRCT2::TrackElemType trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
+
+constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
+{
+    return direction & kTrackDirectionDiagonalMask;
+}

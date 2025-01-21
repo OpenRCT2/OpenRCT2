@@ -874,11 +874,6 @@ enum
 
 enum
 {
-    TRACK_BLOCK_2 = (1 << 2)
-};
-
-enum
-{
     TRACK_ELEMENT_SET_HIGHLIGHT_FALSE = (1 << 0),
     TRACK_ELEMENT_SET_HIGHLIGHT_TRUE = (1 << 1),
     TRACK_ELEMENT_SET_COLOUR_SCHEME = (1 << 2),

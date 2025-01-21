@@ -150,11 +150,6 @@ namespace OpenRCT2
     // Update the magic number with the current number of track elements to silence
     static_assert(EnumValue(TrackElemType::Count) == 349, "Reminder to add new track element to special dropdown list");
 
-    constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
-    {
-        return direction >= kNumOrthogonalDirections;
-    }
-
     struct SpecialElement
     {
         OpenRCT2::TrackElemType TrackType;

@@ -504,7 +504,7 @@ bool TrackBlockGetNextFromZero(
 {
     auto trackPos = startPos;
 
-    if (!(direction_start & TRACK_BLOCK_2))
+    if (!TrackPieceDirectionIsDiagonal(direction_start))
     {
         trackPos += CoordsDirectionDelta[direction_start];
     }
@@ -538,7 +538,7 @@ bool TrackBlockGetNextFromZero(
 
         const auto& nextTrackCoordinate = ted.coordinates;
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
-            | (nextTrackCoordinate.rotationBegin & TRACK_BLOCK_2);
+            | (nextTrackCoordinate.rotationBegin & kTrackDirectionDiagonalMask);
 
         if (nextRotation != direction_start)
             continue;
@@ -605,7 +605,7 @@ bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t*
     OriginZ += trackCoordinate.zEnd;
 
     uint8_t directionStart = ((trackCoordinate.rotationEnd + rotation) & kTileElementDirectionMask)
-        | (trackCoordinate.rotationEnd & TRACK_BLOCK_2);
+        | (trackCoordinate.rotationEnd & kTrackDirectionDiagonalMask);
 
     return TrackBlockGetNextFromZero({ coords, OriginZ }, *ride, directionStart, output, z, direction, false);
 }
@@ -625,7 +625,7 @@ bool TrackBlockGetPreviousFromZero(
     direction = DirectionReverse(direction);
     auto trackPos = startPos;
 
-    if (!(direction & TRACK_BLOCK_2))
+    if (!TrackPieceDirectionIsDiagonal(direction))
     {
         trackPos += CoordsDirectionDelta[direction];
     }
@@ -661,7 +661,7 @@ bool TrackBlockGetPreviousFromZero(
 
         const auto& nextTrackCoordinate = ted.coordinates;
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationEnd)
-            | (nextTrackCoordinate.rotationEnd & TRACK_BLOCK_2);
+            | (nextTrackCoordinate.rotationEnd & kTrackDirectionDiagonalMask);
 
         if (nextRotation != directionStart)
             continue;
@@ -671,7 +671,7 @@ bool TrackBlockGetPreviousFromZero(
             continue;
 
         nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
-            | (nextTrackCoordinate.rotationBegin & TRACK_BLOCK_2);
+            | (nextTrackCoordinate.rotationBegin & kTrackDirectionDiagonalMask);
         outTrackBeginEnd->begin_element = tileElement;
         outTrackBeginEnd->begin_x = trackPos.x;
         outTrackBeginEnd->begin_y = trackPos.y;
@@ -743,7 +743,7 @@ bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeg
     z += trackCoordinate.zBegin;
 
     rotation = ((trackCoordinate.rotationBegin + rotation) & kTileElementDirectionMask)
-        | (trackCoordinate.rotationBegin & TRACK_BLOCK_2);
+        | (trackCoordinate.rotationBegin & kTrackDirectionDiagonalMask);
 
     return TrackBlockGetPreviousFromZero({ coords, z }, *ride, rotation, outTrackBeginEnd);
 }
