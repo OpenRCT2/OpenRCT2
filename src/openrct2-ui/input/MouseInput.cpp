@@ -290,7 +290,7 @@ namespace OpenRCT2
 
         // Get window and widget under cursor position
         w = windowMgr->FindFromPoint(screenCoords);
-        widgetIndex = w == nullptr ? -1 : windowMgr->FindWidgetFromPoint(*w, screenCoords);
+        widgetIndex = w == nullptr ? kWidgetIndexNull : windowMgr->FindWidgetFromPoint(*w, screenCoords);
         widget = widgetIndex == kWidgetIndexNull ? nullptr : &w->widgets[widgetIndex];
 
         switch (_inputState)
@@ -1557,7 +1557,8 @@ namespace OpenRCT2
         {
             if (gTooltipCursor == screenCoords)
             {
-                if (gCurrentRealTimeTicks >= _tooltipNotShownTimeout && w != nullptr && WidgetIsVisible(*w, widgetIndex))
+                if (gCurrentRealTimeTicks >= _tooltipNotShownTimeout && w != nullptr && widgetIndex != kWidgetIndexNull
+                    && WidgetIsVisible(*w, widgetIndex))
                 {
                     gTooltipCloseTimeout = gCurrentRealTimeTicks + 8000;
                     WindowTooltipOpen(w, widgetIndex, screenCoords);
