@@ -52,6 +52,27 @@ namespace OpenRCT2
 
         // Rotation control
         TrackElemType::RotationControlToggle,
+
+        // Brake for drop
+        TrackElemType::BrakeForDrop,
+        kSeparator,
+
+        // Tower
+        TrackElemType::TowerBase,
+        TrackElemType::TowerSection,
+        kSeparator,
+
+        // Mini Golf pieces
+        TrackElemType::MinigolfHoleA,
+        TrackElemType::MinigolfHoleB,
+        TrackElemType::MinigolfHoleC,
+        TrackElemType::MinigolfHoleD,
+        TrackElemType::MinigolfHoleE,
+        kSeparator,
+
+        // S-Bends
+        TrackElemType::SBendLeft,
+        TrackElemType::SBendRight,
         kSeparator,
 
         // (Curved) lift (hills) pieces
@@ -66,15 +87,6 @@ namespace OpenRCT2
         TrackElemType::HeartLineTransferDown,
         TrackElemType::LeftHeartLineRoll,
         TrackElemType::RightHeartLineRoll,
-        kSeparator,
-
-        // Brake for drop
-        TrackElemType::BrakeForDrop,
-        kSeparator,
-
-        // S-Bends
-        TrackElemType::SBendLeft,
-        TrackElemType::SBendRight,
         kSeparator,
 
         // Helixes
@@ -209,19 +221,6 @@ namespace OpenRCT2
         TrackElemType::LeftEighthDiveLoopDownToDiag,
         TrackElemType::RightEighthDiveLoopUpToOrthogonal,
         TrackElemType::RightEighthDiveLoopDownToDiag,
-        kSeparator,
-
-        // Tower
-        TrackElemType::TowerBase,
-        TrackElemType::TowerSection,
-        kSeparator,
-
-        // Mini Golf pieces
-        TrackElemType::MinigolfHoleA,
-        TrackElemType::MinigolfHoleB,
-        TrackElemType::MinigolfHoleC,
-        TrackElemType::MinigolfHoleD,
-        TrackElemType::MinigolfHoleE,
     };
 
     // Update the magic number with the current number of track elements to silence
