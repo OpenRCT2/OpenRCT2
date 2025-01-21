@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
         RatingsCalculationType::FlatRide,
         { RIDE_RATING(2, 40), RIDE_RATING(0, 55), RIDE_RATING(0, 39) },
         32,
-        0,
+        -1,
         false,
         {
             // Special case, passing -2 to represent division by 2

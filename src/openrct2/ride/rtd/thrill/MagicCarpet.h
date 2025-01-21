@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
         RatingsCalculationType::FlatRide,
         { RIDE_RATING(2, 45), RIDE_RATING(1, 60), RIDE_RATING(2, 60) },
         16,
-        0,
+        -1,
         false,
         {
             { RatingsModifierType::BonusOperationOption, 0, 10, 20, 20 }, 

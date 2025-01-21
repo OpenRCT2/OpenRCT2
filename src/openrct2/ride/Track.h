@@ -738,3 +738,4 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
 bool TrackTypeHasSpeedSetting(OpenRCT2::TrackElemType trackType);
 bool TrackTypeIsHelix(OpenRCT2::TrackElemType trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
+bool TrackGetIsSheltered(const CoordsXYZ& input);

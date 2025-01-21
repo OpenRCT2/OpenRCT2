@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
         RatingsCalculationType::FlatRide,
         { RIDE_RATING(1, 50), RIDE_RATING(1, 40), RIDE_RATING(0, 90) },
         8,
-        2,
+        -1,
         false,
         {
             { RatingsModifierType::BonusSlideUnlimitedRides, 0, RIDE_RATING(0, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 25) },

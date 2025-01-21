@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor TopSpinRTD =
         RatingsCalculationType::FlatRide,
         { 1, 1, 1 },
         19,
-        0,
+        -1,
         false,
         {
             { RatingsModifierType::BonusTopSpinMode, 0, 0, 0, 0 },

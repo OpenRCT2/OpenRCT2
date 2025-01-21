@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor TwistRTD =
         RatingsCalculationType::FlatRide,
         { RIDE_RATING(1, 13), RIDE_RATING(0, 97), RIDE_RATING(1, 90) },
         16,
-        0,
+        -1,
         false,
         {
             { RatingsModifierType::BonusRotations,        0,                20, 20, 20 },

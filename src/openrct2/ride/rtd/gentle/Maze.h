@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor MazeRTD =
         RatingsCalculationType::FlatRide,
         { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 00) },
         8,
-        0,
+        -1,
         false,
         {
             { RatingsModifierType::BonusMazeSize, 100, 1, 2, 0 },
