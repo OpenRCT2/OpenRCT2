@@ -189,16 +189,17 @@ namespace OpenRCT2::Ui::Windows
             // Set and calculate num items, rows and columns
             ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customHeight : GetDefaultRowHeight();
             gDropdownNumItems = static_cast<int32_t>(numItems);
-            // There must always be at least one column to prevent dividing by zero
+
             if (gDropdownNumItems <= 1)
             {
+                // There must always be at least one column to prevent division by zero
                 NumRows = 1;
                 NumColumns = 1;
             }
             else
             {
                 const int32_t numAvailableRows = std::max(1, getSpaceUntilBottom(screenPos, extraY) / ItemHeight);
-                NumRows = std::min(numAvailableRows, gDropdownNumItems);
+                NumRows = std::min({ 20, numAvailableRows / 2, gDropdownNumItems });
                 NumColumns = (gDropdownNumItems + NumRows - 1) / NumRows;
             }
 
