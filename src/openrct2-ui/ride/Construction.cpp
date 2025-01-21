@@ -183,7 +183,7 @@ namespace OpenRCT2
         TrackElemType::RightBarrelRollDownToUp,
         kSeparator,
 
-        // Zero-G Rolls
+        // Zero-G Rolls, Dive Loops
         TrackElemType::LeftZeroGRollUp,
         TrackElemType::LeftZeroGRollDown,
         TrackElemType::RightZeroGRollUp,
@@ -192,6 +192,10 @@ namespace OpenRCT2
         TrackElemType::LeftLargeZeroGRollDown,
         TrackElemType::RightLargeZeroGRollUp,
         TrackElemType::RightLargeZeroGRollDown,
+        TrackElemType::LeftEighthDiveLoopUpToOrthogonal,
+        TrackElemType::LeftEighthDiveLoopDownToDiag,
+        TrackElemType::RightEighthDiveLoopUpToOrthogonal,
+        TrackElemType::RightEighthDiveLoopDownToDiag,
         kSeparator,
 
         // Corkscrews
@@ -208,12 +212,6 @@ namespace OpenRCT2
         TrackElemType::RightLargeCorkscrewUp,
         TrackElemType::RightLargeCorkscrewDown,
         kSeparator,
-
-        // Dive loops
-        TrackElemType::LeftEighthDiveLoopUpToOrthogonal,
-        TrackElemType::LeftEighthDiveLoopDownToDiag,
-        TrackElemType::RightEighthDiveLoopUpToOrthogonal,
-        TrackElemType::RightEighthDiveLoopDownToDiag,
     };
 
     // Update the magic number with the current number of track elements to silence
