@@ -201,6 +201,11 @@ namespace OpenRCT2::Ui::Windows
         ScreenRect _ratingGraphBounds;
         ScreenRect _guestGraphBounds;
 
+        int32_t GetGraphPageWindowBodyHeight()
+        {
+            return 169;
+        }
+
     public:
         void OnOpen() override
         {
@@ -553,10 +558,10 @@ namespace OpenRCT2::Ui::Windows
 
             // Anchor entrance page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
-            widgets[WIDX_VIEWPORT].bottom = height - 14;
+            widgets[WIDX_VIEWPORT].bottom = height() - 14;
             widgets[WIDX_STATUS].right = width - 26;
-            widgets[WIDX_STATUS].top = height - 13;
-            widgets[WIDX_STATUS].bottom = height - 3;
+            widgets[WIDX_STATUS].top = height() - 13;
+            widgets[WIDX_STATUS].bottom = height() - 3;
 
             auto y = 0;
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
@@ -678,7 +683,8 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeRating()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
+            auto pageHeight = GetGraphPageWindowBodyHeight();
+            WindowSetResize(*this, 268, pageHeight, 2000, 2000);
         }
 
         void OnUpdateRating()
@@ -746,7 +752,8 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeGuests()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
+            auto pageHeight = GetGraphPageWindowBodyHeight();
+            WindowSetResize(*this, 268, pageHeight, 2000, 2000);
         }
 
         void OnUpdateGuests()
@@ -1074,8 +1081,8 @@ namespace OpenRCT2::Ui::Windows
             if (GetGameState().Park.Flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
             {
                 widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
-                widgets[WIDX_ENTER_NAME].top = height - 19;
-                widgets[WIDX_ENTER_NAME].bottom = height - 6;
+                widgets[WIDX_ENTER_NAME].top = height() - 19;
+                widgets[WIDX_ENTER_NAME].bottom = height() - 6;
             }
             else
                 widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
@@ -1132,7 +1139,8 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Awards page
         void OnResizeAwards()
         {
-            WindowSetResize(*this, 230, 182, 230, 182);
+            auto pageHeight = GetGraphPageWindowBodyHeight();
+            WindowSetResize(*this, 230, pageHeight, 230, pageHeight);
         }
 
         void OnUpdateAwards()

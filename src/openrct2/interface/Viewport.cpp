@@ -342,7 +342,7 @@ namespace OpenRCT2
             // skip current window and non-intersecting windows
             if (window == originalWindow || drawRect.GetRight() <= window->windowPos.x
                 || drawRect.GetLeft() >= window->windowPos.x + window->width || drawRect.GetBottom() <= window->windowPos.y
-                || drawRect.GetTop() >= window->windowPos.y + window->height)
+                || drawRect.GetTop() >= window->windowPos.y + window->height())
             {
                 auto itWindowPos = WindowGetIterator(window);
                 auto itNextWindow = itWindowPos != g_window_list.end() ? std::next(itWindowPos) : g_window_list.end();
@@ -375,12 +375,12 @@ namespace OpenRCT2
                 ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y }, drawRect.Point2 };
                 ViewportRedrawAfterShift(dpi, window, originalWindow, shift, bottomRect);
             }
-            else if (drawRect.GetBottom() > window->windowPos.y + window->height)
+            else if (drawRect.GetBottom() > window->windowPos.y + window->height())
             {
-                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y + window->height } };
+                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y + window->height() } };
                 ViewportRedrawAfterShift(dpi, window, originalWindow, shift, topRect);
 
-                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y + window->height }, drawRect.Point2 };
+                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y + window->height() }, drawRect.Point2 };
                 ViewportRedrawAfterShift(dpi, window, originalWindow, shift, bottomRect);
             }
         }
@@ -453,13 +453,13 @@ namespace OpenRCT2
 
             if (viewport->pos.y + viewport->height <= w->windowPos.y)
                 continue;
-            if (w->windowPos.y + w->height <= viewport->pos.y)
+            if (w->windowPos.y + w->height() <= viewport->pos.y)
                 continue;
 
             auto left = w->windowPos.x;
             auto right = w->windowPos.x + w->width;
             auto top = w->windowPos.y;
-            auto bottom = w->windowPos.y + w->height;
+            auto bottom = w->windowPos.y + w->height();
 
             if (left < viewport->pos.x)
                 left = viewport->pos.x;

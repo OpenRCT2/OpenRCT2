@@ -138,7 +138,7 @@ namespace OpenRCT2
     struct WindowBase;
 
 #define RCT_WINDOW_RIGHT(w) ((w)->windowPos.x + (w)->width)
-#define RCT_WINDOW_BOTTOM(w) ((w)->windowPos.y + (w)->height)
+#define RCT_WINDOW_BOTTOM(w) ((w)->windowPos.y + (w)->height())
 
     enum WINDOW_FLAGS
     {
@@ -171,6 +171,8 @@ namespace OpenRCT2
         // Create only flags
         WF_AUTO_POSITION = (1 << 16),
         WF_CENTRE_SCREEN = (1 << 17),
+
+        WF_NO_TITLE_BAR = (1 << 18),
     };
 
     enum

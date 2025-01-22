@@ -42,7 +42,7 @@ using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_STRING;
-    static constexpr int32_t WH = 124;
+    static constexpr int32_t WH = 112;
     static constexpr int32_t WW = 200;
     constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
     constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;

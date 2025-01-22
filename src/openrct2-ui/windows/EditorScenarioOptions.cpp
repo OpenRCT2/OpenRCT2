@@ -33,13 +33,13 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW_FINANCIAL = 280;
-    static constexpr int32_t WH_FINANCIAL = 149;
+    static constexpr int32_t WH_FINANCIAL = 137;
 
     static constexpr int32_t WW_GUESTS = 380;
-    static constexpr int32_t WH_GUESTS = 149;
+    static constexpr int32_t WH_GUESTS = 137;
 
     static constexpr int32_t WW_PARK = 400;
-    static constexpr int32_t WH_PARK = 200;
+    static constexpr int32_t WH_PARK = 188;
 
 #pragma region Widgets
 

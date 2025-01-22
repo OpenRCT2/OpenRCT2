@@ -23,7 +23,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
-    static constexpr int32_t WH = 100;
+    static constexpr int32_t WH = 88;
     static constexpr int32_t WW = 400;
 
     enum WindowCustomCurrencyWidgetIdx
@@ -195,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
 
             DrawWidgets(dpi);
 
-            auto screenCoords = windowPos + ScreenCoordsXY{ 10, 30 };
+            auto screenCoords = windowPos + ScreenCoordsXY{ 10, 18 + widgets[WIDX_TITLE].height() };
 
             DrawTextBasic(dpi, screenCoords, STR_RATE, {}, { colours[1] });
 

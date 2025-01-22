@@ -100,9 +100,9 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             list_information_type = 0;
             min_width = 210;
-            min_height = 134;
+            minBodyheight = 122;
             max_width = 500;
-            max_height = 450;
+            maxBodyHeight = 438;
             hold_down_widgets = 0;
             pressed_widgets = 0;
             SetPage(WINDOW_PLAYER_PAGE_OVERVIEW);
@@ -229,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
                 if (viewport == nullptr)
                 {
                     const auto viewportFocus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
-                    ViewportCreate(this, windowPos, width, height, viewportFocus);
+                    ViewportCreate(this, windowPos, width, height(), viewportFocus);
                     flags |= WF_NO_SCROLLING;
                     OnPrepareDraw();
                     UpdateViewport(false);
@@ -338,7 +338,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResizeOverview()
         {
-            WindowSetResize(*this, 240, 170, 500, 300);
+            WindowSetResize(*this, 240, 158, 500, 288);
         }
 
         void OnUpdateOverview()
@@ -384,7 +384,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_KICK].right = width - 2;
             widgets[WIDX_KICK].left = width - 25;
             widgets[WIDX_VIEWPORT].right = width - 26;
-            widgets[WIDX_VIEWPORT].bottom = height - 14;
+            widgets[WIDX_VIEWPORT].bottom = height() - 14;
 
             int32_t groupDropdownWidth = widgets[WIDX_GROUP].width();
             widgets[WIDX_GROUP].left = (width - groupDropdownWidth) / 2;
@@ -449,7 +449,7 @@ namespace OpenRCT2::Ui::Windows
             DrawText(dpi, screenCoords + ScreenCoordsXY(30, 0), { colours[2] }, ping);
 
             // Draw last action
-            screenCoords = windowPos + ScreenCoordsXY{ width / 2, height - 13 };
+            screenCoords = windowPos + ScreenCoordsXY{ width / 2, height() - 13 };
             int32_t updatedWidth = this->width - 8;
             int32_t lastaction = NetworkGetPlayerLastAction(player, 0);
             ft = Formatter();
@@ -568,7 +568,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResizeStatistics()
         {
-            WindowSetResize(*this, 210, 80, 210, 80);
+            WindowSetResize(*this, 210, 68, 210, 68);
         }
 
         void OnUpdateStatistics()
@@ -629,7 +629,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = static_cast<PlayerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Player, id));
         if (window == nullptr)
         {
-            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, 240, 170, WF_RESIZABLE);
+            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, 240, 158, WF_RESIZABLE);
         }
 
         window->Init(id);

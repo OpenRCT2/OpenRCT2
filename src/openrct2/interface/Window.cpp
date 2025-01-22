@@ -326,9 +326,9 @@ static constexpr float kWindowScrollLocations[][2] = {
                 return;
             if (w->windowPos.x + w->width <= window.windowPos.x)
                 return;
-            if (w->windowPos.y >= window.windowPos.y + window.height)
+            if (w->windowPos.y >= window.windowPos.y + window.height())
                 return;
-            if (w->windowPos.y + w->height <= window.windowPos.y)
+            if (w->windowPos.y + w->height() <= window.windowPos.y)
                 return;
 
             w->Invalidate();
@@ -358,17 +358,17 @@ static constexpr float kWindowScrollLocations[][2] = {
             // Check if w2 intersects with w1
             if (w2->windowPos.x > (w1.windowPos.x + w1.width) || w2->windowPos.x + w2->width < w1.windowPos.x)
                 return;
-            if (w2->windowPos.y > (w1.windowPos.y + w1.height) || w2->windowPos.y + w2->height < w1.windowPos.y)
+            if (w2->windowPos.y > (w1.windowPos.y + w1.height()) || w2->windowPos.y + w2->height() < w1.windowPos.y)
                 return;
 
             // Check if there is room to push it down
-            if (w1.windowPos.y + w1.height + 80 >= ContextGetHeight())
+            if (w1.windowPos.y + w1.height() + 80 >= ContextGetHeight())
                 return;
 
             // Invalidate the window's current area
             w2->Invalidate();
 
-            int32_t push_amount = w1.windowPos.y + w1.height - w2->windowPos.y + 3;
+            int32_t push_amount = w1.windowPos.y + w1.height() - w2->windowPos.y + 3;
             w2->windowPos.y += push_amount;
 
             // Invalidate the window's new area
@@ -448,7 +448,7 @@ static constexpr float kWindowScrollLocations[][2] = {
                         auto y1 = w2->windowPos.y - 10;
                         if (x2 >= x1 && x2 <= w2->width + x1 + 20)
                         {
-                            if (y2 >= y1 && y2 <= w2->height + y1 + 20)
+                            if (y2 >= y1 && y2 <= w2->height() + y1 + 20)
                             {
                                 // window is covering this area, try the next one
                                 i++;
@@ -507,7 +507,7 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         // Rebase mouse position onto centre of window, and compensate for zoom level.
         int32_t rebased_x = w.viewport->zoom.ApplyTo(w.width / 2 - mouseCoords.x);
-        int32_t rebased_y = w.viewport->zoom.ApplyTo(w.height / 2 - mouseCoords.y);
+        int32_t rebased_y = w.viewport->zoom.ApplyTo(w.height() / 2 - mouseCoords.y);
 
         // Compute cursor offset relative to tile.
         *offset_x = w.viewport->zoom.ApplyTo(w.savedViewPos.x - (centreLoc->x + rebased_x));
@@ -531,7 +531,7 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         // Rebase mouse position onto centre of window, and compensate for zoom level.
         int32_t rebased_x = w.viewport->zoom.ApplyTo((w.width >> 1) - mouseCoords.x);
-        int32_t rebased_y = w.viewport->zoom.ApplyTo((w.height >> 1) - mouseCoords.y);
+        int32_t rebased_y = w.viewport->zoom.ApplyTo((w.height() >> 1) - mouseCoords.y);
 
         // Apply offset to the viewport.
         w.savedViewPos = { centreLoc->x + rebased_x + w.viewport->zoom.ApplyInversedTo(offset_x),
@@ -617,7 +617,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             auto topwindow = it->get();
             if (topwindow->windowPos.x >= right || topwindow->windowPos.y >= bottom)
                 continue;
-            if (topwindow->windowPos.x + topwindow->width <= left || topwindow->windowPos.y + topwindow->height <= top)
+            if (topwindow->windowPos.x + topwindow->width <= left || topwindow->windowPos.y + topwindow->height() <= top)
                 continue;
             if (topwindow->flags & WF_TRANSPARENT)
                 continue;
@@ -641,11 +641,11 @@ static constexpr float kWindowScrollLocations[][2] = {
                 WindowDrawCore(dpi, w, left, top, right, topwindow->windowPos.y);
                 WindowDrawCore(dpi, w, left, topwindow->windowPos.y, right, bottom);
             }
-            else if (topwindow->windowPos.y + topwindow->height < bottom)
+            else if (topwindow->windowPos.y + topwindow->height() < bottom)
             {
                 // Split draw at topwindow.bottom
-                WindowDrawCore(dpi, w, left, top, right, topwindow->windowPos.y + topwindow->height);
-                WindowDrawCore(dpi, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
+                WindowDrawCore(dpi, w, left, top, right, topwindow->windowPos.y + topwindow->height());
+                WindowDrawCore(dpi, w, left, topwindow->windowPos.y + topwindow->height(), right, bottom);
             }
 
             // Drawing for this region should be done now, exit
@@ -665,7 +665,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         left = std::max<int32_t>(left, w.windowPos.x);
         top = std::max<int32_t>(top, w.windowPos.y);
         right = std::min<int32_t>(right, w.windowPos.x + w.width);
-        bottom = std::min<int32_t>(bottom, w.windowPos.y + w.height);
+        bottom = std::min<int32_t>(bottom, w.windowPos.y + w.height());
         if (left >= right)
             return;
         if (top >= bottom)
@@ -873,7 +873,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         if (optionsWindow != nullptr)
         {
             optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
-            optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height) / 2;
+            optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height()) / 2;
         }
 
         // Keep progress bar window centred after a resize
@@ -881,7 +881,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         if (ProgressWindow != nullptr)
         {
             ProgressWindow->windowPos.x = (ContextGetWidth() - ProgressWindow->width) / 2;
-            ProgressWindow->windowPos.y = (ContextGetHeight() - ProgressWindow->height) / 2;
+            ProgressWindow->windowPos.y = (ContextGetHeight() - ProgressWindow->height()) / 2;
         }
 
         GfxInvalidateScreen();
@@ -897,7 +897,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             Viewport* viewport = mainWind->viewport;
             mainWind->width = width;
-            mainWind->height = height;
+            mainWind->bodyHeight = height;
             viewport->width = width;
             viewport->height = height;
             if (!mainWind->widgets.empty() && mainWind->widgets[WC_MAIN_WINDOW__0].type == WindowWidgetType::Viewport)
@@ -990,7 +990,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             // if covered by a higher window, no rendering needed
             if (w_other.windowPos.x <= w.windowPos.x && w_other.windowPos.y <= w.windowPos.y
                 && w_other.windowPos.x + w_other.width >= w.windowPos.x + w.width
-                && w_other.windowPos.y + w_other.height >= w.windowPos.y + w.height)
+                && w_other.windowPos.y + w_other.height() >= w.windowPos.y + w.height())
             {
                 w.visibility = VisibilityCache::Covered;
                 w.viewport->visibility = VisibilityCache::Covered;
@@ -1020,7 +1020,7 @@ static constexpr float kWindowScrollLocations[][2] = {
                 return;
             if (right <= w->windowPos.x || bottom <= w->windowPos.y)
                 return;
-            if (left >= w->windowPos.x + w->width || top >= w->windowPos.y + w->height)
+            if (left >= w->windowPos.x + w->width || top >= w->windowPos.y + w->height())
                 return;
             WindowDraw(windowDPI, *w, left, top, right, bottom);
         });

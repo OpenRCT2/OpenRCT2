@@ -168,14 +168,15 @@ namespace OpenRCT2::Ui::Windows
     static_assert(std::size(_guestWindowPageWidgets) == WINDOW_GUEST_PAGE_COUNT);
     // clang-format on
 
+    // Minimum and maximum sizes, excluding the title bar.
     static constexpr std::array _guestWindowPageSizes = {
-        std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_OVERVIEW
-        std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 192, 180 } }, // WINDOW_GUEST_STATS
-        std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 500, 400 } }, // WINDOW_GUEST_RIDES
-        std::array{ ScreenSize{ 210, 148 }, ScreenSize{ 210, 148 } }, // WINDOW_GUEST_FINANCE
-        std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_THOUGHTS
-        std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_INVENTORY
-        std::array{ ScreenSize{ 192, 171 }, ScreenSize{ 192, 171 } }, // WINDOW_GUEST_DEBUG
+        std::array{ ScreenSize{ 192, 145 }, ScreenSize{ 500, 436 } }, // WINDOW_GUEST_OVERVIEW
+        std::array{ ScreenSize{ 192, 166 }, ScreenSize{ 192, 166 } }, // WINDOW_GUEST_STATS
+        std::array{ ScreenSize{ 192, 166 }, ScreenSize{ 500, 386 } }, // WINDOW_GUEST_RIDES
+        std::array{ ScreenSize{ 210, 134 }, ScreenSize{ 210, 134 } }, // WINDOW_GUEST_FINANCE
+        std::array{ ScreenSize{ 192, 145 }, ScreenSize{ 500, 436 } }, // WINDOW_GUEST_THOUGHTS
+        std::array{ ScreenSize{ 192, 145 }, ScreenSize{ 500, 436 } }, // WINDOW_GUEST_INVENTORY
+        std::array{ ScreenSize{ 192, 157 }, ScreenSize{ 192, 157 } }, // WINDOW_GUEST_DEBUG
     };
     static_assert(_guestWindowPageSizes.size() == WINDOW_GUEST_PAGE_COUNT);
 
@@ -197,9 +198,9 @@ namespace OpenRCT2::Ui::Windows
             _marqueePosition = 0;
             picked_peep_frame = 0;
             min_width = width;
-            min_height = 157;
+            minBodyheight = 145;
             max_width = 500;
-            max_height = 450;
+            maxBodyHeight = 438;
             selected_list_item = -1;
         }
 
@@ -603,8 +604,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
-                auto reqViewportWidth = width - 30;
-                auto reqViewportHeight = height - 72;
+                auto widget = widgets[WIDX_VIEWPORT];
+                auto reqViewportWidth = widget.width() - 1;
+                auto reqViewportHeight = widget.height() - 1;
+                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
                 if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
                 {
                     viewport->width = reqViewportWidth;
@@ -844,10 +847,10 @@ namespace OpenRCT2::Ui::Windows
             }
 
             widgets[WIDX_VIEWPORT].right = width - 26;
-            widgets[WIDX_VIEWPORT].bottom = height - 14;
+            widgets[WIDX_VIEWPORT].bottom = height() - 14;
 
-            widgets[WIDX_ACTION_LBL].top = height - 12;
-            widgets[WIDX_ACTION_LBL].bottom = height - 3;
+            widgets[WIDX_ACTION_LBL].top = height() - 12;
+            widgets[WIDX_ACTION_LBL].bottom = height() - 3;
             widgets[WIDX_ACTION_LBL].right = width - 24;
 
             widgets[WIDX_MARQUEE].right = width - 24;
@@ -1297,7 +1300,7 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDrawRides()
         {
             widgets[WIDX_RIDE_SCROLL].right = width - 4;
-            widgets[WIDX_RIDE_SCROLL].bottom = height - 15;
+            widgets[WIDX_RIDE_SCROLL].bottom = height() - 15;
         }
 
         void OnDrawRides(DrawPixelInfo& dpi)
@@ -1747,7 +1750,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 2 };
             int32_t itemNameWidth = widget.width() - 24;
 
-            int32_t maxY = windowPos.y + height - 22;
+            int32_t maxY = windowPos.y + height() - 22;
             int32_t numItems = 0;
 
             DrawTextBasic(dpi, screenCoords, STR_CARRYING);

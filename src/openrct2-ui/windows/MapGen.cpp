@@ -113,7 +113,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Widgets
 
     static constexpr int32_t WW = 300;
-    static constexpr int32_t WH = 220;
+    static constexpr int32_t WH = 208;
 
 #define SHARED_WIDGETS(PAGE_TITLE)                                                                                             \
     WINDOW_SHIM(PAGE_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */                                             \

@@ -24,9 +24,9 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WH_SAVE = 54;
+    static constexpr int32_t WH_SAVE = 42;
     static constexpr int32_t WW_SAVE = 260;
-    static constexpr int32_t WH_QUIT = 38;
+    static constexpr int32_t WH_QUIT = 26;
     static constexpr int32_t WW_QUIT = 177;
 
     enum WindowSavePromptWidgetIdx

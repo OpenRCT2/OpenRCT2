@@ -36,10 +36,10 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr int32_t WW = 500;
-    static constexpr int32_t WH = 400;
+    static constexpr int32_t WH = 388;
     static constexpr StringId WINDOW_TITLE = STR_CHANGELOG_TITLE;
     constexpr int32_t MIN_WW = 300;
-    constexpr int32_t MIN_WH = 250;
+    constexpr int32_t MIN_WH = 238;
 
     // clang-format off
     static Widget _windowChangelogWidgets[] = {
@@ -128,9 +128,9 @@ namespace OpenRCT2::Ui::Windows
 
             WindowInitScrollWidgets(*this);
             min_width = MIN_WW;
-            min_height = MIN_WH;
-            max_width = MIN_WW;
-            max_height = MIN_WH;
+            minBodyheight = MIN_WH;
+            max_width = WW;
+            maxBodyHeight = WH;
         }
 
         void OnResize() override
@@ -139,10 +139,10 @@ namespace OpenRCT2::Ui::Windows
             int32_t screenHeight = ContextGetHeight();
 
             max_width = (screenWidth * 4) / 5;
-            max_height = (screenHeight * 4) / 5;
+            maxBodyHeight = (screenHeight * 4) / 5;
 
             min_width = MIN_WW;
-            min_height = MIN_WH;
+            minBodyheight = MIN_WH;
 
             auto download_button_width = widgets[WIDX_OPEN_URL].width();
             widgets[WIDX_OPEN_URL].left = (width - download_button_width) / 2;
@@ -153,10 +153,10 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 width = min_width;
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
                 Invalidate();
-                height = min_height;
+                bodyHeight = minBodyheight;
             }
         }
 
@@ -164,9 +164,9 @@ namespace OpenRCT2::Ui::Windows
         {
             ResizeFrameWithPage();
             widgets[WIDX_SCROLL].right = width - 3;
-            widgets[WIDX_SCROLL].bottom = height - 22;
-            widgets[WIDX_OPEN_URL].bottom = height - 5;
-            widgets[WIDX_OPEN_URL].top = height - 19;
+            widgets[WIDX_SCROLL].bottom = height() - 22;
+            widgets[WIDX_OPEN_URL].bottom = height() - 5;
+            widgets[WIDX_OPEN_URL].top = height() - 19;
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override

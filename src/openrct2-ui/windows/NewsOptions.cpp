@@ -18,7 +18,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
-    static constexpr int32_t WH = 300;
+    static constexpr int32_t WH = 288;
     static constexpr int32_t WW = 400;
 
     enum
@@ -195,10 +195,10 @@ namespace OpenRCT2::Ui::Windows
             // Resize window to fit checkboxes exactly
             y += 3;
 
-            if (height != y)
+            if (height() != y)
             {
                 Invalidate();
-                height = y;
+                setHeight(y);
                 widgets[WIDX_BACKGROUND].bottom = y - 1;
                 widgets[WIDX_TAB_CONTENT_PANEL].bottom = y - 1;
                 Invalidate();

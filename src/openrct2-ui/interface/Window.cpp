@@ -328,7 +328,7 @@ namespace OpenRCT2
                 continue;
 
             if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
-                GfxSetDirtyBlocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
+                GfxSetDirtyBlocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height() } });
         }
     }
 
@@ -462,32 +462,52 @@ namespace OpenRCT2
             this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
     }
 
-    void Window::ResizeFrame()
+    int32_t Window::ResizeFrame()
     {
         // Frame
         widgets[0].right = width - 1;
-        widgets[0].bottom = height - 1;
+        widgets[0].bottom = height() - 1;
         // Title
         widgets[1].right = width - 2;
         // Close button
+        auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
         {
             widgets[2].left = 2;
-            widgets[2].right = 2 + kCloseButtonWidth;
+            widgets[2].right = 2 + closeButtonSize;
         }
         else
         {
-            widgets[2].left = width - 3 - kCloseButtonWidth;
+            widgets[2].left = width - 3 - closeButtonSize;
             widgets[2].right = width - 3;
         }
+        auto defaultHeight = OpenRCT2::Ui::Windows::GetTitleBarHeight();
+        auto currentHeight = widgets[1].height();
+        auto heightDifference = defaultHeight - currentHeight;
+        if (heightDifference != 0)
+        {
+            widgets[1].bottom += heightDifference;
+            widgets[2].bottom += heightDifference;
+
+            for (size_t i = 3; i < widgets.size(); i++)
+            {
+                widgets[i].top += heightDifference;
+                widgets[i].bottom += heightDifference;
+            }
+        }
+
+        return heightDifference;
     }
 
-    void Window::ResizeFrameWithPage()
+    int32_t Window::ResizeFrameWithPage()
     {
-        ResizeFrame();
-        // Page background
-        widgets[3].right = width - 1;
-        widgets[3].bottom = height - 1;
+        auto heightDifference = ResizeFrame();
+
+        constexpr auto pageBackgroundOffset = 3;
+        widgets[pageBackgroundOffset].right = width - 1;
+        widgets[pageBackgroundOffset].bottom = height() - 1;
+
+        return heightDifference;
     }
 
     void Window::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
@@ -551,7 +571,7 @@ namespace OpenRCT2
 
     ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     {
-        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonWidth + 2 : 0;
+        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
         return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
     }
 } // namespace OpenRCT2
@@ -675,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Clamp new size to minimum and maximum
         w.width = std::clamp<int16_t>(w.width + dw, w.min_width, w.max_width);
-        w.height = std::clamp<int16_t>(w.height + dh, w.min_height, w.max_height);
+        w.bodyHeight = std::clamp<int16_t>(w.bodyHeight + dh, w.minBodyheight, w.maxBodyHeight);
 
         w.OnResize();
         w.OnPrepareDraw();
@@ -781,7 +801,7 @@ namespace OpenRCT2::Ui::Windows
     static void SnapLeft(WindowBase& w, int32_t proximity)
     {
         const auto* mainWindow = WindowGetMain();
-        auto wBottom = w.windowPos.y + w.height;
+        auto wBottom = w.windowPos.y + w.height();
         auto wLeftProximity = w.windowPos.x - (proximity * 2);
         auto wRightProximity = w.windowPos.x + (proximity * 2);
         auto rightMost = INT32_MIN;
@@ -792,7 +812,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto right = w2->windowPos.x + w2->width;
 
-            if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height)
+            if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height())
                 return;
 
             if (right < wLeftProximity || right > wRightProximity)
@@ -820,7 +840,7 @@ namespace OpenRCT2::Ui::Windows
             if (w2 == &w || w2 == mainWindow)
                 return;
 
-            auto bottom = w2->windowPos.y + w2->height;
+            auto bottom = w2->windowPos.y + w2->height();
 
             if (wRight < w2->windowPos.x || w.windowPos.x > w2->windowPos.x + w2->width)
                 return;
@@ -842,7 +862,7 @@ namespace OpenRCT2::Ui::Windows
     {
         const auto* mainWindow = WindowGetMain();
         auto wRight = w.windowPos.x + w.width;
-        auto wBottom = w.windowPos.y + w.height;
+        auto wBottom = w.windowPos.y + w.height();
         auto wLeftProximity = wRight - (proximity * 2);
         auto wRightProximity = wRight + (proximity * 2);
         auto leftMost = INT32_MAX;
@@ -851,7 +871,7 @@ namespace OpenRCT2::Ui::Windows
             if (w2 == &w || w2 == mainWindow)
                 return;
 
-            if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height)
+            if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height())
                 return;
 
             if (w2->windowPos.x < wLeftProximity || w2->windowPos.x > wRightProximity)
@@ -872,7 +892,7 @@ namespace OpenRCT2::Ui::Windows
     {
         const auto* mainWindow = WindowGetMain();
         auto wRight = w.windowPos.x + w.width;
-        auto wBottom = w.windowPos.y + w.height;
+        auto wBottom = w.windowPos.y + w.height();
         auto wTopProximity = wBottom - (proximity * 2);
         auto wBottomProximity = wBottom + (proximity * 2);
         auto topMost = INT32_MAX;
@@ -895,7 +915,7 @@ namespace OpenRCT2::Ui::Windows
             topMost = std::min(topMost, screenHeight);
 
         if (topMost != INT32_MAX)
-            w.windowPos.y = topMost - w.height;
+            w.windowPos.y = topMost - w.height();
     }
 
     void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
@@ -989,30 +1009,31 @@ namespace OpenRCT2::Ui::Windows
         });
     }
 
-    void WindowSetResize(WindowBase& w, int16_t minWidth, int16_t minHeight, int16_t maxWidth, int16_t maxHeight)
+    void WindowSetResize(WindowBase& w, int16_t minWidth, int16_t minBodyHeight, int16_t maxWidth, int16_t maxBodyHeight)
     {
         w.min_width = minWidth;
-        w.min_height = minHeight;
+        w.minBodyheight = minBodyHeight;
         w.max_width = maxWidth;
-        w.max_height = maxHeight;
+        w.maxBodyHeight = maxBodyHeight;
 
         // Clamp width and height to minimum and maximum
         int16_t width = std::clamp<int16_t>(w.width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
-        int16_t height = std::clamp<int16_t>(w.height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
+        int16_t bodyHeight = std::clamp<int16_t>(
+            w.bodyHeight, std::min(minBodyHeight, maxBodyHeight), std::max(minBodyHeight, maxBodyHeight));
 
         // Resize window if size has changed
-        if (w.width != width || w.height != height)
+        if (w.width != width || w.bodyHeight != bodyHeight)
         {
             w.Invalidate();
             w.width = width;
-            w.height = height;
+            w.bodyHeight = bodyHeight;
             w.Invalidate();
         }
     }
 
     bool WindowCanResize(const WindowBase& w)
     {
-        return (w.flags & WF_RESIZABLE) && (w.min_width != w.max_width || w.min_height != w.max_height);
+        return (w.flags & WF_RESIZABLE) && (w.min_width != w.max_width || w.minBodyheight != w.maxBodyHeight);
     }
 
     /**
@@ -1048,7 +1069,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
             GfxFilterRect(
-                dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
+                dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height() - 1 } }, FilterPaletteID::Palette51);
 
         // todo: some code missing here? Between 006EB18C and 006EB260
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
@@ -1074,7 +1095,7 @@ namespace OpenRCT2::Ui::Windows
         if (w.flags & WF_WHITE_BORDER_MASK)
         {
             GfxFillRectInset(
-                dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
+                dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height() - 1 } }, { COLOUR_WHITE },
                 INSET_RECT_FLAG_FILL_NONE);
         }
     }
@@ -1116,6 +1137,11 @@ namespace OpenRCT2::Ui::Windows
             WindowZoomIn(*mainWindow, atCursor);
         else
             WindowZoomOut(*mainWindow, atCursor);
+    }
+
+    int16_t GetTitleBarHeight()
+    {
+        return Config::Get().interface.EnlargedUi ? 24 : 12;
     }
 
 } // namespace OpenRCT2::Ui::Windows
