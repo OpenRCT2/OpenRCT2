@@ -760,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw campaign button text
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
-                auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
+                auto campaignButton = &widgets[WIDX_CAMPAIGN_1 + i];
                 if (campaignButton->type != WindowWidgetType::Empty)
                 {
                     // Draw button text
