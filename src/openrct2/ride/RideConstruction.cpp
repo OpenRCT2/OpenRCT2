@@ -77,7 +77,7 @@ TrackPitch _previousTrackPitchEnd;
 CoordsXYZ _previousTrackPiece;
 
 uint8_t _currentBrakeSpeed;
-uint8_t _currentColourScheme;
+RideColourScheme _currentColourScheme;
 uint8_t _currentSeatRotationAngle;
 
 CoordsXYZD _unkF440C5;
@@ -632,7 +632,7 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackRollEnd = bank;
             _previousTrackRollEnd = bank;
 
-            auto trackElement = tileElement->AsTrack();
+            const auto& trackElement = tileElement->AsTrack();
 
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
@@ -643,7 +643,7 @@ void RideConstructionSetDefaultNextPiece()
 
             if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
                 _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
-            _currentColourScheme = trackElement->GetColourScheme();
+            _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
             _currentSeatRotationAngle = trackElement->GetSeatRotation();
             break;
         }
@@ -687,18 +687,20 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackRollEnd = bank;
             _previousTrackRollEnd = bank;
 
+            const auto& trackElement = tileElement->AsTrack();
+
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
             if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
-                _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain();
+                _currentTrackHasLiftHill = trackElement->HasChain();
             }
 
-            if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
-                _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
-            _currentColourScheme = tileElement->AsTrack()->GetColourScheme();
-            _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
+            if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
+                _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
+            _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
+            _currentSeatRotationAngle = trackElement->GetSeatRotation();
             break;
         }
         default:
