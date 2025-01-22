@@ -754,9 +754,8 @@ static StringId window_cheats_page_titles[] = {
 
             Invalidate();
             WindowInitScrollWidgets(*this);
-            setHeight(maxY);
-            widgets[WIDX_BACKGROUND].bottom = maxY - 1;
-            widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;
+            bodyHeight = maxY;
+            ResizeFrameWithPage();
             Invalidate();
         }
 
