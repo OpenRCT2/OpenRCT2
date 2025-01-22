@@ -496,7 +496,7 @@ namespace OpenRCT2
             widgets[1].bottom += heightDifference;
             widgets[2].bottom += heightDifference;
 
-            for (auto i = 3; widgets[i].type != WindowWidgetType::Last; i++)
+            for (size_t i = 3; i < widgets.size(); i++)
             {
                 widgets[i].top += heightDifference;
                 widgets[i].bottom += heightDifference;
