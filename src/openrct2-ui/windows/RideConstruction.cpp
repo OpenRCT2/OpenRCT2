@@ -253,6 +253,7 @@ namespace OpenRCT2::Ui::Windows
 
             _currentTrackPrice = kMoney64Undefined;
             _currentBrakeSpeed = 8;
+            _currentColourScheme = 0;
             _currentSeatRotationAngle = 4;
 
             _currentlySelectedTrack = currentRide->GetRideTypeDescriptor().StartTrackPiece;
@@ -2670,7 +2671,7 @@ namespace OpenRCT2::Ui::Windows
             tempTrackTileElement.AsTrack()->SetRideType(currentRide->type);
             tempTrackTileElement.AsTrack()->SetHasCableLift(false);
             tempTrackTileElement.AsTrack()->SetInverted(liftHillAndInvertedState.has(LiftHillAndInverted::inverted));
-            tempTrackTileElement.AsTrack()->SetColourScheme(RideColourScheme::main);
+            tempTrackTileElement.AsTrack()->SetColourScheme((RideColourScheme)_currentColourScheme);
             // Skipping seat rotation, should not be necessary for a temporary piece.
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
@@ -3088,6 +3089,7 @@ namespace OpenRCT2::Ui::Windows
                 _selectedTrackType = tileElement->AsTrack()->GetTrackType();
                 if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
                     _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+                _currentColourScheme = tileElement->AsTrack()->GetColourScheme();
                 _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
             }
         }
@@ -5025,6 +5027,8 @@ namespace OpenRCT2::Ui::Windows
         {
             properties = _currentSeatRotationAngle << 12;
         }
+
+        properties |= _currentColourScheme << 8;
 
         if (_trackType != nullptr)
             *_trackType = trackType;
