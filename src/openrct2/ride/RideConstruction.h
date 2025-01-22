@@ -79,6 +79,7 @@ extern TrackPitch _previousTrackPitchEnd;
 extern CoordsXYZ _previousTrackPiece;
 
 extern uint8_t _currentBrakeSpeed;
+extern uint8_t _currentColourScheme;
 extern uint8_t _currentSeatRotationAngle;
 
 extern CoordsXYZD _unkF440C5;
