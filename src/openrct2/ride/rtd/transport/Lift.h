@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor LiftRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30) },
+        { MakeRideRating(1, 11), MakeRideRating(0, 35), MakeRideRating(0, 30) },
         15,
         7,
         false,

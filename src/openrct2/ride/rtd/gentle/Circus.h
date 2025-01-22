@@ -52,7 +52,7 @@ constexpr RideTypeDescriptor CircusRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(2, 10), RIDE_RATING(0, 30), RIDE_RATING(0, 0) },
+        { MakeRideRating(2, 10), MakeRideRating(0, 30), MakeRideRating(0, 0) },
         9,
         7,
         false,

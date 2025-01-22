@@ -55,13 +55,13 @@ constexpr RideTypeDescriptor InvertedHairpinCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 00), RIDE_RATING(2, 65), RIDE_RATING(2, 25) },
+        { MakeRideRating(3, 00), MakeRideRating(2, 65), MakeRideRating(2, 25) },
         14,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 8), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 8), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                364088, 655360, 0 },
@@ -74,8 +74,8 @@ constexpr RideTypeDescriptor InvertedHairpinCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                5577, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 8,                2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0x70000,          2, 2, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 10), 2, 2, 2 },
-            { RatingsModifierType::RequirementLateralGs,  FIXED_2DP(1, 50), 2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 10), 2, 2, 2 },
+            { RatingsModifierType::RequirementLateralGs,  MakeFixed16_2dp(1, 50), 2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0xAA0000,         2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   3,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                102400, 35746, 49648 },

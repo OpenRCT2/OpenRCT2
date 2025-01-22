@@ -611,8 +611,8 @@ namespace OpenRCT2::Ui::Windows
     };
     static_assert(std::size(GraphsYAxisDetails) == 4);
 
-    static constexpr auto RIDE_G_FORCES_RED_NEG_VERTICAL = -FIXED_2DP(2, 50);
-    static constexpr auto RIDE_G_FORCES_RED_LATERAL = FIXED_2DP(2, 80);
+    static constexpr auto kRideGForcesRedNegVertical = -MakeFixed16_2dp(2, 50);
+    static constexpr auto kRideGForcesRedLateral = MakeFixed16_2dp(2, 80);
 
     // Used for sorting the ride type cheat dropdown.
     struct RideTypeLabel
@@ -5648,7 +5648,7 @@ namespace OpenRCT2::Ui::Windows
                     stringId = STR_INTENSITY_RATING;
                     if (!RideHasRatings(*ride))
                         stringId = STR_INTENSITY_RATING_NOT_YET_AVAILABLE;
-                    else if (ride->ratings.intensity >= RIDE_RATING(10, 00))
+                    else if (ride->ratings.intensity >= MakeRideRating(10, 00))
                         stringId = STR_INTENSITY_RATING_RED;
 
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
@@ -5784,7 +5784,7 @@ namespace OpenRCT2::Ui::Windows
                             screenCoords.y += kListRowHeight;
 
                             // Max. negative vertical G's
-                            stringId = ride->max_negative_vertical_g <= RIDE_G_FORCES_RED_NEG_VERTICAL
+                            stringId = ride->max_negative_vertical_g <= kRideGForcesRedNegVertical
                                 ? STR_MAX_NEGATIVE_VERTICAL_G_RED
                                 : STR_MAX_NEGATIVE_VERTICAL_G;
                             ft = Formatter();
@@ -5793,8 +5793,7 @@ namespace OpenRCT2::Ui::Windows
                             screenCoords.y += kListRowHeight;
 
                             // Max lateral G's
-                            stringId = ride->max_lateral_g > RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED
-                                                                                       : STR_MAX_LATERAL_G;
+                            stringId = ride->max_lateral_g > kRideGForcesRedLateral ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->max_lateral_g);
                             DrawTextBasic(dpi, screenCoords, stringId, ft);
@@ -6163,13 +6162,13 @@ namespace OpenRCT2::Ui::Windows
                     case GRAPH_VERTICAL:
                         firstPoint = measurement->vertical[x] + VerticalGraphHeightOffset;
                         secondPoint = measurement->vertical[x + 1] + VerticalGraphHeightOffset;
-                        intensityThresholdNegative = (RIDE_G_FORCES_RED_NEG_VERTICAL / 8) + VerticalGraphHeightOffset;
+                        intensityThresholdNegative = (kRideGForcesRedNegVertical / 8) + VerticalGraphHeightOffset;
                         break;
                     case GRAPH_LATERAL:
                         firstPoint = measurement->lateral[x] + LateralGraphHeightOffset;
                         secondPoint = measurement->lateral[x + 1] + LateralGraphHeightOffset;
-                        intensityThresholdPositive = (RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
-                        intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
+                        intensityThresholdPositive = (kRideGForcesRedLateral / 8) + LateralGraphHeightOffset;
+                        intensityThresholdNegative = -(kRideGForcesRedLateral / 8) + LateralGraphHeightOffset;
                         break;
                     default:
                         LOG_ERROR("Wrong graph type %d", listType);

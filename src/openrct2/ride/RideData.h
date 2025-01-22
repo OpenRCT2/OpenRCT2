@@ -636,7 +636,7 @@ constexpr RideTypeDescriptor kDummyRTD =
 	.RatingsData =
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 00), RIDE_RATING(1, 00), RIDE_RATING(1, 00) },
+        { MakeRideRating(1, 00), MakeRideRating(1, 00), MakeRideRating(1, 00) },
         1,
         -1,
         false,

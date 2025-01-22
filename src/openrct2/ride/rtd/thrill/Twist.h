@@ -51,7 +51,7 @@ constexpr RideTypeDescriptor TwistRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 13), RIDE_RATING(0, 97), RIDE_RATING(1, 90) },
+        { MakeRideRating(1, 13), MakeRideRating(0, 97), MakeRideRating(1, 90) },
         16,
         0,
         false,

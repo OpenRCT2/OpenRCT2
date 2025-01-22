@@ -2358,8 +2358,8 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.average_speed = 0;
     ride.current_test_segment = 0;
     ride.average_speed_test_timeout = 0;
-    ride.max_positive_vertical_g = FIXED_2DP(1, 0);
-    ride.max_negative_vertical_g = FIXED_2DP(1, 0);
+    ride.max_positive_vertical_g = MakeFixed16_2dp(1, 0);
+    ride.max_negative_vertical_g = MakeFixed16_2dp(1, 0);
     ride.max_lateral_g = 0;
     ride.previous_vertical_g = 0;
     ride.previous_lateral_g = 0;

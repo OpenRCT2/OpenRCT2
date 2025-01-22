@@ -21,7 +21,26 @@ using fixed32_2dp = int32_t;
 using fixed64_1dp = int64_t;
 
 // Construct a fixed point number. For example, to create the value 3.65 you
-// would write FIXED_2DP(3,65)
-#define FIXED_XDP(x, whole, fraction) ((whole) * (10 * (x)) + (fraction))
-#define FIXED_1DP(whole, fraction) FIXED_XDP(1, whole, fraction)
-#define FIXED_2DP(whole, fraction) FIXED_XDP(10, whole, fraction)
+// would write MakeFixed2dp(3, 65)
+template<typename T, uint8_t factor>
+static constexpr T MakeFixedXdp(T whole, uint8_t fraction)
+{
+    return (whole * factor) + fraction;
+}
+
+template<typename T>
+constexpr T MakeFixed1dp(T whole, uint8_t fraction)
+{
+    return MakeFixedXdp<T, 10>(whole, fraction);
+}
+
+template<typename T>
+constexpr T MakeFixed2dp(T whole, uint8_t fraction)
+{
+    return MakeFixedXdp<T, 100>(whole, fraction);
+}
+
+constexpr fixed16_2dp MakeFixed16_2dp(int16_t whole, uint8_t fraction)
+{
+    return MakeFixed2dp<fixed16_2dp>(whole, fraction);
+}
