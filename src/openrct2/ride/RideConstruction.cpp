@@ -632,17 +632,19 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackRollEnd = bank;
             _previousTrackRollEnd = bank;
 
+            auto trackElement = tileElement->AsTrack();
+
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain()
+            _currentTrackHasLiftHill = trackElement->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
                     || GetGameState().Cheats.enableChainLiftOnAllTrack);
 
-            if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
-                _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
-            _currentColourScheme = tileElement->AsTrack()->GetColourScheme();
-            _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
+            if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
+                _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
+            _currentColourScheme = trackElement->GetColourScheme();
+            _currentSeatRotationAngle = trackElement->GetSeatRotation();
             break;
         }
         case RideConstructionState::Back:
