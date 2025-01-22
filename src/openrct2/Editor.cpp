@@ -107,7 +107,7 @@ namespace OpenRCT2::Editor
         auto& gameState = GetGameState();
         Audio::StopAll();
         ObjectListLoad();
-        gameStateInitAll(gameState, DEFAULT_MAP_SIZE);
+        gameStateInitAll(gameState, kDefaultMapSize);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gameState.EditorStep = EditorStep::ObjectSelection;
         gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -173,7 +173,7 @@ namespace OpenRCT2::Editor
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), kDefaultMapSize);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
@@ -198,7 +198,7 @@ namespace OpenRCT2::Editor
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), kDefaultMapSize);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
@@ -298,7 +298,7 @@ namespace OpenRCT2::Editor
 
             gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
+            gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, kMaxEntranceFee);
 
             gameState.InitialCash = std::min<money64>(gameState.InitialCash, 100000);
             FinanceResetCashToInitial();
@@ -536,7 +536,7 @@ namespace OpenRCT2::Editor
 
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
-        if (index != OBJECT_ENTRY_INDEX_NULL)
+        if (index != kObjectEntryIndexNull)
         {
             assert(static_cast<size_t>(objectType) < getObjectEntryGroupCount(ObjectType::Paths));
             auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];

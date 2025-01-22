@@ -1959,7 +1959,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
     if (ride.status == RideStatus::Open && !(ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
-        assert(ride.type < std::size(RideTypeDescriptors));
+        assert(ride.type < std::size(kRideTypeDescriptors));
         if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == RIDE_VALUE_UNDEFINED
             || RideGetPrice(ride) != 0)
         {
@@ -2949,8 +2949,8 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     // TODO: Refactor this to step as tiles, 160 units is 5 tiles.
     int16_t initial_x = std::max(centre_x - 160, 0);
     int16_t initial_y = std::max(centre_y - 160, 0);
-    int16_t final_x = std::min(centre_x + 160, MAXIMUM_MAP_SIZE_BIG);
-    int16_t final_y = std::min(centre_y + 160, MAXIMUM_MAP_SIZE_BIG);
+    int16_t final_x = std::min(centre_x + 160, kMaximumMapSizeBig);
+    int16_t final_y = std::min(centre_y + 160, kMaximumMapSizeBig);
 
     for (int16_t x = initial_x; x < final_x; x += kCoordsXYStep)
     {
@@ -3544,7 +3544,7 @@ void Guest::UpdateRideAtEntrance()
 }
 
 /** rct2: 0x00981FD4, 0x00981FD6 */
-static constexpr CoordsXY _MazeEntranceStart[] = {
+static constexpr CoordsXY kMazeEntranceStart[] = {
     { 8, 8 },
     { 8, 24 },
     { 24, 24 },
@@ -3570,8 +3570,8 @@ void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entran
     peep->Var37 = direction;
     peep->MazeLastEdge &= 3;
 
-    entrance_loc.x += _MazeEntranceStart[direction / 4].x;
-    entrance_loc.y += _MazeEntranceStart[direction / 4].y;
+    entrance_loc.x += kMazeEntranceStart[direction / 4].x;
+    entrance_loc.y += kMazeEntranceStart[direction / 4].y;
 
     peep->SetDestination(entrance_loc, 3);
 

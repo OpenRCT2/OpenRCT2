@@ -204,7 +204,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
         ObjectEntryIndex rideEntryIndex = researchItem.entryIndex;
         const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
 
-        if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
+        if (rideEntry != nullptr && base_ride_type != kRideTypeNull)
         {
             if (!RideTypeIsValid(base_ride_type))
             {
@@ -477,7 +477,7 @@ void ResearchPopulateListRandom()
         int32_t researched = (ScenarioRand() & 0xFF) > 128;
         for (auto rideType : rideEntry->ride_type)
         {
-            if (rideType != RIDE_TYPE_NULL)
+            if (rideType != kRideTypeNull)
             {
                 ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                 ResearchInsertRideEntry(rideType, i, category, researched);
@@ -501,7 +501,7 @@ void ResearchPopulateListRandom()
 
 bool ResearchInsertRideEntry(ride_type_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
 {
-    if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (rideType != kRideTypeNull && entryIndex != kObjectEntryIndexNull)
     {
         auto tmpItem = ResearchItem(Research::EntryType::Ride, entryIndex, rideType, category, 0);
         ResearchInsert(std::move(tmpItem), researched);
@@ -519,7 +519,7 @@ void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched)
 
     for (auto rideType : rideEntry->ride_type)
     {
-        if (rideType != RIDE_TYPE_NULL)
+        if (rideType != kRideTypeNull)
         {
             ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
             ResearchInsertRideEntry(rideType, entryIndex, category, researched);
@@ -529,7 +529,7 @@ void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched)
 
 bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researched)
 {
-    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex != kObjectEntryIndexNull)
     {
         auto tmpItem = ResearchItem(Research::EntryType::Scenery, entryIndex, 0, ResearchCategory::SceneryGroup, 0);
         ResearchInsert(std::move(tmpItem), researched);
@@ -787,7 +787,7 @@ static void ResearchMarkItemAsResearched(const ResearchItem& item)
             RideEntrySetInvented(item.entryIndex);
             for (auto rideType : rideEntry->ride_type)
             {
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != kRideTypeNull)
                 {
                     RideTypeSetInvented(rideType);
                 }
@@ -953,12 +953,12 @@ bool ResearchItem::IsAlwaysResearched() const
 
 bool ResearchItem::IsNull() const
 {
-    return entryIndex == OBJECT_ENTRY_INDEX_NULL;
+    return entryIndex == kObjectEntryIndexNull;
 }
 
 void ResearchItem::SetNull()
 {
-    entryIndex = OBJECT_ENTRY_INDEX_NULL;
+    entryIndex = kObjectEntryIndexNull;
 }
 
 bool ResearchItem::Exists() const

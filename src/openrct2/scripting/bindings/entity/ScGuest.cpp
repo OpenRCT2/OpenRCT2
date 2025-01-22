@@ -514,7 +514,7 @@ namespace OpenRCT2::Scripting
         {
             auto& gameState = GetGameState();
             if (value.type() == DukValue::Type::NUMBER && value.as_uint() < gameState.Rides.size()
-                && gameState.Rides[value.as_uint()].type != RIDE_TYPE_NULL)
+                && gameState.Rides[value.as_uint()].type != kRideTypeNull)
             {
                 peep->FavouriteRide = RideId::FromUnderlying(value.as_uint());
             }

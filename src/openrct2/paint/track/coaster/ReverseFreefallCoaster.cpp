@@ -98,14 +98,14 @@ enum
     SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE = 22227,
 };
 
-static constexpr uint32_t reverse_freefall_rc_track_pieces_station[4] = {
+static constexpr uint32_t kPiecesStation[4] = {
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
     SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
     SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
 };
 
-static constexpr uint32_t reverse_freefall_rc_track_pieces_slope[7][4] = {
+static constexpr uint32_t kPiecesSlope[7][4] = {
     {
         SPR_REVERSE_FREEFALL_RC_SLOPE_SW_NE_0,
         SPR_REVERSE_FREEFALL_RC_SLOPE_NW_SE_0,
@@ -145,7 +145,7 @@ static constexpr uint32_t reverse_freefall_rc_track_pieces_slope[7][4] = {
     },
 };
 
-static constexpr uint32_t reverse_freefall_rc_track_pieces_slope_supports[7][4] = {
+static constexpr uint32_t kPiecesSlopeSupports[7][4] = {
     {
         SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SW_NE_0,
         SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_NW_SE_0,
@@ -190,14 +190,14 @@ static constexpr uint32_t reverse_freefall_rc_track_pieces_slope_supports[7][4] 
     },
 };
 
-static constexpr uint32_t reverse_freefall_rc_track_pieces_vertical[4] = {
+static constexpr uint32_t kPiecesVertical[4] = {
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SW_NE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NW_SE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NE_SW,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SE_NW,
 };
 
-static constexpr uint32_t reverse_freefall_rc_track_pieces_vertical_supports[4] = {
+static constexpr uint32_t kPiecesVerticalSupports[4] = {
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SW_NE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NW_SE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NE_SW,
@@ -240,7 +240,7 @@ static void PaintReverseFreefallRCStation(
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
         // height += 2 (height)
 
-        imageId = session.TrackColours.WithIndex(reverse_freefall_rc_track_pieces_station[direction]);
+        imageId = session.TrackColours.WithIndex(kPiecesStation[direction]);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
     else if (direction == 1 || direction == 3)
@@ -250,7 +250,7 @@ static void PaintReverseFreefallRCStation(
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
         // height += 2 (height)
 
-        imageId = session.TrackColours.WithIndex(reverse_freefall_rc_track_pieces_station[direction]);
+        imageId = session.TrackColours.WithIndex(kPiecesStation[direction]);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
     DrawSupportForSequenceA<TrackElemType::EndStation>(
@@ -272,9 +272,8 @@ static void PaintReverseFreefallRCSlope(
     static constexpr int32_t supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
     static constexpr int32_t tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
 
-    auto supportsImageId = session.SupportColours.WithIndex(
-        reverse_freefall_rc_track_pieces_slope_supports[trackSequence][direction]);
-    auto trackImageId = session.TrackColours.WithIndex(reverse_freefall_rc_track_pieces_slope[trackSequence][direction]);
+    auto supportsImageId = session.SupportColours.WithIndex(kPiecesSlopeSupports[trackSequence][direction]);
+    auto trackImageId = session.TrackColours.WithIndex(kPiecesSlope[trackSequence][direction]);
     int8_t bbHeight;
     bool isDirection03 = (direction == 0 || direction == 3);
     switch (trackSequence)
@@ -374,13 +373,13 @@ static void PaintReverseFreefallRCVertical(
     switch (trackSequence)
     {
         case 0:
-            supportsImageId = session.SupportColours.WithIndex(reverse_freefall_rc_track_pieces_vertical_supports[direction]);
+            supportsImageId = session.SupportColours.WithIndex(kPiecesVerticalSupports[direction]);
             PaintAddImageAsParent(session, supportsImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 79 } });
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 80);
             break;
         case 1:
-            trackImageId = session.TrackColours.WithIndex(reverse_freefall_rc_track_pieces_vertical[direction]);
+            trackImageId = session.TrackColours.WithIndex(kPiecesVertical[direction]);
             if (direction == 0 || direction == 3)
             {
                 PaintAddImageAsParentRotated(

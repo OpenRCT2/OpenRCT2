@@ -475,7 +475,7 @@ namespace OpenRCT2::Ui::Windows
                         auto descriptor = _loadedObject->GetDescriptor();
                         auto& objectManager = GetContext()->GetObjectManager();
                         auto entryIndex = objectManager.GetLoadedObjectEntryIndex(descriptor);
-                        if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+                        if (entryIndex != kObjectEntryIndexNull)
                         {
                             objectManager.UnloadObjects({ descriptor });
                             objectManager.LoadObject(descriptor, entryIndex);
@@ -1025,7 +1025,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            constexpr int32_t ThrillRidesTabAnimationSequence[] = {
+            constexpr int32_t kThrillRidesTabAnimationSequence[] = {
                 5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0,
             };
 
@@ -1049,7 +1049,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // TODO: generalise this?
                     if (currentPage.Caption == STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS && i == 4)
-                        spriteIndex += ThrillRidesTabAnimationSequence[frame];
+                        spriteIndex += kThrillRidesTabAnimationSequence[frame];
                     else
                         spriteIndex += frame;
 
@@ -1531,7 +1531,7 @@ namespace OpenRCT2::Ui::Windows
                 ride_type_t rideType = 0;
                 for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
                 {
-                    if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
+                    if (item->RideInfo.RideType[i] != kRideTypeNull)
                     {
                         rideType = item->RideInfo.RideType[i];
                         break;
@@ -1670,7 +1670,7 @@ namespace OpenRCT2::Ui::Windows
         for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
         {
             auto rideType = item->RideInfo.RideType[i];
-            if (rideType != RIDE_TYPE_NULL)
+            if (rideType != kRideTypeNull)
             {
                 result = GetRideTypeDescriptor(rideType).Naming.Name;
                 break;

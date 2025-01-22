@@ -844,28 +844,28 @@ enum
     SPR_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_3_3 = 25074,
 };
 
-static constexpr uint32_t _wooden_rc_block_brakes_image_ids[4][3] = {
+static constexpr uint32_t kBlockBrakesImageIds[4][3] = {
     { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
 };
 
-static constexpr uint32_t _wooden_rc_station_block_brakes_image_ids[4][2] = {
+static constexpr uint32_t kStationBlockBrakesImageIds[4][2] = {
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
 };
 
-static constexpr const uint32_t WoodenRCDiagBrakeImages[kNumOrthogonalDirections] = {
+static constexpr const uint32_t kWoodenRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_WOODEN_RC_DIAG_BRAKES,
     SPR_G2_WOODEN_RC_DIAG_BRAKES + 1,
     SPR_G2_WOODEN_RC_DIAG_BRAKES,
     SPR_G2_WOODEN_RC_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t WoodenRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
+static constexpr const uint32_t kWoodenRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_WOODEN_RC_DIAG_BRAKES + 3,
         SPR_G2_WOODEN_RC_DIAG_BRAKES + 5,
@@ -2044,8 +2044,8 @@ static void WoodenRCTrackStation(
     auto trackType = trackElement.GetTrackType();
     if (trackType == TrackElemType::EndStation)
     {
-        const auto brakeImg = trackElement.IsBrakeClosed() ? _wooden_rc_station_block_brakes_image_ids[direction][1]
-                                                           : _wooden_rc_station_block_brakes_image_ids[direction][0];
+        const auto brakeImg = trackElement.IsBrakeClosed() ? kStationBlockBrakesImageIds[direction][1]
+                                                           : kStationBlockBrakesImageIds[direction][0];
         WoodenRCTrackPaint<isClassic>(
             session, direction, brakeImg, SPR_G2_EMPTY, { 0, 2, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
@@ -7637,7 +7637,7 @@ static void WoodenRCTrackDiagBrakes(
             {
                 // direction 3
                 {
-                    WoodenRCDiagBrakeImages[3],
+                    kWoodenRCDiagBrakeImages[3],
                     24916, // diagonal vertical trim image
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
@@ -7650,7 +7650,7 @@ static void WoodenRCTrackDiagBrakes(
             {
                 // direction 0
                 {
-                    WoodenRCDiagBrakeImages[0],
+                    kWoodenRCDiagBrakeImages[0],
                     24913, // diagonal horizontal trim image
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
@@ -7693,7 +7693,7 @@ static void WoodenRCTrackDiagBrakes(
             {
                 // direction 2
                 {
-                    WoodenRCDiagBrakeImages[2],
+                    kWoodenRCDiagBrakeImages[2],
                     24913, // diagonal vertical trim image
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
@@ -7720,7 +7720,7 @@ static void WoodenRCTrackDiagBrakes(
             {
                 // direction 1
                 {
-                    WoodenRCDiagBrakeImages[1],
+                    kWoodenRCDiagBrakeImages[1],
                     24916, // diagonal vertical trim image
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
@@ -7743,10 +7743,10 @@ static void WoodenRCTrackDiagBrakes(
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
 
-    if (WoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
+    if (kWoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, supportType.wooden, WoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
+            session, supportType.wooden, kWoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -7781,7 +7781,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 3
                     {
-                        WoodenRCDiagBlockBrakeImages[0][3],
+                        kWoodenRCDiagBlockBrakeImages[0][3],
                         24916,           // diagonal vertical trim image
                         { -16, -16, 0 }, // todo: rotate these bboxes
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7794,7 +7794,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 0
                     {
-                        WoodenRCDiagBlockBrakeImages[0][0],
+                        kWoodenRCDiagBlockBrakeImages[0][0],
                         24913, // diagonal horizontal trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7837,7 +7837,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 2
                     {
-                        WoodenRCDiagBlockBrakeImages[0][2],
+                        kWoodenRCDiagBlockBrakeImages[0][2],
                         24913, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7865,7 +7865,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 1
                     {
-                        WoodenRCDiagBlockBrakeImages[0][1],
+                        kWoodenRCDiagBlockBrakeImages[0][1],
                         24916, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7905,7 +7905,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 3
                     {
-                        WoodenRCDiagBlockBrakeImages[1][3],
+                        kWoodenRCDiagBlockBrakeImages[1][3],
                         24916, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7918,7 +7918,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 0
                     {
-                        WoodenRCDiagBlockBrakeImages[1][0],
+                        kWoodenRCDiagBlockBrakeImages[1][0],
                         24913, // diagonal horizontal trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7961,7 +7961,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 2
                     {
-                        WoodenRCDiagBlockBrakeImages[1][2],
+                        kWoodenRCDiagBlockBrakeImages[1][2],
                         24913, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7989,7 +7989,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 1
                     {
-                        WoodenRCDiagBlockBrakeImages[1][1],
+                        kWoodenRCDiagBlockBrakeImages[1][1],
                         24916, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -8013,10 +8013,10 @@ static void WoodenRCTrackDiagBlockBrakes(
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
 
-    if (WoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
+    if (kWoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, supportType.wooden, WoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
+            session, supportType.wooden, kWoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -10143,10 +10143,10 @@ static void WoodenRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const auto brakeImg = trackElement.IsBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
-                                                       : _wooden_rc_block_brakes_image_ids[direction][0];
+    const auto brakeImg = trackElement.IsBrakeClosed() ? kBlockBrakesImageIds[direction][1]
+                                                       : kBlockBrakesImageIds[direction][0];
     WoodenRCTrackPaint<isClassic>(
-        session, direction, brakeImg, _wooden_rc_block_brakes_image_ids[direction][2], { 0, 2, height },
+        session, direction, brakeImg, kBlockBrakesImageIds[direction][2], { 0, 2, height },
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);

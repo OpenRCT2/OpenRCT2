@@ -14,9 +14,9 @@
 class RideCreateAction final : public GameActionBase<GameCommand::CreateRide>
 {
 private:
-    ride_type_t _rideType{ RIDE_TYPE_NULL };
-    ObjectEntryIndex _subType{ OBJECT_ENTRY_INDEX_NULL };
-    ObjectEntryIndex _entranceObjectIndex{ OBJECT_ENTRY_INDEX_NULL };
+    ride_type_t _rideType{ kRideTypeNull };
+    ObjectEntryIndex _subType{ kObjectEntryIndexNull };
+    ObjectEntryIndex _entranceObjectIndex{ kObjectEntryIndexNull };
     colour_t _colour1{ COLOUR_NULL };
     colour_t _colour2{ COLOUR_NULL };
 

@@ -107,7 +107,7 @@ uint8_t RCT12SurfaceElement::GetOwnership() const
 
 uint32_t RCT12SurfaceElement::GetWaterHeight() const
 {
-    return (Terrain & RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK) * WATER_HEIGHT_STEP;
+    return (Terrain & RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK) * kWaterHeightStep;
 }
 
 uint8_t RCT12SurfaceElement::GetParkFences() const
@@ -511,8 +511,8 @@ bool RCT12ResearchItem::IsRandomEndMarker() const
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index)
 {
-    if (index == RCT12_OBJECT_ENTRY_INDEX_NULL)
-        return OBJECT_ENTRY_INDEX_NULL;
+    if (index == kRCT12ObjectEntryIndexNull)
+        return kObjectEntryIndexNull;
 
     return index;
 }
@@ -835,8 +835,8 @@ void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const 
 
 money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue)
 {
-    if (origValue == RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE)
-        return COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+    if (origValue == kRCT12CompanyValueOnFailedObjective)
+        return kCompanyValueOnFailedObjective;
 
     return ToMoney64(origValue);
 }

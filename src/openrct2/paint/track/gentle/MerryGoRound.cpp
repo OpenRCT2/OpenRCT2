@@ -21,11 +21,11 @@
 
 using namespace OpenRCT2;
 
-static constexpr uint32_t MerryGoRoundRiderOffsets[] = {
+static constexpr uint32_t kMerryGoRoundRiderOffsets[] = {
     0, 32, 64, 96, 16, 48, 80, 112,
 };
 
-static constexpr uint16_t MerryGoRoundBreakdownVibration[] = {
+static constexpr uint16_t kMerryGoRoundBreakdownVibration[] = {
     0, 1, 2, 3, 4, 3, 2, 1, 0, 0,
 };
 
@@ -43,7 +43,7 @@ static void PaintRiders(
         if (vehicle.num_peeps <= peep)
             break;
 
-        auto imageOffset = (MerryGoRoundRiderOffsets[peep / 2] + rotationOffset) % 128;
+        auto imageOffset = (kMerryGoRoundRiderOffsets[peep / 2] + rotationOffset) % 128;
         imageOffset -= 13;
         if (imageOffset >= 68)
             continue;
@@ -73,7 +73,7 @@ static void PaintCarousel(
         if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
             && ride.breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE && ride.breakdown_sound_modifier >= 128)
         {
-            height += MerryGoRoundBreakdownVibration[(vehicle->current_time >> 1) & 7];
+            height += kMerryGoRoundBreakdownVibration[(vehicle->current_time >> 1) & 7];
         }
     }
 

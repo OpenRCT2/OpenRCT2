@@ -50,7 +50,7 @@ using namespace OpenRCT2;
 
 bool gPaintWidePathsAsGhost = false;
 
-const uint8_t PathSlopeToLandSlope[] = {
+const uint8_t kPathSlopeToLandSlope[] = {
     kTileSlopeSWSideUp,
     kTileSlopeNWSideUp,
     kTileSlopeNESideUp,
@@ -132,7 +132,7 @@ static void PathPaintQueueBanner(
     direction += session.CurrentRotation;
     direction &= 3;
 
-    CoordsXYZ boundBoxOffsets = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
+    CoordsXYZ boundBoxOffsets = CoordsXYZ(kBannerBoundBoxes[direction][0], height + 2);
 
     imageId = imageId.WithIndexOffset(28 + (direction << 1));
 
@@ -140,8 +140,8 @@ static void PathPaintQueueBanner(
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { boundBoxOffsets, { 1, 1, 21 } });
 
     // Draw pole in the front and banner
-    boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
-    boundBoxOffsets.y = BannerBoundBoxes[direction][1].y;
+    boundBoxOffsets.x = kBannerBoundBoxes[direction][1].x;
+    boundBoxOffsets.y = kBannerBoundBoxes[direction][1].y;
     imageId = imageId.WithIndexOffset(1);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { boundBoxOffsets, { 1, 1, 21 } });
 
@@ -723,7 +723,7 @@ static bool ShouldDrawSupports(PaintSession& session, const PathElement& pathEl,
     else if (pathEl.IsSloped())
     {
         // Diagonal path
-        if (surface->GetSlope() != PathSlopeToLandSlope[pathEl.GetSlopeDirection()])
+        if (surface->GetSlope() != kPathSlopeToLandSlope[pathEl.GetSlopeDirection()])
         {
             return true;
         }

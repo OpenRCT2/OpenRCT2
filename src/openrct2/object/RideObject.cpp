@@ -122,7 +122,7 @@ static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
     for (auto i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
     {
         auto oldRideType = rideEntry.ride_type[i];
-        if (oldRideType != RIDE_TYPE_NULL)
+        if (oldRideType != kRideTypeNull)
         {
             rideEntry.ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
         }
@@ -137,7 +137,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         rideType = stream->ReadValue<uint8_t>();
         if (!RideTypeIsValid(rideType))
-            rideType = RIDE_TYPE_NULL;
+            rideType = kRideTypeNull;
     }
     _legacyType.min_cars_in_train = stream->ReadValue<uint8_t>();
     _legacyType.max_cars_in_train = stream->ReadValue<uint8_t>();
@@ -354,7 +354,7 @@ void RideObject::DrawPreview(DrawPixelInfo& dpi, [[maybe_unused]] int32_t width,
 
     for (auto rideType : _legacyType.ride_type)
     {
-        if (rideType != RIDE_TYPE_NULL)
+        if (rideType != kRideTypeNull)
             break;
 
         imageId++;
@@ -528,13 +528,13 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         for (size_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
         {
-            auto rideType = RIDE_TYPE_NULL;
+            auto rideType = kRideTypeNull;
 
             if (i < numRideTypes)
             {
                 rideType = ParseRideType(Json::GetString(rideTypes[i]));
 
-                if (rideType == RIDE_TYPE_NULL)
+                if (rideType == kRideTypeNull)
                 {
                     context->LogError(ObjectError::InvalidProperty, "Unknown ride type");
                 }
@@ -970,11 +970,11 @@ bool RideObject::IsRideTypeShopOrFacility(ride_type_t rideType)
 ride_type_t RideObject::ParseRideType(const std::string& s)
 {
     auto result = std::find_if(
-        std::begin(RideTypeDescriptors), std::end(RideTypeDescriptors), [s](const auto& rtd) { return rtd.Name == s; });
-    if (result == std::end(RideTypeDescriptors))
-        return RIDE_TYPE_NULL;
+        std::begin(kRideTypeDescriptors), std::end(kRideTypeDescriptors), [s](const auto& rtd) { return rtd.Name == s; });
+    if (result == std::end(kRideTypeDescriptors))
+        return kRideTypeNull;
     else
-        return std::distance(std::begin(RideTypeDescriptors), result);
+        return std::distance(std::begin(kRideTypeDescriptors), result);
 }
 
 static const EnumMap<uint8_t> RideCategoryLookupTable{

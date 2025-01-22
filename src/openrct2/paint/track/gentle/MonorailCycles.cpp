@@ -75,12 +75,12 @@ enum
     SprMonorailCyclesSBendRightNwSePart3 = 16869,
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesFlat[2] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesFlat[2] = {
     SprMonorailCyclesFlatSwNe,
     SprMonorailCyclesFlatNwSe,
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4][5] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4][5] = {
     {
         SprMonorailCyclesFlatQuarterTurn5TilesSwSePart0,
         SprMonorailCyclesFlatQuarterTurn5TilesSwSePart1,
@@ -111,7 +111,7 @@ static constexpr uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4][5] =
     },
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesSBendLeft[2][4] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesSBendLeft[2][4] = {
     {
         SprMonorailCyclesSBendLeftSwNePart0,
         SprMonorailCyclesSBendLeftSwNePart1,
@@ -126,7 +126,7 @@ static constexpr uint32_t MonorailCyclesTrackPiecesSBendLeft[2][4] = {
     },
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesSBendRight[2][4] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesSBendRight[2][4] = {
     {
         SprMonorailCyclesSBendRightSwNePart0,
         SprMonorailCyclesSBendRightSwNePart1,
@@ -141,7 +141,7 @@ static constexpr uint32_t MonorailCyclesTrackPiecesSBendRight[2][4] = {
     },
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4][3] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4][3] = {
     {
         SprMonorailCyclesFlatQuarterTurn3TilesSwSePart0,
         SprMonorailCyclesFlatQuarterTurn3TilesSwSePart1,
@@ -169,7 +169,7 @@ static void PaintMonorailCyclesTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(MonorailCyclesTrackPiecesFlat[(direction & 1)]);
+    auto imageId = session.TrackColours.WithIndex(kMonorailCyclesTrackPiecesFlat[(direction & 1)]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (direction & 1)
@@ -231,7 +231,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
+        session, 3, height, direction, trackSequence, session.TrackColours, kMonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
@@ -290,14 +290,14 @@ static void PaintMonorailCyclesTrackRightQuarterTurn3Tiles(
         session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
 
-static constexpr int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[][7] = {
+static constexpr int8_t kMonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[][7] = {
     { -2, 0, -2, 0, 0, -3, -1 },
     { -3, 0, 0, 0, 0, 0, 0 },
     { 0 },
     { 0, 0, 0, 0, 0, -2, -3 },
 };
 
-static constexpr int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[][7] = {
+static constexpr int8_t kMonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[][7] = {
     { 0, 0, 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0, 0, 1 },
     { 0, 0, 1, 0, 0, 1, 1 },
@@ -310,11 +310,11 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles,
+        session, 1, height, direction, trackSequence, session.TrackColours, kMonorailCyclesTrackPiecesFlatQuarterTurn5Tiles,
         nullptr, kDefaultRightQuarterTurn5TilesBoundLengths, kDefaultRightQuarterTurn5TilesBoundOffsets);
 
-    int32_t supportHeight = height + MonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[direction][trackSequence];
-    int32_t supportSpecial = MonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[direction][trackSequence];
+    int32_t supportHeight = height + kMonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[direction][trackSequence];
+    int32_t supportSpecial = kMonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[direction][trackSequence];
     switch (trackSequence)
     {
         case 0:
@@ -436,7 +436,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
         trackSequence = 3 - trackSequence;
     }
 
-    auto imageId = session.TrackColours.WithIndex(MonorailCyclesTrackPiecesSBendLeft[direction & 1][trackSequence]);
+    auto imageId = session.TrackColours.WithIndex(kMonorailCyclesTrackPiecesSBendLeft[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:
@@ -527,7 +527,7 @@ static void PaintMonorailCyclesTrackSBendRight(
         trackSequence = 3 - trackSequence;
     }
 
-    auto imageId = session.TrackColours.WithIndex(MonorailCyclesTrackPiecesSBendRight[direction & 1][trackSequence]);
+    auto imageId = session.TrackColours.WithIndex(kMonorailCyclesTrackPiecesSBendRight[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:

@@ -69,7 +69,7 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
 
 // clang-format off
 // rct2: 0x009A3FEC
-constexpr static uint8_t LandSlopeToWallSlope[][kNumOrthogonalDirections] = {
+constexpr static uint8_t kLandSlopeToWallSlope[][kNumOrthogonalDirections] = {
     //  Top right                        Bottom right                   Bottom left                       Top left
     { 0,                             0,                             0,                             0                             },
     { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0                             },
@@ -110,5 +110,5 @@ constexpr static uint8_t LandSlopeToWallSlope[][kNumOrthogonalDirections] = {
 
 uint8_t GetWallSlopeFromEdgeSlope(uint8_t Slope, uint8_t Edge)
 {
-    return LandSlopeToWallSlope[Slope][Edge];
+    return kLandSlopeToWallSlope[Slope][Edge];
 }

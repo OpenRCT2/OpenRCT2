@@ -29,11 +29,11 @@ constexpr VDStruct kVertexData[4] = {
     { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
 };
 
-constexpr size_t InitialInstancesBufferSize = 32768;
+constexpr size_t kInitialInstancesBufferSize = 32768;
 
 DrawRectShader::DrawRectShader()
     : OpenGLShaderProgram("drawrect")
-    , _maxInstancesBufferSize(InitialInstancesBufferSize)
+    , _maxInstancesBufferSize(kInitialInstancesBufferSize)
 {
     GetLocations();
 
@@ -57,7 +57,7 @@ DrawRectShader::DrawRectShader()
     glVertexAttribPointer(vVertVec, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, vec)));
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * InitialInstancesBufferSize, NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * kInitialInstancesBufferSize, nullptr, GL_STREAM_DRAW);
 
     glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, clip)));
     glVertexAttribIPointer(

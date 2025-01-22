@@ -28,7 +28,7 @@ namespace OpenRCT2::TrackMetaData
     };
 
     // clang-format off
-    static constexpr TrackCoordinates _trackCoordinates[] = {
+    static constexpr TrackCoordinates kTrackCoordinates[] = {
             { 0, 0, 0, 0, 0, 0 },       // ELEM_FLAT
             { 0, 0, 0, 0, 0, 0 },       // ELEM_END_STATION
             { 0, 0, 0, 0, 0, 0 },       // ELEM_BEGIN_STATION
@@ -379,9 +379,9 @@ namespace OpenRCT2::TrackMetaData
         { 0, 7,152, 0, -96, -32 },   // TrackElemType::LeftEighthDiveLoopDownToDiag 
         { 0, 4,152, 0, -96, 32 },   // TrackElemType::RightEighthDiveLoopDownToDiag
     };
-    static_assert(std::size(_trackCoordinates) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kTrackCoordinates) == EnumValue(TrackElemType::Count));
     
-    static constexpr uint8_t TrackPieceLengths[] = {
+    static constexpr uint8_t kTrackPieceLengths[] = {
         32,     // TrackElemType::Flat
         32,     // TrackElemType::EndStation
         32,     // TrackElemType::BeginStation
@@ -733,10 +733,10 @@ namespace OpenRCT2::TrackMetaData
         165, // TrackElemType::RightEighthDiveLoopDownToDiag      
     };
 
-    static_assert(std::size(TrackPieceLengths) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kTrackPieceLengths) == EnumValue(TrackElemType::Count));
     
     // rct2: 0x00998C95
-    static constexpr TrackCurveChain gTrackCurveChain[] = {
+    static constexpr TrackCurveChain kTrackCurveChain[] = {
         { TrackCurve::None, TrackCurve::None },
         { TrackElemType::EndStation, TrackElemType::EndStation },
         { TrackElemType::EndStation, TrackElemType::EndStation },
@@ -1087,7 +1087,7 @@ namespace OpenRCT2::TrackMetaData
         { TrackCurve::None, TrackElemType::RightEighthDiveLoopUpToOrthogonal  },             // TrackElemType::LeftEighthDiveLoopDownToDiag  
         { TrackCurve::None, TrackElemType::LeftEighthDiveLoopUpToOrthogonal },             // TrackElemType::RightEighthDiveLoopDownToDiag 
     };
-    static_assert(std::size(gTrackCurveChain) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kTrackCurveChain) == EnumValue(TrackElemType::Count));
     
     const TrackDescriptor gTrackDescriptors[186] = {
         {   true,   TrackPitch::Down60,     TrackRoll::None,    TrackCurve::None,             TrackPitch::Down60,   TrackRoll::None,    TrackElemType::DiagDown60                              },
@@ -1279,7 +1279,7 @@ namespace OpenRCT2::TrackMetaData
     };
     
     /** rct2: 0x00993D1C */
-    static constexpr OpenRCT2::TrackElemType AlternativeTrackTypes[] = {
+    static constexpr OpenRCT2::TrackElemType kAlternativeTrackTypes[] = {
         TrackElemType::FlatCovered,                        // TrackElemType::Flat
         TrackElemType::None,
         TrackElemType::None,
@@ -1630,10 +1630,10 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::None, // TrackElemType::LeftEighthDiveLoopDownToDiag 
         TrackElemType::None, // TrackElemType::RightEighthDiveLoopDownToDiag
     };
-    static_assert(std::size(AlternativeTrackTypes) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kAlternativeTrackTypes) == EnumValue(TrackElemType::Count));
     
     /** rct2: 0x0099DA34 */
-    static constexpr money64 TrackPricing[] = {
+    static constexpr money64 kTrackPricing[] = {
         65536,  // TrackElemType::Flat
         98304,  // TrackElemType::EndStation
         98304,  // TrackElemType::BeginStation
@@ -1984,10 +1984,10 @@ namespace OpenRCT2::TrackMetaData
         458752, // TrackElemType::LeftEighthDiveLoopDownToDiag 
         458752, // TrackElemType::RightEighthDiveLoopDownToDiag
     };
-    static_assert(std::size(TrackPricing) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kTrackPricing) == EnumValue(TrackElemType::Count));
     
     /** rct2: 0x0099EA1C */
-    static constexpr OpenRCT2::TrackElemType TrackElementMirrorMap[] = {
+    static constexpr OpenRCT2::TrackElemType kTrackElementMirrorMap[] = {
         TrackElemType::Flat,
         TrackElemType::EndStation,
         TrackElemType::BeginStation,
@@ -2338,10 +2338,10 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::RightEighthDiveLoopDownToDiag,   // TrackElemType::LeftEighthDiveLoopDownToDiag 
         TrackElemType::LeftEighthDiveLoopDownToDiag,    // TrackElemType::RightEighthDiveLoopDownToDiag
     };
-    static_assert(std::size(TrackElementMirrorMap) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kTrackElementMirrorMap) == EnumValue(TrackElemType::Count));
     
     /** rct2: 0x00999694 */
-    static constexpr uint32_t TrackHeightMarkerPositions[] = {
+    static constexpr uint32_t kTrackHeightMarkerPositions[] = {
         (1 << 0), // TrackElemType::Flat
         (1 << 0), // TrackElemType::EndStation
         (1 << 0), // TrackElemType::BeginStation
@@ -2692,13 +2692,13 @@ namespace OpenRCT2::TrackMetaData
         (1 << 0) | (1 << 5), // TrackElemType::LeftEighthDiveLoopDownToDiag 
         (1 << 0) | (1 << 5), // TrackElemType::RightEighthDiveLoopDownToDiag
     };
-    static_assert(std::size(TrackHeightMarkerPositions) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kTrackHeightMarkerPositions) == EnumValue(TrackElemType::Count));
     
     
     
     
     /** rct2: 0x0099423C */
-    static constexpr uint32_t TrackFlags[] = {
+    static constexpr uint32_t kTrackFlags[] = {
         /* TrackElemType::Flat                                          */   TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
         /* TrackElemType::EndStation                                    */   0,
         /* TrackElemType::BeginStation                                  */   0,
@@ -3049,12 +3049,12 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::LeftEighthDiveLoopDownToDiag     */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
         /* TrackElemType::RightEighthDiveLoopDownToDiag    */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     };
-    static_assert(std::size(TrackFlags) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kTrackFlags) == EnumValue(TrackElemType::Count));
     // clang-format on
 
     /**  rct2: 0x00997C9D */
     // clang-format off
-    static constexpr TrackDefinition TrackDefinitions[] =
+    static constexpr TrackDefinition kTrackDefinitions[] =
     {
         // TYPE                                          VANGLE END                    VANGLE START                BANK END                BANK START              PREVIEW Z OFFSET
         { TrackGroup::straight,                          TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::Flat
@@ -3407,11 +3407,11 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::diveLoop,                          TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown,  -56 }, // TrackElemType::LeftEighthDiveLoopDownToDiag 
         { TrackGroup::diveLoop,                          TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown,  -56 }, // TrackElemType::RightEighthDiveLoopDownToDiag
     };
-    static_assert(std::size(TrackDefinitions) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kTrackDefinitions) == EnumValue(TrackElemType::Count));
 
     // clang-format on
 
-    constexpr static SpinFunction TrackTypeToSpinFunction[] = {
+    constexpr static SpinFunction kTrackTypeToSpinFunction[] = {
         SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
         SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
         SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L8,   SpinFunction::R8,
@@ -3472,7 +3472,7 @@ namespace OpenRCT2::TrackMetaData
         SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,
         SpinFunction::R9
     };
-    static_assert(std::size(TrackTypeToSpinFunction) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kTrackTypeToSpinFunction) == EnumValue(TrackElemType::Count));
 
 #pragma region GForces
 
@@ -4482,7 +4482,7 @@ namespace OpenRCT2::TrackMetaData
 
 #pragma endregion
 
-    static constexpr StringId RideConfigurationStringIds[] = {
+    static constexpr StringId kRideConfigurationStringIds[] = {
         kStringIdEmpty,                    // 0
         STR_STATION_PLATFORM,              // 1
         kStringIdEmpty,                    // 2
@@ -4833,7 +4833,7 @@ namespace OpenRCT2::TrackMetaData
         STR_DIVE_LOOP_LEFT,                // TrackElemType::LeftEighthDiveLoopDownToDiag
         STR_DIVE_LOOP_RIGHT,               // TrackElemType::RightEighthDiveLoopDownToDiag
     };
-    static_assert(std::size(RideConfigurationStringIds) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kRideConfigurationStringIds) == EnumValue(TrackElemType::Count));
 
 #pragma region trackBlocks
 
@@ -13060,17 +13060,17 @@ namespace OpenRCT2::TrackMetaData
         for (int i = 0; i < EnumValue(TrackElemType::Count); i++)
         {
             TrackElementDescriptor& desc = res[i];
-            desc.description = RideConfigurationStringIds[i];
-            desc.alternativeType = AlternativeTrackTypes[i];
-            desc.coordinates = _trackCoordinates[i];
-            desc.curveChain = gTrackCurveChain[i];
-            desc.flags = TrackFlags[i];
-            desc.heightMarkerPositions = TrackHeightMarkerPositions[i];
-            desc.mirrorElement = TrackElementMirrorMap[i];
-            desc.pieceLength = TrackPieceLengths[i];
-            desc.priceModifier = TrackPricing[i];
-            desc.definition = TrackDefinitions[i];
-            desc.spinFunction = TrackTypeToSpinFunction[i];
+            desc.description = kRideConfigurationStringIds[i];
+            desc.alternativeType = kAlternativeTrackTypes[i];
+            desc.coordinates = kTrackCoordinates[i];
+            desc.curveChain = kTrackCurveChain[i];
+            desc.flags = kTrackFlags[i];
+            desc.heightMarkerPositions = kTrackHeightMarkerPositions[i];
+            desc.mirrorElement = kTrackElementMirrorMap[i];
+            desc.pieceLength = kTrackPieceLengths[i];
+            desc.priceModifier = kTrackPricing[i];
+            desc.definition = kTrackDefinitions[i];
+            desc.spinFunction = kTrackTypeToSpinFunction[i];
             desc.verticalFactor = GetVerticalFunction(static_cast<TrackElemType>(i));
             desc.lateralFactor = GetLateralFunction(static_cast<TrackElemType>(i));
             desc.numSequences = kSequenceDescriptorsByElement[i].numSequences;
@@ -13084,13 +13084,13 @@ namespace OpenRCT2::TrackMetaData
         return res;
     }
 
-    static constexpr auto _trackElementDescriptors = BuildDescriptorTable();
+    static constexpr auto kTrackElementDescriptors = BuildDescriptorTable();
 
     const TrackElementDescriptor& GetTrackElementDescriptor(OpenRCT2::TrackElemType type)
     {
-        if (EnumValue(type) >= _trackElementDescriptors.size())
-            return _trackElementDescriptors[0];
-        return _trackElementDescriptors[EnumValue(type)];
+        if (EnumValue(type) >= kTrackElementDescriptors.size())
+            return kTrackElementDescriptors[0];
+        return kTrackElementDescriptors[EnumValue(type)];
     }
 
 } // namespace OpenRCT2::TrackMetaData

@@ -83,7 +83,7 @@ struct ShelteredEights
 };
 
 // Amount of updates allowed per updating state on the current tick.
-// The total amount would be MaxRideRatingSubSteps * RideRatingMaxUpdateStates which
+// The total amount would be MaxRideRatingSubSteps * kRideRatingMaxUpdateStates which
 // would be currently 80, this is the worst case of sub-steps and may break out earlier.
 static constexpr size_t MaxRideRatingUpdateSubSteps = 20;
 
@@ -1661,13 +1661,13 @@ static RatingTuple ride_ratings_get_sheltered_ratings(const Ride& ride)
     /*eax = (ride.var_11C * 30340) >> 16;*/
     /*nausea += eax;*/
 
-    if (ride.num_sheltered_sections & ShelteredSectionsBits::BankingWhileSheltered)
+    if (ride.num_sheltered_sections & ShelteredSectionsBits::kBankingWhileSheltered)
     {
         excitement += 20;
         nausea += 15;
     }
 
-    if (ride.num_sheltered_sections & ShelteredSectionsBits::RotatingWhileSheltered)
+    if (ride.num_sheltered_sections & ShelteredSectionsBits::kRotatingWhileSheltered)
     {
         excitement += 20;
         nausea += 15;

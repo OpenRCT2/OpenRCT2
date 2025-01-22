@@ -373,23 +373,22 @@ namespace OpenRCT2::RCT1
 
         void InitialiseEntryMaps()
         {
-            std::fill(std::begin(_rideTypeToRideEntryMap), std::end(_rideTypeToRideEntryMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_vehicleTypeToRideEntryMap), std::end(_vehicleTypeToRideEntryMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_smallSceneryTypeToEntryMap), std::end(_smallSceneryTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_largeSceneryTypeToEntryMap), std::end(_largeSceneryTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_wallTypeToEntryMap), std::end(_wallTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_bannerTypeToEntryMap), std::end(_bannerTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(std::begin(_rideTypeToRideEntryMap), std::end(_rideTypeToRideEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_vehicleTypeToRideEntryMap), std::end(_vehicleTypeToRideEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_smallSceneryTypeToEntryMap), std::end(_smallSceneryTypeToEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_largeSceneryTypeToEntryMap), std::end(_largeSceneryTypeToEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_wallTypeToEntryMap), std::end(_wallTypeToEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_bannerTypeToEntryMap), std::end(_bannerTypeToEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), kObjectEntryIndexNull);
             std::fill(
-                std::begin(_terrainSurfaceTypeToEntryMap), std::end(_terrainSurfaceTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_terrainEdgeTypeToEntryMap), std::end(_terrainEdgeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+                std::begin(_terrainSurfaceTypeToEntryMap), std::end(_terrainSurfaceTypeToEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_terrainEdgeTypeToEntryMap), std::end(_terrainEdgeTypeToEntryMap), kObjectEntryIndexNull);
             std::fill(
-                std::begin(_footpathSurfaceTypeToEntryMap), std::end(_footpathSurfaceTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+                std::begin(_footpathSurfaceTypeToEntryMap), std::end(_footpathSurfaceTypeToEntryMap), kObjectEntryIndexNull);
             std::fill(
-                std::begin(_footpathRailingsTypeToEntryMap), std::end(_footpathRailingsTypeToEntryMap),
-                OBJECT_ENTRY_INDEX_NULL);
+                std::begin(_footpathRailingsTypeToEntryMap), std::end(_footpathRailingsTypeToEntryMap), kObjectEntryIndexNull);
         }
 
         /**
@@ -575,7 +574,7 @@ namespace OpenRCT2::RCT1
         {
             for (int32_t sceneryTheme = 0; sceneryTheme <= RCT1_SCENERY_THEME_PAGODA; sceneryTheme++)
             {
-                if (sceneryTheme != 0 && _sceneryThemeTypeToEntryMap[sceneryTheme] == OBJECT_ENTRY_INDEX_NULL)
+                if (sceneryTheme != 0 && _sceneryThemeTypeToEntryMap[sceneryTheme] == kObjectEntryIndexNull)
                     continue;
 
                 auto objects = RCT1::GetSceneryObjects(sceneryTheme);
@@ -648,7 +647,7 @@ namespace OpenRCT2::RCT1
         {
             Guard::Assert(EnumValue(rideType) < std::size(_rideTypeToRideEntryMap));
 
-            if (_rideTypeToRideEntryMap[EnumValue(rideType)] == OBJECT_ENTRY_INDEX_NULL)
+            if (_rideTypeToRideEntryMap[EnumValue(rideType)] == kObjectEntryIndexNull)
             {
                 auto entryName = RCT1::GetRideTypeObject(rideType, _gameVersion == FILE_VERSION_RCT1_LL);
                 if (!entryName.empty())
@@ -663,7 +662,7 @@ namespace OpenRCT2::RCT1
         {
             Guard::Assert(EnumValue(rideType) < std::size(_rideTypeToRideEntryMap));
 
-            if (_vehicleTypeToRideEntryMap[EnumValue(vehicleType)] == OBJECT_ENTRY_INDEX_NULL)
+            if (_vehicleTypeToRideEntryMap[EnumValue(vehicleType)] == kObjectEntryIndexNull)
             {
                 auto entryName = RCT1::GetVehicleObject(vehicleType);
                 if (!entryName.empty())
@@ -680,7 +679,7 @@ namespace OpenRCT2::RCT1
         void AddEntryForSmallScenery(ObjectEntryIndex smallSceneryType)
         {
             assert(smallSceneryType < std::size(_smallSceneryTypeToEntryMap));
-            if (_smallSceneryTypeToEntryMap[smallSceneryType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_smallSceneryTypeToEntryMap[smallSceneryType] == kObjectEntryIndexNull)
             {
                 auto entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
                 auto entryIndex = _smallSceneryEntries.GetOrAddEntry(entryName);
@@ -692,7 +691,7 @@ namespace OpenRCT2::RCT1
         void AddEntryForLargeScenery(ObjectEntryIndex largeSceneryType)
         {
             assert(largeSceneryType < std::size(_largeSceneryTypeToEntryMap));
-            if (_largeSceneryTypeToEntryMap[largeSceneryType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_largeSceneryTypeToEntryMap[largeSceneryType] == kObjectEntryIndexNull)
             {
                 auto entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
                 auto entryIndex = _largeSceneryEntries.GetOrAddEntry(entryName);
@@ -704,7 +703,7 @@ namespace OpenRCT2::RCT1
         void AddEntryForWall(ObjectEntryIndex wallType)
         {
             assert(wallType < std::size(_wallTypeToEntryMap));
-            if (_wallTypeToEntryMap[wallType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_wallTypeToEntryMap[wallType] == kObjectEntryIndexNull)
             {
                 auto entryName = RCT1::GetWallObject(wallType);
                 auto entryIndex = _wallEntries.GetOrAddEntry(entryName);
@@ -716,7 +715,7 @@ namespace OpenRCT2::RCT1
         void AddEntryForBanner(BannerType bannerType)
         {
             assert(EnumValue(bannerType) < std::size(_bannerTypeToEntryMap));
-            if (_bannerTypeToEntryMap[EnumValue(bannerType)] == OBJECT_ENTRY_INDEX_NULL)
+            if (_bannerTypeToEntryMap[EnumValue(bannerType)] == kObjectEntryIndexNull)
             {
                 auto entryName = RCT1::GetBannerObject(bannerType);
                 auto entryIndex = _bannerEntries.GetOrAddEntry(entryName);
@@ -728,7 +727,7 @@ namespace OpenRCT2::RCT1
         void AddEntryForPathSurface(ObjectEntryIndex pathType)
         {
             assert(pathType < std::size(_footpathSurfaceTypeToEntryMap));
-            if (_footpathSurfaceTypeToEntryMap[pathType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_footpathSurfaceTypeToEntryMap[pathType] == kObjectEntryIndexNull)
             {
                 auto identifier = RCT1::GetPathSurfaceObject(pathType);
                 if (!identifier.empty())
@@ -744,10 +743,10 @@ namespace OpenRCT2::RCT1
             if (pathAdditionType == RCT1_PATH_ADDITION_NONE)
                 return;
 
-            if (_pathAdditionTypeToEntryMap[pathAdditionType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_pathAdditionTypeToEntryMap[pathAdditionType] == kObjectEntryIndexNull)
             {
                 uint8_t normalisedPathAdditionType = RCT1::NormalisePathAddition(pathAdditionType);
-                if (_pathAdditionTypeToEntryMap[normalisedPathAdditionType] == OBJECT_ENTRY_INDEX_NULL)
+                if (_pathAdditionTypeToEntryMap[normalisedPathAdditionType] == kObjectEntryIndexNull)
                 {
                     auto entryName = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
                     auto entryIndex = _pathAdditionEntries.GetOrAddEntry(entryName);
@@ -786,7 +785,7 @@ namespace OpenRCT2::RCT1
         void AddEntryForTerrainSurface(ObjectEntryIndex terrainSurfaceType)
         {
             assert(terrainSurfaceType < std::size(_terrainSurfaceTypeToEntryMap));
-            if (_terrainSurfaceTypeToEntryMap[terrainSurfaceType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_terrainSurfaceTypeToEntryMap[terrainSurfaceType] == kObjectEntryIndexNull)
             {
                 auto identifier = RCT1::GetTerrainSurfaceObject(terrainSurfaceType);
                 if (!identifier.empty())
@@ -800,7 +799,7 @@ namespace OpenRCT2::RCT1
         void AddEntryForTerrainEdge(ObjectEntryIndex terrainEdgeType)
         {
             assert(terrainEdgeType < std::size(_terrainEdgeTypeToEntryMap));
-            if (_terrainEdgeTypeToEntryMap[terrainEdgeType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_terrainEdgeTypeToEntryMap[terrainEdgeType] == kObjectEntryIndexNull)
             {
                 auto identifier = RCT1::GetTerrainEdgeObject(terrainEdgeType);
                 if (!identifier.empty())
@@ -814,7 +813,7 @@ namespace OpenRCT2::RCT1
         void AddEntryForFootpathRailings(ObjectEntryIndex railingsType)
         {
             assert(railingsType < std::size(_footpathRailingsTypeToEntryMap));
-            if (_footpathRailingsTypeToEntryMap[railingsType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_footpathRailingsTypeToEntryMap[railingsType] == kObjectEntryIndexNull)
             {
                 auto identifier = RCT1::GetFootpathRailingsObject(railingsType);
                 if (!identifier.empty())
@@ -866,7 +865,7 @@ namespace OpenRCT2::RCT1
             if (rideEntry == nullptr)
             {
                 LOG_WARNING("Discarding ride with invalid ride entry");
-                dst->type = RIDE_TYPE_NULL;
+                dst->type = kRideTypeNull;
                 return;
             }
 
@@ -982,7 +981,7 @@ namespace OpenRCT2::RCT1
             // RCT1 used 5mph / 8 km/h for every lift hill
             dst->lift_hill_speed = 5;
 
-            dst->music = OBJECT_ENTRY_INDEX_NULL;
+            dst->music = kObjectEntryIndexNull;
             if (GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::allowMusic))
             {
                 if (_gameVersion == FILE_VERSION_RCT1)
@@ -1111,7 +1110,7 @@ namespace OpenRCT2::RCT1
 
             dst->num_riders = src->NumRiders;
 
-            dst->music_tune_id = TUNE_ID_NULL;
+            dst->music_tune_id = kTuneIDNull;
         }
 
         void SetRideColourScheme(::Ride* dst, RCT1::Ride* src)
@@ -1144,7 +1143,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            dst->entrance_style = OBJECT_ENTRY_INDEX_NULL;
+            dst->entrance_style = kObjectEntryIndexNull;
             if (dst->GetRideTypeDescriptor().HasFlag(RtdFlag::hasEntranceAndExit))
             {
                 // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
@@ -1346,7 +1345,7 @@ namespace OpenRCT2::RCT1
 
         void ImportPeep(::Peep* dst, const RCT1::Peep* src)
         {
-            dst->AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
+            dst->AnimationObjectIndex = kObjectEntryIndexNull;
             auto rct12AnimGroup = RCT1::GetPeepAnimationGroup(src->AnimationGroup);
             dst->AnimationGroup = static_cast<::PeepAnimationGroup>(rct12AnimGroup);
 
@@ -1716,7 +1715,7 @@ namespace OpenRCT2::RCT1
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
                     const auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
+                    auto rideType = (ride != nullptr) ? ride->type : kRideTypeNull;
                     auto rct1RideType = _s4.Rides[src2->GetRideIndex()].Type;
 
                     dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
@@ -1847,13 +1846,13 @@ namespace OpenRCT2::RCT1
                         auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {
-                            clearanceZ += LAND_HEIGHT_STEP;
+                            clearanceZ += kLandHeightStep;
                         }
                         if (edgeSlope & EDGE_SLOPE_ELEVATED)
                         {
                             edgeSlope &= ~EDGE_SLOPE_ELEVATED;
-                            baseZ += LAND_HEIGHT_STEP;
-                            clearanceZ += LAND_HEIGHT_STEP;
+                            baseZ += kLandHeightStep;
+                            clearanceZ += kLandHeightStep;
                         }
 
                         dst->SetType(TileElementType::Wall);
@@ -1974,8 +1973,7 @@ namespace OpenRCT2::RCT1
                     {
                         uint8_t rct1SceneryTheme = researchItem.Item;
                         auto sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
-                        if (sceneryGroupEntryIndex != ObjectEntryIndexIgnore
-                            && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
+                        if (sceneryGroupEntryIndex != ObjectEntryIndexIgnore && sceneryGroupEntryIndex != kObjectEntryIndexNull)
                         {
                             ResearchInsertSceneryGroupEntry(sceneryGroupEntryIndex, researched);
                         }
@@ -1988,7 +1986,7 @@ namespace OpenRCT2::RCT1
 
                         auto ownRideEntryIndex = _rideTypeToRideEntryMap[EnumValue(rct1RideType)];
                         Guard::Assert(
-                            ownRideEntryIndex != OBJECT_ENTRY_INDEX_NULL, "ownRideEntryIndex was OBJECT_ENTRY_INDEX_NULL");
+                            ownRideEntryIndex != kObjectEntryIndexNull, "ownRideEntryIndex was kObjectEntryIndexNull");
 
                         bool foundOwnType = false;
                         // If the ride type does not use vehicles, no point looking for them in the research list.
@@ -2161,7 +2159,7 @@ namespace OpenRCT2::RCT1
         {
             uint8_t vehicle = researchItem.Item;
             // RCT1 research sometimes contain vehicles that aren’t actually researched.
-            // In such cases, `_vehicleTypeToRideEntryMap` will return OBJECT_ENTRY_INDEX_NULL. This is expected.
+            // In such cases, `_vehicleTypeToRideEntryMap` will return kObjectEntryIndexNull. This is expected.
             auto rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
 
             if (rideEntryIndex < std::size(_researchRideEntryUsed) && !_researchRideEntryUsed[rideEntryIndex])
@@ -2303,7 +2301,7 @@ namespace OpenRCT2::RCT1
             {
                 auto entryIndex = _rideTypeToRideEntryMap[srcItem];
 
-                if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (entryIndex != kObjectEntryIndexNull)
                 {
                     const auto* rideEntry = GetRideEntryByIndex(entryIndex);
 
@@ -2322,7 +2320,7 @@ namespace OpenRCT2::RCT1
             {
                 auto entryIndex = _vehicleTypeToRideEntryMap[srcItem];
 
-                if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (entryIndex != kObjectEntryIndexNull)
                 {
                     const auto* rideEntry = GetRideEntryByIndex(entryIndex);
 
@@ -2341,7 +2339,7 @@ namespace OpenRCT2::RCT1
             {
                 auto entryIndex = _sceneryThemeTypeToEntryMap[srcItem];
 
-                if (entryIndex != ObjectEntryIndexIgnore && entryIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (entryIndex != ObjectEntryIndexIgnore && entryIndex != kObjectEntryIndexNull)
                 {
                     dst->entryIndex = entryIndex;
                     dst->type = Research::EntryType::Scenery;
@@ -2476,7 +2474,7 @@ namespace OpenRCT2::RCT1
             if (type < std::size(_bannerTypeToEntryMap))
                 type = _bannerTypeToEntryMap[type];
             else
-                type = OBJECT_ENTRY_INDEX_NULL;
+                type = kObjectEntryIndexNull;
             dst->type = type;
 
             dst->flags = 0;
@@ -2662,7 +2660,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            return RIDE_TYPE_NULL;
+            return kRideTypeNull;
         }
     };
 

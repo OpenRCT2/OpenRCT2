@@ -372,10 +372,10 @@ int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(std::span<const LargeScener
 
         if ((slope & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
         {
-            baseZ += LAND_HEIGHT_STEP;
+            baseZ += kLandHeightStep;
             if (slope & kTileSlopeDiagonalFlag)
             {
-                baseZ += LAND_HEIGHT_STEP;
+                baseZ += kLandHeightStep;
             }
         }
 

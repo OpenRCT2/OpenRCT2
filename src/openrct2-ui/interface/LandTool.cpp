@@ -103,7 +103,7 @@ ObjectEntryIndex LandTool::GetSurfaceStyleFromDropdownIndex(size_t index)
             itemIndex++;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType)
@@ -154,5 +154,5 @@ ObjectEntryIndex LandTool::GetEdgeStyleFromDropdownIndex(size_t index)
             itemIndex++;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }

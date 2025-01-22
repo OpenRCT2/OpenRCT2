@@ -188,7 +188,7 @@ GameActions::Result RideCreateAction::Execute() const
     {
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         ride->music = objManager.GetLoadedObjectEntryIndex(rtd.DefaultMusic);
-        if (ride->music != OBJECT_ENTRY_INDEX_NULL)
+        if (ride->music != kObjectEntryIndexNull)
         {
             if (rtd.HasFlag(RtdFlag::hasMusicByDefault))
             {
@@ -274,7 +274,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->satisfaction = 255;
     ride->popularity = 255;
     ride->build_date = GetDate().GetMonthsElapsed();
-    ride->music_tune_id = TUNE_ID_NULL;
+    ride->music_tune_id = kTuneIDNull;
 
     ride->breakdown_reason = 255;
     ride->upkeep_cost = kMoney64Undefined;
@@ -285,7 +285,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->income_per_hour = kMoney64Undefined;
     ride->profit = kMoney64Undefined;
 
-    ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
+    ride->entrance_style = kObjectEntryIndexNull;
     if (rtd.HasFlag(RtdFlag::hasEntranceAndExit))
     {
         ride->entrance_style = _entranceObjectIndex;

@@ -28,26 +28,26 @@ using namespace OpenRCT2;
 
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
-static constexpr uint32_t BM_BLOCK_BRAKE_SW_NE_OPEN = 17150;
-static constexpr uint32_t BM_BLOCK_BRAKE_NW_SE_OPEN = 17151;
-static constexpr uint32_t BM_BLOCK_BRAKE_SW_NE_CLOSED = 17152;
-static constexpr uint32_t BM_BLOCK_BRAKE_NW_SE_CLOSED = 17153;
+static constexpr uint32_t kTwisterBlockBrakeSwNeOpen = 17150;
+static constexpr uint32_t kTwisterBlockBrakeNwSeOpen = 17151;
+static constexpr uint32_t kTwisterBlockBrakeSwNeClosed = 17152;
+static constexpr uint32_t kTwisterBlockBrakeNwSeClosed = 17153;
 
-static constexpr uint32_t _TwisterRCBlockBrakeImages[kNumOrthogonalDirections][2] = {
-    { BM_BLOCK_BRAKE_SW_NE_OPEN, BM_BLOCK_BRAKE_SW_NE_CLOSED },
-    { BM_BLOCK_BRAKE_NW_SE_OPEN, BM_BLOCK_BRAKE_NW_SE_CLOSED },
-    { BM_BLOCK_BRAKE_SW_NE_OPEN, BM_BLOCK_BRAKE_SW_NE_CLOSED },
-    { BM_BLOCK_BRAKE_NW_SE_OPEN, BM_BLOCK_BRAKE_NW_SE_CLOSED },
+static constexpr uint32_t kTwisterRCBlockBrakeImages[kNumOrthogonalDirections][2] = {
+    { kTwisterBlockBrakeSwNeOpen, kTwisterBlockBrakeSwNeClosed },
+    { kTwisterBlockBrakeNwSeOpen, kTwisterBlockBrakeNwSeClosed },
+    { kTwisterBlockBrakeSwNeOpen, kTwisterBlockBrakeSwNeClosed },
+    { kTwisterBlockBrakeNwSeOpen, kTwisterBlockBrakeNwSeClosed },
 };
 
-static constexpr const uint32_t TwisterRCDiagBrakeImages[kNumOrthogonalDirections] = {
+static constexpr const uint32_t kTwisterRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_BM_DIAG_BRAKES,
     SPR_G2_BM_DIAG_BRAKES + 1,
     SPR_G2_BM_DIAG_BRAKES,
     SPR_G2_BM_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t TwisterRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
+static constexpr const uint32_t kTwisterRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_BM_DIAG_BRAKES + 3,
         SPR_G2_BM_DIAG_BRAKES + 5,
@@ -121,7 +121,7 @@ static void TwisterRCTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(_TwisterRCBlockBrakeImages[direction][isClosed]),
+            session, direction, session.TrackColours.WithIndex(kTwisterRCBlockBrakeImages[direction][isClosed]),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
@@ -10299,13 +10299,13 @@ static void TwisterRCTrackBlockBrakes(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(_TwisterRCBlockBrakeImages[direction][isClosed]),
+                session, direction, session.TrackColours.WithIndex(kTwisterRCBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(_TwisterRCBlockBrakeImages[direction][isClosed]),
+                session, direction, session.TrackColours.WithIndex(kTwisterRCBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
@@ -14168,8 +14168,8 @@ void TwisterRCTrackDiagBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, TwisterRCDiagBrakeImages, defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        session, 3, height, direction, trackSequence, kTwisterRCDiagBrakeImages, defaultDiagTileOffsets,
+        defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -14187,7 +14187,7 @@ void TwisterRCTrackDiagBlockBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, TwisterRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        session, 3, height, direction, trackSequence, kTwisterRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)

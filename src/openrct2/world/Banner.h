@@ -24,7 +24,7 @@ namespace OpenRCT2
     struct GameState_t;
 }
 
-constexpr ObjectEntryIndex BANNER_NULL = OBJECT_ENTRY_INDEX_NULL;
+constexpr ObjectEntryIndex BANNER_NULL = kObjectEntryIndexNull;
 constexpr size_t MAX_BANNERS = 8192;
 
 constexpr uint8_t SCROLLING_MODE_NONE = 255;

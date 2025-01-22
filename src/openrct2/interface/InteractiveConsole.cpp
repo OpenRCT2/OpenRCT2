@@ -176,7 +176,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::Count); i++)
                     {
                         char mode_name[128] = { 0 };
-                        StringId mode_string_id = RideModeNames[i];
+                        StringId mode_string_id = kRideModeNames[i];
                         OpenRCT2::FormatStringLegacy(mode_name, 128, mode_string_id, nullptr);
                         console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
@@ -1117,7 +1117,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
             for (int32_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
             {
                 auto rideType = rideEntry->ride_type[j];
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != kRideTypeNull)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                     ResearchInsertRideEntry(rideType, groupIndex, category, true);
@@ -1285,7 +1285,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
     auto bannerCount = GetNumBanners();
 
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, kMaxEntities);
-    console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
+    console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, kMaxTileElements);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, OpenRCT2::Limits::kMaxRidesInPark);
     console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());

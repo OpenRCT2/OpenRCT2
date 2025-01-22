@@ -23,14 +23,14 @@
 
 using namespace OpenRCT2;
 
-static constexpr uint8_t Edges1X4NeSw[] = {
+static constexpr uint8_t kEdges1X4NeSw[] = {
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_NE,
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_SW,
 };
 
-static constexpr uint8_t Edges1X4NwSe[] = {
+static constexpr uint8_t kEdges1X4NwSe[] = {
     EDGE_NE | EDGE_SW,
     EDGE_NE | EDGE_SW | EDGE_NW,
     EDGE_NE | EDGE_SW,
@@ -38,7 +38,7 @@ static constexpr uint8_t Edges1X4NwSe[] = {
 };
 
 /** rct2: 0x008A8CA8 */
-static constexpr BoundBoxXY FerrisWheelData[] = {
+static constexpr BoundBoxXY kFerrisWheelData[] = {
     { { 1, 8 }, { 31, 16 } },
     { { 8, 1 }, { 16, 31 } },
     { { 1, 8 }, { 31, 16 } },
@@ -76,7 +76,7 @@ static void PaintFerrisWheelStructure(
         session.CurrentlyDrawnEntity = vehicle;
     }
 
-    auto boundBox = FerrisWheelData[direction];
+    auto boundBox = kFerrisWheelData[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
     BoundBoxXYZ bb = { { boundBox.offset, height + 7 }, { boundBox.length, 127 } };
 
@@ -113,11 +113,11 @@ static void PaintFerrisWheel(
     int32_t edges;
     if (direction & 1)
     {
-        edges = Edges1X4NwSe[relativeTrackSequence];
+        edges = kEdges1X4NwSe[relativeTrackSequence];
     }
     else
     {
-        edges = Edges1X4NeSw[relativeTrackSequence];
+        edges = kEdges1X4NeSw[relativeTrackSequence];
     }
 
     auto stationColour = GetStationColourScheme(session, trackElement);

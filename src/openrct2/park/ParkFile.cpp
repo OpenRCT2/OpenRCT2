@@ -272,9 +272,9 @@ namespace OpenRCT2
 
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
-                std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-                std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-                std::fill(std::begin(_pathToRailingsMap), std::end(_pathToRailingsMap), OBJECT_ENTRY_INDEX_NULL);
+                std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), kObjectEntryIndexNull);
+                std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), kObjectEntryIndexNull);
+                std::fill(std::begin(_pathToRailingsMap), std::end(_pathToRailingsMap), kObjectEntryIndexNull);
                 auto* pathToSurfaceMap = _pathToSurfaceMap;
                 auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
                 auto* pathToRailingsMap = _pathToRailingsMap;
@@ -450,7 +450,7 @@ namespace OpenRCT2
 
                 cs.ReadWrite(gameState.ScenarioCompletedCompanyValue);
                 if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined
-                    || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                    || gameState.ScenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
                 {
                     cs.Write("");
                 }
@@ -1142,7 +1142,7 @@ namespace OpenRCT2
                                     if (pathElement->HasLegacyPathEntry())
                                     {
                                         auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
-                                        if (pathToRailingsMap[pathEntryIndex] != OBJECT_ENTRY_INDEX_NULL)
+                                        if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
                                         {
                                             if (pathElement->IsQueue())
                                                 pathElement->SetSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
@@ -1728,7 +1728,7 @@ namespace OpenRCT2
             if (version >= kPeepAnimationObjectsVersion)
                 cs.ReadWrite(entity.AnimationObjectIndex);
             else
-                entity.AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
+                entity.AnimationObjectIndex = kObjectEntryIndexNull;
 
             cs.ReadWrite(entity.AnimationGroup);
 

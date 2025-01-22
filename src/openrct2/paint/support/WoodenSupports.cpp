@@ -331,7 +331,7 @@ static void PaintRepeatedWoodenSupports(
 {
     while (heightSteps > 0)
     {
-        const bool isHalf = baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight;
+        const bool isHalf = baseHeight & 0x10 || heightSteps == 1 || baseHeight + kWaterHeightStep == session.WaterHeight;
         if (isHalf)
         {
             // Half support

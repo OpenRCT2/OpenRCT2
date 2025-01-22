@@ -1257,7 +1257,7 @@ void Ride::ValidateStations()
         }
     }
     // determine what entrances and exits exist
-    sfl::static_vector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
+    sfl::static_vector<TileCoordsXYZD, kMaxStationLocations> locations;
     for (auto& station : stations)
     {
         if (!station.Entrance.IsNull())

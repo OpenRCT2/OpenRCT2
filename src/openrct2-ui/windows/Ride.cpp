@@ -3116,7 +3116,7 @@ namespace OpenRCT2::Ui::Windows
                 if (availableModes & (1uLL << i))
                 {
                     gDropdownItems[numAvailableModes].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numAvailableModes].Args = RideModeNames[i];
+                    gDropdownItems[numAvailableModes].Args = kRideModeNames[i];
 
                     if (ride->mode == static_cast<RideMode>(i))
                         checkedIndex = numAvailableModes;
@@ -3546,7 +3546,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Mode
-            widgets[WIDX_MODE].text = RideModeNames[EnumValue(ride->mode)];
+            widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
 
             // Waiting
             widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
@@ -3805,7 +3805,7 @@ namespace OpenRCT2::Ui::Windows
                     numItems = 1;
                     for (j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
                     {
-                        if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
+                        if (rideEntry->ride_type[j] != kRideTypeNull)
                             break;
                     }
                     gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
@@ -3945,7 +3945,7 @@ namespace OpenRCT2::Ui::Windows
                         int32_t j;
                         for (j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
                         {
-                            if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
+                            if (rideEntry->ride_type[j] != kRideTypeNull)
                                 break;
                         }
                         int32_t i;

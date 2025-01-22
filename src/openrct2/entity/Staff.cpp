@@ -403,7 +403,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
 
         if (GetNextIsSloped())
         {
-            if (surfaceElement->GetSlope() != PathSlopeToLandSlope[GetNextDirection()])
+            if (surfaceElement->GetSlope() != kPathSlopeToLandSlope[GetNextDirection()])
                 return INVALID_DIRECTION;
         }
         else if (surfaceElement->GetSlope() != kTileSlopeFlat)

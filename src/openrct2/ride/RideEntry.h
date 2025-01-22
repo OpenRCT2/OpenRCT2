@@ -20,7 +20,7 @@
 
 // Set to 255 on all tracked ride entries
 static uint8_t constexpr NoFlatRideCars = 0xFF;
-static ride_type_t constexpr RIDE_TYPE_NULL = 0xFF;
+static ride_type_t constexpr kRideTypeNull = 0xFF;
 
 struct RideNaming
 {
@@ -92,11 +92,11 @@ struct RideObjectEntry
     {
         for (const auto& currentRideType : ride_type)
         {
-            if (currentRideType != RIDE_TYPE_NULL)
+            if (currentRideType != kRideTypeNull)
                 return currentRideType;
         }
 
-        return RIDE_TYPE_NULL;
+        return kRideTypeNull;
     }
 };
 

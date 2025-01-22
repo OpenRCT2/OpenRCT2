@@ -835,7 +835,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_INCREASE_PRICE:
                 {
-                    const auto newFee = std::min(MAX_ENTRANCE_FEE, gameState.Park.EntranceFee + 1.00_GBP);
+                    const auto newFee = std::min(kMaxEntranceFee, gameState.Park.EntranceFee + 1.00_GBP);
                     auto gameAction = ParkSetEntranceFeeAction(newFee);
                     GameActions::Execute(&gameAction);
                     break;
@@ -1059,7 +1059,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
                 }
 
-                money = std::clamp(money, 0.00_GBP, MAX_ENTRANCE_FEE);
+                money = std::clamp(money, 0.00_GBP, kMaxEntranceFee);
                 auto gameAction = ParkSetEntranceFeeAction(money);
                 GameActions::Execute(&gameAction);
             }
@@ -1113,7 +1113,7 @@ namespace OpenRCT2::Ui::Windows
             // Objective outcome
             if (gameState.ScenarioCompletedCompanyValue != kMoney64Undefined)
             {
-                if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                if (gameState.ScenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
                 {
                     // Objective failed
                     DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);

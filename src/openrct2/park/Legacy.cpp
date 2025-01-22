@@ -2250,7 +2250,7 @@ void UpdateFootpathsFromMapping(
     const RCT2::FootpathMapping* footpathMapping)
 {
     auto surfaceIndex = requiredObjects.Find(ObjectType::FootpathSurface, footpathMapping->NormalSurface);
-    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (surfaceIndex == kObjectEntryIndexNull)
     {
         requiredObjects.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->NormalSurface);
         surfaceIndex = surfaceCount++;
@@ -2258,7 +2258,7 @@ void UpdateFootpathsFromMapping(
     pathToSurfaceMap[entryIndex] = surfaceIndex;
 
     surfaceIndex = requiredObjects.Find(ObjectType::FootpathSurface, footpathMapping->QueueSurface);
-    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (surfaceIndex == kObjectEntryIndexNull)
     {
         requiredObjects.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->QueueSurface);
         surfaceIndex = surfaceCount++;
@@ -2266,7 +2266,7 @@ void UpdateFootpathsFromMapping(
     pathToQueueSurfaceMap[entryIndex] = surfaceIndex;
 
     auto railingIndex = requiredObjects.Find(ObjectType::FootpathRailings, footpathMapping->Railing);
-    if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (railingIndex == kObjectEntryIndexNull)
     {
         requiredObjects.SetObject(ObjectType::FootpathRailings, railingCount, footpathMapping->Railing);
         railingIndex = railingCount++;
@@ -2327,7 +2327,7 @@ static AnimObjectConversionTable BuildPeepAnimObjectConversionTable()
 template<typename TPeepType>
 static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable& table)
 {
-    if (peep->AnimationObjectIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (peep->AnimationObjectIndex != kObjectEntryIndexNull)
         return false;
 
     // TODO: catch missings

@@ -91,9 +91,9 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
 {
     bool success = false;
 
-    for (uint8_t s = 0; s < std::size(segment_offsets); s++)
+    for (uint8_t s = 0; s < std::size(kSegmentOffsets); s++)
     {
-        if (!(segments & segment_offsets[s]))
+        if (!(segments & kSegmentOffsets[s]))
         {
             continue;
         }
@@ -111,9 +111,9 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
     }
 
     SupportHeight* supportSegments = session.SupportSegments;
-    for (uint8_t s = 0; s < std::size(segment_offsets); s++)
+    for (uint8_t s = 0; s < std::size(kSegmentOffsets); s++)
     {
-        if (!(segments & segment_offsets[s]))
+        if (!(segments & kSegmentOffsets[s]))
         {
             continue;
         }

@@ -52,12 +52,12 @@ void SurfaceElement::SetEdgeObjectIndex(ObjectEntryIndex newIndex)
 
 int32_t SurfaceElement::GetWaterHeight() const
 {
-    return WaterHeight * WATER_HEIGHT_STEP;
+    return WaterHeight * kWaterHeightStep;
 }
 
 void SurfaceElement::SetWaterHeight(int32_t newWaterHeight)
 {
-    WaterHeight = newWaterHeight / WATER_HEIGHT_STEP;
+    WaterHeight = newWaterHeight / kWaterHeightStep;
 }
 
 bool SurfaceElement::CanGrassGrow() const
@@ -135,9 +135,9 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
     // if there is an object placed on top of it.
 
     int32_t baseZ = GetBaseZ();
-    int32_t clearZ = GetBaseZ() + LAND_HEIGHT_STEP;
+    int32_t clearZ = GetBaseZ() + kLandHeightStep;
     if (Slope & kTileSlopeDiagonalFlag)
-        clearZ += LAND_HEIGHT_STEP;
+        clearZ += kLandHeightStep;
 
     // Check objects above grass
     TileElement* tileElementAbove = reinterpret_cast<TileElement*>(this);

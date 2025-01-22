@@ -113,7 +113,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
             continue;
 
         auto entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject.get());
-        if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (entryIndex == kObjectEntryIndexNull)
         {
             // Some parks have manually deleted objects from the save so they might not be loaded
             // silently remove the object from the SceneryGroupObject

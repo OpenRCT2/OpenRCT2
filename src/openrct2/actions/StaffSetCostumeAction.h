@@ -16,7 +16,7 @@ class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffC
 {
 private:
     EntityId _spriteIndex{ EntityId::GetNull() };
-    ObjectEntryIndex _costume = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex _costume = kObjectEntryIndexNull;
 
 public:
     StaffSetCostumeAction() = default;

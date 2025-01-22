@@ -161,7 +161,7 @@ enum
     SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_0 = 21131,
 };
 
-static constexpr uint32_t LogFlumeTrackFlatImageIds[4][2] = {
+static constexpr uint32_t kLogFlumeTrackFlatImageIds[4][2] = {
     { SPR_LOG_FLUME_FLAT_SW_NE, SPR_LOG_FLUME_FLAT_FRONT_SW_NE },
     { SPR_LOG_FLUME_FLAT_NW_SE, SPR_LOG_FLUME_FLAT_FRONT_NW_SE },
     { SPR_LOG_FLUME_FLAT_NE_SW, SPR_LOG_FLUME_FLAT_FRONT_NE_SW },
@@ -172,8 +172,8 @@ static void PaintLogFlumeTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
-    auto frontImageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(kLogFlumeTrackFlatImageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(kLogFlumeTrackFlatImageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
@@ -192,7 +192,7 @@ static void PaintLogFlumeTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(kLogFlumeTrackFlatImageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
     if (direction & 1)
@@ -848,10 +848,10 @@ static void PaintLogFlumeTrackOnRidePhoto(
 {
     TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, supportType.metal);
 
-    auto imageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(kLogFlumeTrackFlatImageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
 
-    imageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
+    imageId = session.TrackColours.WithIndex(kLogFlumeTrackFlatImageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 21 } });
 
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);

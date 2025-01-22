@@ -640,7 +640,7 @@ namespace OpenRCT2::RCT2
             for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
-                if (src->Type != RIDE_TYPE_NULL)
+                if (src->Type != kRideTypeNull)
                 {
                     const auto rideId = RideId::FromUnderlying(index);
                     auto dst = RideAllocateAtIndex(rideId);
@@ -666,7 +666,7 @@ namespace OpenRCT2::RCT2
             for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
-                if (src->Type == RIDE_TYPE_NULL)
+                if (src->Type == kRideTypeNull)
                     continue;
 
                 auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->Subtype);
@@ -973,7 +973,7 @@ namespace OpenRCT2::RCT2
                 }
             }
 
-            auto musicStyle = OBJECT_ENTRY_INDEX_NULL;
+            auto musicStyle = kObjectEntryIndexNull;
             if (GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::allowMusic))
             {
                 musicStyle = src->Music;
@@ -981,7 +981,7 @@ namespace OpenRCT2::RCT2
             dst->music = musicStyle;
 
             // In SV7, "plain" entrances are invisible.
-            auto entranceStyle = OBJECT_ENTRY_INDEX_NULL;
+            auto entranceStyle = kObjectEntryIndexNull;
             if (!_isSV7 && GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::hasEntranceAndExit))
             {
                 entranceStyle = src->EntranceStyle;
@@ -1021,7 +1021,7 @@ namespace OpenRCT2::RCT2
             dst.ProximityStart = { src.ProximityStartX, src.ProximityStartY, src.ProximityStartZ };
             dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.CurrentRide);
             dst.State = src.State;
-            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(RideTypeDescriptors))
+            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(kRideTypeDescriptors))
             {
                 dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
                     src.ProximityTrackType, _s6.Rides[src.CurrentRide].Type, IsFlatRide(src.CurrentRide));
@@ -1312,7 +1312,7 @@ namespace OpenRCT2::RCT2
                     auto pathEntryIndex = src2->GetEntryIndex();
                     auto surfaceEntry = src2->IsQueue() ? _pathToQueueSurfaceMap[pathEntryIndex]
                                                         : _pathToSurfaceMap[pathEntryIndex];
-                    if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                    if (surfaceEntry == kObjectEntryIndexNull)
                     {
                         // Legacy footpath object
                         dst2->SetLegacyPathEntryIndex(pathEntryIndex);
@@ -1433,7 +1433,7 @@ namespace OpenRCT2::RCT2
                     {
                         auto pathEntryIndex = src2->GetPathType();
                         auto surfaceEntry = _pathToSurfaceMap[pathEntryIndex];
-                        if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                        if (surfaceEntry == kObjectEntryIndexNull)
                         {
                             // Legacy footpath object
                             dst2->SetLegacyPathEntryIndex(pathEntryIndex);
@@ -1446,7 +1446,7 @@ namespace OpenRCT2::RCT2
                     }
                     else
                     {
-                        dst2->SetSurfaceEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+                        dst2->SetSurfaceEntryIndex(kObjectEntryIndexNull);
                     }
                     break;
                 }
@@ -1650,7 +1650,7 @@ namespace OpenRCT2::RCT2
             dst->SubState = src->SubState;
 
             // TODO
-            dst->AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
+            dst->AnimationObjectIndex = kObjectEntryIndexNull;
             dst->AnimationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
 
             dst->TshirtColour = src->TshirtColour;
@@ -1799,9 +1799,9 @@ namespace OpenRCT2::RCT2
 
         ObjectList GetRequiredObjects()
         {
-            std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), kObjectEntryIndexNull);
 
             ObjectList objectList;
             int objectIt = 0;
@@ -1827,7 +1827,7 @@ namespace OpenRCT2::RCT2
                                 // We have surface objects for this footpath
                                 auto surfaceIndex = objectList.Find(
                                     ObjectType::FootpathSurface, footpathMapping->NormalSurface);
-                                if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                                if (surfaceIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(
                                         ObjectType::FootpathSurface, surfaceCount, footpathMapping->NormalSurface);
@@ -1836,7 +1836,7 @@ namespace OpenRCT2::RCT2
                                 _pathToSurfaceMap[i] = surfaceIndex;
 
                                 surfaceIndex = objectList.Find(ObjectType::FootpathSurface, footpathMapping->QueueSurface);
-                                if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                                if (surfaceIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(
                                         ObjectType::FootpathSurface, surfaceCount, footpathMapping->QueueSurface);
@@ -1845,7 +1845,7 @@ namespace OpenRCT2::RCT2
                                 _pathToQueueSurfaceMap[i] = surfaceIndex;
 
                                 auto railingIndex = objectList.Find(ObjectType::FootpathRailings, footpathMapping->Railing);
-                                if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
+                                if (railingIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(ObjectType::FootpathRailings, railingCount, footpathMapping->Railing);
                                     railingIndex = railingCount++;

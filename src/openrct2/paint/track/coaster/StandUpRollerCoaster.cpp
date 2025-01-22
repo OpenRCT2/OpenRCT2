@@ -31,21 +31,21 @@ static constexpr uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_OPEN = 25572;
 static constexpr uint32_t STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED = 25573;
 static constexpr uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED = 25574;
 
-static constexpr uint32_t _StandUpBlockBrakeImages[kNumOrthogonalDirections][2] = {
+static constexpr uint32_t kStandUpBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { STAND_UP_BLOCK_BRAKE_SW_NE_OPEN, STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_NW_SE_OPEN, STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_SW_NE_OPEN, STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_NW_SE_OPEN, STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
-static constexpr const uint32_t StandupRCDiagBrakeImages[kNumOrthogonalDirections] = {
+static constexpr const uint32_t kStandupRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_STANDUP_DIAG_BRAKES,
     SPR_G2_STANDUP_DIAG_BRAKES + 1,
     SPR_G2_STANDUP_DIAG_BRAKES,
     SPR_G2_STANDUP_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t StandupRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
+static constexpr const uint32_t kStandupRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_STANDUP_DIAG_BRAKES + 3,
         SPR_G2_STANDUP_DIAG_BRAKES + 5,
@@ -132,7 +132,7 @@ static void StandUpRCTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(_StandUpBlockBrakeImages[direction][isClosed]), { 0, 6, height },
+            session, direction, session.TrackColours.WithIndex(kStandUpBlockBrakeImages[direction][isClosed]), { 0, 6, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
@@ -6385,7 +6385,7 @@ static void StandUpRCTrackDiagBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, StandupRCDiagBrakeImages, supportType.metal);
+        session, 3, height, direction, trackSequence, kStandupRCDiagBrakeImages, supportType.metal);
 }
 
 static void StandUpRCTrackDiagBlockBrakes(
@@ -6393,7 +6393,7 @@ static void StandUpRCTrackDiagBlockBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, StandupRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        session, 3, height, direction, trackSequence, kStandupRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
         supportType.metal);
 }
 
@@ -9848,7 +9848,7 @@ static void StandUpRCTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_StandUpBlockBrakeImages[direction][isClosed]), { 0, 6, height },
+        session, direction, session.TrackColours.WithIndex(kStandUpBlockBrakeImages[direction][isClosed]), { 0, 6, height },
         { 32, 20, 3 });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))

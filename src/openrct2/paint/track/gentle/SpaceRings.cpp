@@ -30,7 +30,7 @@ enum
     SprSpaceRingsFenceNw = 22149,
 };
 
-static constexpr uint32_t SpaceRingsFenceSprites[] = {
+static constexpr uint32_t kSpaceRingsFenceSprites[] = {
     SprSpaceRingsFenceNe,
     SprSpaceRingsFenceSe,
     SprSpaceRingsFenceSw,
@@ -123,7 +123,7 @@ static void PaintSpaceRings(
             break;
         default:
             TrackPaintUtilPaintFences(
-                session, edges, position, trackElement, ride, stationColour, height, SpaceRingsFenceSprites,
+                session, edges, position, trackElement, ride, stationColour, height, kSpaceRingsFenceSprites,
                 session.CurrentRotation);
             break;
     }
