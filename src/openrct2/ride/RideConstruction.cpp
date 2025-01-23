@@ -442,7 +442,13 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         }
         if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
         {
-            trackElement->SetColourScheme(static_cast<RideColourScheme>(extra_params & 0xFF));
+            auto newScheme = static_cast<RideColourScheme>(extra_params & 0xFF);
+            trackElement->SetColourScheme(newScheme);
+
+            if (_previousTrackPiece == retCoordsXYZ)
+            {
+                _currentColourScheme = newScheme;
+            }
         }
         if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
         {
@@ -645,6 +651,10 @@ void RideConstructionSetDefaultNextPiece()
                 _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
             _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
             _currentSeatRotationAngle = trackElement->GetSeatRotation();
+
+            _previousTrackPiece.x = trackBeginEnd.begin_x;
+            _previousTrackPiece.y = trackBeginEnd.begin_y;
+            _previousTrackPiece.z = trackElement->GetBaseZ();
             break;
         }
         case RideConstructionState::Back:
@@ -701,6 +711,10 @@ void RideConstructionSetDefaultNextPiece()
                 _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
             _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
             _currentSeatRotationAngle = trackElement->GetSeatRotation();
+
+            _previousTrackPiece.x = xyElement.x;
+            _previousTrackPiece.y = xyElement.y;
+            _previousTrackPiece.z = trackElement->GetBaseZ();
             break;
         }
         default:
