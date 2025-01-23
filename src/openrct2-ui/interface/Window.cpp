@@ -527,12 +527,17 @@ namespace OpenRCT2
 
     void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
     {
+        assert(start_tab_id < w->widgets.size());
+        assert(end_tab_id < w->widgets.size());
+
         int32_t i, x = w->widgets[start_tab_id].left;
         int32_t tab_width = w->widgets[start_tab_id].width();
 
         for (i = start_tab_id; i <= end_tab_id; i++)
         {
             auto& widget = w->widgets[i];
+            assert(widget.type == WindowWidgetType::Tab);
+
             if (!WidgetIsDisabled(*w, i))
             {
                 widget.left = x;
