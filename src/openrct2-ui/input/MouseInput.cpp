@@ -961,7 +961,7 @@ namespace OpenRCT2
         {
             windowClass = w->classification;
             windowNumber = w->number;
-            widget = &w->widgets[widgetIndex];
+            widget = widgetIndex == kWidgetIndexNull ? nullptr : &w->widgets[widgetIndex];
         }
 
         InputWidgetOverChangeCheck(windowClass, windowNumber, widgetIndex);

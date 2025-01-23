@@ -248,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCROLL].bottom = height - 19;
             widgets[WIDX_RESET].top = height - 16;
             widgets[WIDX_RESET].bottom = height - 5;
-            WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
+            WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size() - 1));
 
             // Set selected tab
             for (size_t i = 0; i < _tabs.size(); i++)
@@ -450,7 +450,7 @@ namespace OpenRCT2::Ui::Windows
         void InitialiseWidgets()
         {
             widgets.clear();
-            widgets.insert(widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets) - 1);
+            widgets.insert(widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets));
 
             int32_t x = 3;
             for (size_t i = 0; i < _tabs.size(); i++)
