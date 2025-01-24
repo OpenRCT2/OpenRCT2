@@ -143,7 +143,7 @@ namespace OpenRCT2::Park
                     continue;
                 if (ride.GetStation().SegmentLength < (600 << 16))
                     continue;
-                if (ride.ratings.excitement < RIDE_RATING(6, 00))
+                if (ride.ratings.excitement < MakeRideRating(6, 00))
                     continue;
 
                 // Bonus guests for good ride

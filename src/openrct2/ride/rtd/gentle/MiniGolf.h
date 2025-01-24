@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 50), RIDE_RATING(0, 90), RIDE_RATING(0, 00) },
+        { MakeRideRating(1, 50), MakeRideRating(0, 90), MakeRideRating(0, 00) },
         0,
         -1,
         false,

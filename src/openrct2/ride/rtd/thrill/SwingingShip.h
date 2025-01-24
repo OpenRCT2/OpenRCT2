@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 50), RIDE_RATING(1, 90), RIDE_RATING(1, 41) },
+        { MakeRideRating(1, 50), MakeRideRating(1, 90), MakeRideRating(1, 41) },
         10,
         0,
         false,

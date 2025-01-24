@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 80), RIDE_RATING(3, 50), RIDE_RATING(3, 50) },
+        { MakeRideRating(2, 80), MakeRideRating(3, 50), MakeRideRating(3, 50) },
         24,
         -1,
         false,

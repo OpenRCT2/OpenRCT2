@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor MazeRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 00) },
+        { MakeRideRating(1, 30), MakeRideRating(0, 50), MakeRideRating(0, 00) },
         8,
         0,
         false,

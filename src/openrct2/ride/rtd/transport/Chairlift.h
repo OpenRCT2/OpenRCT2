@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 60), RIDE_RATING(0, 40), RIDE_RATING(0, 50) },
+        { MakeRideRating(1, 60), MakeRideRating(0, 40), MakeRideRating(0, 50) },
         14,
         -1,
         false,

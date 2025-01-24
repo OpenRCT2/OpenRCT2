@@ -661,7 +661,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
     BitSet<kMaxRideObjects> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(6, 00)
+        if (ride.status == RideStatus::Open && ride.ratings.excitement >= MakeRideRating(6, 00)
             && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.GetRideEntry();
@@ -763,7 +763,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(7, 00)
+        if (ride.status == RideStatus::Open && ride.ratings.excitement >= MakeRideRating(7, 00)
             && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.GetRideEntry();
