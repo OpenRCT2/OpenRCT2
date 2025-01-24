@@ -67,7 +67,8 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<uint8_t>(0);
         auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign.appearance.stationObjectIdentifier);
         tempStream.WriteValue<uint8_t>(entranceStyle);
-        uint16_t _totalAirTime = std::max<uint16_t>(255, (_trackDesign.statistics.totalAirTime * 123) / 1024);
+        // The 512 added is to enforce correctly rounding up, as integer division will truncate.
+        uint16_t _totalAirTime = std::min<uint16_t>(255, ((_trackDesign.statistics.totalAirTime * 123) + 512) / 1024);
         tempStream.WriteValue<uint8_t>(_totalAirTime);
         tempStream.WriteValue<uint8_t>(_trackDesign.operation.departFlags);
         tempStream.WriteValue<uint8_t>(_trackDesign.trackAndVehicle.numberOfTrains);
