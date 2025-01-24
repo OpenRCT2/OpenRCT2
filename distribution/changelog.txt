@@ -8,6 +8,7 @@
 - Change: [#23328] All RCT2 entertainer costumes are now available in legacy parks.
 - Fix: [#1479] Incorrect values provided by the in game console “get location” command.
 - Fix: [#21794] Lay-down coaster cars reverse on first frames of downwards corkscrew.
+- Fix: [#23221] Track designs are saved with an incorrect ‘air’ time statistic. 
 - Fix: [#23368] Incorrect refund amount when deleting track pieces at or above 96m.
 - Fix: [#23508] Simultaneous virtual floors shown for ride and footpath.
 - Fix: [#23512] Holding brakes are skipped if they’re too close together.
