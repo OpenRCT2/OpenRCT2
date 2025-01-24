@@ -113,9 +113,9 @@ namespace OpenRCT2::Ui::Windows
 
                 if (gDropdownItems[i].IsSeparator())
                 {
-                    const ScreenCoordsXY leftTop = screenCoords + ScreenCoordsXY{ 0, (ItemHeight / 2) };
-                    const ScreenCoordsXY rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 1, 0 };
-                    const ScreenCoordsXY shadowOffset{ 0, 1 };
+                    const auto leftTop = screenCoords + ScreenCoordsXY{ 2, (ItemHeight / 2) - 1 };
+                    const auto rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 4, 0 };
+                    const auto shadowOffset = ScreenCoordsXY{ 0, 1 };
 
                     if (colours[0].hasFlag(ColourFlag::translucent))
                     {
@@ -166,7 +166,8 @@ namespace OpenRCT2::Ui::Windows
                         // Draw item string
                         auto yOffset = GetAdditionalRowPadding();
                         Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].Args));
-                        DrawTextEllipsised(dpi, { screenCoords.x, screenCoords.y + yOffset }, width - 5, item, ft, { colour });
+                        DrawTextEllipsised(
+                            dpi, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, item, ft, { colour });
                     }
                 }
             }
@@ -188,16 +189,17 @@ namespace OpenRCT2::Ui::Windows
             // Set and calculate num items, rows and columns
             ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customHeight : GetDefaultRowHeight();
             gDropdownNumItems = static_cast<int32_t>(numItems);
-            // There must always be at least one column to prevent dividing by zero
+
             if (gDropdownNumItems <= 1)
             {
+                // There must always be at least one column to prevent division by zero
                 NumRows = 1;
                 NumColumns = 1;
             }
             else
             {
                 const int32_t numAvailableRows = std::max(1, getSpaceUntilBottom(screenPos, extraY) / ItemHeight);
-                NumRows = std::min(numAvailableRows, gDropdownNumItems);
+                NumRows = std::min({ 20, numAvailableRows / 2, gDropdownNumItems });
                 NumColumns = (gDropdownNumItems + NumRows - 1) / NumRows;
             }
 

@@ -24,6 +24,199 @@ using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2
 {
+    constexpr auto kSeparator = TrackElemType::None;
+
+    /**
+     * Order of special track elements dropdown. Elements with the same name string must be sequential or they show up twice.
+     */
+    constexpr std::array kSpecialElementsDropdownOrder = {
+        TrackElemType::EndStation,
+
+        // Brakes
+        TrackElemType::Brakes,
+        TrackElemType::DiagBrakes,
+        TrackElemType::Down25Brakes,
+        TrackElemType::BlockBrakes,
+        TrackElemType::DiagBlockBrakes,
+
+        // Boosters
+        TrackElemType::Booster,
+        TrackElemType::DiagBooster,
+
+        // Photo sections
+        TrackElemType::OnRidePhoto,
+
+        // Rotation control
+        TrackElemType::RotationControlToggle,
+
+        // Brake for drop
+        TrackElemType::BrakeForDrop,
+
+        // S-Bends
+        TrackElemType::SBendLeft,
+        TrackElemType::SBendRight,
+        kSeparator,
+
+        // Tower
+        TrackElemType::TowerBase,
+        TrackElemType::TowerSection,
+
+        // Mini Golf pieces
+        TrackElemType::MinigolfHoleA,
+        TrackElemType::MinigolfHoleB,
+        TrackElemType::MinigolfHoleC,
+        TrackElemType::MinigolfHoleD,
+        TrackElemType::MinigolfHoleE,
+        kSeparator,
+
+        // (Curved) lift (hills) pieces
+        TrackElemType::LeftCurvedLiftHill,
+        TrackElemType::RightCurvedLiftHill,
+        TrackElemType::CableLiftHill,
+        TrackElemType::PoweredLift,
+        kSeparator,
+
+        // Heart Line pieces
+        TrackElemType::HeartLineTransferUp,
+        TrackElemType::HeartLineTransferDown,
+        TrackElemType::LeftHeartLineRoll,
+        TrackElemType::RightHeartLineRoll,
+        kSeparator,
+
+        // Helixes
+        TrackElemType::LeftHalfBankedHelixUpSmall,
+        TrackElemType::RightHalfBankedHelixUpSmall,
+        TrackElemType::LeftHalfBankedHelixDownSmall,
+        TrackElemType::RightHalfBankedHelixDownSmall,
+        TrackElemType::LeftHalfBankedHelixUpLarge,
+        TrackElemType::RightHalfBankedHelixUpLarge,
+        TrackElemType::LeftHalfBankedHelixDownLarge,
+        TrackElemType::RightHalfBankedHelixDownLarge,
+        TrackElemType::LeftQuarterBankedHelixLargeUp,
+        TrackElemType::RightQuarterBankedHelixLargeUp,
+        TrackElemType::LeftQuarterBankedHelixLargeDown,
+        TrackElemType::RightQuarterBankedHelixLargeDown,
+        TrackElemType::LeftQuarterHelixLargeUp,
+        TrackElemType::RightQuarterHelixLargeUp,
+        TrackElemType::LeftQuarterHelixLargeDown,
+        TrackElemType::RightQuarterHelixLargeDown,
+        kSeparator,
+
+        // (Wooden) water splash
+        TrackElemType::Watersplash,
+        kSeparator,
+
+        // River Rapids
+        TrackElemType::Waterfall,
+        TrackElemType::Rapids, // Also used for Monster Trucks
+        TrackElemType::Whirlpool,
+        kSeparator,
+
+        // Spinning tunnel
+        TrackElemType::SpinningTunnel,
+        kSeparator,
+
+        // Reverser pieces
+        TrackElemType::LeftReverser,
+        TrackElemType::RightReverser,
+        TrackElemType::LogFlumeReverser,
+        kSeparator,
+
+        // Reverse freefall pieces
+        TrackElemType::ReverseFreefallSlope,
+        TrackElemType::ReverseFreefallVertical,
+        kSeparator,
+
+        // Air thrust pieces
+        TrackElemType::AirThrustTopCap,
+        TrackElemType::AirThrustVerticalDown,
+        TrackElemType::AirThrustVerticalDownToLevel,
+        kSeparator,
+
+        // Loops
+        TrackElemType::LeftVerticalLoop,
+        TrackElemType::RightVerticalLoop,
+        TrackElemType::HalfLoopUp,
+        TrackElemType::HalfLoopDown,
+        TrackElemType::FlyerHalfLoopUninvertedUp,
+        TrackElemType::FlyerHalfLoopInvertedDown,
+        TrackElemType::FlyerHalfLoopInvertedUp,
+        TrackElemType::FlyerHalfLoopUninvertedDown,
+        TrackElemType::LeftMediumHalfLoopUp,
+        TrackElemType::LeftMediumHalfLoopDown,
+        TrackElemType::RightMediumHalfLoopUp,
+        TrackElemType::RightMediumHalfLoopDown,
+        TrackElemType::LeftLargeHalfLoopUp,
+        TrackElemType::LeftLargeHalfLoopDown,
+        TrackElemType::RightLargeHalfLoopUp,
+        TrackElemType::RightLargeHalfLoopDown,
+        TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp,
+        TrackElemType::LeftFlyerLargeHalfLoopInvertedDown,
+        TrackElemType::LeftFlyerLargeHalfLoopInvertedUp,
+        TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown,
+        TrackElemType::RightFlyerLargeHalfLoopUninvertedUp,
+        TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
+        TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
+        TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
+        TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop,
+        TrackElemType::Up90ToInvertedFlatQuarterLoop,
+        TrackElemType::InvertedFlatToDown90QuarterLoop,
+        TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop,
+        TrackElemType::MultiDimFlatToDown90QuarterLoop,
+        TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop,
+        kSeparator,
+
+        // Zero-G Rolls, Dive Loops
+        TrackElemType::LeftZeroGRollUp,
+        TrackElemType::LeftZeroGRollDown,
+        TrackElemType::RightZeroGRollUp,
+        TrackElemType::RightZeroGRollDown,
+        TrackElemType::LeftLargeZeroGRollUp,
+        TrackElemType::LeftLargeZeroGRollDown,
+        TrackElemType::RightLargeZeroGRollUp,
+        TrackElemType::RightLargeZeroGRollDown,
+        TrackElemType::LeftEighthDiveLoopUpToOrthogonal,
+        TrackElemType::LeftEighthDiveLoopDownToDiag,
+        TrackElemType::RightEighthDiveLoopUpToOrthogonal,
+        TrackElemType::RightEighthDiveLoopDownToDiag,
+        kSeparator,
+
+        // Corkscrews
+        TrackElemType::LeftCorkscrewUp,
+        TrackElemType::LeftCorkscrewDown,
+        TrackElemType::RightCorkscrewUp,
+        TrackElemType::RightCorkscrewDown,
+        TrackElemType::LeftFlyerCorkscrewUp,
+        TrackElemType::LeftFlyerCorkscrewDown,
+        TrackElemType::RightFlyerCorkscrewUp,
+        TrackElemType::RightFlyerCorkscrewDown,
+        TrackElemType::LeftLargeCorkscrewUp,
+        TrackElemType::LeftLargeCorkscrewDown,
+        TrackElemType::RightLargeCorkscrewUp,
+        TrackElemType::RightLargeCorkscrewDown,
+        kSeparator,
+
+        // Barrel Rolls
+        TrackElemType::LeftBarrelRollUpToDown,
+        TrackElemType::LeftBarrelRollDownToUp,
+        TrackElemType::RightBarrelRollUpToDown,
+        TrackElemType::RightBarrelRollDownToUp,
+        kSeparator,
+
+        // Twists
+        TrackElemType::LeftTwistDownToUp,
+        TrackElemType::LeftTwistUpToDown,
+        TrackElemType::RightTwistDownToUp,
+        TrackElemType::RightTwistUpToDown,
+        TrackElemType::LeftFlyerTwistUp,
+        TrackElemType::LeftFlyerTwistDown,
+        TrackElemType::RightFlyerTwistUp,
+        TrackElemType::RightFlyerTwistDown,
+    };
+
+    // Update the magic number with the current number of track elements to silence
+    static_assert(EnumValue(TrackElemType::Count) == 349, "Reminder to add new track element to special dropdown list");
+
     /**
      *
      *  rct2: 0x006B4800
@@ -60,14 +253,14 @@ namespace OpenRCT2
             && state != RideConstructionState::Back)
             return list;
 
-        for (OpenRCT2::TrackElemType trackType : DropdownOrder)
+        for (TrackElemType trackType : kSpecialElementsDropdownOrder)
         {
             const auto& ted = GetTrackElementDescriptor(trackType);
-            if (!IsTrackEnabled(ted.definition.group))
+            if (!IsTrackEnabled(ted.definition.group) && trackType != kSeparator)
                 continue;
-            bool entryIsDisabled;
 
             // If the current build orientation (slope, bank, diagonal) matches the track element's, show the piece as enabled
+            bool entryIsDisabled;
             if (state == RideConstructionState::Back)
             {
                 entryIsDisabled = ted.definition.pitchEnd != buildSlope || ted.definition.rollEnd != buildBank
@@ -91,7 +284,13 @@ namespace OpenRCT2
                 // If the current element is disabled, do not add current element.
                 if (entryIsDisabled)
                     continue;
+
                 auto& lastElement = list.Elements.back();
+
+                // Don't add two separators in a row
+                if (lastElement.TrackType == kSeparator && trackType == kSeparator)
+                    continue;
+
                 // If the previous element is disabled and current element is enabled, replace the previous element
                 if (lastElement.Disabled && !entryIsDisabled)
                 {
@@ -105,6 +304,15 @@ namespace OpenRCT2
             list.Elements.push_back({ trackType, entryIsDisabled });
             list.HasActiveElements |= !entryIsDisabled;
         }
+
+        // If the very last element is a separator, remove it
+        if (!list.Elements.empty())
+        {
+            auto& lastElement = list.Elements.back();
+            if (lastElement.TrackType == kSeparator)
+                list.Elements.pop_back();
+        }
+
         return list;
     }
 
