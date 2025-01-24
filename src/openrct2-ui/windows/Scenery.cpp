@@ -504,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                windowMgr->InvalidateWidget(*this, WIDX_FILTER_TEXT_BOX);
+                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             Invalidate();

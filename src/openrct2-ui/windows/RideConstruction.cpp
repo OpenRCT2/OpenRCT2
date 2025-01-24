@@ -939,8 +939,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
                 {
-                    auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->InvalidateWidget(*this, i);
+                    InvalidateWidget(i);
                 }
             }
             disabled_widgets = disabledWidgets;

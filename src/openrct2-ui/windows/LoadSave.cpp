@@ -798,9 +798,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-
-                auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateWidget(*this, WIDX_FILENAME_TEXTBOX);
+                InvalidateWidget(WIDX_FILENAME_TEXTBOX);
             }
         }
 

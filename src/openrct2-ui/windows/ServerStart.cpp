@@ -158,20 +158,16 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-
-                auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateWidget(*this, WIDX_NAME_INPUT);
-                windowMgr->InvalidateWidget(*this, WIDX_DESCRIPTION_INPUT);
-                windowMgr->InvalidateWidget(*this, WIDX_GREETING_INPUT);
-                windowMgr->InvalidateWidget(*this, WIDX_PASSWORD_INPUT);
+                InvalidateWidget(WIDX_NAME_INPUT);
+                InvalidateWidget(WIDX_DESCRIPTION_INPUT);
+                InvalidateWidget(WIDX_GREETING_INPUT);
+                InvalidateWidget(WIDX_PASSWORD_INPUT);
             }
         }
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             std::string temp = static_cast<std::string>(text);
             int tempPort = 0;
-
-            auto* windowMgr = Ui::GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -189,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
                         Config::Save();
                     }
 
-                    windowMgr->InvalidateWidget(*this, WIDX_PORT_INPUT);
+                    InvalidateWidget(WIDX_PORT_INPUT);
                     break;
                 case WIDX_NAME_INPUT:
                     if (strcmp(_name, temp.c_str()) == 0)
@@ -204,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
                         Config::Save();
                     }
 
-                    windowMgr->InvalidateWidget(*this, WIDX_NAME_INPUT);
+                    InvalidateWidget(WIDX_NAME_INPUT);
                     break;
                 case WIDX_DESCRIPTION_INPUT:
                     if (strcmp(_description, temp.c_str()) == 0)
@@ -214,7 +210,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().network.ServerDescription = _description;
                     Config::Save();
 
-                    windowMgr->InvalidateWidget(*this, WIDX_DESCRIPTION_INPUT);
+                    InvalidateWidget(WIDX_DESCRIPTION_INPUT);
                     break;
                 case WIDX_GREETING_INPUT:
                     if (strcmp(_greeting, temp.c_str()) == 0)
@@ -224,7 +220,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().network.ServerGreeting = _greeting;
                     Config::Save();
 
-                    windowMgr->InvalidateWidget(*this, WIDX_GREETING_INPUT);
+                    InvalidateWidget(WIDX_GREETING_INPUT);
                     break;
                 case WIDX_PASSWORD_INPUT:
                     if (strcmp(_password, temp.c_str()) == 0)
@@ -232,7 +228,7 @@ namespace OpenRCT2::Ui::Windows
 
                     String::safeUtf8Copy(_password, temp.c_str(), sizeof(_password));
 
-                    windowMgr->InvalidateWidget(*this, WIDX_PASSWORD_INPUT);
+                    InvalidateWidget(WIDX_PASSWORD_INPUT);
                     break;
             }
         }

@@ -246,8 +246,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateWidget(*this, WIDX_CONSTRUCT);
+            InvalidateWidget(WIDX_CONSTRUCT);
             WindowFootpathUpdateProvisionalPathForBridgeMode();
 
             // #2502: The camera might have changed rotation, so we need to update which directional buttons are pressed

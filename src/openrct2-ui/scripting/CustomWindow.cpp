@@ -466,8 +466,7 @@ namespace OpenRCT2::Ui::Windows
                         frame_no = 0;
                     }
 
-                    auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->InvalidateWidget(*this, WIDX_TAB_0 + this->page);
+                    InvalidateWidget(WIDX_TAB_0 + this->page);
                 }
             }
 

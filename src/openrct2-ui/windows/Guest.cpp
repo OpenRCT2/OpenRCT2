@@ -596,10 +596,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DisableWidgets();
             OnPrepareDraw();
-
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateWidget(*this, WIDX_MARQUEE);
-
+            InvalidateWidget(WIDX_MARQUEE);
             OnResizeCommon();
 
             if (viewport != nullptr)
@@ -887,14 +884,13 @@ namespace OpenRCT2::Ui::Windows
             picked_peep_frame++;
             picked_peep_frame %= pickAnimLength * 4;
 
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateWidget(*this, WIDX_TAB_1);
-            windowMgr->InvalidateWidget(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_2);
 
             if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
             {
                 peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
-                windowMgr->InvalidateWidget(*this, WIDX_ACTION_LBL);
+                InvalidateWidget(WIDX_ACTION_LBL);
             }
 
             _marqueePosition += 2;
@@ -1217,9 +1213,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateWidget(*this, WIDX_TAB_2);
-            windowMgr->InvalidateWidget(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_3);
 
             const auto guest = GetGuest();
             if (guest == nullptr)

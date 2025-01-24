@@ -217,8 +217,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no++;
             OnPrepareDraw();
 
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateWidget(*this, WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_1);
 
             if (WindowEditorInventionsListDragGetItem() != nullptr)
                 return;
