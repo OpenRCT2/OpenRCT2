@@ -52,6 +52,11 @@ namespace OpenRCT2
         // Brake for drop
         TrackElemType::BrakeForDrop,
 
+        // S-Bends
+        TrackElemType::SBendLeft,
+        TrackElemType::SBendRight,
+        kSeparator,
+
         // Tower
         TrackElemType::TowerBase,
         TrackElemType::TowerSection,
@@ -62,10 +67,6 @@ namespace OpenRCT2
         TrackElemType::MinigolfHoleC,
         TrackElemType::MinigolfHoleD,
         TrackElemType::MinigolfHoleE,
-
-        // S-Bends
-        TrackElemType::SBendLeft,
-        TrackElemType::SBendRight,
         kSeparator,
 
         // (Curved) lift (hills) pieces
