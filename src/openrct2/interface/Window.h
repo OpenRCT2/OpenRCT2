@@ -54,88 +54,13 @@ namespace OpenRCT2
 
     extern WindowCloseModifier gLastCloseModifier;
 
-    /**
-     * Viewport structure
-     */
-    struct Viewport
-    {
-        int32_t width{};
-        int32_t height{};
-        ScreenCoordsXY pos{};
-        ScreenCoordsXY viewPos{};
-        uint32_t flags{};
-        ZoomLevel zoom{};
-        uint8_t rotation{};
-        VisibilityCache visibility{};
-
-        [[nodiscard]] constexpr int32_t ViewWidth() const
-        {
-            return zoom.ApplyTo(width);
-        }
-
-        [[nodiscard]] constexpr int32_t ViewHeight() const
-        {
-            return zoom.ApplyTo(height);
-        }
-
-        // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
-        // from its x, y, z
-        [[nodiscard]] constexpr bool Contains(const ScreenCoordsXY& vpos) const
-        {
-            return (
-                vpos.y >= viewPos.y && vpos.y < viewPos.y + ViewHeight() && vpos.x >= viewPos.x
-                && vpos.x < viewPos.x + ViewWidth());
-        }
-
-        // Use this function on coordinates that are relative to the screen that is been drawn i.e. the cursor position
-        [[nodiscard]] constexpr bool ContainsScreen(const ScreenCoordsXY& sPos) const
-        {
-            return (sPos.x >= pos.x && sPos.x < pos.x + width && sPos.y >= pos.y && sPos.y < pos.y + height);
-        }
-
-        [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
-
-        void Invalidate() const;
-    };
-
-    struct Focus
-    {
-        using CoordinateFocus = CoordsXYZ;
-        using EntityFocus = EntityId;
-
-        ZoomLevel zoom{};
-        std::variant<CoordinateFocus, EntityFocus> data;
-
-        template<typename T>
-        constexpr explicit Focus(T newValue, ZoomLevel newZoom = {})
-        {
-            data = newValue;
-            zoom = newZoom;
-        }
-
-        CoordsXYZ GetPos() const;
-
-        constexpr bool operator==(const Focus& other) const
-        {
-            if (zoom != other.zoom)
-            {
-                return false;
-            }
-            return data == other.data;
-        }
-        constexpr bool operator!=(const Focus& other) const
-        {
-            return !(*this == other);
-        }
-    };
-
     struct WindowCloseModifier
     {
         WindowIdentifier window;
         CloseWindowModifier modifier;
     };
 
-    struct WindowBase;
+    struct Viewport;
 
 #define RCT_WINDOW_RIGHT(w) ((w)->windowPos.x + (w)->width)
 #define RCT_WINDOW_BOTTOM(w) ((w)->windowPos.y + (w)->height)
