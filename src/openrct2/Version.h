@@ -28,6 +28,8 @@
     #endif
 #elif defined(__powerpc__) || defined(_M_PPC)
     #define OPENRCT2_ARCHITECTURE "PowerPC"
+#elif defined(__s390x__)
+    #define OPENRCT2_ARCHITECTURE "s390x"
 #elif defined(__mips64)
     #define OPENRCT2_ARCHITECTURE "mips64"
 #elif defined(__mips__)
