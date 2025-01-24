@@ -994,7 +994,7 @@ public:
     /**
      * Closes all windows with the specified window class.
      *  rct2: 0x006ECCF4
-     * @param cls (cl) with bit 15 set
+     * @param WindowClass enum
      */
     void CloseByClass(WindowClass cls) override
     {
@@ -1004,8 +1004,8 @@ public:
     /**
      * Closes all windows with specified window class and number.
      *  rct2: 0x006ECCF4
-     * @param cls (cl) without bit 15 set
-     * @param number (dx)
+     * @param WindowClass enum
+     * @param window number
      */
     void CloseByNumber(WindowClass cls, rct_windownumber number) override
     {
@@ -1066,8 +1066,8 @@ public:
 
     /**
      * Closes all windows except the specified window number and class.
-     * @param number (dx)
-     * @param cls (cl) without bit 15 set
+     * @param WindowClass enum
+     * @param window number
      */
     void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override
     {
@@ -1168,8 +1168,6 @@ public:
     /**
      *
      *  rct2: 0x006EA594
-     * x (ax)
-     * y (bx)
      * returns widget_index if found, -1 otherwise
      */
     WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) override
@@ -1225,7 +1223,7 @@ public:
     /**
      * Invalidates all windows with the specified window class.
      *  rct2: 0x006EC3AC
-     * @param cls (al) with bit 14 set
+     * @param WindowClass enum
      */
     void InvalidateByClass(WindowClass cls) override
     {
@@ -1364,8 +1362,8 @@ public:
     /**
      *
      *  rct2: 0x006ED78A
-     * cls (cl)
-     * number (dx)
+     * @param WindowClass enum
+     * @param window number
      */
     WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) override
     {
