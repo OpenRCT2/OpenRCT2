@@ -32,6 +32,38 @@ struct RCTObjectEntry;
 
 namespace OpenRCT2
 {
+    // TODO: move to Viewport.h?
+    struct Focus
+    {
+        using CoordinateFocus = CoordsXYZ;
+        using EntityFocus = EntityId;
+
+        ZoomLevel zoom{};
+        std::variant<CoordinateFocus, EntityFocus> data;
+
+        template<typename T>
+        constexpr explicit Focus(T newValue, ZoomLevel newZoom = {})
+        {
+            data = newValue;
+            zoom = newZoom;
+        }
+
+        CoordsXYZ GetPos() const;
+
+        constexpr bool operator==(const Focus& other) const
+        {
+            if (zoom != other.zoom)
+            {
+                return false;
+            }
+            return data == other.data;
+        }
+        constexpr bool operator!=(const Focus& other) const
+        {
+            return !(*this == other);
+        }
+    };
+
     /**
      * Window structure
      * size: 0x4C0

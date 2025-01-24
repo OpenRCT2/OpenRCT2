@@ -29,6 +29,49 @@ namespace OpenRCT2
 {
     struct WindowBase;
 
+    struct Viewport
+    {
+        int32_t width{};
+        int32_t height{};
+        ScreenCoordsXY pos{};
+        ScreenCoordsXY viewPos{};
+        uint32_t flags{};
+        ZoomLevel zoom{};
+        uint8_t rotation{};
+        VisibilityCache visibility{};
+
+        [[nodiscard]] constexpr int32_t ViewWidth() const
+        {
+            return zoom.ApplyTo(width);
+        }
+
+        [[nodiscard]] constexpr int32_t ViewHeight() const
+        {
+            return zoom.ApplyTo(height);
+        }
+
+        // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
+        // from its x, y, z
+        [[nodiscard]] constexpr bool Contains(const ScreenCoordsXY& vpos) const
+        {
+            return (
+                vpos.y >= viewPos.y && vpos.y < viewPos.y + ViewHeight() && vpos.x >= viewPos.x
+                && vpos.x < viewPos.x + ViewWidth());
+        }
+
+        // Use this function on coordinates that are relative to the screen that is been drawn i.e. the cursor position
+        [[nodiscard]] constexpr bool ContainsScreen(const ScreenCoordsXY& sPos) const
+        {
+            return (sPos.x >= pos.x && sPos.x < pos.x + width && sPos.y >= pos.y && sPos.y < pos.y + height);
+        }
+
+        [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
+
+        void Invalidate() const;
+    };
+
+    struct Focus;
+
     // Flags must currenly retain their values to avoid breaking plugins.
     // Values can be changed when plugins move to using named constants.
     enum : uint32_t
