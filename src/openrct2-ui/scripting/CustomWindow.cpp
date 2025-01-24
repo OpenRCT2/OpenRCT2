@@ -9,7 +9,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../UiContext.h"
     #include "../UiStringIds.h"
     #include "../interface/Dropdown.h"
     #include "../interface/Widget.h"

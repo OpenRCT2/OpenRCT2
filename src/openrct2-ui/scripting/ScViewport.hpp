@@ -18,7 +18,6 @@
     #include <openrct2/interface/Viewport.h>
     #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
-    #include <openrct2/ui/UiContext.h>
     #include <openrct2/ui/WindowManager.h>
     #include <openrct2/world/Map.h>
 

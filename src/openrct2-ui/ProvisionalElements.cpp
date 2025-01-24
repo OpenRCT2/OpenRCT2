@@ -16,7 +16,6 @@
 #include <openrct2/network/network.h>
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/RideConstruction.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Footpath.h>
 
