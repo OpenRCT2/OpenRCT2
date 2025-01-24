@@ -13,9 +13,9 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../entity/Peep.h"
-#include "../ui/WindowManager.h"
 #include "../management/Finance.h"
 #include "../scenario/Scenario.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2;

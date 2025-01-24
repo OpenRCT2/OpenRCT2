@@ -16,9 +16,9 @@
 #include "../../OpenRCT2.h"
 #include "../../audio/audio.h"
 #include "../../interface/Viewport.h"
-#include "../../ui/WindowManager.h"
 #include "../../localisation/LocalisationService.h"
 #include "../../localisation/StringIds.h"
+#include "../../ui/WindowManager.h"
 #include "../../windows/Intent.h"
 
 #include <sstream>
