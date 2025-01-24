@@ -78,7 +78,6 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
     #include "../interface/Chat.h"
-    #include "../interface/Window.h"
     #include "../localisation/Localisation.Date.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"

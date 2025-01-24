@@ -16,7 +16,6 @@
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../entity/EntityList.h"
-#include "../interface/Window.h"
 #include "../management/NewsItem.h"
 #include "../peep/RideUseSystem.h"
 #include "../ride/Ride.h"

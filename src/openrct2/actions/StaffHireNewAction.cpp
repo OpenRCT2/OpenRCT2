@@ -17,7 +17,6 @@
 #include "../drawing/Drawing.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/ObjectManager.h"

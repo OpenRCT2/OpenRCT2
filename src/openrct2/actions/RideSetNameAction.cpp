@@ -14,7 +14,6 @@
 #include "../Diagnostic.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ui/WindowManager.h"

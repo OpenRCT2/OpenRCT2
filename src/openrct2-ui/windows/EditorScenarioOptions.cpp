@@ -10,7 +10,6 @@
 #include "../UiStringIds.h"
 #include "../interface/Dropdown.h"
 #include "../interface/Widget.h"
-#include "../interface/Window.h"
 #include "Windows.h"
 
 #include <openrct2/Context.h>

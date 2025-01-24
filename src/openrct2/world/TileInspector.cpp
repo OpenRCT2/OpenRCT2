@@ -11,7 +11,6 @@
 
 #include "../Diagnostic.h"
 #include "../actions/GameAction.h"
-#include "../interface/Window.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
