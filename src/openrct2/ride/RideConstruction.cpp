@@ -78,6 +78,7 @@ TrackPitch _previousTrackPitchEnd;
 CoordsXYZ _previousTrackPiece;
 
 uint8_t _currentBrakeSpeed;
+RideColourScheme _currentColourScheme;
 uint8_t _currentSeatRotationAngle;
 
 CoordsXYZD _unkF440C5;
@@ -442,7 +443,13 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         }
         if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
         {
-            trackElement->SetColourScheme(static_cast<RideColourScheme>(extra_params & 0xFF));
+            auto newScheme = static_cast<RideColourScheme>(extra_params & 0xFF);
+            trackElement->SetColourScheme(newScheme);
+
+            if (_previousTrackPiece == retCoordsXYZ)
+            {
+                _currentColourScheme = newScheme;
+            }
         }
         if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
         {
@@ -632,12 +639,23 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackRollEnd = bank;
             _previousTrackRollEnd = bank;
 
+            const auto& trackElement = tileElement->AsTrack();
+
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain()
+            _currentTrackHasLiftHill = trackElement->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
                     || GetGameState().Cheats.enableChainLiftOnAllTrack);
+
+            if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
+                _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
+            _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
+            _currentSeatRotationAngle = trackElement->GetSeatRotation();
+
+            _previousTrackPiece.x = trackBeginEnd.begin_x;
+            _previousTrackPiece.y = trackBeginEnd.begin_y;
+            _previousTrackPiece.z = trackElement->GetBaseZ();
             break;
         }
         case RideConstructionState::Back:
@@ -680,13 +698,24 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackRollEnd = bank;
             _previousTrackRollEnd = bank;
 
+            const auto& trackElement = tileElement->AsTrack();
+
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
             if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
-                _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain();
+                _currentTrackHasLiftHill = trackElement->HasChain();
             }
+
+            if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
+                _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
+            _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
+            _currentSeatRotationAngle = trackElement->GetSeatRotation();
+
+            _previousTrackPiece.x = xyElement.x;
+            _previousTrackPiece.y = xyElement.y;
+            _previousTrackPiece.z = trackElement->GetBaseZ();
             break;
         }
         default:
