@@ -396,8 +396,6 @@ public:
 
     void BroadcastIntent(const Intent& intent) override
     {
-        auto* windowMgr = GetWindowManager();
-
         switch (intent.GetAction())
         {
             case INTENT_ACTION_MAP:
@@ -504,19 +502,19 @@ public:
 
             case INTENT_ACTION_UPDATE_CLIMATE:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-                windowMgr->InvalidateByClass(WindowClass::GuestList);
+                InvalidateByClass(WindowClass::GuestList);
                 break;
 
             case INTENT_ACTION_UPDATE_GUEST_COUNT:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-                windowMgr->InvalidateByClass(WindowClass::GuestList);
-                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                InvalidateByClass(WindowClass::GuestList);
+                InvalidateByClass(WindowClass::ParkInformation);
                 WindowGuestListRefreshList();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
-                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                InvalidateByClass(WindowClass::ParkInformation);
                 break;
 
             case INTENT_ACTION_UPDATE_DATE:
@@ -524,7 +522,7 @@ public:
                 break;
 
             case INTENT_ACTION_UPDATE_CASH:
-                windowMgr->InvalidateByClass(WindowClass::Finances);
+                InvalidateByClass(WindowClass::Finances);
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
                 break;
 
@@ -540,8 +538,8 @@ public:
                 break;
             }
             case INTENT_ACTION_UPDATE_RESEARCH:
-                windowMgr->InvalidateByClass(WindowClass::Finances);
-                windowMgr->InvalidateByClass(WindowClass::Research);
+                InvalidateByClass(WindowClass::Finances);
+                InvalidateByClass(WindowClass::Research);
                 break;
 
             case INTENT_ACTION_UPDATE_VEHICLE_SOUNDS:
@@ -560,7 +558,7 @@ public:
 
             case INTENT_ACTION_TILE_MODIFY:
             {
-                windowMgr->InvalidateByClass(WindowClass::TileInspector);
+                InvalidateByClass(WindowClass::TileInspector);
                 break;
             }
 
