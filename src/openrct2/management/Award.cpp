@@ -12,7 +12,7 @@
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../entity/Guest.h"
-#include "../interface/Window.h"
+#include "../ui/WindowManager.h"
 #include "../localisation/StringIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
@@ -606,18 +606,21 @@ void AwardUpdateAll()
 
     auto& gameState = GetGameState();
     auto& currentAwards = gameState.CurrentAwards;
+    auto* windowMgr = Ui::GetWindowManager();
+
     // Decrease award times
     for (auto& award : currentAwards)
     {
         --award.Time;
     }
+
     // Remove any 0 time awards
     auto res = std::remove_if(
         std::begin(currentAwards), std::end(currentAwards), [](const Award& award) { return award.Time == 0; });
     if (res != std::end(currentAwards))
     {
         currentAwards.erase(res, std::end(currentAwards));
-        WindowInvalidateByClass(WindowClass::ParkInformation);
+        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
     }
 
     // Only add new awards if park is open
@@ -649,7 +652,7 @@ void AwardUpdateAll()
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});
                 }
-                WindowInvalidateByClass(WindowClass::ParkInformation);
+                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
             }
         }
     }

@@ -396,6 +396,8 @@ public:
 
     void BroadcastIntent(const Intent& intent) override
     {
+        auto* windowMgr = GetWindowManager();
+
         switch (intent.GetAction())
         {
             case INTENT_ACTION_MAP:
@@ -502,19 +504,19 @@ public:
 
             case INTENT_ACTION_UPDATE_CLIMATE:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-                WindowInvalidateByClass(WindowClass::GuestList);
+                windowMgr->InvalidateByClass(WindowClass::GuestList);
                 break;
 
             case INTENT_ACTION_UPDATE_GUEST_COUNT:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-                WindowInvalidateByClass(WindowClass::GuestList);
-                WindowInvalidateByClass(WindowClass::ParkInformation);
+                windowMgr->InvalidateByClass(WindowClass::GuestList);
+                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
                 WindowGuestListRefreshList();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
-                WindowInvalidateByClass(WindowClass::ParkInformation);
+                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
                 break;
 
             case INTENT_ACTION_UPDATE_DATE:
@@ -522,7 +524,7 @@ public:
                 break;
 
             case INTENT_ACTION_UPDATE_CASH:
-                WindowInvalidateByClass(WindowClass::Finances);
+                windowMgr->InvalidateByClass(WindowClass::Finances);
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
                 break;
 
@@ -538,8 +540,8 @@ public:
                 break;
             }
             case INTENT_ACTION_UPDATE_RESEARCH:
-                WindowInvalidateByClass(WindowClass::Finances);
-                WindowInvalidateByClass(WindowClass::Research);
+                windowMgr->InvalidateByClass(WindowClass::Finances);
+                windowMgr->InvalidateByClass(WindowClass::Research);
                 break;
 
             case INTENT_ACTION_UPDATE_VEHICLE_SOUNDS:
@@ -558,7 +560,7 @@ public:
 
             case INTENT_ACTION_TILE_MODIFY:
             {
-                WindowInvalidateByClass(WindowClass::TileInspector);
+                windowMgr->InvalidateByClass(WindowClass::TileInspector);
                 break;
             }
 
@@ -1203,6 +1205,105 @@ public:
 
         // Return the widget index
         return widget_index;
+    }
+
+    /**
+     * Invalidates the specified window.
+     *  rct2: 0x006EB13A
+     *
+     * @param window The window to invalidate (esi).
+     */
+    template<typename TPred>
+    static void InvalidateByCondition(TPred pred)
+    {
+        WindowVisitEach([pred](WindowBase* w) {
+            if (pred(w))
+            {
+                w->Invalidate();
+            }
+        });
+    }
+
+    /**
+     * Invalidates all windows with the specified window class.
+     *  rct2: 0x006EC3AC
+     * @param cls (al) with bit 14 set
+     */
+    void InvalidateByClass(WindowClass cls) override
+    {
+        InvalidateByCondition([cls](WindowBase* w) -> bool { return w->classification == cls; });
+    }
+
+    /**
+     * Invalidates all windows with the specified window class and number.
+     *  rct2: 0x006EC3AC
+     */
+    void InvalidateByNumber(WindowClass cls, rct_windownumber number) override
+    {
+        InvalidateByCondition([cls, number](WindowBase* w) -> bool { return w->classification == cls && w->number == number; });
+    }
+
+    // TODO: Use variant for this once the window framework is done.
+    void InvalidateByNumber(WindowClass cls, EntityId id) override
+    {
+        InvalidateByNumber(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
+    }
+
+    /**
+     * Invalidates all windows.
+     */
+    void InvalidateAll() override
+    {
+        WindowVisitEach([](WindowBase* w) { w->Invalidate(); });
+    }
+
+    /**
+     * Invalidates the specified widget of a window.
+     *  rct2: 0x006EC402
+     */
+    void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) override
+    {
+        if (w.widgets.empty())
+        {
+            // This might be called before the window is fully created.
+            return;
+        }
+
+        assert(widgetIndex < w.widgets.size());
+
+        const auto& widget = w.widgets[widgetIndex];
+        if (widget.left == -2)
+            return;
+
+        GfxSetDirtyBlocks({ { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
+                            { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
+    }
+
+    /**
+     * Invalidates the specified widget of all windows that match the specified window class.
+     */
+    void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override
+    {
+        WindowVisitEach([this, cls, widgetIndex](WindowBase* w) {
+            if (w->classification == cls)
+            {
+                InvalidateWidget(*w, widgetIndex);
+            }
+        });
+    }
+
+    /**
+     * Invalidates the specified widget of all windows that match the specified window class and number.
+     *  rct2: 0x006EC3AC
+     */
+    void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) override
+    {
+        WindowVisitEach([this, cls, number, widgetIndex](WindowBase* w) {
+            if (w->classification == cls && w->number == number)
+            {
+                InvalidateWidget(*w, widgetIndex);
+            }
+        });
     }
 
     /**

@@ -14,7 +14,6 @@
 #include "../Diagnostic.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
@@ -145,7 +144,9 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             ride->SetLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
             break;
     }
-    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
 
     auto res = GameActions::Result();
     if (!ride->overall_view.IsNull())

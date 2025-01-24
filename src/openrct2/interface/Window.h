@@ -380,14 +380,6 @@ namespace OpenRCT2
 
     void WindowSetWindowLimit(int32_t value);
 
-    void WindowInvalidateByClass(WindowClass cls);
-    void WindowInvalidateByNumber(WindowClass cls, rct_windownumber number);
-    void WindowInvalidateByNumber(WindowClass cls, EntityId id);
-    void WindowInvalidateAll();
-    void WidgetInvalidate(WindowBase& w, WidgetIndex widgetIndex);
-    void WidgetInvalidateByClass(WindowClass cls, WidgetIndex widgetIndex);
-    void WidgetInvalidateByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex);
-
     int32_t WindowGetScrollDataIndex(const WindowBase& w, WidgetIndex widget_index);
 
     void WindowPushOthersRight(WindowBase& w);

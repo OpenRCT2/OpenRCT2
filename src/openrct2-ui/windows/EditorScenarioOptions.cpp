@@ -538,8 +538,9 @@ namespace OpenRCT2::Ui::Windows
 
             if (gScreenFlags == SCREEN_FLAGS_PLAYING)
             {
-                WindowInvalidateByClass(WindowClass::Finances);
-                WindowInvalidateByClass(WindowClass::BottomToolbar);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateByClass(WindowClass::Finances);
+                windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
             }
         }
 
@@ -547,7 +548,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             FinancialPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_1);
         }
 
         void FinancialPrepareDraw()
@@ -820,7 +821,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             GuestsPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_2);
         }
 
         void GuestsPrepareDraw()
@@ -1119,7 +1120,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             ParkPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_3);
         }
 
         void ParkPrepareDraw()

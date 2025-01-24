@@ -690,7 +690,8 @@ namespace OpenRCT2::Ui::Windows
     {
         if (gScreenFlags == SCREEN_FLAGS_PLAYING)
         {
-            WidgetInvalidateByClass(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateWidgetByClass(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -216,7 +216,9 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_1);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateWidget(*this, WIDX_TAB_1);
 
             if (WindowEditorInventionsListDragGetItem() != nullptr)
                 return;
@@ -655,7 +657,7 @@ namespace OpenRCT2::Ui::Windows
                 inventionListWindow->MoveResearchItem(_draggedItem, res->research, res->isInvented);
             }
 
-            WindowInvalidateByClass(WindowClass::EditorInventionList);
+            windowMgr->InvalidateByClass(WindowClass::EditorInventionList);
             Close();
         }
 

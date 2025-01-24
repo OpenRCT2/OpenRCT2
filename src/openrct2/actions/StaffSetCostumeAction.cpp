@@ -12,10 +12,10 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../entity/EntityRegistry.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
+#include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
 using namespace OpenRCT2;
@@ -96,7 +96,9 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     staff->UpdateCurrentAnimationType();
     staff->Invalidate();
 
-    WindowInvalidateByNumber(WindowClass::Peep, _spriteIndex);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Peep, _spriteIndex);
+
     auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
     ContextBroadcastIntent(&intent);
 

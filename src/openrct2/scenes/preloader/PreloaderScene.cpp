@@ -16,7 +16,7 @@
 #include "../../OpenRCT2.h"
 #include "../../audio/audio.h"
 #include "../../interface/Viewport.h"
-#include "../../interface/Window.h"
+#include "../../ui/WindowManager.h"
 #include "../../localisation/LocalisationService.h"
 #include "../../localisation/StringIds.h"
 #include "../../windows/Intent.h"
@@ -50,7 +50,9 @@ void PreloaderScene::Tick()
     gInUpdateCode = true;
 
     ContextHandleInput();
-    WindowInvalidateAll();
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateAll();
 
     gInUpdateCode = false;
 

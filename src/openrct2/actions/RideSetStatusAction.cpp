@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -143,6 +142,8 @@ GameActions::Result RideSetStatusAction::Execute() const
         res.Position = { location, TileElementHeight(location) };
     }
 
+    auto* windowMgr = Ui::GetWindowManager();
+
     switch (_status)
     {
         case RideStatus::Closed:
@@ -160,7 +161,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
             ride->race_winner = EntityId::GetNull();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+            windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         case RideStatus::Simulating:
         {
@@ -183,7 +184,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+            windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         }
         case RideStatus::Testing:
@@ -202,7 +203,6 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
             //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
-            auto* windowMgr = Ui::GetWindowManager();
             WindowBase* constructionWindow = windowMgr->FindByNumber(WindowClass::RideConstruction, _rideIndex.ToUnderlying());
             if (constructionWindow != nullptr)
             {
@@ -236,7 +236,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+            windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         }
         default:

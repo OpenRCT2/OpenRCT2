@@ -346,10 +346,12 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
+            auto* windowMgr = Ui::GetWindowManager();
+
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+                windowMgr->InvalidateWidget(*this, WIDX_FILTER_TEXT_BOX);
             }
 
             auto& currentPage = ObjectSelectionPages[selected_tab];
@@ -365,7 +367,7 @@ namespace OpenRCT2::Ui::Windows
             if (frame_no >= subTabDef.animationLength)
                 frame_no = 0;
 
-            WidgetInvalidate(*this, WIDX_SUB_TAB_0 + _selectedSubTab);
+            windowMgr->InvalidateWidget(*this, WIDX_SUB_TAB_0 + _selectedSubTab);
         }
 
         /**

@@ -238,13 +238,16 @@ namespace OpenRCT2::Ui::Windows
             ViewportSetVisibility(ViewportVisibility::Default);
             MapInvalidateMapSelectionTiles();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
             HideGridlines();
         }
 
         void OnUpdate() override
         {
-            WidgetInvalidate(*this, WIDX_CONSTRUCT);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateWidget(*this, WIDX_CONSTRUCT);
             WindowFootpathUpdateProvisionalPathForBridgeMode();
 
             // #2502: The camera might have changed rotation, so we need to update which directional buttons are pressed
@@ -572,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
                 auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
                 _windowFootpathCost = FootpathProvisionalSet(type, railings, footpathLoc, slope, pathConstructFlags);
-                WidgetInvalidate(*this, WIDX_CONSTRUCT);
+                InvalidateWidget(WIDX_CONSTRUCT);
             }
 
             auto curTime = Platform::GetTicks();
@@ -1050,7 +1053,9 @@ namespace OpenRCT2::Ui::Windows
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             _windowFootpathCost = FootpathProvisionalSet(
                 pathType, gFootpathSelection.Railings, { *mapPos, baseZ }, slope, constructFlags);
-            WindowInvalidateByClass(WindowClass::Footpath);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::Footpath);
         }
 
         /**

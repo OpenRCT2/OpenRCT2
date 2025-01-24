@@ -686,7 +686,8 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless && isMainThread)
             {
                 _uiContext->ProcessMessages();
-                WindowInvalidateByClass(WindowClass::ProgressWindow);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateByClass(WindowClass::ProgressWindow);
                 Draw();
             }
         }

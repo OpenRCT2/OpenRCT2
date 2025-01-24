@@ -874,7 +874,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
 
         rideEntranceExitRemove.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
             gRideEntranceExitPlaceType = entranceType;
-            WindowInvalidateByClass(WindowClass::RideConstruction);
+            windowMgr->InvalidateByClass(WindowClass::RideConstruction);
 
             auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                     : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
@@ -886,7 +886,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         GameActions::Execute(&rideEntranceExitRemove);
     }
 
-    WindowInvalidateByClass(WindowClass::RideConstruction);
+    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
     return true;
 }
 

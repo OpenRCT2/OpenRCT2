@@ -1343,7 +1343,9 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
 
     auto setDateAction = ParkSetDateAction(year - 1, month - 1, day - 1);
     GameActions::Execute(&setDateAction);
-    WindowInvalidateByClass(WindowClass::BottomToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
 }
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)

@@ -1318,15 +1318,19 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_MASTER_SOUND_CHECKBOX:
+                {
                     Config::Get().sound.MasterSoundEnabled = !Config::Get().sound.MasterSoundEnabled;
                     if (!Config::Get().sound.MasterSoundEnabled)
                         OpenRCT2::Audio::Pause();
                     else
                         OpenRCT2::Audio::Resume();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
                     Config::Save();
                     Invalidate();
                     break;
+                }
 
                 case WIDX_MUSIC_CHECKBOX:
                     Config::Get().sound.RideMusicEnabled = !Config::Get().sound.RideMusicEnabled;
@@ -1542,11 +1546,15 @@ namespace OpenRCT2::Ui::Windows
             setting ^= true;
             Config::Save();
             Invalidate();
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
         }
 
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
+            auto* windowMgr = Ui::GetWindowManager();
+
             switch (widgetIndex)
             {
                 case WIDX_HOTKEY_DROPDOWN:
@@ -1596,7 +1604,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
                     Config::Save();
                     Invalidate();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_ENLARGED_UI:
                     Config::Get().interface.EnlargedUi ^= 1;
@@ -1604,13 +1612,13 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().interface.TouchEnhancements = false;
                     Config::Save();
                     Invalidate();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_TOUCH_ENHANCEMENTS:
                     Config::Get().interface.TouchEnhancements ^= 1;
                     Config::Save();
                     Invalidate();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_INVERT_DRAG:
                     Config::Get().general.InvertViewportDrag ^= 1;

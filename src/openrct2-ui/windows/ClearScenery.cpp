@@ -308,7 +308,8 @@ namespace OpenRCT2::Ui::Windows
             if (_clearSceneryCost != cost)
             {
                 _clearSceneryCost = cost;
-                WindowInvalidateByClass(WindowClass::ClearScenery);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateByClass(WindowClass::ClearScenery);
             }
         }
 

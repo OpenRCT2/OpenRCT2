@@ -186,117 +186,6 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    /**
-     * Invalidates the specified window.
-     *  rct2: 0x006EB13A
-     *
-     * @param window The window to invalidate (esi).
-     */
-    template<typename TPred>
-    static void WindowInvalidateByCondition(TPred pred)
-    {
-        WindowVisitEach([pred](WindowBase* w) {
-            if (pred(w))
-            {
-                w->Invalidate();
-            }
-        });
-    }
-
-    /**
-     * Invalidates all windows with the specified window class.
-     *  rct2: 0x006EC3AC
-     * @param cls (al) with bit 14 set
-     */
-    void WindowInvalidateByClass(WindowClass cls)
-    {
-        WindowInvalidateByCondition([cls](WindowBase* w) -> bool { return w->classification == cls; });
-    }
-
-    /**
-     * Invalidates all windows with the specified window class and number.
-     *  rct2: 0x006EC3AC
-     */
-    void WindowInvalidateByNumber(WindowClass cls, rct_windownumber number)
-    {
-        WindowInvalidateByCondition(
-            [cls, number](WindowBase* w) -> bool { return w->classification == cls && w->number == number; });
-    }
-
-    // TODO: Use variant for this once the window framework is done.
-    void WindowInvalidateByNumber(WindowClass cls, EntityId id)
-    {
-        WindowInvalidateByNumber(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
-    }
-
-    /**
-     * Invalidates all windows.
-     */
-    void WindowInvalidateAll()
-    {
-        WindowVisitEach([](WindowBase* w) { w->Invalidate(); });
-    }
-
-    /**
-     * Invalidates the specified widget of a window.
-     *  rct2: 0x006EC402
-     */
-    void WidgetInvalidate(WindowBase& w, WidgetIndex widgetIndex)
-    {
-        if (w.widgets.empty())
-        {
-            // This might be called before the window is fully created.
-            return;
-        }
-
-        assert(widgetIndex < w.widgets.size());
-
-        const auto& widget = w.widgets[widgetIndex];
-        if (widget.left == -2)
-            return;
-
-        GfxSetDirtyBlocks({ { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
-                            { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
-    }
-
-    template<typename TPred>
-    static void widget_invalidate_by_condition(TPred pred)
-    {
-        WindowVisitEach([pred](WindowBase* w) {
-            if (pred(w))
-            {
-                w->Invalidate();
-            }
-        });
-    }
-
-    /**
-     * Invalidates the specified widget of all windows that match the specified window class.
-     */
-    void WidgetInvalidateByClass(WindowClass cls, WidgetIndex widgetIndex)
-    {
-        WindowVisitEach([cls, widgetIndex](WindowBase* w) {
-            if (w->classification == cls)
-            {
-                WidgetInvalidate(*w, widgetIndex);
-            }
-        });
-    }
-
-    /**
-     * Invalidates the specified widget of all windows that match the specified window class and number.
-     *  rct2: 0x006EC3AC
-     */
-    void WidgetInvalidateByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex)
-    {
-        WindowVisitEach([cls, number, widgetIndex](WindowBase* w) {
-            if (w->classification == cls && w->number == number)
-            {
-                WidgetInvalidate(*w, widgetIndex);
-            }
-        });
-    }
-
     int32_t WindowGetScrollDataIndex(const WindowBase& w, WidgetIndex widget_index)
     {
         int32_t i, result;
@@ -819,13 +708,14 @@ static constexpr float kWindowScrollLocations[][2] = {
 
             if (gCurrentToolWidget.widget_index != kWidgetIndexNull)
             {
+                auto* windowMgr = Ui::GetWindowManager();
+
                 // Invalidate tool widget
-                WidgetInvalidateByNumber(
+                windowMgr->InvalidateWidgetByNumber(
                     gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number,
                     gCurrentToolWidget.widget_index);
 
                 // Abort tool event
-                auto* windowMgr = Ui::GetWindowManager();
                 WindowBase* w = windowMgr->FindByNumber(
                     gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                 if (w != nullptr)

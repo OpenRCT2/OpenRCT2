@@ -798,7 +798,9 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILENAME_TEXTBOX);
+
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateWidget(*this, WIDX_FILENAME_TEXTBOX);
             }
         }
 
@@ -1223,7 +1225,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Load or overwrite
                 String::set(_currentFilename, std::size(_currentFilename), _listItems[selectedItem].name.c_str());
-                WidgetInvalidate(*this, WIDX_FILENAME_TEXTBOX);
+                InvalidateWidget(WIDX_FILENAME_TEXTBOX);
 
                 if ((_type & 0x01) == LOADSAVETYPE_SAVE)
                     WindowOverwritePromptOpen(_listItems[selectedItem].name, _listItems[selectedItem].path);

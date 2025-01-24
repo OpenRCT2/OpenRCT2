@@ -299,6 +299,8 @@ namespace OpenRCT2::Ui::Windows
         {
             MapInvalidateSelectionRect();
 
+            auto* windowMgr = Ui::GetWindowManager();
+
             if (gCurrentToolId == Tool::UpDownArrow)
             {
                 if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
@@ -319,7 +321,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _waterToolRaiseCost = raiseCost;
                     _waterToolLowerCost = lowerCost;
-                    WindowInvalidateByClass(WindowClass::Water);
+                    windowMgr->InvalidateByClass(WindowClass::Water);
                 }
                 return;
             }
@@ -335,7 +337,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _waterToolRaiseCost = kMoney64Undefined;
                     _waterToolLowerCost = kMoney64Undefined;
-                    WindowInvalidateByClass(WindowClass::Water);
+                    windowMgr->InvalidateByClass(WindowClass::Water);
                 }
                 return;
             }
@@ -410,7 +412,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _waterToolRaiseCost = raiseCost;
                 _waterToolLowerCost = lowerCost;
-                WindowInvalidateByClass(WindowClass::Water);
+                windowMgr->InvalidateByClass(WindowClass::Water);
             }
         }
 

@@ -835,7 +835,9 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
         ClearFlag(VehicleFlags::Testing);
-        WindowInvalidateByNumber(WindowClass::Ride, ride.ToUnderlying());
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::Ride, ride.ToUnderlying());
         return;
     }
 
@@ -2334,7 +2336,9 @@ static void test_finish(Ride& ride)
 
     totalTime = std::max(totalTime, 1u);
     ride.average_speed = ride.average_speed / totalTime;
-    WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::UpdateTestFinish()
@@ -2384,7 +2388,9 @@ static void test_reset(Ride& ride, StationIndex curStation)
     }
     ride.totalAirTime = 0;
     ride.current_test_station = curStation;
-    WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 void Vehicle::TestReset()

@@ -500,7 +500,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdateEntrance()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_1);
         }
 
         void OnTextInputEntrance(WidgetIndex widgetIndex, std::string_view text)
@@ -684,7 +684,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdateRating()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_2);
             if (_ratingProps.UpdateHoverIndex())
             {
                 InvalidateWidget(WIDX_BACKGROUND);
@@ -753,7 +753,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_3);
             if (_guestProps.UpdateHoverIndex())
             {
                 InvalidateWidget(WIDX_BACKGROUND);
@@ -860,7 +860,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdatePrice()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_4);
+            InvalidateWidget(WIDX_TAB_4);
         }
 
         void OnPrepareDrawPrice()
@@ -929,14 +929,14 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdateStats()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_5);
+            InvalidateWidget(WIDX_TAB_5);
 
             // Invalidate ride count if changed
             const auto rideCount = RideGetCount();
             if (_numberOfRides != rideCount)
             {
                 _numberOfRides = rideCount;
-                WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
+                InvalidateWidget(WIDX_PAGE_BACKGROUND);
             }
 
             // Invalidate number of staff if changed
@@ -944,7 +944,7 @@ namespace OpenRCT2::Ui::Windows
             if (_numberOfStaff != staffCount)
             {
                 _numberOfStaff = staffCount;
-                WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
+                InvalidateWidget(WIDX_PAGE_BACKGROUND);
             }
         }
 
@@ -1035,7 +1035,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdateObjective()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_6);
+            InvalidateWidget(WIDX_TAB_6);
         }
 
         void OnTextInputObjective(WidgetIndex widgetIndex, std::string_view text)
@@ -1138,7 +1138,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdateAwards()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_7);
+            InvalidateWidget(WIDX_TAB_7);
         }
 
         void OnPrepareDrawAwards()

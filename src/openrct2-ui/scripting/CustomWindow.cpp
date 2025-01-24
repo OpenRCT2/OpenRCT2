@@ -465,7 +465,9 @@ namespace OpenRCT2::Ui::Windows
                     {
                         frame_no = 0;
                     }
-                    WidgetInvalidate(*this, WIDX_TAB_0 + this->page);
+
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->InvalidateWidget(*this, WIDX_TAB_0 + this->page);
                 }
             }
 
@@ -1203,7 +1205,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 customWidgetInfo->Text = value;
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
-                WidgetInvalidate(*w, widgetIndex);
+
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateWidget(*w, widgetIndex);
             }
         }
     }
@@ -1237,7 +1241,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     customWidgetInfo->Colour = colour;
                     widget.image = GetColourButtonImage(colour);
-                    WidgetInvalidate(*w, widgetIndex);
+
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->InvalidateWidget(*w, widgetIndex);
 
                     std::vector<DukValue> args;
                     auto ctx = customWidgetInfo->OnChange.context();
@@ -1282,7 +1288,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 customWidgetInfo->SelectedIndex = selectedIndex;
 
-                WidgetInvalidate(*w, widgetIndex);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateWidget(*w, widgetIndex);
 
                 if (lastSelectedIndex != selectedIndex)
                 {
