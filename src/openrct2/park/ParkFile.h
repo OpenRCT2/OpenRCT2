@@ -39,6 +39,7 @@ namespace OpenRCT2
     constexpr uint16_t kExtendedStandUpRollerCoasterVersion = 48;
     constexpr uint16_t kPeepAnimationObjectsVersion = 49;
     constexpr uint16_t kDiagonalLongFlatToSteepAndDiveLoopVersion = 50;
+    constexpr uint16_t kExtendedMiniRollerCoasterVersion = 50;
 } // namespace OpenRCT2
 
 class ParkFileExporter
