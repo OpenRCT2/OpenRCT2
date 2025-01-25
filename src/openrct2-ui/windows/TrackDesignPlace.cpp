@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
             if (cost != _placementCost)
             {
                 _placementCost = cost;
-                WidgetInvalidate(*this, WIDX_PRICE);
+                InvalidateWidget(WIDX_PRICE);
             }
 
             TrackDesignPreviewDrawOutlines(tds, *_trackDesign, RideGetTemporaryForPreview(), trackLoc);

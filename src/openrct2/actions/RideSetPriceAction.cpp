@@ -12,13 +12,13 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2;
@@ -107,6 +107,8 @@ GameActions::Result RideSetPriceAction::Execute() const
         res.Position = { location, TileElementHeight(location) };
     }
 
+    auto* windowMgr = Ui::GetWindowManager();
+
     ShopItem shopItem;
     if (_primaryPrice)
     {
@@ -119,7 +121,7 @@ GameActions::Result RideSetPriceAction::Execute() const
             if (shopItem == ShopItem::None)
             {
                 ride->price[0] = _price;
-                WindowInvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::Ride);
                 return res;
             }
         }
@@ -127,7 +129,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         if (!ShopItemHasCommonPrice(shopItem))
         {
             ride->price[0] = _price;
-            WindowInvalidateByClass(WindowClass::Ride);
+            windowMgr->InvalidateByClass(WindowClass::Ride);
             return res;
         }
     }
@@ -140,7 +142,7 @@ GameActions::Result RideSetPriceAction::Execute() const
             if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
             {
                 ride->price[1] = _price;
-                WindowInvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::Ride);
                 return res;
             }
         }
@@ -148,7 +150,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         if (!ShopItemHasCommonPrice(shopItem))
         {
             ride->price[1] = _price;
-            WindowInvalidateByClass(WindowClass::Ride);
+            windowMgr->InvalidateByClass(WindowClass::Ride);
             return res;
         }
     }
@@ -197,7 +199,8 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
         }
         if (invalidate)
         {
-            WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
         }
     }
 }

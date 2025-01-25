@@ -53,7 +53,6 @@
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../sprites.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -1463,7 +1462,7 @@ void Guest::CheckCantFindRide()
         w->OnPrepareDraw();
     }
 
-    WindowInvalidateByNumber(WindowClass::Peep, Id);
+    windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
 }
 
 /**
@@ -2334,7 +2333,8 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 
     peep_expend_type += amount;
 
-    WindowInvalidateByNumber(WindowClass::Peep, Id);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
 
     FinancePayment(-amount, expenditure);
 
@@ -3149,7 +3149,7 @@ static void PeepLeavePark(Guest* peep)
     WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
         w->OnPrepareDraw();
-    WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
+    windowMgr->InvalidateByNumber(WindowClass::Peep, peep->Id);
 }
 
 template<typename T>
@@ -3388,7 +3388,8 @@ void Guest::UpdateBuying()
             {
                 CashInPocket += 50.00_GBP;
             }
-            WindowInvalidateByNumber(WindowClass::Peep, Id);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
         }
         Orientation ^= 0x10;
 
@@ -3902,7 +3903,8 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
     if (queueTime != station.QueueTime)
     {
         station.QueueTime = queueTime;
-        WindowInvalidateByNumber(WindowClass::Ride, CurrentRide.ToUnderlying());
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::Ride, CurrentRide.ToUnderlying());
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -5785,7 +5787,9 @@ void Guest::UpdateLeavingPark()
     ContextBroadcastIntent(&intent);
     Var37 = 1;
 
-    WindowInvalidateByClass(WindowClass::GuestList);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::GuestList);
+
     uint8_t pathingResult;
     PerformNextAction(pathingResult);
     if (!(pathingResult & PATHING_OUTSIDE_PARK))

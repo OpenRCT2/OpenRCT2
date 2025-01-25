@@ -39,7 +39,6 @@
 #include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
-#include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"

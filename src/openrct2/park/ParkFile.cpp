@@ -36,7 +36,6 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"

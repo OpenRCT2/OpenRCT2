@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/SmallSceneryEntry.h"

@@ -13,7 +13,6 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/MazeCost.h"

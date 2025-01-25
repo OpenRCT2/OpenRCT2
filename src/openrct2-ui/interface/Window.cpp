@@ -28,7 +28,6 @@
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 
@@ -112,7 +111,9 @@ namespace OpenRCT2
         }
 
         WidgetScrollUpdateThumbs(w, widgetIndex);
-        WidgetInvalidate(w, widgetIndex);
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateWidget(w, widgetIndex);
     }
 
     /**
@@ -361,7 +362,8 @@ namespace OpenRCT2
 
     void Window::InvalidateWidget(WidgetIndex widgetIndex)
     {
-        WidgetInvalidate(*this, widgetIndex);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateWidget(*this, widgetIndex);
     }
 
     bool Window::IsWidgetDisabled(WidgetIndex widgetIndex) const
@@ -625,7 +627,7 @@ namespace OpenRCT2::Ui::Windows
             _usingWidgetTextBox = false;
             if (w != nullptr)
             {
-                WidgetInvalidate(*w, _currentTextBox.widget_index);
+                windowMgr->InvalidateWidget(*w, _currentTextBox.widget_index);
             }
             _currentTextBox.widget_index = kWidgetIndexNull;
         }
@@ -645,7 +647,7 @@ namespace OpenRCT2::Ui::Windows
             _textBoxFrameNo = 0;
             auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
-            WidgetInvalidate(*w, _currentTextBox.widget_index);
+            windowMgr->InvalidateWidget(*w, _currentTextBox.widget_index);
             w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
         }
     }

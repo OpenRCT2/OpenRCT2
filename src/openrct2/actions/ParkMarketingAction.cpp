@@ -15,7 +15,6 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"

@@ -390,7 +390,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 selected_list_item = index;
             }
-            WidgetInvalidate(*this, WIDX_SCROLL);
+            InvalidateWidget(WIDX_SCROLL);
         }
 
     public:
@@ -443,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
             if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
             {
                 _highlightedIndex = -1;
-                WidgetInvalidate(*this, WIDX_SCROLL);
+                InvalidateWidget(WIDX_SCROLL);
             }
 
 #ifndef DISABLE_HTTP
@@ -486,7 +486,7 @@ namespace OpenRCT2::Ui::Windows
             else
                 _highlightedIndex = selectedItem;
 
-            WidgetInvalidate(*this, WIDX_SCROLL);
+            InvalidateWidget(WIDX_SCROLL);
         }
 
         void OnDraw(DrawPixelInfo& dpi) override

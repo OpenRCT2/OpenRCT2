@@ -437,7 +437,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_STRING); // TODO Check this
+                InvalidateWidget(WIDX_FILTER_STRING); // TODO Check this
             }
 
             if (_reloadTrackDesigns)

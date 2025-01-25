@@ -16,12 +16,12 @@
 #include "../core/EnumUtils.hpp"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideManager.hpp"
 #include "../scenario/Scenario.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
@@ -288,7 +288,8 @@ void FinanceUpdateDailyProfit()
     gameState.WeeklyProfitAverageDividend += gameState.CurrentProfit;
     gameState.WeeklyProfitAverageDivisor += 1;
 
-    WindowInvalidateByClass(WindowClass::Finances);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Finances);
 }
 
 money64 FinanceGetInitialCash()
@@ -344,7 +345,8 @@ void FinanceShiftExpenditureTable()
         gameState.ExpenditureTable[0][i] = 0;
     }
 
-    WindowInvalidateByClass(WindowClass::Finances);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Finances);
 }
 
 /**

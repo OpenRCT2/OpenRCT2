@@ -111,7 +111,8 @@ namespace OpenRCT2::Ui::Windows
                 Audio::StopAll();
             }
 
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
 
             if (canSave)
             {
@@ -138,7 +139,8 @@ namespace OpenRCT2::Ui::Windows
                 Audio::Resume();
             }
 
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override

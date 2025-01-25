@@ -140,7 +140,10 @@ void GameCreateWindows()
 void PauseToggle()
 {
     gGamePaused ^= GAME_PAUSED_NORMAL;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
         OpenRCT2::Audio::StopAll();

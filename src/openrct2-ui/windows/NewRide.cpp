@@ -324,12 +324,12 @@ namespace OpenRCT2::Ui::Windows
             if (frame_no >= TabAnimationLoops[_currentTab])
                 frame_no = 0;
 
-            WidgetInvalidate(*this, WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
+            InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
 
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             if (_newRideVars.SelectedRide.Type != kRideTypeNull && _newRideVars.SelectedRideCountdown-- == 0)
@@ -347,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST))
                 {
                     _newRideVars.HighlightedRide = { kRideTypeNull, kObjectEntryIndexNull };
-                    WidgetInvalidate(*this, WIDX_RIDE_LIST);
+                    InvalidateWidget(WIDX_RIDE_LIST);
                 }
             }
         }

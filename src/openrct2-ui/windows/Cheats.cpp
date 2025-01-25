@@ -870,6 +870,8 @@ static StringId window_cheats_page_titles[] = {
 
         void OnMouseDownDate(WidgetIndex widgetIndex)
         {
+            auto* windowMgr = Ui::GetWindowManager();
+
             switch (widgetIndex)
             {
                 case WIDX_YEAR_UP:
@@ -914,14 +916,14 @@ static StringId window_cheats_page_titles[] = {
                 {
                     auto setDateAction = ParkSetDateAction(_yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                     GameActions::Execute(&setDateAction);
-                    WindowInvalidateByClass(WindowClass::BottomToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     break;
                 }
                 case WIDX_DATE_RESET:
                 {
                     auto setDateAction = ParkSetDateAction(0, 0, 0);
                     GameActions::Execute(&setDateAction);
-                    WindowInvalidateByClass(WindowClass::BottomToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     InvalidateWidget(WIDX_YEAR_BOX);
                     InvalidateWidget(WIDX_MONTH_BOX);
                     InvalidateWidget(WIDX_DAY_BOX);

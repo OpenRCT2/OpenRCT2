@@ -38,7 +38,6 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"

@@ -21,7 +21,6 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
-#include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
@@ -36,6 +35,7 @@
 #include "../ride/RideEntry.h"
 #include "../ride/TrackData.h"
 #include "../scenario/Scenario.h"
+#include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -129,8 +129,9 @@ static void ResearchCalculateExpectedDate()
 
 static void ResearchInvalidateRelatedWindows()
 {
-    WindowInvalidateByClass(WindowClass::ConstructRide);
-    WindowInvalidateByClass(WindowClass::Research);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::ConstructRide);
+    windowMgr->InvalidateByClass(WindowClass::Research);
 }
 
 static void ResearchMarkAsFullyCompleted()

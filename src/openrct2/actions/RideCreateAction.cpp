@@ -15,7 +15,6 @@
 #include "../GameState.h"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectLimits.h"
@@ -26,6 +25,7 @@
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
 #include "../scenario/Scenario.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
 #include <algorithm>
@@ -296,7 +296,9 @@ GameActions::Result RideCreateAction::Execute() const
     ride->MinCarsPerTrain = rideEntry->min_cars_in_train;
     ride->MaxCarsPerTrain = rideEntry->max_cars_in_train;
     RideSetVehicleColoursToRandomPreset(*ride, _colour2);
-    WindowInvalidateByClass(WindowClass::RideList);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::RideList);
 
     res.Expenditure = ExpenditureType::RideConstruction;
     res.SetData(RideId{ rideIndex });

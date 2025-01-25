@@ -34,7 +34,6 @@
 #include "../platform/Platform.h"
 #include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
@@ -79,7 +78,6 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
     #include "../interface/Chat.h"
-    #include "../interface/Window.h"
     #include "../localisation/Localisation.Date.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
@@ -3146,7 +3144,8 @@ void NetworkBase::ServerHandlePing(NetworkConnection& connection, [[maybe_unused
     if (connection.Player != nullptr)
     {
         connection.Player->Ping = ping;
-        WindowInvalidateByNumber(WindowClass::Player, connection.Player->Id);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::Player, connection.Player->Id);
     }
 }
 
@@ -3165,7 +3164,9 @@ void NetworkBase::Client_Handle_PINGLIST([[maybe_unused]] NetworkConnection& con
             player->Ping = ping;
         }
     }
-    WindowInvalidateByClass(WindowClass::Player);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Player);
 }
 
 void NetworkBase::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet)
@@ -3613,7 +3614,8 @@ GameActions::Result NetworkSetPlayerGroup(
             userManager.Save();
         }
 
-        WindowInvalidateByNumber(WindowClass::Player, playerId);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::Player, playerId);
 
         // Log set player group event
         NetworkPlayer* game_command_player = network.GetPlayerByID(actionPlayerId);

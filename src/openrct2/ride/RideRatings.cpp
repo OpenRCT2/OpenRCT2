@@ -14,9 +14,9 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/UnitConversion.h"
-#include "../interface/Window.h"
 #include "../profiling/Profiling.h"
 #include "../scripting/ScriptEngine.h"
+#include "../ui/WindowManager.h"
 #include "../world/Map.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SurfaceElement.h"
@@ -433,7 +433,9 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
     RideRatingsCalculate(state, *ride);
     RideRatingsCalculateValue(*ride);
 
-    WindowInvalidateByNumber(WindowClass::Ride, state.CurrentRide.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, state.CurrentRide.ToUnderlying());
+
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
