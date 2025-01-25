@@ -164,6 +164,9 @@ namespace OpenRCT2
         if (widgets[index].type != WindowWidgetType::Spinner && widgets[index].type != WindowWidgetType::ImgBtn)
             return false;
 
+        if (static_cast<size_t>(index + 2) >= widgets.size())
+            return false;
+
         if (widgets[index + 1].type != buttonType)
             return false;
 
@@ -240,6 +243,8 @@ namespace OpenRCT2
             // Expected widget order: increase, decrease
             targetWidgetIndex += wheel < 0 ? 1 : 2;
         }
+
+        assert(targetWidgetIndex >= 0 && targetWidgetIndex < w.widgets.size());
 
         if (WidgetIsDisabled(w, targetWidgetIndex))
         {
