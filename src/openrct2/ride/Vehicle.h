@@ -387,7 +387,14 @@ private:
         stop,
     };
     [[nodiscard]] UpdateMiniGolfSubroutineStatus UpdateTrackMotionMiniGolfFlagsStatus(const Ride& curRide);
+    /**
+     * @return UpdateMiniGolfSubroutineStatus::stop or UpdateMiniGolfSubroutineStatus::carryOn
+     */
     [[nodiscard]] UpdateMiniGolfSubroutineStatus Loc6DC462(const Ride& curRide);
+    /**
+     * @return UpdateMiniGolfSubroutineStatus::stop or UpdateMiniGolfSubroutineStatus::restart
+     */
+    [[nodiscard]] UpdateMiniGolfSubroutineStatus Loc6DCA9A(const Ride& curRide);
     void UpdateTrackMotionPreUpdate(
         Vehicle& car, const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry);
 };
