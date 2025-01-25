@@ -588,6 +588,24 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
     ClearFlag(VehicleFlags::MoveSingleCar | VehicleFlags::CollisionDisabled);
 }
 
+void Vehicle::UpdateTrackChange()
+{
+    auto curRide = GetRide();
+    if (curRide == nullptr)
+        return;
+
+    const auto moveInfo = GetMoveInfo();
+    if (moveInfo == nullptr || moveInfo->IsInvalid())
+        return;
+
+    _vehicleCurPosition = TrackLocation
+        + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor((*curRide).type).Heights.VehicleZOffset };
+    Orientation = moveInfo->direction;
+    bank_rotation = moveInfo->bank_rotation;
+    Pitch = moveInfo->Pitch;
+    MoveTo(_vehicleCurPosition);
+}
+
 Vehicle* TryGetVehicle(EntityId spriteIndex)
 {
     return TryGetEntity<Vehicle>(spriteIndex);
