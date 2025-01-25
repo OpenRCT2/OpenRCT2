@@ -47,6 +47,7 @@ static const EnumMap<FormatToken> FormatTokenMap = {
     { "REALTIME",             FormatToken::DurationLong,        },
     { "LENGTH",               FormatToken::Length,              },
     { "HEIGHT",               FormatToken::Height,              },
+    { "HEIGHT2DP",            FormatToken::Height2dp,           },
     { "SPRITE",               FormatToken::Sprite,              },
     { "BLACK",                FormatToken::ColourBlack,         },
     { "GREY",                 FormatToken::ColourGrey,          },
@@ -107,6 +108,7 @@ bool FormatTokenTakesArgument(FormatToken token)
         case FormatToken::DurationLong:
         case FormatToken::Length:
         case FormatToken::Height:
+        case FormatToken::Height2dp:
         case FormatToken::Sprite:
             return true;
         default:
