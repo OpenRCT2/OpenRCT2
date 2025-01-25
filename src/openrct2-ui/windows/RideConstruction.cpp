@@ -1065,13 +1065,11 @@ namespace OpenRCT2::Ui::Windows
                     MouseUpDemolish();
                     break;
                 case WIDX_NEXT_SECTION:
-                    VirtualFloorInvalidate();
                     RideSelectNextSection();
                     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_PREVIOUS_SECTION:
-                    VirtualFloorInvalidate();
                     RideSelectPreviousSection();
                     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
@@ -3076,6 +3074,11 @@ namespace OpenRCT2::Ui::Windows
 
         window->UpdateMapSelection();
 
+        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+        {
+            VirtualFloorInvalidate();
+        }
+
         _selectedTrackType = TrackElemType::None;
         if (_rideConstructionState == RideConstructionState::Selected)
         {
@@ -3157,9 +3160,6 @@ namespace OpenRCT2::Ui::Windows
                         _currentTrackPrice = PlaceProvisionalTrackPiece(
                             rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
                         WindowRideConstructionUpdateActiveElements();
-
-                        // Invalidate previous track piece (we may not be changing height!)
-                        VirtualFloorInvalidate();
 
                         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                         {
@@ -4748,9 +4748,6 @@ namespace OpenRCT2::Ui::Windows
         ViewportSetVisibility(visiblity);
         if (_currentTrackPitchEnd != TrackPitch::None)
             ViewportSetVisibility(ViewportVisibility::TrackHeights);
-
-        // Invalidate previous track piece (we may not be changing height!)
-        VirtualFloorInvalidate();
 
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
         {
