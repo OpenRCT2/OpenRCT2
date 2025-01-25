@@ -1252,7 +1252,10 @@ public:
             return;
         }
 
-        assert(widgetIndex < w.widgets.size());
+        if (static_cast<size_t>(widgetIndex) >= w.widgets.size())
+        {
+            return;
+        }
 
         const auto& widget = w.widgets[widgetIndex];
         if (widget.left == -2)
