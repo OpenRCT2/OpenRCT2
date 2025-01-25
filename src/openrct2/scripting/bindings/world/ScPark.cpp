@@ -18,6 +18,7 @@
     #include "../../../entity/Guest.h"
     #include "../../../management/Finance.h"
     #include "../../../management/NewsItem.h"
+    #include "../../../ui/WindowManager.h"
     #include "../../../windows/Intent.h"
     #include "../../../world/Park.h"
     #include "../../Duktape.hpp"
@@ -130,7 +131,8 @@ namespace OpenRCT2::Scripting
         if (gameState.Park.EntranceFee != value)
         {
             gameState.Park.EntranceFee = value;
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
@@ -227,7 +229,8 @@ namespace OpenRCT2::Scripting
         if (gameState.TotalAdmissions != value)
         {
             gameState.TotalAdmissions = value;
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
@@ -243,7 +246,8 @@ namespace OpenRCT2::Scripting
         if (gameState.TotalIncomeFromAdmissions != value)
         {
             gameState.TotalIncomeFromAdmissions = value;
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
     }
 

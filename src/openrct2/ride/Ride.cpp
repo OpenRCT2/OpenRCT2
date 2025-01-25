@@ -48,7 +48,6 @@
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../scenario/Scenario.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -383,7 +382,8 @@ void RideUpdateFavouritedStat()
         }
     }
 
-    WindowInvalidateByClass(WindowClass::RideList);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::RideList);
 }
 
 /**
@@ -4654,7 +4654,9 @@ void InvalidateTestResults(Ride& ride)
             }
         }
     }
-    WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
 }
 
 /**
@@ -5205,7 +5207,9 @@ void Ride::UpdateMaxVehicles()
     {
         num_cars_per_train = numCarsPerTrain;
         NumTrains = numTrains;
-        WindowInvalidateByNumber(WindowClass::Ride, id.ToUnderlying());
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::Ride, id.ToUnderlying());
     }
 }
 

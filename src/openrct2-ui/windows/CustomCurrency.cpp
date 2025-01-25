@@ -65,6 +65,7 @@ namespace OpenRCT2::Ui::Windows
         void OnMouseDown(WidgetIndex widgetIndex) override
         {
             auto* widget = &widgets[widgetIndex - 1];
+            auto* windowMgr = Ui::GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -75,7 +76,7 @@ namespace OpenRCT2::Ui::Windows
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
                     Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     Config::Save();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_RATE_DOWN:
                     if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
@@ -83,7 +84,7 @@ namespace OpenRCT2::Ui::Windows
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
                         Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                         Config::Save();
-                        WindowInvalidateAll();
+                        windowMgr->InvalidateAll();
                     }
                     break;
                 case WIDX_AFFIX_DROPDOWN_BUTTON:
@@ -149,7 +150,8 @@ namespace OpenRCT2::Ui::Windows
                 Config::Get().general.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
                 Config::Save();
 
-                WindowInvalidateAll();
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateAll();
             }
         }
 
@@ -158,7 +160,7 @@ namespace OpenRCT2::Ui::Windows
             if (text.empty())
                 return;
 
-            int32_t rate;
+            auto* windowMgr = Ui::GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -171,18 +173,19 @@ namespace OpenRCT2::Ui::Windows
                                                                      .symbol_unicode;
 
                     Config::Save();
-                    WindowInvalidateAll();
+
+                    windowMgr->InvalidateAll();
                     break;
 
                 case WIDX_RATE:
                     const auto res = String::Parse<int32_t>(text);
                     if (res.has_value())
                     {
-                        rate = res.value();
+                        int32_t rate = res.value();
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
                         Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                         Config::Save();
-                        WindowInvalidateAll();
+                        windowMgr->InvalidateAll();
                     }
                     break;
             }

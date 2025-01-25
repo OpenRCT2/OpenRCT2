@@ -608,6 +608,7 @@ namespace OpenRCT2::Ui::Windows
         void ToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
             const bool mapCtrlPressed = GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl);
+            auto* windowMgr = Ui::GetWindowManager();
 
             MapInvalidateSelectionRect();
 
@@ -623,7 +624,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    WindowInvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::Land);
                 }
                 return;
             }
@@ -649,7 +650,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _landToolRaiseCost = raise_cost;
                         _landToolLowerCost = lower_cost;
-                        WindowInvalidateByClass(WindowClass::Land);
+                        windowMgr->InvalidateByClass(WindowClass::Land);
                     }
                     return;
                 }
@@ -709,7 +710,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    WindowInvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::Land);
                 }
                 return;
             }
@@ -726,7 +727,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    WindowInvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::Land);
                 }
                 return;
             }
@@ -835,7 +836,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _landToolRaiseCost = raise_cost;
                 _landToolLowerCost = lower_cost;
-                WindowInvalidateByClass(WindowClass::Land);
+                windowMgr->InvalidateByClass(WindowClass::Land);
             }
         }
 

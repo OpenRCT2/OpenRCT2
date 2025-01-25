@@ -2265,7 +2265,7 @@ namespace OpenRCT2::Ui::Windows
             // Update tab animation
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_1);
 
             // Update status
             auto ride = GetRide(rideId);
@@ -2291,7 +2291,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MAIN;
             }
-            WidgetInvalidate(*this, WIDX_STATUS);
+            InvalidateWidget(WIDX_STATUS);
         }
 
         void MainOnTextInput(WidgetIndex widgetIndex, std::string_view text)
@@ -2717,7 +2717,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_2);
         }
 
         OpenRCT2String VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
@@ -3398,7 +3398,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_3);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_OPERATING)
@@ -3928,7 +3928,9 @@ namespace OpenRCT2::Ui::Windows
                                 break;
                         }
                         ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
-                        WindowInvalidateByNumber(WindowClass::Ride, number);
+
+                        auto* windowMgr = GetWindowManager();
+                        windowMgr->InvalidateByNumber(WindowClass::Ride, number);
                         break;
                     }
                     if (ride->lifecycle_flags
@@ -3976,7 +3978,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_4);
+            InvalidateWidget(WIDX_TAB_4);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAINTENANCE)
@@ -4543,8 +4545,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_5);
-            WidgetInvalidate(*this, WIDX_VEHICLE_PREVIEW);
+            InvalidateWidget(WIDX_TAB_5);
+            InvalidateWidget(WIDX_VEHICLE_PREVIEW);
         }
 
         void ColourOnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -5116,7 +5118,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_6);
+            InvalidateWidget(WIDX_TAB_6);
 
             if (auto ride = GetRide(rideId); ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MUSIC)
             {
@@ -5501,7 +5503,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_7);
+            InvalidateWidget(WIDX_TAB_7);
         }
 
         void MeasurementsOnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -5919,9 +5921,9 @@ namespace OpenRCT2::Ui::Windows
 
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_8);
+            InvalidateWidget(WIDX_TAB_8);
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_GRAPH);
+            InvalidateWidget(WIDX_GRAPH);
 
             widget = &widgets[WIDX_GRAPH];
             x = scrolls[0].contentOffsetX;
@@ -6468,7 +6470,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_9);
+            InvalidateWidget(WIDX_TAB_9);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_INCOME)
@@ -6768,7 +6770,7 @@ namespace OpenRCT2::Ui::Windows
                 picked_peep_frame = 0;
 
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_10);
+            InvalidateWidget(WIDX_TAB_10);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_CUSTOMER)

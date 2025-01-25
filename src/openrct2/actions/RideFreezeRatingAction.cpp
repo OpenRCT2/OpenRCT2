@@ -10,7 +10,7 @@
 #include "RideFreezeRatingAction.h"
 
 #include "../Diagnostic.h"
-#include "../interface/Window.h"
+#include "../ui/WindowManager.h"
 
 using namespace OpenRCT2;
 
@@ -72,7 +72,8 @@ GameActions::Result RideFreezeRatingAction::Execute() const
 
     ride->lifecycle_flags |= RIDE_LIFECYCLE_FIXED_RATINGS;
 
-    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
 
     auto res = GameActions::Result();
     return res;

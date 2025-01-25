@@ -15,7 +15,6 @@
 #include "../GameState.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../management/Finance.h"

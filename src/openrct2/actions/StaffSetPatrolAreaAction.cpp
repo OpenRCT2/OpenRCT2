@@ -14,7 +14,6 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
 
 using namespace OpenRCT2;
 

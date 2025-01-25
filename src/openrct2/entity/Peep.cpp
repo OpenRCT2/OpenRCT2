@@ -49,7 +49,6 @@
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -608,13 +607,13 @@ void PeepWindowStateUpdate(Peep* peep)
             }
         }
 
-        WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
-        WindowInvalidateByClass(WindowClass::GuestList);
+        windowMgr->InvalidateByNumber(WindowClass::Peep, peep->Id);
+        windowMgr->InvalidateByClass(WindowClass::GuestList);
     }
     else
     {
-        WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
-        WindowInvalidateByClass(WindowClass::StaffList);
+        windowMgr->InvalidateByNumber(WindowClass::Peep, peep->Id);
+        windowMgr->InvalidateByClass(WindowClass::StaffList);
     }
 }
 
@@ -2056,7 +2055,9 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         GetGameState().TotalAdmissions++;
-        WindowInvalidateByNumber(WindowClass::ParkInformation, 0);
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::ParkInformation, 0);
 
         guest->Var37 = 1;
         auto destination = guest->GetDestination();

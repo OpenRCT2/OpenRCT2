@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
                 gClipSelectionB = _previousClipSelectionB;
             }
 
-            WidgetInvalidate(*this, WIDX_CLIP_HEIGHT_SLIDER);
+            InvalidateWidget(WIDX_CLIP_HEIGHT_SLIDER);
         }
 
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override

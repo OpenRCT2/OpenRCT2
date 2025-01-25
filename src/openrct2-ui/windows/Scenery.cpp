@@ -504,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             Invalidate();
@@ -1067,7 +1067,9 @@ namespace OpenRCT2::Ui::Windows
             _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), MaxTabsPerRow) * TabWidth + 5;
 
             PrepareWidgets();
-            WindowInvalidateByClass(WindowClass::Scenery);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::Scenery);
         }
 
         int32_t GetRequiredWidth() const

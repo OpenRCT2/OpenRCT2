@@ -375,7 +375,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdate() override
         {
             frame_no = (frame_no + 1) % 64;
-            WidgetInvalidate(*this, WIDX_TAB_1 + page);
+            InvalidateWidget(WIDX_TAB_1 + page);
             if (_windowRideListInformationType != INFORMATION_TYPE_STATUS)
                 Invalidate();
         }
