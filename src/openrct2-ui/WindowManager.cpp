@@ -925,8 +925,6 @@ public:
     /**
      * Closes the specified window.
      *  rct2: 0x006ECD4C
-     *
-     * @param window The window to close (esi).
      */
     void Close(WindowBase& w) override
     {
@@ -994,7 +992,6 @@ public:
     /**
      * Closes all windows with the specified window class.
      *  rct2: 0x006ECCF4
-     * @param WindowClass enum
      */
     void CloseByClass(WindowClass cls) override
     {
@@ -1004,8 +1001,6 @@ public:
     /**
      * Closes all windows with specified window class and number.
      *  rct2: 0x006ECCF4
-     * @param WindowClass enum
-     * @param window number
      */
     void CloseByNumber(WindowClass cls, rct_windownumber number) override
     {
@@ -1066,8 +1061,6 @@ public:
 
     /**
      * Closes all windows except the specified window number and class.
-     * @param WindowClass enum
-     * @param window number
      */
     void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override
     {
@@ -1092,7 +1085,6 @@ public:
     /**
      * Finds the first window with the specified window class.
      *  rct2: 0x006EA8A0
-     * @param WindowClass enum
      * @returns the window or nullptr if no window was found.
      */
     WindowBase* FindByClass(WindowClass cls) override
@@ -1112,8 +1104,6 @@ public:
     /**
      * Finds the first window with the specified window class and number.
      *  rct2: 0x006EA8A0
-     * @param WindowClass enum
-     * @param window number
      * @returns the window or nullptr if no window was found.
      */
     WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) override
@@ -1206,8 +1196,6 @@ public:
     /**
      * Invalidates the specified window.
      *  rct2: 0x006EB13A
-     *
-     * @param window The window to invalidate (esi).
      */
     template<typename TPred>
     static void InvalidateByCondition(TPred pred)
@@ -1223,7 +1211,6 @@ public:
     /**
      * Invalidates all windows with the specified window class.
      *  rct2: 0x006EC3AC
-     * @param WindowClass enum
      */
     void InvalidateByClass(WindowClass cls) override
     {
@@ -1362,8 +1349,6 @@ public:
     /**
      *
      *  rct2: 0x006ED78A
-     * @param WindowClass enum
-     * @param window number
      */
     WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) override
     {
