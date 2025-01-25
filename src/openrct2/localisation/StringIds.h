@@ -1724,6 +1724,20 @@ enum : StringId
     STR_DIVE_LOOP_LEFT = 6727,
     STR_DIVE_LOOP_RIGHT = 6728,
 
+    STR_DROWNING_LOWERCASE = 6732,
+    STR_ON_RIDE_LOWERCASE = 6733,
+    STR_IN_RIDE_LOWERCASE = 6734,
+    STR_AT_RIDE_LOWERCASE = 6735,
+    STR_SITTING_LOWERCASE = 6736,
+    STR_WATCHING_RIDE_LOWERCASE = 6737,
+    STR_WATCHING_CONSTRUCTION_OF_LOWERCASE = 6738,
+    STR_LOOKING_AT_SCENERY_LOWERCASE = 6739,
+    STR_LEAVING_PARK_LOWERCASE = 6740,
+    STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED_LOWERCASE = 6741,
+    STR_WALKING_LOWERCASE = 6742,
+    STR_HEADING_FOR_LOWERCASE = 6743,
+    STR_QUEUING_FOR_LOWERCASE = 6744,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

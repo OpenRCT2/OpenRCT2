@@ -1193,7 +1193,6 @@ STR_1816    :Select information type to show in guest list
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}All guests
 STR_1819    :{WINDOW_COLOUR_2}All guests (summarised)
-STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Guests thinking {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
 STR_1823    :Show guests’ thoughts about this ride/attraction
@@ -3794,3 +3793,16 @@ STR_6728    :Dive Loop (right)
 STR_6729    :Cable lift hill must start immediately after station or block brake
 STR_6730    :Export emscripten data
 STR_6731    :Import emscripten data
+STR_6732    :Guests drowning
+STR_6733    :Guests on {STRINGID}
+STR_6734    :Guests in {STRINGID}
+STR_6735    :Guests at {STRINGID}
+STR_6736    :Guests sitting
+STR_6737    :Guests watching {STRINGID}
+STR_6738    :Guests watching construction of {STRINGID}
+STR_6739    :Guests looking at scenery
+STR_6740    :Guests leaving the park
+STR_6741    :Guests watching new ride being constructed
+STR_6742    :Guests walking
+STR_6743    :Guests heading for {STRINGID}
+STR_6744    :Guests queuing for {STRINGID}
