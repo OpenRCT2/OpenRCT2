@@ -304,7 +304,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // Height label is Units.
                         auto ft = Formatter();
-                        ft.Add<fixed16_1dp>(static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0)));
+                        ft.Add<fixed16_1dp>((MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2 - MakeFixed1dp<fixed16_1dp>(7, 0)));
                         DrawTextBasic(
                             dpi, screenCoords, STR_UNIT1DP_NO_SUFFIX, ft,
                             { this->colours[0] }); // Printing the value in Height Units.
@@ -320,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 auto ft = Formatter();
                                 ft.Add<fixed32_2dp>(
-                                    static_cast<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50)));
+                                    MakeFixed2dp<fixed32_2dp>(gClipHeight, 0) / 2 * 1.5f - MakeFixed2dp<fixed32_2dp>(10, 50));
                                 DrawTextBasic(dpi, screenCoords, STR_UNIT2DP_SUFFIX_METRES, ft, { this->colours[0] });
                                 break;
                             }
@@ -328,7 +328,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 auto ft = Formatter();
                                 ft.Add<fixed16_1dp>(
-                                    static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0)));
+                                    MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2.0f * 5 - MakeFixed1dp<fixed16_1dp>(35, 0));
                                 DrawTextBasic(dpi, screenCoords, STR_UNIT1DP_SUFFIX_FEET, ft, { this->colours[0] });
                                 break;
                             }

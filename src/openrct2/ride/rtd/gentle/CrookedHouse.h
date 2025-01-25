@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(2, 15), RIDE_RATING(0, 62), RIDE_RATING(0, 34) },
+        { MakeRideRating(2, 15), MakeRideRating(0, 62), MakeRideRating(0, 34) },
         5,
         7,
         false,
