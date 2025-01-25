@@ -921,13 +921,47 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        static constexpr StringId GetGuestActionString()
+        {
+            switch ()
+            {
+                default:
+                case STR_WALKING:
+                    return STR_WALKING_LOWERCASE;
+                case STR_HEADING_FOR:
+                    return STR_HEADING_FOR_LOWERCASE;
+                case STR_QUEUING_FOR:
+                    return STR_QUEUING_FOR_LOWERCASE;
+                case STR_DROWNING:
+                    return STR_DROWNING_LOWERCASE;
+                case STR_ON_RIDE:
+                    return STR_ON_RIDE_LOWERCASE;
+                case STR_IN_RIDE:
+                    return STR_IN_RIDE_LOWERCASE;
+                case STR_AT_RIDE:
+                    return STR_AT_RIDE_LOWERCASE;
+                case STR_SITTING:
+                    return STR_SITTING_LOWERCASE;
+                case STR_WATCHING_RIDE:
+                    return STR_WATCHING_RIDE_LOWERCASE;
+                case STR_WATCHING_CONSTRUCTION_OF:
+                    return STR_WATCHING_CONSTRUCTION_OF_LOWERCASE;
+                case STR_LOOKING_AT_SCENERY:
+                    return STR_LOOKING_AT_SCENERY_LOWERCASE;
+                case STR_LEAVING_PARK:
+                    return STR_LEAVING_PARK_LOWERCASE;
+                case STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED:
+                    return STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED_LOWERCASE;
+            }
+        }
+
         static constexpr StringId GetFilterString(GuestFilterType type)
         {
             switch (type)
             {
                 default:
                 case GuestFilterType::Guests:
-                    return STR_GUESTS_FILTER;
+                    return GetGuestActionString().Value;
                 case GuestFilterType::GuestsThinking:
                     return STR_GUESTS_FILTER_THINKING;
                 case GuestFilterType::GuestsThinkingAbout:
