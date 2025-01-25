@@ -3794,16 +3794,16 @@ STR_6728    :Dive Loop (right)
 STR_6729    :Cable lift hill must start immediately after station or block brake
 STR_6730    :Export emscripten data
 STR_6731    :Import emscripten data
-STR_6732    :drowning
-STR_6733    :on {STRINGID}
-STR_6734    :in {STRINGID}
-STR_6735    :at {STRINGID}
-STR_6736    :sitting
-STR_6737    :watching {STRINGID}
-STR_6738    :watching construction of {STRINGID}
-STR_6739    :looking at scenery
-STR_6740    :leaving the park
-STR_6741    :watching new ride being constructed
-STR_6742    :walking
-STR_6743    :heading for {STRINGID}
-STR_6744    :queuing for {STRINGID}
+STR_6732    :Guests drowning
+STR_6733    :Guests on {STRINGID}
+STR_6734    :Guests in {STRINGID}
+STR_6735    :Guests at {STRINGID}
+STR_6736    :Guests sitting
+STR_6737    :Guests watching {STRINGID}
+STR_6738    :Guests watching construction of {STRINGID}
+STR_6739    :Guests looking at scenery
+STR_6740    :Guests leaving the park
+STR_6741    :Guests watching new ride being constructed
+STR_6742    :Guests walking
+STR_6743    :Guests heading for {STRINGID}
+STR_6744    :Guests queuing for {STRINGID}
