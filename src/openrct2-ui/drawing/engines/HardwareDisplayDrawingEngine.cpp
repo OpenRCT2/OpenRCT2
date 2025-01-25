@@ -365,10 +365,12 @@ private:
 
     void RenderDirtyVisuals()
     {
-        int viewX, viewY;
-        SDL_GetRendererOutputSize(_sdlRenderer, &viewX, &viewY);
-        float ratioX = static_cast<float>(viewX) / static_cast<float>(_dirtyGrid.BlockColumns * _dirtyGrid.BlockWidth);
-        float ratioY = static_cast<float>(viewY) / static_cast<float>(_dirtyGrid.BlockRows * _dirtyGrid.BlockHeight);
+        int windowX, windowY, renderX, renderY;
+        SDL_GetWindowSize(_window, &windowX, &windowY);
+        SDL_GetRendererOutputSize(_sdlRenderer, &renderX, &renderY);
+
+        float scaleX = Config::Get().general.WindowScale * renderX / static_cast<float>(windowX);
+        float scaleY = Config::Get().general.WindowScale * renderY / static_cast<float>(windowY);
 
         SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
         for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
@@ -380,10 +382,10 @@ private:
                 {
                     uint8_t alpha = static_cast<uint8_t>(timeLeft * 5 / 2);
                     SDL_Rect ddRect;
-                    ddRect.x = static_cast<int32_t>(x * _dirtyGrid.BlockWidth * ratioX);
-                    ddRect.y = static_cast<int32_t>(y * _dirtyGrid.BlockHeight * ratioY);
-                    ddRect.w = static_cast<int32_t>(_dirtyGrid.BlockWidth * ratioX);
-                    ddRect.h = static_cast<int32_t>(_dirtyGrid.BlockHeight * ratioY);
+                    ddRect.x = static_cast<int32_t>(x * _dirtyGrid.BlockWidth * scaleX);
+                    ddRect.y = static_cast<int32_t>(y * _dirtyGrid.BlockHeight * scaleY);
+                    ddRect.w = static_cast<int32_t>(_dirtyGrid.BlockWidth * scaleX);
+                    ddRect.h = static_cast<int32_t>(_dirtyGrid.BlockHeight * scaleY);
 
                     SDL_SetRenderDrawColor(_sdlRenderer, 255, 255, 255, alpha);
                     SDL_RenderFillRect(_sdlRenderer, &ddRect);
