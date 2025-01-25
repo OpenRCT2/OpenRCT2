@@ -5039,9 +5039,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        properties = _currentBrakeSpeed
-            | static_cast<uint8_t>(_currentColourScheme) << 8
-            | _currentSeatRotationAngle << 12;
+        properties = static_cast<uint8_t>(_currentColourScheme) << 8 | _currentSeatRotationAngle << 12;
+
+        if (TrackTypeHasSpeedSetting(trackType))
+        {
+            properties |= _currentBrakeSpeed;
+        }
 
         if (_trackType != nullptr)
             *_trackType = trackType;
