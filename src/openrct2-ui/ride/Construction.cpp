@@ -317,12 +317,6 @@ namespace OpenRCT2
         if (lastElement.TrackType == kSeparator)
             elements.pop_back();
 
-        // If the middle element is a separator, remove it
-        // (This prevents it from being drawn after a column separator)
-        auto& middleElement = elements[elements.size() / 2];
-        if (middleElement.TrackType == kSeparator)
-            elements.erase(elements.begin() + (elements.size() / 2));
-
         return list;
     }
 
