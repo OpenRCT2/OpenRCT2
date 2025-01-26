@@ -255,6 +255,8 @@ namespace OpenRCT2
             && state != RideConstructionState::Back)
             return list;
 
+        auto& elements = list.Elements;
+
         for (TrackElemType trackType : kSpecialElementsDropdownOrder)
         {
             const auto& ted = GetTrackElementDescriptor(trackType);
@@ -281,13 +283,13 @@ namespace OpenRCT2
 
             // Check if a previous element exists, to collate entries if possible
             if (!list.Elements.empty()
-                && GetTrackElementDescriptor(list.Elements.back().TrackType).description == ted.description)
+                && GetTrackElementDescriptor(elements.back().TrackType).description == ted.description)
             {
                 // If the current element is disabled, do not add current element.
                 if (entryIsDisabled)
                     continue;
 
-                auto& lastElement = list.Elements.back();
+                auto& lastElement = elements.back();
 
                 // Don't add two separators in a row
                 if (lastElement.TrackType == kSeparator && trackType == kSeparator)
@@ -303,17 +305,23 @@ namespace OpenRCT2
                 }
                 // If the previous element and current element are enabled, add both to the list
             }
-            list.Elements.push_back({ trackType, entryIsDisabled });
+            elements.push_back({ trackType, entryIsDisabled });
             list.HasActiveElements |= !entryIsDisabled;
         }
 
+        if (elements.empty())
+            return list;
+
         // If the very last element is a separator, remove it
-        if (!list.Elements.empty())
-        {
-            auto& lastElement = list.Elements.back();
-            if (lastElement.TrackType == kSeparator)
-                list.Elements.pop_back();
-        }
+        auto& lastElement = elements.back();
+        if (lastElement.TrackType == kSeparator)
+            elements.pop_back();
+
+        // If the middle element is a separator, remove it
+        // (This prevents it from being drawn after a column separator)
+        auto& middleElement = elements[elements.size() / 2];
+        if (middleElement.TrackType == kSeparator)
+            elements.erase(elements.begin() + (elements.size() / 2));
 
         return list;
     }
