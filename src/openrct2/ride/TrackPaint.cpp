@@ -2039,12 +2039,49 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
-        bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
+        const bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
         const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
         trackType = UncoverTrackElement(trackType);
         TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
-        paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+
+        const auto ride_entry = ride->getRideEntry();
+        const auto car_flags = ride_entry->Cars[0].flags;
+
+        BlockedSegments::TrackType blockedSegmentsTrackType = BlockedSegments::TrackType::Narrow;
+        if (IsTrackStyleWide(trackDrawerEntry.trackStyle, trackType, trackElement.HasChain()))
+        {
+            blockedSegmentsTrackType = BlockedSegments::TrackType::Wide;
+        }
+        else if (rtd.HasFlag(RtdFlag::isSuspended) || isInverted)
+        {
+            blockedSegmentsTrackType = BlockedSegments::TrackType::Inverted;
+        }
+
+        BlockedSegments::TrainType blockedSegmentsTrainType = BlockedSegments::TrainType::Narrow;
+        if (rtd.HasFlag(RtdFlag::isSuspended)
+            && (car_flags & CAR_ENTRY_FLAG_SWINGING || car_flags & CAR_ENTRY_FLAG_SUSPENDED_SWING))
+        {
+            blockedSegmentsTrainType = BlockedSegments::TrainType::SuspendedSwinging;
+        }
+        else if (car_flags & CAR_ENTRY_FLAG_WIDE)
+        {
+            blockedSegmentsTrainType = BlockedSegments::TrainType::Wide;
+        }
+
+        if ((blockedSegmentsTrackType == BlockedSegments::TrackType::Inverted)
+            != BlockedSegments::GetShouldInvertPrePostCall(trackType, trackSequence, blockedSegmentsTrackType))
+        {
+            BlockSegmentsForTrackSequence(
+                session, trackSequence, direction, height, trackType, blockedSegmentsTrackType, blockedSegmentsTrainType);
+            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+        }
+        else
+        {
+            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+            BlockSegmentsForTrackSequence(
+                session, trackSequence, direction, height, trackType, blockedSegmentsTrackType, blockedSegmentsTrainType);
+        }
     }
 }
 

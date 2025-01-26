@@ -144,7 +144,6 @@ static void SideFrictionRCTrackFlat(
     DrawSupportForSequenceA<TrackElemType::Flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -172,7 +171,6 @@ static void SideFrictionRCTrackStation(
             { { 0, 2, height + 27 }, { 32, 27, 0 } });
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -267,7 +265,6 @@ static void SideFrictionRCTrack25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -362,7 +359,6 @@ static void SideFrictionRCTrackFlatTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -457,7 +453,6 @@ static void SideFrictionRCTrack25DegUpToFlat(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
@@ -530,15 +525,9 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
@@ -575,14 +564,6 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
             }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
@@ -619,22 +600,9 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
             }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
-                        PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
@@ -671,14 +639,6 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
             }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
@@ -724,7 +684,6 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -788,7 +747,6 @@ static void SideFrictionRCTrackSBendLeft(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -829,14 +787,6 @@ static void SideFrictionRCTrackSBendLeft(
             }
             DrawSupportForSequenceA<TrackElemType::SBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
@@ -877,14 +827,6 @@ static void SideFrictionRCTrackSBendLeft(
             }
             DrawSupportForSequenceA<TrackElemType::SBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
@@ -934,7 +876,6 @@ static void SideFrictionRCTrackSBendLeft(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -989,7 +930,6 @@ static void SideFrictionRCTrackSBendRight(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -1030,14 +970,6 @@ static void SideFrictionRCTrackSBendRight(
             }
             DrawSupportForSequenceA<TrackElemType::SBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
@@ -1078,14 +1010,6 @@ static void SideFrictionRCTrackSBendRight(
             }
             DrawSupportForSequenceA<TrackElemType::SBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
@@ -1135,7 +1059,6 @@ static void SideFrictionRCTrackSBendRight(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -1190,7 +1113,6 @@ static void SideFrictionRCTrackLeftQuarterTurn3(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -1232,12 +1154,6 @@ static void SideFrictionRCTrackLeftQuarterTurn3(
                         { { 16, 16, height + 27 }, { 16, 16, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
@@ -1287,7 +1203,6 @@ static void SideFrictionRCTrackLeftQuarterTurn3(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -1331,7 +1246,6 @@ static void SideFrictionRCTrackBrakes(
     DrawSupportForSequenceA<TrackElemType::Brakes>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1384,7 +1298,6 @@ static void SideFrictionRCTrackLeftEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -1425,7 +1338,6 @@ static void SideFrictionRCTrackLeftEighthToDiag(
             }
             DrawSupportForSequenceA<TrackElemType::LeftEighthToDiag>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
@@ -1466,13 +1378,11 @@ static void SideFrictionRCTrackLeftEighthToDiag(
             }
             DrawSupportForSequenceA<TrackElemType::LeftEighthToDiag>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             DrawSupportForSequenceA<TrackElemType::LeftEighthToDiag>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
@@ -1511,7 +1421,6 @@ static void SideFrictionRCTrackLeftEighthToDiag(
                         { { 16, 0, height + 27 }, { 16, 16, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -1566,7 +1475,6 @@ static void SideFrictionRCTrackRightEighthToDiag(
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
@@ -1607,7 +1515,6 @@ static void SideFrictionRCTrackRightEighthToDiag(
             }
             DrawSupportForSequenceA<TrackElemType::RightEighthToDiag>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
@@ -1648,13 +1555,11 @@ static void SideFrictionRCTrackRightEighthToDiag(
             }
             DrawSupportForSequenceA<TrackElemType::RightEighthToDiag>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
             DrawSupportForSequenceA<TrackElemType::RightEighthToDiag>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
@@ -1693,7 +1598,6 @@ static void SideFrictionRCTrackRightEighthToDiag(
                         { { 16, 16, height + 27 }, { 16, 16, 0 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -1757,7 +1661,6 @@ static void SideFrictionRCTrackDiagFlat(
     DrawSupportForSequenceA<TrackElemType::DiagFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1880,7 +1783,6 @@ static void SideFrictionRCTrackDiag25DegUp(
     DrawSupportForSequenceB<TrackElemType::DiagUp25>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -1914,7 +1816,6 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -1948,7 +1849,6 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
             }
             DrawSupportForSequenceA<TrackElemType::DiagFlatToUp25>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
@@ -1982,7 +1882,6 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
             }
             DrawSupportForSequenceA<TrackElemType::DiagFlatToUp25>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
@@ -2008,7 +1907,6 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -2133,7 +2031,6 @@ static void SideFrictionRCTrackDiag25DegUpToFlat(
     }
     DrawSupportForSequenceB<TrackElemType::DiagUp25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -2256,7 +2153,6 @@ static void SideFrictionRCTrackDiag25DegDown(
     }
     DrawSupportForSequenceB<TrackElemType::DiagDown25>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -2379,7 +2275,6 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
 
     DrawSupportForSequenceB<TrackElemType::DiagFlatToDown25>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -2413,7 +2308,6 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 1:
@@ -2447,7 +2341,6 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
             }
             DrawSupportForSequenceA<TrackElemType::DiagDown25ToFlat>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
@@ -2481,7 +2374,6 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
             }
             DrawSupportForSequenceA<TrackElemType::DiagDown25ToFlat>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
@@ -2507,7 +2399,6 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -2564,7 +2455,6 @@ static void SideFrictionRCTrack60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
@@ -2625,7 +2515,6 @@ static void SideFrictionRCTrack25DegUpTo60DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
@@ -2686,7 +2575,6 @@ static void SideFrictionRCTrack60DegUpTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
@@ -2753,7 +2641,6 @@ static void SideFrictionRCTrackDiag60DegUp(
     }
     DrawSupportForSequenceB<TrackElemType::DiagUp60>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
@@ -2826,7 +2713,6 @@ static void SideFrictionRCTrackDiag60DegUpTo25DegUp(
     }
     DrawSupportForSequenceB<TrackElemType::DiagUp60ToUp25>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
@@ -2898,7 +2784,6 @@ static void SideFrictionRCTrackDiag25DegUpTo60DegUp(
     }
     DrawSupportForSequenceB<TrackElemType::DiagUp25ToUp60>(
         session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
