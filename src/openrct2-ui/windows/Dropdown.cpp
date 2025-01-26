@@ -322,7 +322,7 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowDropdownShowText(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items,
-        int8_t prefRowsPerColumn)
+        size_t prefRowsPerColumn)
     {
         char buffer[256];
 
@@ -353,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowDropdownShowTextCustomWidth(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t customItemHeight, uint8_t flags,
-        size_t num_items, int32_t width, int8_t prefRowsPerColumn)
+        size_t num_items, int32_t width, size_t prefRowsPerColumn)
     {
         InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
         if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
