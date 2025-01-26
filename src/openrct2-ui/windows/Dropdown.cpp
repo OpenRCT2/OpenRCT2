@@ -366,7 +366,7 @@ namespace OpenRCT2::Ui::Windows
         auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, width, customItemHeight, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
-            auto numRowsPerColumn = prefRowsPerColumn > 0 ? prefRowsPerColumn : Dropdown::kItemsMaxSize;
+            auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
             w->SetTextItems(screenPos, extray, colour, customItemHeight, flags, num_items, width, numRowsPerColumn);
         }
     }
