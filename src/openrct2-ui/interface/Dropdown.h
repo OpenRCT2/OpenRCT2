@@ -10,9 +10,10 @@
 #pragma once
 
 #include <openrct2-ui/UiStringIds.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2/core/EnumUtils.hpp>
-#include <openrct2/drawing/ImageId.hpp>
+#include <openrct2/interface/Window.h>
+
+struct ImageId;
 
 namespace OpenRCT2::Dropdown
 {
@@ -22,18 +23,6 @@ namespace OpenRCT2::Dropdown
     constexpr StringId kFormatColourPicker = 0xFFFE;
     constexpr StringId kFormatLandPicker = 0xFFFF;
     constexpr int32_t kItemsMaxSize = 512;
-
-    enum Flag
-    {
-        CustomHeight = (1 << 6),
-        StayOpen = (1 << 7)
-    };
-
-    bool IsChecked(int32_t index);
-    bool IsDisabled(int32_t index);
-    void SetChecked(int32_t index, bool value);
-    void SetDisabled(int32_t index, bool value);
-    void SetImage(int32_t index, ImageId image);
 } // namespace OpenRCT2::Dropdown
 
 namespace OpenRCT2::Ui::Windows
@@ -67,6 +56,18 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Dropdown
 {
+    bool IsChecked(int32_t index);
+    bool IsDisabled(int32_t index);
+    void SetChecked(int32_t index, bool value);
+    void SetDisabled(int32_t index, bool value);
+    void SetImage(int32_t index, ImageId image);
+
+    enum Flag
+    {
+        CustomHeight = (1 << 6), // never set?
+        StayOpen = (1 << 7)
+    };
+
     enum class ItemFlag : uint8_t
     {
         IsDisabled = (1 << 0),
