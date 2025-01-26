@@ -282,8 +282,7 @@ namespace OpenRCT2
                 entryIsDisabled = true;
 
             // Check if a previous element exists, to collate entries if possible
-            if (!list.Elements.empty()
-                && GetTrackElementDescriptor(elements.back().TrackType).description == ted.description)
+            if (!list.Elements.empty() && GetTrackElementDescriptor(elements.back().TrackType).description == ted.description)
             {
                 // If the current element is disabled, do not add current element.
                 if (entryIsDisabled)
