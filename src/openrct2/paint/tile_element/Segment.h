@@ -12,6 +12,7 @@
 #include "../../core/EnumUtils.hpp"
 
 #include <cstdint>
+#include <limits>
 
 // This controls in which segment of a tile something is drawn.
 // This is from a screen perspective, e.g. topCorner will always represent the part of top of the screen.
@@ -27,7 +28,9 @@ enum class PaintSegment : uint16_t
     topLeftSide = 7,
     centre = 8,
 };
+constexpr uint16_t kSegmentsNone = std::numeric_limits<uint16_t>::max();
 constexpr int32_t kSegmentsAll = EnumsToFlags(
     PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::bottomCorner,
     PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide,
     PaintSegment::bottomRightSide);
+constexpr uint16_t kSegmentsUnimplemented = kSegmentsAll;

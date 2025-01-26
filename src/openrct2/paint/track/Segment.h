@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include "../../ride/TrackData.h"
+#include "../../world/tile_element/TrackElement.h"
+#include "../Paint.h"
 #include "../tile_element/Segment.h"
 
 #include <cstdint>
@@ -25,4 +28,24 @@ namespace OpenRCT2::BlockedSegments
             PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide),
         EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide),
     };
+
+    enum class TrackType
+    {
+        Narrow,
+        Inverted,
+        Wide,
+    };
+
+    enum class TrainType
+    {
+        Narrow,
+        SuspendedSwinging,
+        Wide,
+    };
+
+    bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence, const TrackType trackType);
+
+    void BlockSegmentsForTrackSequence(
+        PaintSession& session, const uint8_t trackSequence, const Direction direction, const uint16_t height,
+        const TrackElemType trackElemType, const TrackType trackType, const TrainType trainType);
 } // namespace OpenRCT2::BlockedSegments
