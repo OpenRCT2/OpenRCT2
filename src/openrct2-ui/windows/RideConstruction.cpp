@@ -2516,29 +2516,6 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& elements = _specialElementDropdownState.Elements;
 
-            // Tune dropdown to the elements it contains
-            auto ddWidth = widget->width();
-            auto targetColumnSize = elements.size();
-            if (targetColumnSize > 20)
-            {
-                ddWidth -= 30;
-                targetColumnSize = targetColumnSize / 2 + 1;
-            }
-
-            // Scan ahead of the halfway mark to see if there's a separator nearby
-            for (size_t i = 0; i < 3; i++)
-            {
-                if (targetColumnSize + i > elements.size())
-                    break;
-
-                auto trackPiece = elements[targetColumnSize + i].TrackType;
-                if (trackPiece == TrackElemType::None)
-                {
-                    targetColumnSize += i + 1;
-                    break;
-                }
-            }
-
             int32_t defaultIndex = -1;
             size_t i = 0;
             for (auto& element : elements)
@@ -2573,6 +2550,12 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = static_cast<int32_t>(i);
                 }
             }
+
+            // Tune dropdown to the elements it contains
+            auto ddWidth = widget->width();
+            auto targetColumnSize = _specialElementDropdownState.PreferredNumRows;
+            if (targetColumnSize < _specialElementDropdownState.Elements.size())
+                ddWidth -= 30;
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,

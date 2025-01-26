@@ -27,6 +27,7 @@ namespace OpenRCT2
     {
         bool HasActiveElements = false;
         std::vector<SpecialElement> Elements{};
+        size_t PreferredNumRows{};
     };
 
     SpecialElementsDropdownState BuildSpecialElementsList(

@@ -316,6 +316,36 @@ namespace OpenRCT2
         if (lastElement.TrackType == kSeparator)
             elements.pop_back();
 
+        if (elements.size() < 20)
+        {
+            list.PreferredNumRows = elements.size();
+            return list;
+        }
+
+        list.PreferredNumRows = elements.size() / 2 + 1;
+
+        // Scan ahead of the halfway mark to see if there's a separator nearby
+        for (size_t i = 0; i < 3; i++)
+        {
+            if (list.PreferredNumRows + i > elements.size())
+                break;
+
+            auto trackPiece = elements[list.PreferredNumRows + i].TrackType;
+            if (trackPiece == TrackElemType::None)
+            {
+                list.PreferredNumRows += i + 1;
+                break;
+            }
+        }
+
+        // If the last element of the first column is a separator, remove it
+        auto& middleElement = elements[list.PreferredNumRows - 1];
+        if (middleElement.TrackType == kSeparator)
+        {
+            elements.erase(elements.begin() + list.PreferredNumRows - 1);
+            list.PreferredNumRows -= 1;
+        }
+
         return list;
     }
 
