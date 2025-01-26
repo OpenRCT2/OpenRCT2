@@ -49,26 +49,6 @@ namespace OpenRCT2
         // Rotation control
         TrackElemType::RotationControlToggle,
 
-        // Brake for drop
-        TrackElemType::BrakeForDrop,
-
-        // S-Bends
-        TrackElemType::SBendLeft,
-        TrackElemType::SBendRight,
-        kSeparator,
-
-        // Tower
-        TrackElemType::TowerBase,
-        TrackElemType::TowerSection,
-
-        // Mini Golf pieces
-        TrackElemType::MinigolfHoleA,
-        TrackElemType::MinigolfHoleB,
-        TrackElemType::MinigolfHoleC,
-        TrackElemType::MinigolfHoleD,
-        TrackElemType::MinigolfHoleE,
-        kSeparator,
-
         // (Curved) lift (hills) pieces
         TrackElemType::LeftCurvedLiftHill,
         TrackElemType::RightCurvedLiftHill,
@@ -81,6 +61,28 @@ namespace OpenRCT2
         TrackElemType::HeartLineTransferDown,
         TrackElemType::LeftHeartLineRoll,
         TrackElemType::RightHeartLineRoll,
+        kSeparator,
+
+        // Brake for drop
+        TrackElemType::BrakeForDrop,
+        kSeparator,
+
+        // Tower
+        TrackElemType::TowerBase,
+        TrackElemType::TowerSection,
+        kSeparator,
+
+        // Mini Golf pieces
+        TrackElemType::MinigolfHoleA,
+        TrackElemType::MinigolfHoleB,
+        TrackElemType::MinigolfHoleC,
+        TrackElemType::MinigolfHoleD,
+        TrackElemType::MinigolfHoleE,
+        kSeparator,
+
+        // S-Bends
+        TrackElemType::SBendLeft,
+        TrackElemType::SBendRight,
         kSeparator,
 
         // Helixes
