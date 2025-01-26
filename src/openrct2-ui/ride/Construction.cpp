@@ -135,6 +135,21 @@ namespace OpenRCT2
         TrackElemType::AirThrustVerticalDownToLevel,
         kSeparator,
 
+        // Corkscrews
+        TrackElemType::LeftCorkscrewUp,
+        TrackElemType::LeftCorkscrewDown,
+        TrackElemType::RightCorkscrewUp,
+        TrackElemType::RightCorkscrewDown,
+        TrackElemType::LeftFlyerCorkscrewUp,
+        TrackElemType::LeftFlyerCorkscrewDown,
+        TrackElemType::RightFlyerCorkscrewUp,
+        TrackElemType::RightFlyerCorkscrewDown,
+        TrackElemType::LeftLargeCorkscrewUp,
+        TrackElemType::LeftLargeCorkscrewDown,
+        TrackElemType::RightLargeCorkscrewUp,
+        TrackElemType::RightLargeCorkscrewDown,
+        kSeparator,
+
         // Loops
         TrackElemType::LeftVerticalLoop,
         TrackElemType::RightVerticalLoop,
@@ -181,21 +196,6 @@ namespace OpenRCT2
         TrackElemType::LeftEighthDiveLoopDownToDiag,
         TrackElemType::RightEighthDiveLoopUpToOrthogonal,
         TrackElemType::RightEighthDiveLoopDownToDiag,
-        kSeparator,
-
-        // Corkscrews
-        TrackElemType::LeftCorkscrewUp,
-        TrackElemType::LeftCorkscrewDown,
-        TrackElemType::RightCorkscrewUp,
-        TrackElemType::RightCorkscrewDown,
-        TrackElemType::LeftFlyerCorkscrewUp,
-        TrackElemType::LeftFlyerCorkscrewDown,
-        TrackElemType::RightFlyerCorkscrewUp,
-        TrackElemType::RightFlyerCorkscrewDown,
-        TrackElemType::LeftLargeCorkscrewUp,
-        TrackElemType::LeftLargeCorkscrewDown,
-        TrackElemType::RightLargeCorkscrewUp,
-        TrackElemType::RightLargeCorkscrewDown,
         kSeparator,
 
         // Barrel Rolls
