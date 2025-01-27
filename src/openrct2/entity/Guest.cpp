@@ -6273,20 +6273,18 @@ static void PeepUpdateWalkingBreakScenery(Guest* peep)
         return;
     }
 
-    for (auto inner_peep : EntityList<Staff>())
+    for (auto innerPeep : EntityList<Staff>())
     {
-        if (inner_peep->AssignedStaffType != StaffType::Security)
+        if (innerPeep->AssignedStaffType != StaffType::Security || innerPeep->x == kLocationNull)
             continue;
 
-        if (inner_peep->x == kLocationNull)
-            continue;
+        int32_t xDist = abs(innerPeep->x - peep->x);
+        int32_t yDist = abs(innerPeep->y - peep->y);
 
-        int32_t x_diff = abs(inner_peep->x - peep->x);
-        int32_t y_diff = abs(inner_peep->y - peep->y);
-
-        if (std::max(x_diff, y_diff) < 224)
+        if (std::max(xDist, yDist) < 224)
         {
-            inner_peep->StaffVandalsStopped++;
+            auto vandalsStopped = innerPeep->StaffVandalsStopped;
+            vandalsStopped = AddClamp<decltype(vandalsStopped)>(vandalsStopped, 1);
             return;
         }
     }
