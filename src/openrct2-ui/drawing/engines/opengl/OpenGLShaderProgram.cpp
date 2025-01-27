@@ -28,16 +28,16 @@ OpenGLShader::OpenGLShader(const char* name, GLenum type)
     auto sourceCodeStr = sourceCode.c_str();
 
     _id = glCreateShader(type);
-    glShaderSource(_id, 1, static_cast<const GLchar**>(&sourceCodeStr), nullptr);
-    glCompileShader(_id);
+    glCall(glShaderSource, _id, 1, static_cast<const GLchar**>(&sourceCodeStr), nullptr);
+    glCall(glCompileShader, _id);
 
     GLint status;
-    glGetShaderiv(_id, GL_COMPILE_STATUS, &status);
+    glCall(glGetShaderiv, _id, GL_COMPILE_STATUS, &status);
     if (status != GL_TRUE)
     {
         char buffer[512];
-        glGetShaderInfoLog(_id, sizeof(buffer), nullptr, buffer);
-        glDeleteShader(_id);
+        glCall(glGetShaderInfoLog, _id, GLsizei(sizeof(buffer)), nullptr, buffer);
+        glCall(glDeleteShader, _id);
 
         Console::Error::WriteLine("Error compiling %s", path.c_str());
         Console::Error::WriteLine(buffer);
@@ -92,16 +92,21 @@ OpenGLShaderProgram::OpenGLShaderProgram(const char* name)
     _vertexShader = std::make_unique<OpenGLShader>(name, GL_VERTEX_SHADER);
     _fragmentShader = std::make_unique<OpenGLShader>(name, GL_FRAGMENT_SHADER);
 
-    _id = glCreateProgram();
-    glAttachShader(_id, _vertexShader->GetShaderId());
-    glAttachShader(_id, _fragmentShader->GetShaderId());
-    glBindFragDataLocation(_id, 0, "oColour");
+    _id = glCall(glCreateProgram);
+    glCall(glAttachShader, _id, _vertexShader->GetShaderId());
+    glCall(glAttachShader, _id, _fragmentShader->GetShaderId());
+    glCall(glBindFragDataLocation, _id, 0, "oColour");
+
+    if (glObjectLabel != nullptr)
+    {
+        glObjectLabel(GL_PROGRAM, _id, -1, name);
+    }
 
     if (!Link())
     {
         char buffer[512];
         GLsizei length;
-        glGetProgramInfoLog(_id, sizeof(buffer), &length, buffer);
+        glCall(glGetProgramInfoLog, _id, GLsizei(sizeof(buffer)), &length, buffer);
 
         Console::Error::WriteLine("Error linking %s", name);
         Console::Error::WriteLine(buffer);
@@ -125,12 +130,12 @@ OpenGLShaderProgram::~OpenGLShaderProgram()
 
 GLuint OpenGLShaderProgram::GetAttributeLocation(const char* name)
 {
-    return glGetAttribLocation(_id, name);
+    return glCall(glGetAttribLocation, _id, name);
 }
 
 GLuint OpenGLShaderProgram::GetUniformLocation(const char* name)
 {
-    return glGetUniformLocation(_id, name);
+    return glCall(glGetUniformLocation, _id, name);
 }
 
 void OpenGLShaderProgram::Use()
@@ -138,16 +143,16 @@ void OpenGLShaderProgram::Use()
     if (OpenGLState::CurrentProgram != _id)
     {
         OpenGLState::CurrentProgram = _id;
-        glUseProgram(_id);
+        glCall(glUseProgram, _id);
     }
 }
 
 bool OpenGLShaderProgram::Link()
 {
-    glLinkProgram(_id);
+    glCall(glLinkProgram, _id);
 
     GLint linkStatus;
-    glGetProgramiv(_id, GL_LINK_STATUS, &linkStatus);
+    glCall(glGetProgramiv, _id, GL_LINK_STATUS, &linkStatus);
     return linkStatus == GL_TRUE;
 }
 

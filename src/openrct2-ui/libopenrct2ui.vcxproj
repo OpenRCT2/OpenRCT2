@@ -60,6 +60,7 @@
     <ClInclude Include="drawing\engines\opengl\OpenGLAPIProc.h" />
     <ClInclude Include="drawing\engines\opengl\OpenGLFramebuffer.h" />
     <ClInclude Include="drawing\engines\opengl\OpenGLShaderProgram.h" />
+    <ClInclude Include="drawing\engines\opengl\PostProcessShader.h" />
     <ClInclude Include="drawing\engines\opengl\SwapFramebuffer.h" />
     <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
     <ClInclude Include="drawing\engines\opengl\TransparencyDepth.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="drawing\engines\opengl\OpenGLDrawingEngine.cpp" />
     <ClCompile Include="drawing\engines\opengl\OpenGLFramebuffer.cpp" />
     <ClCompile Include="drawing\engines\opengl\OpenGLShaderProgram.cpp" />
+    <ClCompile Include="drawing\engines\opengl\PostProcessShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\SwapFramebuffer.cpp" />
     <ClCompile Include="drawing\engines\opengl\TextureCache.cpp" />
     <ClCompile Include="drawing\engines\opengl\TransparencyDepth.cpp" />

@@ -7,9 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#pragma optimize("", off)
+
 #ifndef DISABLE_OPENGL
 
-    #include "ApplyPaletteShader.h"
+    #include "PostProcessShader.h"
 
 using namespace OpenRCT2::Ui;
 
@@ -29,8 +31,8 @@ constexpr VDStruct kVertexData[4] = {
     { 1.0f, 1.0f, 1.0f, 1.0f },
 };
 
-ApplyPaletteShader::ApplyPaletteShader()
-    : OpenGLShaderProgram("applypalette")
+PostProcessShader::PostProcessShader()
+    : OpenGLShaderProgram("postprocess")
 {
     GetLocations();
 
@@ -55,35 +57,41 @@ ApplyPaletteShader::ApplyPaletteShader()
     glCall(glUniform1i, uTexture, 0);
 }
 
-ApplyPaletteShader::~ApplyPaletteShader()
+PostProcessShader::~PostProcessShader()
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
 }
 
-void ApplyPaletteShader::GetLocations()
+void PostProcessShader::GetLocations()
 {
     uTexture = GetUniformLocation("uTexture");
-    uPalette = GetUniformLocation("uPalette");
+    uTicks = GetUniformLocation("uTicks");
 
+    uZoom = GetUniformLocation("uZoom");
     vPosition = GetAttributeLocation("vPosition");
     vTextureCoordinate = GetAttributeLocation("vTextureCoordinate");
 }
 
-void ApplyPaletteShader::SetTexture(GLuint texture)
+void PostProcessShader::SetTexture(GLuint texture)
 {
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
-void ApplyPaletteShader::SetPalette(const vec4* glPalette)
-{
-    glCall(glUniform4fv, uPalette, 256, reinterpret_cast<const GLfloat*>(glPalette));
-}
-
-void ApplyPaletteShader::Draw()
+void PostProcessShader::Draw()
 {
     glCall(glBindVertexArray, _vao);
     glCall(glDrawArrays, GL_TRIANGLE_STRIP, 0, 4);
+}
+
+void PostProcessShader::SetTickCount(uint32_t ticks)
+{
+    glCall(glUniform1f, uTicks, (float)ticks);
+}
+
+void PostProcessShader::SetZoom(float zoom)
+{
+    glCall(glUniform1f, uZoom, zoom);
 }
 
 #endif /* DISABLE_OPENGL */
