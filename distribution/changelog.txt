@@ -4,7 +4,7 @@
 - Feature: [#23569] Add large diagonal flat to steep and dive loop track pieces.
 - Improved: [#23328] The costume list in the staff window is now ordered alphabetically.
 - Improved: [#23540] The file browser now optionally shows a file size column.
-- Improved: [#23640] Building sprites with command line can use images table of JSON object.
+- Improved: [#23640] Building sprite repository with command line can use images array of JSON parkobj.
 - Change: [#23328] All RCT2 entertainer costumes are now available in legacy parks.
 - Fix: [#1479] Incorrect values provided by the in game console “get location” command.
 - Fix: [#21794] Lay-down coaster cars reverse on first frames of downwards corkscrew.
