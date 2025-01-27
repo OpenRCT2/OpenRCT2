@@ -3152,7 +3152,8 @@ static void CorkscrewRCTrackLeftCorkscrewUp(
                     break;
             }
 
-            TrackPaintUtilLeftCorkscrewUpSupports(session, direction, height);
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
