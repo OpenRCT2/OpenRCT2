@@ -2544,11 +2544,11 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                gDropdownItems[i++].Format = trackPieceStringId;
+                gDropdownItems[i].Format = trackPieceStringId;
                 if (_currentlySelectedTrack == trackPiece)
-                {
-                    defaultIndex = static_cast<int32_t>(i);
-                }
+                    defaultIndex = i;
+
+                i++;
             }
 
             // Tune dropdown to the elements it contains
