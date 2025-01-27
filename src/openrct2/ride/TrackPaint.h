@@ -543,8 +543,6 @@ void TrackPaintUtilDiagTilesPaintExtra(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const uint32_t sprites[4], MetalSupportType supportType);
 
-void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence);
-
 void DrawSBendLeftSupports(
     PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
     int32_t specialA, int32_t specialB);
