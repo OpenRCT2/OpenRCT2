@@ -11,7 +11,7 @@ namespace OpenRCT2
     struct GameState_t;
 
     // Current version that is saved.
-    constexpr uint32_t kParkFileCurrentVersion = 50;
+    constexpr uint32_t kParkFileCurrentVersion = 51;
 
     // The minimum version that is forwards compatible with the current version.
     constexpr uint32_t kParkFileMinVersion = 50;
@@ -39,6 +39,7 @@ namespace OpenRCT2
     constexpr uint16_t kExtendedStandUpRollerCoasterVersion = 48;
     constexpr uint16_t kPeepAnimationObjectsVersion = 49;
     constexpr uint16_t kDiagonalLongFlatToSteepAndDiveLoopVersion = 50;
+    constexpr uint16_t kExtendedSpinningCoasterTrack = 51;
 } // namespace OpenRCT2
 
 class ParkFileExporter
