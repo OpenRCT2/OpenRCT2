@@ -3794,3 +3794,7 @@ STR_6728    :Dive Loop (right)
 STR_6729    :Cable lift hill must start immediately after station or block brake
 STR_6730    :Export emscripten data
 STR_6731    :Import emscripten data
+STR_6732    :Make invisible
+STR_6733    :Makes the whole ride invisible
+STR_6734    :Make visible
+STR_6735    :Makes the whole ride visible

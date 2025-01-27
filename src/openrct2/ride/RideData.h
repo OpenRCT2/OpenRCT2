@@ -431,6 +431,7 @@ enum class RtdFlag : uint8_t
     hasOneStation,
     hasSeatRotation,
     allowReversedTrains,
+    isDummyType,
 };
 
 /**
@@ -609,7 +610,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = {},
     .InvertedTrackPaintFunctions = {},
-    .Flags = 0,
+    .Flags = EnumToFlag(RtdFlag::isDummyType),
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
     .OperatingSettings = {},
