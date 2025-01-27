@@ -1,5 +1,6 @@
 0.4.19 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21574] [Plugin] Add more guest events to scripting API.
 - Feature: [#23328] Introducing peep animation objects, enabling custom entertainer costumes.
 - Feature: [#23569] Add large diagonal flat to steep and dive loop track pieces.
 - Improved: [#20683] Allow Giga Coaster cable lift to start after block brake section.
