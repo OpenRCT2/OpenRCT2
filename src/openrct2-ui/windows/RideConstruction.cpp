@@ -2561,9 +2561,9 @@ namespace OpenRCT2::Ui::Windows
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,
                 elements.size(), ddWidth, targetColumnSize);
 
-            for (i = 0; i < elements.size(); i++)
+            for (size_t j = 0; j < elements.size(); j++)
             {
-                Dropdown::SetDisabled(static_cast<int32_t>(i), _specialElementDropdownState.Elements[i].Disabled);
+                Dropdown::SetDisabled(static_cast<int32_t>(j), _specialElementDropdownState.Elements[j].Disabled);
             }
             gDropdownDefaultIndex = defaultIndex;
         }
