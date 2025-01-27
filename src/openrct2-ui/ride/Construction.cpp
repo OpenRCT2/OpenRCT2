@@ -305,7 +305,7 @@ namespace OpenRCT2
                 // If the previous element and current element are enabled, add both to the list
             }
             elements.push_back({ trackType, entryIsDisabled });
-            list.HasActiveElements |= !entryIsDisabled;
+            list.HasActiveElements |= !entryIsDisabled && trackType != kSeparator;
         }
 
         if (elements.empty())
