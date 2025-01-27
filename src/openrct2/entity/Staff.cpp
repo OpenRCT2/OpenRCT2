@@ -1037,7 +1037,7 @@ void Staff::UpdateMowing()
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
             MapInvalidateTileZoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
-        StaffLawnsMown = AddClamp<decltype(StaffLawnsMown)>(StaffLawnsMown, 1);
+        StaffLawnsMown = AddClamp(StaffLawnsMown, 1U);
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1097,7 +1097,7 @@ void Staff::UpdateWatering()
 
             tile_element->AsSmallScenery()->SetAge(0);
             MapInvalidateTileZoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-            StaffGardensWatered = AddClamp<decltype(StaffGardensWatered)>(StaffGardensWatered, 1);
+            StaffGardensWatered = AddClamp(StaffGardensWatered, 1U);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
 
@@ -1181,7 +1181,7 @@ void Staff::UpdateEmptyingBin()
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
         MapInvalidateTileZoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-        StaffBinsEmptied = AddClamp<decltype(StaffBinsEmptied)>(StaffBinsEmptied, 1);
+        StaffBinsEmptied = AddClamp(StaffBinsEmptied, 1U);
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1200,7 +1200,7 @@ void Staff::UpdateSweeping()
     {
         // Remove sick at this location
         Litter::RemoveAt(GetLocation());
-        StaffLitterSwept = AddClamp<decltype(StaffLitterSwept)>(StaffLitterSwept, 1);
+        StaffLitterSwept = AddClamp(StaffLitterSwept, 1U);
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     if (auto loc = UpdateAction(); loc.has_value())
@@ -2413,13 +2413,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
         {
             UpdateRideInspected(CurrentRide);
 
-            StaffRidesInspected = AddClamp<decltype(StaffRidesInspected)>(StaffRidesInspected, 1);
+            StaffRidesInspected = AddClamp(StaffRidesInspected, 1U);
             WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
             ride.mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
             return true;
         }
 
-        StaffRidesFixed = AddClamp<decltype(StaffRidesFixed)>(StaffRidesFixed, 1);
+        StaffRidesFixed = AddClamp(StaffRidesFixed, 1U);
         WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         Orientation = PeepDirection << 3;
