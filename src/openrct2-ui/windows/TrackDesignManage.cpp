@@ -20,9 +20,9 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_STRING;
-    static constexpr int32_t WH = 44;
+    static constexpr int32_t WH = 32;
     static constexpr int32_t WW = 250;
-    static constexpr int32_t WH_DELETE_PROMPT = 74;
+    static constexpr int32_t WH_DELETE_PROMPT = 62;
     static constexpr int32_t WW_DELETE_PROMPT = 250;
     static constexpr int32_t TrackDesignNameMaxLength = 127;
 

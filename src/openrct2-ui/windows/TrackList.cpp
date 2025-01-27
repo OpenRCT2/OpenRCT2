@@ -31,7 +31,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_SELECT_DESIGN;
-    static constexpr int32_t WH = 441;
+    static constexpr int32_t WH = 429;
     static constexpr int32_t WW = 600;
     static constexpr int32_t DEBUG_PATH_HEIGHT = 12;
     static constexpr int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
@@ -425,8 +425,8 @@ namespace OpenRCT2::Ui::Windows
             // When debugging tools are on, shift everything up a bit to make room for displaying the path.
             const int32_t bottomMargin = Config::Get().general.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT)
                                                                               : WINDOW_PADDING;
-            widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
-            widgets[WIDX_ROTATE].bottom = height - bottomMargin;
+            widgets[WIDX_TRACK_LIST].bottom = height() - bottomMargin;
+            widgets[WIDX_ROTATE].bottom = height() - bottomMargin;
             widgets[WIDX_ROTATE].top = widgets[WIDX_ROTATE].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
             widgets[WIDX_TOGGLE_SCENERY].bottom = widgets[WIDX_ROTATE].top;
             widgets[WIDX_TOGGLE_SCENERY].top = widgets[WIDX_TOGGLE_SCENERY].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
@@ -477,7 +477,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<utf8*>(shortPath.c_str());
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 0, height - DEBUG_PATH_HEIGHT - 3 }, STR_STRING, ft,
+                    dpi, windowPos + ScreenCoordsXY{ 0, height() - DEBUG_PATH_HEIGHT - 3 }, STR_STRING, ft,
                     { colours[1] }); // TODO Check dpi
             }
 

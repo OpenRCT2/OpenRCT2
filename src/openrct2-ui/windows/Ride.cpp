@@ -79,9 +79,11 @@ using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
 {
+    static constexpr int32_t kMinimumWindowWidth = 316;
+
     static constexpr StringId WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
-    static constexpr int32_t WH = 207;
-    static constexpr int32_t WW = 316;
+    static constexpr int32_t WH = 195;
+    static constexpr int32_t WW = kMinimumWindowWidth;
 
     enum
     {
@@ -242,7 +244,7 @@ namespace OpenRCT2::Ui::Windows
 
     #define MAIN_RIDE_WIDGETS \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-        MakeWidget({ 0, 43 }, { 316, 137 }, WindowWidgetType::Resize, WindowColour::Secondary), \
+    MakeWidget({  0, 43}, {kMinimumWindowWidth, 137}, WindowWidgetType::Resize, WindowColour::Secondary), \
         MakeTab({ 3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP), \
         MakeTab({ 34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP), \
         MakeTab({ 65, 17 }, STR_OPERATING_OPTIONS_TIP), \
@@ -752,10 +754,10 @@ namespace OpenRCT2::Ui::Windows
             list_information_type = 0;
             picked_peep_frame = 0;
             DisableTabs();
-            min_width = 316;
-            min_height = 180;
+            min_width = kMinimumWindowWidth;
+            minBodyheight = 168;
             max_width = 500;
-            max_height = 450;
+            maxBodyHeight = 438;
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -1708,7 +1710,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 316, minHeight, 500, 450);
+            WindowSetResize(*this, kMinimumWindowWidth, minHeight, 500, 450);
             // Unlike with other windows, the focus needs to be recentred so it’s best to just reset it.
             focus = std::nullopt;
             InitViewport();
@@ -2368,20 +2370,20 @@ namespace OpenRCT2::Ui::Windows
             const int32_t offset = gameState.Cheats.allowArbitraryRideTypeChanges ? 15 : 0;
             // Anchor main page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
-            widgets[WIDX_VIEWPORT].bottom = height - (14 + offset);
+            widgets[WIDX_VIEWPORT].bottom = height() - (14 + offset);
             widgets[WIDX_STATUS].right = width - 26;
-            widgets[WIDX_STATUS].top = height - (13 + offset);
-            widgets[WIDX_STATUS].bottom = height - (3 + offset);
+            widgets[WIDX_STATUS].top = height() - (13 + offset);
+            widgets[WIDX_STATUS].bottom = height() - (3 + offset);
             widgets[WIDX_VIEW].right = width - 60;
             widgets[WIDX_VIEW_DROPDOWN].right = width - 61;
             widgets[WIDX_VIEW_DROPDOWN].left = width - 71;
             widgets[WIDX_RIDE_TYPE].right = width - 26;
-            widgets[WIDX_RIDE_TYPE].top = height - 17;
-            widgets[WIDX_RIDE_TYPE].bottom = height - 4;
+            widgets[WIDX_RIDE_TYPE].top = height() - 17;
+            widgets[WIDX_RIDE_TYPE].bottom = height() - 4;
             widgets[WIDX_RIDE_TYPE_DROPDOWN].left = width - 37;
             widgets[WIDX_RIDE_TYPE_DROPDOWN].right = width - 27;
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].top = height - 16;
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].bottom = height - 5;
+            widgets[WIDX_RIDE_TYPE_DROPDOWN].top = height() - 16;
+            widgets[WIDX_RIDE_TYPE_DROPDOWN].bottom = height() - 5;
 
             if (!gameState.Cheats.allowArbitraryRideTypeChanges)
             {
@@ -2410,7 +2412,7 @@ namespace OpenRCT2::Ui::Windows
                                                                                           : WindowWidgetType::Empty;
                 widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
 
-                widgetHeight = 62;
+                widgetHeight = widgets[WIDX_PAGE_BACKGROUND].top + 19;
                 if (widgets[WIDX_SIMULATE_LIGHT].type != WindowWidgetType::Empty)
                 {
                     widgets[WIDX_SIMULATE_LIGHT].top = widgetHeight;
@@ -2656,7 +2658,7 @@ namespace OpenRCT2::Ui::Windows
         void VehicleResize()
         {
             auto bottom = widgets[WIDX_VEHICLE_TRAINS].bottom + 6;
-            WindowSetResize(*this, 316, bottom, 316, bottom);
+            WindowSetResize(*this, kMinimumWindowWidth, bottom, kMinimumWindowWidth, bottom);
         }
 
         void VehicleOnMouseDown(WidgetIndex widgetIndex)
@@ -2879,8 +2881,7 @@ namespace OpenRCT2::Ui::Windows
             if (rideEntry == nullptr)
                 return;
 
-            auto screenCoords = windowPos + ScreenCoordsXY{ 8, 64 };
-
+            auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_VEHICLE_TYPE_DROPDOWN].bottom + 5 };
             // Description
             auto ft = Formatter();
             ft.Add<StringId>(rideEntry->naming.Description);
@@ -2937,7 +2938,7 @@ namespace OpenRCT2::Ui::Windows
             if (minimumPreviewStart > widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top)
             {
                 auto heightIncrease = minimumPreviewStart - widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top;
-                height += heightIncrease;
+                bodyHeight += heightIncrease;
                 ResizeFrameWithPage();
 
                 for (auto i = EnumValue(WIDX_VEHICLE_TRAINS_PREVIEW); i <= WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE; i++)
@@ -3201,7 +3202,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OperatingResize()
         {
-            WindowSetResize(*this, 316, 186, 316, 186);
+            auto bottom = widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].bottom + 6;
+            WindowSetResize(*this, kMinimumWindowWidth, bottom, kMinimumWindowWidth, bottom);
         }
 
         void OperatingOnMouseDown(WidgetIndex widgetIndex)
@@ -3695,10 +3697,11 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Horizontal rule between mode settings and depart settings
+            auto ruleStart = widgets[WIDX_LOAD_DROPDOWN].top - 8;
             GfxFillRectInset(
                 dpi,
-                { windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, 103 },
-                  windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].right - 5, 104 } },
+                { windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, ruleStart },
+                  windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].right - 5, ruleStart + 1 } },
                 colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
             // Number of block sections
@@ -3706,9 +3709,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(ride->num_block_brakes + ride->num_stations);
+                auto underWidget = ride->mode == RideMode::PoweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 21, ride->mode == RideMode::PoweredLaunchBlockSectioned ? 89 : 61 },
-                    STR_BLOCK_SECTIONS, ft, { COLOUR_BLACK });
+                    dpi, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
+                    { COLOUR_BLACK });
             }
         }
 
@@ -3769,7 +3773,8 @@ namespace OpenRCT2::Ui::Windows
 
         void MaintenanceResize()
         {
-            WindowSetResize(*this, 316, 135, 316, 135);
+            auto bottom = widgets[WIDX_LOCATE_MECHANIC].bottom + 6;
+            WindowSetResize(*this, kMinimumWindowWidth, bottom, kMinimumWindowWidth, bottom);
         }
 
         void MaintenanceOnMouseDown(WidgetIndex widgetIndex)
@@ -4293,7 +4298,8 @@ namespace OpenRCT2::Ui::Windows
 
         void ColourResize()
         {
-            WindowSetResize(*this, 316, 207, 316, 207);
+            auto bottom = widgets[WIDX_VEHICLE_PREVIEW].bottom + 6;
+            WindowSetResize(*this, kMinimumWindowWidth, bottom, kMinimumWindowWidth, bottom);
         }
 
         void ColourOnMouseDown(WidgetIndex widgetIndex)
@@ -5013,9 +5019,10 @@ namespace OpenRCT2::Ui::Windows
 
             // Expand the window when music is playing
             auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
-            auto minHeight = isMusicActivated ? 214 : 81;
-            auto maxHeight = isMusicActivated ? 450 : 81;
-            WindowSetResize(*this, 316, minHeight, 500, maxHeight);
+            auto standardHeight = widgets[WIDX_MUSIC_DROPDOWN].bottom + 6;
+            auto minHeight = isMusicActivated ? standardHeight + 133 : standardHeight;
+            auto maxHeight = isMusicActivated ? standardHeight + 369 : standardHeight;
+            WindowSetResize(*this, kMinimumWindowWidth, minHeight, 500, maxHeight);
         }
 
         static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
@@ -5203,7 +5210,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (isMusicActivated)
             {
-                widgets[WIDX_MUSIC_DATA].bottom = height - 11;
+                widgets[WIDX_MUSIC_DATA].bottom = height() - 11;
 
                 if (hasPreviewImage)
                 {
@@ -5456,7 +5463,7 @@ namespace OpenRCT2::Ui::Windows
 
         void MeasurementsResize()
         {
-            WindowSetResize(*this, 316, 234, 316, 234);
+            WindowSetResize(*this, kMinimumWindowWidth, 234, kMinimumWindowWidth, 234);
         }
 
         void MeasurementsOnMouseDown(WidgetIndex widgetIndex)
@@ -5892,7 +5899,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsResize()
         {
-            WindowSetResize(*this, 316, 182, std::numeric_limits<int16_t>::max(), 450);
+            WindowSetResize(*this, kMinimumWindowWidth, 182, std::numeric_limits<int16_t>::max(), 450);
         }
 
         void GraphsOnMouseDown(WidgetIndex widgetIndex)
@@ -6028,7 +6035,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Anchor graph widget
             auto x = width - 4;
-            auto y = height - kButtonFaceHeight - 8;
+            auto y = height() - kButtonFaceHeight - 8;
 
             widgets[WIDX_GRAPH].right = x;
             widgets[WIDX_GRAPH].bottom = y;
@@ -6444,7 +6451,8 @@ namespace OpenRCT2::Ui::Windows
 
         void IncomeResize()
         {
-            WindowSetResize(*this, 316, 194, 316, 194);
+            auto newHeight = 180;
+            WindowSetResize(*this, kMinimumWindowWidth, newHeight, kMinimumWindowWidth, newHeight);
         }
 
         void IncomeOnMouseDown(WidgetIndex widgetIndex)
@@ -6760,7 +6768,7 @@ namespace OpenRCT2::Ui::Windows
         void CustomerResize()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 316, 163, 316, 163);
+            WindowSetResize(*this, kMinimumWindowWidth, 163, kMinimumWindowWidth, 163);
         }
 
         void CustomerUpdate()
@@ -6940,7 +6948,7 @@ namespace OpenRCT2::Ui::Windows
     static RideWindow* WindowRideOpen(const Ride& ride)
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->Create<RideWindow>(WindowClass::Ride, 316, 207, WF_10 | WF_RESIZABLE, ride);
+        return windowMgr->Create<RideWindow>(WindowClass::Ride, kMinimumWindowWidth, 207, WF_10 | WF_RESIZABLE, ride);
     }
 
     /**

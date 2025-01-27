@@ -25,7 +25,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_ASSET_PACKS;
     static constexpr int32_t WW = 400;
-    static constexpr int32_t WH = 200;
+    static constexpr int32_t WH = 188;
 
     enum WindowAssetPacksWidgetIdx
     {
@@ -155,9 +155,9 @@ namespace OpenRCT2::Ui::Windows
 
             auto& list = widgets[WIDX_LIST];
             list.left = 6;
-            list.top = 20 + 11 + 3;
+            list.top = widgets[WIDX_TITLE].height() + 8 + 11 + 3;
             list.right = width - 2 - 24 - 1;
-            list.bottom = height - 6 - 11 - 3;
+            list.bottom = height() - 6 - 11 - 3;
 
             widgets[WIDX_HIGH_LABEL].bottom = list.top - 1;
             widgets[WIDX_HIGH_LABEL].top = widgets[WIDX_HIGH_LABEL].bottom - 11 - 3;
@@ -168,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LOW_LABEL].left = list.left;
             widgets[WIDX_LOW_LABEL].right = list.right;
 
-            auto toolstripY = 20;
+            auto toolstripY = widgets[WIDX_TITLE].height() + 8;
             auto toolstripRight = width - 2;
             auto toolstripLeft = toolstripRight - 24;
             for (WidgetIndex i = WIDX_MOVE_UP; i <= WIDX_APPLY; i++)

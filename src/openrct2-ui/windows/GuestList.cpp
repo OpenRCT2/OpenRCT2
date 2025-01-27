@@ -35,7 +35,7 @@ using namespace OpenRCT2::Numerics;
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_GUESTS;
-    static constexpr int32_t WH = 330;
+    static constexpr int32_t WH = 318;
     static constexpr int32_t WW = 350;
 
     enum WindowGuestListWidgetIdx
@@ -170,9 +170,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::Empty;
             widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
             min_width = 350;
-            min_height = 330;
+            minBodyheight = 318;
             max_width = 500;
-            max_height = 450;
+            maxBodyHeight = 438;
             RefreshList();
         }
 
@@ -251,16 +251,16 @@ namespace OpenRCT2::Ui::Windows
         void OnResize() override
         {
             min_width = 350;
-            min_height = 330;
+            minBodyheight = 318;
             if (width < min_width)
             {
                 Invalidate();
                 width = min_width;
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
                 Invalidate();
-                height = min_height;
+                bodyHeight = minBodyheight;
             }
         }
 
@@ -424,7 +424,7 @@ namespace OpenRCT2::Ui::Windows
 
             ResizeFrameWithPage();
             widgets[WIDX_GUEST_LIST].right = width - 4;
-            widgets[WIDX_GUEST_LIST].bottom = height - 15;
+            widgets[WIDX_GUEST_LIST].bottom = height() - 15;
             widgets[WIDX_MAP].left = 273 - 350 + width;
             widgets[WIDX_MAP].right = 296 - 350 + width;
             widgets[WIDX_FILTER_BY_NAME].left = 297 - 350 + width;

@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kScrollWidth = (kImageSize * kNumColumns) + kScrollBarWidth + 4;
     static constexpr int32_t kScrollHeight = (kImageSize * kNumRows);
     static constexpr int32_t kWindowWidth = kScrollWidth + 28;
-    static constexpr int32_t kWindowHeight = kScrollHeight + 50;
+    static constexpr int32_t kWindowBodyHeight = kScrollHeight + 38;
 
     struct EntranceSelection
     {
@@ -59,8 +59,8 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static Widget _widgets[] = {
-        WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowHeight),
-        MakeWidget     ({                 0, 43 }, { kWindowWidth, kWindowHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
+        WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowBodyHeight),
+        MakeWidget     ({                 0, 43 }, { kWindowWidth, kWindowBodyHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
         MakeTab        ({                 3, 17 },                                                                                           kStringIdNone                                         ),
         MakeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
         MakeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 ),
@@ -247,9 +247,9 @@ namespace OpenRCT2::Ui::Windows
 
             list_information_type = 0;
             min_width = kWindowWidth;
-            min_height = kWindowHeight;
+            minBodyheight = kWindowBodyHeight;
             max_width = kWindowWidth;
-            max_height = static_cast<int16_t>(43 + kImageSize * GetNumRows());
+            maxBodyHeight = static_cast<int16_t>(31 + kImageSize * GetNumRows());
 
             pressed_widgets |= 1LL << WIDX_TAB;
 
@@ -288,7 +288,7 @@ namespace OpenRCT2::Ui::Windows
             ResizeFrameWithPage();
 
             widgets[WIDX_LIST].right = width - 30;
-            widgets[WIDX_LIST].bottom = height - 5;
+            widgets[WIDX_LIST].bottom = height() - 5;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -399,7 +399,7 @@ namespace OpenRCT2::Ui::Windows
             return window;
 
         window = windowMgr->Create<EditorParkEntrance>(
-            WindowClass::EditorParkEntrance, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
+            WindowClass::EditorParkEntrance, kWindowWidth, kWindowBodyHeight, WF_10 | WF_RESIZABLE);
 
         return window;
     }

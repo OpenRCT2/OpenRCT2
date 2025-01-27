@@ -673,7 +673,7 @@ public:
                 continue;
             if (loc.y + height <= w->windowPos.y)
                 continue;
-            if (loc.y >= w->windowPos.y + w->height)
+            if (loc.y >= w->windowPos.y + w->height())
                 continue;
             return false;
         }
@@ -766,12 +766,12 @@ public:
             const ScreenCoordsXY offsets[] = {
                 { w->width + 2, 0 },
                 { -w->width - 2, 0 },
-                { 0, w->height + 2 },
-                { 0, -w->height - 2 },
-                { w->width + 2, -w->height - 2 },
-                { -w->width - 2, -w->height - 2 },
-                { w->width + 2, w->height + 2 },
-                { -w->width - 2, w->height + 2 },
+                { 0, w->height() + 2 },
+                { 0, -w->height() - 2 },
+                { w->width + 2, -w->height() - 2 },
+                { -w->width - 2, -w->height() - 2 },
+                { w->width + 2, w->height() + 2 },
+                { -w->width - 2, w->height() + 2 },
             };
 
             for (const auto& offset : offsets)
@@ -795,8 +795,8 @@ public:
             const ScreenCoordsXY offsets[] = {
                 { w->width + 2, 0 },
                 { -w->width - 2, 0 },
-                { 0, w->height + 2 },
-                { 0, -w->height - 2 },
+                { 0, w->height() + 2 },
+                { 0, -w->height() - 2 },
             };
 
             for (const auto& offset : offsets)
@@ -832,18 +832,20 @@ public:
     }
 
     WindowBase* Create(
-        std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
+        std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t bodyHeight,
         uint32_t flags) override
     {
+        auto titleBarHeight = (flags & WF_NO_TITLE_BAR) ? 0 : GetTitleBarHeight();
+
         if (flags & WF_AUTO_POSITION)
         {
             if (flags & WF_CENTRE_SCREEN)
             {
-                pos = GetCentrePositionForNewWindow(width, height);
+                pos = GetCentrePositionForNewWindow(width, titleBarHeight + bodyHeight);
             }
             else
             {
-                pos = GetAutoPositionForNewWindow(width, height);
+                pos = GetAutoPositionForNewWindow(width, titleBarHeight + bodyHeight);
             }
         }
 
@@ -908,11 +910,12 @@ public:
 
         w->windowPos = pos;
         w->width = width;
-        w->height = height;
         w->min_width = width;
         w->max_width = width;
-        w->min_height = height;
-        w->max_height = height;
+        w->titleBarHeight = titleBarHeight;
+        w->bodyHeight = bodyHeight;
+        w->minBodyheight = bodyHeight;
+        w->maxBodyHeight = bodyHeight;
 
         w->focus = std::nullopt;
 
@@ -1139,7 +1142,7 @@ public:
                 continue;
 
             if (screenCoords.x < w->windowPos.x || screenCoords.x >= w->windowPos.x + w->width
-                || screenCoords.y < w->windowPos.y || screenCoords.y >= w->windowPos.y + w->height)
+                || screenCoords.y < w->windowPos.y || screenCoords.y >= w->windowPos.y + w->height())
                 continue;
 
             if (w->flags & WF_NO_BACKGROUND)

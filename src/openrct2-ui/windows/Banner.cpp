@@ -29,7 +29,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW = 113;
-    static constexpr int32_t WH = 96;
+    static constexpr int32_t WH = 84;
     static constexpr StringId WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
     enum WindowBannerWidgetIdx
@@ -279,6 +279,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
+            ResizeFrame();
             Widget& colourBtn = widgets[WIDX_MAIN_COLOUR];
             colourBtn.type = WindowWidgetType::Empty;
 
