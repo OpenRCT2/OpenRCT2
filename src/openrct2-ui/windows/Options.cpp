@@ -188,6 +188,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOOLBAR_SHOW_MUTE,
         WIDX_TOOLBAR_SHOW_CHAT,
         WIDX_TOOLBAR_SHOW_ZOOM,
+        WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE,
 
         // Misc
         WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
@@ -353,16 +354,17 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
         MakeWidget({155, kThemesGroupStart + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 
-        MakeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
-        MakeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP),
-        MakeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
-        MakeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
-        MakeWidget({ 24, kToolbarGroupStart + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
-        MakeWidget({155, kToolbarGroupStart + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
-        MakeWidget({155, kToolbarGroupStart + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
-        MakeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
-        MakeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
-        MakeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
+        MakeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                         ), // Toolbar buttons group
+        MakeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP      ),
+        MakeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                      ),
+        MakeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP           ), // Finances
+        MakeWidget({ 24, kToolbarGroupStart + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP           ), // Research
+        MakeWidget({155, kToolbarGroupStart + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP             ), // Cheats
+        MakeWidget({155, kToolbarGroupStart + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP      ), // Recent messages
+        MakeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP               ), // Mute
+        MakeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP               ), // Chat
+        MakeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP               ), // Zoom
+        MakeWidget({155, kToolbarGroupStart + 91}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ROTATE_ANTI_CLOCKWISE,           STR_ROTATE_VIEW_ANTI_CLOCKWISE_IN_TOOLBAR_TIP), // Rotate anti-clockwise
     };
 
     constexpr int32_t kTitleSequenceStart = 53;
@@ -1600,6 +1602,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TOOLBAR_SHOW_ZOOM:
                     ToggleToolbarSetting(Config::Get().interface.ToolbarShowZoom);
                     break;
+                case WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowRotateAnticlockwise);
+                    break;
                 case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
                     Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
                     Config::Save();
@@ -1685,6 +1690,7 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, Config::Get().interface.ToolbarShowMute);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.ToolbarShowChat);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.ToolbarShowZoom);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE, Config::Get().interface.ToolbarShowRotateAnticlockwise);
             SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
             SetCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
             SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
