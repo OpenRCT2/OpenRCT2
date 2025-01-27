@@ -2517,7 +2517,7 @@ namespace OpenRCT2::Ui::Windows
             auto& elements = _specialElementDropdownState.Elements;
 
             int32_t defaultIndex = -1;
-            size_t i = 0;
+            int32_t i = 0;
             for (auto& element : elements)
             {
                 TrackElemType trackPiece = element.TrackType;
