@@ -2514,13 +2514,25 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowSpecialTrackDropdown(Widget* widget)
         {
+            auto& elements = _specialElementDropdownState.Elements;
+
             int32_t defaultIndex = -1;
-            for (size_t i = 0; i < _specialElementDropdownState.Elements.size(); i++)
+            int32_t i = 0;
+            for (auto& element : elements)
             {
-                OpenRCT2::TrackElemType trackPiece = _specialElementDropdownState.Elements[i].TrackType;
+                TrackElemType trackPiece = element.TrackType;
+
+                // Separate elements logically
+                if (trackPiece == TrackElemType::None)
+                {
+                    gDropdownItems[i++].Format = kStringIdEmpty;
+                    continue;
+                }
 
                 const auto& ted = GetTrackElementDescriptor(trackPiece);
                 StringId trackPieceStringId = ted.description;
+
+                // TODO: this should probably be done elsewhere
                 if (trackPieceStringId == STR_RAPIDS)
                 {
                     auto currentRide = GetRide(_currentRideIndex);
@@ -2531,20 +2543,27 @@ namespace OpenRCT2::Ui::Windows
                             trackPieceStringId = STR_LOG_BUMPS;
                     }
                 }
+
                 gDropdownItems[i].Format = trackPieceStringId;
                 if (_currentlySelectedTrack == trackPiece)
-                {
-                    defaultIndex = static_cast<int32_t>(i);
-                }
+                    defaultIndex = i;
+
+                i++;
             }
+
+            // Tune dropdown to the elements it contains
+            auto ddWidth = widget->width();
+            auto targetColumnSize = _specialElementDropdownState.PreferredNumRows;
+            if (targetColumnSize < _specialElementDropdownState.Elements.size())
+                ddWidth -= 30;
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,
-                _specialElementDropdownState.Elements.size(), widget->width());
+                elements.size(), ddWidth, targetColumnSize);
 
-            for (size_t i = 0; i < _specialElementDropdownState.Elements.size(); i++)
+            for (size_t j = 0; j < elements.size(); j++)
             {
-                Dropdown::SetDisabled(static_cast<int32_t>(i), _specialElementDropdownState.Elements[i].Disabled);
+                Dropdown::SetDisabled(static_cast<int32_t>(j), _specialElementDropdownState.Elements[j].Disabled);
             }
             gDropdownDefaultIndex = defaultIndex;
         }
