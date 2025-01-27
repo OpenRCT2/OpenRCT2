@@ -2924,6 +2924,10 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     if (guest == nullptr)
         return;
 
+    // Can't display any accessories whilst drowning
+    if (Action == PeepActionType::Drowning)
+        return;
+
     // There are only 6 walking frames available for each item,
     // as well as 1 sprite for sitting and 1 for standing still.
     auto itemFrame = imageOffset % 6;
