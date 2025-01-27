@@ -6283,8 +6283,7 @@ static void PeepUpdateWalkingBreakScenery(Guest* peep)
 
         if (std::max(xDist, yDist) < 224)
         {
-            auto vandalsStopped = innerPeep->StaffVandalsStopped;
-            vandalsStopped = AddClamp<decltype(vandalsStopped)>(vandalsStopped, 1);
+            innerPeep->StaffVandalsStopped = AddClamp(innerPeep->StaffVandalsStopped, 1U);
             return;
         }
     }
