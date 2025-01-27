@@ -23,9 +23,9 @@
 
 #ifdef __MACOSX__
     // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
-    #define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
+    #define KB_PRIMARY_MODIFIER KMOD_GUI
 #else
-    #define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
+    #define KB_PRIMARY_MODIFIER KMOD_CTRL
 #endif
 
 using namespace OpenRCT2;
@@ -119,7 +119,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     if (_session.SelectionStart > 0)
                     {
                         size_t endOffset = _session.SelectionStart;
-                        if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                        if (modifier & KB_PRIMARY_MODIFIER)
                             CaretMoveToLeftToken();
                         else
                             CaretMoveLeft();
@@ -130,10 +130,18 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         OpenRCT2::Ui::Windows::WindowUpdateTextbox();
                     }
                     break;
+                case SDLK_UP:
+                    if (!(modifier & KB_PRIMARY_MODIFIER))
+                        break;
+                    [[fallthrough]];
                 case SDLK_HOME:
                     CaretMoveToStart();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
+                case SDLK_DOWN:
+                    if (!(modifier & KB_PRIMARY_MODIFIER))
+                        break;
+                    [[fallthrough]];
                 case SDLK_END:
                     CaretMoveToEnd();
                     console.RefreshCaret(_session.SelectionStart);
@@ -141,7 +149,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 case SDLK_DELETE:
                 {
                     size_t startOffset = _session.SelectionStart;
-                    if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                    if (modifier & KB_PRIMARY_MODIFIER)
                         CaretMoveToRightToken();
                     else
                         CaretMoveRight();
@@ -156,33 +164,42 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     OpenRCT2::Ui::Windows::WindowCancelTextbox();
                     break;
                 case SDLK_LEFT:
-                    if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                    if (modifier & KB_PRIMARY_MODIFIER)
                         CaretMoveToLeftToken();
                     else
                         CaretMoveLeft();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_RIGHT:
-                    if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                    if (modifier & KB_PRIMARY_MODIFIER)
                         CaretMoveToRightToken();
                     else
                         CaretMoveRight();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_c:
-                    if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && _session.Length)
+                    if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
                     {
                         OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;
                 case SDLK_v:
-                    if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && SDL_HasClipboardText())
+                    if ((modifier & KB_PRIMARY_MODIFIER) && SDL_HasClipboardText())
                     {
                         utf8* text = SDL_GetClipboardText();
                         Insert(text);
                         SDL_free(text);
                         OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                    }
+                    break;
+                case SDLK_x:
+                    if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
+                    {
+                        SDL_SetClipboardText(_session.Buffer->c_str());
+                        Clear();
+                        OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                        ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;
             }
