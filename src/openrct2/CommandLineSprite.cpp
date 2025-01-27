@@ -537,7 +537,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        if (jsonSprites.is_object() and !jsonSprites["images"].is_null())
+        if (jsonSprites.is_object() && !jsonSprites["images"].is_null())
             jsonSprites = jsonSprites["images"];
 
         if (!jsonSprites.is_array())
@@ -603,7 +603,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        fprintf(stdout, "Finished building graphics repository with %d images\n", numSuccessful);
+        fprintf(stdout, "Finished building graphics repository with %u images\n", numSuccessful);
         return 1;
     }
 
