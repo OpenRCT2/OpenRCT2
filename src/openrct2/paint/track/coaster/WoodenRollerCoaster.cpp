@@ -4743,8 +4743,6 @@ static void WoodenRCTrackRightVerticalLoop(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
-
-    TrackPaintUtilRightVerticalLoopSegments(session, direction, trackSequence);
 }
 
 /** rct2: 0x008AC7E8 */

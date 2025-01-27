@@ -1840,43 +1840,6 @@ void TrackPaintUtilOnridePhotoPaint(
     }
 }
 
-static constexpr uint16_t RightVerticalLoopSegments[] = {
-    EnumsToFlags(
-        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-    EnumsToFlags(
-        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-    EnumsToFlags(PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-    EnumsToFlags(
-        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-    0,
-    0,
-    EnumsToFlags(
-        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-    EnumsToFlags(PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-    EnumsToFlags(
-        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-    EnumsToFlags(
-        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-};
-
-void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence)
-{
-    if (trackSequence > 9)
-    {
-        // P
-        return;
-    }
-
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(RightVerticalLoopSegments[trackSequence], direction), 0xFFFF, 0);
-}
-
 ImageId GetStationColourScheme(PaintSession& session, const TrackElement& trackElement)
 {
     if (trackElement.IsGhost())

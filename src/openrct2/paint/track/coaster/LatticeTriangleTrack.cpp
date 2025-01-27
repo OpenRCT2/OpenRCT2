@@ -9933,8 +9933,6 @@ static void LatticeTriangleTrackRightVerticalLoop(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
-
-    TrackPaintUtilRightVerticalLoopSegments(session, direction, trackSequence);
 }
 
 static void LatticeTriangleTrackLeftCorkscrewUp(
