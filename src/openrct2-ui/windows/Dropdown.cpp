@@ -183,23 +183,24 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void SetTextItems(
-            const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, uint8_t customHeight, uint8_t txtFlags,
-            size_t numItems, int32_t itemWidth)
+            const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, uint8_t customItemHeight, uint8_t txtFlags,
+            size_t numItems, int32_t itemWidth, int32_t numRowsPerColumn)
         {
             // Set and calculate num items, rows and columns
-            ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customHeight : GetDefaultRowHeight();
+            ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customItemHeight : GetDefaultRowHeight();
+
             gDropdownNumItems = static_cast<int32_t>(numItems);
-            // There must always be at least one column to prevent dividing by zero
-            if (gDropdownNumItems <= 1)
+            if (gDropdownNumItems > 1)
             {
-                NumRows = 1;
-                NumColumns = 1;
+                int32_t numAvailableRows = std::max(1, getSpaceUntilBottom(screenPos, extraY) / ItemHeight);
+                NumRows = std::min({ gDropdownNumItems, numAvailableRows, numRowsPerColumn });
+                NumColumns = (gDropdownNumItems + NumRows - 1) / NumRows;
             }
             else
             {
-                const int32_t numAvailableRows = std::max(1, getSpaceUntilBottom(screenPos, extraY) / ItemHeight);
-                NumRows = std::min(numAvailableRows, gDropdownNumItems);
-                NumColumns = (gDropdownNumItems + NumRows - 1) / NumRows;
+                // There must always be at least one column to prevent dividing by zero
+                NumRows = 1;
+                NumColumns = 1;
             }
 
             ItemWidth = itemWidth;
@@ -225,6 +226,7 @@ namespace OpenRCT2::Ui::Windows
             ItemWidth = itemWidth;
             ItemHeight = itemHeight;
             gDropdownNumItems = numItems;
+
             // There must always be at least one column and row to prevent dividing by zero
             if (gDropdownNumItems == 0)
             {
@@ -319,21 +321,22 @@ namespace OpenRCT2::Ui::Windows
      * @param colour (al)
      */
     void WindowDropdownShowText(
-        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items)
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items,
+        size_t prefRowsPerColumn)
     {
-        int32_t string_width, max_string_width;
         char buffer[256];
 
         // Calculate the longest string width
-        max_string_width = 0;
+        int32_t max_string_width = 0;
         for (size_t i = 0; i < num_items; i++)
         {
             FormatStringLegacy(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
-            string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
+            int32_t string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
             max_string_width = std::max(string_width, max_string_width);
         }
 
-        WindowDropdownShowTextCustomWidth(screenPos, extray, colour, 0, flags, num_items, max_string_width + 3);
+        WindowDropdownShowTextCustomWidth(
+            screenPos, extray, colour, 0, flags, num_items, max_string_width + 3, prefRowsPerColumn);
     }
 
     /**
@@ -346,11 +349,11 @@ namespace OpenRCT2::Ui::Windows
      * @param flags (bh)
      * @param num_items (bx)
      * @param colour (al)
-     * @param custom_height (ah) requires flag set as well
+     * @param customItemHeight (ah) requires flag set as well
      */
     void WindowDropdownShowTextCustomWidth(
-        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
-        size_t num_items, int32_t width)
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t customItemHeight, uint8_t flags,
+        size_t num_items, int32_t width, size_t prefRowsPerColumn)
     {
         InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
         if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
@@ -360,10 +363,11 @@ namespace OpenRCT2::Ui::Windows
 
         // Create the window (width/height position are set later)
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, width, custom_height, WF_STICK_TO_FRONT);
+        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, width, customItemHeight, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
-            w->SetTextItems(screenPos, extray, colour, custom_height, flags, num_items, width);
+            auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
+            w->SetTextItems(screenPos, extray, colour, customItemHeight, flags, num_items, width, numRowsPerColumn);
         }
     }
 
@@ -421,73 +425,71 @@ namespace OpenRCT2::Ui::Windows
         return -1;
     }
 
-    // clang-format off
-// colour_t ordered for use in color dropdown
-static constexpr colour_t kColoursDropdownOrder[] = {
-    COLOUR_BLACK,
-    COLOUR_SATURATED_RED,
-    COLOUR_DARK_ORANGE,
-    COLOUR_DARK_YELLOW,
-    COLOUR_GRASS_GREEN_DARK,
-    COLOUR_SATURATED_GREEN,
-    COLOUR_AQUA_DARK,
-    COLOUR_DARK_BLUE,
-    COLOUR_SATURATED_PURPLE_DARK,
+    // colour_t ordered for use in color dropdown
+    static constexpr colour_t kColoursDropdownOrder[] = {
+        COLOUR_BLACK,
+        COLOUR_SATURATED_RED,
+        COLOUR_DARK_ORANGE,
+        COLOUR_DARK_YELLOW,
+        COLOUR_GRASS_GREEN_DARK,
+        COLOUR_SATURATED_GREEN,
+        COLOUR_AQUA_DARK,
+        COLOUR_DARK_BLUE,
+        COLOUR_SATURATED_PURPLE_DARK,
 
-    COLOUR_GREY,
-    COLOUR_BRIGHT_RED,
-    COLOUR_LIGHT_ORANGE,
-    COLOUR_YELLOW,
-    COLOUR_MOSS_GREEN,
-    COLOUR_BRIGHT_GREEN,
-    COLOUR_TEAL,
-    COLOUR_LIGHT_BLUE,
-    COLOUR_BRIGHT_PURPLE,
+        COLOUR_GREY,
+        COLOUR_BRIGHT_RED,
+        COLOUR_LIGHT_ORANGE,
+        COLOUR_YELLOW,
+        COLOUR_MOSS_GREEN,
+        COLOUR_BRIGHT_GREEN,
+        COLOUR_TEAL,
+        COLOUR_LIGHT_BLUE,
+        COLOUR_BRIGHT_PURPLE,
 
-    COLOUR_WHITE,
-    COLOUR_LIGHT_PINK,
-    COLOUR_ORANGE_LIGHT,
-    COLOUR_BRIGHT_YELLOW,
-    COLOUR_GRASS_GREEN_LIGHT,
-    COLOUR_SATURATED_GREEN_LIGHT,
-    COLOUR_AQUAMARINE,
-    COLOUR_ICY_BLUE,
-    COLOUR_SATURATED_PURPLE_LIGHT,
+        COLOUR_WHITE,
+        COLOUR_LIGHT_PINK,
+        COLOUR_ORANGE_LIGHT,
+        COLOUR_BRIGHT_YELLOW,
+        COLOUR_GRASS_GREEN_LIGHT,
+        COLOUR_SATURATED_GREEN_LIGHT,
+        COLOUR_AQUAMARINE,
+        COLOUR_ICY_BLUE,
+        COLOUR_SATURATED_PURPLE_LIGHT,
 
-    COLOUR_DULL_BROWN_DARK,
-    COLOUR_BORDEAUX_RED_DARK,
-    COLOUR_TAN_DARK,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_OLIVE_DARK,
-    COLOUR_OLIVE_DARK,
-    COLOUR_DULL_GREEN_DARK,
-    COLOUR_DARK_PURPLE,
-    COLOUR_DARK_PINK,
+        COLOUR_DULL_BROWN_DARK,
+        COLOUR_BORDEAUX_RED_DARK,
+        COLOUR_TAN_DARK,
+        COLOUR_SATURATED_BROWN,
+        COLOUR_DARK_OLIVE_DARK,
+        COLOUR_OLIVE_DARK,
+        COLOUR_DULL_GREEN_DARK,
+        COLOUR_DARK_PURPLE,
+        COLOUR_DARK_PINK,
 
-    COLOUR_DARK_BROWN,
-    COLOUR_BORDEAUX_RED,
-    COLOUR_SALMON_PINK,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_DARK_OLIVE_GREEN,
-    COLOUR_OLIVE_GREEN,
-    COLOUR_DARK_GREEN,
-    COLOUR_LIGHT_PURPLE,
-    COLOUR_BRIGHT_PINK,
+        COLOUR_DARK_BROWN,
+        COLOUR_BORDEAUX_RED,
+        COLOUR_SALMON_PINK,
+        COLOUR_LIGHT_BROWN,
+        COLOUR_DARK_OLIVE_GREEN,
+        COLOUR_OLIVE_GREEN,
+        COLOUR_DARK_GREEN,
+        COLOUR_LIGHT_PURPLE,
+        COLOUR_BRIGHT_PINK,
 
-    COLOUR_DULL_BROWN_LIGHT,
-    COLOUR_BORDEAUX_RED_LIGHT,
-    COLOUR_TAN_LIGHT,
-    COLOUR_SATURATED_BROWN_LIGHT,
-    COLOUR_DARK_OLIVE_LIGHT,
-    COLOUR_OLIVE_LIGHT,
-    COLOUR_DULL_GREEN_LIGHT,
-    COLOUR_DULL_PURPLE_LIGHT,
-    COLOUR_MAGENTA_LIGHT,
+        COLOUR_DULL_BROWN_LIGHT,
+        COLOUR_BORDEAUX_RED_LIGHT,
+        COLOUR_TAN_LIGHT,
+        COLOUR_SATURATED_BROWN_LIGHT,
+        COLOUR_DARK_OLIVE_LIGHT,
+        COLOUR_OLIVE_LIGHT,
+        COLOUR_DULL_GREEN_LIGHT,
+        COLOUR_DULL_PURPLE_LIGHT,
+        COLOUR_MAGENTA_LIGHT,
 
-    COLOUR_INVISIBLE,
-    COLOUR_VOID
-};
-    // clang-format on
+        COLOUR_INVISIBLE,
+        COLOUR_VOID,
+    };
 
     colour_t ColourDropDownIndexToColour(uint8_t ddidx)
     {
