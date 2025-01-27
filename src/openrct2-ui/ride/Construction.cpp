@@ -127,7 +127,6 @@ namespace OpenRCT2
         // Reverse freefall pieces
         TrackElemType::ReverseFreefallSlope,
         TrackElemType::ReverseFreefallVertical,
-        kSeparator,
 
         // Air thrust pieces
         TrackElemType::AirThrustTopCap,
