@@ -2486,8 +2486,6 @@ static void TwisterRCTrackRightVerticalLoop(
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
     }
-
-    TrackPaintUtilRightVerticalLoopSegments(session, direction, trackSequence);
 }
 
 static void TwisterRCTrackLeftQuarterTurn3(
