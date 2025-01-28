@@ -18,17 +18,6 @@
 
 namespace OpenRCT2::BlockedSegments
 {
-    constexpr uint16_t kStraightFlat = EnumsToFlags(
-        PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide);
-    constexpr uint16_t kDiagStraightFlat[] = {
-        EnumsToFlags(
-            PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
-        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide, PaintSegment::topCorner),
-        EnumsToFlags(
-            PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide),
-        EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide),
-    };
-
     enum class TrackType
     {
         Narrow,
