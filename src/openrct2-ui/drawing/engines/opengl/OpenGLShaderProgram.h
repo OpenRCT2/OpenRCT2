@@ -11,17 +11,21 @@
 
 #include "OpenGLAPI.h"
 
+#include <chrono>
+#include <filesystem>
 #include <memory>
+#include <openrct2/core/StringTypes.h>
 #include <string>
+
 namespace OpenRCT2::Ui
 {
     class OpenGLShader final
     {
     private:
-        static constexpr uint64_t kMaxSourceSize = 8 * 1024 * 1024; // 8 MiB
-
         GLenum _type;
         GLuint _id = 0;
+        std::filesystem::file_time_type _lastWriteTime;
+        std::filesystem::path _filePath;
 
     public:
         OpenGLShader(const char* name, GLenum type);
@@ -29,20 +33,22 @@ namespace OpenRCT2::Ui
 
         GLuint GetShaderId();
 
-    private:
-        std::string GetPath(const std::string& name);
-        static std::string ReadSourceCode(const std::string& path);
+        bool NeedsReload() const;
     };
 
     class OpenGLShaderProgram
     {
+        using Clock = std::chrono::steady_clock;
+
     private:
+        std::string _name;
         GLuint _id = 0;
         std::unique_ptr<OpenGLShader> _vertexShader;
         std::unique_ptr<OpenGLShader> _fragmentShader;
+        Clock::time_point _lastReloadCheck{};
 
     public:
-        explicit OpenGLShaderProgram(const char* name);
+        explicit OpenGLShaderProgram(u8string_view name);
         explicit OpenGLShaderProgram(const OpenGLShaderProgram&) = delete;
         explicit OpenGLShaderProgram(OpenGLShaderProgram&&) = default;
         virtual ~OpenGLShaderProgram();
@@ -50,6 +56,9 @@ namespace OpenRCT2::Ui
         GLuint GetAttributeLocation(const char* name);
         GLuint GetUniformLocation(const char* name);
         void Use();
+        void Reload();
+        void Destroy();
+        void Update();
 
     private:
         bool Link();

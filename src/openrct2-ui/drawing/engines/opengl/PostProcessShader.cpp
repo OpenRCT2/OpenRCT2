@@ -31,8 +31,8 @@ constexpr VDStruct kVertexData[4] = {
     { 1.0f, 1.0f, 1.0f, 1.0f },
 };
 
-PostProcessShader::PostProcessShader()
-    : OpenGLShaderProgram("postprocess")
+PostProcessShader::PostProcessShader(u8string_view name)
+    : OpenGLShaderProgram(name)
 {
     GetLocations();
 

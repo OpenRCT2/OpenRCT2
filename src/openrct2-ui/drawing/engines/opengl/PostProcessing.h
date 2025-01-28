@@ -10,36 +10,31 @@
 #pragma once
 
 #include "GLSLTypes.h"
+#include "OpenGLAPI.h"
+#include "OpenGLFramebuffer.h"
 #include "OpenGLShaderProgram.h"
+#include "PostProcessShader.h"
 
-#include <openrct2/core/StringTypes.h>
+#include <vector>
 
 namespace OpenRCT2::Ui
 {
-    class PostProcessShader final : public OpenGLShaderProgram
+    class PostProcessing
     {
-    private:
-        GLuint uTexture;
-        GLuint uTicks;
-        GLuint uZoom;
-
-        GLuint vPosition;
-        GLuint vTextureCoordinate;
-
-        GLuint _vbo;
-        GLuint _vao;
+        std::vector<std::string> _available;
+        std::vector<std::unique_ptr<PostProcessShader>> _postProcessShaders;
+        std::unique_ptr<OpenGLFramebuffer> _postProcessFramebuffer;
 
     public:
-        PostProcessShader(u8string_view name);
-        ~PostProcessShader() override;
+        PostProcessing();
 
-        static void SetTexture(GLuint texture);
-        void SetTickCount(uint32_t ticks);
-        void SetZoom(float zoom);
+        void Initialize();
 
-        void Draw();
+        void Resize(int32_t width, int32_t height);
 
-    private:
-        void GetLocations();
+        void Update();
+
+        void Apply(OpenGLFramebuffer& screenFrameBuffer);
     };
+
 } // namespace OpenRCT2::Ui

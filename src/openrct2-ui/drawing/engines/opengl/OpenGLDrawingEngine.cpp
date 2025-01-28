@@ -18,6 +18,7 @@
     #include "OpenGLAPI.h"
     #include "OpenGLFramebuffer.h"
     #include "PostProcessShader.h"
+    #include "PostProcessing.h"
     #include "SwapFramebuffer.h"
     #include "TextureCache.h"
     #include "TransparencyDepth.h"
@@ -199,8 +200,8 @@ private:
     std::unique_ptr<OpenGLFramebuffer> _screenFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
-    std::unique_ptr<OpenGLFramebuffer> _postProcessFramebuffer;
-    std::unique_ptr<PostProcessShader> _postProcessShader;
+    std::unique_ptr<PostProcessing> _postProcessing;
+
     OpenGLWeatherDrawer _weatherDrawer;
 
 public:
@@ -210,6 +211,7 @@ public:
     explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
         , _drawingContext(std::make_unique<OpenGLDrawingContext>(*this))
+        , _postProcessing(std::make_unique<PostProcessing>())
         , _weatherDrawer(_drawingContext.get())
     {
         _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
@@ -246,13 +248,16 @@ public:
         _drawingContext->Initialise();
 
         _applyPaletteShader = std::make_unique<ApplyPaletteShader>();
-        _postProcessShader = std::make_unique<PostProcessShader>();
+        //_postProcessShader = std::make_unique<PostProcessShader>();
+
+        _postProcessing->Initialize();
     }
 
     void Resize(uint32_t width, uint32_t height) override
     {
         ConfigureBits(width, height, width);
         ConfigureCanvas();
+        _postProcessing->Resize(width, height);
         _drawingContext->Resize(width, height);
         _drawingContext->Clear(_bitsDPI, PALETTE_INDEX_10);
     }
@@ -294,6 +299,8 @@ public:
     {
         assert(_screenFramebuffer != nullptr);
 
+        _postProcessing->Update();
+
         _drawingContext->StartNewDraw();
     }
 
@@ -320,24 +327,6 @@ public:
         _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
         _applyPaletteShader->Draw();
 
-        _postProcessFramebuffer->Copy(*frameBuffer, GL_NEAREST);
-
-        auto mainWindow = WindowGetMain();
-        auto zoomLevel = 0.0f;
-        if (mainWindow != nullptr)
-        {
-            zoomLevel = static_cast<float>(static_cast<int8_t>(mainWindow->viewport->zoom));
-        }
-
-        _postProcessShader->Use();
-        _postProcessShader->SetTexture(_postProcessFramebuffer->GetTexture());
-        _postProcessShader->SetTickCount(GetGameState().CurrentTicks);
-        _postProcessShader->SetZoom(zoomLevel);
-        _postProcessShader->Draw();
-
-        // Copy to final framebuffer
-        _screenFramebuffer->Copy(*_postProcessFramebuffer, GL_NEAREST);
-
         if (_smoothScaleFramebuffer != nullptr)
         {
             _smoothScaleFramebuffer->Copy(*_scaleFramebuffer, GL_NEAREST);
@@ -347,6 +336,8 @@ public:
         {
             _screenFramebuffer->Copy(*_scaleFramebuffer, GL_LINEAR);
         }
+
+        _postProcessing->Apply(*_screenFramebuffer);
 
         CheckGLError();
         Display();
@@ -471,9 +462,6 @@ private:
         // Re-create screen framebuffer
         _screenFramebuffer = std::make_unique<OpenGLFramebuffer>(_window);
         _screenFramebuffer->SetName("ScreenFrameBuffer");
-
-        _postProcessFramebuffer = std::make_unique<OpenGLFramebuffer>(_width, _height, false, false);
-        _postProcessFramebuffer->SetName("PostProcessFrameBuffer");
 
         _smoothScaleFramebuffer.reset();
         _scaleFramebuffer.reset();
