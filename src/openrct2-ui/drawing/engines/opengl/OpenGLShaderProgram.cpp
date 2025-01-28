@@ -77,8 +77,6 @@ OpenGLShader::OpenGLShader(const char* name, GLenum type)
 
         Console::Error::WriteLine("Error compiling %s", _filePath.u8string().c_str());
         Console::Error::WriteLine(buffer);
-
-        throw std::runtime_error("Error compiling shader.");
     }
 }
 
@@ -94,7 +92,13 @@ GLuint OpenGLShader::GetShaderId()
 
 bool OpenGLShader::NeedsReload() const
 {
-    return std::filesystem::last_write_time(_filePath) > _lastWriteTime;
+    std::error_code ec;
+    auto lastWrite = std::filesystem::last_write_time(_filePath, ec);
+    if (ec)
+    {
+        return false;
+    }
+    return lastWrite > _lastWriteTime;
 }
 
 OpenGLShaderProgram::OpenGLShaderProgram(u8string_view name)
