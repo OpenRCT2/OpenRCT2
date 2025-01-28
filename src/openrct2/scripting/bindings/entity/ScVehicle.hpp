@@ -101,6 +101,8 @@ namespace OpenRCT2::Scripting
         DukValue gForces_get() const;
 
         void travelBy(int32_t value);
+
+        void moveToTrack(const DukValue& dukPosition, int32_t elementIndex);
     };
 
 } // namespace OpenRCT2::Scripting
