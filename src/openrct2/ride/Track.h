@@ -616,7 +616,9 @@ namespace OpenRCT2
         LeftEighthDiveLoopDownToDiag = 347,
         RightEighthDiveLoopDownToDiag = 348,
 
-        Count = 349,
+        DiagDown25Brakes = 349,
+
+        Count = 350,
 
         None = 65535,
     };

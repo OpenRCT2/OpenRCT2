@@ -378,6 +378,7 @@ namespace OpenRCT2::TrackMetaData
         { 4, 1, 0,152, -32, 96 },   // TrackElemType::RightEighthDiveLoopUpToOrthogonal
         { 0, 7,152, 0, -96, -32 },   // TrackElemType::LeftEighthDiveLoopDownToDiag 
         { 0, 4,152, 0, -96, 32 },   // TrackElemType::RightEighthDiveLoopDownToDiag
+        { 4, 4, 16, 0, -32, 32 }   // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kTrackCoordinates) == EnumValue(TrackElemType::Count));
     
@@ -731,6 +732,7 @@ namespace OpenRCT2::TrackMetaData
         165, // TrackElemType::RightEighthDiveLoopUpToOrthogonal   
         165, // TrackElemType::LeftEighthDiveLoopDownToDiag  
         165, // TrackElemType::RightEighthDiveLoopDownToDiag      
+        45, // TrackElemType::DiagDown25Brakes
     };
 
     static_assert(std::size(kTrackPieceLengths) == EnumValue(TrackElemType::Count));
@@ -1086,6 +1088,7 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::LeftEighthDiveLoopDownToDiag, TrackCurve::None },            // TrackElemType::RightEighthDiveLoopUpToOrthogonal   
         { TrackCurve::None, TrackElemType::RightEighthDiveLoopUpToOrthogonal  },             // TrackElemType::LeftEighthDiveLoopDownToDiag  
         { TrackCurve::None, TrackElemType::LeftEighthDiveLoopUpToOrthogonal },             // TrackElemType::RightEighthDiveLoopDownToDiag 
+        { TrackElemType::DiagDown25Brakes, TrackElemType::DiagDown25Brakes }, // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kTrackCurveChain) == EnumValue(TrackElemType::Count));
     
@@ -1629,6 +1632,7 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::None, // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
         TrackElemType::None, // TrackElemType::LeftEighthDiveLoopDownToDiag 
         TrackElemType::None, // TrackElemType::RightEighthDiveLoopDownToDiag
+        TrackElemType::None, // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kAlternativeTrackTypes) == EnumValue(TrackElemType::Count));
     
@@ -1983,6 +1987,7 @@ namespace OpenRCT2::TrackMetaData
         458752, // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
         458752, // TrackElemType::LeftEighthDiveLoopDownToDiag 
         458752, // TrackElemType::RightEighthDiveLoopDownToDiag
+        109824, // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kTrackPricing) == EnumValue(TrackElemType::Count));
     
@@ -2337,6 +2342,7 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::LeftEighthDiveLoopUpToOrthogonal,      // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
         TrackElemType::RightEighthDiveLoopDownToDiag,   // TrackElemType::LeftEighthDiveLoopDownToDiag 
         TrackElemType::LeftEighthDiveLoopDownToDiag,    // TrackElemType::RightEighthDiveLoopDownToDiag
+        TrackElemType::DiagDown25Brakes,
     };
     static_assert(std::size(kTrackElementMirrorMap) == EnumValue(TrackElemType::Count));
     
@@ -2691,6 +2697,7 @@ namespace OpenRCT2::TrackMetaData
         (1 << 0) | (1 << 5), // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
         (1 << 0) | (1 << 5), // TrackElemType::LeftEighthDiveLoopDownToDiag 
         (1 << 0) | (1 << 5), // TrackElemType::RightEighthDiveLoopDownToDiag
+        (1 << 3), // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kTrackHeightMarkerPositions) == EnumValue(TrackElemType::Count));
     
@@ -3048,6 +3055,7 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::RightEighthDiveLoopUpToOrthogonal      */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
         /* TrackElemType::LeftEighthDiveLoopDownToDiag     */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
         /* TrackElemType::RightEighthDiveLoopDownToDiag    */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+        /* TrackElemType::DiagDown25Brakes                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
     };
     static_assert(std::size(kTrackFlags) == EnumValue(TrackElemType::Count));
     // clang-format on
@@ -3406,6 +3414,7 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::diveLoop,                          TrackPitch::None,             TrackPitch::Up60,           TrackRoll::UpsideDown,  TrackRoll::None,        56  }, // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
         { TrackGroup::diveLoop,                          TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown,  -56 }, // TrackElemType::LeftEighthDiveLoopDownToDiag 
         { TrackGroup::diveLoop,                          TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown,  -56 }, // TrackElemType::RightEighthDiveLoopDownToDiag
+        { TrackGroup::inclinedBrakes,                    TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::None,        TrackRoll::None,       0    }, // TrackElemType::DiagDown25
     };
     static_assert(std::size(kTrackDefinitions) == EnumValue(TrackElemType::Count));
 
@@ -3470,7 +3479,7 @@ namespace OpenRCT2::TrackMetaData
         SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,
         SpinFunction::R9,   SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
         SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,
-        SpinFunction::R9
+        SpinFunction::R9,   SpinFunction::None
     };
     static_assert(std::size(kTrackTypeToSpinFunction) == EnumValue(TrackElemType::Count));
 
@@ -4832,6 +4841,7 @@ namespace OpenRCT2::TrackMetaData
         STR_DIVE_LOOP_RIGHT,               // TrackElemType::RightEighthDiveLoopUpToOrthogonal
         STR_DIVE_LOOP_LEFT,                // TrackElemType::LeftEighthDiveLoopDownToDiag
         STR_DIVE_LOOP_RIGHT,               // TrackElemType::RightEighthDiveLoopDownToDiag
+        STR_BRAKES,                        // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kRideConfigurationStringIds) == EnumValue(TrackElemType::Count));
 
@@ -13049,6 +13059,7 @@ namespace OpenRCT2::TrackMetaData
         { 6,
           { kRightEighthDiveLoopDownToDiagSeq0, kRightEighthDiveLoopDownToDiagSeq1, kRightEighthDiveLoopDownToDiagSeq2,
             kRightEighthDiveLoopDownToDiagSeq3, kRightEighthDiveLoopDownToDiagSeq4, kRightEighthDiveLoopDownToDiagSeq5 } },
+        /* TrackElemType::DiagDown25Brakes */ { 4, { kDiagDown25Seq0, kDiagDown25Seq1, kDiagDown25Seq2, kDiagDown25Seq3 } }
     };
 
 #pragma endregion

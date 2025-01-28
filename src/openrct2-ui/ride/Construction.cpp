@@ -38,6 +38,7 @@ namespace OpenRCT2
         TrackElemType::Down25Brakes,
         TrackElemType::BlockBrakes,
         TrackElemType::DiagBlockBrakes,
+        TrackElemType::DiagDown25Brakes,
 
         // Boosters
         TrackElemType::Booster,
@@ -216,7 +217,7 @@ namespace OpenRCT2
     };
 
     // Update the magic number with the current number of track elements to silence
-    static_assert(EnumValue(TrackElemType::Count) == 349, "Reminder to add new track element to special dropdown list");
+    static_assert(EnumValue(TrackElemType::Count) == 350, "Reminder to add new track element to special dropdown list");
 
     /**
      *
