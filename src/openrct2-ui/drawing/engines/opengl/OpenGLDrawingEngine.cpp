@@ -528,6 +528,10 @@ void OpenGLDrawingContext::ResetPalette()
 
 void OpenGLDrawingContext::StartNewDraw()
 {
+    _drawRectShader->Update();
+    _drawLineShader->Update();
+    _applyTransparencyShader->Update();
+
     _drawCount = 0;
     _swapFramebuffer->Clear();
 }
