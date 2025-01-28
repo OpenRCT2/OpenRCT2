@@ -25,11 +25,8 @@
 
 #include <cmath>
 #include <cstring>
+#include <format>
 #include <optional>
-
-// TODO: Remove when C++20 is enabled and std::format can be used
-#include <iomanip>
-#include <sstream>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -248,15 +245,6 @@ static std::optional<ImageImporter::ImportResult> SpriteImageImport(u8string_vie
     }
 }
 
-// TODO: Remove when C++20 is enabled and std::format can be used
-static std::string PopStr(std::ostringstream& oss)
-{
-    auto str = oss.str();
-    oss.str("");
-    oss.clear();
-    return str;
-}
-
 int32_t CommandLineForSprite(const char** argv, int32_t argc)
 {
     gOpenRCT2Headless = true;
@@ -371,16 +359,13 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         const uint32_t maxIndex = spriteFile->Header.num_entries;
         const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
 
-        std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used
         for (uint32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
         {
             // Status indicator
             printf("\r%u / %u, %u%%", spriteIndex + 1, maxIndex, ((spriteIndex + 1) * 100) / maxIndex);
 
-            oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
-
             const auto& spriteHeader = spriteFile->Entries[spriteIndex];
-            if (!SpriteImageExport(spriteHeader, Path::Combine(outputPath, PopStr(oss))))
+            if (!SpriteImageExport(spriteHeader, Path::Combine(outputPath, std::format("{:0{}}.png", spriteIndex, numbers))))
             {
                 fprintf(stderr, "Could not export\n");
                 return -1;
@@ -431,11 +416,9 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         const uint32_t maxIndex = metaObject->GetNumImages();
         const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
 
-        std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used
         for (uint32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
         {
-            oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
-            auto path = Path::Combine(outputPath, PopStr(oss));
+            auto path = Path::Combine(outputPath, std::format("{:0{}}.png", spriteIndex, numbers));
 
             const auto& g1 = metaObject->GetImageTable().GetImages()[spriteIndex];
             if (!SpriteImageExport(g1, path))
