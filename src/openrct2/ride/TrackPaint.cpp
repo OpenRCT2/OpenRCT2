@@ -1200,8 +1200,6 @@ void TrackPaintUtilDiagTilesPaintExtra(
             session.SupportColours);
     }
 
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1988,7 +1986,6 @@ void TrackPaintUtilOnridePhotoPaint2(
 {
     TrackPaintUtilOnridePhotoPaint(session, direction, height + trackHeightOffset, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + supportsAboveHeightOffset);
 }
 
