@@ -318,6 +318,7 @@ namespace OpenRCT2
             if (elements.empty())
                 return list;
         }
+
         // If the very last element is a separator, remove it
         auto& lastElement = elements.back();
         if (lastElement.TrackType == kSeparator)
