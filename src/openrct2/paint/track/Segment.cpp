@@ -3176,7 +3176,7 @@ namespace OpenRCT2::BlockedSegments
         constexpr uint16_t kLeftBankedQuarterTurn3TilesSeq2 = Narrow::kLeftBankedQuarterTurn3TilesSeq2;
         constexpr uint16_t kLeftBankedQuarterTurn3TilesSeq3 = kSegmentsAll;
         constexpr uint16_t kRightBankedQuarterTurn3TilesSeq0 = kSegmentsAll;
-        constexpr uint16_t kRightBankedQuarterTurn3TilesSeq1 = EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft);
+        constexpr uint16_t kRightBankedQuarterTurn3TilesSeq1 = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
         constexpr uint16_t kRightBankedQuarterTurn3TilesSeq2 = Narrow::kRightBankedQuarterTurn3TilesSeq2;
         constexpr uint16_t kRightBankedQuarterTurn3TilesSeq3 = kSegmentsAll;
         constexpr uint16_t kLeftQuarterTurn3TilesUp25Seq0 = kSegmentsAll;
