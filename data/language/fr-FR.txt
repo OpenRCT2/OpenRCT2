@@ -2176,7 +2176,6 @@ STR_3136    :Attention : cette construction sera fabriquée avec un autre type 
 STR_3137    :Choisir décor proche
 STR_3138    :Recomm. sélection
 STR_3139    :Impossible d’appliquer une remontée à chaîne dans ce mode de fonctionnement
-STR_3140    :La remontée à chaîne doit commencer immédiatement à la sortie de la station
 STR_3141    :La remontée à chaîne n’est pas compatible avec une attraction multi-parcours
 STR_3142    :{WINDOW_COLOUR_2}Capacité : {BLACK}{STRINGID}
 STR_3143    :Voir les personnes sur la carte
@@ -2208,7 +2207,7 @@ STR_3188    :Panneaux de direction
 STR_3189    :Allées classiques
 STR_3190    :Suppléments allées
 STR_3191    :Groupes de décor
-STR_3192    :Entrée du parc
+STR_3192    :Entrées du parc
 STR_3193    :Etendue d’eau
 STR_3195    :Liste d’inventions
 STR_3196    :{WINDOW_COLOUR_2}Groupe de recherche : {BLACK}{STRINGID}
@@ -2615,7 +2614,7 @@ STR_5368    :Réinit. accidents
 STR_5371    :Sélection d’objets
 STR_5372    :Inverser le déplacement du clic droit
 STR_5373    :Nom {STRINGID}
-STR_5374    :Date {STRINGID}
+STR_5374    :Date de modification {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Le nom existe déjà
@@ -3781,3 +3780,23 @@ STR_6707    :(aucun sélectionné)
 STR_6708    :Puissance du lissage
 STR_6709    :Entrez une puissance du lissage comprise entre {COMMA16} et {COMMA16}
 STR_6710    :Tri stable
+STR_6711    :Nom de fichier :
+STR_6712    :Enregistrer
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Nom de fichier
+STR_6715    :Date de modification
+STR_6716    :Taille
+STR_6717    :Taille {STRINGID}
+STR_6718    :Animations de personnel
+STR_6719    :Au moins un objet d’animations de personnel doit être sélectionné
+STR_6720    :Au moins un objet d’animations d’agent d’entretien doit être sélectionné
+STR_6721    :Au moins un objet d’animations de mécanicien doit être sélectionné
+STR_6722    :Au moins un objet d’animations d’agent de sécurité doit être sélectionné
+STR_6723    :Au moins un objet d’animations d’animateur doit être sélectionné
+STR_6724    :Textes de scénario
+STR_6725    :X :
+STR_6726    :Y :
+STR_6727    :Boucle plongeante (gauche)
+STR_6728    :Boucle plongeante (droite)
+STR_6729    :La remontée à chaîne doit commencer immédiatement à la sortie de la station ou des freins de bloc
+
