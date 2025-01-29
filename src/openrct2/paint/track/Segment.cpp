@@ -374,6 +374,9 @@ namespace OpenRCT2::BlockedSegments
 
     bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence, const TrackType trackType)
     {
+        if (trackSequence >= OpenRCT2::TrackMetaData::kMaxSequencesPerPiece)
+            return false;
+
         if (trackType == TrackType::Inverted
             && (trackElemType == TrackElemType::BeginStation || trackElemType == TrackElemType::MiddleStation
                 || trackElemType == TrackElemType::EndStation || trackElemType == TrackElemType::OnRidePhoto))
@@ -6183,6 +6186,9 @@ namespace OpenRCT2::BlockedSegments
         PaintSession& session, const uint8_t trackSequence, const Direction direction, const uint16_t height,
         const TrackElemType trackElemType, const TrackType trackType, const TrainType trainType)
     {
+        if (trackSequence >= OpenRCT2::TrackMetaData::kMaxSequencesPerPiece)
+            return;
+
         uint16_t blockedSegments = kSegmentsNone;
         switch (trackType)
         {
