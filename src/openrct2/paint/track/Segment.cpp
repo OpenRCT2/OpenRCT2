@@ -6203,27 +6203,21 @@ namespace OpenRCT2::BlockedSegments
                 break;
         };
 
-        if (blockedSegments != kSegmentsNone)
-        {
-            PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-        }
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
 
         if (trackType == TrackType::Inverted && trainType == TrainType::SuspendedSwinging)
         {
-            const uint16_t blockedSegmentsTrain = kBlockedSegmentsSuspendedSwingingTrain[EnumValue(trackElemType)]
-                                                                                        [trackSequence];
-            if (blockedSegmentsTrain != kSegmentsNone)
-            {
-                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegmentsTrain, direction), 0xFFFF, 0);
-            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    kBlockedSegmentsSuspendedSwingingTrain[EnumValue(trackElemType)][trackSequence], direction),
+                0xFFFF, 0);
         }
         else if (trackType == TrackType::Narrow && trainType == TrainType::Wide)
         {
-            const uint16_t blockedSegmentsTrain = kBlockedSegmentsWideTrain[EnumValue(trackElemType)][trackSequence];
-            if (blockedSegmentsTrain != kSegmentsNone)
-            {
-                PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegmentsTrain, direction), 0xFFFF, 0);
-            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(kBlockedSegmentsWideTrain[EnumValue(trackElemType)][trackSequence], direction),
+                0xFFFF, 0);
         }
     }
 } // namespace OpenRCT2::BlockedSegments
