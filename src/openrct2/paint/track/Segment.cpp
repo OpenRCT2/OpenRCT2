@@ -373,9 +373,6 @@ namespace OpenRCT2::BlockedSegments
 
     bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence)
     {
-        if (trackSequence >= OpenRCT2::TrackMetaData::kMaxSequencesPerPiece)
-            return false;
-
         return kBlockedSegmentsShouldInvertPrePostCall[EnumValue(trackElemType)][trackSequence];
     }
 
@@ -6172,9 +6169,6 @@ namespace OpenRCT2::BlockedSegments
         PaintSession& session, const uint8_t trackSequence, const Direction direction, const uint16_t height,
         const TrackElemType trackElemType, const BlockedSegmentsType blockedSegmentsType)
     {
-        if (trackSequence >= OpenRCT2::TrackMetaData::kMaxSequencesPerPiece)
-            return;
-
         PaintUtilSetSegmentSupportHeight(
             session,
             PaintUtilRotateSegments(
