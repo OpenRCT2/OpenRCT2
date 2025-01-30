@@ -39920,5 +39920,8 @@
         "x": -32,
         "y": 15,
         "palette": "keep"
+    },
+    {
+        "path": "icons/rotate_view_anti-clockwise.png"
     }
 ]

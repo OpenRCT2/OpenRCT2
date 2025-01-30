@@ -7,6 +7,7 @@
 - Improved: [#23540] The file browser now optionally shows a file size column.
 - Improved: [#23640] Building sprite repository with command line can use images array of JSON parkobj.
 - Improved: [#23660] The ‘special elements’ dropdown has been reorganised, now using multiple columns and separators.
+- Improved: [#23730] Added optional button to toolbar to rotate view anti-clockwise.
 - Change: [#23328] All RCT2 entertainer costumes are now available in legacy parks.
 - Fix: [#1479] Incorrect values provided by the in game console “get location” command.
 - Fix: [#21794] Lay-down coaster cars reverse on first frames of downwards corkscrew.
