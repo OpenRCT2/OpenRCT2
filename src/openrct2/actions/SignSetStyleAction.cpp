@@ -74,7 +74,7 @@ GameActions::Result SignSetStyleAction::Query() const
                 "Tile element has type %u, expected %d (LargeScenery)", tileElement->GetType(), TileElementType::LargeScenery);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
-        loc = { banner->position.ToCoordsXY(), tileElement->GetBaseZ()};
+        loc = { banner->position.ToCoordsXY(), tileElement->GetBaseZ() };
     }
     else
     {
@@ -85,9 +85,8 @@ GameActions::Result SignSetStyleAction::Query() const
             LOG_ERROR("Wall element not found for bannerIndex", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
-        loc = { banner->position.ToCoordsXY(), wallElement->GetBaseZ()};
+        loc = { banner->position.ToCoordsXY(), wallElement->GetBaseZ() };
     }
-    
 
     if (!LocationValid(loc))
     {

@@ -53,7 +53,7 @@ GameActions::Result BannerSetNameAction::Query() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
-    
+
     TileElement* tileElement = BannerGetTileElement(_bannerIndex);
 
     if (tileElement == nullptr)
@@ -62,7 +62,7 @@ GameActions::Result BannerSetNameAction::Query() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
-    
+
     BannerElement* bannerElement = tileElement->AsBanner();
     CoordsXYZD loc = { banner->position.ToCoordsXY(), bannerElement->GetBaseZ(), bannerElement->GetPosition() };
 

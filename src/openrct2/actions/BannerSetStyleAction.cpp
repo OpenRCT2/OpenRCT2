@@ -11,11 +11,11 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../localisation/StringIdType.h"
 #include "../management/Finance.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/tile_element/BannerElement.h"
-#include "../localisation/StringIdType.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;
@@ -48,9 +48,9 @@ void BannerSetStyleAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result BannerSetStyleAction::Query() const
 {
-
     StringId errorTitle = STR_CANT_REPAINT_THIS;
-    if(_type == BannerSetStyleType::NoEntry){
+    if (_type == BannerSetStyleType::NoEntry)
+    {
         errorTitle = STR_CANT_RENAME_BANNER;
     }
 
@@ -60,8 +60,7 @@ GameActions::Result BannerSetStyleAction::Query() const
     if (banner == nullptr)
     {
         LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
 
     res.Expenditure = ExpenditureType::Landscaping;
@@ -73,13 +72,12 @@ GameActions::Result BannerSetStyleAction::Query() const
     if (tileElement == nullptr)
     {
         LOG_ERROR("Banner tile element not found for bannerIndex %d", _bannerIndex);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
 
     BannerElement* bannerElement = tileElement->AsBanner();
-    CoordsXYZ loc = { banner->position.ToCoordsXY(), bannerElement->GetBaseZ()};
-    
+    CoordsXYZ loc = { banner->position.ToCoordsXY(), bannerElement->GetBaseZ() };
+
     if (!LocationValid(loc))
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);

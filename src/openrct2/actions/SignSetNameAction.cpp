@@ -60,8 +60,8 @@ GameActions::Result SignSetNameAction::Query() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
-    
-    CoordsXYZ loc = { banner->position.ToCoordsXY(), tileElement->GetBaseZ()};
+
+    CoordsXYZ loc = { banner->position.ToCoordsXY(), tileElement->GetBaseZ() };
 
     if (!LocationValid(loc))
     {
