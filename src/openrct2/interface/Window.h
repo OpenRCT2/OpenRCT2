@@ -312,13 +312,6 @@ namespace OpenRCT2
 
     WindowBase* WindowGetMain();
 
-    void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords);
-    void WindowViewportGetMapCoordsByCursor(
-        const WindowBase& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y);
-    void WindowViewportCentreTileAroundCursor(WindowBase& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
-    void WindowCheckAllValidZoom();
-    void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor);
-
     void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
     void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 

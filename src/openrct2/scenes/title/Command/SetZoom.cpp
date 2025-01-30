@@ -9,7 +9,7 @@
 
 #include "SetZoom.h"
 
-#include "../../../interface/Window.h"
+#include "../../../interface/Viewport.h"
 #include "../../../interface/ZoomLevel.h"
 
 namespace OpenRCT2::Title
