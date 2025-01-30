@@ -371,17 +371,11 @@ namespace OpenRCT2::BlockedSegments
 
     static_assert(std::size(kBlockedSegmentsShouldInvertPrePostCall) == EnumValue(TrackElemType::Count));
 
-    bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence, const TrackType trackType)
+    bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence)
     {
         if (trackSequence >= OpenRCT2::TrackMetaData::kMaxSequencesPerPiece)
             return false;
 
-        if (trackType == TrackType::Inverted
-            && (trackElemType == TrackElemType::BeginStation || trackElemType == TrackElemType::MiddleStation
-                || trackElemType == TrackElemType::EndStation || trackElemType == TrackElemType::OnRidePhoto))
-        {
-            return true;
-        }
         return kBlockedSegmentsShouldInvertPrePostCall[EnumValue(trackElemType)][trackSequence];
     }
 
@@ -6160,46 +6154,31 @@ namespace OpenRCT2::BlockedSegments
         {{ Narrow::kRightEighthDiveLoopDownToDiagSeq0, Narrow::kRightEighthDiveLoopDownToDiagSeq1, Narrow::kRightEighthDiveLoopDownToDiagSeq2, Narrow::kRightEighthDiveLoopDownToDiagSeq3, Narrow::kRightEighthDiveLoopDownToDiagSeq4, Narrow::kRightEighthDiveLoopDownToDiagSeq5 }}, // RightEighthDiveLoopDownToDiag
     };
 
+    // clang-format on
+
     static_assert(std::size(kBlockedSegmentsWideTrain) == EnumValue(TrackElemType::Count));
 
-    // clang-format on
+    static constexpr const std::array<uint16_t, OpenRCT2::TrackMetaData::kMaxSequencesPerPiece>* kBlockedSegmentsMap[] = {
+        kBlockedSegmentsNarrow,                 // narrow
+        kBlockedSegmentsInverted,               // inverted
+        kBlockedSegmentsWide,                   // wide
+        kBlockedSegmentsSuspendedSwingingTrain, // suspendedSwinging
+        kBlockedSegmentsWideTrain,              // wideTrain
+    };
+
+    static_assert(std::size(kBlockedSegmentsMap) == EnumValue(BlockedSegmentsType::count));
 
     void BlockSegmentsForTrackSequence(
         PaintSession& session, const uint8_t trackSequence, const Direction direction, const uint16_t height,
-        const TrackElemType trackElemType, const TrackType trackType, const TrainType trainType)
+        const TrackElemType trackElemType, const BlockedSegmentsType blockedSegmentsType)
     {
         if (trackSequence >= OpenRCT2::TrackMetaData::kMaxSequencesPerPiece)
             return;
 
-        uint16_t blockedSegments = kSegmentsNone;
-        switch (trackType)
-        {
-            case TrackType::Narrow:
-                blockedSegments = kBlockedSegmentsNarrow[EnumValue(trackElemType)][trackSequence];
-                break;
-            case TrackType::Inverted:
-                blockedSegments = kBlockedSegmentsInverted[EnumValue(trackElemType)][trackSequence];
-                break;
-            case TrackType::Wide:
-                blockedSegments = kBlockedSegmentsWide[EnumValue(trackElemType)][trackSequence];
-                break;
-        };
-
-        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-
-        if (trackType == TrackType::Inverted && trainType == TrainType::SuspendedSwinging)
-        {
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    kBlockedSegmentsSuspendedSwingingTrain[EnumValue(trackElemType)][trackSequence], direction),
-                0xFFFF, 0);
-        }
-        else if (trackType == TrackType::Narrow && trainType == TrainType::Wide)
-        {
-            PaintUtilSetSegmentSupportHeight(
-                session, PaintUtilRotateSegments(kBlockedSegmentsWideTrain[EnumValue(trackElemType)][trackSequence], direction),
-                0xFFFF, 0);
-        }
+        PaintUtilSetSegmentSupportHeight(
+            session,
+            PaintUtilRotateSegments(
+                kBlockedSegmentsMap[EnumValue(blockedSegmentsType)][EnumValue(trackElemType)][trackSequence], direction),
+            0xFFFF, 0);
     }
 } // namespace OpenRCT2::BlockedSegments

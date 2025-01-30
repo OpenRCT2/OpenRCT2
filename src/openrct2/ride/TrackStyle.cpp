@@ -9,8 +9,6 @@
 
 #include "TrackStyle.h"
 
-#include "../core/EnumUtils.hpp"
-#include "TrackData.h"
 #include "TrackPaint.h"
 
 using TrackPaintFunctionGetter = TrackPaintFunction (*)(OpenRCT2::TrackElemType trackType);
@@ -283,109 +281,4 @@ static_assert(std::size(kPaintFunctionMap) == (sizeof(TrackStyle) * 256));
 TrackPaintFunction GetTrackPaintFunction(TrackStyle trackStyle, OpenRCT2::TrackElemType trackType)
 {
     return kPaintFunctionMap[static_cast<uint8_t>(trackStyle)](trackType);
-}
-
-static constexpr const bool kTrackStyleWide[] = {
-    false, // 3DCinema
-    true,  // airPoweredVerticalCoaster
-    false, // alpineCoaster
-    false, // boatHire
-    false, // bobsleighCoaster
-    false, // carRide
-    true,  // chairlift
-    false, // circus
-    false, // classicStandUpRollerCoaster
-    true,  // classicWoodenRollerCoaster
-    true,  // classicWoodenTwisterRollerCoaster
-    false, // compactInvertedCoaster
-    false, // corkscrewRollerCoaster
-    false, // crookedHouse
-    false, // dinghySlide
-    false, // dinghySlideCovered
-    false, // dodgems
-    false, // enterprise
-    false, // facility
-    false, // ferrisWheel
-    false, // flyingRollerCoaster
-    false, // flyingRollerCoasterInverted
-    false, // flyingSaucers
-    false, // ghostTrain
-    true,  // goKarts
-    false, // hauntedHouse
-    true,  // heartlineTwisterCoaster
-    true,  // hybridCoaster
-    false, // invertedHairpinCoaster
-    false, // invertedImpulseCoaster
-    false, // invertedRollerCoaster
-    false, // juniorRollerCoaster
-    false, // latticeTriangle
-    false, // latticeTriangleAlt
-    false, // launchedFreefall
-    false, // layDownRollerCoasterInverted
-    false, // lift
-    false, // limLaunchedRollerCoaster
-    false, // logFlume
-    false, // loopingRollerCoaster
-    false, // magicCarpet
-    false, // maze
-    false, // merryGoRound
-    false, // mineRide
-    true,  // mineTrainCoaster
-    false, // miniGolf
-    false, // miniHelicopters
-    false, // miniRollerCoaster
-    false, // miniSuspendedCoaster
-    true,  // miniatureRailway
-    false, // monorail
-    false, // monorailCycles
-    false, // motionSimulator
-    false, // multiDimensionRollerCoaster
-    false, // multiDimensionRollerCoasterInverted
-    false, // observationTower
-    true,  // reverseFreefallCoaster
-    true,  // reverserRollerCoaster
-    true,  // riverRapids
-    false, // rotoDrop
-    false, // shop
-    true,  // sideFrictionRollerCoaster
-    false, // singleRailRollerCoaster
-    false, // spaceRings
-    false, // spiralSlide
-    true,  // splashBoats
-    false, // standUpRollerCoaster
-    false, // steelWildMouse
-    false, // steeplechase
-    false, // submarineRide
-    false, // suspendedMonorail
-    false, // suspendedSwingingCoaster
-    false, // swingingInverterShip
-    false, // swingingShip
-    false, // topSpin
-    false, // twist
-    false, // twisterRollerCoaster
-    true,  // virginiaReel
-    false, // waterCoaster
-    true,  // woodenRollerCoaster
-    true,  // woodenWildMouse
-};
-
-bool IsTrackStyleWide(const TrackStyle trackStyle, const OpenRCT2::TrackElemType trackElemType, const bool isChain)
-{
-    const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackElemType);
-
-    // These checks are in place of tracks that would supply a list of all their track group and chain widths
-    if ((trackStyle == TrackStyle::carRide || trackStyle == TrackStyle::ghostTrain)
-        && ted.definition.group == TrackGroup::curveVerySmall)
-        return true;
-
-    if ((trackStyle == TrackStyle::woodenRollerCoaster || trackStyle == TrackStyle::classicWoodenRollerCoaster
-         || trackStyle == TrackStyle::classicWoodenTwisterRollerCoaster)
-        && (ted.definition.group == TrackGroup::verticalLoop || ted.definition.group == TrackGroup::halfLoopMedium
-            || ted.definition.group == TrackGroup::halfLoopLarge))
-        return false;
-
-    if (trackStyle == TrackStyle::multiDimensionRollerCoaster && isChain)
-        return true;
-
-    return kTrackStyleWide[EnumValue(trackStyle)];
 }

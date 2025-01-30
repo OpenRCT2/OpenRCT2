@@ -101,5 +101,3 @@ enum class TrackStyle : uint8_t
 };
 
 TrackPaintFunction GetTrackPaintFunction(TrackStyle trackStyle, OpenRCT2::TrackElemType trackType);
-
-bool IsTrackStyleWide(const TrackStyle trackStyle, const OpenRCT2::TrackElemType trackElemType, const bool isChain);

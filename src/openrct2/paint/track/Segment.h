@@ -18,23 +18,59 @@
 
 namespace OpenRCT2::BlockedSegments
 {
-    enum class TrackType
+    enum class BlockedSegmentsType : uint8_t
     {
-        Narrow,
-        Inverted,
-        Wide,
+        narrow = 0,
+        inverted = 1,
+        wide = 2,
+        suspendedSwinging = 3,
+        wideTrain = 4,
+
+        count = 5,
     };
 
-    enum class TrainType
-    {
-        Narrow,
-        SuspendedSwinging,
-        Wide,
-    };
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsNarrow =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::narrow);
+            return array;
+        }();
 
-    bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence, const TrackType trackType);
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsInverted =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::inverted);
+            array[EnumValue(TrackGroup::stationEnd)] = BlockedSegments::BlockedSegmentsType::wide;
+            array[EnumValue(TrackGroup::onridePhoto)] = BlockedSegments::BlockedSegmentsType::wide;
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsWide =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::wide);
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)>
+        kTrackGroupBlockedSegmentsSuspendedSwinging = []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::suspendedSwinging);
+            array[EnumValue(TrackGroup::stationEnd)] = BlockedSegments::BlockedSegmentsType::wide;
+            array[EnumValue(TrackGroup::onridePhoto)] = BlockedSegments::BlockedSegmentsType::wide;
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsWideTrain =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::wideTrain);
+            return array;
+        }();
+
+    bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence);
 
     void BlockSegmentsForTrackSequence(
         PaintSession& session, const uint8_t trackSequence, const Direction direction, const uint16_t height,
-        const TrackElemType trackElemType, const TrackType trackType, const TrainType trainType);
+        const TrackElemType trackElemType, const BlockedSegmentsType blockedSegmentsType);
 } // namespace OpenRCT2::BlockedSegments
