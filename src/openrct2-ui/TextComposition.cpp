@@ -168,18 +168,10 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         OpenRCT2::Ui::Windows::WindowUpdateTextbox();
                     }
                     break;
-                case SDLK_UP:
-                    if (!(modifier & KB_PRIMARY_MODIFIER))
-                        break;
-                    [[fallthrough]];
                 case SDLK_HOME:
                     CaretMoveToStart();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
-                case SDLK_DOWN:
-                    if (!(modifier & KB_PRIMARY_MODIFIER))
-                        break;
-                    [[fallthrough]];
                 case SDLK_END:
                     CaretMoveToEnd();
                     console.RefreshCaret(_session.SelectionStart);
