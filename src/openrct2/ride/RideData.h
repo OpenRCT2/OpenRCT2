@@ -25,6 +25,7 @@
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
+#include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
 #include "Ride.h"
 #include "RideAudio.h"
@@ -289,6 +290,7 @@ enum class RideConstructionWindowContext : uint8_t
 struct TrackDrawerEntry
 {
     TrackStyle trackStyle = TrackStyle::null;
+    std::array<BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> trackGroupBlockedSegmentTypes{};
     SupportType supportType{};
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
     RideTrackGroups enabledTrackGroups{};

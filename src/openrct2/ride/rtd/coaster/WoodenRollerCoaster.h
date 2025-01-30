@@ -21,6 +21,14 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::woodenRollerCoaster,
+        .trackGroupBlockedSegmentTypes = []() consteval {
+            std::array<BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegments::BlockedSegmentsType::wide);
+            array[EnumValue(TrackGroup::verticalLoop)] = BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopMedium)] = BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopLarge)] = BlockedSegments::BlockedSegmentsType::narrow;
+            return array;
+        }(),
         .supportType = WoodenSupportType::Truss,
         .enabledTrackGroups = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::waterSplash, TrackGroup::slopeCurveBanked, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge},
         .extraTrackGroups = {TrackGroup::booster},

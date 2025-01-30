@@ -48,8 +48,8 @@ enum : uint64_t
     CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET = 1 << 6, // Set on vehicles that support running inverted for extended periods
     // of time, i.e. the Flying, Lay-down and Multi-dimension RCs.
     CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS = 1
-        << 7,                     // When set the vehicle has an additional frame for when in use. Used only by dodgems.
-    CAR_ENTRY_FLAG_WIDE = 1 << 8, // More supports are blocked around the track if the vehicle is wide.
+        << 7, // When set the vehicle has an additional frame for when in use. Used only by dodgems.
+    CAR_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8, // Not used any more - every vehicle will now work with doors.
     CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR = 1 << 9,
     CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS = 1 << 10, // Only used during loading of the objects.
     CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES = 1
