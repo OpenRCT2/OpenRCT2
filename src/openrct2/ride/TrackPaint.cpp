@@ -1977,19 +1977,29 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         trackType = UncoverTrackElement(trackType);
         TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
 
-        const auto& ted = GetTrackElementDescriptor(trackType);
-        const auto trackStyleBlockedSegments = trackDrawerEntry.trackGroupBlockedSegmentTypes[EnumValue(ted.definition.group)];
-
-        if ((trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::inverted)
-            != BlockedSegments::GetShouldInvertPrePostCall(trackType, trackSequence))
+        // Mazes share bits with trackSequence and block their own segments.
+        if (rtd.specialType == RtdSpecialType::maze)
         {
-            BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
             paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
         }
         else
         {
-            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
-            BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
+            const auto& ted = GetTrackElementDescriptor(trackType);
+            const auto trackStyleBlockedSegments = trackDrawerEntry
+                                                       .trackGroupBlockedSegmentTypes[EnumValue(ted.definition.group)];
+
+            if ((trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::inverted
+                 || trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::suspendedSwinging)
+                != BlockedSegments::GetShouldInvertPrePostCall(trackType, trackSequence))
+            {
+                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
+                paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+            }
+            else
+            {
+                paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
+            }
         }
     }
 }
