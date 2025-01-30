@@ -362,10 +362,10 @@ namespace OpenRCT2::BlockedSegments
         {{ false, false, false, false, false, false, false, false, false, false }}, // DiagUp60ToFlatLongBase
         {{ false, false, false, false, false, false, false, false, false, false }}, // DiagFlatToDown60LongBase
         {{ false, false, false, false, false, false, false, false, false, false }}, // DiagDown60ToFlatLongBase
-        {{ false, false, false, false, false, false }}, // LeftEighthDiveLoopUpToOrthogonal
-        {{ false, false, false, false, false, false }}, // RightEighthDiveLoopUpToOrthogonal
-        {{ false, false, false, false, false, false }}, // LeftEighthDiveLoopDownToDiag
-        {{ false, false, false, false, false, false }}, // RightEighthDiveLoopDownToDiag
+        {{ false, false, false, false, true, true }}, // LeftEighthDiveLoopUpToOrthogonal
+        {{ false, false, false, false, true, true }}, // RightEighthDiveLoopUpToOrthogonal
+        {{ true, true, false, false, false, false }}, // LeftEighthDiveLoopDownToDiag
+        {{ true, true, false, false, false, false }}, // RightEighthDiveLoopDownToDiag
         {{ false, false, false, false }}, // DiagDown25Brakes
     };
     // clang-format on
