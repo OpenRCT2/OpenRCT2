@@ -1977,8 +1977,9 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         trackType = UncoverTrackElement(trackType);
         TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
 
+        // Don't block segments if the paint function does nothing.
         // Mazes share bits with trackSequence and block their own segments.
-        if (rtd.specialType == RtdSpecialType::maze)
+        if (paintFunction == TrackPaintFunctionDummy || rtd.specialType == RtdSpecialType::maze)
         {
             paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
         }
