@@ -741,10 +741,7 @@ public:
 
         // Place window in an empty corner of the screen
         const ScreenCoordsXY cornerPositions[] = {
-            { 0, 30 },                                           // topLeft
-            { screenWidth - width, 30 },                         // topRight
-            { 0, screenHeight - 34 - height },                   // bottomLeft
-            { screenWidth - width, screenHeight - 34 - height }, // bottomRight
+            { 0, 30 }, // topLeft
         };
 
         for (const auto& cornerPos : cornerPositions)
