@@ -41,7 +41,7 @@ enum class THUNDER_STATUS
     PLAYING,
 };
 
-struct WeatherTransition
+struct WeatherPattern
 {
     int8_t BaseTemperature;
     int8_t RandomBias;
@@ -49,7 +49,7 @@ struct WeatherTransition
 };
 
 // TODO: no need for these to be declared extern, just move the definitions up
-extern const WeatherTransition* kClimateTransitions[4];
+extern const WeatherPattern* kClimatePatterns[4];
 extern const WeatherState kClimateWeatherData[EnumValue(WeatherType::Count)];
 extern const FilterPaletteID kClimateWeatherGloomColours[4];
 
@@ -91,7 +91,7 @@ void ClimateReset(ClimateType climate)
     auto weather = WeatherType::PartiallyCloudy;
     int32_t month = GetDate().GetMonth();
 
-    const WeatherTransition* transition = &kClimateTransitions[EnumValue(climate)][month];
+    const WeatherPattern* transition = &kClimatePatterns[EnumValue(climate)][month];
     const WeatherState* weatherState = &kClimateWeatherData[EnumValue(weather)];
 
     auto& gameState = GetGameState();
@@ -204,7 +204,7 @@ void ClimateForceWeather(WeatherType weather)
     auto& gameState = GetGameState();
     int32_t month = GetDate().GetMonth();
 
-    const auto* transition = &kClimateTransitions[EnumValue(gameState.Climate)][month];
+    const auto* transition = &kClimatePatterns[EnumValue(gameState.Climate)][month];
     const auto weatherState = &kClimateWeatherData[EnumValue(weather)];
 
     gameState.ClimateCurrent.Weather = weather;
@@ -301,7 +301,7 @@ static void ClimateDetermineFutureWeather(int32_t randomValue)
 
     // Generate a random index with values 0 up to RandomBias-1
     // and choose weather from the distribution table accordingly
-    const auto& transition = kClimateTransitions[EnumValue(gameState.Climate)][month];
+    const auto& transition = kClimatePatterns[EnumValue(gameState.Climate)][month];
     auto randomIndex = ((randomValue % 256) * transition.RandomBias) / 256;
     auto nextWeather = transition.Distribution[randomIndex];
     gameState.ClimateNext.Weather = nextWeather;
@@ -461,18 +461,19 @@ const FilterPaletteID kClimateWeatherGloomColours[4] = {
     FilterPaletteID::PaletteDarken3,
 };
 
-// There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
+// clang-format off
 const WeatherState kClimateWeatherData[EnumValue(WeatherType::Count)] = {
-    { 10, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_SUN },         // Sunny
-    { 5, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
-    { 0, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_CLOUD },        // Cloudy
-    { -2, WeatherEffectType::Rain, 1, WeatherLevel::Light, SPR_WEATHER_LIGHT_RAIN }, // Rain
-    { -4, WeatherEffectType::Rain, 2, WeatherLevel::Heavy, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
-    { 2, WeatherEffectType::Storm, 2, WeatherLevel::Heavy, SPR_WEATHER_STORM },      // Thunderstorm
-    { -10, WeatherEffectType::Snow, 1, WeatherLevel::Light, SPR_WEATHER_SNOW },      // Snow
-    { -15, WeatherEffectType::Snow, 2, WeatherLevel::Heavy, SPR_WEATHER_SNOW },      // Heavy Snow
-    { -20, WeatherEffectType::Blizzard, 2, WeatherLevel::Heavy, SPR_WEATHER_SNOW },  // Blizzard
+    {  10, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_SUN        }, // Sunny
+    {   5, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_SUN_CLOUD  }, // Partially Cloudy
+    {   0, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_CLOUD      }, // Cloudy
+    {  -2, WeatherEffectType::Rain,     1, WeatherLevel::Light, SPR_WEATHER_LIGHT_RAIN }, // Rain
+    {  -4, WeatherEffectType::Rain,     2, WeatherLevel::Heavy, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
+    {   2, WeatherEffectType::Storm,    2, WeatherLevel::Heavy, SPR_WEATHER_STORM      }, // Thunderstorm
+    { -10, WeatherEffectType::Snow,     1, WeatherLevel::Light, SPR_WEATHER_SNOW       }, // Snow
+    { -15, WeatherEffectType::Snow,     2, WeatherLevel::Heavy, SPR_WEATHER_SNOW       }, // Heavy Snow
+    { -20, WeatherEffectType::Blizzard, 2, WeatherLevel::Heavy, SPR_WEATHER_SNOW       }, // Blizzard
 };
+// clang-format on
 
 constexpr auto S = WeatherType::Sunny;
 constexpr auto P = WeatherType::PartiallyCloudy;
@@ -481,7 +482,7 @@ constexpr auto R = WeatherType::Rain;
 constexpr auto H = WeatherType::HeavyRain;
 constexpr auto T = WeatherType::Thunder;
 
-static constexpr WeatherTransition kClimateTransitionsCoolAndWet[] = {
+static constexpr WeatherPattern kClimatePatternsCoolAndWet[] = {
     { 8, 18, { S, P, P, P, P, P, C, C, C, C, C, C, C, R, R, R, H, H, S, S, S, S, S } },
     { 10, 21, { P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, R, R, H, H, H, T, S, S } },
     { 14, 17, { S, S, S, P, P, P, P, P, P, C, C, C, C, R, R, R, H, S, S, S, S, S, S } },
@@ -491,7 +492,7 @@ static constexpr WeatherTransition kClimateTransitionsCoolAndWet[] = {
     { 16, 19, { S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, R, H, H, T, S, S, S, S } },
     { 13, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
 };
-static constexpr WeatherTransition kClimateTransitionsWarm[] = {
+static constexpr WeatherPattern kClimatePatternsWarm[] = {
     { 12, 21, { S, S, S, S, S, P, P, P, P, P, P, P, P, C, C, C, C, C, C, C, H, S, S } },
     { 13, 22, { S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, T, S } },
     { 16, 17, { S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, R, S, S, S, S, S, S } },
@@ -501,7 +502,7 @@ static constexpr WeatherTransition kClimateTransitionsWarm[] = {
     { 19, 17, { S, S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, S, S, S, S, S, S } },
     { 16, 17, { S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, H, S, S, S, S, S, S } },
 };
-static constexpr WeatherTransition kClimateTransitionsHotAndDry[] = {
+static constexpr WeatherPattern kClimatePatternsHotAndDry[] = {
     { 12, 15, { S, S, S, S, P, P, P, P, P, P, P, P, C, C, R, S, S, S, S, S, S, S, S } },
     { 14, 12, { S, S, S, S, S, P, P, P, P, P, C, C, S, S, S, S, S, S, S, S, S, S, S } },
     { 16, 11, { S, S, S, S, S, S, P, P, P, P, C, S, S, S, S, S, S, S, S, S, S, S, S } },
@@ -511,7 +512,7 @@ static constexpr WeatherTransition kClimateTransitionsHotAndDry[] = {
     { 21, 12, { S, S, S, S, S, S, S, P, P, P, C, T, S, S, S, S, S, S, S, S, S, S, S } },
     { 16, 13, { S, S, S, S, S, S, S, S, P, P, P, C, R, S, S, S, S, S, S, S, S, S, S } },
 };
-static constexpr WeatherTransition kClimateTransitionsCold[] = {
+static constexpr WeatherPattern kClimatePatternsCold[] = {
     { 4, 18, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, R, H, S, S, S, S, S } },
     { 5, 21, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, H, T, S, S } },
     { 7, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, H, S, S, S, S, S, S } },
@@ -522,11 +523,11 @@ static constexpr WeatherTransition kClimateTransitionsCold[] = {
     { 6, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
 };
 
-const WeatherTransition* kClimateTransitions[] = {
-    kClimateTransitionsCoolAndWet,
-    kClimateTransitionsWarm,
-    kClimateTransitionsHotAndDry,
-    kClimateTransitionsCold,
+const WeatherPattern* kClimatePatterns[] = {
+    kClimatePatternsCoolAndWet,
+    kClimatePatternsWarm,
+    kClimatePatternsHotAndDry,
+    kClimatePatternsCold,
 };
 
 #pragma endregion
