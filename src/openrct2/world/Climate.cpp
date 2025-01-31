@@ -33,12 +33,12 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-constexpr int32_t MAX_THUNDER_INSTANCES = 2;
+constexpr int32_t kMaxThunderInstances = 2;
 
-enum class THUNDER_STATUS
+enum class ThunderStatus
 {
-    NONE,
-    PLAYING,
+    None,
+    Playing,
 };
 
 struct WeatherPattern
@@ -69,10 +69,10 @@ uint16_t gClimateLightningFlash;
 static int32_t _weatherVolume = 1;
 static uint32_t _lightningTimer;
 static uint32_t _thunderTimer;
-static std::shared_ptr<IAudioChannel> _thunderSoundChannels[MAX_THUNDER_INSTANCES];
-static THUNDER_STATUS _thunderStatus[MAX_THUNDER_INSTANCES] = {
-    THUNDER_STATUS::NONE,
-    THUNDER_STATUS::NONE,
+static std::shared_ptr<IAudioChannel> _thunderSoundChannels[kMaxThunderInstances];
+static ThunderStatus _thunderStatus[kMaxThunderInstances] = {
+    ThunderStatus::None,
+    ThunderStatus::None,
 };
 static OpenRCT2::Audio::SoundId _thunderSoundId;
 static int32_t _thunderVolume;
@@ -386,15 +386,15 @@ static void ClimateUpdateThunderSound()
     }
 
     // Stop thunder sounds if they have finished
-    for (int32_t i = 0; i < MAX_THUNDER_INSTANCES; i++)
+    for (int32_t i = 0; i < kMaxThunderInstances; i++)
     {
-        if (_thunderStatus[i] != THUNDER_STATUS::NONE)
+        if (_thunderStatus[i] != ThunderStatus::None)
         {
             auto& channel = _thunderSoundChannels[i];
             if (!channel->IsPlaying())
             {
                 channel->Stop();
-                _thunderStatus[i] = THUNDER_STATUS::NONE;
+                _thunderStatus[i] = ThunderStatus::None;
             }
         }
     }
@@ -427,7 +427,7 @@ static void ClimateUpdateThunder()
         uint32_t randomNumber = UtilRand();
         if (randomNumber & 0x10000)
         {
-            if (_thunderStatus[0] == THUNDER_STATUS::NONE && _thunderStatus[1] == THUNDER_STATUS::NONE)
+            if (_thunderStatus[0] == ThunderStatus::None && _thunderStatus[1] == ThunderStatus::None)
             {
                 // Play thunder on left side
                 _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::Thunder1
@@ -441,7 +441,7 @@ static void ClimateUpdateThunder()
         }
         else
         {
-            if (_thunderStatus[0] == THUNDER_STATUS::NONE)
+            if (_thunderStatus[0] == ThunderStatus::None)
             {
                 _thunderSoundId = (randomNumber & 0x20000) ? OpenRCT2::Audio::SoundId::Thunder1
                                                            : OpenRCT2::Audio::SoundId::Thunder2;
@@ -457,7 +457,7 @@ static void ClimatePlayThunder(int32_t instanceIndex, OpenRCT2::Audio::SoundId s
     _thunderSoundChannels[instanceIndex] = CreateAudioChannel(soundId, false, DStoMixerVolume(volume), DStoMixerPan(pan));
     if (_thunderSoundChannels[instanceIndex] != nullptr)
     {
-        _thunderStatus[instanceIndex] = THUNDER_STATUS::PLAYING;
+        _thunderStatus[instanceIndex] = ThunderStatus::Playing;
     }
 }
 
