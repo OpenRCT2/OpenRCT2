@@ -70,7 +70,7 @@ static int32_t _thunderStereoEcho = 0;
 static std::shared_ptr<IAudioChannel> _weatherSoundChannel;
 
 static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWeatherLevel);
-static void ClimateDetermineFutureWeather(int32_t randomDistribution);
+static void ClimateDetermineFutureWeather(int32_t randomValue);
 static void ClimateUpdateWeatherSound();
 static void ClimateUpdateThunderSound();
 static void ClimateUpdateLightning();
@@ -87,12 +87,13 @@ int32_t ClimateCelsiusToFahrenheit(int32_t celsius)
  */
 void ClimateReset(ClimateType climate)
 {
-    auto& gameState = GetGameState();
     auto weather = WeatherType::PartiallyCloudy;
     int32_t month = GetDate().GetMonth();
+
     const WeatherTransition* transition = &ClimateTransitions[EnumValue(climate)][month];
     const WeatherState* weatherState = &ClimateWeatherData[EnumValue(weather)];
 
+    auto& gameState = GetGameState();
     gameState.Climate = climate;
     gameState.ClimateCurrent.Weather = weather;
     gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
@@ -201,7 +202,8 @@ void ClimateForceWeather(WeatherType weather)
 {
     auto& gameState = GetGameState();
     int32_t month = GetDate().GetMonth();
-    const WeatherTransition* transition = &ClimateTransitions[EnumValue(gameState.Climate)][month];
+
+    const auto* transition = &ClimateTransitions[EnumValue(gameState.Climate)][month];
     const auto weatherState = &ClimateWeatherData[EnumValue(weather)];
 
     gameState.ClimateCurrent.Weather = weather;
@@ -291,15 +293,15 @@ static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWea
  * for nextWeather. The other weather parameters are then looked up depending only on the
  * next weather.
  */
-static void ClimateDetermineFutureWeather(int32_t randomDistribution)
+static void ClimateDetermineFutureWeather(int32_t randomValue)
 {
     int32_t month = GetDate().GetMonth();
     auto& gameState = GetGameState();
 
-    // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
-    // accordingly
-    const WeatherTransition* transition = &ClimateTransitions[EnumValue(gameState.Climate)][month];
-    WeatherType nextWeather = (transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8]);
+    // Generate a random variable with values 0 up to DistributionSize-1
+    // and choose weather from the distribution table accordingly
+    const auto* transition = &ClimateTransitions[EnumValue(gameState.Climate)][month];
+    auto nextWeather = transition->Distribution[((randomValue & 0xFF) * transition->DistributionSize) >> 8];
     gameState.ClimateNext.Weather = nextWeather;
 
     const auto nextWeatherState = &ClimateWeatherData[EnumValue(nextWeather)];
