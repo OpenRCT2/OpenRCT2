@@ -44,7 +44,7 @@ enum class THUNDER_STATUS
 struct WeatherTransition
 {
     int8_t BaseTemperature;
-    int8_t DistributionSize;
+    int8_t RandomBias;
     WeatherType Distribution[24];
 };
 
@@ -294,20 +294,20 @@ static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWea
  * for nextWeather. The other weather parameters are then looked up depending only on the
  * next weather.
  */
-static void ClimateDetermineFutureWeather(int32_t randomSeed)
+static void ClimateDetermineFutureWeather(int32_t randomValue)
 {
     int32_t month = GetDate().GetMonth();
     auto& gameState = GetGameState();
 
-    // Generate a random value with values 0 up to DistributionSize-1
+    // Generate a random index with values 0 up to RandomBias-1
     // and choose weather from the distribution table accordingly
-    const auto* transition = &kClimateTransitions[EnumValue(gameState.Climate)][month];
-    auto randomValue = ((randomSeed & 0xFF) * transition->DistributionSize) >> 8; // bias??
-    auto nextWeather = transition->Distribution[randomValue];
+    const auto& transition = kClimateTransitions[EnumValue(gameState.Climate)][month];
+    auto randomIndex = ((randomValue % 256) * transition.RandomBias) / 256;
+    auto nextWeather = transition.Distribution[randomIndex];
     gameState.ClimateNext.Weather = nextWeather;
 
     const auto nextWeatherState = &kClimateWeatherData[EnumValue(nextWeather)];
-    gameState.ClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
+    gameState.ClimateNext.Temperature = transition.BaseTemperature + nextWeatherState->TemperatureDelta;
     gameState.ClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
     gameState.ClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
     gameState.ClimateNext.Level = nextWeatherState->Level;
