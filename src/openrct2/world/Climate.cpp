@@ -48,9 +48,18 @@ struct WeatherPattern
     WeatherType Distribution[24];
 };
 
+struct WeatherTrait
+{
+    int8_t TemperatureDelta;
+    WeatherEffectType EffectLevel;
+    int8_t GloomLevel;
+    WeatherLevel Level;
+    uint32_t SpriteId;
+};
+
 // TODO: no need for these to be declared extern, just move the definitions up
 extern const WeatherPattern* kClimatePatterns[4];
-extern const WeatherState kClimateWeatherData[EnumValue(WeatherType::Count)];
+extern const WeatherTrait kClimateWeatherTraits[EnumValue(WeatherType::Count)];
 extern const FilterPaletteID kClimateWeatherGloomColours[4];
 
 // Climate data
@@ -92,15 +101,15 @@ void ClimateReset(ClimateType climate)
     int32_t month = GetDate().GetMonth();
 
     const WeatherPattern* transition = &kClimatePatterns[EnumValue(climate)][month];
-    const WeatherState* weatherState = &kClimateWeatherData[EnumValue(weather)];
+    const WeatherTrait* weatherTrait = &kClimateWeatherTraits[EnumValue(weather)];
 
     auto& gameState = GetGameState();
     gameState.Climate = climate;
     gameState.ClimateCurrent.Weather = weather;
-    gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
-    gameState.ClimateCurrent.WeatherEffect = weatherState->EffectLevel;
-    gameState.ClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-    gameState.ClimateCurrent.Level = weatherState->Level;
+    gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherTrait->TemperatureDelta;
+    gameState.ClimateCurrent.WeatherEffect = weatherTrait->EffectLevel;
+    gameState.ClimateCurrent.WeatherGloom = weatherTrait->GloomLevel;
+    gameState.ClimateCurrent.Level = weatherTrait->Level;
 
     _lightningTimer = 0;
     _thunderTimer = 0;
@@ -205,13 +214,13 @@ void ClimateForceWeather(WeatherType weather)
     int32_t month = GetDate().GetMonth();
 
     const auto* transition = &kClimatePatterns[EnumValue(gameState.Climate)][month];
-    const auto weatherState = &kClimateWeatherData[EnumValue(weather)];
+    const auto weatherTrait = &kClimateWeatherTraits[EnumValue(weather)];
 
     gameState.ClimateCurrent.Weather = weather;
-    gameState.ClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-    gameState.ClimateCurrent.Level = weatherState->Level;
-    gameState.ClimateCurrent.WeatherEffect = weatherState->EffectLevel;
-    gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
+    gameState.ClimateCurrent.WeatherGloom = weatherTrait->GloomLevel;
+    gameState.ClimateCurrent.Level = weatherTrait->Level;
+    gameState.ClimateCurrent.WeatherEffect = weatherTrait->EffectLevel;
+    gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherTrait->TemperatureDelta;
     gameState.ClimateUpdateTimer = 1920;
 
     ClimateUpdate();
@@ -271,9 +280,9 @@ FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state)
 uint32_t ClimateGetWeatherSpriteId(const ClimateState& state)
 {
     uint32_t spriteId = SPR_WEATHER_SUN;
-    if (EnumValue(state.Weather) < std::size(kClimateWeatherData))
+    if (EnumValue(state.Weather) < std::size(kClimateWeatherTraits))
     {
-        spriteId = kClimateWeatherData[EnumValue(state.Weather)].SpriteId;
+        spriteId = kClimateWeatherTraits[EnumValue(state.Weather)].SpriteId;
     }
     return spriteId;
 }
@@ -306,11 +315,11 @@ static void ClimateDetermineFutureWeather(int32_t randomValue)
     auto nextWeather = transition.Distribution[randomIndex];
     gameState.ClimateNext.Weather = nextWeather;
 
-    const auto nextWeatherState = &kClimateWeatherData[EnumValue(nextWeather)];
-    gameState.ClimateNext.Temperature = transition.BaseTemperature + nextWeatherState->TemperatureDelta;
-    gameState.ClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
-    gameState.ClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
-    gameState.ClimateNext.Level = nextWeatherState->Level;
+    const auto nextWeatherTrait = &kClimateWeatherTraits[EnumValue(nextWeather)];
+    gameState.ClimateNext.Temperature = transition.BaseTemperature + nextWeatherTrait->TemperatureDelta;
+    gameState.ClimateNext.WeatherEffect = nextWeatherTrait->EffectLevel;
+    gameState.ClimateNext.WeatherGloom = nextWeatherTrait->GloomLevel;
+    gameState.ClimateNext.Level = nextWeatherTrait->Level;
 
     gameState.ClimateUpdateTimer = 1920;
 }
@@ -462,7 +471,7 @@ const FilterPaletteID kClimateWeatherGloomColours[4] = {
 };
 
 // clang-format off
-const WeatherState kClimateWeatherData[EnumValue(WeatherType::Count)] = {
+const WeatherTrait kClimateWeatherTraits[EnumValue(WeatherType::Count)] = {
     {  10, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_SUN        }, // Sunny
     {   5, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_SUN_CLOUD  }, // Partially Cloudy
     {   0, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_CLOUD      }, // Cloudy
