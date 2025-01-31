@@ -43,18 +43,18 @@ enum class ThunderStatus
 
 struct WeatherPattern
 {
-    int8_t BaseTemperature;
-    int8_t RandomBias;
-    WeatherType Distribution[24];
+    int8_t baseTemperature;
+    int8_t randomBias;
+    WeatherType distribution[24];
 };
 
 struct WeatherTrait
 {
-    int8_t TemperatureDelta;
-    WeatherEffectType EffectLevel;
-    int8_t GloomLevel;
-    WeatherLevel Level;
-    uint32_t SpriteId;
+    int8_t temperatureDelta;
+    WeatherEffectType effectLevel;
+    int8_t gloomLevel;
+    WeatherLevel level;
+    uint32_t spriteId;
 };
 
 // TODO: no need for these to be declared extern, just move the definitions up
@@ -106,10 +106,10 @@ void ClimateReset(ClimateType climate)
     auto& gameState = GetGameState();
     gameState.Climate = climate;
     gameState.ClimateCurrent.Weather = weather;
-    gameState.ClimateCurrent.Temperature = pattern.BaseTemperature + trait.TemperatureDelta;
-    gameState.ClimateCurrent.WeatherEffect = trait.EffectLevel;
-    gameState.ClimateCurrent.WeatherGloom = trait.GloomLevel;
-    gameState.ClimateCurrent.Level = trait.Level;
+    gameState.ClimateCurrent.Temperature = pattern.baseTemperature + trait.temperatureDelta;
+    gameState.ClimateCurrent.WeatherEffect = trait.effectLevel;
+    gameState.ClimateCurrent.WeatherGloom = trait.gloomLevel;
+    gameState.ClimateCurrent.Level = trait.level;
 
     _lightningTimer = 0;
     _thunderTimer = 0;
@@ -217,10 +217,10 @@ void ClimateForceWeather(WeatherType weather)
     const auto& trait = kClimateWeatherTraits[EnumValue(weather)];
 
     gameState.ClimateCurrent.Weather = weather;
-    gameState.ClimateCurrent.WeatherGloom = trait.GloomLevel;
-    gameState.ClimateCurrent.Level = trait.Level;
-    gameState.ClimateCurrent.WeatherEffect = trait.EffectLevel;
-    gameState.ClimateCurrent.Temperature = pattern.BaseTemperature + trait.TemperatureDelta;
+    gameState.ClimateCurrent.WeatherGloom = trait.gloomLevel;
+    gameState.ClimateCurrent.Level = trait.level;
+    gameState.ClimateCurrent.WeatherEffect = trait.effectLevel;
+    gameState.ClimateCurrent.Temperature = pattern.baseTemperature + trait.temperatureDelta;
     gameState.ClimateUpdateTimer = 1920;
 
     ClimateUpdate();
@@ -282,7 +282,7 @@ uint32_t ClimateGetWeatherSpriteId(const ClimateState& state)
     uint32_t spriteId = SPR_WEATHER_SUN;
     if (EnumValue(state.Weather) < std::size(kClimateWeatherTraits))
     {
-        spriteId = kClimateWeatherTraits[EnumValue(state.Weather)].SpriteId;
+        spriteId = kClimateWeatherTraits[EnumValue(state.Weather)].spriteId;
     }
     return spriteId;
 }
@@ -308,18 +308,18 @@ static void ClimateDetermineFutureWeather(int32_t randomValue)
     int32_t month = GetDate().GetMonth();
     auto& gameState = GetGameState();
 
-    // Generate a random index with values 0 up to RandomBias-1
+    // Generate a random index with values 0 up to randomBias-1
     // and choose weather from the distribution table accordingly
     const auto& pattern = kClimatePatterns[EnumValue(gameState.Climate)][month];
-    auto randomIndex = ((randomValue % 256) * pattern.RandomBias) / 256;
-    auto nextWeather = pattern.Distribution[randomIndex];
+    auto randomIndex = ((randomValue % 256) * pattern.randomBias) / 256;
+    auto nextWeather = pattern.distribution[randomIndex];
     gameState.ClimateNext.Weather = nextWeather;
 
     const auto& nextWeatherTrait = kClimateWeatherTraits[EnumValue(nextWeather)];
-    gameState.ClimateNext.Temperature = pattern.BaseTemperature + nextWeatherTrait.TemperatureDelta;
-    gameState.ClimateNext.WeatherEffect = nextWeatherTrait.EffectLevel;
-    gameState.ClimateNext.WeatherGloom = nextWeatherTrait.GloomLevel;
-    gameState.ClimateNext.Level = nextWeatherTrait.Level;
+    gameState.ClimateNext.Temperature = pattern.baseTemperature + nextWeatherTrait.temperatureDelta;
+    gameState.ClimateNext.WeatherEffect = nextWeatherTrait.effectLevel;
+    gameState.ClimateNext.WeatherGloom = nextWeatherTrait.gloomLevel;
+    gameState.ClimateNext.Level = nextWeatherTrait.level;
 
     gameState.ClimateUpdateTimer = 1920;
 }
