@@ -100,16 +100,16 @@ void ClimateReset(ClimateType climate)
     auto weather = WeatherType::PartiallyCloudy;
     int32_t month = GetDate().GetMonth();
 
-    const WeatherPattern* transition = &kClimatePatterns[EnumValue(climate)][month];
-    const WeatherTrait* weatherTrait = &kClimateWeatherTraits[EnumValue(weather)];
+    const WeatherPattern& pattern = kClimatePatterns[EnumValue(climate)][month];
+    const WeatherTrait& trait = kClimateWeatherTraits[EnumValue(weather)];
 
     auto& gameState = GetGameState();
     gameState.Climate = climate;
     gameState.ClimateCurrent.Weather = weather;
-    gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherTrait->TemperatureDelta;
-    gameState.ClimateCurrent.WeatherEffect = weatherTrait->EffectLevel;
-    gameState.ClimateCurrent.WeatherGloom = weatherTrait->GloomLevel;
-    gameState.ClimateCurrent.Level = weatherTrait->Level;
+    gameState.ClimateCurrent.Temperature = pattern.BaseTemperature + trait.TemperatureDelta;
+    gameState.ClimateCurrent.WeatherEffect = trait.EffectLevel;
+    gameState.ClimateCurrent.WeatherGloom = trait.GloomLevel;
+    gameState.ClimateCurrent.Level = trait.Level;
 
     _lightningTimer = 0;
     _thunderTimer = 0;
@@ -213,14 +213,14 @@ void ClimateForceWeather(WeatherType weather)
     auto& gameState = GetGameState();
     int32_t month = GetDate().GetMonth();
 
-    const auto* transition = &kClimatePatterns[EnumValue(gameState.Climate)][month];
-    const auto weatherTrait = &kClimateWeatherTraits[EnumValue(weather)];
+    const auto& pattern = kClimatePatterns[EnumValue(gameState.Climate)][month];
+    const auto& trait = kClimateWeatherTraits[EnumValue(weather)];
 
     gameState.ClimateCurrent.Weather = weather;
-    gameState.ClimateCurrent.WeatherGloom = weatherTrait->GloomLevel;
-    gameState.ClimateCurrent.Level = weatherTrait->Level;
-    gameState.ClimateCurrent.WeatherEffect = weatherTrait->EffectLevel;
-    gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherTrait->TemperatureDelta;
+    gameState.ClimateCurrent.WeatherGloom = trait.GloomLevel;
+    gameState.ClimateCurrent.Level = trait.Level;
+    gameState.ClimateCurrent.WeatherEffect = trait.EffectLevel;
+    gameState.ClimateCurrent.Temperature = pattern.BaseTemperature + trait.TemperatureDelta;
     gameState.ClimateUpdateTimer = 1920;
 
     ClimateUpdate();
@@ -310,16 +310,16 @@ static void ClimateDetermineFutureWeather(int32_t randomValue)
 
     // Generate a random index with values 0 up to RandomBias-1
     // and choose weather from the distribution table accordingly
-    const auto& transition = kClimatePatterns[EnumValue(gameState.Climate)][month];
-    auto randomIndex = ((randomValue % 256) * transition.RandomBias) / 256;
-    auto nextWeather = transition.Distribution[randomIndex];
+    const auto& pattern = kClimatePatterns[EnumValue(gameState.Climate)][month];
+    auto randomIndex = ((randomValue % 256) * pattern.RandomBias) / 256;
+    auto nextWeather = pattern.Distribution[randomIndex];
     gameState.ClimateNext.Weather = nextWeather;
 
-    const auto nextWeatherTrait = &kClimateWeatherTraits[EnumValue(nextWeather)];
-    gameState.ClimateNext.Temperature = transition.BaseTemperature + nextWeatherTrait->TemperatureDelta;
-    gameState.ClimateNext.WeatherEffect = nextWeatherTrait->EffectLevel;
-    gameState.ClimateNext.WeatherGloom = nextWeatherTrait->GloomLevel;
-    gameState.ClimateNext.Level = nextWeatherTrait->Level;
+    const auto& nextWeatherTrait = kClimateWeatherTraits[EnumValue(nextWeather)];
+    gameState.ClimateNext.Temperature = pattern.BaseTemperature + nextWeatherTrait.TemperatureDelta;
+    gameState.ClimateNext.WeatherEffect = nextWeatherTrait.EffectLevel;
+    gameState.ClimateNext.WeatherGloom = nextWeatherTrait.GloomLevel;
+    gameState.ClimateNext.Level = nextWeatherTrait.Level;
 
     gameState.ClimateUpdateTimer = 1920;
 }
