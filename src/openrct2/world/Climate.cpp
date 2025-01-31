@@ -48,9 +48,10 @@ struct WeatherTransition
     WeatherType Distribution[24];
 };
 
-extern const WeatherTransition* ClimateTransitions[4];
-extern const WeatherState ClimateWeatherData[EnumValue(WeatherType::Count)];
-extern const FilterPaletteID ClimateWeatherGloomColours[4];
+// TODO: no need for these to be declared extern, just move the definitions up
+extern const WeatherTransition* kClimateTransitions[4];
+extern const WeatherState kClimateWeatherData[EnumValue(WeatherType::Count)];
+extern const FilterPaletteID kClimateWeatherGloomColours[4];
 
 // Climate data
 uint16_t gClimateLightningFlash;
@@ -90,8 +91,8 @@ void ClimateReset(ClimateType climate)
     auto weather = WeatherType::PartiallyCloudy;
     int32_t month = GetDate().GetMonth();
 
-    const WeatherTransition* transition = &ClimateTransitions[EnumValue(climate)][month];
-    const WeatherState* weatherState = &ClimateWeatherData[EnumValue(weather)];
+    const WeatherTransition* transition = &kClimateTransitions[EnumValue(climate)][month];
+    const WeatherState* weatherState = &kClimateWeatherData[EnumValue(weather)];
 
     auto& gameState = GetGameState();
     gameState.Climate = climate;
@@ -203,8 +204,8 @@ void ClimateForceWeather(WeatherType weather)
     auto& gameState = GetGameState();
     int32_t month = GetDate().GetMonth();
 
-    const auto* transition = &ClimateTransitions[EnumValue(gameState.Climate)][month];
-    const auto weatherState = &ClimateWeatherData[EnumValue(weather)];
+    const auto* transition = &kClimateTransitions[EnumValue(gameState.Climate)][month];
+    const auto weatherState = &kClimateWeatherData[EnumValue(weather)];
 
     gameState.ClimateCurrent.Weather = weather;
     gameState.ClimateCurrent.WeatherGloom = weatherState->GloomLevel;
@@ -260,9 +261,9 @@ FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state)
 {
     auto paletteId = FilterPaletteID::PaletteNull;
     auto gloom = state.WeatherGloom;
-    if (gloom < std::size(ClimateWeatherGloomColours))
+    if (gloom < std::size(kClimateWeatherGloomColours))
     {
-        paletteId = ClimateWeatherGloomColours[gloom];
+        paletteId = kClimateWeatherGloomColours[gloom];
     }
     return paletteId;
 }
@@ -270,9 +271,9 @@ FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state)
 uint32_t ClimateGetWeatherSpriteId(const ClimateState& state)
 {
     uint32_t spriteId = SPR_WEATHER_SUN;
-    if (EnumValue(state.Weather) < std::size(ClimateWeatherData))
+    if (EnumValue(state.Weather) < std::size(kClimateWeatherData))
     {
-        spriteId = ClimateWeatherData[EnumValue(state.Weather)].SpriteId;
+        spriteId = kClimateWeatherData[EnumValue(state.Weather)].SpriteId;
     }
     return spriteId;
 }
@@ -293,18 +294,19 @@ static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWea
  * for nextWeather. The other weather parameters are then looked up depending only on the
  * next weather.
  */
-static void ClimateDetermineFutureWeather(int32_t randomValue)
+static void ClimateDetermineFutureWeather(int32_t randomSeed)
 {
     int32_t month = GetDate().GetMonth();
     auto& gameState = GetGameState();
 
-    // Generate a random variable with values 0 up to DistributionSize-1
+    // Generate a random value with values 0 up to DistributionSize-1
     // and choose weather from the distribution table accordingly
-    const auto* transition = &ClimateTransitions[EnumValue(gameState.Climate)][month];
-    auto nextWeather = transition->Distribution[((randomValue & 0xFF) * transition->DistributionSize) >> 8];
+    const auto* transition = &kClimateTransitions[EnumValue(gameState.Climate)][month];
+    auto randomValue = ((randomSeed & 0xFF) * transition->DistributionSize) >> 8; // bias??
+    auto nextWeather = transition->Distribution[randomValue];
     gameState.ClimateNext.Weather = nextWeather;
 
-    const auto nextWeatherState = &ClimateWeatherData[EnumValue(nextWeather)];
+    const auto nextWeatherState = &kClimateWeatherData[EnumValue(nextWeather)];
     gameState.ClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
     gameState.ClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
     gameState.ClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
@@ -452,7 +454,7 @@ static void ClimatePlayThunder(int32_t instanceIndex, OpenRCT2::Audio::SoundId s
 
 #pragma region Climate / Weather data tables
 
-const FilterPaletteID ClimateWeatherGloomColours[4] = {
+const FilterPaletteID kClimateWeatherGloomColours[4] = {
     FilterPaletteID::PaletteNull,
     FilterPaletteID::PaletteDarken1,
     FilterPaletteID::PaletteDarken2,
@@ -460,7 +462,7 @@ const FilterPaletteID ClimateWeatherGloomColours[4] = {
 };
 
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
-const WeatherState ClimateWeatherData[EnumValue(WeatherType::Count)] = {
+const WeatherState kClimateWeatherData[EnumValue(WeatherType::Count)] = {
     { 10, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_SUN },         // Sunny
     { 5, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
     { 0, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_CLOUD },        // Cloudy
@@ -479,7 +481,7 @@ constexpr auto R = WeatherType::Rain;
 constexpr auto H = WeatherType::HeavyRain;
 constexpr auto T = WeatherType::Thunder;
 
-static constexpr WeatherTransition ClimateTransitionsCoolAndWet[] = {
+static constexpr WeatherTransition kClimateTransitionsCoolAndWet[] = {
     { 8, 18, { S, P, P, P, P, P, C, C, C, C, C, C, C, R, R, R, H, H, S, S, S, S, S } },
     { 10, 21, { P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, R, R, H, H, H, T, S, S } },
     { 14, 17, { S, S, S, P, P, P, P, P, P, C, C, C, C, R, R, R, H, S, S, S, S, S, S } },
@@ -489,7 +491,7 @@ static constexpr WeatherTransition ClimateTransitionsCoolAndWet[] = {
     { 16, 19, { S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, R, H, H, T, S, S, S, S } },
     { 13, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
 };
-static constexpr WeatherTransition ClimateTransitionsWarm[] = {
+static constexpr WeatherTransition kClimateTransitionsWarm[] = {
     { 12, 21, { S, S, S, S, S, P, P, P, P, P, P, P, P, C, C, C, C, C, C, C, H, S, S } },
     { 13, 22, { S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, T, S } },
     { 16, 17, { S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, R, S, S, S, S, S, S } },
@@ -499,7 +501,7 @@ static constexpr WeatherTransition ClimateTransitionsWarm[] = {
     { 19, 17, { S, S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, S, S, S, S, S, S } },
     { 16, 17, { S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, H, S, S, S, S, S, S } },
 };
-static constexpr WeatherTransition ClimateTransitionsHotAndDry[] = {
+static constexpr WeatherTransition kClimateTransitionsHotAndDry[] = {
     { 12, 15, { S, S, S, S, P, P, P, P, P, P, P, P, C, C, R, S, S, S, S, S, S, S, S } },
     { 14, 12, { S, S, S, S, S, P, P, P, P, P, C, C, S, S, S, S, S, S, S, S, S, S, S } },
     { 16, 11, { S, S, S, S, S, S, P, P, P, P, C, S, S, S, S, S, S, S, S, S, S, S, S } },
@@ -509,7 +511,7 @@ static constexpr WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 21, 12, { S, S, S, S, S, S, S, P, P, P, C, T, S, S, S, S, S, S, S, S, S, S, S } },
     { 16, 13, { S, S, S, S, S, S, S, S, P, P, P, C, R, S, S, S, S, S, S, S, S, S, S } },
 };
-static constexpr WeatherTransition ClimateTransitionsCold[] = {
+static constexpr WeatherTransition kClimateTransitionsCold[] = {
     { 4, 18, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, R, H, S, S, S, S, S } },
     { 5, 21, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, H, T, S, S } },
     { 7, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, H, S, S, S, S, S, S } },
@@ -520,11 +522,11 @@ static constexpr WeatherTransition ClimateTransitionsCold[] = {
     { 6, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
 };
 
-const WeatherTransition* ClimateTransitions[] = {
-    ClimateTransitionsCoolAndWet,
-    ClimateTransitionsWarm,
-    ClimateTransitionsHotAndDry,
-    ClimateTransitionsCold,
+const WeatherTransition* kClimateTransitions[] = {
+    kClimateTransitionsCoolAndWet,
+    kClimateTransitionsWarm,
+    kClimateTransitionsHotAndDry,
+    kClimateTransitionsCold,
 };
 
 #pragma endregion
