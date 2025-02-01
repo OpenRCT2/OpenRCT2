@@ -876,7 +876,7 @@ namespace OpenRCT2::RCT1
         uint8_t StaffModes[Limits::kMaxStaff];
         uint8_t Unk1F431E[4];
         uint8_t Unk1F4322[8];
-        uint8_t Climate;
+        RCT12::ClimateType Climate;
         uint8_t Unk1F432B;
         uint16_t WeatherUpdateTimer;
         uint8_t Weather;

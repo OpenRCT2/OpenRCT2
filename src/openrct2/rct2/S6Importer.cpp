@@ -552,7 +552,10 @@ namespace OpenRCT2::RCT2
             // unk_13CA73E
             // Pad13CA73F
             // unk_13CA740
+
+            // TODO: remove
             gameState.Climate = ClimateType{ _s6.Climate };
+
             // Pad13CA741;
             // Byte13CA742
             // Pad013CA747
@@ -1911,6 +1914,9 @@ namespace OpenRCT2::RCT2
 
             auto animObjects = GetLegacyPeepAnimationObjects();
             AppendRequiredObjects(objectList, ObjectType::peepAnimations, animObjects);
+
+            auto climateObjId = GetClimateObjectIdFromLegacyClimateType(_s6.Climate);
+            AppendRequiredObjects(objectList, ObjectType::climate, std::vector({ climateObjId }));
 
             return objectList;
         }
