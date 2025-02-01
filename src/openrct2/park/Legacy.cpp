@@ -18,6 +18,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
+#include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
@@ -2375,6 +2376,18 @@ void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState)
     }
 
     LOG_INFO("Converted %d peep entities", numConverted);
+}
+
+static constexpr std::array kClimateObjectIdsByLegacyClimateType = {
+    "rct2.climate.cool_and_wet",
+    "rct2.climate.warm",
+    "rct2.climate.hot_and_dry",
+    "rct2.climate.cold",
+};
+
+std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::ClimateType climate)
+{
+    return kClimateObjectIdsByLegacyClimateType[EnumValue(climate)];
 }
 
 bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)

@@ -1562,6 +1562,9 @@ namespace OpenRCT2::RCT1
             auto animObjects = GetLegacyPeepAnimationObjects(result);
             AppendRequiredObjects(result, ObjectType::PeepAnimations, animObjects);
 
+            auto climateObjId = GetClimateObjectIdFromLegacyClimateType(RCT12::ClimateType{ _s4.Climate });
+            AppendRequiredObjects(result, ObjectType::Climate, std::vector({ climateObjId }));
+
             return result;
         }
 
@@ -2351,7 +2354,9 @@ namespace OpenRCT2::RCT1
 
         void ImportClimate(GameState_t& gameState)
         {
+            // TODO: remove
             gameState.Climate = ClimateType{ _s4.Climate };
+
             gameState.WeatherUpdateTimer = _s4.WeatherUpdateTimer;
             gameState.WeatherCurrent = {
                 .Temperature = static_cast<int8_t>(_s4.Temperature),

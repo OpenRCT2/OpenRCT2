@@ -390,6 +390,17 @@ namespace OpenRCT2
                     AppendRequiredObjects(requiredObjects, ObjectType::PeepAnimations, animObjects);
                 }
 
+                if (version < kClimateObjectsVersion)
+                {
+                    RCT12::ClimateType legacyClimate{};
+                    os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&legacyClimate](OrcaStream::ChunkStream& cs) {
+                        cs.ReadWrite(legacyClimate);
+                    });
+
+                    auto climateObjId = GetClimateObjectIdFromLegacyClimateType(legacyClimate);
+                    AppendRequiredObjects(requiredObjects, ObjectType::Climate, std::vector({ climateObjId }));
+                }
+
                 RequiredObjects = std::move(requiredObjects);
             }
             else
@@ -791,8 +802,14 @@ namespace OpenRCT2
 
         void ReadWriteClimateChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&gameState](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gameState.Climate);
+            os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&os, &gameState](OrcaStream::ChunkStream& cs) {
+                auto version = os.GetHeader().TargetVersion;
+                if (version < kClimateObjectsVersion)
+                {
+                    // Legacy climate is converted elsewhere, so we can skip it here.
+                    cs.Ignore<ClimateType>();
+                }
+
                 cs.ReadWrite(gameState.WeatherUpdateTimer);
 
                 for (auto* cl : { &gameState.WeatherCurrent, &gameState.WeatherNext })
