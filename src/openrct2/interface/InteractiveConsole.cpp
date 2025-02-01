@@ -19,7 +19,6 @@
 #include "../ReplayManager.h"
 #include "../Version.h"
 #include "../actions/CheatSetAction.h"
-#include "../actions/ClimateSetAction.h"
 #include "../actions/GameSetSpeedAction.h"
 #include "../actions/ParkSetDateAction.h"
 #include "../actions/ParkSetParameterAction.h"
@@ -88,13 +87,6 @@ using namespace OpenRCT2;
 
 using arguments_t = std::vector<std::string>;
 using OpenRCT2::Date;
-
-static constexpr const char* kClimateNames[] = {
-    "cool_and_wet",
-    "warm",
-    "hot_and_dry",
-    "cold",
-};
 
 static int32_t ConsoleParseInt(const std::string& src, bool* valid);
 static double ConsoleParseDouble(const std::string& src, bool* valid);
@@ -674,11 +666,6 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         {
             console.WriteFormatLine("park_open %d", (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) != 0);
         }
-        else if (argv[0] == "climate")
-        {
-            console.WriteFormatLine(
-                "climate %s  (%d)", kClimateNames[EnumValue(gameState.Climate)], EnumValue(gameState.Climate));
-        }
         else if (argv[0] == "game_speed")
         {
             console.WriteFormatLine("game_speed %d", gGameSpeed);
@@ -912,37 +899,6 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             ConsoleSetVariableAction<ScenarioSetSettingAction>(
                 console, varName, ScenarioSetSetting::CostToBuyConstructionRights,
                 std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
-        }
-        else if (varName == "climate")
-        {
-            uint8_t newClimate = static_cast<uint8_t>(ClimateType::Count);
-            invalidArgs = true;
-
-            if (int_valid[0])
-            {
-                newClimate = static_cast<uint8_t>(int_val[0]);
-                invalidArgs = false;
-            }
-            else
-            {
-                for (newClimate = 0; newClimate < static_cast<uint8_t>(ClimateType::Count); newClimate++)
-                {
-                    if (argv[1] == kClimateNames[newClimate])
-                    {
-                        invalidArgs = false;
-                        break;
-                    }
-                }
-            }
-
-            if (invalidArgs)
-            {
-                console.WriteLine(LanguageGetString(STR_INVALID_CLIMATE_ID));
-            }
-            else
-            {
-                ConsoleSetVariableAction<ClimateSetAction>(console, varName, ClimateType{ newClimate });
-            }
         }
         else if (varName == "game_speed" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -1794,7 +1750,6 @@ static constexpr const utf8* console_variable_table[] = {
     "land_rights_cost",
     "construction_rights_cost",
     "park_open",
-    "climate",
     "game_speed",
     "console_small_font",
     "location",
