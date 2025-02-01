@@ -710,7 +710,7 @@ namespace OpenRCT2
 
             if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
             {
-                int32_t height = (TileElementHeight({ sprite->x, sprite->y }))-16;
+                int32_t height = (TileElementHeight({ sprite->x, sprite->y })) - 16;
                 int32_t underground = sprite->z < height;
                 ViewportSetUndergroundFlag(underground, window, window->viewport);
             }
@@ -1403,6 +1403,8 @@ namespace OpenRCT2
 
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
     {
+        auto paintAsPartial = gClipHeightTransparency && ps->Element != nullptr && ps->Element->Flags & TILE_ELEMENT_FLAG_PARTIAL;
+
         switch (ps->InteractionItem)
         {
             case ViewportInteractionItem::Entity:
@@ -1412,14 +1414,14 @@ namespace OpenRCT2
                     {
                         case EntityType::Vehicle:
                         {
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES)
+                            if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || paintAsPartial)
                             {
                                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::Hidden
                                                                                       : VisibilityKind::Partial;
                             }
                             // Rides without track can technically have a 'vehicle':
                             // these should be hidden if 'hide rides' is enabled
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES)
+                            if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || paintAsPartial)
                             {
                                 auto vehicle = ps->Entity->As<Vehicle>();
                                 if (vehicle == nullptr)
@@ -1452,7 +1454,7 @@ namespace OpenRCT2
                 }
                 break;
             case ViewportInteractionItem::Ride:
-                if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES)
+                if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || paintAsPartial)
                 {
                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
                 }
@@ -1460,7 +1462,7 @@ namespace OpenRCT2
             case ViewportInteractionItem::Footpath:
             case ViewportInteractionItem::PathAddition:
             case ViewportInteractionItem::Banner:
-                if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS)
+                if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS || paintAsPartial)
                 {
                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? VisibilityKind::Hidden : VisibilityKind::Partial;
                 }
@@ -1472,7 +1474,7 @@ namespace OpenRCT2
                 {
                     if (IsTileElementVegetation(ps->Element))
                     {
-                        if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION)
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION || paintAsPartial)
                         {
                             return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEGETATION) ? VisibilityKind::Hidden
                                                                                     : VisibilityKind::Partial;
@@ -1480,14 +1482,15 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY || paintAsPartial)
                         {
                             return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden
                                                                                  : VisibilityKind::Partial;
                         }
                     }
                 }
-                if (ps->InteractionItem == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+                if (ps->InteractionItem == ViewportInteractionItem::Wall
+                    && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE || paintAsPartial))
                 {
                     return VisibilityKind::Partial;
                 }
