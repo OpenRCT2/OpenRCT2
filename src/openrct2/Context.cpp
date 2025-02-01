@@ -439,7 +439,13 @@ namespace OpenRCT2
                 {
                     LOG_FATAL("Failed to open fallback language: %s", eFallback.what());
                     auto uiContext = GetContext()->GetUiContext();
+#ifdef __ANDROID__
+                    uiContext->ShowMessageBox(
+                        "You need to copy some additional files to finish your install.\n\nSee "
+                        "https://docs.openrct2.io/en/latest/installing/installing-on-android.html for more details.");
+#else
                     uiContext->ShowMessageBox("Failed to load language file!\nYour installation may be damaged.");
+#endif
                     return false;
                 }
             }

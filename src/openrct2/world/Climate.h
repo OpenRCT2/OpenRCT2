@@ -50,15 +50,6 @@ enum class WeatherLevel
     Heavy,
 };
 
-struct WeatherState
-{
-    int8_t TemperatureDelta;
-    WeatherEffectType EffectLevel;
-    int8_t GloomLevel;
-    WeatherLevel Level;
-    uint32_t SpriteId;
-};
-
 struct ClimateState
 {
     WeatherType Weather;
