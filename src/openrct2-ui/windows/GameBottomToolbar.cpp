@@ -219,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
             auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherNext);
             if (currentWeatherSpriteId != nextWeatherSpriteId)
             {
-                if (GetGameState().ClimateUpdateTimer < 960)
+                if (GetGameState().WeatherUpdateTimer < 960)
                 {
                     GfxDrawSprite(dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
                     GfxDrawSprite(dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
