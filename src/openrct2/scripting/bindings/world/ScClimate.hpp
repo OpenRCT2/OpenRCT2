@@ -108,8 +108,8 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScWeatherState> current_get() const
         {
             auto& gameState = GetGameState();
-            std::string weatherType = WeatherTypeToString(gameState.ClimateCurrent.Weather);
-            return std::make_shared<ScWeatherState>(weatherType, gameState.ClimateCurrent.Temperature);
+            std::string weatherType = WeatherTypeToString(gameState.WeatherCurrent.Weather);
+            return std::make_shared<ScWeatherState>(weatherType, gameState.WeatherCurrent.Temperature);
         }
 
         std::shared_ptr<ScWeatherState> future_get() const

@@ -2353,11 +2353,11 @@ namespace OpenRCT2::RCT1
         {
             gameState.Climate = ClimateType{ _s4.Climate };
             gameState.ClimateUpdateTimer = _s4.ClimateTimer;
-            gameState.ClimateCurrent.Temperature = _s4.Temperature;
-            gameState.ClimateCurrent.Weather = WeatherType{ _s4.Weather };
-            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType::None;
-            gameState.ClimateCurrent.WeatherGloom = _s4.WeatherGloom;
-            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s4.Rain);
+            gameState.WeatherCurrent.Temperature = _s4.Temperature;
+            gameState.WeatherCurrent.Weather = WeatherType{ _s4.Weather };
+            gameState.WeatherCurrent.WeatherEffect = WeatherEffectType::None;
+            gameState.WeatherCurrent.WeatherGloom = _s4.WeatherGloom;
+            gameState.WeatherCurrent.Level = static_cast<WeatherLevel>(_s4.Rain);
             gameState.ClimateNext.Temperature = _s4.TargetTemperature;
             gameState.ClimateNext.Weather = WeatherType{ _s4.TargetWeather };
             gameState.ClimateNext.WeatherEffect = WeatherEffectType::None;
