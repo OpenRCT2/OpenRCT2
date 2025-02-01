@@ -17,8 +17,6 @@
 #include "../audio/audio.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
-#include "../interface/Window.h"
-#include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.Date.h"
@@ -26,6 +24,7 @@
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
+#include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"
 
@@ -194,7 +193,8 @@ void News::ItemQueues::ArchiveCurrent()
     Archived.push_back(Current());
 
     // Invalidate the news window
-    WindowInvalidateByClass(WindowClass::RecentNews);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::RecentNews);
 
     // Dequeue the current news item, shift news up
     Recent.pop_front();
@@ -456,7 +456,8 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
         if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
             newsItem.SetFlags(News::ItemFlags::HasButton);
-            WindowInvalidateByClass(WindowClass::RecentNews);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::RecentNews);
         }
     });
 }

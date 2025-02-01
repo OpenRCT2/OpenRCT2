@@ -36,7 +36,6 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
@@ -52,7 +51,7 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
-#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
@@ -117,7 +116,7 @@ namespace OpenRCT2
         void ThrowIfIncompatibleVersion()
         {
             const auto& header = _os->GetHeader();
-            if (/*header.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION || */ header.MinVersion > PARK_FILE_CURRENT_VERSION)
+            if (/*header.TargetVersion < kParkFileMinSupportedVersion || */ header.MinVersion > kParkFileCurrentVersion)
             {
                 throw UnsupportedVersionException(header.MinVersion, header.TargetVersion);
             }
@@ -129,7 +128,7 @@ namespace OpenRCT2
             const auto& header = _os->GetHeader();
             minVersion = header.MinVersion;
             targetVersion = header.TargetVersion;
-            return targetVersion > PARK_FILE_CURRENT_VERSION;
+            return targetVersion > kParkFileCurrentVersion;
         }
 
         void Load(const std::string_view path)
@@ -179,9 +178,9 @@ namespace OpenRCT2
             OrcaStream os(stream, OrcaStream::Mode::WRITING);
 
             auto& header = os.GetHeader();
-            header.Magic = PARK_FILE_MAGIC;
-            header.TargetVersion = PARK_FILE_CURRENT_VERSION;
-            header.MinVersion = PARK_FILE_MIN_VERSION;
+            header.Magic = kParkFileMagic;
+            header.TargetVersion = kParkFileCurrentVersion;
+            header.MinVersion = kParkFileMinVersion;
 
             ReadWriteAuthoringChunk(os);
             ReadWriteObjectsChunk(os);
@@ -272,9 +271,9 @@ namespace OpenRCT2
 
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
-                std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-                std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-                std::fill(std::begin(_pathToRailingsMap), std::end(_pathToRailingsMap), OBJECT_ENTRY_INDEX_NULL);
+                std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), kObjectEntryIndexNull);
+                std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), kObjectEntryIndexNull);
+                std::fill(std::begin(_pathToRailingsMap), std::end(_pathToRailingsMap), kObjectEntryIndexNull);
                 auto* pathToSurfaceMap = _pathToSurfaceMap;
                 auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
                 auto* pathToRailingsMap = _pathToRailingsMap;
@@ -385,6 +384,12 @@ namespace OpenRCT2
                         requiredObjects, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
                 }
 
+                if (version < kPeepAnimationObjectsVersion)
+                {
+                    auto animObjects = GetLegacyPeepAnimationObjects(requiredObjects);
+                    AppendRequiredObjects(requiredObjects, ObjectType::PeepAnimations, animObjects);
+                }
+
                 RequiredObjects = std::move(requiredObjects);
             }
             else
@@ -444,7 +449,7 @@ namespace OpenRCT2
 
                 cs.ReadWrite(gameState.ScenarioCompletedCompanyValue);
                 if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined
-                    || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                    || gameState.ScenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
                 {
                     cs.Write("");
                 }
@@ -1136,7 +1141,7 @@ namespace OpenRCT2
                                     if (pathElement->HasLegacyPathEntry())
                                     {
                                         auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
-                                        if (pathToRailingsMap[pathEntryIndex] != OBJECT_ENTRY_INDEX_NULL)
+                                        if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
                                         {
                                             if (pathElement->IsQueue())
                                                 pathElement->SetSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
@@ -1718,6 +1723,12 @@ namespace OpenRCT2
 
             cs.ReadWrite(entity.State);
             cs.ReadWrite(entity.SubState);
+
+            if (version >= kPeepAnimationObjectsVersion)
+                cs.ReadWrite(entity.AnimationObjectIndex);
+            else
+                entity.AnimationObjectIndex = kObjectEntryIndexNull;
+
             cs.ReadWrite(entity.AnimationGroup);
 
             if (version <= 1)
@@ -1912,7 +1923,7 @@ namespace OpenRCT2
                         cs.ReadWrite(item);
                         if (item == 255)
                         {
-                            thought.item = PeepThoughtItemNone;
+                            thought.item = kPeepThoughtItemNone;
                         }
                         else
                         {
@@ -2568,7 +2579,7 @@ namespace OpenRCT2
 
     void ParkFile::ReadWriteEntitiesChunk(GameState_t& gameState, OrcaStream& os)
     {
-        os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this, &os](OrcaStream::ChunkStream& cs) {
+        os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this, &gameState, &os](OrcaStream::ChunkStream& cs) {
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
                 ResetAllEntities();
@@ -2580,6 +2591,12 @@ namespace OpenRCT2
                 ReadEntitiesOfTypes<
                     Vehicle, Guest, Staff, Litter, SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud,
                     CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(os, cs);
+
+                auto version = os.GetHeader().TargetVersion;
+                if (version < kPeepAnimationObjectsVersion)
+                {
+                    ConvertPeepAnimationTypeToObjects(gameState);
+                }
             }
             else
             {
@@ -2625,7 +2642,8 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
     gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
     if (!gIsAutosave)
     {
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseConstructionWindows();
     }
 
     PrepareMapForSave();

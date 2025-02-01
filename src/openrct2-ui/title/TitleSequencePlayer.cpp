@@ -12,7 +12,7 @@
 #include "../interface/Window.h"
 
 #include <memory>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
@@ -34,7 +34,6 @@
 #include <openrct2/scenes/title/TitleSequence.h>
 #include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
@@ -406,31 +405,32 @@ namespace OpenRCT2::Title
 
         void CloseParkSpecificWindows()
         {
-            WindowCloseByClass(WindowClass::ConstructRide);
-            WindowCloseByClass(WindowClass::DemolishRidePrompt);
-            WindowCloseByClass(WindowClass::EditorInventionListDrag);
-            WindowCloseByClass(WindowClass::EditorInventionList);
-            WindowCloseByClass(WindowClass::EditorObjectSelection);
-            WindowCloseByClass(WindowClass::EditorObjectiveOptions);
-            WindowCloseByClass(WindowClass::EditorScenarioOptions);
-            WindowCloseByClass(WindowClass::Finances);
-            WindowCloseByClass(WindowClass::FirePrompt);
-            WindowCloseByClass(WindowClass::GuestList);
-            WindowCloseByClass(WindowClass::InstallTrack);
-            WindowCloseByClass(WindowClass::Peep);
-            WindowCloseByClass(WindowClass::Ride);
-            WindowCloseByClass(WindowClass::RideConstruction);
-            WindowCloseByClass(WindowClass::RideList);
-            WindowCloseByClass(WindowClass::Scenery);
-            WindowCloseByClass(WindowClass::Staff);
-            WindowCloseByClass(WindowClass::TrackDeletePrompt);
-            WindowCloseByClass(WindowClass::TrackDesignList);
-            WindowCloseByClass(WindowClass::TrackDesignPlace);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::ConstructRide);
+            windowMgr->CloseByClass(WindowClass::DemolishRidePrompt);
+            windowMgr->CloseByClass(WindowClass::EditorInventionListDrag);
+            windowMgr->CloseByClass(WindowClass::EditorInventionList);
+            windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+            windowMgr->CloseByClass(WindowClass::EditorObjectiveOptions);
+            windowMgr->CloseByClass(WindowClass::EditorScenarioOptions);
+            windowMgr->CloseByClass(WindowClass::Finances);
+            windowMgr->CloseByClass(WindowClass::FirePrompt);
+            windowMgr->CloseByClass(WindowClass::GuestList);
+            windowMgr->CloseByClass(WindowClass::InstallTrack);
+            windowMgr->CloseByClass(WindowClass::Peep);
+            windowMgr->CloseByClass(WindowClass::Ride);
+            windowMgr->CloseByClass(WindowClass::RideConstruction);
+            windowMgr->CloseByClass(WindowClass::RideList);
+            windowMgr->CloseByClass(WindowClass::Scenery);
+            windowMgr->CloseByClass(WindowClass::Staff);
+            windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
+            windowMgr->CloseByClass(WindowClass::TrackDesignList);
+            windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
         }
 
         void PrepareParkForPlayback()
         {
-            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+            auto windowManager = Ui::GetWindowManager();
             auto& gameState = GetGameState();
             windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
             ResetEntitySpatialIndices();

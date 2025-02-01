@@ -80,7 +80,7 @@ namespace OpenRCT2
         MiniGolfPeepAnimationFramesPutt,
     };
 
-    const size_t MiniGolfPeepAnimationLengths[] = {
+    const size_t kMiniGolfPeepAnimationLengths[] = {
         std::size(MiniGolfPeepAnimationFramesWalk),
         std::size(MiniGolfPeepAnimationFramesPlaceBallDownwards),
         std::size(MiniGolfPeepAnimationFramesSwingLeft),

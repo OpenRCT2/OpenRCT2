@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor MineRideRTD =
     .UpkeepCosts = { 50, 20, 80, 10, 3, 10 },
     .BuildCosts = { 42.50_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WILD_WEST,
+    .DefaultMusic = kMusicObjectWildWest,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -54,13 +54,13 @@ constexpr RideTypeDescriptor MineRideRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 75), RIDE_RATING(1, 00), RIDE_RATING(1, 80) },
+        { MakeRideRating(2, 75), MakeRideRating(1, 00), MakeRideRating(1, 80) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

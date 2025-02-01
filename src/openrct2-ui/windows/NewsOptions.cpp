@@ -9,10 +9,11 @@
 
 #include <cstddef>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -72,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget WindowNewsOptionsWidgets[] = {
+    static constexpr Widget WindowNewsOptionsWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // Tab content panel
         MakeTab   ({ 3, 17}                                                                 ), // Park tab
@@ -87,7 +88,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
         MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
         MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -96,7 +96,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = WindowNewsOptionsWidgets;
+            SetWidgets(WindowNewsOptionsWidgets);
             InitScrollWidgets();
             colours[0] = COLOUR_GREY;
             colours[1] = COLOUR_LIGHT_BLUE;
@@ -161,7 +161,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& baseCheckBox = widgets[WIDX_CHECKBOX_0];
             int32_t y = baseCheckBox.top;
 
-            int32_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
+            uint16_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
             Widget* checkboxWidget = &widgets[checkboxWidgetIndex];
             for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
             {
@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Remove unused checkboxes
-            while (checkboxWidget->type != WindowWidgetType::Last)
+            while (checkboxWidgetIndex < widgets.size())
             {
                 checkboxWidget->type = WindowWidgetType::Empty;
                 checkboxWidgetIndex++;
@@ -283,6 +283,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* NewsOptionsOpen()
     {
-        return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

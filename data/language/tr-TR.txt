@@ -1151,17 +1151,6 @@ STR_1773    :Alet başı bir tane fotoğraf alanı inşa edilebilir
 STR_1774    :Alet başı bir tane asansörlü tırmanma zinciri inşa edilebilir
 STR_1777    :{WINDOW_COLOUR_2}Alet müziği
 STR_1778    :{STRINGID} - -
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda kıyafeti
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Kaplan kıyafeti
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Fil kıyafeti
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romalı kıyafeti
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Goril kıyafeti
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Kardan adam kıyafeti
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Şövalye kıyafeti
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronot kıyafeti
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Eşkıya kıyafeti
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Şerif kıyafeti
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Korsan kıyafeti
 STR_1790    :Bu işçinin üniforma{NEWLINE}rengini seçiniz
 STR_1791    :{WINDOW_COLOUR_2}Üniforma rengi:
 STR_1792    :{STRINGID} aletinin tamirine gidiyor

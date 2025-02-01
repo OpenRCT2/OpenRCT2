@@ -158,6 +158,7 @@ namespace OpenRCT2
         kPeepSpriteBalloonStateWalkingId = 10785,
         kPeepSpriteBalloonStateWatchRideId = 10781,
         kPeepSpriteBalloonStateSittingIdleId = 10809,
+        kPeepSpriteBalloonItemStart = 10813,
 
         kPeepSpriteCandyflossStateWalkingId = 10849,
         kPeepSpriteCandyflossStateWatchRideId = 10845,
@@ -168,6 +169,7 @@ namespace OpenRCT2
         kPeepSpriteUmbrellaStateWalkingId = 11197,
         kPeepSpriteUmbrellaStateWatchRideId = 11221,
         kPeepSpriteUmbrellaStateSittingIdleId = 11225,
+        kPeepSpriteUmbrellaItemStart = 11229,
 
         kPeepSpritePizzaStateWalkingId = 7785,
         kPeepSpritePizzaStateWatchRideId = 7781,
@@ -197,6 +199,7 @@ namespace OpenRCT2
         kPeepSpriteHatStateWalkingId = 10721,
         kPeepSpriteHatStateWatchRideId = 10717,
         kPeepSpriteHatStateSittingIdleId = 10745,
+        kPeepSpriteHatItemStart = 10749,
 
         kPeepSpriteHotDogStateWalkingId = 7889,
         kPeepSpriteHotDogStateWatchRideId = 7885,
@@ -244,9 +247,9 @@ namespace OpenRCT2
         kPeepSpriteSunglassesStateWatchRideId = 10713,
         kPeepSpriteSunglassesStateSittingIdleId = 10709,
 
-        kPeepSpriteSuJongkwaStateWalkingId = 9509,
-        kPeepSpriteSuJongkwaStateWatchRideId = 9629,
-        kPeepSpriteSuJongkwaStateSittingIdleId = 9581,
+        kPeepSpriteSujeonggwaStateWalkingId = 9509,
+        kPeepSpriteSujeonggwaStateWatchRideId = 9629,
+        kPeepSpriteSujeonggwaStateSittingIdleId = 9581,
 
         kPeepSpriteJuiceStateWalkingId = 9677,
         kPeepSpriteJuiceStateWatchRideId = 9797,

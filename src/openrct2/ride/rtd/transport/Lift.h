@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor LiftRTD =
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 19.50_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor LiftRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30) },
+        { MakeRideRating(1, 11), MakeRideRating(0, 35), MakeRideRating(0, 30) },
         15,
         7,
         false,

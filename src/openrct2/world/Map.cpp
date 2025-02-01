@@ -30,7 +30,6 @@
 #include "../entity/Staff.h"
 #include "../interface/Cursors.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -259,7 +258,7 @@ void ReorganiseTileElements()
 static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t numNewElements)
 {
     // Check hard cap on num in use tiles (this would be the size of _tileElements immediately after a reorg)
-    if (_tileElementsInUse + numNewElements > MAX_TILE_ELEMENTS)
+    if (_tileElementsInUse + numNewElements > kMaxTileElements)
     {
         return false;
     }
@@ -284,7 +283,7 @@ static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t n
         }
     }
 
-    // Capacity must increase to handle the space (Note capacity can go above MAX_TILE_ELEMENTS)
+    // Capacity must increase to handle the space (Note capacity can go above kMaxTileElements)
     auto newCapacity = gameState.TileElements.capacity() * 2;
     ReorganiseTileElements(newCapacity);
     return true;
@@ -670,7 +669,7 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
             return height;
         }
         // This tile is essentially at the next height level
-        height += LAND_HEIGHT_STEP;
+        height += kLandHeightStep;
         // so we move *down* the slope
         if (quad < 0)
         {
@@ -816,8 +815,8 @@ int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool 
 
 bool MapIsLocationValid(const CoordsXY& coords)
 {
-    const bool is_x_valid = coords.x < MAXIMUM_MAP_SIZE_BIG && coords.x >= 0;
-    const bool is_y_valid = coords.y < MAXIMUM_MAP_SIZE_BIG && coords.y >= 0;
+    const bool is_x_valid = coords.x < kMaximumMapSizeBig && coords.x >= 0;
+    const bool is_y_valid = coords.y < kMaximumMapSizeBig && coords.y >= 0;
     return is_x_valid && is_y_valid;
 }
 
@@ -855,7 +854,7 @@ bool MapIsLocationOwned(const CoordsXYZ& loc)
 
             if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
             {
-                if (loc.z < surfaceElement->GetBaseZ() || loc.z >= surfaceElement->GetBaseZ() + ConstructionRightsClearanceBig)
+                if (loc.z < surfaceElement->GetBaseZ() || loc.z >= surfaceElement->GetBaseZ() + kConstructionRightsClearanceBig)
                     return true;
             }
         }
@@ -1019,7 +1018,7 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
 
 bool MapIsLocationAtEdge(const CoordsXY& loc)
 {
-    return loc.x < 32 || loc.y < 32 || loc.x >= (MAXIMUM_TILE_START_XY) || loc.y >= (MAXIMUM_TILE_START_XY);
+    return loc.x < 32 || loc.y < 32 || loc.x >= (kMaximumTileStartXY) || loc.y >= (kMaximumTileStartXY);
 }
 
 /**
@@ -1322,9 +1321,9 @@ void MapRemoveOutOfRangeElements()
     bool buildState = gameState.Cheats.buildInPauseMode;
     gameState.Cheats.buildInPauseMode = true;
 
-    for (int32_t y = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep; y >= 0; y -= kCoordsXYStep)
+    for (int32_t y = kMaximumMapSizeBig - kCoordsXYStep; y >= 0; y -= kCoordsXYStep)
     {
-        for (int32_t x = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep; x >= 0; x -= kCoordsXYStep)
+        for (int32_t x = kMaximumMapSizeBig - kCoordsXYStep; x >= 0; x -= kCoordsXYStep)
         {
             if (x == 0 || y == 0 || x >= mapSizeMax.x || y >= mapSizeMax.y)
             {
@@ -1543,9 +1542,9 @@ int32_t MapGetHighestZ(const CoordsXY& loc)
 
     // Raise z so that is above highest point of land and water on tile
     if ((surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
-        z += LAND_HEIGHT_STEP;
+        z += kLandHeightStep;
     if ((surfaceElement->GetSlope() & kTileSlopeDiagonalFlag) != 0)
-        z += LAND_HEIGHT_STEP;
+        z += kLandHeightStep;
 
     z = std::max(z, surfaceElement->GetWaterHeight());
     return z;
@@ -1869,9 +1868,9 @@ bool MapSurfaceIsBlocked(const CoordsXY& mapCoords)
 /* Clears all map elements, to be used before generating a new map */
 void MapClearAllElements()
 {
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_BIG; y += kCoordsXYStep)
+    for (int32_t y = 0; y < kMaximumMapSizeBig; y += kCoordsXYStep)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_BIG; x += kCoordsXYStep)
+        for (int32_t x = 0; x < kMaximumMapSizeBig; x += kCoordsXYStep)
         {
             ClearElementsAt({ x, y });
         }
@@ -2152,7 +2151,7 @@ uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
         {
             destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
             // Do not own construction rights if too high/below surface
-            if (tileElement->BaseHeight - ConstructionRightsClearanceSmall > tilePos.z || tileElement->BaseHeight < tilePos.z)
+            if (tileElement->BaseHeight - kConstructionRightsClearanceSmall > tilePos.z || tileElement->BaseHeight < tilePos.z)
             {
                 destOwnership = OWNERSHIP_UNOWNED;
                 break;
@@ -2352,7 +2351,7 @@ void ShiftMap(const TileCoordsXY& amount)
     // Rides
     for (auto& ride : GetRideManager())
     {
-        auto& stations = ride.GetStations();
+        auto stations = ride.GetStations();
         for (auto& station : stations)
         {
             shiftIfNotNull(station.Start, amountToMove);

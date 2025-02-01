@@ -9,13 +9,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../UiContext.h"
     #include "../UiStringIds.h"
     #include "../interface/Dropdown.h"
     #include "../interface/Widget.h"
     #include "../scripting/ScGraphicsContext.hpp"
     #include "../scripting/ScWidget.hpp"
-    #include "../windows/Window.h"
+    #include "../windows/Windows.h"
     #include "CustomListView.h"
     #include "ScUi.hpp"
     #include "ScWindow.hpp"
@@ -217,6 +216,21 @@ namespace OpenRCT2::Ui::Windows
                 result.imageFrameBase = ImageId(dukImage["frameBase"].as_uint());
                 result.imageFrameCount = AsOrDefault(dukImage["frameCount"], 0);
                 result.imageFrameDuration = AsOrDefault(dukImage["frameDuration"], 0);
+
+                if (dukImage["primaryColour"].type() == DukValue::Type::NUMBER)
+                {
+                    result.imageFrameBase = result.imageFrameBase.WithPrimary(dukImage["primaryColour"].as_uint());
+
+                    if (dukImage["secondaryColour"].type() == DukValue::Type::NUMBER)
+                    {
+                        result.imageFrameBase = result.imageFrameBase.WithSecondary(dukImage["secondaryColour"].as_uint());
+
+                        if (dukImage["tertiaryColour"].type() == DukValue::Type::NUMBER)
+                        {
+                            result.imageFrameBase = result.imageFrameBase.WithTertiary(dukImage["tertiaryColour"].as_uint());
+                        }
+                    }
+                }
 
                 auto dukCoord = dukImage["offset"];
                 if (dukCoord.type() == DukValue::Type::OBJECT)
@@ -450,7 +464,8 @@ namespace OpenRCT2::Ui::Windows
                     {
                         frame_no = 0;
                     }
-                    WidgetInvalidate(*this, WIDX_TAB_0 + this->page);
+
+                    InvalidateWidget(WIDX_TAB_0 + this->page);
                 }
             }
 
@@ -459,9 +474,9 @@ namespace OpenRCT2::Ui::Windows
             // Since the plugin may alter widget positions and sizes during an update event,
             // we need to force an update for all list view scrollbars
             WidgetIndex widgetIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
+            for (auto& widget : widgets)
             {
-                if (widget->type == WindowWidgetType::Scroll)
+                if (widget.type == WindowWidgetType::Scroll)
                 {
                     WidgetScrollUpdateThumbs(*this, widgetIndex);
                 }
@@ -496,13 +511,13 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<const char*>(desc.Title.c_str());
 
             size_t scrollIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
+            for (const auto& widget : widgets)
             {
-                if (widget->type == WindowWidgetType::Scroll)
+                if (widget.type == WindowWidgetType::Scroll)
                 {
                     auto& listView = _info.ListViews[scrollIndex];
-                    auto wwidth = widget->width() + 1 - 2;
-                    auto wheight = widget->height() + 1 - 2;
+                    auto wwidth = widget.width() + 1 - 2;
+                    auto wheight = widget.height() + 1 - 2;
                     if (listView.GetScrollbars() == ScrollbarType::Horizontal
                         || listView.GetScrollbars() == ScrollbarType::Both)
                     {
@@ -565,8 +580,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                {
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->Close(*this);
                     break;
+                }
                 default:
                 {
                     if (widgetIndex >= WIDX_TAB_0
@@ -626,7 +644,7 @@ namespace OpenRCT2::Ui::Windows
                     widget--;
                     auto selectedIndex = widgetDesc->SelectedIndex;
                     const auto& items = widgetDesc->Items;
-                    const auto numItems = std::min<size_t>(items.size(), Dropdown::ItemsMaxSize);
+                    const auto numItems = std::min<size_t>(items.size(), Dropdown::kItemsMaxSize);
                     for (size_t i = 0; i < numItems; i++)
                     {
                         gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
@@ -765,9 +783,9 @@ namespace OpenRCT2::Ui::Windows
         std::optional<WidgetIndex> GetViewportWidgetIndex()
         {
             WidgetIndex widgetIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
+            for (auto& widget : widgets)
             {
-                if (widget->type == WindowWidgetType::Viewport)
+                if (widget.type == WindowWidgetType::Viewport)
                 {
                     return widgetIndex;
                 }
@@ -886,7 +904,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.top = 17;
                 widget.bottom = 43;
                 widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
-                widget.tooltip = STR_NONE;
+                widget.tooltip = kStringIdNone;
                 widgetList.push_back(widget);
                 _info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
             }
@@ -928,8 +946,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            widgetList.push_back(kWidgetsEnd);
-            widgets = widgetList.data();
+            SetWidgets(widgetList);
 
             WindowInitScrollWidgets(*this);
             UpdateViewport();
@@ -944,7 +961,7 @@ namespace OpenRCT2::Ui::Windows
             widget.right = desc.X + desc.Width - 1;
             widget.bottom = desc.Y + desc.Height - 1;
             widget.content = std::numeric_limits<uint32_t>::max();
-            widget.tooltip = STR_NONE;
+            widget.tooltip = kStringIdNone;
             widget.sztooltip = const_cast<utf8*>(desc.Tooltip.c_str());
             widget.flags |= WIDGET_FLAGS::TOOLTIP_IS_STRING;
             if (desc.IsDisabled)
@@ -1016,7 +1033,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.top = desc.Y + 1;
                 widget.bottom = desc.Y + desc.Height - 2;
                 widget.text = STR_DROPDOWN_GLYPH;
-                widget.tooltip = STR_NONE;
+                widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
                 widgetList.push_back(widget);
@@ -1067,7 +1084,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.top = desc.Y + 1;
                 widget.bottom = desc.Y + desc.Height - 2;
                 widget.text = STR_NUMERIC_UP;
-                widget.tooltip = STR_NONE;
+                widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
                 widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;
@@ -1089,7 +1106,7 @@ namespace OpenRCT2::Ui::Windows
             else if (desc.Type == "viewport")
             {
                 widget.type = WindowWidgetType::Viewport;
-                widget.text = STR_NONE;
+                widget.text = kStringIdNone;
                 widgetList.push_back(widget);
             }
         }
@@ -1097,7 +1114,8 @@ namespace OpenRCT2::Ui::Windows
         static rct_windownumber GetNewWindowNumber()
         {
             auto result = _nextWindowNumber++;
-            while (WindowFindByNumber(WindowClass::Custom, result) != nullptr)
+            auto* windowMgr = GetWindowManager();
+            while (windowMgr->FindByNumber(WindowClass::Custom, result) != nullptr)
             {
                 result++;
             }
@@ -1111,15 +1129,17 @@ namespace OpenRCT2::Ui::Windows
     {
         auto desc = CustomWindowDesc::FromDukValue(dukDesc);
         uint16_t windowFlags = WF_RESIZABLE | WF_TRANSPARENT;
+        auto* windowMgr = GetWindowManager();
+
         CustomWindow* window{};
         if (desc.X && desc.Y)
         {
-            window = WindowCreate<CustomWindow>(
+            window = windowMgr->Create<CustomWindow>(
                 WindowClass::Custom, { *desc.X, *desc.Y }, desc.Width, desc.Height, windowFlags, owner, desc);
         }
         else
         {
-            window = WindowCreate<CustomWindow>(WindowClass::Custom, desc.Width, desc.Height, windowFlags, owner, desc);
+            window = windowMgr->Create<CustomWindow>(WindowClass::Custom, desc.Width, desc.Height, windowFlags, owner, desc);
         }
         return window;
     }
@@ -1183,7 +1203,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 customWidgetInfo->Text = value;
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
-                WidgetInvalidate(*w, widgetIndex);
+
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateWidget(*w, widgetIndex);
             }
         }
     }
@@ -1217,7 +1239,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     customWidgetInfo->Colour = colour;
                     widget.image = GetColourButtonImage(colour);
-                    WidgetInvalidate(*w, widgetIndex);
+
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->InvalidateWidget(*w, widgetIndex);
 
                     std::vector<DukValue> args;
                     auto ctx = customWidgetInfo->OnChange.context();
@@ -1262,7 +1286,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 customWidgetInfo->SelectedIndex = selectedIndex;
 
-                WidgetInvalidate(*w, widgetIndex);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateWidget(*w, widgetIndex);
 
                 if (lastSelectedIndex != selectedIndex)
                 {
@@ -1468,7 +1493,8 @@ namespace OpenRCT2::Ui::Windows
 
         for (auto& window : customWindows)
         {
-            WindowClose(*window.get());
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->Close(*window.get());
         }
     }
 

@@ -68,7 +68,7 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
             if (surfaceObj->Colour != TerrainSurfaceObject::kNoValue)
                 imageId = imageId.WithPrimary(surfaceObj->Colour);
 
-            gDropdownItems[itemIndex].Format = Dropdown::FormatLandPicker;
+            gDropdownItems[itemIndex].Format = Dropdown::kFormatLandPicker;
             Dropdown::SetImage(itemIndex, imageId);
             if (i == currentSurfaceType)
             {
@@ -103,7 +103,7 @@ ObjectEntryIndex LandTool::GetSurfaceStyleFromDropdownIndex(size_t index)
             itemIndex++;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType)
@@ -118,7 +118,7 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
         if (edgeObj != nullptr && !edgeObj->UsesFallbackImages())
         {
-            gDropdownItems[itemIndex].Format = Dropdown::FormatLandPicker;
+            gDropdownItems[itemIndex].Format = Dropdown::kFormatLandPicker;
             Dropdown::SetImage(itemIndex, ImageId(edgeObj->IconImageId));
             if (i == currentEdgeType)
             {
@@ -154,5 +154,5 @@ ObjectEntryIndex LandTool::GetEdgeStyleFromDropdownIndex(size_t index)
             itemIndex++;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }

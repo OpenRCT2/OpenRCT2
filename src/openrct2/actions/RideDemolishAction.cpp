@@ -16,12 +16,10 @@
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../entity/EntityList.h"
-#include "../interface/Window.h"
 #include "../management/NewsItem.h"
 #include "../peep/RideUseSystem.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Banner.h"
 #include "../world/Park.h"
@@ -160,13 +158,14 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     GetGameState().Park.Value = Park::CalculateParkValue();
 
     // Close windows related to the demolished ride
-    WindowCloseByNumber(WindowClass::RideConstruction, rideId.ToUnderlying());
-    WindowCloseByNumber(WindowClass::Ride, rideId.ToUnderlying());
-    WindowCloseByNumber(WindowClass::DemolishRidePrompt, rideId.ToUnderlying());
-    WindowCloseByClass(WindowClass::NewCampaign);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByNumber(WindowClass::RideConstruction, rideId.ToUnderlying());
+    windowMgr->CloseByNumber(WindowClass::Ride, rideId.ToUnderlying());
+    windowMgr->CloseByNumber(WindowClass::DemolishRidePrompt, rideId.ToUnderlying());
+    windowMgr->CloseByClass(WindowClass::NewCampaign);
 
     // Refresh windows that display the ride name
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
@@ -242,15 +241,15 @@ money64 RideDemolishAction::DemolishTracks() const
                 }
                 else
                 {
-                    static constexpr CoordsXY DirOffsets[] = {
+                    static constexpr CoordsXY kDirOffsets[] = {
                         { 0, 0 },
                         { 0, 16 },
                         { 16, 16 },
                         { 16, 0 },
                     };
-                    for (Direction dir : ALL_DIRECTIONS)
+                    for (Direction dir : kAllDirections)
                     {
-                        const CoordsXYZ off = { DirOffsets[dir], 0 };
+                        const CoordsXYZ off = { kDirOffsets[dir], 0 };
                         money64 removePrice = MazeRemoveTrack({ location + off, dir });
                         if (removePrice != kMoney64Undefined)
                         {
@@ -288,7 +287,8 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride& ride) const
         res.Position = { location, TileElementHeight(location) };
     }
 
-    WindowCloseByNumber(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByNumber(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());
 
     return res;
 }

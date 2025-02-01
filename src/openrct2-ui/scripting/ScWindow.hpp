@@ -218,11 +218,9 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetIndex widgetIndex = 0;
-                for (auto widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
+                for (WidgetIndex widgetIndex = 0; widgetIndex < w->widgets.size(); widgetIndex++)
                 {
                     result.push_back(ScWidget::ToDukValue(ctx, w, widgetIndex));
-                    widgetIndex++;
                 }
             }
             return result;
@@ -307,7 +305,8 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WindowClose(*w);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->Close(*w);
             }
         }
 
@@ -328,10 +327,11 @@ namespace OpenRCT2::Scripting
 
         void bringToFront()
         {
-            auto w = GetWindow();
+            auto* w = GetWindow();
             if (w != nullptr)
             {
-                WindowBringToFront(*w);
+                auto* windowMgr = Ui::GetWindowManager();
+                w = windowMgr->BringToFront(*w);
                 w->flags |= WF_WHITE_BORDER_MASK;
             }
         }
@@ -362,7 +362,8 @@ namespace OpenRCT2::Scripting
     private:
         WindowBase* GetWindow() const
         {
-            return WindowFindByNumber(_class, _number);
+            auto* windowMgr = Ui::GetWindowManager();
+            return windowMgr->FindByNumber(_class, _number);
         }
     };
 } // namespace OpenRCT2::Scripting

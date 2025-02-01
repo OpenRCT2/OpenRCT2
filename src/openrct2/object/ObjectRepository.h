@@ -52,8 +52,8 @@ struct ObjectRepositoryItem
     struct
     {
         uint8_t RideFlags;
-        uint8_t RideCategory[OpenRCT2::RCT2::ObjectLimits::MaxCategoriesPerRide];
-        ride_type_t RideType[OpenRCT2::RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
+        uint8_t RideCategory[OpenRCT2::RCT2::ObjectLimits::kMaxCategoriesPerRide];
+        ride_type_t RideType[OpenRCT2::RCT2::ObjectLimits::kMaxRideTypesPerRideEntry];
     } RideInfo;
     struct
     {
@@ -63,6 +63,10 @@ struct ObjectRepositoryItem
     {
         uint8_t Flags{};
     } FootpathSurfaceInfo;
+    struct
+    {
+        uint8_t PeepType{};
+    } PeepAnimationsInfo;
 
     [[nodiscard]] ObjectSourceGame GetFirstSourceGame() const
     {

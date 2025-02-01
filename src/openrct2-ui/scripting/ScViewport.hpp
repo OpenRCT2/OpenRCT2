@@ -18,6 +18,7 @@
     #include <openrct2/interface/Viewport.h>
     #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/ui/WindowManager.h>
     #include <openrct2/world/Map.h>
 
 namespace OpenRCT2::Scripting
@@ -251,7 +252,8 @@ namespace OpenRCT2::Scripting
             if (_class == WindowClass::MainWindow)
                 return WindowGetMain();
 
-            return WindowFindByNumber(_class, _number);
+            auto* windowMgr = Ui::GetWindowManager();
+            return windowMgr->FindByNumber(_class, _number);
         }
 
         Viewport* GetViewport() const

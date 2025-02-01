@@ -11,7 +11,7 @@
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/PlayerKickAction.h>
 #include <openrct2/actions/PlayerSetGroupAction.h>
@@ -20,6 +20,7 @@
 #include <openrct2/network/NetworkAction.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <utility>
 
 namespace OpenRCT2::Ui::Windows
@@ -57,22 +58,20 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 3, 17 }),                                                                                                       \
         MakeTab({ 34, 17 })
 
-    static Widget window_player_overview_widgets[] = {
+    static constexpr Widget window_player_overview_widgets[] = {
         WINDOW_PLAYER_COMMON_WIDGETS,
         MakeWidget({  3, 46}, {175, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                           ), // Permission group
         MakeWidget({167, 47}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                       ),
         MakeWidget({179, 45}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_LOCATE),         STR_LOCATE_PLAYER_TIP), // Locate button
         MakeWidget({179, 69}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH),       STR_KICK_PLAYER_TIP  ), // Kick button
         MakeWidget({  3, 60}, {175, 61}, WindowWidgetType::Viewport, WindowColour::Secondary                                           ), // Viewport
-        kWidgetsEnd,
     };
 
-    static Widget window_player_statistics_widgets[] = {
+    static constexpr Widget window_player_statistics_widgets[] = {
         WINDOW_PLAYER_COMMON_WIDGETS,
-        kWidgetsEnd,
     };
 
-    static Widget *window_player_page_widgets[] = {
+    static constexpr std::span<const Widget> window_player_page_widgets[] = {
         window_player_overview_widgets,
         window_player_statistics_widgets,
     };
@@ -104,12 +103,9 @@ namespace OpenRCT2::Ui::Windows
             min_height = 134;
             max_width = 500;
             max_height = 450;
-
-            Invalidate();
-
-            widgets = window_player_page_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
             hold_down_widgets = 0;
             pressed_widgets = 0;
+            SetPage(WINDOW_PLAYER_PAGE_OVERVIEW);
         }
 
         void OnResize() override
@@ -221,7 +217,7 @@ namespace OpenRCT2::Ui::Windows
 
             hold_down_widgets = 0;
             pressed_widgets = 0;
-            widgets = window_player_page_widgets[newPage];
+            SetWidgets(window_player_page_widgets[newPage]);
             Invalidate();
             OnResize();
             OnPrepareDraw();
@@ -376,12 +372,6 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (window_player_page_widgets[page] != widgets)
-            {
-                widgets = window_player_page_widgets[page];
-                InitScrollWidgets();
-            }
-
             pressed_widgets &= ~(WIDX_TAB_1);
             pressed_widgets &= ~(WIDX_TAB_2);
             pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
@@ -406,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
-                Widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
+                Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
 
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
                 viewport->width = viewportWidget->width();
@@ -435,7 +425,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t groupindex = NetworkGetGroupIndex(NetworkGetPlayerGroup(player));
             if (groupindex != -1)
             {
-                Widget* widget = &window_player_overview_widgets[WIDX_GROUP];
+                Widget* widget = &widgets[WIDX_GROUP];
 
                 thread_local std::string _buffer;
                 _buffer.assign("{WINDOW_COLOUR_2}");
@@ -539,7 +529,8 @@ namespace OpenRCT2::Ui::Windows
             playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
-                    WindowInvalidateByNumber(windowHandle.first, windowHandle.second);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->InvalidateByNumber(windowHandle.first, windowHandle.second);
                 }
             });
             GameActions::Execute(&playerSetGroupAction);
@@ -594,12 +585,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawStatistics()
         {
-            if (window_player_page_widgets[page] != widgets)
-            {
-                widgets = window_player_page_widgets[page];
-                InitScrollWidgets();
-            }
-
             pressed_widgets &= ~(WIDX_TAB_1);
             pressed_widgets &= ~(WIDX_TAB_2);
             pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
@@ -623,8 +608,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto screenCoords = windowPos
-                + ScreenCoordsXY{ window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                                  window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
             auto ft = Formatter();
             ft.Add<uint32_t>(NetworkGetPlayerCommandsRan(player));
@@ -642,10 +626,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* PlayerOpen(uint8_t id)
     {
-        auto* window = static_cast<PlayerWindow*>(WindowBringToFrontByNumber(WindowClass::Player, id));
+        auto* windowMgr = GetWindowManager();
+        auto* window = static_cast<PlayerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Player, id));
         if (window == nullptr)
         {
-            window = WindowCreate<PlayerWindow>(WindowClass::Player, 240, 170, WF_RESIZABLE);
+            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, 240, 170, WF_RESIZABLE);
         }
 
         window->Init(id);

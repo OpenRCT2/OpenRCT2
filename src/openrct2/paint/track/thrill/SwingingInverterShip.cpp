@@ -24,7 +24,7 @@
 using namespace OpenRCT2;
 
 /** rct2: 0x01428010 */
-static constexpr uint32_t SwingingInverterShipBaseSpriteOffset[] = {
+static constexpr uint32_t kSwingingInverterShipBaseSpriteOffset[] = {
     0,
     16,
     0,
@@ -32,7 +32,7 @@ static constexpr uint32_t SwingingInverterShipBaseSpriteOffset[] = {
 };
 
 /** rct2: 0x01428020 */
-static constexpr uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] = {
+static constexpr uint32_t kSwingingInverterShipAnimatingBaseSpriteOffset[] = {
     32,
     33,
     32,
@@ -40,7 +40,7 @@ static constexpr uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] = {
 };
 
 /** rct2: 0x01428020 */
-static constexpr BoundBoxXY SwingingInverterShipBounds[] = {
+static constexpr BoundBoxXY kSwingingInverterShipBounds[] = {
     { { 0, 8 }, { 32, 16 } },
     { { 8, 0 }, { 16, 32 } },
     { { 0, 8 }, { 32, 16 } },
@@ -55,7 +55,7 @@ enum
     SPR_SWINGING_INVERTER_SHIP_FRAME_3 = 22001,
 };
 
-static constexpr uint32_t SwingingInverterShipFrameSprites[] = {
+static constexpr uint32_t kSwingingInverterShipFrameSprites[] = {
     SPR_SWINGING_INVERTER_SHIP_FRAME_0,
     SPR_SWINGING_INVERTER_SHIP_FRAME_1,
     SPR_SWINGING_INVERTER_SHIP_FRAME_2,
@@ -69,7 +69,7 @@ static void PaintSwingingInverterShipStructure(
     if (rideEntry == nullptr)
         return;
 
-    const auto& boundBox = SwingingInverterShipBounds[direction];
+    const auto& boundBox = kSwingingInverterShipBounds[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height);
     BoundBoxXYZ bb = { { boundBox.offset, height }, { boundBox.length, 127 } };
 
@@ -84,13 +84,13 @@ static void PaintSwingingInverterShipStructure(
         }
     }
 
-    ImageIndex vehicleImageIndex = rideEntry->Cars[0].base_image_id + SwingingInverterShipBaseSpriteOffset[direction];
+    ImageIndex vehicleImageIndex = rideEntry->Cars[0].base_image_id + kSwingingInverterShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
         int32_t rotation = static_cast<int8_t>(vehicle->Pitch);
         if (rotation != 0)
         {
-            vehicleImageIndex = rideEntry->Cars[0].base_image_id + SwingingInverterShipAnimatingBaseSpriteOffset[direction];
+            vehicleImageIndex = rideEntry->Cars[0].base_image_id + kSwingingInverterShipAnimatingBaseSpriteOffset[direction];
             if (direction & 2)
             {
                 rotation = -rotation;
@@ -110,7 +110,7 @@ static void PaintSwingingInverterShipStructure(
     }
     auto frameImageTemplate = session.TrackColours;
     auto vehicleImageId = vehicleImageTemplate.WithIndex(vehicleImageIndex);
-    auto frameImageId = frameImageTemplate.WithIndex(SwingingInverterShipFrameSprites[direction]);
+    auto frameImageId = frameImageTemplate.WithIndex(kSwingingInverterShipFrameSprites[direction]);
 
     if (direction & 2)
     {

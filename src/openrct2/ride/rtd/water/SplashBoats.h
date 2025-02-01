@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
     .UpkeepCosts = { 70, 20, 0, 9, 0, 10 },
     .BuildCosts = { 28.50_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo4,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -58,13 +58,13 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 46), RIDE_RATING(0, 35), RIDE_RATING(0, 30) },
+        { MakeRideRating(1, 46), MakeRideRating(0, 35), MakeRideRating(0, 30) },
         15,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                797059, 655360, 301111 },
             { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
             { RatingsModifierType::BonusTurns,            0,                22291, 20860, 4574 },

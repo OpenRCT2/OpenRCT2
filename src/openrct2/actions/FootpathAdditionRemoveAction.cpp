@@ -14,7 +14,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../world/Footpath.h"
@@ -87,7 +86,7 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
     if (!pathElement->AdditionIsGhost() && (GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         LOG_WARNING("Tried to remove non ghost during ghost removal.");
-        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, kStringIdNone);
     }
     auto res = GameActions::Result();
     res.Position = _loc;

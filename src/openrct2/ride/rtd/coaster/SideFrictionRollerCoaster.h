@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     .UpkeepCosts = { 39, 20, 80, 10, 3, 10 },
     .BuildCosts = { 27.50_GBP, 3.00_GBP, 37, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo3,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -56,13 +56,13 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 50), RIDE_RATING(2, 00), RIDE_RATING(1, 50) },
+        { MakeRideRating(2, 50), MakeRideRating(2, 00), MakeRideRating(1, 50) },
         19,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                364088, 655360, 0 },

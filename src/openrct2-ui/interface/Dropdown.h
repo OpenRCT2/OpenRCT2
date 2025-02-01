@@ -10,63 +10,70 @@
 #pragma once
 
 #include <openrct2-ui/UiStringIds.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2/core/EnumUtils.hpp>
-#include <openrct2/drawing/ImageId.hpp>
+#include <openrct2/interface/Window.h>
+
+struct ImageId;
 
 namespace OpenRCT2::Dropdown
 {
     struct Item;
 
-    constexpr StringId SeparatorString = 0;
-    constexpr StringId FormatColourPicker = 0xFFFE;
-    constexpr StringId FormatLandPicker = 0xFFFF;
-    constexpr int32_t ItemsMaxSize = 512;
-
-    enum Flag
-    {
-        CustomHeight = (1 << 6),
-        StayOpen = (1 << 7)
-    };
-
-    bool IsChecked(int32_t index);
-    bool IsDisabled(int32_t index);
-    void SetChecked(int32_t index, bool value);
-    void SetDisabled(int32_t index, bool value);
-    void SetImage(int32_t index, ImageId image);
+    constexpr StringId kSeparatorString = 0;
+    constexpr StringId kFormatColourPicker = 0xFFFE;
+    constexpr StringId kFormatLandPicker = 0xFFFF;
+    constexpr int32_t kItemsMaxSize = 512;
 } // namespace OpenRCT2::Dropdown
 
 namespace OpenRCT2::Ui::Windows
 {
     extern int32_t gDropdownNumItems;
-    extern Dropdown::Item gDropdownItems[Dropdown::ItemsMaxSize];
+    extern Dropdown::Item gDropdownItems[Dropdown::kItemsMaxSize];
     extern bool gDropdownIsColour;
     extern int32_t gDropdownLastColourHover;
     extern int32_t gDropdownHighlightedIndex;
     extern int32_t gDropdownDefaultIndex;
 
     void WindowDropdownShowText(
-        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items);
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items,
+        size_t prefRowsPerColumn = 0);
     void WindowDropdownShowTextCustomWidth(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
-        size_t num_items, int32_t width);
+        size_t num_items, int32_t width, size_t prefRowsPerColumn = 0);
+
     void WindowDropdownShowImage(
         int32_t x, int32_t y, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
         int32_t itemHeight, int32_t numColumns);
+
     void WindowDropdownClose();
+
     int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w);
+
     void WindowDropdownShowColour(
         WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, colour_t selectedColour,
         bool alwaysHideSpecialColours = false);
     void WindowDropdownShowColourAvailable(
         WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
-    uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 
     colour_t ColourDropDownIndexToColour(uint8_t ddidx);
+
+    uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 } // namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Dropdown
 {
+    bool IsChecked(int32_t index);
+    bool IsDisabled(int32_t index);
+    void SetChecked(int32_t index, bool value);
+    void SetDisabled(int32_t index, bool value);
+    void SetImage(int32_t index, ImageId image);
+
+    enum Flag
+    {
+        CustomHeight = (1 << 6), // never set?
+        StayOpen = (1 << 7)
+    };
+
     enum class ItemFlag : uint8_t
     {
         IsDisabled = (1 << 0),
@@ -81,7 +88,7 @@ namespace OpenRCT2::Dropdown
 
         constexpr bool IsSeparator() const
         {
-            return Format == SeparatorString;
+            return Format == kSeparatorString;
         }
 
         constexpr bool IsDisabled() const
@@ -116,7 +123,7 @@ namespace OpenRCT2::Dropdown
 
     constexpr ItemExt Separator()
     {
-        return ItemExt(-1, Dropdown::SeparatorString, STR_EMPTY);
+        return ItemExt(-1, Dropdown::kSeparatorString, kStringIdEmpty);
     }
 
     template<int N>

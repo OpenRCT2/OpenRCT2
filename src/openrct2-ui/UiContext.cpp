@@ -18,6 +18,7 @@
 #include "input/ShortcutManager.h"
 #include "interface/InGameConsole.h"
 #include "interface/Theme.h"
+#include "interface/Viewport.h"
 #include "scripting/UiExtensions.h"
 #include "title/TitleSequencePlayer.h"
 
@@ -40,7 +41,6 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/scripting/ScriptEngine.h>
@@ -48,6 +48,11 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 #include <vector>
+
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+    #include <emscripten/html5.h>
+#endif
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -64,7 +69,7 @@ using namespace OpenRCT2::Ui;
 class UiContext final : public IUiContext
 {
 private:
-    constexpr static uint32_t TOUCH_DOUBLE_TIMEOUT = 300;
+    constexpr static uint32_t kTouchDoubleTimeout = 300;
 
     const std::unique_ptr<IPlatformUiContext> _platformUiContext;
     const std::unique_ptr<IWindowManager> _windowManager;
@@ -177,12 +182,12 @@ public:
 
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
-        static constexpr int32_t _sdlFullscreenFlags[] = {
+        static constexpr int32_t kSDLFullscreenFlags[] = {
             0,
             SDL_WINDOW_FULLSCREEN,
             SDL_WINDOW_FULLSCREEN_DESKTOP,
         };
-        uint32_t windowFlags = _sdlFullscreenFlags[EnumValue(mode)];
+        uint32_t windowFlags = kSDLFullscreenFlags[EnumValue(mode)];
 
         // HACK Changing window size when in fullscreen usually has no effect
         if (mode == FULLSCREEN_MODE::FULLSCREEN)
@@ -476,7 +481,7 @@ public:
 
                     _cursorState.touchIsDouble
                         = (!_cursorState.touchIsDouble
-                           && e.tfinger.timestamp - _cursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
+                           && e.tfinger.timestamp - _cursorState.touchDownTimestamp < kTouchDoubleTimeout);
 
                     if (_cursorState.touchIsDouble)
                     {
@@ -713,7 +718,25 @@ public:
 
     bool SetClipboardText(const utf8* target) override
     {
+#ifndef __EMSCRIPTEN__
         return (SDL_SetClipboardText(target) == 0);
+#else
+        return (
+            MAIN_THREAD_EM_ASM_INT(
+                {
+                    try
+                    {
+                        navigator.clipboard.writeText(UTF8ToString($0));
+                        return 0;
+                    }
+                    catch (e)
+                    {
+                        return -1;
+                    };
+                },
+                target)
+            == 0);
+#endif
     }
 
     ITitleSequencePlayer* GetTitleSequencePlayer() override
@@ -753,9 +776,19 @@ private:
 
     void CreateWindow(const ScreenCoordsXY& windowPos)
     {
+#ifdef __EMSCRIPTEN__
+        MAIN_THREAD_EM_ASM({
+            Module.canvas.width = window.innerWidth;
+            Module.canvas.height = window.innerHeight;
+        });
+        int32_t width = 0;
+        int32_t height = 0;
+        emscripten_get_canvas_element_size("!canvas", &width, &height);
+#else
         // Get saved window size
         int32_t width = Config::Get().general.WindowWidth;
         int32_t height = Config::Get().general.WindowHeight;
+#endif
         if (width <= 0)
             width = 640;
         if (height <= 0)

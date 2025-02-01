@@ -68,13 +68,13 @@ GameActions::Result TrackDesignAction::Query() const
     auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
-    if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex == kObjectEntryIndexNull)
     {
         // Force a fallback if the entry is not invented yet a track design of it is selected,
         // which can happen in select-by-track-type mode
         if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
         {
-            entryIndex = OBJECT_ENTRY_INDEX_NULL;
+            entryIndex = kObjectEntryIndexNull;
         }
     }
 
@@ -84,7 +84,7 @@ GameActions::Result TrackDesignAction::Query() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
     {
-        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
     }
 
     const auto rideIndex = r.GetData<RideId>();
@@ -142,13 +142,13 @@ GameActions::Result TrackDesignAction::Execute() const
     auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
-    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex != kObjectEntryIndexNull)
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
         // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
         if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
         {
-            entryIndex = OBJECT_ENTRY_INDEX_NULL;
+            entryIndex = kObjectEntryIndexNull;
         }
     }
 
@@ -158,7 +158,7 @@ GameActions::Result TrackDesignAction::Execute() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
     {
-        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
     }
 
     const auto rideIndex = r.GetData<RideId>();
@@ -214,7 +214,7 @@ GameActions::Result TrackDesignAction::Execute() const
         return res;
     }
 
-    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex != kObjectEntryIndexNull)
     {
         auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
         auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
@@ -243,7 +243,7 @@ GameActions::Result TrackDesignAction::Execute() const
     ride->vehicleColourSettings = _td.appearance.vehicleColourSettings;
 
     ride->entrance_style = objManager.GetLoadedObjectEntryIndex(_td.appearance.stationObjectIdentifier);
-    if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
+    if (ride->entrance_style == kObjectEntryIndexNull)
     {
         ride->entrance_style = gameState.LastEntranceStyle;
     }

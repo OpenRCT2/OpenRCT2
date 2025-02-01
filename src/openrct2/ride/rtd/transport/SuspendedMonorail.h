@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
     .UpkeepCosts = { 70, 20, 0, 10, 3, 10 },
     .BuildCosts = { 32.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 15), RIDE_RATING(0, 23), RIDE_RATING(0, 8) },
+        { MakeRideRating(2, 15), MakeRideRating(0, 23), MakeRideRating(0, 8) },
         14,
         -1,
         false,

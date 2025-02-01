@@ -350,7 +350,7 @@ void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height
     session.Support.slope = slope;
 }
 
-const uint16_t segment_offsets[9] = {
+const uint16_t kSegmentOffsets[9] = {
     EnumToFlag(PaintSegment::topCorner),    EnumToFlag(PaintSegment::leftCorner),     EnumToFlag(PaintSegment::rightCorner),
     EnumToFlag(PaintSegment::bottomCorner), EnumToFlag(PaintSegment::centre),         EnumToFlag(PaintSegment::topLeftSide),
     EnumToFlag(PaintSegment::topRightSide), EnumToFlag(PaintSegment::bottomLeftSide), EnumToFlag(PaintSegment::bottomRightSide),
@@ -359,9 +359,9 @@ const uint16_t segment_offsets[9] = {
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
 {
     SupportHeight* supportSegments = session.SupportSegments;
-    for (std::size_t s = 0; s < std::size(segment_offsets); s++)
+    for (std::size_t s = 0; s < std::size(kSegmentOffsets); s++)
     {
-        if (segments & segment_offsets[s])
+        if (segments & kSegmentOffsets[s])
         {
             supportSegments[s].height = height;
             if (height != 0xFFFF)

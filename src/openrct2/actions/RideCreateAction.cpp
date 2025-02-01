@@ -15,7 +15,6 @@
 #include "../GameState.h"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectLimits.h"
@@ -26,7 +25,10 @@
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
 #include "../scenario/Scenario.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
+
+#include <algorithm>
 
 using namespace OpenRCT2;
 
@@ -115,7 +117,7 @@ GameActions::Result RideCreateAction::Query() const
     const auto* presetList = rideEntry->vehicle_preset_list;
     if ((presetList->count > 0 && presetList->count != 255) && _colour2 >= presetList->count)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, kStringIdNone);
     }
 
     auto res = GameActions::Result();
@@ -147,18 +149,12 @@ GameActions::Result RideCreateAction::Execute() const
     ride->overall_view.SetNull();
     ride->SetNameToDefault();
 
-    for (auto& station : ride->GetStations())
-    {
-        station.Start.SetNull();
-        station.Entrance.SetNull();
-        station.Exit.SetNull();
-        station.TrainAtStation = RideStation::kNoTrain;
-        station.QueueTime = 0;
-        station.SegmentLength = 0;
-        station.QueueLength = 0;
-        station.Length = 0;
-        station.Height = 0;
-    }
+    // Default initialize all stations.
+    RideStation station{};
+    station.Start.SetNull();
+    station.Entrance.SetNull();
+    station.Exit.SetNull();
+    std::ranges::fill(ride->GetStations(), station);
 
     ride->status = RideStatus::Closed;
     ride->NumTrains = 1;
@@ -192,7 +188,7 @@ GameActions::Result RideCreateAction::Execute() const
     {
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         ride->music = objManager.GetLoadedObjectEntryIndex(rtd.DefaultMusic);
-        if (ride->music != OBJECT_ENTRY_INDEX_NULL)
+        if (ride->music != kObjectEntryIndexNull)
         {
             if (rtd.HasFlag(RtdFlag::hasMusicByDefault))
             {
@@ -210,7 +206,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
     {
-        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
         {
             ride->price[i] = rtd.DefaultPrices[i];
         }
@@ -248,7 +244,7 @@ GameActions::Result RideCreateAction::Execute() const
             }
         }
 
-        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
         {
             if (rideEntry->shop_item[i] != ShopItem::None)
             {
@@ -278,7 +274,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->satisfaction = 255;
     ride->popularity = 255;
     ride->build_date = GetDate().GetMonthsElapsed();
-    ride->music_tune_id = TUNE_ID_NULL;
+    ride->music_tune_id = kTuneIDNull;
 
     ride->breakdown_reason = 255;
     ride->upkeep_cost = kMoney64Undefined;
@@ -289,7 +285,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->income_per_hour = kMoney64Undefined;
     ride->profit = kMoney64Undefined;
 
-    ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
+    ride->entrance_style = kObjectEntryIndexNull;
     if (rtd.HasFlag(RtdFlag::hasEntranceAndExit))
     {
         ride->entrance_style = _entranceObjectIndex;
@@ -300,7 +296,9 @@ GameActions::Result RideCreateAction::Execute() const
     ride->MinCarsPerTrain = rideEntry->min_cars_in_train;
     ride->MaxCarsPerTrain = rideEntry->max_cars_in_train;
     RideSetVehicleColoursToRandomPreset(*ride, _colour2);
-    WindowInvalidateByClass(WindowClass::RideList);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::RideList);
 
     res.Expenditure = ExpenditureType::RideConstruction;
     res.SetData(RideId{ rideIndex });

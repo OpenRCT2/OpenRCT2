@@ -208,7 +208,7 @@ void GfxDrawDashedLine(
     const auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
     {
-        constexpr int32_t precisionFactor = 1000;
+        constexpr int32_t kPrecisionFactor = 1000;
 
         const int32_t dashedLineLength = std::hypot(
             screenLine.GetX2() - screenLine.GetX1(), screenLine.GetY2() - screenLine.GetY1());
@@ -220,15 +220,15 @@ void GfxDrawDashedLine(
 
         const int32_t lineXDist = std::abs(screenLine.GetX2() - screenLine.GetX1());
         const int32_t lineYDist = std::abs(screenLine.GetY2() - screenLine.GetY1());
-        const int32_t dxPrecise = precisionFactor * lineXDist / lineSegmentCount / 2;
-        const int32_t dyPrecise = precisionFactor * lineYDist / lineSegmentCount / 2;
+        const int32_t dxPrecise = kPrecisionFactor * lineXDist / lineSegmentCount / 2;
+        const int32_t dyPrecise = kPrecisionFactor * lineYDist / lineSegmentCount / 2;
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
 
         for (int32_t i = 0, x, y; i < lineSegmentCount; ++i)
         {
-            x = screenLine.GetX1() + dxPrecise * i * 2 / precisionFactor;
-            y = screenLine.GetY1() + dyPrecise * i * 2 / precisionFactor;
-            dc->DrawLine(dpi, color, { { x, y }, { x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor } });
+            x = screenLine.GetX1() + dxPrecise * i * 2 / kPrecisionFactor;
+            y = screenLine.GetY1() + dyPrecise * i * 2 / kPrecisionFactor;
+            dc->DrawLine(dpi, color, { { x, y }, { x + dxPrecise / kPrecisionFactor, y + dyPrecise / kPrecisionFactor } });
         }
     }
 }

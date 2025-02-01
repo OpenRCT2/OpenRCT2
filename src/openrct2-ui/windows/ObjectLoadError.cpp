@@ -9,8 +9,7 @@
 
 #include <mutex>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Http.h>
@@ -25,6 +24,7 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <sstream>
 #include <string>
@@ -279,7 +279,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
     // clang-format off
-    static Widget window_object_load_error_widgets[] = {
+    static constexpr Widget window_object_load_error_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                         ), // 'Object name' header
         MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
@@ -290,7 +290,6 @@ namespace OpenRCT2::Ui::Windows
     #ifndef DISABLE_HTTP
         MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_DOWNLOAD_ALL,  STR_DOWNLOAD_ALL_TIP ), // Download all button
     #endif
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -391,13 +390,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 selected_list_item = index;
             }
-            WidgetInvalidate(*this, WIDX_SCROLL);
+            InvalidateWidget(WIDX_SCROLL);
         }
 
     public:
         void OnOpen() override
         {
-            widgets = window_object_load_error_widgets;
+            SetWidgets(window_object_load_error_widgets);
 
             WindowInitScrollWidgets(*this);
             colours[0] = COLOUR_LIGHT_BLUE;
@@ -416,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     return;
                 case WIDX_COPY_CURRENT:
                     if (selected_list_item > -1 && selected_list_item < no_list_items)
@@ -444,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
             if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
             {
                 _highlightedIndex = -1;
-                WidgetInvalidate(*this, WIDX_SCROLL);
+                InvalidateWidget(WIDX_SCROLL);
             }
 
 #ifndef DISABLE_HTTP
@@ -487,7 +486,7 @@ namespace OpenRCT2::Ui::Windows
             else
                 _highlightedIndex = selectedItem;
 
-            WidgetInvalidate(*this, WIDX_SCROLL);
+            InvalidateWidget(WIDX_SCROLL);
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -577,10 +576,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);
+        auto* windowMgr = Ui::GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::ObjectLoadError);
         if (window == nullptr)
         {
-            window = WindowCreate<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
+            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);

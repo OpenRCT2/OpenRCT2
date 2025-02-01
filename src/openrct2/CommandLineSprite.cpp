@@ -537,6 +537,9 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             return -1;
         }
 
+        if (jsonSprites.is_object() && !jsonSprites["images"].is_null())
+            jsonSprites = jsonSprites["images"];
+
         if (!jsonSprites.is_array())
         {
             fprintf(stderr, "Error: expected array\n");
@@ -554,6 +557,8 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         fprintf(stdout, "Building: %s\n", spriteFilePath);
 
         json_t sprite_description;
+
+        uint32_t numSuccessful = 0;
 
         // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const
         for (auto& [jsonKey, jsonSprite] : jsonSprites.items())
@@ -588,6 +593,8 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
 
             if (!silent)
                 fprintf(stdout, "Added: %s\n", imagePath.c_str());
+
+            numSuccessful++;
         }
 
         if (!spriteFile.Save(spriteFilePath))
@@ -596,7 +603,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        fprintf(stdout, "Finished\n");
+        fprintf(stdout, "Finished building graphics repository with %u images\n", numSuccessful);
         return 1;
     }
 

@@ -69,6 +69,71 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
+
+        WindowBase* Create(
+            std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
+            uint32_t flags) override
+        {
+            return nullptr;
+        }
+
+        void Close(WindowBase& window) override {};
+        void CloseSurplus(int32_t cap, WindowClass avoid_classification) override {};
+        void CloseByClass(WindowClass cls) override {};
+        void CloseByNumber(WindowClass cls, rct_windownumber number) override {};
+        void CloseByNumber(WindowClass cls, EntityId number) override {};
+        void CloseTop() override {};
+        void CloseAll() override {};
+        void CloseAllExceptClass(WindowClass cls) override {};
+        void CloseAllExceptFlags(uint16_t flags) override {};
+        void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override {};
+        void CloseConstructionWindows() override {};
+
+        WindowBase* FindByClass(WindowClass cls) override
+        {
+            return nullptr;
+        }
+        WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) override
+        {
+            return nullptr;
+        }
+        WindowBase* FindByNumber(WindowClass cls, EntityId id) override
+        {
+            return nullptr;
+        }
+        WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) override
+        {
+            return nullptr;
+        }
+        WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) override
+        {
+            return kWidgetIndexNull;
+        }
+
+        void InvalidateByClass(WindowClass cls) override {};
+        void InvalidateByNumber(WindowClass cls, rct_windownumber number) override {};
+        void InvalidateByNumber(WindowClass cls, EntityId id) override {};
+        void InvalidateAll() override {};
+        void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) override {};
+        void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override {};
+        void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) override {};
+
+        WindowBase* BringToFront(WindowBase& w) override
+        {
+            return nullptr;
+        }
+        WindowBase* BringToFrontByClass(WindowClass cls) override
+        {
+            return nullptr;
+        }
+        WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) override
+        {
+            return nullptr;
+        }
+        WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) override
+        {
+            return nullptr;
+        }
     };
 
     std::unique_ptr<IWindowManager> CreateDummyWindowManager()

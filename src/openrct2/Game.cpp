@@ -140,7 +140,10 @@ void GameCreateWindows()
 void PauseToggle()
 {
     gGamePaused ^= GAME_PAUSED_NORMAL;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
         OpenRCT2::Audio::StopAll();
@@ -437,7 +440,7 @@ void GameNotifyMapChanged()
  */
 void ResetAllSpriteQuadrantPlacements()
 {
-    for (EntityId::UnderlyingType i = 0; i < MAX_ENTITIES; i++)
+    for (EntityId::UnderlyingType i = 0; i < kMaxEntities; i++)
     {
         auto* spr = GetEntity(EntityId::FromUnderlying(i));
         if (spr != nullptr && spr->Type != EntityType::Null)
@@ -615,7 +618,10 @@ static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)
     {
         GameNotifyMapChange();
         GameUnloadScripts();
-        WindowCloseByClass(WindowClass::EditorObjectSelection);
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+
         GameLoadScripts();
         GameNotifyMapChanged();
         gIsAutosaveLoaded = gIsAutosave;
@@ -627,8 +633,9 @@ static void NewGameWindowCallback(const utf8* path)
 {
     // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
     // no windows are open (besides the toolbars and LoadSave window).
-    WindowCloseByClass(WindowClass::RideConstruction);
-    WindowCloseAllExceptClass(WindowClass::Loadsave);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByClass(WindowClass::RideConstruction);
+    windowMgr->CloseAllExceptClass(WindowClass::Loadsave);
 
     GameNotifyMapChange();
     GetContext()->LoadParkFromFile(path, false, true);

@@ -1165,17 +1165,6 @@ STR_1773    :Només es permet una secció de fotos de record per atracció.
 STR_1774    :Només es permet un cable d’elevació per atracció.
 STR_1777    :Música de l’atracció
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Disfressa de panda
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Disfressa de tigre
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Disfressa d’elefant
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Disfressa de romà
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Disfressa de goril·la
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Disfressa de ninot de neu
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Disfressa de cavaller
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Disfressa d’astronauta
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Disfressa de bandit
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Disfressa de xèrif
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Disfressa de pirata
 STR_1790    :Seleccioneu el color de l’uniforme d’aquest tipus d’empleats.
 STR_1791    :{WINDOW_COLOUR_2}Color de l’uniforme:
 STR_1792    :Responent la trucada d’avaria de {STRINGID}.

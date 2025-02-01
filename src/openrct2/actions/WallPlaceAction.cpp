@@ -114,7 +114,7 @@ GameActions::Result WallPlaceAction::Query() const
 
     if (_edge > 3)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
     }
 
     uint8_t edgeSlope = 0;
@@ -536,7 +536,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             int32_t direction = tileElement->GetDirection();
             if (_edge == direction)
             {
-                auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+                auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
                 MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
@@ -544,7 +544,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
         }
         if (tileElement->GetOccupiedQuadrants() == 0)
             continue;
-        auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
         switch (elementType)
         {
             case TileElementType::Entrance:

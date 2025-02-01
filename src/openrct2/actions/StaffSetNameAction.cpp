@@ -16,7 +16,6 @@
 #include "../drawing/Drawing.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
@@ -49,7 +48,7 @@ void StaffSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffSetNameAction::Query() const
 {
-    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
+    if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
     {
         LOG_ERROR("Invalid sprite index %u", _spriteIndex);
         return GameActions::Result(
@@ -85,7 +84,7 @@ GameActions::Result StaffSetNameAction::Execute() const
 
     if (!staff->SetName(_name))
     {
-        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, kStringIdNone);
     }
 
     GfxInvalidateScreen();

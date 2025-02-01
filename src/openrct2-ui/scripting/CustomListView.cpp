@@ -13,7 +13,7 @@
 
     #include "../interface/Viewport.h"
     #include "../interface/Widget.h"
-    #include "../interface/Window.h"
+    #include "../windows/Windows.h"
 
     #include <numeric>
     #include <openrct2/Context.h>
@@ -26,7 +26,7 @@ using namespace OpenRCT2::Ui::Windows;
 
 namespace OpenRCT2::Scripting
 {
-    constexpr size_t COLUMN_HEADER_HEIGHT = kListRowHeight + 1;
+    constexpr size_t kColumnHeaderHeight = kListRowHeight + 1;
 
     template<>
     ColumnSortOrder FromDuk(const DukValue& d)
@@ -431,7 +431,7 @@ ScreenSize CustomListView::GetSize()
         result.height = static_cast<int32_t>(Items.size() * kListRowHeight);
         if (ShowColumnHeaders)
         {
-            result.height += COLUMN_HEADER_HEIGHT;
+            result.height += kColumnHeaderHeight;
         }
     }
 
@@ -472,7 +472,7 @@ void CustomListView::MouseOver(const ScreenCoordsXY& pos, bool isMouseDown)
         HighlightedCell = hitResult;
         if (HighlightedCell != LastHighlightedCell)
         {
-            if (hitResult->Row != HEADER_ROW && OnHighlight.context() != nullptr && OnHighlight.is_function())
+            if (hitResult->Row != kHeaderRow && OnHighlight.context() != nullptr && OnHighlight.is_function())
             {
                 auto ctx = OnHighlight.context();
                 duk_push_int(ctx, static_cast<int32_t>(HighlightedCell->Row));
@@ -489,7 +489,7 @@ void CustomListView::MouseOver(const ScreenCoordsXY& pos, bool isMouseDown)
     // Update the header currently held down
     if (isMouseDown)
     {
-        if (hitResult && hitResult->Row == HEADER_ROW)
+        if (hitResult && hitResult->Row == kHeaderRow)
         {
             ColumnHeaderPressedCurrentState = (hitResult->Column == ColumnHeaderPressed);
             Invalidate();
@@ -511,7 +511,7 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
     auto hitResult = GetItemIndexAt(pos);
     if (hitResult)
     {
-        if (hitResult->Row != HEADER_ROW)
+        if (hitResult->Row != kHeaderRow)
         {
             if (CanSelect)
             {
@@ -531,7 +531,7 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
             }
         }
     }
-    if (hitResult && hitResult->Row == HEADER_ROW)
+    if (hitResult && hitResult->Row == kHeaderRow)
     {
         if (Columns[hitResult->Column].CanSort)
         {
@@ -546,7 +546,7 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
 void CustomListView::MouseUp(const ScreenCoordsXY& pos)
 {
     auto hitResult = GetItemIndexAt(pos);
-    if (hitResult && hitResult->Row == HEADER_ROW)
+    if (hitResult && hitResult->Row == kHeaderRow)
     {
         if (hitResult->Column == ColumnHeaderPressed)
         {
@@ -566,7 +566,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollArea* 
     auto paletteIndex = ColourMapA[w->colours[1].colour].mid_light;
     GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, paletteIndex);
 
-    int32_t y = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
+    int32_t y = ShowColumnHeaders ? kColumnHeaderHeight : 0;
     for (size_t i = 0; i < Items.size(); i++)
     {
         if (y > dpi.y + dpi.height)
@@ -787,12 +787,12 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         if (ShowColumnHeaders && absoluteY >= 0 && absoluteY < kListRowHeight)
         {
             result = RowColumn();
-            result->Row = HEADER_ROW;
+            result->Row = kHeaderRow;
         }
         else
         {
             // Check what row we pressed
-            int32_t firstY = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
+            int32_t firstY = ShowColumnHeaders ? kColumnHeaderHeight : 0;
             int32_t row = (pos.y - firstY) / kListRowHeight;
             if (row >= 0 && row < static_cast<int32_t>(Items.size()))
             {
@@ -830,16 +830,17 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
     return result;
 }
 
-Widget* CustomListView::GetWidget() const
+OpenRCT2::Widget* CustomListView::GetWidget() const
 {
     size_t scrollIndex = 0;
-    for (auto widget = ParentWindow->widgets; widget->type != WindowWidgetType::Last; widget++)
+    for (WidgetIndex widgetIndex = 0; widgetIndex < ParentWindow->widgets.size(); widgetIndex++)
     {
-        if (widget->type == WindowWidgetType::Scroll)
+        auto& widget = ParentWindow->widgets[widgetIndex];
+        if (widget.type == WindowWidgetType::Scroll)
         {
             if (scrollIndex == ScrollIndex)
             {
-                return widget;
+                return &widget;
             }
             scrollIndex++;
         }

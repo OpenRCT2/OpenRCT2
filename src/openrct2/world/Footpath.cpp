@@ -432,7 +432,7 @@ static bool FootpathReconnectQueueToPath(
     }
 
     int32_t z = tileElement->GetBaseZ();
-    TileElement* targetFootpathElement = FootpathGetElement({ targetQueuePos, z - LAND_HEIGHT_STEP, z }, direction);
+    TileElement* targetFootpathElement = FootpathGetElement({ targetQueuePos, z - kLandHeightStep, z }, direction);
     if (targetFootpathElement != nullptr && !targetFootpathElement->AsPath()->IsQueue())
     {
         auto targetQueueElement = targetFootpathElement->AsPath();
@@ -475,7 +475,7 @@ static bool FootpathDisconnectQueueFromPath(const CoordsXY& footpathPos, TileEle
             return true;
     }
 
-    for (Direction direction : ALL_DIRECTIONS)
+    for (Direction direction : kAllDirections)
     {
         if ((action < 0) && (direction == tileElement->AsPath()->GetSlopeDirection()))
             continue;
@@ -589,7 +589,7 @@ static void Loc6A6D7E(
                         }
                         return;
                     }
-                    if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
+                    if (tileElement->GetBaseZ() == initialTileElementPos.z - kLandHeightStep)
                     {
                         if (tileElement->AsPath()->IsSloped()
                             && tileElement->AsPath()->GetSlopeDirection() == DirectionReverse(direction))
@@ -726,7 +726,7 @@ static void Loc6A6C85(
             }
             if (tileElementPos.element->AsPath()->GetSlopeDirection() == direction)
             {
-                pos.z += LAND_HEIGHT_STEP;
+                pos.z += kLandHeightStep;
             }
         }
     }
@@ -748,7 +748,7 @@ void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement,
     FootpathNeighbourListInit(&neighbourList);
 
     FootpathUpdateQueueEntranceBanner(footpathPos, tileElement);
-    for (Direction direction : ALL_DIRECTIONS)
+    for (Direction direction : kAllDirections)
     {
         Loc6A6C85({ footpathPos, tileElement }, direction, flags, true, &neighbourList);
     }
@@ -823,7 +823,7 @@ void FootpathChainRideQueue(
             {
                 if (tileElement->AsPath()->GetSlopeDirection() == direction)
                 {
-                    baseZ += LAND_HEIGHT_STEP;
+                    baseZ += kLandHeightStep;
                 }
             }
         }
@@ -849,7 +849,7 @@ void FootpathChainRideQueue(
                     foundQueue = true;
                     break;
                 }
-                if (tileElement->GetBaseZ() == baseZ - LAND_HEIGHT_STEP)
+                if (tileElement->GetBaseZ() == baseZ - kLandHeightStep)
                 {
                     if (!tileElement->AsPath()->IsSloped())
                         break;
@@ -857,7 +857,7 @@ void FootpathChainRideQueue(
                     if (DirectionReverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
                         break;
 
-                    baseZ -= LAND_HEIGHT_STEP;
+                    baseZ -= kLandHeightStep;
                     foundQueue = true;
                     break;
                 }
@@ -1824,7 +1824,7 @@ static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
             }
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
@@ -1855,7 +1855,7 @@ static ObjectEntryIndex FootpathGetDefaultRailings()
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
@@ -1880,7 +1880,7 @@ static ObjectEntryIndex FootpathGetDefaultLegacyPath()
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 bool FootpathSelectDefault()
@@ -1909,7 +1909,7 @@ bool FootpathSelectDefault()
 
     // Select default legacy path
     auto legacyPathIndex = FootpathGetDefaultLegacyPath();
-    if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
+    if (gFootpathSelection.LegacyPath != kObjectEntryIndexNull)
     {
         if (FootpathIsLegacyPathEntryOkay(gFootpathSelection.LegacyPath))
         {
@@ -1919,13 +1919,13 @@ bool FootpathSelectDefault()
         else
         {
             // Reset legacy path, we default to a surface (if there are any)
-            gFootpathSelection.LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+            gFootpathSelection.LegacyPath = kObjectEntryIndexNull;
         }
     }
 
-    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (surfaceIndex == kObjectEntryIndexNull)
     {
-        if (legacyPathIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (legacyPathIndex == kObjectEntryIndexNull)
         {
             // No surfaces or legacy paths available
             return false;

@@ -23,7 +23,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr BoundBoxXY HauntedHouseData[] = {
+static constexpr BoundBoxXY kHauntedHouseData[] = {
     { { 6, 0 }, { 42, 24 } }, { { 0, 0 }, { 0, 0 } },   { { -16, -16 }, { 32, 32 } },
     { { 0, 0 }, { 0, 0 } },   { { 0, 6 }, { 24, 42 } }, { { 0, 0 }, { 0, 0 } },
 };
@@ -46,7 +46,7 @@ static void PaintHauntedHouseStructure(
         frameNum = vehicle->Pitch;
     }
 
-    const auto& boundBox = HauntedHouseData[part];
+    const auto& boundBox = kHauntedHouseData[part];
     auto baseImageIndex = rideEntry->Cars[0].base_image_id;
     auto imageIndex = baseImageIndex + direction;
 

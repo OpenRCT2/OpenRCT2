@@ -10,7 +10,7 @@
 #include <iterator>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Editor.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -25,6 +25,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -51,7 +52,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _inventionListWidgets[] = {
+    static constexpr Widget _inventionListWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
         MakeTab   ({  3,  17}                                                                                               ),
@@ -61,12 +62,10 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({375, 343}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
         MakeWidget({375, 358}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
         MakeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
-        kWidgetsEnd,
     };
 
-    static Widget _inventionListDragWidgets[] = {
+    static constexpr Widget _inventionListDragWidgets[] = {
         MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -151,7 +150,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ResearchRidesSetup();
 
-            widgets = _inventionListWidgets;
+            SetWidgets(_inventionListWidgets);
             InitScrollWidgets();
             selected_tab = 0;
             _selectedResearchItem = nullptr;
@@ -217,7 +216,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_1);
+
+            InvalidateWidget(WIDX_TAB_1);
 
             if (WindowEditorInventionsListDragGetItem() != nullptr)
                 return;
@@ -489,7 +489,9 @@ namespace OpenRCT2::Ui::Windows
             if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
                 && windowPos.y + height > screenCoords.y)
             {
-                WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*this, screenCoords);
+                auto* windowMgr = GetWindowManager();
+                WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*this, screenCoords);
+
                 auto& widget = widgets[widgetIndex];
                 if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
                 {
@@ -592,7 +594,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorInventionsListOpen()
     {
-        return WindowFocusOrCreate<InventionListWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<InventionListWindow>(
             WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 #pragma endregion
@@ -606,13 +609,15 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _inventionListDragWidgets;
+            SetWidgets(_inventionListDragWidgets);
             colours[1] = COLOUR_WHITE;
         }
 
         CursorID OnCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
         {
-            auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
+            auto* windowMgr = GetWindowManager();
+            auto* inventionListWindow = static_cast<InventionListWindow*>(
+                windowMgr->FindByClass(WindowClass::EditorInventionList));
             if (inventionListWindow != nullptr)
             {
                 auto res = inventionListWindow->GetResearchItemAt(screenCoords);
@@ -629,7 +634,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMoved(const ScreenCoordsXY& screenCoords) override
         {
-            auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
+            auto* windowMgr = GetWindowManager();
+            auto* inventionListWindow = static_cast<InventionListWindow*>(
+                windowMgr->FindByClass(WindowClass::EditorInventionList));
             if (inventionListWindow == nullptr)
             {
                 Close();
@@ -649,7 +656,7 @@ namespace OpenRCT2::Ui::Windows
                 inventionListWindow->MoveResearchItem(_draggedItem, res->research, res->isInvented);
             }
 
-            WindowInvalidateByClass(WindowClass::EditorInventionList);
+            windowMgr->InvalidateByClass(WindowClass::EditorInventionList);
             Close();
         }
 
@@ -684,8 +691,9 @@ namespace OpenRCT2::Ui::Windows
     static void WindowEditorInventionsListDragOpen(
         ResearchItem* researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
     {
-        WindowCloseByClass(WindowClass::EditorInventionListDrag);
-        auto* wnd = WindowCreate<InventionDragWindow>(
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::EditorInventionListDrag);
+        auto* wnd = windowMgr->Create<InventionDragWindow>(
             WindowClass::EditorInventionListDrag, 10, 14, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
         if (wnd != nullptr)
         {
@@ -695,7 +703,8 @@ namespace OpenRCT2::Ui::Windows
 
     static const ResearchItem* WindowEditorInventionsListDragGetItem()
     {
-        auto* wnd = static_cast<InventionDragWindow*>(WindowFindByClass(WindowClass::EditorInventionListDrag));
+        auto* windowMgr = GetWindowManager();
+        auto* wnd = static_cast<InventionDragWindow*>(windowMgr->FindByClass(WindowClass::EditorInventionListDrag));
         if (wnd == nullptr)
         {
             return nullptr;

@@ -12,8 +12,14 @@
 #include "../Context.h"
 #include "../drawing/Drawing.h"
 #include "../entity/Peep.h"
+#include "../entity/Staff.h"
+#include "../object/ObjectLimits.h"
+#include "../object/ObjectManager.h"
+#include "../object/PeepAnimationsObject.h"
 
 #include <algorithm>
+#include <random>
+#include <sstream>
 
 namespace OpenRCT2
 {
@@ -103,6 +109,164 @@ namespace OpenRCT2
             default:
                 return availableEntertainerAnimations;
         }
+    }
+
+    AnimationPeepType getAnimationPeepType(StaffType staffType)
+    {
+        switch (staffType)
+        {
+            case StaffType::Handyman:
+                return AnimationPeepType::Handyman;
+            case StaffType::Mechanic:
+                return AnimationPeepType::Mechanic;
+            case StaffType::Security:
+                return AnimationPeepType::Security;
+            case StaffType::Entertainer:
+            default:
+                return AnimationPeepType::Entertainer;
+        }
+    }
+
+    ObjectEntryIndex findPeepAnimationsIndexForType(const AnimationPeepType type)
+    {
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj != nullptr && animObj->GetPeepType() == type)
+                return i;
+        }
+        return kObjectEntryIndexNull;
+    }
+
+    PeepAnimationsObject* findPeepAnimationsObjectForType(const AnimationPeepType type)
+    {
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj != nullptr && animObj->GetPeepType() == type)
+                return animObj;
+        }
+        return nullptr;
+    }
+
+    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(const AnimationPeepType type, bool randomOnly)
+    {
+        std::vector<ObjectEntryIndex> output{};
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj == nullptr || animObj->GetPeepType() != type)
+                continue;
+
+            if (randomOnly && animObj->ShouldExcludeFromRandomPlacement())
+                continue;
+
+            output.push_back(i);
+        }
+        return output;
+    }
+
+    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(const AnimationPeepType type, bool randomOnly)
+    {
+        std::vector<PeepAnimationsObject*> output{};
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj == nullptr || animObj->GetPeepType() != type)
+                continue;
+
+            if (randomOnly && animObj->ShouldExcludeFromRandomPlacement())
+                continue;
+
+            output.push_back(animObj);
+        }
+        return output;
+    }
+
+    ObjectEntryIndex findRandomPeepAnimationsIndexForType(const AnimationPeepType type)
+    {
+        // Get available costumes, excluding from random placement as requested
+        auto costumes = findAllPeepAnimationsIndexesForType(type, true);
+
+        // No costumes? Try again without respecting the random placement flag
+        if (costumes.empty())
+            costumes = findAllPeepAnimationsIndexesForType(type);
+
+        // Still no costumes available? Bail out
+        if (costumes.empty())
+            return kObjectEntryIndexNull;
+
+        std::vector<ObjectEntryIndex> out{};
+        std::sample(costumes.begin(), costumes.end(), std::back_inserter(out), 1, std::mt19937{ std::random_device{}() });
+        return !out.empty() ? out[0] : kObjectEntryIndexNull;
+    }
+
+    std::vector<AnimationGroupResult> getAnimationGroupsByPeepType(const AnimationPeepType type)
+    {
+        std::vector<AnimationGroupResult> groups{};
+
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj == nullptr || animObj->GetPeepType() != type)
+                continue;
+
+            for (auto j = 0u; j < animObj->GetNumAnimationGroups(); j++)
+            {
+                auto group = PeepAnimationGroup(j);
+                auto scriptName = animObj->GetScriptName(group);
+                if (scriptName.empty())
+                    continue;
+
+                groups.push_back({
+                    .objectId = ObjectEntryIndex(i),
+                    .group = group,
+                    .legacyPosition = animObj->GetLegacyPosition(group),
+                    .scriptName = scriptName,
+                });
+            }
+        }
+
+        return groups;
+    }
+
+    std::vector<AvailableCostume> getAvailableCostumeStrings(const AnimationPeepType type)
+    {
+        auto availCostumeIndexes = findAllPeepAnimationsIndexesForType(type);
+        auto availCostumeObjects = findAllPeepAnimationsObjectForType(type);
+
+        auto availableCostumes = std::vector<AvailableCostume>{};
+        for (auto i = 0u; i < availCostumeObjects.size(); i++)
+        {
+            auto baseName = availCostumeObjects[i]->GetCostumeName();
+            auto inlineImageId = availCostumeObjects[i]->GetInlineImageId();
+
+            // std::format doesn't appear to be available on macOS <13.3
+            std::stringstream out{};
+            out << "{INLINE_SPRITE}";
+            for (auto b = 0; b < 32; b += 8)
+                out << '{' << ((inlineImageId >> b) & 0xFF) << '}';
+            out << ' ';
+            out << baseName;
+
+            availableCostumes.push_back({
+                .index = availCostumeIndexes[i],
+                .object = availCostumeObjects[i],
+                .rawName = baseName,
+                .friendlyName = out.str(),
+            });
+        }
+
+        std::sort(availableCostumes.begin(), availableCostumes.end(), [](const auto& a, const auto& b) {
+            return a.rawName < b.rawName;
+        });
+
+        return availableCostumes;
     }
 
     // Adapted from CarEntry.cpp

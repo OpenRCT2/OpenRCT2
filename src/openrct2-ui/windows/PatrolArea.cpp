@@ -12,7 +12,7 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -24,6 +24,7 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -43,12 +44,11 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget PatrolAreaWidgets[] = {
+    static constexpr Widget PatrolAreaWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0)                                  ), // preview box
         MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_PATROL_AREA_TIP), // decrement size
         MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_PATROL_AREA_TIP ), // increment size
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = PatrolAreaWidgets;
+            SetWidgets(PatrolAreaWidgets);
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -131,7 +131,7 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             SetWidgetPressed(WIDX_PREVIEW, true);
-            PatrolAreaWidgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
+            widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -141,8 +141,8 @@ namespace OpenRCT2::Ui::Windows
             // Draw number for tool sizes bigger than 7
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
             {
-                auto screenCoords = ScreenCoordsXY{ windowPos.x + PatrolAreaWidgets[WIDX_PREVIEW].midX(),
-                                                    windowPos.y + PatrolAreaWidgets[WIDX_PREVIEW].midY() };
+                auto screenCoords = ScreenCoordsXY{ windowPos.x + widgets[WIDX_PREVIEW].midX(),
+                                                    windowPos.y + widgets[WIDX_PREVIEW].midY() };
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
                 DrawTextBasic(
@@ -263,7 +263,8 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft;
             ft.Add<uint16_t>(kLandToolMinimumSize);
             ft.Add<uint16_t>(kLandToolMaximumSize);
-            WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+            WindowTextInputOpen(
+                this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, kStringIdNone, kStringIdNone, 3);
         }
 
         bool PatrolAreaToolIsActive()
@@ -274,7 +275,8 @@ namespace OpenRCT2::Ui::Windows
         bool IsStaffWindowOpen()
         {
             // If staff window for this patrol area was closed, tool is no longer active
-            auto staffWindow = WindowFindByNumber(WindowClass::Peep, _staffId);
+            auto* windowMgr = GetWindowManager();
+            auto staffWindow = windowMgr->FindByNumber(WindowClass::Peep, _staffId);
             return staffWindow != nullptr;
         }
 
@@ -292,7 +294,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* PatrolAreaOpen(EntityId staffId)
     {
-        auto w = WindowFocusOrCreate<PatrolAreaWindow>(
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->FocusOrCreate<PatrolAreaWindow>(
             WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
         if (w != nullptr)
         {
@@ -303,7 +306,8 @@ namespace OpenRCT2::Ui::Windows
 
     EntityId WindowPatrolAreaGetCurrentStaffId()
     {
-        auto current = reinterpret_cast<PatrolAreaWindow*>(WindowFindByClass(WindowClass::PatrolArea));
+        auto* windowMgr = GetWindowManager();
+        auto current = reinterpret_cast<PatrolAreaWindow*>(windowMgr->FindByClass(WindowClass::PatrolArea));
         return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
     }
 } // namespace OpenRCT2::Ui::Windows

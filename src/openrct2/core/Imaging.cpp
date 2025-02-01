@@ -26,9 +26,15 @@
 #include <stdexcept>
 #include <unordered_map>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+    #include <iostream>
+    #include <sstream>
+#endif
+
 namespace OpenRCT2::Imaging
 {
-    constexpr auto EXCEPTION_IMAGE_FORMAT_UNKNOWN = "Unknown image format.";
+    static constexpr auto kExceptionImageFormatUnknown = "Unknown image format.";
 
     static std::unordered_map<IMAGE_FORMAT, ImageReaderFunc> _readerImplementations;
 
@@ -300,7 +306,7 @@ namespace OpenRCT2::Imaging
                 {
                     return impl(istream, format);
                 }
-                throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
+                throw std::runtime_error(kExceptionImageFormatUnknown);
             }
         }
     }
@@ -334,12 +340,31 @@ namespace OpenRCT2::Imaging
                 break;
             case IMAGE_FORMAT::PNG:
             {
+#ifndef __EMSCRIPTEN__
                 std::ofstream fs(fs::u8path(path), std::ios::binary);
                 WritePng(fs, image);
+#else
+                std::ostringstream stream(std::ios::binary);
+                WritePng(stream, image);
+                std::string dataStr = stream.str();
+                void* data = reinterpret_cast<void*>(dataStr.data());
+                MAIN_THREAD_EM_ASM(
+                    {
+                        const a = document.createElement("a");
+                        // Blob requires the data must not be shared
+                        const data = new Uint8Array(HEAPU8.subarray($0, $0 + $1));
+                        a.href = URL.createObjectURL(new Blob([data]));
+                        a.download = UTF8ToString($2).split("/").pop();
+                        a.click();
+                        setTimeout(function(){ URL.revokeObjectURL(a.href) }, 1000);
+                    },
+                    data, dataStr.size(), std::string(path).c_str());
+                free(data);
+#endif
                 break;
             }
             default:
-                throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
+                throw std::runtime_error(kExceptionImageFormatUnknown);
         }
     }
 } // namespace OpenRCT2::Imaging

@@ -11,7 +11,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
@@ -23,6 +23,7 @@
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/map_generator/MapGen.h>
@@ -124,7 +125,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 185, 200 }, { 109, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE)
 
     // clang-format off
-    static Widget BaseWidgets[] = {
+    static constexpr Widget BaseWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_GENERATOR),
         MakeSpinnerWidgets ({165, 52}, { 50, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
         MakeWidget         ({216, 52}, { 21, 12}, WindowWidgetType::FlatBtn,      WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
@@ -140,10 +141,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 10, 125}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
         MakeWidget        ({ 10, 141}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
         MakeSpinnerWidgets({179, 157}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
-        kWidgetsEnd,
     };
 
-    static Widget TerrainWidgets[] = {
+    static constexpr Widget TerrainWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_TERRAIN),
         MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
         MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
@@ -151,26 +151,23 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({236,  88}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
         MakeWidget        ({ 10, 106}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
         MakeWidget        ({ 10, 122}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
-        kWidgetsEnd,
     };
 
-    static Widget WaterWidgets[] = {
+    static constexpr Widget WaterWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_WATER),
         MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // NB: 3 widgets
         MakeWidget        ({ 10,  70}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES),
-        kWidgetsEnd,
     };
 
-    static Widget ForestsWidgets[] = {
+    static constexpr Widget ForestsWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_FORESTS),
         MakeWidget        ({ 10,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES),
         MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
         MakeSpinnerWidgets({179,  88}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
         MakeSpinnerWidgets({179, 106}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
-        kWidgetsEnd,
     };
 
-    static Widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
+    static std::span<const Widget> PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         BaseWidgets,
         TerrainWidgets,
         WaterWidgets,
@@ -282,7 +279,7 @@ namespace OpenRCT2::Ui::Windows
             RemoveViewport();
 
             hold_down_widgets = HoldDownWidgets[newPage];
-            widgets = PageWidgets[newPage];
+            SetWidgets(PageWidgets[newPage]);
             disabled_widgets = PageDisabledWidgets[newPage];
             pressed_widgets = PressedWidgets[newPage];
 
@@ -515,12 +512,6 @@ namespace OpenRCT2::Ui::Windows
 
         void BasePrepareDraw()
         {
-            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_BASE])
-            {
-                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
-                InitScrollWidgets();
-            }
-
             // Only allow linking the map size when X and Y are the same
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             SetWidgetDisabled(WIDX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
@@ -578,26 +569,26 @@ namespace OpenRCT2::Ui::Windows
         void ToggleSimplexWidgets(bool state)
         {
             // clang-format off
-            BaseWidgets[WIDX_SIMPLEX_GROUP].type          = state ? WindowWidgetType::Groupbox : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            widgets[WIDX_SIMPLEX_GROUP].type          = state ? WindowWidgetType::Groupbox : WindowWidgetType::Empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            widgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
+            widgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
             // clang-format on
         }
 
         void ToggleHeightmapWidgets(bool state)
         {
             // clang-format off
-            BaseWidgets[WIDX_HEIGHTMAP_GROUP].type            = state ? WindowWidgetType::Groupbox : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_HEIGHTMAP_BROWSE].type           = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_HEIGHTMAP_NORMALIZE].type        = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].type = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_HEIGHTMAP_STRENGTH].type         = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_HEIGHTMAP_STRENGTH_UP].type      = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].type    = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            widgets[WIDX_HEIGHTMAP_GROUP].type            = state ? WindowWidgetType::Groupbox : WindowWidgetType::Empty;
+            widgets[WIDX_HEIGHTMAP_BROWSE].type           = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            widgets[WIDX_HEIGHTMAP_NORMALIZE].type        = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
+            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].type = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
+            widgets[WIDX_HEIGHTMAP_STRENGTH].type         = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
+            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].type      = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].type    = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
             // clang-format on
         }
 
@@ -744,12 +735,6 @@ namespace OpenRCT2::Ui::Windows
 
         void ForestsPrepareDraw()
         {
-            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_FORESTS])
-            {
-                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_FORESTS];
-                InitScrollWidgets();
-            }
-
             pressed_widgets = 0;
             if (_settings.trees)
                 pressed_widgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
@@ -1141,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainSurface == type)
                     {
-                        gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainSurface = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -1158,7 +1143,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainEdge == type)
                     {
-                        gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainEdge = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -1221,12 +1206,6 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainPrepareDraw()
         {
-            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_TERRAIN])
-            {
-                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_TERRAIN];
-                InitScrollWidgets();
-            }
-
             SetCheckboxValue(WIDX_RANDOM_TERRAIN, _randomTerrain != 0);
             SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
 
@@ -1348,12 +1327,6 @@ namespace OpenRCT2::Ui::Windows
 
         void WaterPrepareDraw()
         {
-            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_WATER])
-            {
-                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_WATER];
-                InitScrollWidgets();
-            }
-
             SetCheckboxValue(WIDX_ADD_BEACHES, _settings.beaches != 0);
 
             SetPressedTab();
@@ -1383,11 +1356,9 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             number = 0;
-            frame_no = 0;
 
-            page = WINDOW_MAPGEN_PAGE_BASE;
+            SetPage(WINDOW_MAPGEN_PAGE_BASE);
             Invalidate();
-            widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
             hold_down_widgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
             pressed_widgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
             disabled_widgets = PageDisabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
@@ -1559,7 +1530,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* MapgenOpen()
     {
-        return WindowFocusOrCreate<MapGenWindow>(WindowClass::Mapgen, WW, WH, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<MapGenWindow>(WindowClass::Mapgen, WW, WH, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
     }
 
     static void HeightmapLoadsaveCallback(int32_t result, const utf8* path)

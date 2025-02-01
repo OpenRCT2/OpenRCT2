@@ -201,7 +201,7 @@ namespace OpenRCT2::PathFinding
         assert(DirectionValid(direction));
         auto newTile = CoordsXY{ CoordsXY{ peep.NextLoc } + CoordsDirectionDelta[direction] }.ToTileCentre();
 
-        if (newTile.x >= MAXIMUM_MAP_SIZE_BIG || newTile.y >= MAXIMUM_MAP_SIZE_BIG)
+        if (newTile.x >= kMaximumMapSizeBig || newTile.y >= kMaximumMapSizeBig)
         {
             // This could loop!
             return GuestSurfacePathFinding(peep);
@@ -467,7 +467,7 @@ namespace OpenRCT2::PathFinding
                     edges &= ~(1 << DirectionReverse(chosenDirection));
                     loc.z = tileElement->BaseHeight;
 
-                    for (Direction dir : ALL_DIRECTIONS)
+                    for (Direction dir : kAllDirections)
                     {
                         if (!(edges & (1 << dir)))
                             continue;
@@ -1911,7 +1911,7 @@ namespace OpenRCT2::PathFinding
             /* If this tileElement is adjacent to any non-wide paths,
              * remove all of the edges to wide paths. */
             uint8_t adjustedEdges = edges;
-            for (Direction chosenDirection : ALL_DIRECTIONS)
+            for (Direction chosenDirection : kAllDirections)
             {
                 // If there is no path in that direction try another
                 if (!(adjustedEdges & (1 << chosenDirection)))
@@ -1981,7 +1981,7 @@ namespace OpenRCT2::PathFinding
         if (!peep.HasFoodOrDrink() && (ScenarioRand() & 0xFFFF) >= 2184)
         {
             uint8_t adjustedEdges = edges;
-            for (Direction chosenDirection : ALL_DIRECTIONS)
+            for (Direction chosenDirection : kAllDirections)
             {
                 // If there is no path in that direction try another
                 if (!(adjustedEdges & (1 << chosenDirection)))

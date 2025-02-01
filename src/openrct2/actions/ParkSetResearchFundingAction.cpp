@@ -15,7 +15,6 @@
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Research.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
@@ -61,7 +60,7 @@ GameActions::Result ParkSetResearchFundingAction::Execute() const
     gameState.ResearchPriorities = _priorities;
     gameState.ResearchFundingLevel = _fundingAmount;
 
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_RESEARCH));
     return GameActions::Result();
 }

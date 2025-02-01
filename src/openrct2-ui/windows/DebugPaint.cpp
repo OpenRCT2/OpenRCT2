@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Language.h>
@@ -16,6 +16,7 @@
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -34,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t WINDOW_HEIGHT = 8 + (15 * 6) + 8;
 
     // clang-format off
-    static Widget window_debug_paint_widgets[] = {
+    static constexpr Widget window_debug_paint_widgets[] = {
         MakeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WindowWidgetType::Frame,    WindowColour::Primary                                        ),
         MakeWidget({8, 8 + 15 * 0}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
         MakeWidget({8, 8 + 15 * 1}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
@@ -42,7 +43,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({8, 8 + 15 * 3}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
         MakeWidget({8, 8 + 15 * 4}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
         MakeWidget({8, 8 + 15 * 5}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_STABLE_SORT  ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_debug_paint_widgets;
+            SetWidgets(window_debug_paint_widgets);
 
             InitScrollWidgets();
             WindowPushOthersBelow(*this);
@@ -154,7 +154,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* DebugPaintOpen()
     {
-        auto* window = WindowFocusOrCreate<DebugPaintWindow>(
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<DebugPaintWindow>(
             WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
             WF_STICK_TO_FRONT | WF_TRANSPARENT);
 

@@ -36,9 +36,9 @@
 #include "object/DefaultObjects.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
-#include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
@@ -106,7 +106,7 @@ namespace OpenRCT2::Editor
         auto& gameState = GetGameState();
         Audio::StopAll();
         ObjectListLoad();
-        gameStateInitAll(gameState, DEFAULT_MAP_SIZE);
+        gameStateInitAll(gameState, kDefaultMapSize);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gameState.EditorStep = EditorStep::ObjectSelection;
         gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -172,7 +172,7 @@ namespace OpenRCT2::Editor
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), kDefaultMapSize);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
@@ -197,7 +197,7 @@ namespace OpenRCT2::Editor
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), kDefaultMapSize);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
@@ -244,7 +244,8 @@ namespace OpenRCT2::Editor
     {
         // #4996: Make sure the object selection window closes here to prevent unload objects
         //        after we have loaded a new park.
-        WindowCloseAll();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseAll();
 
         if (!GetContext()->LoadParkFromFile(path))
             return false;
@@ -296,7 +297,7 @@ namespace OpenRCT2::Editor
 
             gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
+            gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, kMaxEntranceFee);
 
             gameState.InitialCash = std::min<money64>(gameState.InitialCash, 100000);
             FinanceResetCashToInitial();
@@ -324,15 +325,17 @@ namespace OpenRCT2::Editor
             return;
         }
 
+        auto* windowMgr = Ui::GetWindowManager();
+
         switch (GetGameState().EditorStep)
         {
             case EditorStep::ObjectSelection:
-                if (WindowFindByClass(WindowClass::EditorObjectSelection) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::EditorObjectSelection) != nullptr)
                 {
                     return;
                 }
 
-                if (WindowFindByClass(WindowClass::InstallTrack) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::InstallTrack) != nullptr)
                 {
                     return;
                 }
@@ -345,7 +348,7 @@ namespace OpenRCT2::Editor
                 ContextOpenWindow(WindowClass::EditorObjectSelection);
                 break;
             case EditorStep::InventionsListSetUp:
-                if (WindowFindByClass(WindowClass::EditorInventionList) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::EditorInventionList) != nullptr)
                 {
                     return;
                 }
@@ -353,7 +356,7 @@ namespace OpenRCT2::Editor
                 ContextOpenWindow(WindowClass::EditorInventionList);
                 break;
             case EditorStep::OptionsSelection:
-                if (WindowFindByClass(WindowClass::EditorScenarioOptions) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::EditorScenarioOptions) != nullptr)
                 {
                     return;
                 }
@@ -361,7 +364,7 @@ namespace OpenRCT2::Editor
                 ContextOpenWindow(WindowClass::EditorScenarioOptions);
                 break;
             case EditorStep::ObjectiveSelection:
-                if (WindowFindByClass(WindowClass::EditorObjectiveOptions) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::EditorObjectiveOptions) != nullptr)
                 {
                     return;
                 }
@@ -379,7 +382,7 @@ namespace OpenRCT2::Editor
 
     static void FinaliseMainView()
     {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto windowManager = Ui::GetWindowManager();
         auto& gameState = GetGameState();
         windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 
@@ -418,7 +421,7 @@ namespace OpenRCT2::Editor
         const bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
         if (isTrackDesignerManager)
         {
-            return { ObjectType::None, STR_NONE };
+            return { ObjectType::None, kStringIdNone };
         }
 
         if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
@@ -445,7 +448,24 @@ namespace OpenRCT2::Editor
             }
         }
 
-        return { ObjectType::None, STR_NONE };
+        using OpenRCT2::AnimationPeepType;
+        constexpr std::pair<AnimationPeepType, StringId> kPeepCheckPairs[] = {
+            { AnimationPeepType::Guest, STR_AT_LEAST_ONE_GUEST_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+            { AnimationPeepType::Handyman, STR_AT_LEAST_ONE_HANDYMAN_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+            { AnimationPeepType::Mechanic, STR_AT_LEAST_ONE_MECHANIC_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+            { AnimationPeepType::Security, STR_AT_LEAST_ONE_SECURITY_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+            { AnimationPeepType::Entertainer, STR_AT_LEAST_ONE_ENTERTAINER_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+        };
+
+        for (auto& pair : kPeepCheckPairs)
+        {
+            if (!EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(EnumValue(pair.first)))
+            {
+                return { ObjectType::PeepAnimations, pair.second };
+            }
+        }
+
+        return { ObjectType::None, kStringIdNone };
     }
 
     /**
@@ -489,7 +509,7 @@ namespace OpenRCT2::Editor
             return { false, STR_PEEP_SPAWNS_NOT_SET };
         }
 
-        return { true, STR_NONE };
+        return { true, kStringIdNone };
     }
 
     uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index)
@@ -515,7 +535,7 @@ namespace OpenRCT2::Editor
 
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
-        if (index != OBJECT_ENTRY_INDEX_NULL)
+        if (index != kObjectEntryIndexNull)
         {
             assert(static_cast<size_t>(objectType) < getObjectEntryGroupCount(ObjectType::Paths));
             auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];

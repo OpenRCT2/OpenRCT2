@@ -11,8 +11,7 @@
 
 #include <SDL_clipboard.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/Version.h>
 #include <openrct2/drawing/Drawing.h>
@@ -20,6 +19,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -63,26 +63,24 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE)
 
     // clang-format off
-    static Widget _windowAboutOpenRCT2Widgets[] = {
+    static constexpr Widget _windowAboutOpenRCT2Widgets[] = {
         WIDGETS_MAIN,
         MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
-        MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
-        MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // Build version
+        MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, kStringIdNone), // OpenRCT2 Logo
+        MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, kStringIdNone), // Build version
         MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
         MakeWidget({168, 115 + 20}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
         MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
         MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
         MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
-        kWidgetsEnd,
     };
     // clang-format on
 
-    static Widget _windowAboutRCT2Widgets[] = {
+    static constexpr Widget _windowAboutRCT2Widgets[] = {
         WIDGETS_MAIN,
-        kWidgetsEnd,
     };
 
-    static Widget* _windowAboutPageWidgets[] = {
+    static constexpr std::span<const Widget> _windowAboutPageWidgets[] = {
         _windowAboutOpenRCT2Widgets,
         _windowAboutRCT2Widgets,
     };
@@ -92,9 +90,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _windowAboutOpenRCT2Widgets;
-
-            WindowInitScrollWidgets(*this);
             SetPage(WINDOW_ABOUT_PAGE_OPENRCT2);
         }
 
@@ -119,7 +114,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindowView(WV_NEW_VERSION_INFO);
                     break;
                 case WIDX_COPY_BUILD_INFO:
-                    SDL_SetClipboardText(gVersionInfoFull);
+                    OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(gVersionInfoFull);
                     break;
                 case WIDX_CONTRIBUTORS_BUTTON:
                     ContextOpenWindowView(WV_CONTRIBUTORS);
@@ -174,7 +169,7 @@ namespace OpenRCT2::Ui::Windows
             page = p;
             frame_no = 0;
             pressed_widgets = 0;
-            widgets = _windowAboutPageWidgets[p];
+            SetWidgets(_windowAboutPageWidgets[p]);
 
             switch (p)
             {
@@ -186,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            WindowInitScrollWidgets(*this);
+            InitScrollWidgets();
             Invalidate();
         }
 
@@ -215,7 +210,6 @@ namespace OpenRCT2::Ui::Windows
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
             {
                 widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
-                _windowAboutOpenRCT2Widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
             }
 
             // Draw the rest of the text
@@ -286,6 +280,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* AboutOpen()
     {
-        return WindowFocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

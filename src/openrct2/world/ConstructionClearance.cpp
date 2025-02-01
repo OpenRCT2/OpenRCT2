@@ -156,7 +156,7 @@ GameActions::Result MapCanConstructWithClearAt(
     if (tileElement == nullptr)
     {
         res.Error = GameActions::Status::Unknown;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = kStringIdNone;
         return res;
     }
 
@@ -234,27 +234,27 @@ GameActions::Result MapCanConstructWithClearAt(
                 const auto slope = tileElement->AsSurface()->GetSlope();
                 if (slope & kTileSlopeNCornerUp)
                 {
-                    northZ += LAND_HEIGHT_STEP;
+                    northZ += kLandHeightStep;
                     if (slope == (kTileSlopeSCornerDown | kTileSlopeDiagonalFlag))
-                        northZ += LAND_HEIGHT_STEP;
+                        northZ += kLandHeightStep;
                 }
                 if (slope & kTileSlopeECornerUp)
                 {
-                    eastZ += LAND_HEIGHT_STEP;
+                    eastZ += kLandHeightStep;
                     if (slope == (kTileSlopeWCornerDown | kTileSlopeDiagonalFlag))
-                        eastZ += LAND_HEIGHT_STEP;
+                        eastZ += kLandHeightStep;
                 }
                 if (slope & kTileSlopeSCornerUp)
                 {
-                    southZ += LAND_HEIGHT_STEP;
+                    southZ += kLandHeightStep;
                     if (slope == (kTileSlopeNCornerDown | kTileSlopeDiagonalFlag))
-                        southZ += LAND_HEIGHT_STEP;
+                        southZ += kLandHeightStep;
                 }
                 if (slope & kTileSlopeWCornerUp)
                 {
-                    westZ += LAND_HEIGHT_STEP;
+                    westZ += kLandHeightStep;
                     if (slope == (kTileSlopeECornerDown | kTileSlopeDiagonalFlag))
-                        westZ += LAND_HEIGHT_STEP;
+                        westZ += kLandHeightStep;
                 }
                 const auto baseHeight = pos.baseZ + (4 * kCoordsZStep);
                 const auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
@@ -321,7 +321,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
         }
@@ -344,7 +344,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             auto* wallEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(STR_EMPTY);
+            StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
         }
@@ -353,7 +353,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
         }

@@ -352,6 +352,7 @@ namespace OpenRCT2::RCT2
             DetermineFlatRideStatus();
             ImportTileElements(gameState);
             ImportEntities();
+            ConvertPeepAnimationTypeToObjects(gameState);
 
             gameState.InitialCash = ToMoney64(_s6.InitialCash);
             gameState.BankLoan = ToMoney64(_s6.CurrentLoan);
@@ -449,7 +450,7 @@ namespace OpenRCT2::RCT2
             // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
             // This is not always the case in OpenRCT2, so we use the actual ride ID.
             if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-                gameState.ScenarioObjective.RideId = _s6.ObjectiveGuests - RCT2_RIDE_STRING_START;
+                gameState.ScenarioObjective.RideId = _s6.ObjectiveGuests - kRCT2RideStringStart;
             else
                 gameState.ScenarioObjective.NumGuests = _s6.ObjectiveGuests;
             ImportMarketingCampaigns();
@@ -639,7 +640,7 @@ namespace OpenRCT2::RCT2
             for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
-                if (src->Type != RIDE_TYPE_NULL)
+                if (src->Type != kRideTypeNull)
                 {
                     const auto rideId = RideId::FromUnderlying(index);
                     auto dst = RideAllocateAtIndex(rideId);
@@ -665,7 +666,7 @@ namespace OpenRCT2::RCT2
             for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
-                if (src->Type == RIDE_TYPE_NULL)
+                if (src->Type == kRideTypeNull)
                     continue;
 
                 auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->Subtype);
@@ -972,7 +973,7 @@ namespace OpenRCT2::RCT2
                 }
             }
 
-            auto musicStyle = OBJECT_ENTRY_INDEX_NULL;
+            auto musicStyle = kObjectEntryIndexNull;
             if (GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::allowMusic))
             {
                 musicStyle = src->Music;
@@ -980,7 +981,7 @@ namespace OpenRCT2::RCT2
             dst->music = musicStyle;
 
             // In SV7, "plain" entrances are invisible.
-            auto entranceStyle = OBJECT_ENTRY_INDEX_NULL;
+            auto entranceStyle = kObjectEntryIndexNull;
             if (!_isSV7 && GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::hasEntranceAndExit))
             {
                 entranceStyle = src->EntranceStyle;
@@ -1020,7 +1021,7 @@ namespace OpenRCT2::RCT2
             dst.ProximityStart = { src.ProximityStartX, src.ProximityStartY, src.ProximityStartZ };
             dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.CurrentRide);
             dst.State = src.State;
-            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(RideTypeDescriptors))
+            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(kRideTypeDescriptors))
             {
                 dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
                     src.ProximityTrackType, _s6.Rides[src.CurrentRide].Type, IsFlatRide(src.CurrentRide));
@@ -1311,7 +1312,7 @@ namespace OpenRCT2::RCT2
                     auto pathEntryIndex = src2->GetEntryIndex();
                     auto surfaceEntry = src2->IsQueue() ? _pathToQueueSurfaceMap[pathEntryIndex]
                                                         : _pathToSurfaceMap[pathEntryIndex];
-                    if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                    if (surfaceEntry == kObjectEntryIndexNull)
                     {
                         // Legacy footpath object
                         dst2->SetLegacyPathEntryIndex(pathEntryIndex);
@@ -1432,7 +1433,7 @@ namespace OpenRCT2::RCT2
                     {
                         auto pathEntryIndex = src2->GetPathType();
                         auto surfaceEntry = _pathToSurfaceMap[pathEntryIndex];
-                        if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                        if (surfaceEntry == kObjectEntryIndexNull)
                         {
                             // Legacy footpath object
                             dst2->SetLegacyPathEntryIndex(pathEntryIndex);
@@ -1445,7 +1446,7 @@ namespace OpenRCT2::RCT2
                     }
                     else
                     {
-                        dst2->SetSurfaceEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+                        dst2->SetSurfaceEntryIndex(kObjectEntryIndexNull);
                     }
                     break;
                 }
@@ -1647,7 +1648,11 @@ namespace OpenRCT2::RCT2
             dst->NextFlags = src->NextFlags;
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;
+
+            // TODO
+            dst->AnimationObjectIndex = kObjectEntryIndexNull;
             dst->AnimationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
+
             dst->TshirtColour = src->TshirtColour;
             dst->TrousersColour = src->TrousersColour;
             dst->DestinationX = src->DestinationX;
@@ -1769,12 +1774,12 @@ namespace OpenRCT2::RCT2
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
             dst->Type = GetEntityTypeFromRCT2Sprite(src);
-            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
             dst->Id = EntityId::FromUnderlying(src->EntityIndex);
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
             dst->SpriteData.Width = src->SpriteWidth;
+            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
             dst->SpriteData.HeightMax = src->SpriteHeightPositive;
             dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
             dst->Orientation = src->EntityDirection;
@@ -1794,9 +1799,9 @@ namespace OpenRCT2::RCT2
 
         ObjectList GetRequiredObjects()
         {
-            std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), kObjectEntryIndexNull);
 
             ObjectList objectList;
             int objectIt = 0;
@@ -1804,7 +1809,7 @@ namespace OpenRCT2::RCT2
             ObjectEntryIndex railingCount = 0;
             for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
             {
-                for (int16_t i = 0; i < RCT2ObjectEntryGroupCounts[objectType]; i++, objectIt++)
+                for (int16_t i = 0; i < kRCT2ObjectEntryGroupCounts[objectType]; i++, objectIt++)
                 {
                     auto entry = ObjectEntryDescriptor(_s6.Objects[objectIt]);
                     if (entry.HasValue())
@@ -1822,7 +1827,7 @@ namespace OpenRCT2::RCT2
                                 // We have surface objects for this footpath
                                 auto surfaceIndex = objectList.Find(
                                     ObjectType::FootpathSurface, footpathMapping->NormalSurface);
-                                if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                                if (surfaceIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(
                                         ObjectType::FootpathSurface, surfaceCount, footpathMapping->NormalSurface);
@@ -1831,7 +1836,7 @@ namespace OpenRCT2::RCT2
                                 _pathToSurfaceMap[i] = surfaceIndex;
 
                                 surfaceIndex = objectList.Find(ObjectType::FootpathSurface, footpathMapping->QueueSurface);
-                                if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                                if (surfaceIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(
                                         ObjectType::FootpathSurface, surfaceCount, footpathMapping->QueueSurface);
@@ -1840,7 +1845,7 @@ namespace OpenRCT2::RCT2
                                 _pathToQueueSurfaceMap[i] = surfaceIndex;
 
                                 auto railingIndex = objectList.Find(ObjectType::FootpathRailings, footpathMapping->Railing);
-                                if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
+                                if (railingIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(ObjectType::FootpathRailings, railingCount, footpathMapping->Railing);
                                     railingIndex = railingCount++;
@@ -1899,6 +1904,9 @@ namespace OpenRCT2::RCT2
             if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
                 AppendRequiredObjects(
                     objectList, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+
+            auto animObjects = GetLegacyPeepAnimationObjects(objectList);
+            AppendRequiredObjects(objectList, ObjectType::PeepAnimations, animObjects);
 
             return objectList;
         }
@@ -2073,7 +2081,7 @@ namespace OpenRCT2::RCT2
             auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->Type);
             if (srcThought->Item == RCT12PeepThoughtItemNone)
-                dstThought->item = PeepThoughtItemNone;
+                dstThought->item = kPeepThoughtItemNone;
             else
                 dstThought->item = srcThought->Item;
             dstThought->freshness = srcThought->Freshness;

@@ -58,7 +58,7 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
     {
-        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
     }
 
     auto res = GameActions::Result();
@@ -111,7 +111,7 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
         EntranceElement* entranceElement = MapGetParkEntranceElementAt(entranceLoc, false);
         if (entranceElement != nullptr)
         {
-            return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
         }
     }
 
@@ -162,7 +162,7 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
         entranceElement->setEntryIndex(_entranceType);
-        if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+        if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
         {
             entranceElement->SetSurfaceEntryIndex(gFootpathSelection.NormalSurface);
         }

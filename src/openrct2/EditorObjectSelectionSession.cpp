@@ -16,6 +16,8 @@
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "drawing/Drawing.h"
+#include "entity/Guest.h"
+#include "entity/Staff.h"
 #include "localisation/Formatter.h"
 #include "management/Research.h"
 #include "object/DefaultObjects.h"
@@ -113,7 +115,7 @@ static void SetupTrackDesignerObjects()
 
             for (auto rideType : item->RideInfo.RideType)
             {
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != kRideTypeNull)
                 {
                     if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::showInTrackDesigner))
                     {
@@ -173,7 +175,7 @@ void SetupInUseSelectionFlags()
             {
                 auto footpathEl = iter.element->AsPath();
                 auto legacyPathEntryIndex = footpathEl->GetLegacyPathEntryIndex();
-                if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (legacyPathEntryIndex == kObjectEntryIndexNull)
                 {
                     auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
                     auto railingEntryIndex = footpathEl->GetRailingsEntryIndex();
@@ -209,7 +211,7 @@ void SetupInUseSelectionFlags()
                     break;
 
                 auto legacyPathEntryIndex = parkEntranceEl->GetLegacyPathEntryIndex();
-                if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (legacyPathEntryIndex == kObjectEntryIndexNull)
                 {
                     auto surfaceEntryIndex = parkEntranceEl->GetSurfaceEntryIndex();
                     Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
@@ -248,11 +250,29 @@ void SetupInUseSelectionFlags()
         Editor::SetSelectedObject(ObjectType::Music, ride.music, ObjectSelectionFlags::InUse);
     }
 
+    ObjectEntryIndex lastIndex = kObjectEntryIndexNull;
+    for (auto* peep : EntityList<Guest>())
+    {
+        if (peep->AnimationObjectIndex == lastIndex)
+            continue;
+
+        lastIndex = peep->AnimationObjectIndex;
+        Editor::SetSelectedObject(ObjectType::PeepAnimations, lastIndex, ObjectSelectionFlags::InUse);
+    }
+    for (auto* peep : EntityList<Staff>())
+    {
+        if (peep->AnimationObjectIndex == lastIndex)
+            continue;
+
+        lastIndex = peep->AnimationObjectIndex;
+        Editor::SetSelectedObject(ObjectType::PeepAnimations, lastIndex, ObjectSelectionFlags::InUse);
+    }
+
     // Apply selected object status for hacked vehicles that may not have an associated ride
     for (auto* vehicle : TrainManager::View())
     {
         ObjectEntryIndex type = vehicle->ride_subtype;
-        if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        if (type != kObjectEntryIndexNull) // cable lifts use index null. Ignore them
         {
             Editor::SetSelectedObject(ObjectType::Ride, type, ObjectSelectionFlags::InUse);
         }
@@ -260,7 +280,7 @@ void SetupInUseSelectionFlags()
     for (auto vehicle : EntityList<Vehicle>())
     {
         ObjectEntryIndex type = vehicle->ride_subtype;
-        if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        if (type != kObjectEntryIndexNull) // cable lifts use index null. Ignore them
         {
             Editor::SetSelectedObject(ObjectType::Ride, type, ObjectSelectionFlags::InUse);
         }
@@ -498,7 +518,7 @@ void FinishObjectSelection()
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-        if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+        if (gameState.LastEntranceStyle == kObjectEntryIndexNull)
         {
             gameState.LastEntranceStyle = 0;
         }
@@ -666,6 +686,23 @@ bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType)
     return false;
 }
 
+bool EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType)
+{
+    auto numObjects = std::min(ObjectRepositoryGetItemsCount(), _objectSelectionFlags.size());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
+
+    for (size_t i = 0; i < numObjects; i++)
+    {
+        const auto isAnimObjectType = items[i].Type == ObjectType::PeepAnimations;
+        const bool isSelected = _objectSelectionFlags[i] & ObjectSelectionFlags::Selected;
+        if (isAnimObjectType && isSelected && items[i].PeepAnimationsInfo.PeepType == peepType)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue)
 {
     auto numObjects = std::min(ObjectRepositoryGetItemsCount(), _objectSelectionFlags.size());
@@ -710,6 +747,10 @@ int32_t EditorRemoveUnusedObjects()
 
                 // Avoid the used peep names object being deleted as no in-use checks are performed.
                 if (objectType == ObjectType::PeepNames)
+                    continue;
+
+                // Avoid deleting peep animation objects, as it ensures we don't delete the last ones for a kind of peep.
+                if (objectType == ObjectType::PeepAnimations)
                     continue;
 
                 // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.

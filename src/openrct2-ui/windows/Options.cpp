@@ -12,14 +12,12 @@
  * the window has been changed to a tab interface similar to the options window seen in Locomotion.
  */
 
-#include "../interface/Theme.h"
-
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
@@ -45,6 +43,15 @@
 #include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
+
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+extern "C" {
+extern void ExportPersistentData();
+extern void ImportPersistentData();
+}
+#endif
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -181,6 +188,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOOLBAR_SHOW_MUTE,
         WIDX_TOOLBAR_SHOW_CHAT,
         WIDX_TOOLBAR_SHOW_ZOOM,
+        WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE,
 
         // Misc
         WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
@@ -218,6 +226,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PATH_TO_RCT1_BUTTON,
         WIDX_PATH_TO_RCT1_CLEAR,
         WIDX_ASSET_PACKS,
+#ifdef __EMSCRIPTEN__
+        WIDX_EXPORT_EMSCRIPTEN_DATA,
+        WIDX_IMPORT_EMSCRIPTEN_DATA,
+#endif
     };
 
     // clang-format off
@@ -236,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 158, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP), \
         MakeTab({ 189, 17 }, STR_OPTIONS_ADVANCED)
 
-    static Widget window_options_display_widgets[] = {
+    static constexpr Widget window_options_display_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget        ({  5,  53}, {300, 170}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
         MakeWidget        ({ 10,  67}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
@@ -246,7 +258,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({155,  83}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ),
         MakeWidget        ({288,  84}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
         MakeWidget        ({ 10,  98}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
-        MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_NONE,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
+        MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
         MakeWidget        ({ 10, 113}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine
         MakeWidget        ({155, 113}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Drawing engine
         MakeWidget        ({288, 114}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ),
@@ -257,13 +269,12 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
         MakeWidget        ({ 11, 191}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
         MakeWidget        ({ 11, 206}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
-        kWidgetsEnd,
     };
 
     constexpr int32_t kFrameRenderingStart = 53;
     constexpr int32_t kFrameEffectStart = 163;
 
-    static Widget window_options_rendering_widgets[] = {
+    static constexpr Widget window_options_rendering_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({  5,  kFrameRenderingStart + 0}, {300, 108}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_RENDERING_GROUP                                       ), // Rendering group
         MakeWidget({ 10, kFrameRenderingStart + 15}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
@@ -272,7 +283,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, kFrameRenderingStart + 60}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
         MakeWidget({ 10, kFrameRenderingStart + 75}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
         MakeWidget({ 10, kFrameRenderingStart + 90}, {281,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
-        MakeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        MakeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
         MakeWidget({288, kFrameRenderingStart + 91}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
 
         MakeWidget({ 5,  kFrameEffectStart + 0}, {300, 94}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
@@ -281,10 +292,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({40, kFrameEffectStart + 45}, {251, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ENABLE_LIGHTING_VEHICLES, STR_ENABLE_LIGHTING_VEHICLES_TIP), // Enable light fx for vehicles
         MakeWidget({10, kFrameEffectStart + 60}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
         MakeWidget({25, kFrameEffectStart + 75}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP), // Disable lightning effect
-        kWidgetsEnd,
     };
 
-    static Widget window_options_culture_widgets[] = {
+    static constexpr Widget window_options_culture_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({ 10,  53}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
         MakeWidget({155,  53}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                         ),
@@ -304,10 +314,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, 128}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DATE_FORMAT,        STR_DATE_FORMAT_TIP        ), // Date format
         MakeWidget({155, 128}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                     ),
         MakeWidget({288, 129}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        ),
-        kWidgetsEnd,
     };
 
-    static Widget window_options_audio_widgets[] = {
+    static constexpr Widget window_options_audio_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({ 10,  53}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                ), // Audio device
         MakeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
@@ -321,14 +330,13 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({155,  68}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Master volume
         MakeWidget({155,  83}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
         MakeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Music volume
-        kWidgetsEnd,
     };
 
     constexpr int32_t kControlsGroupStart = 53;
     constexpr int32_t kThemesGroupStart = 193;
     constexpr int32_t kToolbarGroupStart = 245;
 
-    static Widget window_options_controls_and_interface_widgets[] = {
+    static constexpr Widget window_options_controls_and_interface_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({  5, kControlsGroupStart +  0},  {300,137}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
         MakeWidget({ 10, kControlsGroupStart + 13},  {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
@@ -346,17 +354,17 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
         MakeWidget({155, kThemesGroupStart + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 
-        MakeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
-        MakeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP),
-        MakeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
-        MakeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
-        MakeWidget({ 24, kToolbarGroupStart + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
-        MakeWidget({155, kToolbarGroupStart + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
-        MakeWidget({155, kToolbarGroupStart + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
-        MakeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
-        MakeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
-        MakeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
-        kWidgetsEnd,
+        MakeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                         ), // Toolbar buttons group
+        MakeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP      ),
+        MakeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                      ),
+        MakeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP           ), // Finances
+        MakeWidget({ 24, kToolbarGroupStart + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP           ), // Research
+        MakeWidget({155, kToolbarGroupStart + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP             ), // Cheats
+        MakeWidget({155, kToolbarGroupStart + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP      ), // Recent messages
+        MakeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP               ), // Mute
+        MakeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP               ), // Chat
+        MakeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP               ), // Zoom
+        MakeWidget({155, kToolbarGroupStart + 91}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ROTATE_ANTI_CLOCKWISE,           STR_ROTATE_VIEW_ANTI_CLOCKWISE_IN_TOOLBAR_TIP), // Rotate anti-clockwise
     };
 
     constexpr int32_t kTitleSequenceStart = 53;
@@ -364,7 +372,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t kScenarioOptionsGroupStart = kScenarioGroupStart + 55;
     constexpr int32_t kTweaksStart = kScenarioOptionsGroupStart + 39;
 
-    static Widget window_options_misc_widgets[] = {
+    static constexpr Widget window_options_misc_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
         MakeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
@@ -386,10 +394,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, kTweaksStart + 77}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
         MakeWidget({175, kTweaksStart + 76}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
         MakeWidget({288, kTweaksStart + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
-        kWidgetsEnd,
     };
 
-    static Widget window_options_advanced_widgets[] = {
+    static constexpr Widget window_options_advanced_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
         MakeWidget        ({ 10,  69}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
@@ -399,15 +406,18 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({165, 113}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
         MakeWidget        ({288, 114}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
         MakeWidget        ({ 23, 130}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_NONE,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
         MakeWidget        ({ 23, 145}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
-        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
+        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path button
         MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
-        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               STR_NONE                                     ), // Asset packs
-        kWidgetsEnd,
+        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
+#ifdef __EMSCRIPTEN__
+        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
+        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
+#endif
     };
 
-    static Widget *window_options_page_widgets[] = {
+    static constexpr std::span<const Widget> window_options_page_widgets[] = {
         window_options_display_widgets,
         window_options_rendering_widgets,
         window_options_culture_widgets,
@@ -425,10 +435,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_options_display_widgets;
-            page = WINDOW_OPTIONS_PAGE_DISPLAY;
-            frame_no = 0;
-            InitScrollWidgets();
+            SetPage(WINDOW_OPTIONS_PAGE_DISPLAY);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -631,7 +638,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_TAB_DISPLAY:
                 case WIDX_TAB_RENDERING:
@@ -647,11 +654,6 @@ namespace OpenRCT2::Ui::Windows
 
         void CommonPrepareDrawBefore()
         {
-            if (window_options_page_widgets[page] != widgets)
-            {
-                widgets = window_options_page_widgets[page];
-                InitScrollWidgets();
-            }
             SetPressedTab();
 
             disabled_widgets = 0;
@@ -668,9 +670,10 @@ namespace OpenRCT2::Ui::Windows
         {
             // Automatically adjust window height to fit widgets
             int32_t y = 0;
-            for (auto widget = &widgets[WIDX_PAGE_START]; widget->type != WindowWidgetType::Last; widget++)
+            for (WidgetIndex widgetIdx = WIDX_PAGE_START; widgetIdx < widgets.size(); widgetIdx++)
             {
-                y = std::max<int32_t>(y, widget->bottom);
+                const auto& widget = widgets[widgetIdx];
+                y = std::max<int32_t>(y, widget.bottom);
             }
             height = y + 6;
             ResizeFrameWithPage();
@@ -1125,7 +1128,7 @@ namespace OpenRCT2::Ui::Windows
                         gDropdownItems[i].Args = CurrencyDescriptors[i].stringId;
                     }
 
-                    gDropdownItems[numOrdinaryCurrencies].Format = Dropdown::SeparatorString;
+                    gDropdownItems[numOrdinaryCurrencies].Format = Dropdown::kSeparatorString;
 
                     gDropdownItems[numOrdinaryCurrencies + 1].Format = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItems[numOrdinaryCurrencies + 1].Args = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
@@ -1239,7 +1242,7 @@ namespace OpenRCT2::Ui::Windows
                             if (LanguageOpen(fallbackLanguage))
                             {
                                 // It worked, so we can say it with error message in-game
-                                ContextShowError(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
+                                ContextShowError(STR_LANGUAGE_LOAD_FAILED, kStringIdNone, {});
                             }
                             // report error to console regardless
                             LOG_ERROR("Failed to open language file.");
@@ -1275,7 +1278,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Distance: metric / imperial / si
             {
-                StringId stringId = STR_NONE;
+                StringId stringId = kStringIdNone;
                 switch (Config::Get().general.MeasurementFormat)
                 {
                     case MeasurementFormat::Imperial:
@@ -1317,15 +1320,19 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_MASTER_SOUND_CHECKBOX:
+                {
                     Config::Get().sound.MasterSoundEnabled = !Config::Get().sound.MasterSoundEnabled;
                     if (!Config::Get().sound.MasterSoundEnabled)
                         OpenRCT2::Audio::Pause();
                     else
                         OpenRCT2::Audio::Resume();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
                     Config::Save();
                     Invalidate();
                     break;
+                }
 
                 case WIDX_MUSIC_CHECKBOX:
                     Config::Get().sound.RideMusicEnabled = !Config::Get().sound.RideMusicEnabled;
@@ -1541,11 +1548,15 @@ namespace OpenRCT2::Ui::Windows
             setting ^= true;
             Config::Save();
             Invalidate();
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
         }
 
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
+            auto* windowMgr = Ui::GetWindowManager();
+
             switch (widgetIndex)
             {
                 case WIDX_HOTKEY_DROPDOWN:
@@ -1591,11 +1602,14 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TOOLBAR_SHOW_ZOOM:
                     ToggleToolbarSetting(Config::Get().interface.ToolbarShowZoom);
                     break;
+                case WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowRotateAnticlockwise);
+                    break;
                 case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
                     Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
                     Config::Save();
                     Invalidate();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_ENLARGED_UI:
                     Config::Get().interface.EnlargedUi ^= 1;
@@ -1603,13 +1617,13 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().interface.TouchEnhancements = false;
                     Config::Save();
                     Invalidate();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_TOUCH_ENHANCEMENTS:
                     Config::Get().interface.TouchEnhancements ^= 1;
                     Config::Save();
                     Invalidate();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_INVERT_DRAG:
                     Config::Get().general.InvertViewportDrag ^= 1;
@@ -1676,6 +1690,7 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, Config::Get().interface.ToolbarShowMute);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.ToolbarShowChat);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.ToolbarShowZoom);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE, Config::Get().interface.ToolbarShowRotateAnticlockwise);
             SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
             SetCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
             SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
@@ -1713,10 +1728,13 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_SCENARIO_UNLOCKING:
+                {
                     Config::Get().general.ScenarioUnlockingEnabled ^= 1;
                     Config::Save();
-                    WindowCloseByClass(WindowClass::ScenarioSelect);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::ScenarioSelect);
                     break;
+                }
                 case WIDX_AUTO_OPEN_SHOPS:
                     Config::Get().general.AutoOpenShops = !Config::Get().general.AutoOpenShops;
                     Config::Save();
@@ -1835,7 +1853,8 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().interface.ScenarioselectLastTab = 0;
                         Config::Save();
                         Invalidate();
-                        WindowCloseByClass(WindowClass::ScenarioSelect);
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
                     }
                     break;
             }
@@ -1942,21 +1961,21 @@ namespace OpenRCT2::Ui::Windows
                                     Config::Get().general.RCT1Path = std::move(rct1path);
                                     Config::Get().interface.ScenarioselectLastTab = 0;
                                     Config::Save();
-                                    ContextShowError(STR_RESTART_REQUIRED, STR_NONE, {});
+                                    ContextShowError(STR_RESTART_REQUIRED, kStringIdNone, {});
                                 }
                                 else
                                 {
-                                    ContextShowError(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
+                                    ContextShowError(STR_PATH_TO_RCT1_IS_WRONG_VERSION, kStringIdNone, {});
                                 }
                             }
                             else
                             {
-                                ContextShowError(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
+                                ContextShowError(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, kStringIdNone, {});
                             }
                         }
                         else
                         {
-                            ContextShowError(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
+                            ContextShowError(STR_PATH_TO_RCT1_WRONG_ERROR, kStringIdNone, {});
                         }
                     }
                     Invalidate();
@@ -1973,6 +1992,14 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ASSET_PACKS:
                     ContextOpenWindow(WindowClass::AssetPacks);
                     break;
+#ifdef __EMSCRIPTEN__
+                case WIDX_EXPORT_EMSCRIPTEN_DATA:
+                    ExportPersistentData();
+                    break;
+                case WIDX_IMPORT_EMSCRIPTEN_DATA:
+                    ImportPersistentData();
+                    break;
+#endif
             }
         }
 
@@ -2066,7 +2093,7 @@ namespace OpenRCT2::Ui::Windows
                 if (Config::Get().general.RCT1Path.empty())
                 {
                     // No tooltip if the path is empty
-                    return { STR_NONE, {} };
+                    return { kStringIdNone, {} };
                 }
 
                 auto ft = Formatter();
@@ -2083,7 +2110,7 @@ namespace OpenRCT2::Ui::Windows
             page = p;
             frame_no = 0;
             pressed_widgets = 0;
-            widgets = window_options_page_widgets[page];
+            SetWidgets(window_options_page_widgets[page]);
 
             Invalidate();
             OnResize();
@@ -2230,6 +2257,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* OptionsOpen()
     {
-        return WindowFocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

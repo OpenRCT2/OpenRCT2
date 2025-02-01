@@ -20,7 +20,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const char* DirectoryNamesRCT2[] = {
+static constexpr const char* kDirectoryNamesRCT2[] = {
     "Data",        // DATA
     "Landscapes",  // LANDSCAPE
     nullptr,       // LANGUAGE
@@ -38,7 +38,7 @@ static constexpr const char* DirectoryNamesRCT2[] = {
     "Tracks",      // TRACK
 };
 
-static constexpr u8string_view DirectoryNamesOpenRCT2[] = {
+static constexpr u8string_view kDirectoryNamesOpenRCT2[] = {
     u8"data",             // DATA
     u8"landscape",        // LANDSCAPE
     u8"language",         // LANGUAGE
@@ -62,7 +62,7 @@ static constexpr u8string_view DirectoryNamesOpenRCT2[] = {
     u8"scenario_patches", // SCENARIO_PATCHES
 };
 
-static constexpr u8string_view FileNames[] = {
+static constexpr u8string_view kFileNames[] = {
     u8"config.ini",                              // CONFIG
     u8"hotkeys.dat",                             // CONFIG_SHORTCUTS_LEGACY
     u8"shortcuts.json",                          // CONFIG_SHORTCUTS
@@ -83,13 +83,13 @@ static constexpr u8string_view FileNames[] = {
 class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
-    u8string _basePath[DIRBASE_COUNT];
+    u8string _basePath[kDirBaseCount];
     bool _usingRCTClassic{};
 
 public:
     explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
     {
-        for (size_t i = 0; i < DIRBASE_COUNT; i++)
+        for (size_t i = 0; i < kDirBaseCount; i++)
         {
             _basePath[i] = basePaths[i];
         }
@@ -108,15 +108,15 @@ public:
         {
             default:
             case DIRBASE::RCT1:
-                directoryName = DirectoryNamesRCT2[EnumValue(did)];
+                directoryName = kDirectoryNamesRCT2[EnumValue(did)];
                 break;
             case DIRBASE::RCT2:
-                directoryName = _usingRCTClassic ? "Assets" : DirectoryNamesRCT2[EnumValue(did)];
+                directoryName = _usingRCTClassic ? "Assets" : kDirectoryNamesRCT2[EnumValue(did)];
                 break;
             case DIRBASE::OPENRCT2:
             case DIRBASE::USER:
             case DIRBASE::CONFIG:
-                directoryName = DirectoryNamesOpenRCT2[EnumValue(did)];
+                directoryName = kDirectoryNamesOpenRCT2[EnumValue(did)];
                 break;
         }
 
@@ -127,7 +127,7 @@ public:
     {
         auto dirbase = GetDefaultBaseDirectory(pathid);
         auto basePath = GetDirectoryPath(dirbase);
-        auto fileName = FileNames[EnumValue(pathid)];
+        auto fileName = kFileNames[EnumValue(pathid)];
         return Path::Combine(basePath, fileName);
     }
 
@@ -225,7 +225,7 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     auto subDirectory = GetOpenRCT2DirectoryName();
 
     // Set default paths
-    std::string basePaths[DIRBASE_COUNT];
+    std::string basePaths[kDirBaseCount];
     basePaths[EnumValue(DIRBASE::OPENRCT2)] = Platform::GetInstallPath();
     basePaths[EnumValue(DIRBASE::USER)] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_DATA), subDirectory);
     basePaths[EnumValue(DIRBASE::CONFIG)] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CONFIG), subDirectory);

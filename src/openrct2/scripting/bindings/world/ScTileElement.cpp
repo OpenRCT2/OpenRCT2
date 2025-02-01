@@ -1134,7 +1134,7 @@ namespace OpenRCT2::Scripting
             {
                 auto* el = _element->AsPath();
                 auto index = el->GetLegacyPathEntryIndex();
-                if (index != OBJECT_ENTRY_INDEX_NULL)
+                if (index != kObjectEntryIndexNull)
                     duk_push_int(ctx, index);
                 else
                     duk_push_null(ctx);
@@ -1784,7 +1784,7 @@ namespace OpenRCT2::Scripting
         {
             auto* el = _element->AsPath();
             auto index = el->GetSurfaceEntryIndex();
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 duk_push_int(ctx, index);
             }
@@ -1822,7 +1822,7 @@ namespace OpenRCT2::Scripting
         {
             auto* el = _element->AsPath();
             auto index = el->GetRailingsEntryIndex();
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 duk_push_int(ctx, index);
             }
@@ -1969,7 +1969,7 @@ namespace OpenRCT2::Scripting
         if (el != nullptr)
         {
             auto index = el->GetLegacyPathEntryIndex();
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 duk_push_int(ctx, index);
             }
@@ -2006,7 +2006,7 @@ namespace OpenRCT2::Scripting
         if (el != nullptr)
         {
             auto index = el->GetSurfaceEntryIndex();
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 duk_push_int(ctx, index);
             }

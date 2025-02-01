@@ -338,7 +338,7 @@ constexpr uint16_t RCT12_TILE_ELEMENT_LARGE_TYPE_MASK = 0x3FF;
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
 using RCT12ObjectEntryIndex = uint8_t;
-constexpr RCT12ObjectEntryIndex RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
+constexpr RCT12ObjectEntryIndex kRCT12ObjectEntryIndexNull = 255;
 
 // Everything before this point has been researched
 constexpr uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
@@ -985,6 +985,61 @@ enum class RCT12PeepType : uint8_t
     Invalid = 0xFF
 };
 
+enum class RCT12PeepAnimationGroup : uint8_t
+{
+    Normal = 0,
+    Handyman = 1,
+    Mechanic = 2,
+    Security = 3,
+    EntertainerPanda = 4,
+    EntertainerTiger = 5,
+    EntertainerElephant = 6,
+    EntertainerRoman = 7,
+    EntertainerGorilla = 8,
+    EntertainerSnowman = 9,
+    EntertainerKnight = 10,
+    EntertainerAstronaut = 11,
+    EntertainerBandit = 12,
+    EntertainerSheriff = 13,
+    EntertainerPirate = 14,
+    IceCream = 15,
+    Chips = 16,
+    Burger = 17,
+    Drink = 18,
+    Balloon = 19,
+    Candyfloss = 20,
+    Umbrella = 21,
+    Pizza = 22,
+    SecurityAlt = 23,
+    Popcorn = 24,
+    ArmsCrossed = 25,
+    HeadDown = 26,
+    Nauseous = 27,
+    VeryNauseous = 28,
+    RequireToilet = 29,
+    Hat = 30,
+    HotDog = 31,
+    Tentacle = 32,
+    ToffeeApple = 33,
+    Doughnut = 34,
+    Coffee = 35,
+    Chicken = 36,
+    Lemonade = 37,
+    Watching = 38,
+    Pretzel = 39,
+    Sunglasses = 40,
+    Sujeonggwa = 41,
+    Juice = 42,
+    FunnelCake = 43,
+    Noodles = 44,
+    Sausage = 45,
+    Soup = 46,
+    Sandwich = 47,
+    Count = 48,
+
+    Invalid = 255
+};
+
 struct RCT12EntityBase
 {
     RCT12EntityIdentifier EntityIdentifier;         // 0x00
@@ -1204,7 +1259,7 @@ void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const 
 void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const OpenRCT2::RCT12::EntryList& entryList);
 bool IsUserStringID(StringId stringId);
 
-static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
+static constexpr money32 kRCT12CompanyValueOnFailedObjective = 0x80000001;
 
 money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
 

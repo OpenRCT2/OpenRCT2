@@ -24,7 +24,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
         .trackStyle = TrackStyle::flyingRollerCoaster,
         .supportType = MetalSupportType::TubesInverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::quarterLoopUninvertedUp, TrackGroup::flyingLargeHalfLoopUninvertedUp, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeCurveLarge},
-        .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeSteepLong, TrackGroup::flyingLargeHalfLoopUninvertedDown, TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::stationEnd, TrackGroup::verticalLoop, TrackGroup::poweredLift},
+        .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepLong, TrackGroup::flyingLargeHalfLoopUninvertedDown, TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::stationEnd, TrackGroup::verticalLoop, TrackGroup::poweredLift},
     }),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::flyingRollerCoasterInverted,
@@ -50,7 +50,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
     .UpkeepCosts = { 49, 20, 90, 11, 3, 15 },
     .BuildCosts = { 62.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -68,13 +68,13 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(4, 35), RIDE_RATING(1, 85), RIDE_RATING(4, 33) },
+        { MakeRideRating(4, 35), MakeRideRating(1, 85), MakeRideRating(4, 33) },
         17,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -87,7 +87,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementInversions, 1,                2, 1, 1 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 1, 1 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 1, 1 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 40), 2, 1, 1 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
         },
@@ -125,7 +125,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
     .UpkeepCosts = { 49, 20, 90, 11, 3, 15 },
     .BuildCosts = { 62.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -139,13 +139,13 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(4, 35), RIDE_RATING(1, 85), RIDE_RATING(4, 33) },
+        { MakeRideRating(4, 35), MakeRideRating(1, 85), MakeRideRating(4, 33) },
         17,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -158,7 +158,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementInversions, 1,                2, 1, 1 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 1, 1 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 1, 1 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 40), 2, 1, 1 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 1 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
         },

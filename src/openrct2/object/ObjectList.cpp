@@ -36,7 +36,7 @@ static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryG
     kMaxScenarioTextObjects, // scenario text
     kMaxTerrainSurfaceObjects, kMaxTerrainEdgeObjects,     kMaxStationObjects,
     kMaxMusicObjects,          kMaxFootpathSurfaceObjects, kMaxFootpathRailingsObjects,
-    kMaxAudioObjects,          kMaxPeepNamesObjects,
+    kMaxAudioObjects,          kMaxPeepNamesObjects,       kMaxPeepAnimationsObjects,
 };
 static_assert(std::size(kObjectEntryGroupCounts) == EnumValue(ObjectType::Count));
 
@@ -180,7 +180,7 @@ ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier) 
             return static_cast<ObjectEntryIndex>(i);
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 // Intended to be used to find non-custom legacy objects. For internal use only.
@@ -195,7 +195,7 @@ ObjectEntryIndex ObjectList::FindLegacy(ObjectType type, std::string_view identi
             return static_cast<ObjectEntryIndex>(i);
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 /**

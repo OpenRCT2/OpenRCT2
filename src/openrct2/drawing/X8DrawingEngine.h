@@ -45,9 +45,9 @@ namespace OpenRCT2
                 uint8_t Colour;
             };
 
-            static constexpr uint32_t MaxWeatherPixels = 0xFFFE;
+            static constexpr uint32_t kMaxWeatherPixels = 0xFFFE;
 
-            size_t _weatherPixelsCapacity = MaxWeatherPixels;
+            size_t _weatherPixelsCapacity = kMaxWeatherPixels;
             uint32_t _weatherPixelsCount = 0;
             WeatherPixel* _weatherPixels = nullptr;
 

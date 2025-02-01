@@ -44,7 +44,6 @@
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Chat.h"
-#include "interface/InteractiveConsole.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
@@ -57,7 +56,6 @@
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
 #include "park/ParkFile.h"
-#include "peep/PeepAnimationData.h"
 #include "platform/Crash.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
@@ -211,7 +209,9 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             _network.Close();
 #endif
-            WindowCloseAll();
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
 
             // Unload objects after closing all windows, this is to overcome windows like
             // the object selection window which loads objects when closed.
@@ -413,14 +413,14 @@ namespace OpenRCT2
 
             CrashInit();
 
-            if (String::equals(Config::Get().general.LastRunVersion, OPENRCT2_VERSION))
+            if (String::equals(Config::Get().general.LastRunVersion, kOpenRCT2Version))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                Config::Get().general.LastRunVersion = OPENRCT2_VERSION;
+                Config::Get().general.LastRunVersion = kOpenRCT2Version;
                 Config::Save();
             }
 
@@ -439,7 +439,13 @@ namespace OpenRCT2
                 {
                     LOG_FATAL("Failed to open fallback language: %s", eFallback.what());
                     auto uiContext = GetContext()->GetUiContext();
+#ifdef __ANDROID__
+                    uiContext->ShowMessageBox(
+                        "You need to copy some additional files to finish your install.\n\nSee "
+                        "https://docs.openrct2.io/en/latest/installing/installing-on-android.html for more details.");
+#else
                     uiContext->ShowMessageBox("Failed to load language file!\nYour installation may be damaged.");
+#endif
                     return false;
                 }
             }
@@ -667,7 +673,7 @@ namespace OpenRCT2
             ContextOpenIntent(&intent);
         }
 
-        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) override
+        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = kStringIdNone) override
         {
             if (_forcedUpdateTimer.GetElapsedTime() < kForcedUpdateInterval)
                 return;
@@ -686,7 +692,8 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless && isMainThread)
             {
                 _uiContext->ProcessMessages();
-                WindowInvalidateByClass(WindowClass::ProgressWindow);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateByClass(WindowClass::ProgressWindow);
                 Draw();
             }
         }
@@ -743,7 +750,7 @@ namespace OpenRCT2
                     SetActiveScene(GetTitleScene());
                 }
                 auto windowManager = _uiContext->GetWindowManager();
-                windowManager->ShowError(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE, {});
+                windowManager->ShowError(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, kStringIdNone, {});
             }
             return false;
         }
@@ -869,14 +876,14 @@ namespace OpenRCT2
                     auto windowManager = _uiContext->GetWindowManager();
                     auto ft = Formatter();
                     ft.Add<uint32_t>(result.TargetVersion);
-                    ft.Add<uint32_t>(OpenRCT2::PARK_FILE_CURRENT_VERSION);
+                    ft.Add<uint32_t>(OpenRCT2::kParkFileCurrentVersion);
                     windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
                 }
                 else if (HasObjectsThatUseFallbackImages())
                 {
                     Console::Error::WriteLine("Park has objects which require RCT1 linked. Fallback images will be used.");
                     auto windowManager = _uiContext->GetWindowManager();
-                    windowManager->ShowError(STR_PARK_USES_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter());
+                    windowManager->ShowError(STR_PARK_USES_FALLBACK_IMAGES_WARNING, kStringIdEmpty, Formatter());
                 }
 
                 CloseProgress();
@@ -911,7 +918,7 @@ namespace OpenRCT2
                     SetActiveScene(GetTitleScene());
                 }
                 auto windowManager = _uiContext->GetWindowManager();
-                windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
+                windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, kStringIdNone, {});
             }
             catch (const UnsupportedVersionException& e)
             {
@@ -923,7 +930,7 @@ namespace OpenRCT2
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 Formatter ft;
-                /*if (e.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION)
+                /*if (e.TargetVersion < kParkFileMinSupportedVersion)
                 {
                     ft.Add<uint32_t>(e.TargetVersion);
                     windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_OLD_MESSAGE, ft);
@@ -933,14 +940,14 @@ namespace OpenRCT2
                     if (e.MinVersion == e.TargetVersion)
                     {
                         ft.Add<uint32_t>(e.TargetVersion);
-                        ft.Add<uint32_t>(OpenRCT2::PARK_FILE_CURRENT_VERSION);
+                        ft.Add<uint32_t>(OpenRCT2::kParkFileCurrentVersion);
                         windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE_2, ft);
                     }
                     else
                     {
                         ft.Add<uint32_t>(e.TargetVersion);
                         ft.Add<uint32_t>(e.MinVersion);
-                        ft.Add<uint32_t>(OpenRCT2::PARK_FILE_CURRENT_VERSION);
+                        ft.Add<uint32_t>(OpenRCT2::kParkFileCurrentVersion);
                         windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE, ft);
                     }
                 }
@@ -1017,7 +1024,6 @@ namespace OpenRCT2
             GfxLoadG2();
             GfxLoadCsg();
             FontSpriteInitialiseCharacters();
-            inferMaxPeepSpriteDimensions();
             return true;
         }
 
@@ -1201,9 +1207,21 @@ namespace OpenRCT2
             {
                 SwitchToStartUpScene();
             }
-
+#ifdef __EMSCRIPTEN__
+            emscripten_set_main_loop_arg(
+                [](void* vctx) {
+                    auto ctx = reinterpret_cast<Context*>(vctx);
+                    if (ctx->_finished)
+                    {
+                        emscripten_cancel_main_loop();
+                    }
+                    ctx->RunFrame();
+                },
+                this, 0, 1);
+#else
             _stdInOutConsole.Start();
             RunGameLoop();
+#endif
         }
 
         bool ShouldDraw()
@@ -1229,6 +1247,7 @@ namespace OpenRCT2
         /**
          * Run the main game loop until the finished flag is set.
          */
+#ifndef __EMSCRIPTEN__
         void RunGameLoop()
         {
             PROFILED_FUNCTION();
@@ -1236,22 +1255,14 @@ namespace OpenRCT2
             LOG_VERBOSE("begin openrct2 loop");
             _finished = false;
 
-#ifndef __EMSCRIPTEN__
             _variableFrame = ShouldRunVariableFrame();
             do
             {
                 RunFrame();
             } while (!_finished);
-#else
-            emscripten_set_main_loop_arg(
-                [](void* vctx) -> {
-                    auto ctx = reinterpret_cast<Context*>(vctx);
-                    ctx->RunFrame();
-                },
-                this, 0, 1);
-#endif // __EMSCRIPTEN__
             LOG_VERBOSE("finish openrct2 loop");
         }
+#endif // __EMSCRIPTEN__
 
         void RunFrame()
         {
@@ -1561,7 +1572,7 @@ namespace OpenRCT2
 
 void ContextInit()
 {
-    GetContext()->GetUiContext()->GetWindowManager()->Init();
+    GetWindowManager()->Init();
 }
 
 bool ContextLoadParkFromStream(void* stream)
@@ -1679,55 +1690,55 @@ void ContextSetCursorTrap(bool value)
 
 WindowBase* ContextOpenWindow(WindowClass wc)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->OpenWindow(wc);
 }
 
 WindowBase* ContextOpenWindowView(uint8_t wc)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->OpenView(wc);
 }
 
 WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->OpenDetails(type, id);
 }
 
 WindowBase* ContextOpenIntent(Intent* intent)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->OpenIntent(intent);
 }
 
 void ContextBroadcastIntent(Intent* intent)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     windowManager->BroadcastIntent(*intent);
 }
 
 void ContextForceCloseWindowByClass(WindowClass windowClass)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     windowManager->ForceClose(windowClass);
 }
 
 WindowBase* ContextShowError(StringId title, StringId message, const Formatter& args, const bool autoClose /* = false */)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     return windowManager->ShowError(title, message, args, autoClose);
 }
 
 void ContextHandleInput()
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     windowManager->HandleInput();
 }
 
 void ContextInputHandleKeyboard(bool isTitle)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     windowManager->HandleKeyboard(isTitle);
 }
 

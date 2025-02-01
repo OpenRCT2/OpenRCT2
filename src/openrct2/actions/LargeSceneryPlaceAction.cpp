@@ -224,7 +224,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     if (sceneryEntry->tiles.empty())
     {
         LOG_ERROR("Invalid large scenery object, sceneryType = %u", _sceneryType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, kStringIdNone);
     }
 
     int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
@@ -372,10 +372,10 @@ int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(std::span<const LargeScener
 
         if ((slope & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
         {
-            baseZ += LAND_HEIGHT_STEP;
+            baseZ += kLandHeightStep;
             if (slope & kTileSlopeDiagonalFlag)
             {
-                baseZ += LAND_HEIGHT_STEP;
+                baseZ += kLandHeightStep;
             }
         }
 

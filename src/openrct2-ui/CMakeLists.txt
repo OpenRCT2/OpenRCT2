@@ -11,7 +11,16 @@ option(DISABLE_VORBIS   "Disable OGG/VORBIS support.")
 option(DISABLE_OPENGL   "Disable OpenGL support.")
 
 # Third party libraries
-if (MSVC)
+if (EMSCRIPTEN)
+    set(USE_FLAGS "${EMSCRIPTEN_FLAGS}")
+    if (NOT DISABLE_VORBIS)
+        set(USE_FLAGS "${USE_FLAGS} -s USE_VORBIS=1 -s USE_OGG=1")
+    endif ()
+    set(SHARED_FLAGS "-fexceptions")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS} ${SHARED_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_LDFLAGS} --bind ${SHARED_FLAGS} -s EXPORTED_FUNCTIONS=_GetVersion,_main --js-library ${ROOT_DIR}/emscripten/deps.js")
+    find_package(SpeexDSP REQUIRED)
+elseif (MSVC)
     find_package(SDL2 REQUIRED)
     find_library(SPEEX_LDFLAGS libspeexdsp)
     if (NOT DISABLE_FLAC)
@@ -33,7 +42,7 @@ else ()
     endif ()
 endif ()
 
-if (NOT DISABLE_OPENGL)
+if (NOT DISABLE_OPENGL AND NOT EMSCRIPTEN)
     # GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
     if (APPLE)
         find_package(OpenGL REQUIRED)
@@ -61,7 +70,12 @@ SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 ipo_set_target_properties(${PROJECT_NAME})
 
 # mingw builds cannot use the PkgConfig imported targets
-if (NOT MSVC AND NOT WIN32)
+if (EMSCRIPTEN)
+    target_link_libraries(${PROJECT_NAME} "libopenrct2"
+                                    ${SPEEXDSP_LIBRARIES}
+                                    ${ICU_DATA_LIBRARIES}
+                                    ${ICU_DT_LIBRARY_RELEASE})
+elseif (NOT MSVC AND NOT WIN32)
     target_link_libraries(${PROJECT_NAME} "libopenrct2"
                                     PkgConfig::SDL2
                                     PkgConfig::SPEEX)
@@ -81,7 +95,7 @@ if (NOT DISABLE_FLAC)
 endif ()
 
 if (NOT DISABLE_VORBIS)
-    if (NOT MSVC AND NOT WIN32)
+    if (NOT MSVC AND NOT WIN32 AND NOT EMSCRIPTEN)
         target_link_libraries(${PROJECT_NAME} PkgConfig::OGG PkgConfig::VORBISFILE)
     else ()
         target_link_libraries(${PROJECT_NAME} ${OGG_LDFLAGS} ${VORBISFILE_LDFLAGS})

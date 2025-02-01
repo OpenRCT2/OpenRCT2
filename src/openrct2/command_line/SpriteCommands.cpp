@@ -25,7 +25,7 @@ ImportMode gSpriteMode = ImportMode::Default;
 static const char* _mode;
 
 // clang-format off
-static constexpr CommandLineOptionDefinition SpriteOptions[]
+static constexpr CommandLineOptionDefinition kSpriteOptions[]
 {
     { CMDLINE_TYPE_STRING, &_mode, 'm', "mode", "the type of sprite conversion <" SZ_DEFAULT "|" SZ_CLOSEST "|" SZ_DITHERING ">" },
     kOptionTableEnd
@@ -33,17 +33,17 @@ static constexpr CommandLineOptionDefinition SpriteOptions[]
 
 static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator);
 
-const CommandLineCommand CommandLine::SpriteCommands[]
+const CommandLineCommand CommandLine::kSpriteCommands[]
 {
     // Main commands
-    DefineCommand("append",       "<spritefile> <input> [x_offset y_offset]", SpriteOptions, HandleSprite),
-    DefineCommand("build",        "<spritefile> <json path> [silent]",        SpriteOptions, HandleSprite),
-    DefineCommand("combine",      "<index file> <image file> <output>",       SpriteOptions, HandleSprite),
-    DefineCommand("create",       "<spritefile>",                             SpriteOptions, HandleSprite),
-    DefineCommand("details",      "<spritefile> [idx]",                       SpriteOptions, HandleSprite),
-    DefineCommand("export",       "<spritefile> <idx> <output>",              SpriteOptions, HandleSprite),
-    DefineCommand("exportall",    "<spritefile> <output directory>",          SpriteOptions, HandleSprite),
-    DefineCommand("exportalldat", "<DAT identifier> <output directory>",      SpriteOptions, HandleSprite),
+    DefineCommand("append",       "<spritefile> <input> [x_offset y_offset]", kSpriteOptions, HandleSprite),
+    DefineCommand("build",        "<spritefile> <json path> [silent]",        kSpriteOptions, HandleSprite),
+    DefineCommand("combine",      "<index file> <image file> <output>",       kSpriteOptions, HandleSprite),
+    DefineCommand("create",       "<spritefile>",                             kSpriteOptions, HandleSprite),
+    DefineCommand("details",      "<spritefile> [idx]",                       kSpriteOptions, HandleSprite),
+    DefineCommand("export",       "<spritefile> <idx> <output>",              kSpriteOptions, HandleSprite),
+    DefineCommand("exportall",    "<spritefile> <output directory>",          kSpriteOptions, HandleSprite),
+    DefineCommand("exportalldat", "<DAT identifier> <output directory>",      kSpriteOptions, HandleSprite),
 
     kCommandTableEnd
 };

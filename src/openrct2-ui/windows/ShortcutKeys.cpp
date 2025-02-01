@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Window.h"
+#include "Windows.h"
 
 #include <algorithm>
 #include <openrct2-ui/UiContext.h>
@@ -17,6 +17,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -41,12 +42,11 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _shortcutWidgets[] = {
+    static constexpr Widget _shortcutWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
         MakeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
         MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -60,10 +60,9 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_shortcut_change_widgets[] = {
+    static constexpr Widget window_shortcut_change_widgets[] = {
         WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
         MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -81,8 +80,9 @@ namespace OpenRCT2::Ui::Windows
             auto registeredShortcut = shortcutManager.GetShortcut(shortcutId);
             if (registeredShortcut != nullptr)
             {
-                WindowCloseByClass(WindowClass::ChangeKeyboardShortcut);
-                auto w = WindowCreate<ChangeShortcutWindow>(
+                auto* windowMgr = GetWindowManager();
+                windowMgr->CloseByClass(WindowClass::ChangeKeyboardShortcut);
+                auto* w = windowMgr->Create<ChangeShortcutWindow>(
                     WindowClass::ChangeKeyboardShortcut, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
                 if (w != nullptr)
                 {
@@ -98,7 +98,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_shortcut_change_widgets;
+            SetWidgets(window_shortcut_change_widgets);
             WindowInitScrollWidgets(*this);
         }
 
@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui::Windows
         struct ShortcutStringPair
         {
             std::string ShortcutId;
-            ::StringId StringId = STR_NONE;
+            ::StringId StringId = kStringIdNone;
             std::string CustomString;
             std::string Binding;
         };
@@ -198,7 +198,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnClose() override
         {
-            WindowCloseByClass(WindowClass::ResetShortcutKeysPrompt);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::ResetShortcutKeysPrompt);
         }
 
         void OnResize() override
@@ -247,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCROLL].bottom = height - 19;
             widgets[WIDX_RESET].top = height - 16;
             widgets[WIDX_RESET].bottom = height - 5;
-            WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
+            WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size() - 1));
 
             // Set selected tab
             for (size_t i = 0; i < _tabs.size(); i++)
@@ -448,19 +449,16 @@ namespace OpenRCT2::Ui::Windows
 
         void InitialiseWidgets()
         {
-            _widgets.clear();
-            _widgets.insert(_widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets) - 1);
+            widgets.clear();
+            widgets.insert(widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets));
 
             int32_t x = 3;
             for (size_t i = 0; i < _tabs.size(); i++)
             {
-                auto tab = MakeTab({ x, 17 }, STR_NONE);
-                _widgets.push_back(tab);
+                auto tab = MakeTab({ x, 17 }, kStringIdNone);
+                widgets.push_back(tab);
                 x += 31;
             }
-
-            _widgets.push_back(kWidgetsEnd);
-            widgets = _widgets.data();
 
             WindowInitScrollWidgets(*this);
         }
@@ -547,7 +545,8 @@ namespace OpenRCT2::Ui::Windows
 
     void ChangeShortcutWindow::NotifyShortcutKeysWindow()
     {
-        auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
+        auto* windowMgr = GetWindowManager();
+        auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
         if (w != nullptr)
         {
             static_cast<ShortcutKeysWindow*>(w)->RefreshBindings();
@@ -556,10 +555,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ShortcutKeysOpen()
     {
-        auto w = WindowBringToFrontByClass(WindowClass::KeyboardShortcutList);
+        auto* windowMgr = GetWindowManager();
+        auto w = windowMgr->BringToFrontByClass(WindowClass::KeyboardShortcutList);
         if (w == nullptr)
         {
-            w = WindowCreate<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, WW, WH, WF_RESIZABLE);
+            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, WW, WH, WF_RESIZABLE);
         }
         return w;
     }
@@ -578,7 +578,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RESET_PROMPT_CANCEL
     };
 
-    static Widget WindowResetShortcutKeysPromptWidgets[] = {
+    static constexpr Widget WindowResetShortcutKeysPromptWidgets[] = {
         WINDOW_SHIM_WHITE(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
         MakeWidget(
             { 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary,
@@ -587,14 +587,13 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget(
             { RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary,
             STR_SAVE_PROMPT_CANCEL),
-        kWidgetsEnd,
     };
 
     class ResetShortcutKeysPrompt final : public Window
     {
         void OnOpen() override
         {
-            widgets = WindowResetShortcutKeysPromptWidgets;
+            SetWidgets(WindowResetShortcutKeysPromptWidgets);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -603,7 +602,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RESET_PROMPT_RESET:
                 {
-                    auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
+                    auto* windowMgr = GetWindowManager();
+                    auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
                     if (w != nullptr)
                     {
                         static_cast<ShortcutKeysWindow*>(w)->ResetAllOnActiveTab();
@@ -621,7 +621,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ResetShortcutKeysPromptOpen()
     {
-        return WindowFocusOrCreate<ResetShortcutKeysPrompt>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<ResetShortcutKeysPrompt>(
             WindowClass::ResetShortcutKeysPrompt, RESET_PROMPT_WW, RESET_PROMPT_WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
     }
 #pragma endregion

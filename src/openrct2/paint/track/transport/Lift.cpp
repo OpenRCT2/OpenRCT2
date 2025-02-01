@@ -32,7 +32,7 @@ enum
     SPR_LIFT_CAGE_NW_FRONT = 15003,
 };
 
-static constexpr uint32_t lift_cage_sprites[][2] = {
+static constexpr uint32_t kLiftCageSprites[][2] = {
     { SPR_LIFT_CAGE_BACK, SPR_LIFT_CAGE_FRONT },       { SPR_LIFT_CAGE_NE_BACK, SPR_LIFT_CAGE_NE_FRONT },
     { SPR_LIFT_CAGE_SE_BACK, SPR_LIFT_CAGE_SE_FRONT }, { SPR_LIFT_CAGE_SW_BACK, SPR_LIFT_CAGE_SW_FRONT },
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
@@ -42,10 +42,10 @@ static void PaintLiftCage(PaintSession& session, int8_t index, ImageId colourFla
 {
     ImageId imageId;
 
-    imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][0]);
+    imageId = colourFlags.WithIndex(kLiftCageSprites[1 + index][0]);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 2, height }, { 2, 2, 30 } });
 
-    imageId = colourFlags.WithIndex(lift_cage_sprites[1 + index][1]);
+    imageId = colourFlags.WithIndex(kLiftCageSprites[1 + index][1]);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 2, 2, 30 } });
 }
 

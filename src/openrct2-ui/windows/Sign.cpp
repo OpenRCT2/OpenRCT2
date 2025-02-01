@@ -12,7 +12,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/LargeSceneryRemoveAction.h>
 #include <openrct2/actions/SignSetNameAction.h>
@@ -23,6 +23,7 @@
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/LargeSceneryElement.h>
@@ -48,14 +49,13 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     // 0x9AEE00
-    static Widget _signWidgets[] = {
+    static constexpr Widget _signWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary                                                        ), // Viewport
         MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
         MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
         MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
         MakeWidget({     17, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         bool _isSmall = false;
-        ObjectEntryIndex _sceneryEntry = OBJECT_ENTRY_INDEX_NULL;
+        ObjectEntryIndex _sceneryEntry = kObjectEntryIndexNull;
         colour_t _mainColour = {};
         colour_t _textColour = {};
 
@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _signWidgets;
+            SetWidgets(_signWidgets);
             WindowInitScrollWidgets(*this);
         }
 
@@ -335,12 +335,13 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* SignOpen(rct_windownumber number)
     {
-        auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
 
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<SignWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::Banner, WW, WH, 0);
 
         if (w == nullptr)
             return nullptr;
@@ -358,12 +359,13 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* SignSmallOpen(rct_windownumber number)
     {
-        auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
 
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<SignWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::Banner, WW, WH, 0);
 
         if (w == nullptr)
             return nullptr;

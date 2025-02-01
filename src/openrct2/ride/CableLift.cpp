@@ -28,7 +28,7 @@ Vehicle* CableLiftSegmentCreate(
 {
     Vehicle* current = CreateEntity<Vehicle>();
     current->ride = ride.id;
-    current->ride_subtype = OBJECT_ENTRY_INDEX_NULL;
+    current->ride_subtype = kObjectEntryIndexNull;
     if (head)
     {
         ride.cable_lift = current->Id;
@@ -327,7 +327,10 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             SetTrackDirection(output.begin_direction);
             SetTrackType(output.begin_element->AsTrack()->GetTrackType());
 
-            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation)
+            // Doesn't check for diagonal block brakes because there is no diagonal cable lift piece,
+            // no way for a cable lift to start from a diagonal brake.
+            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation
+                || output.begin_element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }

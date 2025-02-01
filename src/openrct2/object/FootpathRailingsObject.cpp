@@ -53,7 +53,7 @@ void FootpathRailingsObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int3
 {
     auto x = width / 2;
     auto y = height / 2;
-    auto helper = ImageId(ImageIndexUndefined);
+    auto helper = ImageId(kImageIndexUndefined);
     if (Colour != COLOUR_NULL)
         helper = helper.WithPrimary(Colour);
 

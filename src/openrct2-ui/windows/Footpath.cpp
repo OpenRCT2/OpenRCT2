@@ -16,7 +16,7 @@
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -36,6 +36,7 @@
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -122,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_footpath_widgets[] = {
+    static constexpr Widget window_footpath_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW_WINDOW, WH_WINDOW),
 
         // Type group
@@ -150,7 +151,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 3, 361}, {100, 54}, WindowWidgetType::Groupbox, WindowColour::Primary                                                                                      ),
         MakeWidget({13, 372}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_LAND),    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
         MakeWidget({57, 372}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_BRIDGE),  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    ),
-        kWidgetsEnd,
     };
 
 #pragma endregion
@@ -213,7 +213,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_footpath_widgets;
+            SetWidgets(window_footpath_widgets);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersRight(*this);
@@ -238,13 +238,15 @@ namespace OpenRCT2::Ui::Windows
             ViewportSetVisibility(ViewportVisibility::Default);
             MapInvalidateMapSelectionTiles();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
             HideGridlines();
         }
 
         void OnUpdate() override
         {
-            WidgetInvalidate(*this, WIDX_CONSTRUCT);
+            InvalidateWidget(WIDX_CONSTRUCT);
             WindowFootpathUpdateProvisionalPathForBridgeMode();
 
             // #2502: The camera might have changed rotation, so we need to update which directional buttons are pressed
@@ -273,13 +275,13 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_FOOTPATH_TYPE:
-                    WindowFootpathShowFootpathTypesDialog(&window_footpath_widgets[widgetIndex], false);
+                    WindowFootpathShowFootpathTypesDialog(&widgets[widgetIndex], false);
                     break;
                 case WIDX_QUEUELINE_TYPE:
-                    WindowFootpathShowFootpathTypesDialog(&window_footpath_widgets[widgetIndex], true);
+                    WindowFootpathShowFootpathTypesDialog(&widgets[widgetIndex], true);
                     break;
                 case WIDX_RAILINGS_TYPE:
-                    WindowFootpathShowRailingsTypesDialog(&window_footpath_widgets[widgetIndex]);
+                    WindowFootpathShowRailingsTypesDialog(&widgets[widgetIndex]);
                     break;
                 case WIDX_DIRECTION_NW:
                     WindowFootpathMousedownDirection(0);
@@ -370,7 +372,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gFootpathSelection.LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+                    gFootpathSelection.LegacyPath = kObjectEntryIndexNull;
                     gFootpathSelection.NormalSurface = entryIndex.second;
                 }
             }
@@ -383,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gFootpathSelection.LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+                    gFootpathSelection.LegacyPath = kObjectEntryIndexNull;
                     gFootpathSelection.QueueSurface = entryIndex.second;
                 }
             }
@@ -450,17 +452,17 @@ namespace OpenRCT2::Ui::Windows
                                                                   : (1uLL << WIDX_FOOTPATH_TYPE);
 
             // Enable / disable construct button
-            window_footpath_widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
+            widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
                 ? WindowWidgetType::ImgBtn
                 : WindowWidgetType::Empty;
 
-            if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+            if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
             {
-                window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
             }
             else
             {
-                window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
+                widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
             }
         }
 
@@ -485,7 +487,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 std::optional<uint32_t> baseImage;
-                if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+                if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
                 {
                     auto selectedPath = gFootpathSelection.GetSelectedSurface();
                     const auto* pathType = GetPathSurfaceEntry(selectedPath);
@@ -515,22 +517,19 @@ namespace OpenRCT2::Ui::Windows
 
                     // Draw construction image
                     screenCoords = this->windowPos
-                        + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                          window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60 };
+                        + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 60 };
                     GfxDrawSprite(dpi, ImageId(image), screenCoords);
                 }
 
                 // Draw build this... label
                 screenCoords = this->windowPos
-                    + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                      window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23 };
+                    + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 23 };
                 DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
             }
 
             // Draw cost
             screenCoords = this->windowPos
-                + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                  window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
+                + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 12 };
             if (_windowFootpathCost != kMoney64Undefined)
             {
                 if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
@@ -575,7 +574,7 @@ namespace OpenRCT2::Ui::Windows
                 auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
                 _windowFootpathCost = FootpathProvisionalSet(type, railings, footpathLoc, slope, pathConstructFlags);
-                WidgetInvalidate(*this, WIDX_CONSTRUCT);
+                InvalidateWidget(WIDX_CONSTRUCT);
             }
 
             auto curTime = Platform::GetTicks();
@@ -605,7 +604,7 @@ namespace OpenRCT2::Ui::Windows
 
         void WindowFootpathDrawDropdownButtons(DrawPixelInfo& dpi)
         {
-            if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+            if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
             {
                 // Set footpath and queue type button images
                 auto pathImage = kSpriteIdNull;
@@ -702,13 +701,13 @@ namespace OpenRCT2::Ui::Windows
                     continue;
                 }
 
-                if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL
+                if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull
                     && i == (showQueues ? gFootpathSelection.QueueSurface : gFootpathSelection.NormalSurface))
                 {
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].Format = STR_NONE;
+                gDropdownItems[numPathTypes].Format = kStringIdNone;
                 Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::FootpathSurface, i });
                 numPathTypes++;
@@ -728,12 +727,12 @@ namespace OpenRCT2::Ui::Windows
                     continue;
                 }
 
-                if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL && gFootpathSelection.LegacyPath == i)
+                if (gFootpathSelection.LegacyPath != kObjectEntryIndexNull && gFootpathSelection.LegacyPath == i)
                 {
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].Format = STR_NONE;
+                gDropdownItems[numPathTypes].Format = kStringIdNone;
                 Dropdown::SetImage(
                     numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
                 _dropdownEntries.push_back({ ObjectType::Paths, i });
@@ -767,7 +766,7 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numRailingsTypes;
                 }
 
-                gDropdownItems[numRailingsTypes].Format = STR_NONE;
+                gDropdownItems[numRailingsTypes].Format = kStringIdNone;
                 Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::FootpathRailings, i });
                 numRailingsTypes++;
@@ -1053,7 +1052,9 @@ namespace OpenRCT2::Ui::Windows
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             _windowFootpathCost = FootpathProvisionalSet(
                 pathType, gFootpathSelection.Railings, { *mapPos, baseZ }, slope, constructFlags);
-            WindowInvalidateByClass(WindowClass::Footpath);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::Footpath);
         }
 
         /**
@@ -1238,7 +1239,8 @@ namespace OpenRCT2::Ui::Windows
                     Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                 }
 
-                auto* self = static_cast<FootpathWindow*>(WindowFindByClass(WindowClass::Footpath));
+                auto* windowMgr = GetWindowManager();
+                auto* self = static_cast<FootpathWindow*>(windowMgr->FindByClass(WindowClass::Footpath));
                 if (self == nullptr)
                 {
                     return;
@@ -1498,7 +1500,7 @@ namespace OpenRCT2::Ui::Windows
             PathConstructFlags pathConstructFlags = 0;
             if (gFootpathSelection.IsQueueSelected)
                 pathConstructFlags |= PathConstructFlag::IsQueue;
-            if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
+            if (gFootpathSelection.LegacyPath != kObjectEntryIndexNull)
             {
                 pathConstructFlags |= PathConstructFlag::IsLegacyPathObject;
                 type = gFootpathSelection.LegacyPath;
@@ -1628,7 +1630,8 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        return WindowFocusOrCreate<FootpathWindow>(WindowClass::Footpath, WW_WINDOW, WH_WINDOW, 0);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<FootpathWindow>(WindowClass::Footpath, WW_WINDOW, WH_WINDOW, 0);
     }
 
     void WindowFootpathResetSelectedPath()
@@ -1638,7 +1641,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutTurnLeft()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1651,7 +1655,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutTurnRight()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1664,7 +1669,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutSlopeDown()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1677,7 +1683,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutSlopeUp()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1690,7 +1697,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutDemolishCurrent()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1703,7 +1711,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutBuildCurrent()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1720,14 +1729,15 @@ namespace OpenRCT2::Ui::Windows
      */
     void ToggleFootpathWindow()
     {
-        if (WindowFindByClass(WindowClass::Footpath) == nullptr)
+        auto* windowMgr = GetWindowManager();
+        if (windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
         {
             ContextOpenWindow(WindowClass::Footpath);
         }
         else
         {
             ToolCancel();
-            WindowCloseByClass(WindowClass::Footpath);
+            windowMgr->CloseByClass(WindowClass::Footpath);
         }
     }
 
@@ -1787,7 +1797,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 // Going up in the world!
-                VirtualFloorSetHeight(_provisionalFootpath.position.z + LAND_HEIGHT_STEP);
+                VirtualFloorSetHeight(_provisionalFootpath.position.z + kLandHeightStep);
             }
         }
 

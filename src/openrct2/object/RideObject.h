@@ -22,8 +22,8 @@ class RideObject final : public Object
 private:
     RideObjectEntry _legacyType = {};
     VehicleColourPresetList _presetColours = {};
-    std::vector<int8_t> _peepLoadingPositions[OpenRCT2::RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
-    std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[OpenRCT2::RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
+    std::vector<int8_t> _peepLoadingPositions[OpenRCT2::RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
+    std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[OpenRCT2::RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
 
 public:
     static constexpr ObjectType kObjectType = ObjectType::Ride;

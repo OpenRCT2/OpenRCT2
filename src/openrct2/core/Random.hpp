@@ -34,11 +34,11 @@ namespace OpenRCT2::Random
         using result_type = uint32_t;
 
         static constexpr size_t N = TNum;
-        static constexpr result_type default_seed = 0x1234567F;
+        static constexpr result_type kDefaultSeed = 0x1234567F;
 
         explicit FixedSeedSequence()
         {
-            std::fill(v.begin(), v.end(), default_seed);
+            std::fill(v.begin(), v.end(), kDefaultSeed);
         }
 
         template<
@@ -110,7 +110,7 @@ namespace OpenRCT2::Random
         static constexpr result_type x = TX;
         static constexpr size_t r1 = TR1;
         static constexpr size_t r2 = TR2;
-        static constexpr result_type default_seed = 1;
+        static constexpr result_type kDefaultSeed = 1;
 
         static constexpr result_type min()
         {
@@ -141,7 +141,7 @@ namespace OpenRCT2::Random
             seed(seed_seq);
         }
 
-        void seed(result_type s = default_seed)
+        void seed(result_type s = kDefaultSeed)
         {
             s0 = s;
             s1 = s;

@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 77.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_PIRATE,
+    .DefaultMusic = kMusicObjectPirate,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 50), RIDE_RATING(1, 90), RIDE_RATING(1, 41) },
+        { MakeRideRating(1, 50), MakeRideRating(1, 90), MakeRideRating(1, 41) },
         10,
         0,
         false,

@@ -101,7 +101,7 @@ struct Objective
     union
     {
         money64 Currency;
-        uint16_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
+        ride_rating MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
     };
 
     bool NeedsMoney() const
@@ -150,9 +150,9 @@ enum
 constexpr uint8_t kAutosavePause = 0;
 constexpr uint8_t kDefaultNumAutosavesToKeep = 10;
 
-static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;
+static constexpr money64 kCompanyValueOnFailedObjective = 0x8000000000000001;
 
-extern const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
+extern const StringId kScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern bool gAllowEarlyCompletionInNetworkPlay;
 

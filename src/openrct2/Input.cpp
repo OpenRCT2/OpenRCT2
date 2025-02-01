@@ -12,65 +12,68 @@
 #include "Context.h"
 #include "Game.h"
 
-InputState _inputState;
-uint8_t _inputFlags;
-
-WidgetRef gHoverWidget;
-WidgetRef gPressedWidget;
-
-uint32_t _tooltipNotShownTimeout;
-
-/**
- *
- *  rct2: 0x006E3B43
- */
-void TitleHandleKeyboardInput()
+namespace OpenRCT2
 {
-    ContextInputHandleKeyboard(true);
-}
+    InputState _inputState;
+    uint8_t _inputFlags;
 
-/**
- *
- *  rct2: 0x006E3B43
- */
-void GameHandleKeyboardInput()
-{
-    ContextInputHandleKeyboard(false);
-}
+    WidgetRef gHoverWidget;
+    WidgetRef gPressedWidget;
 
-void InputSetFlag(INPUT_FLAGS flag, bool on)
-{
-    if (on)
+    uint32_t _tooltipNotShownTimeout;
+
+    /**
+     *
+     *  rct2: 0x006E3B43
+     */
+    void TitleHandleKeyboardInput()
     {
-        _inputFlags |= flag;
+        ContextInputHandleKeyboard(true);
     }
-    else
+
+    /**
+     *
+     *  rct2: 0x006E3B43
+     */
+    void GameHandleKeyboardInput()
     {
-        _inputFlags &= ~flag;
+        ContextInputHandleKeyboard(false);
     }
-}
 
-bool InputTestFlag(INPUT_FLAGS flag)
-{
-    return _inputFlags & flag;
-}
+    void InputSetFlag(INPUT_FLAGS flag, bool on)
+    {
+        if (on)
+        {
+            _inputFlags |= flag;
+        }
+        else
+        {
+            _inputFlags &= ~flag;
+        }
+    }
 
-void InputResetFlags()
-{
-    _inputFlags = 0;
-}
+    bool InputTestFlag(INPUT_FLAGS flag)
+    {
+        return _inputFlags & flag;
+    }
 
-void InputSetState(InputState state)
-{
-    _inputState = state;
-}
+    void InputResetFlags()
+    {
+        _inputFlags = 0;
+    }
 
-InputState InputGetState()
-{
-    return _inputState;
-}
+    void InputSetState(InputState state)
+    {
+        _inputState = state;
+    }
 
-void ResetTooltipNotShown()
-{
-    _tooltipNotShownTimeout = gCurrentRealTimeTicks + 50;
-}
+    InputState InputGetState()
+    {
+        return _inputState;
+    }
+
+    void ResetTooltipNotShown()
+    {
+        _tooltipNotShownTimeout = gCurrentRealTimeTicks + 50;
+    }
+} // namespace OpenRCT2

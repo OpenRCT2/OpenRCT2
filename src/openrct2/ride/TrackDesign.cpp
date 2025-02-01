@@ -186,7 +186,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    StringId warningMessage = STR_NONE;
+    StringId warningMessage = kStringIdNone;
 
     RideGetStartOfTrack(&trackElement);
 
@@ -365,9 +365,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     // x is defined here as we can start the search
     // on tile start_x, start_y but then the next row
     // must restart on 0
-    for (int32_t y = startLoc.y, x = startLoc.x; y < MAXIMUM_MAP_SIZE_BIG; y += kCoordsXYStep)
+    for (int32_t y = startLoc.y, x = startLoc.x; y < kMaximumMapSizeBig; y += kCoordsXYStep)
     {
-        for (; x < MAXIMUM_MAP_SIZE_BIG; x += kCoordsXYStep)
+        for (; x < kMaximumMapSizeBig; x += kCoordsXYStep)
         {
             auto tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
             do
@@ -467,9 +467,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
 CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
 {
     CoordsXYE tile{};
-    for (tile.y = 0; tile.y < MAXIMUM_MAP_SIZE_BIG; tile.y += kCoordsXYStep)
+    for (tile.y = 0; tile.y < kMaximumMapSizeBig; tile.y += kCoordsXYStep)
     {
-        for (tile.x = 0; tile.x < MAXIMUM_MAP_SIZE_BIG; tile.x += kCoordsXYStep)
+        for (tile.x = 0; tile.x < kMaximumMapSizeBig; tile.x += kCoordsXYStep)
         {
             tile.element = MapGetFirstElementAt(CoordsXY{ tile.x, tile.y });
             do
@@ -638,8 +638,8 @@ static void TrackDesignLoadSceneryObjects(const TrackDesign& td)
 struct TrackSceneryEntry
 {
     ObjectType Type = ObjectType::None;
-    ObjectEntryIndex Index = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex SecondaryIndex = OBJECT_ENTRY_INDEX_NULL; // For footpath railing
+    ObjectEntryIndex Index = kObjectEntryIndexNull;
+    ObjectEntryIndex SecondaryIndex = kObjectEntryIndexNull; // For footpath railing
 };
 
 static ObjectEntryIndex TrackDesignGetDefaultSurfaceIndex(bool isQueue)
@@ -662,7 +662,7 @@ static ObjectEntryIndex TrackDesignGetDefaultSurfaceIndex(bool isQueue)
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static ObjectEntryIndex TrackDesignGetDefaultRailingIndex()
@@ -675,7 +675,7 @@ static ObjectEntryIndex TrackDesignGetDefaultRailingIndex()
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(const TrackDesignSceneryElement& scenery)
@@ -708,12 +708,12 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
             result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
         }
 
-        if (result.Index == OBJECT_ENTRY_INDEX_NULL)
+        if (result.Index == kObjectEntryIndexNull)
             result.Index = TrackDesignGetDefaultSurfaceIndex(scenery.isQueue());
-        if (result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (result.SecondaryIndex == kObjectEntryIndexNull)
             result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
 
-        if (result.Index == OBJECT_ENTRY_INDEX_NULL || result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (result.Index == kObjectEntryIndexNull || result.SecondaryIndex == kObjectEntryIndexNull)
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
             return {};
@@ -1499,10 +1499,10 @@ static GameActions::Result TrackDesignPlaceMaze(
             int16_t surfaceZ = surfaceElement->GetBaseZ();
             if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
             {
-                surfaceZ += LAND_HEIGHT_STEP;
+                surfaceZ += kLandHeightStep;
                 if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                 {
-                    surfaceZ += LAND_HEIGHT_STEP;
+                    surfaceZ += kLandHeightStep;
                 }
             }
 
@@ -1667,10 +1667,10 @@ static GameActions::Result TrackDesignPlaceRide(
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
                     if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
                     {
-                        surfaceZ += LAND_HEIGHT_STEP;
+                        surfaceZ += kLandHeightStep;
                         if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                         {
-                            surfaceZ += LAND_HEIGHT_STEP;
+                            surfaceZ += kLandHeightStep;
                         }
                     }
 
@@ -1895,7 +1895,7 @@ static bool TrackDesignPlacePreview(
     ride->custom_name = {};
 
     ride->entrance_style = objManager.GetLoadedObjectEntryIndex(td.appearance.stationObjectIdentifier);
-    if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
+    if (ride->entrance_style == kObjectEntryIndexNull)
     {
         ride->entrance_style = gameState.LastEntranceStyle;
     }
@@ -1946,7 +1946,7 @@ static bool TrackDesignPlacePreview(
 
     if (res.Error == GameActions::Status::Ok)
     {
-        if (entry_index == OBJECT_ENTRY_INDEX_NULL)
+        if (entry_index == kObjectEntryIndexNull)
         {
             gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
         }

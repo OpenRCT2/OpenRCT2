@@ -22,7 +22,6 @@
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Colour.h"
-#include "../interface/Window.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -35,6 +34,7 @@
 #include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
@@ -143,7 +143,7 @@ namespace OpenRCT2::Park
                     continue;
                 if (ride.GetStation().SegmentLength < (600 << 16))
                     continue;
-                if (ride.ratings.excitement < RIDE_RATING(6, 00))
+                if (ride.ratings.excitement < MakeRideRating(6, 00))
                     continue;
 
                 // Bonus guests for good ride
@@ -339,6 +339,7 @@ namespace OpenRCT2::Park
         }
 
         const auto currentTicks = gameState.CurrentTicks;
+        auto* windowMgr = Ui::GetWindowManager();
 
         // Every ~13 seconds
         if (currentTicks % 512 == 0)
@@ -350,7 +351,7 @@ namespace OpenRCT2::Park
             gameState.SuggestedGuestMaximum = calculateSuggestedMaxGuests();
             gameState.GuestGenerationProbability = calculateGuestGenerationProbability();
 
-            WindowInvalidateByClass(WindowClass::Finances);
+            windowMgr->InvalidateByClass(WindowClass::Finances);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
             ContextBroadcastIntent(&intent);
         }
@@ -359,7 +360,7 @@ namespace OpenRCT2::Park
         if (currentTicks % 4096 == 0)
         {
             gameState.Park.Size = CalculateParkSize();
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
 
         generateGuests(gameState);
@@ -385,7 +386,8 @@ namespace OpenRCT2::Park
         if (tiles != gameState.Park.Size)
         {
             gameState.Park.Size = tiles;
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
 
         return tiles;
@@ -631,8 +633,10 @@ namespace OpenRCT2::Park
         // Invalidate relevant windows
         auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
         ContextBroadcastIntent(&intent);
-        WindowInvalidateByClass(WindowClass::ParkInformation);
-        WindowInvalidateByClass(WindowClass::Finances);
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+        windowMgr->InvalidateByClass(WindowClass::Finances);
     }
 
     uint32_t UpdateSize(GameState_t& gameState)
@@ -641,7 +645,9 @@ namespace OpenRCT2::Park
         if (tiles != gameState.Park.Size)
         {
             gameState.Park.Size = tiles;
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
         return tiles;
     }

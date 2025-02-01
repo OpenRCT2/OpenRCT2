@@ -75,7 +75,7 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
     if (_brakeSpeed > kMaximumTrackSpeed)
     {
         LOG_WARNING("Invalid speed for track, speed = %d", _brakeSpeed);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_SPEED_TOO_HIGH, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_SPEED_TOO_HIGH, kStringIdNone);
     }
 
     if (isExecuting)

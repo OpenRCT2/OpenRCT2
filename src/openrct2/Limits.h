@@ -20,8 +20,8 @@ namespace OpenRCT2::Limits
     constexpr uint16_t kMaxInversions = RCT12::Limits::kMaxInversions;
     constexpr uint16_t kMaxTrainsPerRide = 255;
     constexpr uint16_t kMaxCarsPerTrain = 255;
-    constexpr const uint16_t kMaxVehicleColours = kMaxTrainsPerRide; // this should really be kMaxTrainsPerRide *
-                                                                     // kMaxCarsPerTrain
+    constexpr uint16_t kMaxVehicleColours = kMaxTrainsPerRide; // this should really be kMaxTrainsPerRide *
+                                                               // kMaxCarsPerTrain
     // kMaxVehicleColours should be set to kMaxTrainsPerRide or kMaxCarsPerTrain, whichever is higher.
     // Sadly, using std::max() will cause compilation failures when using kMaxVehicleColours as an array size,
     // hence the usage of static asserts.

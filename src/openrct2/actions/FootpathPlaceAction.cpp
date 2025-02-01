@@ -15,7 +15,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/PathAdditionEntry.h"
@@ -219,7 +218,7 @@ GameActions::Result FootpathPlaceAction::ElementUpdateQuery(PathElement* pathEle
 
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST && !pathElement->IsGhost())
     {
-        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
     }
     return res;
 }
@@ -283,7 +282,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertQuery(GameActions::Result 
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
-        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_BUILD_FOOTPATH_HERE, kStringIdNone);
     }
 
     res.Cost = 12.00_GBP;

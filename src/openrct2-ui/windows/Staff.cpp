@@ -12,7 +12,7 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
@@ -29,8 +29,11 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/network/network.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
+#include <openrct2/peep/PeepAnimations.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -89,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 65, 17 }, STR_STAFF_STATS_TIP)                                                /* Tab 3 */
 
     // clang-format off
-    static Widget _staffOverviewWidgets[] = {
+    static constexpr Widget _staffOverviewWidgets[] = {
         MAIN_STAFF_WIDGETS,
         MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
         MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
@@ -98,11 +101,10 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
         MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
         MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    ), // Fire Button
-        kWidgetsEnd,
     };
 
     //0x9AF910
-    static Widget _staffOptionsWidgets[] = {
+    static constexpr Widget _staffOptionsWidgets[] = {
         MAIN_STAFF_WIDGETS,
         MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
         MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
@@ -110,17 +112,15 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget     ({      5, 101}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 4
         MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                            ), // Costume Dropdown
         MakeWidget     ({WW - 17,  51}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
-        kWidgetsEnd,
     };
     // clang-format on
 
     // 0x9AF9F4
-    static Widget _staffStatsWidgets[] = {
+    static constexpr Widget _staffStatsWidgets[] = {
         MAIN_STAFF_WIDGETS,
-        kWidgetsEnd,
     };
 
-    static Widget* window_staff_page_widgets[] = {
+    static constexpr std::span<const Widget> window_staff_page_widgets[] = {
         _staffOverviewWidgets,
         _staffOptionsWidgets,
         _staffStatsWidgets,
@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
     class StaffWindow final : public Window
     {
     private:
-        EntertainerCostume _availableCostumes[EnumValue(EntertainerCostume::Count)]{};
+        std::vector<AvailableCostume> _availableCostumes;
         uint16_t _tabAnimationOffset = 0;
         int32_t _pickedPeepOldX = kLocationNull;
 
@@ -137,6 +137,9 @@ namespace OpenRCT2::Ui::Windows
         void Initialise(EntityId entityId)
         {
             number = entityId.ToUnderlying();
+
+            if (GetStaff()->AssignedStaffType == StaffType::Entertainer)
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
         void OnOpen() override
@@ -147,6 +150,12 @@ namespace OpenRCT2::Ui::Windows
         void OnClose() override
         {
             CancelTools();
+        }
+
+        void OnLanguageChange() override
+        {
+            if (GetStaff()->AssignedStaffType == StaffType::Entertainer)
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -328,11 +337,6 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::Staff));
 
-            if (window_staff_page_widgets[page] != widgets)
-            {
-                widgets = window_staff_page_widgets[page];
-                InitScrollWidgets();
-            }
             SetPressedTab();
             DisableWidgets();
 
@@ -375,7 +379,9 @@ namespace OpenRCT2::Ui::Windows
                     pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;
-                        WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+
+                        auto* windowMgr = GetWindowManager();
+                        WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
                             ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
@@ -464,7 +470,8 @@ namespace OpenRCT2::Ui::Windows
                             return;
                         }
 
-                        WindowCloseByClass(WindowClass::PatrolArea);
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::PatrolArea);
 
                         auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
                             staff->Id, {}, StaffSetPatrolAreaMode::ClearAll);
@@ -475,7 +482,8 @@ namespace OpenRCT2::Ui::Windows
                         auto staffId = EntityId::FromUnderlying(number);
                         if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                         {
-                            WindowCloseByClass(WindowClass::PatrolArea);
+                            auto* windowMgr = Ui::GetWindowManager();
+                            windowMgr->CloseByClass(WindowClass::PatrolArea);
                         }
                         else
                         {
@@ -576,17 +584,15 @@ namespace OpenRCT2::Ui::Windows
             if (staff->Is<Staff>() && staff->AssignedStaffType == StaffType::Entertainer)
                 screenCoords.y++;
 
-            int32_t imageIndex = GetPeepAnimation(staff->AnimationGroup).base_image + 1;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
-            int32_t offset = 0;
-
+            const auto& anim = animObj->GetPeepAnimation(staff->AnimationGroup);
+            int32_t animFrame = 0;
             if (page == WINDOW_STAFF_OVERVIEW)
-            {
-                offset = _tabAnimationOffset;
-                offset = floor2(offset, 4);
-            }
-            imageIndex += offset;
+                animFrame = _tabAnimationOffset / 4;
 
+            auto imageIndex = anim.base_image + 1 + anim.frame_offsets[animFrame] * 4;
             GfxDrawSprite(clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
         }
 
@@ -636,12 +642,25 @@ namespace OpenRCT2::Ui::Windows
 
         void OverviewUpdate()
         {
-            _tabAnimationOffset++;
-            _tabAnimationOffset %= 24;
+            auto* staff = GetStaff();
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
-            // Update pickup animation, can only happen in this tab.
+            // Get walking animation length
+            const auto& walkingAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Walking);
+            const auto walkingAnimLength = walkingAnim.frame_offsets.size();
+
+            // Overview tab animation offset
+            _tabAnimationOffset++;
+            _tabAnimationOffset %= walkingAnimLength * 4;
+
+            // Get pickup animation length
+            const auto& pickAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging);
+            const auto pickAnimLength = pickAnim.frame_offsets.size();
+
+            // Update pickup animation frame
             picked_peep_frame++;
-            picked_peep_frame %= 48;
+            picked_peep_frame %= pickAnimLength * 4;
 
             InvalidateWidget(WIDX_TAB_1);
         }
@@ -667,7 +686,7 @@ namespace OpenRCT2::Ui::Windows
 
             gPickupPeepImage = ImageId();
 
-            auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
+            auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionItemAll);
             if (info.interactionType == ViewportInteractionItem::None)
                 return;
 
@@ -680,8 +699,11 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto baseImageId = GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging).base_image;
-            baseImageId += picked_peep_frame >> 2;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
+
+            auto& pickupAnim = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging);
+            auto baseImageId = pickupAnim.base_image + pickupAnim.frame_offsets[picked_peep_frame >> 2];
             gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
         }
 
@@ -768,19 +790,18 @@ namespace OpenRCT2::Ui::Windows
             }
 
             int32_t checkedIndex = -1;
-            // This will be moved below where Items Checked is when all
-            // of dropdown related functions are finished. This prevents
-            // the dropdown from not working on first click.
-            int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(_availableCostumes);
-            for (int32_t i = 0; i < numCostumes; i++)
+            auto numCostumes = _availableCostumes.size();
+            for (auto i = 0u; i < numCostumes; i++)
             {
-                EntertainerCostume costume = _availableCostumes[i];
-                if (staff->AnimationGroup == EntertainerCostumeToSprite(costume))
-                {
+                // TODO: rework interface to dropdown arguments so memcpy won't be needed
+                auto* nameStr = _availableCostumes[i].friendlyName.c_str();
+                std::memcpy(&gDropdownItems[i].Args, &nameStr, sizeof(const char*));
+                gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+
+                // Remember what item to check for the end of this event function
+                auto costumeIndex = _availableCostumes[i].index;
+                if (staff->AnimationObjectIndex == costumeIndex)
                     checkedIndex = i;
-                }
-                gDropdownItems[i].Args = StaffCostumeNames[EnumValue(costume)];
-                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
             }
 
             auto ddPos = ScreenCoordsXY{ ddWidget->left + windowPos.x, ddWidget->top + windowPos.y };
@@ -788,11 +809,9 @@ namespace OpenRCT2::Ui::Windows
             int32_t ddWidth = ddWidget->width() - 3;
             WindowDropdownShowTextCustomWidth(ddPos, ddHeight, colours[1], 0, Dropdown::Flag::StayOpen, numCostumes, ddWidth);
 
-            // See above note.
+            // Set selection
             if (checkedIndex != -1)
-            {
                 Dropdown::SetChecked(checkedIndex, true);
-            }
         }
 
         void OptionsOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
@@ -805,7 +824,7 @@ namespace OpenRCT2::Ui::Windows
             if (dropdownIndex == -1)
                 return;
 
-            EntertainerCostume costume = _availableCostumes[dropdownIndex];
+            ObjectEntryIndex costume = _availableCostumes[dropdownIndex].index;
             auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(number), costume);
             GameActions::Execute(&staffSetCostumeAction);
         }
@@ -829,12 +848,23 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::DropdownMenu;
                     widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Button;
 
-                    // TODO: retrieve string from object instead
-                    auto costumeType = EnumValue(staff->AnimationGroup) - EnumValue(PeepAnimationGroup::EntertainerPanda);
-                    if (costumeType >= 0)
-                        widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[costumeType];
+                    auto pos = std::find_if(_availableCostumes.begin(), _availableCostumes.end(), [staff](auto costume) {
+                        return costume.index == staff->AnimationObjectIndex;
+                    });
+
+                    if (pos != _availableCostumes.end())
+                    {
+                        auto index = std::distance(_availableCostumes.begin(), pos);
+                        auto name = _availableCostumes[index].friendlyName.c_str();
+                        widgets[WIDX_COSTUME_BOX].string = const_cast<utf8*>(name);
+                        widgets[WIDX_COSTUME_BOX].flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                    }
                     else
-                        widgets[WIDX_COSTUME_BOX].text = STR_UNKNOWN_OBJECT_TYPE;
+                    {
+                        widgets[WIDX_COSTUME_BOX].text = kStringIdEmpty;
+                        widgets[WIDX_COSTUME_BOX].flags &= ~WIDGET_FLAGS::TEXT_IS_STRING;
+                    }
+
                     break;
                 }
                 case StaffType::Handyman:
@@ -1049,7 +1079,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            for (WidgetIndex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != kWidgetsEnd.type; widgetIndex++)
+            for (WidgetIndex widgetIndex = WIDX_TAB_1; widgetIndex < widgets.size(); widgetIndex++)
             {
                 SetWidgetDisabled(widgetIndex, false);
             }
@@ -1095,7 +1125,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             pressed_widgets = 0;
             hold_down_widgets = 0;
-            widgets = window_staff_page_widgets[page];
+            SetWidgets(window_staff_page_widgets[page]);
 
             RemoveViewport();
 
@@ -1247,13 +1277,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* StaffOpen(Peep* peep)
     {
-        auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
+        auto* windowMgr = GetWindowManager();
 
+        auto w = static_cast<StaffWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
-
+        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
         if (w == nullptr)
             return nullptr;
 

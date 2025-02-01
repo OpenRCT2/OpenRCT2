@@ -8,12 +8,12 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -32,12 +32,11 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_ride_refurbish_widgets[] =
+    static constexpr Widget window_ride_refurbish_widgets[] =
     {
         WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
         MakeWidget({ 10, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_REFURBISH),
         MakeWidget({ WW - 95, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -54,7 +53,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_ride_refurbish_widgets;
+            SetWidgets(window_ride_refurbish_widgets);
             WindowInitScrollWidgets(*this);
         }
 
@@ -101,20 +100,21 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* RideRefurbishPromptOpen(const Ride& ride)
     {
-        WindowBase* w;
         RefurbishRidePromptWindow* newWindow;
 
-        w = WindowFindByClass(WindowClass::DemolishRidePrompt);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
         if (w != nullptr)
         {
             auto windowPos = w->windowPos;
-            WindowClose(*w);
-            newWindow = WindowCreate<RefurbishRidePromptWindow>(
+            windowMgr->Close(*w);
+
+            newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
                 WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
         }
         else
         {
-            newWindow = WindowCreate<RefurbishRidePromptWindow>(
+            newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
                 WindowClass::DemolishRidePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
         }
 

@@ -19,16 +19,16 @@
 using namespace OpenRCT2;
 
 // clang-format off
-static constexpr CommandLineOptionDefinition NoOptions[]
+static constexpr CommandLineOptionDefinition kNoOptions[]
 {
     kOptionTableEnd
 };
 
 static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
 
-const CommandLineCommand CommandLine::ParkInfoCommands[]{
+const CommandLineCommand CommandLine::kParkInfoCommands[]{
     // Main commands
-    DefineCommand("objects", "<savefile>", NoOptions, HandleObjectsInfo),
+    DefineCommand("objects", "<savefile>", kNoOptions, HandleObjectsInfo),
 
     kCommandTableEnd
 };

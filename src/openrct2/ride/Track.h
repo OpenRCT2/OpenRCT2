@@ -19,6 +19,7 @@
 constexpr uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
 constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
 constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
+constexpr auto kTrackDirectionDiagonalMask = 0b0100;
 
 constexpr uint8_t kMaximumTrackSpeed = 30;
 
@@ -147,6 +148,9 @@ enum class TrackGroup : uint8_t
     diagBlockBrakes,
     inclinedBrakes,
     diagBooster,
+
+    diagSlopeSteepLong,
+    diveLoop,
 
     count,
 };
@@ -603,7 +607,17 @@ namespace OpenRCT2
         Down25Brakes = 339,
         DiagBooster = 340,
 
-        Count = 341,
+        DiagFlatToUp60LongBase = 341,
+        DiagUp60ToFlatLongBase = 342,
+        DiagFlatToDown60LongBase = 343,
+        DiagDown60ToFlatLongBase = 344,
+        LeftEighthDiveLoopUpToOrthogonal = 345,
+        RightEighthDiveLoopUpToOrthogonal = 346,
+        LeftEighthDiveLoopDownToDiag = 347,
+        RightEighthDiveLoopDownToDiag = 348,
+
+        Count = 349,
+
         None = 65535,
     };
 }
@@ -725,3 +739,8 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
 bool TrackTypeHasSpeedSetting(OpenRCT2::TrackElemType trackType);
 bool TrackTypeIsHelix(OpenRCT2::TrackElemType trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
+
+constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
+{
+    return direction & kTrackDirectionDiagonalMask;
+}

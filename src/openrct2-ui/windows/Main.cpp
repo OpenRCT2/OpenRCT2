@@ -11,17 +11,17 @@
 
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Footpath.h>
 
 namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
-    static Widget _mainWidgets[] = {
+    static constexpr Widget _mainWidgets[] = {
         MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -30,9 +30,9 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            _mainWidgets[0].right = width;
-            _mainWidgets[0].bottom = height;
-            widgets = _mainWidgets;
+            SetWidgets(_mainWidgets);
+            widgets[0].right = width;
+            widgets[0].bottom = height;
 
             ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
             if (viewport != nullptr)
@@ -76,7 +76,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* MainOpen()
     {
-        return WindowCreate<MainWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->Create<MainWindow>(
             WindowClass::MainWindow, { 0, 0 }, ContextGetWidth(), ContextGetHeight(), WF_STICK_TO_BACK);
     }
 } // namespace OpenRCT2::Ui::Windows

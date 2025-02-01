@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .UpkeepCosts = { 47, 20, 80, 11, 3, 10 },
     .BuildCosts = { 72.50_GBP, 3.50_GBP, 30, },
     .DefaultPrices = { 15, 20 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -58,13 +58,13 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 00), RIDE_RATING(1, 70), RIDE_RATING(1, 65) },
+        { MakeRideRating(3, 00), MakeRideRating(1, 70), MakeRideRating(1, 65) },
         18,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000, 764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,    RIDE_RATING(0, 20), RIDE_RATING(0, 04), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,    MakeRideRating(0, 20), MakeRideRating(0, 04), 0 },
             { RatingsModifierType::BonusTrainLength,      0,    187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,    97418, 123987, 70849 },
             { RatingsModifierType::BonusAverageSpeed,     0,    291271, 436906, 0 },

@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor MonorailRTD =
     .UpkeepCosts = { 65, 20, 0, 10, 3, 10 },
     .BuildCosts = { 21.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor MonorailRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 00), RIDE_RATING(0, 00), RIDE_RATING(0, 00) },
+        { MakeRideRating(2, 00), MakeRideRating(0, 00), MakeRideRating(0, 00) },
         14,
         -1,
         false,

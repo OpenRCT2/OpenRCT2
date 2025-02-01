@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/audio/audio.h>
@@ -19,8 +19,10 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/NewsItem.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -38,11 +40,10 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_news_widgets[] = {
+    static constexpr Widget window_news_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_TAB_GEARS_0)), // settings
         MakeWidget({  4, 44}, {392, 252}, WindowWidgetType::Scroll,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -58,7 +59,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_news_widgets;
+            SetWidgets(window_news_widgets);
             WindowInitScrollWidgets(*this);
             _pressedNewsItemIndex = -1;
 
@@ -262,7 +263,10 @@ namespace OpenRCT2::Ui::Windows
                                 }
                             }
 
-                            ImageIndex imageId = GetPeepAnimation(spriteType).base_image + 1;
+                            auto& objManager = GetContext()->GetObjectManager();
+                            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+                            ImageIndex imageId = animObj->GetPeepAnimation(spriteType).base_image + 1;
                             auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
                             GfxDrawSprite(cliped_dpi, image, clipCoords);
                             break;
@@ -320,6 +324,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* NewsOpen()
     {
-        return WindowFocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
     }
 } // namespace OpenRCT2::Ui::Windows

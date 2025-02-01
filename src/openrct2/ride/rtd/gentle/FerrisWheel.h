@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 112.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(0, 60), RIDE_RATING(0, 25), RIDE_RATING(0, 30) },
+        { MakeRideRating(0, 60), MakeRideRating(0, 25), MakeRideRating(0, 30) },
         16,
         0,
         false,

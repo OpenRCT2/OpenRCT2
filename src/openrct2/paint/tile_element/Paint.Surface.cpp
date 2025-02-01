@@ -841,7 +841,7 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
         int32_t waterHeight = surfaceElement.GetWaterHeight();
         if (waterHeight > height)
         {
-            localHeight += LAND_HEIGHT_STEP;
+            localHeight += kLandHeightStep;
 
             if (waterHeight != localHeight || !(localSurfaceShape & static_cast<int32_t>(kTileSlopeDiagonalFlag)))
             {

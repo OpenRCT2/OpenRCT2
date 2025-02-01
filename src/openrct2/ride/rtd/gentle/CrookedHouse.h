@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .UpkeepCosts = { 30, 1, 0, 0, 0, 0 },
     .BuildCosts = { 32.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 6, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 22,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(2, 15), RIDE_RATING(0, 62), RIDE_RATING(0, 34) },
+        { MakeRideRating(2, 15), MakeRideRating(0, 62), MakeRideRating(0, 34) },
         5,
         7,
         false,

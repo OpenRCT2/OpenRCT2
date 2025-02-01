@@ -15,15 +15,16 @@ enum class MeasurementFormat : int32_t;
 enum class TemperatureUnit : int32_t;
 enum class CurrencyType : uint8_t;
 enum class ScaleQuality : int32_t;
-enum class Sort : int32_t;
 enum class VirtualFloorStyles : int32_t;
 enum class DrawingEngine : int32_t;
 enum class TitleMusicKind : int32_t;
 
-enum class Sort : int32_t
+enum class FileBrowserSort : int32_t
 {
     NameAscending,
     NameDescending,
+    SizeAscending,
+    SizeDescending,
     DateAscending,
     DateDescending,
 };

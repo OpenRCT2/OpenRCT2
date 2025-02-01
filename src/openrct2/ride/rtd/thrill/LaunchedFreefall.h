@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 25.00_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -55,12 +55,12 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 70), RIDE_RATING(3, 00), RIDE_RATING(3, 50) },
+        { MakeRideRating(2, 70), MakeRideRating(3, 00), MakeRideRating(3, 50) },
         16,
         -1,
         false,
         {
-            { RatingsModifierType::BonusDownwardLaunch,          0, RIDE_RATING(0, 30), RIDE_RATING(0, 65), RIDE_RATING(0, 45) },
+            { RatingsModifierType::BonusDownwardLaunch,          0, MakeRideRating(0, 30), MakeRideRating(0, 65), MakeRideRating(0, 45) },
             { RatingsModifierType::BonusLaunchedFreefallSpecial, 0, 0, 1355917, 451972 },
             { RatingsModifierType::BonusProximity,               0, 20130, 0, 0 },
             { RatingsModifierType::BonusScenery,                 0, 25098, 0, 0 },

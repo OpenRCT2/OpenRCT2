@@ -16,7 +16,6 @@
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
 #include "../core/Numerics.hpp"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
@@ -87,7 +86,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
     {
-        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_NONE, STR_LAND_NOT_FOR_SALE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, kStringIdNone, STR_LAND_NOT_FOR_SALE);
     }
 
     // Game command modified to accept selection size

@@ -111,11 +111,11 @@ namespace OpenRCT2::Config
         ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::Fahrenheit),
     });
 
-    static const auto Enum_Sort = ConfigEnum<Sort>({
-        ConfigEnumEntry<Sort>("NAME_ASCENDING", Sort::NameAscending),
-        ConfigEnumEntry<Sort>("NAME_DESCENDING", Sort::NameDescending),
-        ConfigEnumEntry<Sort>("DATE_ASCENDING", Sort::DateAscending),
-        ConfigEnumEntry<Sort>("DATE_DESCENDING", Sort::DateDescending),
+    static const auto Enum_FileBrowserSort = ConfigEnum<FileBrowserSort>({
+        ConfigEnumEntry<FileBrowserSort>("NAME_ASCENDING", FileBrowserSort::NameAscending),
+        ConfigEnumEntry<FileBrowserSort>("NAME_DESCENDING", FileBrowserSort::NameDescending),
+        ConfigEnumEntry<FileBrowserSort>("DATE_ASCENDING", FileBrowserSort::DateAscending),
+        ConfigEnumEntry<FileBrowserSort>("DATE_DESCENDING", FileBrowserSort::DateDescending),
     });
 
     static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
@@ -200,7 +200,8 @@ namespace OpenRCT2::Config
             model->DefaultInspectionInterval = reader->GetInt32("default_inspection_interval", 2);
             model->LastRunVersion = reader->GetString("last_run_version", "");
             model->InvertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
-            model->LoadSaveSort = reader->GetEnum<Sort>("load_save_sort", Sort::NameAscending, Enum_Sort);
+            model->LoadSaveSort = reader->GetEnum<FileBrowserSort>(
+                "load_save_sort", FileBrowserSort::NameAscending, Enum_FileBrowserSort);
             model->MinimizeFullscreenFocusLoss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
             model->DisableScreensaver = reader->GetBoolean("disable_screensaver", true);
 
@@ -252,6 +253,11 @@ namespace OpenRCT2::Config
             model->InvisibleSupports = reader->GetBoolean("invisible_supports", true);
 
             model->LastVersionCheckTime = reader->GetInt64("last_version_check_time", 0);
+
+            model->FileBrowserWidth = reader->GetInt32("file_browser_width", 0);
+            model->FileBrowserHeight = reader->GetInt32("file_browser_height", 0);
+            model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
+            model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
         }
     }
 
@@ -295,7 +301,7 @@ namespace OpenRCT2::Config
         writer->WriteInt32("default_inspection_interval", model->DefaultInspectionInterval);
         writer->WriteString("last_run_version", model->LastRunVersion);
         writer->WriteBoolean("invert_viewport_drag", model->InvertViewportDrag);
-        writer->WriteEnum<Sort>("load_save_sort", model->LoadSaveSort, Enum_Sort);
+        writer->WriteEnum<FileBrowserSort>("load_save_sort", model->LoadSaveSort, Enum_FileBrowserSort);
         writer->WriteBoolean("minimize_fullscreen_focus_loss", model->MinimizeFullscreenFocusLoss);
         writer->WriteBoolean("disable_screensaver", model->DisableScreensaver);
         writer->WriteBoolean("day_night_cycle", model->DayNightCycle);
@@ -338,6 +344,10 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("invisible_paths", model->InvisiblePaths);
         writer->WriteBoolean("invisible_supports", model->InvisibleSupports);
         writer->WriteInt64("last_version_check_time", model->LastVersionCheckTime);
+        writer->WriteInt32("file_browser_width", model->FileBrowserWidth);
+        writer->WriteInt32("file_browser_height", model->FileBrowserHeight);
+        writer->WriteBoolean("file_browser_show_size_column", model->FileBrowserShowSizeColumn);
+        writer->WriteBoolean("file_browser_show_date_column", model->FileBrowserShowDateColumn);
     }
 
     static void ReadInterface(IIniReader* reader)
@@ -353,6 +363,7 @@ namespace OpenRCT2::Config
             model->ToolbarShowMute = reader->GetBoolean("toolbar_show_mute", false);
             model->ToolbarShowChat = reader->GetBoolean("toolbar_show_chat", false);
             model->ToolbarShowZoom = reader->GetBoolean("toolbar_show_zoom", true);
+            model->ToolbarShowRotateAnticlockwise = reader->GetBoolean("toolbar_show_rotate_anti_clockwise", false);
             model->ConsoleSmallFont = reader->GetBoolean("console_small_font", false);
             model->CurrentThemePreset = reader->GetString("current_theme", "*RCT2");
             model->CurrentTitleSequencePreset = reader->GetString("current_title_sequence", "*OPENRCT2");
@@ -378,6 +389,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("toolbar_show_mute", model->ToolbarShowMute);
         writer->WriteBoolean("toolbar_show_chat", model->ToolbarShowChat);
         writer->WriteBoolean("toolbar_show_zoom", model->ToolbarShowZoom);
+        writer->WriteBoolean("toolbar_show_rotate_anti_clockwise", model->ToolbarShowRotateAnticlockwise);
         writer->WriteBoolean("console_small_font", model->ConsoleSmallFont);
         writer->WriteString("current_theme", model->CurrentThemePreset);
         writer->WriteString("current_title_sequence", model->CurrentTitleSequencePreset);

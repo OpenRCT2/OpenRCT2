@@ -13,8 +13,8 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2;
@@ -46,14 +46,14 @@ GameActions::Result ParkSetEntranceFeeAction::Query() const
     if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) != 0)
     {
         LOG_ERROR("Can't set park entrance fee because the park has no money");
-        return GameActions::Result(GameActions::Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, kStringIdNone);
     }
     else if (!Park::EntranceFeeUnlocked())
     {
         LOG_ERROR("Park entrance fee is locked");
-        return GameActions::Result(GameActions::Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, kStringIdNone);
     }
-    else if (_fee < 0.00_GBP || _fee > MAX_ENTRANCE_FEE)
+    else if (_fee < 0.00_GBP || _fee > kMaxEntranceFee)
     {
         LOG_ERROR("Invalid park entrance fee %d", _fee);
         return GameActions::Result(
@@ -66,6 +66,9 @@ GameActions::Result ParkSetEntranceFeeAction::Query() const
 GameActions::Result ParkSetEntranceFeeAction::Execute() const
 {
     GetGameState().Park.EntranceFee = _fee;
-    WindowInvalidateByClass(WindowClass::ParkInformation);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+
     return GameActions::Result();
 }

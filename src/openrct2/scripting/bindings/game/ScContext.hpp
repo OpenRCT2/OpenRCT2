@@ -47,7 +47,7 @@ namespace OpenRCT2::Scripting
     private:
         int32_t apiVersion_get()
         {
-            return OPENRCT2_PLUGIN_API_VERSION;
+            return kPluginApiVersion;
         }
 
         std::shared_ptr<ScConfiguration> configuration_get()
@@ -472,7 +472,7 @@ namespace OpenRCT2::Scripting
         if (d.type() == DukValue::Type::NUMBER)
         {
             img = d.as_uint();
-            if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+            if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
             {
                 img = NewIconIndex(d.as_uint());
             }

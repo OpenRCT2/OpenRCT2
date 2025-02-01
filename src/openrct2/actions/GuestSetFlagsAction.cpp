@@ -46,7 +46,7 @@ GameActions::Result GuestSetFlagsAction::Query() const
     if (peep == nullptr)
     {
         LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, kStringIdNone);
     }
     return GameActions::Result();
 }
@@ -57,7 +57,7 @@ GameActions::Result GuestSetFlagsAction::Execute() const
     if (peep == nullptr)
     {
         LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, kStringIdNone);
     }
 
     peep->PeepFlags = _newFlags;

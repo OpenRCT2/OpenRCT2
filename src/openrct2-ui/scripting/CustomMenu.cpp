@@ -16,6 +16,8 @@
     #include <openrct2-ui/UiContext.h>
     #include <openrct2-ui/input/ShortcutManager.h>
     #include <openrct2/Input.h>
+    #include <openrct2/ui/UiContext.h>
+    #include <openrct2/ui/WindowManager.h>
     #include <openrct2/world/Map.h>
 
 using namespace OpenRCT2;
@@ -257,7 +259,7 @@ namespace OpenRCT2::Scripting
                 }
                 else
                 {
-                    customTool.Filter = ViewportInteractionItemAll;
+                    customTool.Filter = kViewportInteractionItemAll;
                 }
 
                 customTool.onStart = dukValue["onStart"];
@@ -266,12 +268,14 @@ namespace OpenRCT2::Scripting
                 customTool.onUp = dukValue["onUp"];
                 customTool.onFinish = dukValue["onFinish"];
 
-                auto toolbarWindow = WindowFindByClass(WindowClass::TopToolbar);
+                auto* windowMgr = GetWindowManager();
+                auto toolbarWindow = windowMgr->FindByClass(WindowClass::TopToolbar);
                 if (toolbarWindow != nullptr)
                 {
-                    // Use a widget that does not exist on top toolbar but also make sure it isn't -1 as that
-                    // prevents abort from being called.
-                    WidgetIndex widgetIndex = -2;
+                    // Use a widget that does not exist on top toolbar but also make sure it isn't
+                    // kWidgetIndexNull, as that prevents abort from being called.
+                    // TODO: refactor this to not leech on the top toolbar.
+                    WidgetIndex widgetIndex = 0xFFFE;
                     ToolCancel();
                     ToolSet(*toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
                     ActiveCustomTool = std::move(customTool);

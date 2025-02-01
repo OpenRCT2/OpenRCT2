@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
     .UpkeepCosts = { 70, 20, 0, 8, 3, 5 },
     .BuildCosts = { 12.50_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -60,13 +60,13 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
         .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 00), RIDE_RATING(0, 50), RIDE_RATING(0, 00) },
+        { MakeRideRating(2, 00), MakeRideRating(0, 50), MakeRideRating(0, 00) },
         12,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 15), RIDE_RATING(0, 00), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 15), MakeRideRating(0, 00), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

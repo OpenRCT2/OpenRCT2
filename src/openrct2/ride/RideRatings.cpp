@@ -14,9 +14,9 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/UnitConversion.h"
-#include "../interface/Window.h"
 #include "../profiling/Profiling.h"
 #include "../scripting/ScriptEngine.h"
+#include "../ui/WindowManager.h"
 #include "../world/Map.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SurfaceElement.h"
@@ -83,7 +83,7 @@ struct ShelteredEights
 };
 
 // Amount of updates allowed per updating state on the current tick.
-// The total amount would be MaxRideRatingSubSteps * RideRatingMaxUpdateStates which
+// The total amount would be MaxRideRatingSubSteps * kRideRatingMaxUpdateStates which
 // would be currently 80, this is the worst case of sub-steps and may break out earlier.
 static constexpr size_t MaxRideRatingUpdateSubSteps = 20;
 
@@ -433,7 +433,9 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
     RideRatingsCalculate(state, *ride);
     RideRatingsCalculateValue(*ride);
 
-    WindowInvalidateByNumber(WindowClass::Ride, state.CurrentRide.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, state.CurrentRide.ToUnderlying());
+
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
@@ -1661,13 +1663,13 @@ static RatingTuple ride_ratings_get_sheltered_ratings(const Ride& ride)
     /*eax = (ride.var_11C * 30340) >> 16;*/
     /*nausea += eax;*/
 
-    if (ride.num_sheltered_sections & ShelteredSectionsBits::BankingWhileSheltered)
+    if (ride.num_sheltered_sections & ShelteredSectionsBits::kBankingWhileSheltered)
     {
         excitement += 20;
         nausea += 15;
     }
 
-    if (ride.num_sheltered_sections & ShelteredSectionsBits::RotatingWhileSheltered)
+    if (ride.num_sheltered_sections & ShelteredSectionsBits::kRotatingWhileSheltered)
     {
         excitement += 20;
         nausea += 15;
@@ -1701,27 +1703,27 @@ static RatingTuple ride_ratings_get_gforce_ratings(const Ride& ride)
 
     // Apply maximum negative G force factor
     fixed16_2dp gforce = ride.max_negative_vertical_g;
-    result.excitement += (std::clamp<fixed16_2dp>(gforce, -FIXED_2DP(2, 50), FIXED_2DP(0, 00)) * -15728) >> 16;
-    result.intensity += ((gforce - FIXED_2DP(1, 00)) * -52428) >> 16;
-    result.nausea += ((gforce - FIXED_2DP(1, 00)) * -14563) >> 16;
+    result.excitement += (std::clamp<fixed16_2dp>(gforce, -MakeRideRating(2, 50), MakeRideRating(0, 00)) * -15728) >> 16;
+    result.intensity += ((gforce - MakeRideRating(1, 00)) * -52428) >> 16;
+    result.nausea += ((gforce - MakeRideRating(1, 00)) * -14563) >> 16;
 
     // Apply lateral G force factor
-    result.excitement += (std::min<fixed16_2dp>(FIXED_2DP(1, 50), ride.max_lateral_g) * 26214) >> 16;
+    result.excitement += (std::min<fixed16_2dp>(MakeRideRating(1, 50), ride.max_lateral_g) * 26214) >> 16;
     result.intensity += ride.max_lateral_g;
     result.nausea += (ride.max_lateral_g * 21845) >> 16;
 
 // Very high lateral G force penalty
 #ifdef ORIGINAL_RATINGS
-    if (ride.max_lateral_g > FIXED_2DP(2, 80))
+    if (ride.max_lateral_g > MakeFixed16_2dp(2, 80))
     {
-        result.intensity += FIXED_2DP(3, 75);
-        result.nausea += FIXED_2DP(2, 00);
+        result.intensity += MakeRideRating(3, 75);
+        result.nausea += MakeRideRating(2, 00);
     }
-    if (ride.max_lateral_g > FIXED_2DP(3, 10))
+    if (ride.max_lateral_g > MakeFixed16_2dp(3, 10))
     {
         result.excitement /= 2;
-        result.intensity += FIXED_2DP(8, 50);
-        result.nausea += FIXED_2DP(4, 00);
+        result.intensity += MakeRideRating(8, 50);
+        result.nausea += MakeRideRating(4, 00);
     }
 #endif
 
@@ -1983,11 +1985,11 @@ static void RideRatingsApplyBonusMotionSimulatorMode(RatingTuple& ratings, const
     // Hardcoded until ride mode refactor
     if (ride.mode == RideMode::FilmThrillRiders)
     {
-        RideRatingsSet(ratings, RIDE_RATING(3, 25), RIDE_RATING(4, 10), RIDE_RATING(3, 30));
+        RideRatingsSet(ratings, MakeRideRating(3, 25), MakeRideRating(4, 10), MakeRideRating(3, 30));
     }
     else
     {
-        RideRatingsSet(ratings, RIDE_RATING(2, 90), RIDE_RATING(3, 50), RIDE_RATING(3, 00));
+        RideRatingsSet(ratings, MakeRideRating(2, 90), MakeRideRating(3, 50), MakeRideRating(3, 00));
     }
 }
 
@@ -1998,13 +2000,13 @@ static void RideRatingsApplyBonus3DCinemaMode(RatingTuple& ratings, const Ride& 
     {
         default:
         case RideMode::MouseTails3DFilm:
-            RideRatingsSet(ratings, RIDE_RATING(3, 50), RIDE_RATING(2, 40), RIDE_RATING(1, 40));
+            RideRatingsSet(ratings, MakeRideRating(3, 50), MakeRideRating(2, 40), MakeRideRating(1, 40));
             break;
         case RideMode::StormChasers3DFilm:
-            RideRatingsSet(ratings, RIDE_RATING(4, 00), RIDE_RATING(2, 65), RIDE_RATING(1, 55));
+            RideRatingsSet(ratings, MakeRideRating(4, 00), MakeRideRating(2, 65), MakeRideRating(1, 55));
             break;
         case RideMode::SpaceRaiders3DFilm:
-            RideRatingsSet(ratings, RIDE_RATING(4, 20), RIDE_RATING(2, 60), RIDE_RATING(1, 48));
+            RideRatingsSet(ratings, MakeRideRating(4, 20), MakeRideRating(2, 60), MakeRideRating(1, 48));
             break;
     }
 }
@@ -2016,13 +2018,13 @@ static void RideRatingsApplyBonusTopSpinMode(RatingTuple& ratings, const Ride& r
     {
         default:
         case RideMode::Beginners:
-            RideRatingsSet(ratings, RIDE_RATING(2, 00), RIDE_RATING(4, 80), RIDE_RATING(5, 74));
+            RideRatingsSet(ratings, MakeRideRating(2, 00), MakeRideRating(4, 80), MakeRideRating(5, 74));
             break;
         case RideMode::Intense:
-            RideRatingsSet(ratings, RIDE_RATING(3, 00), RIDE_RATING(5, 75), RIDE_RATING(6, 64));
+            RideRatingsSet(ratings, MakeRideRating(3, 00), MakeRideRating(5, 75), MakeRideRating(6, 64));
             break;
         case RideMode::Berserk:
-            RideRatingsSet(ratings, RIDE_RATING(3, 20), RIDE_RATING(6, 80), RIDE_RATING(7, 94));
+            RideRatingsSet(ratings, MakeRideRating(3, 20), MakeRideRating(6, 80), MakeRideRating(7, 94));
             break;
     }
 }
@@ -2229,29 +2231,29 @@ static void RideRatingsApplyRequirementSplashdown(RatingTuple& ratings, const Ri
 static RatingTuple ride_ratings_get_excessive_lateral_g_penalty(const Ride& ride)
 {
     RatingTuple result{};
-    if (ride.max_lateral_g > FIXED_2DP(2, 80))
+    if (ride.max_lateral_g > MakeFixed16_2dp(2, 80))
     {
-        result.intensity = FIXED_2DP(3, 75);
-        result.nausea = FIXED_2DP(2, 00);
+        result.intensity = MakeRideRating(3, 75);
+        result.nausea = MakeRideRating(2, 00);
     }
 
-    if (ride.max_lateral_g > FIXED_2DP(3, 10))
+    if (ride.max_lateral_g > MakeFixed16_2dp(3, 10))
     {
         // Remove half of the ride_ratings_get_gforce_ratings
         result.excitement = (ride.max_positive_vertical_g * 5242) >> 16;
 
         // Apply maximum negative G force factor
         fixed16_2dp gforce = ride.max_negative_vertical_g;
-        result.excitement += (std::clamp<fixed16_2dp>(gforce, -FIXED_2DP(2, 50), FIXED_2DP(0, 00)) * -15728) >> 16;
+        result.excitement += (std::clamp<fixed16_2dp>(gforce, -MakeRideRating(2, 50), MakeRideRating(0, 00)) * -15728) >> 16;
 
         // Apply lateral G force factor
-        result.excitement += (std::min<fixed16_2dp>(FIXED_2DP(1, 50), ride.max_lateral_g) * 26214) >> 16;
+        result.excitement += (std::min<fixed16_2dp>(MakeRideRating(1, 50), ride.max_lateral_g) * 26214) >> 16;
 
         // Remove half of the ride_ratings_get_gforce_ratings
         result.excitement /= 2;
         result.excitement *= -1;
-        result.intensity = FIXED_2DP(12, 25);
-        result.nausea = FIXED_2DP(6, 00);
+        result.intensity = MakeRideRating(12, 25);
+        result.nausea = MakeRideRating(6, 00);
     }
     return result;
 }

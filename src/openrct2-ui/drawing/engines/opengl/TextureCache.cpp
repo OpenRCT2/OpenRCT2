@@ -175,9 +175,9 @@ void TextureCache::CreateTextures()
     {
         // Determine width and height to use for texture atlases
         glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_atlasesTextureDimensions);
-        if (_atlasesTextureDimensions > TEXTURE_CACHE_MAX_ATLAS_SIZE)
+        if (_atlasesTextureDimensions > kTextureCacheMaxAtlasSize)
         {
-            _atlasesTextureDimensions = TEXTURE_CACHE_MAX_ATLAS_SIZE;
+            _atlasesTextureDimensions = kTextureCacheMaxAtlasSize;
         }
 
         // Determine maximum number of atlases (minimum of size and array limit)

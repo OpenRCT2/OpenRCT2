@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/SmallSceneryEntry.h"
@@ -63,20 +62,20 @@ GameActions::Result LandSetHeightAction::Query() const
     auto& gameState = GetGameState();
     if (gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, kStringIdNone);
     }
 
     StringId errorMessage = CheckParameters();
-    if (errorMessage != STR_NONE)
+    if (errorMessage != kStringIdNone)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, errorMessage);
+        return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, errorMessage);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {
-            return GameActions::Result(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK, kStringIdNone);
         }
     }
 
@@ -89,7 +88,7 @@ GameActions::Result LandSetHeightAction::Query() const
             TileElement* tileElement = CheckTreeObstructions();
             if (tileElement != nullptr)
             {
-                auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+                auto res = GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, kStringIdNone);
                 MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
@@ -101,9 +100,9 @@ GameActions::Result LandSetHeightAction::Query() const
     if (!gameState.Cheats.disableSupportLimits)
     {
         errorMessage = CheckRideSupports();
-        if (errorMessage != STR_NONE)
+        if (errorMessage != kStringIdNone)
         {
-            return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, errorMessage);
+            return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, errorMessage);
         }
     }
 
@@ -118,13 +117,13 @@ GameActions::Result LandSetHeightAction::Query() const
     auto* pathElement = MapGetFootpathElement(oldCoords);
     if (pathElement != nullptr && pathElement->AsPath()->IsLevelCrossing(oldCoords))
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, kStringIdNone);
     }
 
     TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
     if (tileElement != nullptr)
     {
-        auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+        auto res = GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, kStringIdNone);
         MapGetObstructionErrorText(tileElement, res);
         return res;
     }
@@ -212,7 +211,7 @@ StringId LandSetHeightAction::CheckParameters() const
         return STR_TOO_HIGH;
     }
 
-    return STR_NONE;
+    return kStringIdNone;
 }
 
 TileElement* LandSetHeightAction::CheckTreeObstructions() const
@@ -297,7 +296,7 @@ StringId LandSetHeightAction::CheckRideSupports() const
             return STR_SUPPORTS_CANT_BE_EXTENDED;
         }
     }
-    return STR_NONE;
+    return kStringIdNone;
 }
 
 TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const
@@ -327,7 +326,7 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
 money64 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const
 {
     money64 cost{ 0 };
-    for (Direction i : ALL_DIRECTIONS)
+    for (Direction i : kAllDirections)
     {
         int32_t cornerHeight = TileElementGetCornerHeight(surfaceElement, i);
         cornerHeight -= MapGetCornerHeight(_height, _style & kTileSlopeMask, i);

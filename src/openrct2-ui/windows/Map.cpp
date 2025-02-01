@@ -11,7 +11,7 @@
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -31,6 +31,7 @@
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
@@ -130,7 +131,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_map_widgets[] = {
+    static constexpr Widget window_map_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                ),
         MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
@@ -143,7 +144,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  4,  70}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
         MakeWidget        ({ 28,  94}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
         MakeWidget        ({110, 118}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_map_widgets;
+            SetWidgets(window_map_widgets);
 
             hold_down_widgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
                 | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
@@ -275,6 +275,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
+            auto* windowMgr = GetWindowManager();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -282,18 +283,18 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_SET_LAND_RIGHTS:
                 {
-                    if (!WindowFindByClass(WindowClass::LandRights))
+                    if (!windowMgr->FindByClass(WindowClass::LandRights))
                         ContextOpenWindow(WindowClass::LandRights);
                     else
-                        WindowCloseByClass(WindowClass::LandRights);
+                        windowMgr->CloseByClass(WindowClass::LandRights);
                     break;
                 }
                 case WIDX_BUILD_PARK_ENTRANCE:
                 {
-                    if (!WindowFindByClass(WindowClass::EditorParkEntrance))
+                    if (!windowMgr->FindByClass(WindowClass::EditorParkEntrance))
                         ContextOpenWindow(WindowClass::EditorParkEntrance);
                     else
-                        WindowCloseByClass(WindowClass::EditorParkEntrance);
+                        windowMgr->CloseByClass(WindowClass::EditorParkEntrance);
                     break;
                 }
                 case WIDX_PEOPLE_STARTING_POSITION:
@@ -354,6 +355,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
+            auto* windowMgr = GetWindowManager();
+
             // the flickering frequency is reduced by 4, compared to the original
             // it was done due to inability to reproduce original frequency
             // and decision that the original one looks too fast
@@ -362,12 +365,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Handle guest map flashing
             _flashingFlags &= ~MapFlashingFlags::FlashGuests;
-            if (WindowFindByClass(WindowClass::GuestList) != nullptr)
+            if (windowMgr->FindByClass(WindowClass::GuestList) != nullptr)
                 _flashingFlags |= MapFlashingFlags::FlashGuests;
 
             // Handle staff map flashing
             _flashingFlags &= ~MapFlashingFlags::FlashStaff;
-            if (WindowFindByClass(WindowClass::StaffList) != nullptr)
+            if (windowMgr->FindByClass(WindowClass::StaffList) != nullptr)
                 _flashingFlags |= MapFlashingFlags::FlashStaff;
 
             if (GetCurrentRotation() != _rotation)
@@ -596,18 +599,20 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
+            auto* windowMgr = GetWindowManager();
+
             // Set the pressed widgets
             pressed_widgets = 0;
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             pressed_widgets |= (1uLL << (WIDX_PEOPLE_TAB + selected_tab));
 
-            if (WindowFindByClass(WindowClass::EditorParkEntrance))
+            if (windowMgr->FindByClass(WindowClass::EditorParkEntrance))
                 pressed_widgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
 
-            if (WindowFindByClass(WindowClass::LandRights))
+            if (windowMgr->FindByClass(WindowClass::LandRights))
                 pressed_widgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
 
-            if (WindowFindByClass(WindowClass::Mapgen))
+            if (windowMgr->FindByClass(WindowClass::Mapgen))
                 pressed_widgets |= (1uLL << WIDX_MAP_GENERATOR);
 
             // Set disabled widgets
@@ -1124,7 +1129,7 @@ namespace OpenRCT2::Ui::Windows
             Formatter ft;
             ft.Add<int16_t>(kMinimumMapSizePractical);
             ft.Add<int16_t>(kMaximumMapSizePractical);
-            TextInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_NONE, STR_NONE, 4);
+            TextInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, kStringIdNone, kStringIdNone, 4);
         }
 
         CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
@@ -1247,7 +1252,8 @@ namespace OpenRCT2::Ui::Windows
     {
         try
         {
-            WindowBase* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
+            auto* windowMgr = GetWindowManager();
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
             w->selected_tab = 0;
             w->list_information_type = 0;
             return w;
@@ -1260,10 +1266,9 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowMapReset()
     {
-        WindowBase* w;
-
         // Check if window is even opened
-        w = WindowBringToFrontByClass(WindowClass::Map);
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->BringToFrontByClass(WindowClass::Map);
         if (w == nullptr)
         {
             return;

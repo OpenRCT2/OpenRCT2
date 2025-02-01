@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 99.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_EGYPTIAN,
+    .DefaultMusic = kMusicObjectEgyptian,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(2, 45), RIDE_RATING(1, 60), RIDE_RATING(2, 60) },
+        { MakeRideRating(2, 45), MakeRideRating(1, 60), MakeRideRating(2, 60) },
         16,
         0,
         false,

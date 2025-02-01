@@ -146,6 +146,9 @@ enum class SpriteGroupType : uint8_t
     Slopes42Banked67,
     Slopes42Banked90,
     Slopes60Banked22,
+    Slopes50Banked45,
+    Slopes50Banked67,
+    Slopes50Banked90,
     Corkscrews,
     RestraintAnimation,
     CurvedLiftHillUp,
@@ -153,18 +156,26 @@ enum class SpriteGroupType : uint8_t
     Count
 };
 
-static constexpr const char* SpriteGroupNames[] = {
-    "slopeFlat",          "slopes12",         "slopes25",           "slopes42",
-    "slopes60",           "slopes75",         "slopes90",           "slopesLoop",
-    "slopeInverted",      "slopes8",          "slopes16",           "slopes50",
-    "flatBanked22",       "flatBanked45",     "flatBanked67",       "flatBanked90",
-    "inlineTwists",       "slopes12Banked22", "slopes8Banked22",    "slopes25Banked22",
-    "slopes8Banked45",    "slopes16Banked22", "slopes16Banked45",   "slopes25Banked45",
-    "slopes12Banked45",   "slopes25Banked67", "slopes25Banked90",   "slopes25InlineTwists",
-    "slopes42Banked22",   "slopes42Banked45", "slopes42Banked67",   "slopes42Banked90",
-    "slopes60Banked22",   "corkscrews",       "restraintAnimation", "curvedLiftHillUp",
-    "curvedLiftHillDown",
-};
+static constexpr const char* SpriteGroupNames[] = { "slopeFlat",        "slopes12",
+                                                    "slopes25",         "slopes42",
+                                                    "slopes60",         "slopes75",
+                                                    "slopes90",         "slopesLoop",
+                                                    "slopeInverted",    "slopes8",
+                                                    "slopes16",         "slopes50",
+                                                    "flatBanked22",     "flatBanked45",
+                                                    "flatBanked67",     "flatBanked90",
+                                                    "inlineTwists",     "slopes12Banked22",
+                                                    "slopes8Banked22",  "slopes25Banked22",
+                                                    "slopes8Banked45",  "slopes16Banked22",
+                                                    "slopes16Banked45", "slopes25Banked45",
+                                                    "slopes12Banked45", "slopes25Banked67",
+                                                    "slopes25Banked90", "slopes25InlineTwists",
+                                                    "slopes42Banked22", "slopes42Banked45",
+                                                    "slopes42Banked67", "slopes42Banked90",
+                                                    "slopes60Banked22", "slopes50Banked45",
+                                                    "slopes50Banked67", "slopes50Banked90",
+                                                    "corkscrews",       "restraintAnimation",
+                                                    "curvedLiftHillUp", "curvedLiftHillDown" };
 static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::Count));
 
 struct VehicleSpriteGroup

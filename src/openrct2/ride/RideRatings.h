@@ -21,8 +21,11 @@ namespace OpenRCT2
 }
 
 // Convenience function for writing ride ratings. The result is a 16 bit signed
-// integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
-#define RIDE_RATING(whole, fraction) FIXED_2DP(whole, fraction)
+// integer. To create the ride rating 3.65 type MakeRideRating(3, 65).
+constexpr ride_rating MakeRideRating(int16_t whole, uint8_t fraction)
+{
+    return MakeFixed2dp<ride_rating>(whole, fraction);
+}
 constexpr ride_rating kRideRatingUndefined = 0xFFFFu;
 
 #pragma pack(push, 1)
@@ -61,8 +64,8 @@ struct RideRatingUpdateState
     uint16_t StationFlags;
 };
 
-static constexpr size_t RideRatingMaxUpdateStates = 4;
-using RideRatingUpdateStates = std::array<RideRatingUpdateState, RideRatingMaxUpdateStates>;
+static constexpr size_t kRideRatingMaxUpdateStates = 4;
+using RideRatingUpdateStates = std::array<RideRatingUpdateState, kRideRatingMaxUpdateStates>;
 
 void RideRatingResetUpdateStates();
 

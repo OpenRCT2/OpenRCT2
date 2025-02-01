@@ -11,7 +11,7 @@
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -21,6 +21,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -76,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
     const uint16_t kWindowHeaderWidth = 152;
 
     // clang-format off
-    static Widget _themesWidgets[] = {
+    static constexpr Widget _themesWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  0, 43}, {320,  64},               WindowWidgetType::Resize,       WindowColour::Secondary                                                                                ), // tab content panel
         MakeTab   ({  3, 17},                                                                                    STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
@@ -102,7 +103,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, 69}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
         MakeWidget({ 10, 84}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
         MakeWidget({ 10, 99}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         ), // rct1 bottom toolbar
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -263,7 +263,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = _themesWidgets;
+            SetWidgets(_themesWidgets);
 
             WindowThemesInitVars();
 
@@ -373,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
             if (frame_no >= window_themes_tab_animation_loops[_selected_tab])
                 frame_no = 0;
 
-            WidgetInvalidate(*this, WIDX_THEMES_SETTINGS_TAB + _selected_tab);
+            InvalidateWidget(WIDX_THEMES_SETTINGS_TAB + _selected_tab);
         }
 
         void OnPrepareDraw() override
@@ -386,7 +386,8 @@ namespace OpenRCT2::Ui::Windows
 
             pressed_widgets = pressedWidgets | (1 << widgetIndex);
 
-            if (WindowFindByClass(WindowClass::Dropdown) == nullptr)
+            auto* windowMgr = GetWindowManager();
+            if (windowMgr->FindByClass(WindowClass::Dropdown) == nullptr)
             {
                 _classIndex = -1;
                 _buttonIndex = -1;
@@ -484,9 +485,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseDown(WidgetIndex widgetIndex) override
         {
-            int16_t newSelectedTab;
-            int32_t num_items;
             auto widget = &widgets[widgetIndex];
+            auto* windowMgr = Ui::GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -499,7 +499,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_MISC_TAB:
                 case WIDX_THEMES_PROMPTS_TAB:
                 case WIDX_THEMES_FEATURES_TAB:
-                    newSelectedTab = widgetIndex - WIDX_THEMES_SETTINGS_TAB;
+                {
+                    auto newSelectedTab = widgetIndex - WIDX_THEMES_SETTINGS_TAB;
                     if (_selected_tab == newSelectedTab)
                         break;
                     _selected_tab = static_cast<uint8_t>(newSelectedTab);
@@ -508,9 +509,11 @@ namespace OpenRCT2::Ui::Windows
                     OnResize();
                     Invalidate();
                     break;
+                }
                 case WIDX_THEMES_PRESETS_DROPDOWN:
+                {
                     ThemeManagerLoadAvailableThemes();
-                    num_items = static_cast<int32_t>(ThemeManagerGetNumAvailableThemes());
+                    auto num_items = static_cast<int32_t>(ThemeManagerGetNumAvailableThemes());
 
                     widget--;
                     for (int32_t i = 0; i < num_items; i++)
@@ -525,53 +528,54 @@ namespace OpenRCT2::Ui::Windows
 
                     Dropdown::SetChecked(static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex()), true);
                     break;
+                }
                 case WIDX_THEMES_RCT1_RIDE_LIGHTS:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
                         ThemeSetFlags(ThemeGetFlags() ^ UITHEME_FLAG_USE_LIGHTS_RIDE);
                         ThemeSave();
-                        WindowInvalidateAll();
+                        windowMgr->InvalidateAll();
                     }
                     break;
                 case WIDX_THEMES_RCT1_PARK_LIGHTS:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
                         ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_LIGHTS_PARK));
                         ThemeSave();
-                        WindowInvalidateAll();
+                        windowMgr->InvalidateAll();
                     }
                     break;
                 case WIDX_THEMES_RCT1_SCENARIO_FONT:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
                         ThemeSetFlags(
                             ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT));
                         ThemeSave();
-                        WindowInvalidateAll();
+                        windowMgr->InvalidateAll();
                     }
                     break;
                 case WIDX_THEMES_RCT1_BOTTOM_TOOLBAR:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
                         ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
                         ThemeSave();
-                        WindowInvalidateAll();
+                        windowMgr->InvalidateAll();
                     }
             }
         }
@@ -596,7 +600,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_DELETE_BUTTON:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -606,7 +610,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_THEMES_RENAME_BUTTON:
                     if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                     {
-                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE, {});
+                        ContextShowError(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, kStringIdNone, {});
                     }
                     else
                     {
@@ -633,7 +637,10 @@ namespace OpenRCT2::Ui::Windows
                         newColour.flags = oldColour.flags;
                         ThemeSetColour(wc, _buttonIndex, newColour);
                         ColourSchemeUpdateAll();
-                        WindowInvalidateAll();
+
+                        auto* windowMgr = GetWindowManager();
+                        windowMgr->InvalidateAll();
+
                         _classIndex = -1;
                         _buttonIndex = -1;
                     }
@@ -672,12 +679,12 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            ContextShowError(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE, {});
+                            ContextShowError(STR_THEMES_ERR_NAME_ALREADY_EXISTS, kStringIdNone, {});
                         }
                     }
                     else
                     {
-                        ContextShowError(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
+                        ContextShowError(STR_ERROR_INVALID_CHARACTERS, kStringIdNone, {});
                     }
                     break;
             }
@@ -739,7 +746,7 @@ namespace OpenRCT2::Ui::Windows
                             auto colour = ThemeGetColour(wc, _buttonIndex);
                             WindowDropdownShowColour(
                                 this, &(widgets[WIDX_THEMES_COLOURBTN_MASK]), colours[1], colour.colour, true);
-                            WidgetInvalidate(*this, WIDX_THEMES_LIST);
+                            InvalidateWidget(WIDX_THEMES_LIST);
                         }
                     }
                     else if (
@@ -756,7 +763,9 @@ namespace OpenRCT2::Ui::Windows
                             colour.setFlag(ColourFlag::translucent, !colour.hasFlag(ColourFlag::translucent));
                             ThemeSetColour(wc, _buttonIndex, colour);
                             ColourSchemeUpdateAll();
-                            WindowInvalidateAll();
+
+                            auto* windowMgr = Ui::GetWindowManager();
+                            windowMgr->InvalidateAll();
                         }
                     }
                 }
@@ -970,14 +979,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ThemesOpen()
     {
-        WindowBase* window;
-
         // Check if window is already open
-        window = WindowBringToFrontByClass(WindowClass::Themes);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::Themes);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<ThemesWindow>(WindowClass::Themes, 320, 107, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<ThemesWindow>(WindowClass::Themes, 320, 107, WF_10 | WF_RESIZABLE);
 
         return window;
     }

@@ -25,7 +25,6 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.Date.h"
 #include "../network/network.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
@@ -119,11 +118,11 @@ static int32_t ride_check_if_construction_allowed(Ride& ride)
 
 static WindowBase* ride_create_or_find_construction_window(RideId rideIndex)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowManager = Ui::GetWindowManager();
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
     intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
     windowManager->BroadcastIntent(intent);
-    return WindowFindByClass(WindowClass::RideConstruction);
+    return windowManager->FindByClass(WindowClass::RideConstruction);
 }
 
 /**
@@ -238,7 +237,8 @@ void RideClearForConstruction(Ride& ride)
     ride.RemoveVehicles();
     RideClearBlockedTiles(ride);
 
-    auto w = WindowFindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    auto w = windowMgr->FindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
     if (w != nullptr)
         w->OnResize();
 }
@@ -832,13 +832,14 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     auto stationIndex = entranceElement->GetStationIndex();
 
     // Get or create construction window for ride
-    auto constructionWindow = WindowFindByClass(WindowClass::RideConstruction);
+    auto* windowMgr = Ui::GetWindowManager();
+    auto constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (constructionWindow == nullptr)
     {
         if (!RideInitialiseConstructionWindow(*ride))
             return false;
 
-        constructionWindow = WindowFindByClass(WindowClass::RideConstruction);
+        constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (constructionWindow == nullptr)
             return false;
     }
@@ -872,7 +873,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
 
         rideEntranceExitRemove.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
             gRideEntranceExitPlaceType = entranceType;
-            WindowInvalidateByClass(WindowClass::RideConstruction);
+            windowMgr->InvalidateByClass(WindowClass::RideConstruction);
 
             auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                     : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
@@ -884,7 +885,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         GameActions::Execute(&rideEntranceExitRemove);
     }
 
-    WindowInvalidateByClass(WindowClass::RideConstruction);
+    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
     return true;
 }
 
@@ -1255,7 +1256,7 @@ void Ride::ValidateStations()
         }
     }
     // determine what entrances and exits exist
-    sfl::static_vector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
+    sfl::static_vector<TileCoordsXYZD, kMaxStationLocations> locations;
     for (auto& station : stations)
     {
         if (!station.Entrance.IsNull())

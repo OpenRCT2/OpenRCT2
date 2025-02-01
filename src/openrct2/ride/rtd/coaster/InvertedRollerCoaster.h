@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor InvertedRollerCoasterRTD =
     .UpkeepCosts = { 40, 20, 80, 13, 3, 10 },
     .BuildCosts = { 65.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -64,13 +64,13 @@ constexpr RideTypeDescriptor InvertedRollerCoasterRTD =
     .RatingsData =
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 60), RIDE_RATING(2, 80), RIDE_RATING(3, 20) },
+        { MakeRideRating(3, 60), MakeRideRating(2, 80), MakeRideRating(3, 20) },
         17,
         -1,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 42), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 42), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -84,7 +84,7 @@ constexpr RideTypeDescriptor InvertedRollerCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                8366, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 30), 2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 30), 2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 29789, 55606 },
         },
     },

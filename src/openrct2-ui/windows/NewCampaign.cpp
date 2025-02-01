@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/ParkMarketingAction.h>
 #include <openrct2/core/BitSet.hpp>
@@ -22,10 +22,11 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_NONE;
+    static constexpr StringId WINDOW_TITLE = kStringIdNone;
     static constexpr int32_t WH = 109;
     static constexpr int32_t WW = 350;
 
@@ -47,15 +48,14 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_new_campaign_widgets[] = {
+    static constexpr Widget window_new_campaign_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
-        MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
+        MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, kStringIdEmpty                                  ), // ride label
+        MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, kStringIdEmpty                                  ), // ride dropdown
         MakeWidget        ({330, 25}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
         MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
-        MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
+        MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, kStringIdEmpty                                  ), // weeks (3 widgets)
         MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -160,10 +160,10 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (RideList.size() > Dropdown::ItemsMaxSize)
+            if (RideList.size() > Dropdown::kItemsMaxSize)
             {
                 std::sort(RideList.begin(), RideList.end(), RideValueCompare);
-                RideList.resize(Dropdown::ItemsMaxSize);
+                RideList.resize(Dropdown::kItemsMaxSize);
             }
 
             // Sort rides by name
@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_new_campaign_widgets;
+            SetWidgets(window_new_campaign_widgets);
             hold_down_widgets = (1uLL << WIDX_WEEKS_INCREASE_BUTTON) | (1uLL << WIDX_WEEKS_DECREASE_BUTTON);
             WindowInitScrollWidgets(*this);
         }
@@ -209,7 +209,7 @@ namespace OpenRCT2::Ui::Windows
                         if (!ShopItems.empty())
                         {
                             int32_t numItems = 0;
-                            int32_t maxSize = std::min(Dropdown::ItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
+                            int32_t maxSize = std::min(Dropdown::kItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
                             for (int32_t i = 0; i < maxSize; i++)
                             {
                                 gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
@@ -279,7 +279,8 @@ namespace OpenRCT2::Ui::Windows
                     gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            WindowCloseByClass(WindowClass::NewCampaign);
+                            auto* windowMgr = Ui::GetWindowManager();
+                            windowMgr->CloseByClass(WindowClass::NewCampaign);
                         }
                     });
                     GameActions::Execute(&gameAction);
@@ -353,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Set current number of weeks spinner (moved to paint due to required parameter)
-            widgets[WIDX_WEEKS_SPINNER].text = STR_NONE;
+            widgets[WIDX_WEEKS_SPINNER].text = kStringIdNone;
 
             // Enable / disable start button based on ride dropdown
             WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
@@ -402,16 +403,17 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* NewCampaignOpen(int16_t campaignType)
     {
-        auto w = static_cast<NewCampaignWindow*>(WindowBringToFrontByClass(WindowClass::NewCampaign));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<NewCampaignWindow*>(windowMgr->BringToFrontByClass(WindowClass::NewCampaign));
         if (w != nullptr)
         {
             if (w->GetCampaignType() == campaignType)
                 return w;
 
-            WindowClose(*w);
+            w->Close();
         }
 
-        w = WindowCreate<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
+        w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
         if (w != nullptr)
         {
             w->SetCampaign(campaignType);
@@ -421,7 +423,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowCampaignRefreshRides()
     {
-        auto w = static_cast<NewCampaignWindow*>(WindowFindByClass(WindowClass::NewCampaign));
+        auto* windowMgr = GetWindowManager();
+        auto w = static_cast<NewCampaignWindow*>(windowMgr->FindByClass(WindowClass::NewCampaign));
         if (w != nullptr)
         {
             w->RefreshRides();

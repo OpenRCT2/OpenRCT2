@@ -41,16 +41,16 @@ enum
     SPR_MAGIC_CARPET_PENDULUM_SW = 22102,
 };
 
-static constexpr int16_t MagicCarpetOscillationZ[] = {
+static constexpr int16_t kMagicCarpetOscillationZ[] = {
     -2, -1, 1, 5, 10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76, 77, 76, 74, 70, 65, 59, 52, 45, 37, 30, 23, 16, 10, 5, 1, -1,
 };
 
-static constexpr int8_t MagicCarpetOscillationXY[] = {
+static constexpr int8_t kMagicCarpetOscillationXY[] = {
     0, 6,  12,  18,  23,  27,  30,  31,  32,  31,  30,  27,  23,  18,  12,  6,
     0, -5, -11, -17, -22, -26, -29, -30, -31, -30, -29, -26, -22, -17, -11, -5,
 };
 
-static constexpr BoundBoxXY MagicCarpetBounds[] = {
+static constexpr BoundBoxXY kMagicCarpetBounds[] = {
     { { 0, 8 }, { 32, 16 } },
     { { 8, 0 }, { 16, 32 } },
     { { 0, 8 }, { 32, 16 } },
@@ -150,7 +150,7 @@ static void PaintMagicCarpetVehicle(
     if (rideEntry == nullptr)
         return;
 
-    auto directionalOffset = MagicCarpetOscillationXY[swing];
+    auto directionalOffset = kMagicCarpetOscillationXY[swing];
     switch (direction)
     {
         case 0:
@@ -166,7 +166,7 @@ static void PaintMagicCarpetVehicle(
             offset.y -= directionalOffset;
             break;
     }
-    offset.z += MagicCarpetOscillationZ[swing];
+    offset.z += kMagicCarpetOscillationZ[swing];
 
     // Vehicle
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
@@ -201,7 +201,7 @@ static void PaintMagicCarpetStructure(
         (direction & 1) ? axisOffset : 0,
         height + 7,
     };
-    BoundBoxXYZ bb = { { MagicCarpetBounds[direction].offset, height + 7 }, { MagicCarpetBounds[direction].length, 127 } };
+    BoundBoxXYZ bb = { { kMagicCarpetBounds[direction].offset, height + 7 }, { kMagicCarpetBounds[direction].length, 127 } };
 
     PaintMagicCarpetFrame(session, Plane::Back, direction, offset, bb);
     PaintMagicCarpetPendulum(session, Plane::Back, swing, direction, offset, bb);

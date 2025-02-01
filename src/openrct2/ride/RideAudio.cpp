@@ -305,7 +305,7 @@ namespace OpenRCT2::RideAudio
         }
         else
         {
-            ride.music_tune_id = TUNE_ID_NULL;
+            ride.music_tune_id = kTuneIDNull;
             ride.music_position = 0;
         }
     }
@@ -329,7 +329,7 @@ namespace OpenRCT2::RideAudio
         }
         else
         {
-            ride.music_tune_id = TUNE_ID_NULL;
+            ride.music_tune_id = kTuneIDNull;
             ride.music_position = 0;
         }
     }
@@ -353,7 +353,7 @@ namespace OpenRCT2::RideAudio
             {
                 // We had a real music channel, but it isn't playing anymore, so stop the track
                 ride.music_position = 0;
-                ride.music_tune_id = TUNE_ID_NULL;
+                ride.music_tune_id = kTuneIDNull;
             }
         }
         else

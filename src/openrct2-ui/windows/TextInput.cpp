@@ -11,13 +11,14 @@
 #include <SDL_keycode.h>
 #include <iterator>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -33,11 +34,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OKAY
     };
 
-    static Widget _textInputWidgets[] = {
-        WINDOW_SHIM(STR_NONE, WW, WH),
+    static constexpr Widget _textInputWidgets[] = {
+        WINDOW_SHIM(kStringIdNone, WW, WH),
         MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
         MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK),
-        kWidgetsEnd,
     };
 
     class TextInputWindow final : public Window
@@ -46,10 +46,10 @@ namespace OpenRCT2::Ui::Windows
         WidgetIdentifier _parentWidget{};
 
         std::string _title;
-        StringId _titleStringId = STR_NONE;
+        StringId _titleStringId = kStringIdNone;
 
         std::string _description;
-        StringId _descriptionStringId = STR_NONE;
+        StringId _descriptionStringId = kStringIdNone;
         Formatter _descriptionArgs;
 
         std::function<void(std::string_view)> _callback;
@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _textInputWidgets;
+            SetWidgets(_textInputWidgets);
             WindowInitScrollWidgets(*this);
             SetParentWindow(nullptr, 0);
         }
@@ -101,9 +101,9 @@ namespace OpenRCT2::Ui::Windows
 
         void SetTitle(std::string_view title, std::string_view description)
         {
-            _titleStringId = STR_NONE;
+            _titleStringId = kStringIdNone;
             _title = title;
-            _descriptionStringId = STR_NONE;
+            _descriptionStringId = kStringIdNone;
             _description = description;
         }
 
@@ -136,7 +136,7 @@ namespace OpenRCT2::Ui::Windows
                 auto parentWindow = GetParentWindow();
                 if (parentWindow == nullptr)
                 {
-                    WindowClose(*this);
+                    Close();
                     return;
                 }
             }
@@ -157,12 +157,12 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CLOSE:
                     ContextStopTextInput();
                     ExecuteCallback(false);
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_OKAY:
                     ContextStopTextInput();
                     ExecuteCallback(true);
-                    WindowClose(*this);
+                    Close();
             }
         }
 
@@ -182,7 +182,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_BACKGROUND].bottom = newHeight - 1;
 
             // Set window title argument
-            if (_titleStringId == STR_NONE)
+            if (_titleStringId == kStringIdNone)
             {
                 auto ft = Formatter::Common();
                 ft.Add<const char*>(_title.c_str());
@@ -203,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
 
             int32_t no_lines = 0;
 
-            if (_descriptionStringId == STR_NONE)
+            if (_descriptionStringId == kStringIdNone)
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(_description.c_str());
@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ContextStopTextInput();
             ExecuteCallback(true);
-            WindowClose(*this);
+            Close();
         }
 
         static int32_t CalculateWindowHeight(std::string_view text)
@@ -363,7 +363,8 @@ namespace OpenRCT2::Ui::Windows
 
         WindowBase* GetParentWindow() const
         {
-            return HasParentWindow() ? WindowFindByNumber(_parentWidget.window.classification, _parentWidget.window.number)
+            auto* windowMgr = GetWindowManager();
+            return HasParentWindow() ? windowMgr->FindByNumber(_parentWidget.window.classification, _parentWidget.window.number)
                                      : nullptr;
         }
     };
@@ -372,10 +373,11 @@ namespace OpenRCT2::Ui::Windows
         WindowBase* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
         const_utf8string existing_text, int32_t maxLength)
     {
-        WindowCloseByClass(WindowClass::Textinput);
+        auto* windowMgr = GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Textinput);
 
         auto height = TextInputWindow::CalculateWindowHeight(existing_text);
-        auto w = WindowCreate<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetParentWindow(call_w, call_widget);
@@ -388,8 +390,9 @@ namespace OpenRCT2::Ui::Windows
         std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
         std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
     {
+        auto* windowMgr = GetWindowManager();
         auto height = TextInputWindow::CalculateWindowHeight(initialValue);
-        auto w = WindowCreate<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetTitle(title, description);
@@ -422,7 +425,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // The window can be potentially closed within a callback, we need to check if its still alive.
-        w = WindowFindByNumber(wndClass, wndNumber);
+        auto* windowMgr = GetWindowManager();
+        w = windowMgr->FindByNumber(wndClass, wndNumber);
         if (w != nullptr)
             w->Invalidate();
     }

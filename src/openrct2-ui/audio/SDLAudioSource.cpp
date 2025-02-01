@@ -80,20 +80,20 @@ std::unique_ptr<SDLAudioSource> SDLAudioSource::ToMemory(const AudioFormat& targ
 
 static AudioCodecKind GetAudioCodec(SDL_RWops* rw)
 {
-    constexpr uint32_t MAGIC_FLAC = 0x43614C66;
-    constexpr uint32_t MAGIC_OGG = 0x5367674F;
-    constexpr uint32_t MAGIC_RIFF = 0x46464952;
+    constexpr uint32_t kMagicFLAC = 0x43614C66;
+    constexpr uint32_t kMagicOGG = 0x5367674F;
+    constexpr uint32_t kMagicRIFF = 0x46464952;
 
     auto originalPosition = SDL_RWtell(rw);
     auto magic = SDL_ReadLE32(rw);
     SDL_RWseek(rw, originalPosition, RW_SEEK_SET);
     switch (magic)
     {
-        case MAGIC_FLAC:
+        case kMagicFLAC:
             return AudioCodecKind::Flac;
-        case MAGIC_OGG:
+        case kMagicOGG:
             return AudioCodecKind::Ogg;
-        case MAGIC_RIFF:
+        case kMagicRIFF:
             return AudioCodecKind::Wav;
         default:
             return AudioCodecKind::Unknown;

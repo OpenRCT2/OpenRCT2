@@ -55,25 +55,25 @@ GameActions::Result WaterSetHeightAction::Query() const
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode
         && gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+        return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
 
     StringId errorMsg = CheckParameters();
-    if (errorMsg != STR_NONE)
+    if (errorMsg != kStringIdNone)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, errorMsg);
+        return GameActions::Result(GameActions::Status::InvalidParameters, kStringIdNone, errorMsg);
     }
 
     if (!LocationValid(_coords))
     {
-        return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, kStringIdNone, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {
-            return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
 
@@ -165,5 +165,5 @@ StringId WaterSetHeightAction::CheckParameters() const
         return STR_TOO_HIGH;
     }
 
-    return STR_NONE;
+    return kStringIdNone;
 }

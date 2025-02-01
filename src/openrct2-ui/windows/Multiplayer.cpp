@@ -10,7 +10,7 @@
 #include <cassert>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
@@ -18,6 +18,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -64,7 +65,7 @@ namespace OpenRCT2::Ui::Windows
 
     #define MAIN_MULTIPLAYER_WIDGETS \
         MakeWidget({  0,  0}, {340, 240}, WindowWidgetType::Frame,    WindowColour::Primary                                        ), /* panel / background */ \
-        MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,  STR_NONE,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
+        MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,  kStringIdNone,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
         MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,  STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
         MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                      ), /* content panel */ \
         MakeTab   ({  3, 17},                                                                STR_SHOW_SERVER_INFO_TIP), /* tab */ \
@@ -72,22 +73,20 @@ namespace OpenRCT2::Ui::Windows
         MakeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ), /* tab */ \
         MakeTab   ({ 96, 17},                                                                STR_OPTIONS_TIP         )  /* tab */
 
-    static Widget window_multiplayer_information_widgets[] = {
+    static constexpr Widget window_multiplayer_information_widgets[] = {
         MAIN_MULTIPLAYER_WIDGETS,
-        kWidgetsEnd,
     };
 
-    static Widget window_multiplayer_players_widgets[] = {
+    static constexpr Widget window_multiplayer_players_widgets[] = {
         MAIN_MULTIPLAYER_WIDGETS,
         MakeWidget({  3, 46}, {173,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PLAYER     ), // Player name
         MakeWidget({176, 46}, { 83,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_GROUP      ), // Player name
         MakeWidget({259, 46}, {100,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_LAST_ACTION), // Player name
         MakeWidget({359, 46}, { 42,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PING       ), // Player name
         MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL), // list
-        kWidgetsEnd,
     };
 
-    static Widget window_multiplayer_groups_widgets[] = {
+    static constexpr Widget window_multiplayer_groups_widgets[] = {
         MAIN_MULTIPLAYER_WIDGETS,
         MakeWidget({141, 46}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // default group
         MakeWidget({305, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
@@ -97,18 +96,16 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 72, 80}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // selected group
         MakeWidget({236, 81}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
         MakeWidget({  3, 94}, {314, 207}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL   ), // permissions list
-        kWidgetsEnd,
     };
 
-    static Widget window_multiplayer_options_widgets[] = {
+    static constexpr Widget window_multiplayer_options_widgets[] = {
         MAIN_MULTIPLAYER_WIDGETS,
         MakeWidget({3, 50}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
         MakeWidget({3, 64}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
         MakeWidget({3, 78}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP),
-        kWidgetsEnd,
     };
 
-    static Widget *window_multiplayer_page_widgets[] = {
+    static std::span<const Widget> window_multiplayer_page_widgets[] = {
         window_multiplayer_information_widgets,
         window_multiplayer_players_widgets,
         window_multiplayer_groups_widgets,
@@ -188,10 +185,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* MultiplayerOpen()
     {
         // Check if window is already open
-        WindowBase* window = WindowBringToFrontByClass(WindowClass::Multiplayer);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::Multiplayer);
         if (window == nullptr)
         {
-            window = WindowCreate<MultiplayerWindow>(
+            window = windowMgr->Create<MultiplayerWindow>(
                 WindowClass::Multiplayer, 320, 144, WF_10 | WF_RESIZABLE | WF_AUTO_POSITION);
         }
 
@@ -214,7 +212,7 @@ namespace OpenRCT2::Ui::Windows
 
         hold_down_widgets = 0;
         pressed_widgets = 0;
-        widgets = window_multiplayer_page_widgets[page];
+        SetWidgets(window_multiplayer_page_widgets[page]);
         widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
 
         OnResize();
@@ -405,15 +403,15 @@ namespace OpenRCT2::Ui::Windows
             }
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             {
-                window_multiplayer_players_widgets[WIDX_LIST].right = width - 4;
-                window_multiplayer_players_widgets[WIDX_LIST].bottom = height - 0x0F;
+                widgets[WIDX_LIST].right = width - 4;
+                widgets[WIDX_LIST].bottom = height - 0x0F;
                 WindowAlignTabs(this, WIDX_TAB1, WIDX_TAB4);
                 break;
             }
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
-                window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].right = width - 4;
-                window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].bottom = height - 0x0F;
+                widgets[WIDX_PERMISSIONS_LIST].right = width - 4;
+                widgets[WIDX_PERMISSIONS_LIST].bottom = height - 0x0F;
                 WindowAlignTabs(this, WIDX_TAB1, WIDX_TAB4);
 
                 // select other group if one is removed
@@ -530,11 +528,11 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
             gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
         }
-        if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
+        if (widget == &widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
         {
             Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetDefaultGroup()), true);
         }
-        else if (widget == &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP_DROPDOWN])
+        else if (widget == &widgets[WIDX_SELECTED_GROUP_DROPDOWN])
         {
             Dropdown::SetChecked(NetworkGetGroupIndex(_selectedGroup), true);
         }
@@ -572,8 +570,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 screenSize = { 0, NetworkGetNumPlayers() * kScrollableRowHeight };
-                int32_t i = screenSize.height - window_multiplayer_players_widgets[WIDX_LIST].bottom
-                    + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
+                int32_t i = screenSize.height - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
                 if (i < scrolls[0].contentOffsetY)
@@ -593,8 +590,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 screenSize = { 0, NetworkGetNumActions() * kScrollableRowHeight };
-                int32_t i = screenSize.height - window_multiplayer_groups_widgets[WIDX_LIST].bottom
-                    + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
+                int32_t i = screenSize.height - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
                 if (i < scrolls[0].contentOffsetY)
@@ -842,7 +838,7 @@ namespace OpenRCT2::Ui::Windows
     {
         thread_local std::string _buffer;
 
-        Widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
+        Widget* widget = &widgets[WIDX_DEFAULT_GROUP];
         int32_t group = NetworkGetGroupIndex(NetworkGetDefaultGroup());
         if (group != -1)
         {
@@ -857,8 +853,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto screenPos = windowPos
-            + ScreenCoordsXY{ window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4,
-                              window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4 };
+            + ScreenCoordsXY{ widgets[WIDX_CONTENT_PANEL].left + 4, widgets[WIDX_CONTENT_PANEL].top + 4 };
 
         DrawTextBasic(dpi, screenPos, STR_DEFAULT_GROUP, {}, { colours[2] });
 
@@ -868,7 +863,7 @@ namespace OpenRCT2::Ui::Windows
             dpi, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
-        widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
+        widget = &widgets[WIDX_SELECTED_GROUP];
         group = NetworkGetGroupIndex(_selectedGroup);
         if (group != -1)
         {

@@ -12,10 +12,10 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../interface/Window.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ui/WindowManager.h"
 
 using namespace OpenRCT2;
 
@@ -152,7 +152,7 @@ GameActions::Result RideSetSettingAction::Query() const
             if (!GetGameState().Cheats.allowArbitraryRideTypeChanges)
             {
                 LOG_ERROR("Arbitrary ride type changes not allowed.");
-                return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
             }
             break;
         default:
@@ -220,7 +220,7 @@ GameActions::Result RideSetSettingAction::Execute() const
             if (_value != ride->music)
             {
                 ride->music = _value;
-                ride->music_tune_id = TUNE_ID_NULL;
+                ride->music_tune_id = kTuneIDNull;
             }
             break;
         case RideSetSetting::LiftHillSpeed:
@@ -251,7 +251,8 @@ GameActions::Result RideSetSettingAction::Execute() const
         auto location = ride->overall_view.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
-    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
     return res;
 }
 

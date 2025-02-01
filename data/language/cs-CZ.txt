@@ -1161,17 +1161,6 @@ STR_1773    :Je povolena jen jedna fotobuňka na atrakci
 STR_1774    :Je povolen pouze jeden výtah na atrakci
 STR_1777    :Hudba atrakcí
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tygr
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Slon
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Říman
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorila
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Sněhulák
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Rytíř
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Skafandr
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandita
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Šerif
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirát
 STR_1790    :Vybrat barvu uniformy těchto zaměstnanců
 STR_1791    :{WINDOW_COLOUR_2}Barva uniformy:
 STR_1792    :Reaguje na poruchu {STRINGID}

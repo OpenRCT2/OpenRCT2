@@ -20,6 +20,7 @@
 #include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -41,7 +42,7 @@ static int32_t InGameConsoleGetLineHeight()
 
 void InGameConsole::WriteInitial()
 {
-    InteractiveConsole::WriteLine(OPENRCT2_NAME " " OPENRCT2_VERSION);
+    InteractiveConsole::WriteLine(OPENRCT2_NAME " " kOpenRCT2Version);
     InteractiveConsole::WriteLine(LanguageGetString(STR_CONSOLE_HELPER_TEXT));
     InteractiveConsole::WriteLine("");
     WritePrompt();
@@ -135,13 +136,13 @@ void InGameConsole::ClearInput()
     _consoleCurrentLine.clear();
     if (_isOpen)
     {
-        _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, CONSOLE_INPUT_SIZE);
+        _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, kConsoleInputSize);
     }
 }
 
 void InGameConsole::HistoryAdd(const u8string& src)
 {
-    if (_consoleHistory.size() >= CONSOLE_HISTORY_SIZE)
+    if (_consoleHistory.size() >= kConsoleHistorySize)
     {
         _consoleHistory.pop_front();
     }
@@ -201,7 +202,7 @@ void InGameConsole::Open()
     _isOpen = true;
     ScrollToEnd();
     RefreshCaret();
-    _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, CONSOLE_INPUT_SIZE);
+    _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, kConsoleInputSize);
 }
 
 void InGameConsole::Close()
@@ -242,9 +243,9 @@ void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat
         stringOffset = splitPos + 1;
     }
 
-    if (_consoleLines.size() > CONSOLE_MAX_LINES)
+    if (_consoleLines.size() > kConsoleMaxLines)
     {
-        const std::size_t linesToErase = _consoleLines.size() - CONSOLE_MAX_LINES;
+        const std::size_t linesToErase = _consoleLines.size() - kConsoleMaxLines;
         _consoleLines.erase(_consoleLines.begin(), _consoleLines.begin() + linesToErase);
     }
 }
@@ -323,7 +324,7 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
         INSET_RECT_FLAG_BORDER_INSET);
 
     std::string lineBuffer;
-    auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ CONSOLE_EDGE_PADDING, CONSOLE_EDGE_PADDING };
+    auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ kConsoleEdgePadding, kConsoleEdgePadding };
 
     // Draw text inside console
     for (std::size_t i = 0; i < _consoleLines.size() && i < static_cast<size_t>(maxLines); i++)
@@ -353,7 +354,7 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
         screenCoords.y += lineHeight;
     }
 
-    screenCoords.y = _consoleBottomRight.y - lineHeight - CONSOLE_EDGE_PADDING - 1;
+    screenCoords.y = _consoleBottomRight.y - lineHeight - kConsoleEdgePadding - 1;
 
     // Draw current line
     if (textColour.colour == COLOUR_BLACK)
@@ -367,11 +368,11 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
     }
 
     // Draw caret
-    if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)
+    if (_consoleCaretTicks < kConsoleCaretFlashThreshold)
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
         uint8_t caretColour = ColourMapA[textColour.colour].lightest;
-        GfxFillRect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
+        GfxFillRect(dpi, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
     }
 
     // What about border colours?

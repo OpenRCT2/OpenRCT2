@@ -10,7 +10,7 @@
 #include "../interface/Theme.h"
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/EditorObjectSelectionSession.h>
@@ -22,6 +22,7 @@
 #include <openrct2/management/Research.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -38,12 +39,11 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _editorBottomToolbarWidgets[] = {
+    static constexpr Widget kEditorBottomToolbarWidgets[] = {
         MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
         MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
         MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
         MakeWidget({442, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -52,7 +52,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
 
-        static constexpr StringId _editorStepNames[] = {
+        static constexpr StringId kEditorStepNames[] = {
             STR_EDITOR_STEP_OBJECT_SELECTION,       STR_EDITOR_STEP_LANDSCAPE_EDITOR,
             STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP, STR_EDITOR_STEP_OPTIONS_SELECTION,
             STR_EDITOR_STEP_OBJECTIVE_SELECTION,    STR_EDITOR_STEP_SAVE_SCENARIO,
@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _editorBottomToolbarWidgets;
+            SetWidgets(kEditorBottomToolbarWidgets);
 
             InitScrollWidgets();
             SetAllSceneryItemsInvented();
@@ -105,7 +105,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
                 {
-                    if (GetNumFreeEntities() != MAX_ENTITIES || GetGameState().Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)
+                    if (GetNumFreeEntities() != kMaxEntities || GetGameState().Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)
                     {
                         HidePreviousStepButton();
                     }
@@ -141,28 +141,32 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
                 if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    || (GetNumFreeEntities() == MAX_ENTITIES && !(gameState.Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)))
+                    || (GetNumFreeEntities() == kMaxEntities && !(gameState.Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)))
                 {
-                    ((this)->*(_previousButtonMouseUp[EnumValue(gameState.EditorStep)]))();
+                    ((this)->*(kPreviousButtonMouseUp[EnumValue(gameState.EditorStep)]))();
                 }
             }
             else if (widgetIndex == WIDX_NEXT_STEP_BUTTON)
             {
-                ((this)->*(_nextButtonMouseUp[EnumValue(gameState.EditorStep)]))();
+                ((this)->*(kNextButtonMouseUp[EnumValue(gameState.EditorStep)]))();
             }
         }
 
     private:
         void JumpBackToObjectSelection() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             GetGameState().EditorStep = EditorStep::ObjectSelection;
             GfxInvalidateScreen();
         }
 
         void JumpBackToLandscapeEditor() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             SetAllSceneryItemsInvented();
             WindowScenerySetDefaultPlacementConfiguration();
             GetGameState().EditorStep = EditorStep::LandscapeEditor;
@@ -172,7 +176,9 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpBackToInventionListSetUp() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             ContextOpenWindow(WindowClass::EditorInventionList);
             GetGameState().EditorStep = EditorStep::InventionsListSetUp;
             GfxInvalidateScreen();
@@ -180,7 +186,9 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpBackToOptionsSelection() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             ContextOpenWindow(WindowClass::EditorScenarioOptions);
             GetGameState().EditorStep = EditorStep::OptionsSelection;
             GfxInvalidateScreen();
@@ -208,7 +216,8 @@ namespace OpenRCT2::Ui::Windows
             auto [checksPassed, errorString] = Editor::CheckPark();
             if (checksPassed)
             {
-                WindowCloseAll();
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseAll();
                 ContextOpenWindow(WindowClass::EditorInventionList);
                 GetGameState().EditorStep = EditorStep::InventionsListSetUp;
             }
@@ -222,7 +231,9 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpForwardToOptionsSelection() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             ContextOpenWindow(WindowClass::EditorScenarioOptions);
             GetGameState().EditorStep = EditorStep::OptionsSelection;
             GfxInvalidateScreen();
@@ -230,7 +241,9 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpForwardToObjectiveSelection() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             ContextOpenWindow(WindowClass::EditorObjectiveOptions);
             GetGameState().EditorStep = EditorStep::ObjectiveSelection;
             GfxInvalidateScreen();
@@ -247,7 +260,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
             auto intent = Intent(WindowClass::Loadsave);
             intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
             intent.PutExtra(INTENT_EXTRA_PATH, gameState.ScenarioName);
@@ -296,7 +310,7 @@ namespace OpenRCT2::Ui::Windows
             int16_t textX = (widgets[WIDX_PREVIOUS_IMAGE].left + 30 + widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + windowPos.x;
             int16_t textY = widgets[WIDX_PREVIOUS_IMAGE].top + 6 + windowPos.y;
 
-            StringId stringId = _editorStepNames[EnumValue(GetGameState().EditorStep) - 1];
+            StringId stringId = kEditorStepNames[EnumValue(GetGameState().EditorStep) - 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
@@ -335,7 +349,7 @@ namespace OpenRCT2::Ui::Windows
             int16_t textX = (widgets[WIDX_NEXT_IMAGE].left + widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + windowPos.x;
             int16_t textY = widgets[WIDX_NEXT_IMAGE].top + 6 + windowPos.y;
 
-            StringId stringId = _editorStepNames[EnumValue(GetGameState().EditorStep) + 1];
+            StringId stringId = kEditorStepNames[EnumValue(GetGameState().EditorStep) + 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
@@ -349,11 +363,11 @@ namespace OpenRCT2::Ui::Windows
             int16_t stateY = height - 0x0C + windowPos.y;
             auto colour = colours[2].withFlag(ColourFlag::translucent, false).withFlag(ColourFlag::withOutline, true);
             DrawTextBasic(
-                dpi, { stateX, stateY }, _editorStepNames[EnumValue(GetGameState().EditorStep)], {},
+                dpi, { stateX, stateY }, kEditorStepNames[EnumValue(GetGameState().EditorStep)], {},
                 { colour, TextAlignment::CENTRE });
         }
 
-        static constexpr FuncPtr _previousButtonMouseUp[] = {
+        static constexpr FuncPtr kPreviousButtonMouseUp[] = {
             nullptr,
             &EditorBottomToolbarWindow::JumpBackToObjectSelection,
             &EditorBottomToolbarWindow::JumpBackToLandscapeEditor,
@@ -364,7 +378,7 @@ namespace OpenRCT2::Ui::Windows
             nullptr,
         };
 
-        static constexpr FuncPtr _nextButtonMouseUp[] = {
+        static constexpr FuncPtr kNextButtonMouseUp[] = {
             &EditorBottomToolbarWindow::JumpForwardFromObjectSelection,
             &EditorBottomToolbarWindow::JumpForwardToInventionListSetUp,
             &EditorBottomToolbarWindow::JumpForwardToOptionsSelection,
@@ -382,7 +396,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorBottomToolbarOpen()
     {
-        auto* window = WindowCreate<EditorBottomToolbarWindow>(
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->Create<EditorBottomToolbarWindow>(
             WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), ContextGetWidth(), 32,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 

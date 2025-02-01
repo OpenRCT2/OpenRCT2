@@ -9,7 +9,7 @@
 
 #include <iterator>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
@@ -19,6 +19,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/network/network.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -40,13 +41,12 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _savePromptWidgets[] = {
-        WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
-        MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, STR_EMPTY                ), // question/label
+    static constexpr Widget _savePromptWidgets[] = {
+        WINDOW_SHIM_WHITE(kStringIdNone, WW_SAVE, WH_SAVE),
+        MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, kStringIdEmpty                ), // question/label
         MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
         MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
         MakeWidget({174, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_CANCEL   ), // cancel
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -60,11 +60,10 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _quitPromptWidgets[] = {
+    static constexpr Widget _quitPromptWidgets[] = {
         WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
         MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
         MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -98,7 +97,10 @@ namespace OpenRCT2::Ui::Windows
         {
             bool canSave = !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER));
 
-            widgets = canSave ? _savePromptWidgets : _quitPromptWidgets;
+            if (canSave)
+                SetWidgets(_savePromptWidgets);
+            else
+                SetWidgets(_quitPromptWidgets);
 
             InitScrollWidgets();
 
@@ -109,7 +111,8 @@ namespace OpenRCT2::Ui::Windows
                 Audio::StopAll();
             }
 
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
 
             if (canSave)
             {
@@ -136,7 +139,8 @@ namespace OpenRCT2::Ui::Windows
                 Audio::Resume();
             }
 
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -228,11 +232,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        auto* windowMgr = GetWindowManager();
+
         // Check if window is already open
-        WindowBase* window = WindowBringToFrontByClass(WindowClass::SavePrompt);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::SavePrompt);
         if (window != nullptr)
         {
-            WindowClose(*window);
+            windowMgr->Close(*window);
         }
 
         if (EnumValue(prompt_mode) >= std::size(window_save_prompt_labels))
@@ -250,7 +256,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto savePromptWindow = std::make_unique<SavePromptWindow>(prompt_mode);
-        return WindowCreate(
+        return windowMgr->Create(
             std::move(savePromptWindow), WindowClass::SavePrompt, {}, width, height,
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
     }

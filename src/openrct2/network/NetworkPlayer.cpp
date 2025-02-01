@@ -12,7 +12,7 @@
     #include "NetworkPlayer.h"
 
     #include "../core/Money.hpp"
-    #include "../interface/Window.h"
+    #include "../ui/WindowManager.h"
     #include "NetworkPacket.h"
 
 void NetworkPlayer::SetName(std::string_view name)
@@ -39,13 +39,15 @@ void NetworkPlayer::Write(NetworkPacket& packet)
 void NetworkPlayer::IncrementNumCommands()
 {
     CommandsRan++;
-    WindowInvalidateByNumber(WindowClass::Player, Id);
+    auto* windowMgr = OpenRCT2::Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Player, Id);
 }
 
 void NetworkPlayer::AddMoneySpent(money64 cost)
 {
     MoneySpent += cost;
-    WindowInvalidateByNumber(WindowClass::Player, Id);
+    auto* windowMgr = OpenRCT2::Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Player, Id);
 }
 
 #endif

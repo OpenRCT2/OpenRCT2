@@ -37,9 +37,9 @@ namespace OpenRCT2::Ui
     {
         if (objective.Type == OBJECTIVE_BUILD_THE_BEST)
         {
-            StringId rideTypeString = STR_NONE;
+            StringId rideTypeString = kStringIdNone;
             auto rideTypeId = objective.RideId;
-            if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
+            if (rideTypeId != kRideTypeNull && rideTypeId < RIDE_TYPE_COUNT)
             {
                 rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
             }
@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui
             ft.Add<int16_t>(objective.NumGuests);
             ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, objective.Year));
             if (objective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-                ft.Add<uint16_t>(objective.MinimumExcitement);
+                ft.Add<ride_rating>(objective.MinimumExcitement);
             else
                 ft.Add<money64>(objective.Currency);
         }

@@ -14,10 +14,10 @@
 struct ResultWithMessage
 {
     bool Successful{};
-    StringId Message = STR_NONE;
+    StringId Message = kStringIdNone;
 
     bool HasMessage() const
     {
-        return Message != STR_NONE;
+        return Message != kStringIdNone;
     }
 };

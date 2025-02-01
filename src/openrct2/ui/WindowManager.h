@@ -42,7 +42,81 @@ namespace OpenRCT2::Ui
         virtual void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) = 0;
         virtual void UpdateMouseWheel() = 0;
         virtual WindowBase* GetOwner(const Viewport* viewport) = 0;
+
+        virtual WindowBase* Create(
+            std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
+            = 0;
+
+        template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
+        T* Create(
+            WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0,
+            TArgs&&... args)
+        {
+            return static_cast<T*>(Create(std::make_unique<T>(std::forward<TArgs>(args)...), cls, pos, width, height, flags));
+        }
+
+        template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
+        T* Create(WindowClass cls, int32_t width, int32_t height, uint32_t flags, TArgs&&... args)
+        {
+            return static_cast<T*>(
+                Create(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, width, height, flags | WF_AUTO_POSITION));
+        }
+
+        template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
+        T* FocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+        {
+            auto* w = BringToFrontByClass(cls);
+            if (w == nullptr)
+            {
+                w = Create<T>(cls, pos, width, height, flags);
+            }
+            return static_cast<T*>(w);
+        }
+
+        template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
+        T* FocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
+        {
+            auto* w = BringToFrontByClass(cls);
+            if (w == nullptr)
+            {
+                w = Create<T>(cls, width, height, flags);
+            }
+            return static_cast<T*>(w);
+        }
+
+        virtual void Close(WindowBase& window) = 0;
+        virtual void CloseSurplus(int32_t cap, WindowClass avoid_classification) = 0;
+        virtual void CloseByClass(WindowClass cls) = 0;
+        virtual void CloseByNumber(WindowClass cls, rct_windownumber number) = 0;
+        virtual void CloseByNumber(WindowClass cls, EntityId number) = 0;
+        virtual void CloseTop() = 0;
+        virtual void CloseAll() = 0;
+        virtual void CloseAllExceptClass(WindowClass cls) = 0;
+        virtual void CloseAllExceptFlags(uint16_t flags) = 0;
+        virtual void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) = 0;
+        virtual void CloseConstructionWindows() = 0;
+
+        virtual WindowBase* FindByClass(WindowClass cls) = 0;
+        virtual WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) = 0;
+        virtual WindowBase* FindByNumber(WindowClass cls, EntityId id) = 0;
+        virtual WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) = 0;
+        virtual WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) = 0;
+
+        virtual void InvalidateByClass(WindowClass cls) = 0;
+        virtual void InvalidateByNumber(WindowClass cls, rct_windownumber number) = 0;
+        virtual void InvalidateByNumber(WindowClass cls, EntityId id) = 0;
+        virtual void InvalidateAll() = 0;
+        virtual void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) = 0;
+        virtual void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) = 0;
+        virtual void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) = 0;
+
+        virtual WindowBase* BringToFront(WindowBase& w) = 0;
+        virtual WindowBase* BringToFrontByClass(WindowClass cls) = 0;
+        virtual WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) = 0;
+        virtual WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) = 0;
     };
 
     std::unique_ptr<IWindowManager> CreateDummyWindowManager();
+
+    IWindowManager* GetWindowManager();
 } // namespace OpenRCT2::Ui

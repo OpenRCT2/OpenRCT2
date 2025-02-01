@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 22.50_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 80), RIDE_RATING(3, 50), RIDE_RATING(3, 50) },
+        { MakeRideRating(2, 80), MakeRideRating(3, 50), MakeRideRating(3, 50) },
         24,
         -1,
         false,

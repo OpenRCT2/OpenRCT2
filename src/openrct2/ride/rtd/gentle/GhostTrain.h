@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
     .UpkeepCosts = { 80, 20, 0, 8, 3, 5 },
     .BuildCosts = { 13.00_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_HORROR,
+    .DefaultMusic = kMusicObjectHorror,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -61,13 +61,13 @@ constexpr RideTypeDescriptor GhostTrainRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 00), RIDE_RATING(0, 20), RIDE_RATING(0, 03) },
+        { MakeRideRating(2, 00), MakeRideRating(0, 20), MakeRideRating(0, 03) },
         12,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 15), RIDE_RATING(0, 00), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 15), MakeRideRating(0, 00), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
             { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },

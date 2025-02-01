@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor MazeRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 27.50_GBP, 1.00_GBP, 8, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor MazeRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 00) },
+        { MakeRideRating(1, 30), MakeRideRating(0, 50), MakeRideRating(0, 00) },
         8,
         0,
         false,

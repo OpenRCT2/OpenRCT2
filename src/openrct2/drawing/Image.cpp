@@ -21,8 +21,8 @@
 
 using namespace OpenRCT2;
 
-constexpr uint32_t BASE_IMAGE_ID = SPR_IMAGE_LIST_BEGIN;
-constexpr uint32_t MAX_IMAGES = SPR_IMAGE_LIST_END - BASE_IMAGE_ID;
+constexpr uint32_t kBaseImageID = SPR_IMAGE_LIST_BEGIN;
+constexpr uint32_t kMaxImages = SPR_IMAGE_LIST_END - kBaseImageID;
 
 static bool _initialised = false;
 static std::list<ImageList> _freeLists;
@@ -65,7 +65,7 @@ static bool AllocatedListRemove(uint32_t baseImageId, uint32_t count)
 
 static uint32_t GetNumFreeImagesRemaining()
 {
-    return MAX_IMAGES - _allocatedImageCount;
+    return kMaxImages - _allocatedImageCount;
 }
 
 static void InitialiseImageList()
@@ -73,7 +73,7 @@ static void InitialiseImageList()
     Guard::Assert(!_initialised, GUARD_LINE);
 
     _freeLists.clear();
-    _freeLists.push_back({ BASE_IMAGE_ID, MAX_IMAGES });
+    _freeLists.push_back({ kBaseImageID, kMaxImages });
 #ifdef DEBUG_LEVEL_1
     _allocatedLists.clear();
 #endif
@@ -129,7 +129,7 @@ static uint32_t TryAllocateImageList(uint32_t count)
             return imageList.BaseId;
         }
     }
-    return ImageIndexUndefined;
+    return kImageIndexUndefined;
 }
 
 static uint32_t AllocateImageList(uint32_t count)
@@ -141,12 +141,12 @@ static uint32_t AllocateImageList(uint32_t count)
         InitialiseImageList();
     }
 
-    uint32_t baseImageId = ImageIndexUndefined;
+    uint32_t baseImageId = kImageIndexUndefined;
     uint32_t freeImagesRemaining = GetNumFreeImagesRemaining();
     if (freeImagesRemaining >= count)
     {
         baseImageId = TryAllocateImageList(count);
-        if (baseImageId == ImageIndexUndefined)
+        if (baseImageId == kImageIndexUndefined)
         {
             // Defragment and try again
             MergeFreeLists();
@@ -159,7 +159,7 @@ static uint32_t AllocateImageList(uint32_t count)
 static void FreeImageList(uint32_t baseImageId, uint32_t count)
 {
     Guard::Assert(_initialised, GUARD_LINE);
-    Guard::Assert(baseImageId >= BASE_IMAGE_ID, GUARD_LINE);
+    Guard::Assert(baseImageId >= kBaseImageID, GUARD_LINE);
 
 #ifdef DEBUG_LEVEL_1
     if (!AllocatedListRemove(baseImageId, count))
@@ -192,14 +192,14 @@ uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count)
 {
     if (count == 0 || gOpenRCT2NoGraphics)
     {
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     }
 
     uint32_t baseImageId = AllocateImageList(count);
-    if (baseImageId == ImageIndexUndefined)
+    if (baseImageId == kImageIndexUndefined)
     {
         LOG_ERROR("Reached maximum image limit.");
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     }
 
     uint32_t imageId = baseImageId;
@@ -215,7 +215,7 @@ uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count)
 
 void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count)
 {
-    if (baseImageId != 0 && baseImageId != ImageIndexUndefined)
+    if (baseImageId != 0 && baseImageId != kImageIndexUndefined)
     {
         // Zero the G1 elements so we don't have invalid pointers
         // and data lying about
@@ -250,7 +250,7 @@ size_t ImageListGetUsedCount()
 
 size_t ImageListGetMaximum()
 {
-    return MAX_IMAGES;
+    return kMaxImages;
 }
 
 const std::list<ImageList>& GetAvailableAllocationRanges()

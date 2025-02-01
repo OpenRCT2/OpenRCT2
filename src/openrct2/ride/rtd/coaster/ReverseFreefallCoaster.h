@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .UpkeepCosts = { 80, 20, 0, 0, 0, 10 },
     .BuildCosts = { 100.00_GBP, 0.00_GBP, 45, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -58,13 +58,13 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 00), RIDE_RATING(3, 20), RIDE_RATING(2, 80) },
+        { MakeRideRating(2, 00), MakeRideRating(3, 20), MakeRideRating(2, 80) },
         25,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 60), RIDE_RATING(0, 15), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 60), MakeRideRating(0, 15), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                436906, 436906, 320398 },
             { RatingsModifierType::BonusGForces,          0,                24576, 41704, 59578 },
             { RatingsModifierType::BonusSheltered,        0,                12850, 28398, 11702 },

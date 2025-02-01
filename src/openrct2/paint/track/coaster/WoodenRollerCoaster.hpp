@@ -26,9 +26,9 @@ static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 struct WoodenTrackSection
 {
     ImageIndex track;
-    ImageIndex handrail = ImageIndexUndefined;
-    ImageIndex frontTrack = ImageIndexUndefined;
-    ImageIndex frontHandrail = ImageIndexUndefined;
+    ImageIndex handrail = kImageIndexUndefined;
+    ImageIndex frontTrack = kImageIndexUndefined;
+    ImageIndex frontHandrail = kImageIndexUndefined;
 };
 
 struct SpriteBoundBox2
@@ -40,7 +40,7 @@ struct SpriteBoundBox2
 };
 
 // Magic number 4 refers to the number of track blocks in a diagonal track element
-static constexpr const WoodenSupportSubType WoodenRCDiagonalSupports[4][kNumOrthogonalDirections] = {
+static constexpr const WoodenSupportSubType kWoodenRCDiagonalSupports[4][kNumOrthogonalDirections] = {
     { WoodenSupportSubType::Null, WoodenSupportSubType::Null, WoodenSupportSubType::Null,
       WoodenSupportSubType::Null }, // sequence 0
     { WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner2,
@@ -108,7 +108,7 @@ static void WoodenRCTrackStraightBankTrack(PaintSession& session, uint8_t direct
     WoodenRCTrackPaint<isClassic>(
         session, direction, imageIds[direction].track, imageIds[direction].handrail, { 0, 0, height },
         { { 0, 3, height }, { 32, 25, 2 } });
-    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+    if (imageIds[direction].frontTrack != kImageIndexUndefined)
     {
         WoodenRCTrackPaint<isClassic>(
             session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail, { 0, 0, height },
@@ -194,7 +194,7 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -210,7 +210,7 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -231,7 +231,7 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -247,7 +247,7 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -268,7 +268,7 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -284,7 +284,7 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -323,7 +323,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 2, height }, { 32, 32, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -339,7 +339,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -360,7 +360,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -376,7 +376,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -397,7 +397,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -413,7 +413,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -434,7 +434,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
@@ -450,7 +450,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
@@ -471,7 +471,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 2, 0, height }, { 32, 32, 2 } });
-                    if (imageIds[4][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
@@ -487,7 +487,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 2 } });
-                    if (imageIds[4][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
@@ -549,7 +549,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -569,7 +569,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -635,7 +635,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -651,7 +651,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -683,7 +683,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -703,7 +703,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -747,7 +747,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][3].track, imageIds[0][3].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[0][3].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][3].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][3].frontTrack, imageIds[0][3].frontHandrail, { 0, 0, height },
@@ -767,7 +767,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][1].track, imageIds[0][1].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[0][1].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][1].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][1].frontTrack, imageIds[0][1].frontHandrail, { 0, 0, height },
@@ -840,7 +840,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][3].track, imageIds[1][3].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[1][3].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][3].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][3].frontTrack, imageIds[1][3].frontHandrail, { 0, 0, height },
@@ -856,7 +856,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][1].track, imageIds[1][1].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[1][1].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][1].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][1].frontTrack, imageIds[1][1].frontHandrail, { 0, 0, height },
@@ -886,7 +886,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][3].track, imageIds[2][3].handrail, { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
-                    if (imageIds[2][3].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][3].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][3].frontTrack, imageIds[2][3].frontHandrail, { 0, 0, height },
@@ -906,7 +906,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][1].track, imageIds[2][1].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[2][1].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][1].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][1].frontTrack, imageIds[2][1].frontHandrail, { 0, 0, height },
@@ -963,7 +963,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -983,7 +983,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -1051,7 +1051,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -1067,7 +1067,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -1097,7 +1097,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -1117,7 +1117,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -1175,7 +1175,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][2].track, imageIds[0][2].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[0][2].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][2].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][2].frontTrack, imageIds[0][2].frontHandrail, { 0, 0, height },
@@ -1195,7 +1195,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][0].track, imageIds[0][0].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[0][0].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][0].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][0].frontTrack, imageIds[0][0].frontHandrail, { 0, 0, height },
@@ -1266,7 +1266,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][2].track, imageIds[1][2].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[1][2].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][2].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][2].frontTrack, imageIds[1][2].frontHandrail, { 0, 0, height },
@@ -1282,7 +1282,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][0].track, imageIds[1][0].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[1][0].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][0].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][0].frontTrack, imageIds[1][0].frontHandrail, { 0, 0, height },
@@ -1314,7 +1314,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][2].track, imageIds[2][2].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[2][2].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][2].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][2].frontTrack, imageIds[2][2].frontHandrail, { 0, 0, height },
@@ -1334,7 +1334,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][0].track, imageIds[2][0].handrail, { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
-                    if (imageIds[2][0].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][0].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][0].frontTrack, imageIds[2][0].frontHandrail, { 0, 0, height },
@@ -1391,7 +1391,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -1411,7 +1411,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -1466,7 +1466,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -1486,7 +1486,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -1520,7 +1520,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -1540,7 +1540,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -1591,7 +1591,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
@@ -1611,7 +1611,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
@@ -1645,7 +1645,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 2 } });
-                    if (imageIds[4][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
@@ -1665,7 +1665,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 2 } });
-                    if (imageIds[4][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
@@ -1709,7 +1709,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][3].track, imageIds[0][3].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[0][3].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][3].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][3].frontTrack, imageIds[0][3].frontHandrail, { 0, 0, height },
@@ -1729,7 +1729,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][1].track, imageIds[0][1].handrail, { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 2 } });
-                    if (imageIds[0][1].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][1].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][1].frontTrack, imageIds[0][1].frontHandrail, { 0, 0, height },
@@ -1788,7 +1788,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][3].track, imageIds[1][3].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[1][3].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][3].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][3].frontTrack, imageIds[1][3].frontHandrail, { 0, 0, height },
@@ -1808,7 +1808,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][1].track, imageIds[1][1].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[1][1].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][1].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][1].frontTrack, imageIds[1][1].frontHandrail, { 0, 0, height },
@@ -1842,7 +1842,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][3].track, imageIds[2][3].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[2][3].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][3].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][3].frontTrack, imageIds[2][3].frontHandrail, { 0, 0, height },
@@ -1862,7 +1862,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][1].track, imageIds[2][1].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[2][1].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][1].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][1].frontTrack, imageIds[2][1].frontHandrail, { 0, 0, height },
@@ -1911,7 +1911,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][3].track, imageIds[3][3].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    if (imageIds[3][3].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][3].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][3].frontTrack, imageIds[3][3].frontHandrail, { 0, 0, height },
@@ -1931,7 +1931,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][1].track, imageIds[3][1].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 2 } });
-                    if (imageIds[3][1].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][1].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][1].frontTrack, imageIds[3][1].frontHandrail, { 0, 0, height },
@@ -1965,7 +1965,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][3].track, imageIds[4][3].handrail, { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
-                    if (imageIds[4][3].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][3].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][3].frontTrack, imageIds[4][3].frontHandrail, { 0, 0, height },
@@ -1985,7 +1985,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][1].track, imageIds[4][1].handrail, { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 2 } });
-                    if (imageIds[4][1].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][1].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][1].frontTrack, imageIds[4][1].frontHandrail, { 0, 0, height },
@@ -2042,7 +2042,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -2062,7 +2062,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -2116,7 +2116,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -2136,7 +2136,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -2170,7 +2170,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -2190,7 +2190,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -2239,7 +2239,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
@@ -2259,7 +2259,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
@@ -2293,7 +2293,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 2 } });
-                    if (imageIds[4][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
@@ -2313,7 +2313,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 2 } });
-                    if (imageIds[4][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
@@ -2371,7 +2371,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][2].track, imageIds[0][2].handrail, { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 2 } });
-                    if (imageIds[0][2].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][2].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][2].frontTrack, imageIds[0][2].frontHandrail, { 0, 0, height },
@@ -2391,7 +2391,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][0].track, imageIds[0][0].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[0][0].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][0].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][0].frontTrack, imageIds[0][0].frontHandrail, { 0, 0, height },
@@ -2451,7 +2451,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][2].track, imageIds[1][2].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[1][2].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][2].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][2].frontTrack, imageIds[1][2].frontHandrail, { 0, 0, height },
@@ -2471,7 +2471,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][0].track, imageIds[1][0].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 2 } });
-                    if (imageIds[1][0].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][0].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][0].frontTrack, imageIds[1][0].frontHandrail, { 0, 0, height },
@@ -2505,7 +2505,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][2].track, imageIds[2][2].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[2][2].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][2].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][2].frontTrack, imageIds[2][2].frontHandrail, { 0, 0, height },
@@ -2525,7 +2525,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][0].track, imageIds[2][0].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[2][0].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][0].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][0].frontTrack, imageIds[2][0].frontHandrail, { 0, 0, height },
@@ -2576,7 +2576,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][2].track, imageIds[3][2].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 2 } });
-                    if (imageIds[3][2].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][2].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][2].frontTrack, imageIds[3][2].frontHandrail, { 0, 0, height },
@@ -2596,7 +2596,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][0].track, imageIds[3][0].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    if (imageIds[3][0].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][0].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][0].frontTrack, imageIds[3][0].frontHandrail, { 0, 0, height },
@@ -2630,7 +2630,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][2].track, imageIds[4][2].handrail, { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 2 } });
-                    if (imageIds[4][2].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][2].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][2].frontTrack, imageIds[4][2].frontHandrail, { 0, 0, height },
@@ -2650,7 +2650,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][0].track, imageIds[4][0].handrail, { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 2 } });
-                    if (imageIds[4][0].frontTrack != ImageIndexUndefined)
+                    if (imageIds[4][0].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[4][0].frontTrack, imageIds[4][0].frontHandrail, { 0, 0, height },
@@ -2707,7 +2707,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -2727,7 +2727,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -2772,7 +2772,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -2785,7 +2785,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -2798,7 +2798,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -2838,7 +2838,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -2858,7 +2858,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -2903,7 +2903,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -2916,7 +2916,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -2929,7 +2929,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -2986,7 +2986,7 @@ static void WoodenRCTrackDiagFlatToBank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 2 } });
-                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
@@ -3002,7 +3002,7 @@ static void WoodenRCTrackDiagFlatToBank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 2 } });
-                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
@@ -3054,7 +3054,7 @@ static void WoodenRCTrackDiagBankTo25DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 2 } });
-                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
@@ -3070,7 +3070,7 @@ static void WoodenRCTrackDiagBankTo25DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 2 } });
-                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
@@ -3122,7 +3122,7 @@ static void WoodenRCTrackDiagUp25ToBank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 2 } });
-                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
@@ -3138,7 +3138,7 @@ static void WoodenRCTrackDiagUp25ToBank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 2 } });
-                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
@@ -3190,7 +3190,7 @@ static void WoodenRCTrackDiagLeftBank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 2 } });
-                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
@@ -3206,7 +3206,7 @@ static void WoodenRCTrackDiagLeftBank(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 2 } });
-                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
@@ -3253,7 +3253,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -3269,7 +3269,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -3294,7 +3294,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 34, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -3310,7 +3310,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -3331,7 +3331,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -3347,7 +3347,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -3368,7 +3368,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
@@ -3384,7 +3384,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
@@ -3416,7 +3416,7 @@ static void WoodenRCTrackRightEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -3432,7 +3432,7 @@ static void WoodenRCTrackRightEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 32, 2 } });
-                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[0][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
@@ -3457,7 +3457,7 @@ static void WoodenRCTrackRightEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -3473,7 +3473,7 @@ static void WoodenRCTrackRightEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 34, 16, 2 } });
-                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[1][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
@@ -3494,7 +3494,7 @@ static void WoodenRCTrackRightEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -3510,7 +3510,7 @@ static void WoodenRCTrackRightEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 4, 4, height }, { 28, 28, 2 } });
-                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[2][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
@@ -3531,7 +3531,7 @@ static void WoodenRCTrackRightEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
@@ -3547,7 +3547,7 @@ static void WoodenRCTrackRightEighthBankToDiag(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 2 } });
-                    if (imageIds[3][direction].frontTrack != ImageIndexUndefined)
+                    if (imageIds[3][direction].frontTrack != kImageIndexUndefined)
                     {
                         WoodenRCTrackPaint<isClassic>(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,

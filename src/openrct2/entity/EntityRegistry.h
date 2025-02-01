@@ -27,7 +27,7 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-constexpr uint16_t MAX_ENTITIES = 65535;
+constexpr uint16_t kMaxEntities = 65535;
 
 EntityBase* GetEntity(EntityId sprite_idx);
 

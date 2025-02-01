@@ -50,6 +50,11 @@ struct ScreenSize
     {
         return ScreenSize{ width * scalar, height * scalar };
     }
+
+    constexpr ScreenSize operator/(int32_t scalar) const
+    {
+        return ScreenSize{ width / scalar, height / scalar };
+    }
 };
 
 struct ScreenCoordsXY
@@ -535,9 +540,9 @@ const Direction INVALID_DIRECTION = 0xFF;
 
 /**
  * Array of all valid cardinal directions, to make it easy to write range-based for loops like:
- *   for (Direction d : ALL_DIRECTIONS)
+ *   for (Direction d : kAllDirections)
  */
-constexpr Direction ALL_DIRECTIONS[] = {
+constexpr Direction kAllDirections[] = {
     0,
     1,
     2,

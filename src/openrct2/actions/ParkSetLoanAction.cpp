@@ -14,7 +14,6 @@
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
@@ -71,7 +70,7 @@ GameActions::Result ParkSetLoanAction::Execute() const
     gameState.Cash -= (gameState.BankLoan - _value);
     gameState.BankLoan = _value;
 
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
     return GameActions::Result();
 }

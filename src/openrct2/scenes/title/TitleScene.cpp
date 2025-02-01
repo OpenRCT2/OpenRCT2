@@ -21,12 +21,12 @@
 #include "../../drawing/Text.h"
 #include "../../interface/Screenshot.h"
 #include "../../interface/Viewport.h"
-#include "../../interface/Window.h"
 #include "../../network/NetworkBase.h"
 #include "../../network/network.h"
 #include "../../scenario/Scenario.h"
 #include "../../scenario/ScenarioRepository.h"
 #include "../../ui/UiContext.h"
+#include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
 #include "../../windows/Intent.h"
 #include "TitleSequence.h"
@@ -106,7 +106,7 @@ void TitleScene::Load()
 #ifndef DISABLE_NETWORK
     GetContext().GetNetwork().Close();
 #endif
-    gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+    gameStateInitAll(GetGameState(), kDefaultMapSize);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
 
@@ -184,7 +184,9 @@ void TitleScene::ChangePresetSequence(size_t preset)
 
     if (!_previewingSequence)
         _currentSequence = preset;
-    WindowInvalidateAll();
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateAll();
 }
 
 /**
@@ -318,7 +320,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
         {
-            gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+            gameStateInitAll(GetGameState(), kDefaultMapSize);
             GameNotifyMapChanged();
         }
         return false;

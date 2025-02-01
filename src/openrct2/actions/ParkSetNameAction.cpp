@@ -16,7 +16,6 @@
 #include "../drawing/Drawing.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"

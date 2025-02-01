@@ -90,7 +90,7 @@ namespace OpenRCT2
         std::string ScenarioFileName;
 
         std::vector<Banner> Banners;
-        Entity_t Entities[MAX_ENTITIES]{};
+        Entity_t Entities[kMaxEntities]{};
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
         std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> Rides{};
         size_t RidesEndOfUsedRange{};

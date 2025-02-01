@@ -87,10 +87,10 @@ enum
     CMDLINE_TYPE_STRING,
 };
 
-constexpr char NAC = '\0';
+constexpr char kNAC = '\0';
 
 constexpr CommandLineExample kExampleTableEnd = CommandLineExample{ nullptr, nullptr };
-constexpr CommandLineOptionDefinition kOptionTableEnd = CommandLineOptionDefinition{ UINT8_MAX, nullptr, NAC, nullptr,
+constexpr CommandLineOptionDefinition kOptionTableEnd = CommandLineOptionDefinition{ UINT8_MAX, nullptr, kNAC, nullptr,
                                                                                      nullptr };
 constexpr CommandLineCommand kCommandTableEnd = CommandLineCommand{ nullptr, nullptr, nullptr, nullptr, nullptr };
 
@@ -107,13 +107,13 @@ consteval CommandLineCommand DefineSubCommand(const char* name, const CommandLin
 
 namespace OpenRCT2::CommandLine
 {
-    extern const CommandLineCommand RootCommands[];
-    extern const CommandLineCommand ScreenshotCommands[];
-    extern const CommandLineCommand SpriteCommands[];
-    extern const CommandLineCommand SimulateCommands[];
-    extern const CommandLineCommand ParkInfoCommands[];
+    extern const CommandLineCommand kRootCommands[];
+    extern const CommandLineCommand kScreenshotCommands[];
+    extern const CommandLineCommand kSpriteCommands[];
+    extern const CommandLineCommand kSimulateCommands[];
+    extern const CommandLineCommand kParkInfoCommands[];
 
-    extern const CommandLineExample RootExamples[];
+    extern const CommandLineExample kRootExamples[];
 
     void PrintHelp(bool allCommands = false);
     exitcode_t HandleCommandDefault();

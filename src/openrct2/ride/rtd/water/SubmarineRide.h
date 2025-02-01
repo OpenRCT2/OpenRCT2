@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .UpkeepCosts = { 50, 1, 0, 4, 0, 0 },
     .BuildCosts = { 35.00_GBP, 2.50_GBP, 5, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 20), RIDE_RATING(1, 80), RIDE_RATING(1, 40) },
+        { MakeRideRating(2, 20), MakeRideRating(1, 80), MakeRideRating(1, 40) },
         7,
         -1,
         false,

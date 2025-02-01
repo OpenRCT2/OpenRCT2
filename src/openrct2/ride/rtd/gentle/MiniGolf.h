@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .UpkeepCosts = { 30, 60, 0, 0, 0, 0 },
     .BuildCosts = { 25.00_GBP, 3.50_GBP, 20, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 23,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 50), RIDE_RATING(0, 90), RIDE_RATING(0, 00) },
+        { MakeRideRating(1, 50), MakeRideRating(0, 90), MakeRideRating(0, 00) },
         0,
         -1,
         false,

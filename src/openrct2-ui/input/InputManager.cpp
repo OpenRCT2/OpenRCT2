@@ -16,7 +16,8 @@
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/InGameConsole.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
@@ -24,6 +25,7 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
 
@@ -79,10 +81,10 @@ void InputManager::QueueInputEvent(InputEvent&& e)
 
 void InputManager::CheckJoysticks()
 {
-    constexpr uint32_t CHECK_INTERVAL_MS = 5000;
+    constexpr uint32_t kCheckInternalMs = 5000;
 
     auto tick = SDL_GetTicks();
-    if (tick > _lastJoystickCheck + CHECK_INTERVAL_MS)
+    if (tick > _lastJoystickCheck + kCheckInternalMs)
     {
         _lastJoystickCheck = tick;
 
@@ -209,8 +211,10 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
+            auto* windowMgr = GetWindowManager();
+
             // TODO: replace with event
-            auto w = WindowFindByClass(WindowClass::Textinput);
+            auto w = windowMgr->FindByClass(WindowClass::Textinput);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -221,7 +225,7 @@ void InputManager::Process(const InputEvent& e)
             }
 
             // TODO: replace with event
-            w = WindowFindByClass(WindowClass::LoadsaveOverwritePrompt);
+            w = windowMgr->FindByClass(WindowClass::LoadsaveOverwritePrompt);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -232,7 +236,7 @@ void InputManager::Process(const InputEvent& e)
             }
 
             // TODO: replace with event
-            w = WindowFindByClass(WindowClass::Loadsave);
+            w = windowMgr->FindByClass(WindowClass::Loadsave);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -361,9 +365,9 @@ bool InputManager::GetState(const RegisteredShortcut& shortcut) const
 
 bool InputManager::GetState(const ShortcutInput& shortcut) const
 {
-    constexpr uint32_t UsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
-    auto modifiers = SDL_GetModState() & UsefulModifiers;
-    if ((shortcut.Modifiers & UsefulModifiers) == modifiers)
+    constexpr uint32_t kUsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
+    auto modifiers = SDL_GetModState() & kUsefulModifiers;
+    if ((shortcut.Modifiers & kUsefulModifiers) == modifiers)
     {
         switch (shortcut.Kind)
         {
@@ -421,7 +425,8 @@ bool InputManager::HasTextInputFocus() const
     if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox() || gChatOpen)
         return true;
 
-    auto w = WindowFindByClass(WindowClass::Textinput);
+    auto* windowMgr = GetWindowManager();
+    auto w = windowMgr->FindByClass(WindowClass::Textinput);
     if (w != nullptr)
         return true;
 

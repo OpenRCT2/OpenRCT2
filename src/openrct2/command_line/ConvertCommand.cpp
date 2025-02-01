@@ -14,10 +14,10 @@
 #include "../ParkImporter.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
-#include "../interface/Window.h"
 #include "../object/ObjectManager.h"
 #include "../park/ParkFile.h"
 #include "../scenario/Scenario.h"
+#include "../ui/WindowManager.h"
 #include "CommandLine.hpp"
 
 #include <cassert>
@@ -123,7 +123,8 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
 
         // HACK remove the main window so it saves the park with the
         //      correct initial view
-        WindowCloseByClass(WindowClass::MainWindow);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::MainWindow);
 
         exporter->Export(gameState, destinationPath);
     }

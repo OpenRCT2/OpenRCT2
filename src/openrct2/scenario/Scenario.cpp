@@ -52,6 +52,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Track.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -68,7 +69,7 @@
 
 using namespace OpenRCT2;
 
-const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
+const StringId kScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
     STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS, STR_COMPETITIONS, STR_UCES_TM,    STR_UCES_KD,
 };
@@ -150,7 +151,7 @@ void ScenarioReset(GameState_t& gameState)
     Staff::ResetStats();
 
     gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-    if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+    if (gameState.LastEntranceStyle == kObjectEntryIndexNull)
     {
         // Fall back to first entrance object
         gameState.LastEntranceStyle = 0;
@@ -173,8 +174,11 @@ void ScenarioReset(GameState_t& gameState)
 static void ScenarioEnd()
 {
     GameResetSpeed();
-    WindowCloseByClass(WindowClass::Dropdown);
-    WindowCloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByClass(WindowClass::Dropdown);
+    windowMgr->CloseAllExceptFlags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
+
     ContextOpenWindowView(WV_PARK_OBJECTIVE);
 }
 
@@ -184,7 +188,7 @@ static void ScenarioEnd()
  */
 void ScenarioFailure(GameState_t& gameState)
 {
-    gameState.ScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+    gameState.ScenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
     ScenarioEnd();
 }
 
@@ -657,8 +661,8 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
     BitSet<kMaxRideObjects> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(6, 00)
-            && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::Open && ride.ratings.excitement >= MakeRideRating(6, 00)
+            && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
@@ -725,7 +729,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
             return ObjectiveStatus::Failure;
         }
     }
-    else if (gameState.ScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+    else if (gameState.ScenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
     {
         gameState.ScenarioParkRatingWarningDays = 0;
     }
@@ -759,8 +763,8 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(7, 00)
-            && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::Open && ride.ratings.excitement >= MakeRideRating(7, 00)
+            && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)

@@ -11,7 +11,7 @@
 #include <cctype>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Editor.h>
@@ -31,6 +31,7 @@
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/platform/Platform.h>
@@ -38,6 +39,7 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <span>
 #include <string>
@@ -176,6 +178,11 @@ namespace OpenRCT2::Ui::Windows
         { STR_OBJECT_SELECTION_WATER,             ObjectType::Water,            FILTER_NONE, SPR_TAB_WATER,           1, 1 },
     };
 
+    static ObjectSubTab kPeepObjectSubTabs[] = {
+        { STR_OBJECT_SELECTION_PEEP_ANIMATIONS,   ObjectType::PeepAnimations,   FILTER_NONE, SPR_G2_PEEP_ANIMATIONS, 1, 1 },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,        ObjectType::PeepNames,        FILTER_NONE, SPR_TAB_GUESTS_0,       1, 1 },
+    };
+
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
         { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,            SPR_TAB_RIDE_16,         kRideObjectSubTabs },
         { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,    SPR_TAB_SCENERY_STATUES, kSceneryObjectSubTabs },
@@ -183,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
         { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,    SPR_TAB_PARK,            kEntrancesObjectSubTabs },
         { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,  SPR_G2_TAB_LAND,         kTerrainObjectSubTabs },
         { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,           SPR_TAB_MUSIC_0,         {} },
-        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::PeepNames,       SPR_TAB_GUESTS_0,        {} },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::PeepNames,       SPR_TAB_GUESTS_0,        kPeepObjectSubTabs },
     };
     // clang-format on
 
@@ -218,15 +225,13 @@ namespace OpenRCT2::Ui::Windows
 
     validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
-    static bool _window_editor_object_selection_widgets_initialised;
-
     // clang-format off
-    static std::vector<Widget> _window_editor_object_selection_widgets = {
+    static constexpr Widget _window_editor_object_selection_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
         MakeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
         MakeWidget         ({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
-        MakeWidget         ({350, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+        MakeWidget         ({340, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
         MakeDropdownWidgets({470, 22}, {114,  14}, WindowWidgetType::DropdownMenu, WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
         MakeWidget         ({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                                  ),
         MakeWidget         ({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
@@ -243,8 +248,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Secondary,  SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
         MakeTab            ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
         // Copied object type times...
-
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -346,7 +349,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             auto& currentPage = ObjectSelectionPages[selected_tab];
@@ -362,7 +365,7 @@ namespace OpenRCT2::Ui::Windows
             if (frame_no >= subTabDef.animationLength)
                 frame_no = 0;
 
-            WidgetInvalidate(*this, WIDX_SUB_TAB_0 + _selectedSubTab);
+            InvalidateWidget(WIDX_SUB_TAB_0 + _selectedSubTab);
         }
 
         /**
@@ -472,7 +475,7 @@ namespace OpenRCT2::Ui::Windows
                         auto descriptor = _loadedObject->GetDescriptor();
                         auto& objectManager = GetContext()->GetObjectManager();
                         auto entryIndex = objectManager.GetLoadedObjectEntryIndex(descriptor);
-                        if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+                        if (entryIndex != kObjectEntryIndexNull)
                         {
                             objectManager.UnloadObjects({ descriptor });
                             objectManager.LoadObject(descriptor, entryIndex);
@@ -520,7 +523,7 @@ namespace OpenRCT2::Ui::Windows
                         gDropdownItems[DDIX_FILTER_SEPARATOR].Format = 0;
                         gDropdownItems[DDIX_FILTER_SELECTED].Format = STR_TOGGLE_OPTION;
                         gDropdownItems[DDIX_FILTER_NONSELECTED].Format = STR_TOGGLE_OPTION;
-                        gDropdownItems[DDIX_FILTER_SEPARATOR].Args = STR_NONE;
+                        gDropdownItems[DDIX_FILTER_SEPARATOR].Args = kStringIdNone;
                         gDropdownItems[DDIX_FILTER_SELECTED].Args = STR_SELECTED_ONLY;
                         gDropdownItems[DDIX_FILTER_NONSELECTED].Args = STR_NON_SELECTED_ONLY;
                     }
@@ -599,7 +602,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Used for in-game object selection cheat to prevent crashing the game
             // when windows attempt to draw objects that don't exist any more
-            WindowCloseAllExceptClass(WindowClass::EditorObjectSelection);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAllExceptClass(WindowClass::EditorObjectSelection);
 
             int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
             if (selected_object == -1)
@@ -850,11 +854,13 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LIST].bottom = height - 14;
             widgets[WIDX_PREVIEW].left = width - 209;
             widgets[WIDX_PREVIEW].right = width - 96;
-            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, 22 }, { kFilterWidth, 14 });
-            widgets[WIDX_INSTALL_TRACK].left = width - 250;
-            widgets[WIDX_INSTALL_TRACK].right = width - 137;
             widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
             widgets[WIDX_RELOAD_OBJECT].right = width - 9;
+
+            auto& dropdownWidget = widgets[WIDX_FILTER_DROPDOWN];
+            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, dropdownWidget.top }, { kFilterWidth, 14 });
+            auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
+            installTrackWidget.moveToX(dropdownWidget.left - installTrackWidget.width() - 10);
 
             // Set pressed widgets
             pressed_widgets |= 1uLL << WIDX_PREVIEW;
@@ -862,7 +868,6 @@ namespace OpenRCT2::Ui::Windows
 
             // Set window title and buttons
             auto& titleWidget = widgets[WIDX_TITLE];
-            auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
             {
                 titleWidget.text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
@@ -956,7 +961,7 @@ namespace OpenRCT2::Ui::Windows
             const auto numSubTabs = static_cast<int8_t>(currentPage.subTabs.size());
             for (int8_t i = 0; i <= 6; i++)
             {
-                widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : STR_NONE;
+                widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : kStringIdNone;
                 widgets[WIDX_SUB_TAB_0 + i].type = i < numSubTabs ? WindowWidgetType::Tab : WindowWidgetType::Empty;
                 pressed_widgets &= ~(1uLL << (WIDX_SUB_TAB_0 + i));
             }
@@ -1020,7 +1025,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            constexpr int32_t ThrillRidesTabAnimationSequence[] = {
+            constexpr int32_t kThrillRidesTabAnimationSequence[] = {
                 5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0,
             };
 
@@ -1044,7 +1049,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // TODO: generalise this?
                     if (currentPage.Caption == STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS && i == 4)
-                        spriteIndex += ThrillRidesTabAnimationSequence[frame];
+                        spriteIndex += kThrillRidesTabAnimationSequence[frame];
                     else
                         spriteIndex += frame;
 
@@ -1081,7 +1086,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                                : STR_NONE;
+                                                                : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortTypeWidget.left + 1, listSortTypeWidget.top + 1 };
                 DrawTextEllipsised(dpi, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
@@ -1091,7 +1096,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                                : STR_NONE;
+                                                                : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortRideWidget.left + 1, listSortRideWidget.top + 1 };
                 DrawTextEllipsised(dpi, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
@@ -1129,20 +1134,20 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
+        bool tabWidgetsInitialised = false;
+
         void InitWidgets()
         {
-            auto& targetWidgets = _window_editor_object_selection_widgets;
-            if (!_window_editor_object_selection_widgets_initialised)
+            SetWidgets(_window_editor_object_selection_widgets);
+            if (!tabWidgetsInitialised)
             {
-                _window_editor_object_selection_widgets_initialised = true;
-                auto tabWidget = targetWidgets[targetWidgets.size() - 2];
+                tabWidgetsInitialised = true;
+                auto tabWidget = widgets[WIDX_TAB_1];
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
-                    targetWidgets.insert(targetWidgets.end() - 1, tabWidget);
+                    widgets.insert(widgets.end() - 1, tabWidget);
                 }
             }
-
-            widgets = targetWidgets.data();
         }
 
         void SetPage(int32_t _page)
@@ -1327,6 +1332,24 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        StringId GetAnimationPeepTypeStringId(AnimationPeepType type)
+        {
+            switch (type)
+            {
+                case AnimationPeepType::Handyman:
+                    return STR_HANDYMAN_PLURAL;
+                case AnimationPeepType::Mechanic:
+                    return STR_MECHANIC_PLURAL;
+                case AnimationPeepType::Security:
+                    return STR_SECURITY_GUARD_PLURAL;
+                case AnimationPeepType::Entertainer:
+                    return STR_ENTERTAINER_PLURAL;
+                case AnimationPeepType::Guest:
+                default:
+                    return STR_GUESTS;
+            }
+        }
+
         void DrawDebugData(DrawPixelInfo& dpi)
         {
             ObjectListItem* listItem = &_listItems[selected_list_item];
@@ -1343,6 +1366,14 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedObjectType() == ObjectType::Ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
+                DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            }
+
+            // Draw peep animation object type
+            if (GetSelectedObjectType() == ObjectType::PeepAnimations)
+            {
+                auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
+                auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
                 DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
 
@@ -1498,9 +1529,9 @@ namespace OpenRCT2::Ui::Windows
             if (item->Type == ObjectType::Ride)
             {
                 ride_type_t rideType = 0;
-                for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+                for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
                 {
-                    if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
+                    if (item->RideInfo.RideType[i] != kRideTypeNull)
                     {
                         rideType = item->RideInfo.RideType[i];
                         break;
@@ -1613,7 +1644,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorObjectSelectionOpen()
     {
-        return WindowFocusOrCreate<EditorObjectSelectionWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
             WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 
@@ -1634,11 +1666,11 @@ namespace OpenRCT2::Ui::Windows
 
     static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
     {
-        StringId result = STR_NONE;
-        for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+        StringId result = kStringIdNone;
+        for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
         {
             auto rideType = item->RideInfo.RideType[i];
-            if (rideType != RIDE_TYPE_NULL)
+            if (rideType != kRideTypeNull)
             {
                 result = GetRideTypeDescriptor(rideType).Naming.Name;
                 break;
@@ -1701,22 +1733,23 @@ namespace OpenRCT2::Ui::Windows
             LoadPalette();
         }
         if (showFallbackWarning)
-            ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
+            ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, kStringIdEmpty, Formatter::Common());
     }
 
     bool EditorObjectSelectionWindowCheck()
     {
-        WindowBase* w;
+        auto* windowMgr = Ui::GetWindowManager();
 
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
         {
-            WindowCloseByClass(WindowClass::EditorObjectSelection);
+            windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
             return true;
         }
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-        w = WindowFindByClass(WindowClass::EditorObjectSelection);
+
+        WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {
             // Click tab with missing object

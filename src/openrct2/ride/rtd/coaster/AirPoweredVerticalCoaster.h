@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .UpkeepCosts = { 90, 20, 0, 0, 0, 10 },
     .BuildCosts = { 100.00_GBP, 0.00_GBP, 45, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_2,
+    .DefaultMusic = kMusicObjectRock2,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -57,13 +57,13 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(4, 13), RIDE_RATING(2, 50), RIDE_RATING(2, 80) },
+        { MakeRideRating(4, 13), MakeRideRating(2, 50), MakeRideRating(2, 80) },
         28,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 60), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 60), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                509724, 364088, 320398 },
             { RatingsModifierType::BonusGForces,          0,                24576, 35746, 59578 },
             { RatingsModifierType::BonusSheltered,        0,                15420, 21845, 11702 },

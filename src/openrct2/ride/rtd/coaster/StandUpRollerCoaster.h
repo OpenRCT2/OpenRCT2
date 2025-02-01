@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor StandUpRollerCoasterRTD =
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 50.00_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 90,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -59,13 +59,13 @@ constexpr RideTypeDescriptor StandUpRollerCoasterRTD =
 	.RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 50), RIDE_RATING(3, 00), RIDE_RATING(3, 00) },
+        { MakeRideRating(2, 50), MakeRideRating(3, 00), MakeRideRating(3, 00) },
         17,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 10), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 10), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 123987, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -79,7 +79,7 @@ constexpr RideTypeDescriptor StandUpRollerCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                5577, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 50), 2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 50), 2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 59578 },
         },
     },

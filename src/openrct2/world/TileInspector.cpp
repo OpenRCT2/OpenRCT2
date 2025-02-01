@@ -11,11 +11,11 @@
 
 #include "../Diagnostic.h"
 #include "../actions/GameAction.h"
-#include "../interface/Window.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ui/WindowManager.h"
 #include "../windows/TileInspectorGlobals.h"
 #include "Banner.h"
 #include "Footpath.h"
@@ -84,7 +84,8 @@ namespace OpenRCT2::TileInspector
     static bool IsTileSelected(const CoordsXY& loc)
     {
         // Return true for everyone who has the window open and tile selected
-        auto* window = WindowFindByClass(WindowClass::TileInspector);
+        auto* windowMgr = Ui::GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         return window != nullptr && loc == windowTileInspectorTile.ToCoordsXY();
     }
 
@@ -321,7 +322,7 @@ namespace OpenRCT2::TileInspector
                 if (newBanner == nullptr)
                 {
                     LOG_ERROR("No free banners available");
-                    return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
+                    return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, kStringIdNone);
                 }
                 auto newId = newBanner->id;
                 // Copy the banners style

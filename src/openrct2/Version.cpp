@@ -26,7 +26,7 @@ const char gVersionInfoTag[] =
 #ifdef OPENRCT2_VERSION_TAG
     OPENRCT2_VERSION_TAG
 #else
-    "v" OPENRCT2_VERSION
+    "v" kOpenRCT2Version
 #endif
     ;
 
@@ -34,7 +34,7 @@ const char gVersionInfoFull[] = OPENRCT2_NAME ", "
 #ifdef OPENRCT2_VERSION_TAG
     OPENRCT2_VERSION_TAG
 #else
-                                              "v" OPENRCT2_VERSION
+                                              "v" kOpenRCT2Version
 #endif
 #if defined(OPENRCT2_BRANCH) || defined(OPENRCT2_COMMIT_SHA1_SHORT) || !defined(NDEBUG)
                                               " ("
@@ -54,6 +54,16 @@ const char gVersionInfoFull[] = OPENRCT2_NAME ", "
                                               " provided by " OPENRCT2_BUILD_SERVER
 #endif
     ;
+
+#ifdef __EMSCRIPTEN__
+// This must be wrapped in extern "C", according to the emscripten docs, "to prevent C++ name mangling"
+extern "C" {
+const char* GetVersion()
+{
+    return gVersionInfoFull;
+}
+}
+#endif
 
 NewVersionInfo GetLatestVersion()
 {

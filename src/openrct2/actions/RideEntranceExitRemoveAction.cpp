@@ -77,12 +77,12 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST, kStringIdNone);
     }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, kStringIdNone);
     }
 
     if (!LocationValid(_loc))

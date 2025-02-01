@@ -1163,17 +1163,6 @@ STR_1773    :Een attractie mag maar één actiefotogedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
 STR_1777    :Attractiemuziek
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandapak
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tijgerpak
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Olifantenpak
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romeins kostuum
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorillapak
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Sneeuwpoppak
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ridderkostuum
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronautenpak
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandietenkostuum
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffkostuum
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratenkostuum
 STR_1790    :Selecteer de uniformkleur voor dit type werknemer
 STR_1791    :{WINDOW_COLOUR_2}Uniformkleur:
 STR_1792    :Gaat {STRINGID} repareren
@@ -2179,7 +2168,6 @@ STR_3136    :Waarschuwing: Dit ontwerp zal worden gebouwd met een ander type kar
 STR_3137    :Decor naast baan selecteren
 STR_3138    :Alles deselecteren
 STR_3139    :Kabellift kan niet functioneren in deze werkmodus
-STR_3140    :Kabellift moet meteen na het station beginnen
 STR_3141    :Meerdere circuits zijn niet mogelijk met een kabellift
 STR_3142    :{WINDOW_COLOUR_2}Capaciteit: {BLACK}{STRINGID}
 STR_3143    :Laat bezoekers zien op kaart
@@ -2211,7 +2199,7 @@ STR_3188    :Lichtkranten
 STR_3189    :Voetpaden (oude stijl)
 STR_3190    :Extra’s voor paden
 STR_3191    :Decorgroepen
-STR_3192    :Parkingang
+STR_3192    :Parkingangen
 STR_3193    :Water
 STR_3195    :Lijst van uitvindingen
 STR_3196    :{WINDOW_COLOUR_2}Onderzoeksgroep: {BLACK}{STRINGID}
@@ -2618,7 +2606,7 @@ STR_5368    :Crashstatus weg
 STR_5371    :Objectselectie
 STR_5372    :Sleeprichting van rechtermuisknop omkeren
 STR_5373    :Naam {STRINGID}
-STR_5374    :Datum {STRINGID}
+STR_5374    :Gewijzigd {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Naam bestaat al
@@ -3784,3 +3772,23 @@ STR_6709    :Voer een afrondsterkte in tussen {COMMA16} en {COMMA16}
 STR_6710    :Stabiel sorteren
 STR_6711    :Bestandsnaam:
 STR_6712    :Opslaan
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Naam
+STR_6715    :Gewijzigd
+STR_6716    :Grootte
+STR_6717    :Grootte {STRINGID}
+STR_6718    :NPC-animaties
+STR_6719    :Er moet minstens één object met bezoekersanimaties geselecteerd zijn.
+STR_6720    :Er moet minstens één object met klusjesmananimaties geselecteerd zijn.
+STR_6721    :Er moet minstens één object met monteuranimaties geselecteerd zijn.
+STR_6722    :Er moet minstens één object met bewakeranimaties geselecteerd zijn.
+STR_6723    :Er moet minstens één object met entertaineranimaties geselecteerd zijn.
+STR_6724    :Scenariobeschrijvingen
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Dive loop (links)
+STR_6728    :Dive loop (rechts)
+STR_6729    :Kabellift moet meteen na het station of een blokrem beginnen.
+STR_6730    :Emscripten-data exporteren
+STR_6731    :Emscripten-data importeren
+STR_6732    :Toon een knop in de werkbalk om het beeld tegen de klok in te draaien.

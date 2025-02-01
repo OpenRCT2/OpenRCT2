@@ -12,12 +12,10 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
@@ -73,7 +71,7 @@ GameActions::Result RideSetStatusAction::Query() const
         LOG_ERROR("Invalid ride status %u for ride %u", EnumValue(_status), _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = kStringIdNone;
         return res;
     }
 
@@ -143,6 +141,8 @@ GameActions::Result RideSetStatusAction::Execute() const
         res.Position = { location, TileElementHeight(location) };
     }
 
+    auto* windowMgr = Ui::GetWindowManager();
+
     switch (_status)
     {
         case RideStatus::Closed:
@@ -160,7 +160,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
             ride->race_winner = EntityId::GetNull();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+            windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         case RideStatus::Simulating:
         {
@@ -183,7 +183,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+            windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         }
         case RideStatus::Testing:
@@ -202,10 +202,10 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
             //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
-            WindowBase* constructionWindow = WindowFindByNumber(WindowClass::RideConstruction, _rideIndex.ToUnderlying());
+            WindowBase* constructionWindow = windowMgr->FindByNumber(WindowClass::RideConstruction, _rideIndex.ToUnderlying());
             if (constructionWindow != nullptr)
             {
-                WindowClose(*constructionWindow);
+                windowMgr->Close(*constructionWindow);
             }
 
             if (_status == RideStatus::Testing)
@@ -235,14 +235,14 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+            windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         }
         default:
             Guard::Assert(false, "Invalid ride status %u", _status);
             break;
     }
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
 
     return res;

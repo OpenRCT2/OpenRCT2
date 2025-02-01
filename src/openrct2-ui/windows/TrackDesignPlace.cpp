@@ -12,7 +12,7 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -29,7 +29,6 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -49,10 +48,10 @@ namespace OpenRCT2::Ui::Windows
     constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
     constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;
 
-    static constexpr uint8_t _PaletteIndexColourEntrance = PALETTE_INDEX_20; // White
-    static constexpr uint8_t _PaletteIndexColourExit = PALETTE_INDEX_10;     // Black
-    static constexpr uint8_t _PaletteIndexColourTrack = PALETTE_INDEX_248;   // Grey (dark)
-    static constexpr uint8_t _PaletteIndexColourStation = PALETTE_INDEX_252; // Grey (light)
+    static constexpr uint8_t kPaletteIndexColourEntrance = PALETTE_INDEX_20; // White
+    static constexpr uint8_t kPaletteIndexColourExit = PALETTE_INDEX_10;     // Black
+    static constexpr uint8_t kPaletteIndexColourTrack = PALETTE_INDEX_248;   // Grey (dark)
+    static constexpr uint8_t kPaletteIndexColourStation = PALETTE_INDEX_252; // Grey (light)
 
     enum
     {
@@ -68,13 +67,12 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
     // clang-format off
-    static Widget _trackPlaceWidgets[] = {
+    static constexpr Widget _trackPlaceWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({173,  83}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),              STR_ROTATE_90_TIP                         ),
         MakeWidget({173,  59}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_MIRROR_ARROW),              STR_MIRROR_IMAGE_TIP                      ),
         MakeWidget({  4, 109}, {192, 12}, WindowWidgetType::Button,  WindowColour::Primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
         MakeWidget({  0,   0}, {  1,  1}, WindowWidgetType::Empty,   WindowColour::Primary),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -103,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _trackPlaceWidgets;
+            SetWidgets(_trackPlaceWidgets);
             WindowInitScrollWidgets(*this);
             ToolSet(*this, WIDX_PRICE, Tool::Crosshair);
             InputSetFlag(INPUT_FLAG_6, true);
@@ -237,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
             if (cost != _placementCost)
             {
                 _placementCost = cost;
-                WidgetInvalidate(*this, WIDX_PRICE);
+                InvalidateWidget(WIDX_PRICE);
             }
 
             TrackDesignPreviewDrawOutlines(tds, *_trackDesign, RideGetTemporaryForPreview(), trackLoc);
@@ -280,7 +278,7 @@ namespace OpenRCT2::Ui::Windows
                 // Unable to build track
                 Audio::Play3D(Audio::SoundId::Error, trackLoc);
 
-                auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+                auto windowManager = GetWindowManager();
                 windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
                 return;
             }
@@ -297,22 +295,24 @@ namespace OpenRCT2::Ui::Windows
                 auto getRide = GetRide(rideId);
                 if (getRide != nullptr)
                 {
-                    WindowCloseByClass(WindowClass::Error);
-                    Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::Error);
 
+                    Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
                     _currentRideIndex = rideId;
+
                     if (TrackDesignAreEntranceAndExitPlaced())
                     {
                         auto intent = Intent(WindowClass::Ride);
                         intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                         ContextOpenIntent(&intent);
-                        auto wnd = WindowFindByClass(WindowClass::TrackDesignPlace);
-                        WindowClose(*wnd);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::TrackDesignPlace);
+                        windowMgr->Close(*wnd);
                     }
                     else
                     {
                         RideInitialiseConstructionWindow(*getRide);
-                        auto wnd = WindowFindByClass(WindowClass::RideConstruction);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::RideConstruction);
                         wnd->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                     }
                 }
@@ -567,7 +567,7 @@ namespace OpenRCT2::Ui::Windows
                     if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                     {
                         uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
-                        uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                        uint8_t colour = entrance.isExit ? kPaletteIndexColourExit : kPaletteIndexColourEntrance;
                         for (int32_t i = 0; i < 4; i++)
                         {
                             pixel[338 + i] = colour; // x + 2, y + 2
@@ -613,8 +613,8 @@ namespace OpenRCT2::Ui::Windows
                             auto bits = trackBlock.quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
-                            uint8_t colour = (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN) ? _PaletteIndexColourStation
-                                                                                                   : _PaletteIndexColourTrack;
+                            uint8_t colour = (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN) ? kPaletteIndexColourStation
+                                                                                                   : kPaletteIndexColourTrack;
 
                             for (int32_t i = 0; i < 4; i++)
                             {
@@ -673,7 +673,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
-                        uint8_t colour = _PaletteIndexColourTrack;
+                        uint8_t colour = kPaletteIndexColourTrack;
                         for (int32_t i = 0; i < 4; i++)
                         {
                             pixel[338 + i] = colour; // x + 2, y + 2
@@ -734,9 +734,10 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseConstructionWindows();
 
-        auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
+        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
         if (window != nullptr)
         {
             window->Init(std::move(openTrackDesign));
@@ -746,7 +747,8 @@ namespace OpenRCT2::Ui::Windows
 
     void TrackPlaceClearProvisionalTemporarily()
     {
-        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(WindowFindByClass(WindowClass::TrackDesignPlace));
+        auto* windowMgr = GetWindowManager();
+        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {
             trackPlaceWnd->ClearProvisionalTemporarily();
@@ -755,7 +757,8 @@ namespace OpenRCT2::Ui::Windows
 
     void TrackPlaceRestoreProvisional()
     {
-        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(WindowFindByClass(WindowClass::TrackDesignPlace));
+        auto* windowMgr = GetWindowManager();
+        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {
             trackPlaceWnd->RestoreProvisional();

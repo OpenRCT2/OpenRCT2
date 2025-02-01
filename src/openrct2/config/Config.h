@@ -109,7 +109,7 @@ namespace OpenRCT2::Config
 
         // Loading and saving
         bool ConfirmationPrompt;
-        Sort LoadSaveSort;
+        FileBrowserSort LoadSaveSort;
         u8string LastSaveGameDirectory;
         u8string LastSaveLandscapeDirectory;
         u8string LastSaveScenarioDirectory;
@@ -117,6 +117,10 @@ namespace OpenRCT2::Config
         u8string LastRunVersion;
         bool UseNativeBrowseDialog;
         int64_t LastVersionCheckTime;
+        int16_t FileBrowserWidth;
+        int16_t FileBrowserHeight;
+        bool FileBrowserShowSizeColumn;
+        bool FileBrowserShowDateColumn;
     };
 
     struct Interface
@@ -129,6 +133,7 @@ namespace OpenRCT2::Config
         bool ToolbarShowMute;
         bool ToolbarShowChat;
         bool ToolbarShowZoom;
+        bool ToolbarShowRotateAnticlockwise;
         bool ConsoleSmallFont;
         bool RandomTitleSequence;
         u8string CurrentThemePreset;

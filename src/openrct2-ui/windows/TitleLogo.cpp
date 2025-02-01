@@ -8,10 +8,11 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -23,9 +24,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LOGO
     };
 
-    static Widget _titleLogoWidgets[] = {
+    static constexpr Widget _titleLogoWidgets[] = {
         MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
 
     class TitleLogoWindow final : public Window
@@ -37,7 +37,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnOpen() override
         {
-            widgets = _titleLogoWidgets;
+            SetWidgets(_titleLogoWidgets);
             WindowInitScrollWidgets(*this);
             colours[0] = ColourWithFlags{ COLOUR_GREY }.withFlag(ColourFlag::translucent, true);
             colours[1] = ColourWithFlags{ COLOUR_GREY }.withFlag(ColourFlag::translucent, true);
@@ -68,10 +68,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* TitleLogoOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::TitleLogo);
         if (window == nullptr)
         {
-            window = WindowCreate<TitleLogoWindow>(
+            window = windowMgr->Create<TitleLogoWindow>(
                 WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT);
         }
         return window;

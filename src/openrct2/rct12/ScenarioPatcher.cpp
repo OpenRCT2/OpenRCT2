@@ -636,13 +636,13 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
         auto railingsObjIndex = objectManager.GetLoadedObjectEntryIndex(railings);
         auto surfaceObjIndex = objectManager.GetLoadedObjectEntryIndex(surface);
 
-        if (railingsObjIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (railingsObjIndex == kObjectEntryIndexNull)
         {
             OpenRCT2::Guard::Assert(0, "Railings object not found");
             return;
         }
 
-        if (surfaceObjIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (surfaceObjIndex == kObjectEntryIndexNull)
         {
             OpenRCT2::Guard::Assert(0, "Surface object not found");
             return;

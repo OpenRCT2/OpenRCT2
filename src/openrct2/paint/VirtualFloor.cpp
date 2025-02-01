@@ -30,7 +30,8 @@
 
 using namespace OpenRCT2;
 
-static uint16_t _virtualFloorBaseSize = 5 * 32;
+static constexpr uint16_t kVirtualFloorBaseSize = 5 * kCoordsXYStep;
+static constexpr CoordsXY kVirtualFloorBaseSizeXY = { kVirtualFloorBaseSize, kVirtualFloorBaseSize };
 static uint16_t _virtualFloorHeight = 0;
 static CoordsXYZ _virtualFloorLastMinPos;
 static CoordsXYZ _virtualFloorLastMaxPos;
@@ -130,10 +131,10 @@ void VirtualFloorInvalidate()
            && max_position.y != std::numeric_limits<int32_t>::lowest());
 
     // Apply the virtual floor size to the computed invalidation area.
-    min_position.x -= _virtualFloorBaseSize + 16;
-    min_position.y -= _virtualFloorBaseSize + 16;
-    max_position.x += _virtualFloorBaseSize + 16;
-    max_position.y += _virtualFloorBaseSize + 16;
+    min_position.x -= kVirtualFloorBaseSize + 16;
+    min_position.y -= kVirtualFloorBaseSize + 16;
+    max_position.x += kVirtualFloorBaseSize + 16;
+    max_position.y += kVirtualFloorBaseSize + 16;
 
     // Invalidate previous region if appropriate.
     if (_virtualFloorLastMinPos.x != std::numeric_limits<int32_t>::max()
@@ -187,12 +188,12 @@ bool VirtualFloorTileIsFloor(const CoordsXY& loc)
     }
 
     // Check if map selection (usually single tiles) are enabled
-    //  and if the current tile is near or on them
-    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) && loc.x >= gMapSelectPositionA.x - _virtualFloorBaseSize
-        && loc.y >= gMapSelectPositionA.y - _virtualFloorBaseSize && loc.x <= gMapSelectPositionB.x + _virtualFloorBaseSize
-        && loc.y <= gMapSelectPositionB.y + _virtualFloorBaseSize)
+    // and if the current tile is near or on them
+    // (short-circuit to false otherwise - we don't want to show a second
+    //  virtual floor from e. g. an open ride construction window)
+    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
     {
-        return true;
+        return loc >= gMapSelectPositionA - kVirtualFloorBaseSizeXY && loc <= gMapSelectPositionB + kVirtualFloorBaseSizeXY;
     }
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
@@ -200,8 +201,8 @@ bool VirtualFloorTileIsFloor(const CoordsXY& loc)
         // Check if we are anywhere near the selection tiles (larger scenery / rides)
         for (const auto& tile : gMapSelectionTiles)
         {
-            if (loc.x >= tile.x - _virtualFloorBaseSize && loc.y >= tile.y - _virtualFloorBaseSize
-                && loc.x <= tile.x + _virtualFloorBaseSize && loc.y <= tile.y + _virtualFloorBaseSize)
+            if (loc.x >= tile.x - kVirtualFloorBaseSize && loc.y >= tile.y - kVirtualFloorBaseSize
+                && loc.x <= tile.x + kVirtualFloorBaseSize && loc.y <= tile.y + kVirtualFloorBaseSize)
             {
                 return true;
             }
@@ -263,7 +264,7 @@ static void VirtualFloorGetTileProperties(
             {
                 *outBelowGround = true;
             }
-            else if (height < (tileElement->GetBaseZ() + LAND_HEIGHT_STEP) && tileElement->AsSurface()->GetSlope() != 0)
+            else if (height < (tileElement->GetBaseZ() + kLandHeightStep) && tileElement->AsSurface()->GetSlope() != 0)
             {
                 *outBelowGround = true;
                 *outOccupied = true;

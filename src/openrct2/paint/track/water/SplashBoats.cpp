@@ -229,133 +229,133 @@ enum
     SPR_SPLASH_BOATS_S_BEND_TOP_NW_NE_NW_SEQ_0 = 20995,
 };
 
-static constexpr uint32_t SplashBoats25DegUpImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegUpImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats25DegUpFrontImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats60DegUpImageId[4] = {
+static constexpr uint32_t kSplashBoats60DegUpImageId[4] = {
     SPR_SPLASH_BOATS_60_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_60_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_60_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_60_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats60DegUpFrontImageId[4] = {
+static constexpr uint32_t kSplashBoats60DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_60_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_60_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_60_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_60_DEG_UP_FRONT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoatsFlatTo25DegUpImageId[4] = {
+static constexpr uint32_t kSplashBoatsFlatTo25DegUpImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t SplashBoatsFlatTo25DegUpFrontImageId[4] = {
+static constexpr uint32_t kSplashBoatsFlatTo25DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats25DegUpToFlatImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegUpToFlatImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats25DegUpToFlatFrontImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegUpToFlatFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats25DegUpTo60DegUpImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegUpTo60DegUpImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats25DegUpTo60DegUpFrontImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegUpTo60DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_FRONT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats60DegUpTo25DegUpImageId[4] = {
+static constexpr uint32_t kSplashBoats60DegUpTo25DegUpImageId[4] = {
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats60DegUpTo25DegUpFrontImageId[4] = {
+static constexpr uint32_t kSplashBoats60DegUpTo25DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_FRONT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats25DegDownImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegDownImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_DOWN_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_DOWN_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_DOWN_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_DOWN_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats25DegDownFrontImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegDownFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_SE_NW,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_NW_SE,
 };
 
-static constexpr uint32_t SplashBoatsFlatTo25DegDownImageId[4] = {
+static constexpr uint32_t kSplashBoatsFlatTo25DegDownImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_DOWN_SW_NE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_DOWN_NW_SE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_DOWN_NE_SW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_DOWN_SE_NW,
 };
 
-static constexpr uint32_t SplashBoatsFlatTo25DegDownFrontImageId[4] = {
+static constexpr uint32_t kSplashBoatsFlatTo25DegDownFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_SE_NW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_NW_SE,
 };
 
-static constexpr uint32_t SplashBoats25DegDownToFlatImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegDownToFlatImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_DOWN_TO_FLAT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_DOWN_TO_FLAT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_DOWN_TO_FLAT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_DOWN_TO_FLAT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats25DegDownToFlatFrontImageId[4] = {
+static constexpr uint32_t kSplashBoats25DegDownToFlatFrontImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_SE_NW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NW_SE,
 };
 
-static constexpr SpriteBb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
+static constexpr SpriteBb kSplashBoatsLeftQuarterTurn5_Top[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 27, 2 },
         SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 },  { 32, 16, 2 },
@@ -386,7 +386,7 @@ static constexpr SpriteBb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
     },
 };
 
-static constexpr SpriteBb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
+static constexpr SpriteBb kSplashBoatsLeftQuarterTurn5_Side[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 27, 0 },
         SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 },  { 32, 16, 0 },
@@ -417,7 +417,7 @@ static constexpr SpriteBb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
     },
 };
 
-static constexpr SpriteBb RiverRaftsRightQuarterTurn5_Top[4][5] = {
+static constexpr SpriteBb kSplashBoatsRightQuarterTurn5_Top[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 32, 2 },
         SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 },
@@ -448,7 +448,7 @@ static constexpr SpriteBb RiverRaftsRightQuarterTurn5_Top[4][5] = {
     },
 };
 
-static constexpr SpriteBb RiverRaftsRightQuarterTurn5_Side[4][5] = {
+static constexpr SpriteBb kSplashBoatsRightQuarterTurn5_Side[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 32, 0 },
         SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 },
@@ -483,8 +483,8 @@ static void PaintSplashBoatsTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(kSplashBoats25DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(kSplashBoats25DegUpFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
@@ -508,8 +508,8 @@ static void PaintSplashBoatsTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoats60DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours.WithIndex(SplashBoats60DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(kSplashBoats60DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(kSplashBoats60DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
@@ -534,8 +534,8 @@ static void PaintSplashBoatsTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(kSplashBoatsFlatTo25DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(kSplashBoatsFlatTo25DegUpFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
@@ -559,8 +559,8 @@ static void PaintSplashBoatsTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpToFlatImageId[direction]);
-    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegUpToFlatFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(kSplashBoats25DegUpToFlatImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(kSplashBoats25DegUpToFlatFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
@@ -584,8 +584,8 @@ static void PaintSplashBoatsTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpTo60DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegUpTo60DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(kSplashBoats25DegUpTo60DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(kSplashBoats25DegUpTo60DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
@@ -610,8 +610,8 @@ static void PaintSplashBoatsTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoats60DegUpTo25DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours.WithIndex(SplashBoats60DegUpTo25DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(kSplashBoats60DegUpTo25DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(kSplashBoats60DegUpTo25DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
@@ -636,8 +636,8 @@ static void PaintSplashBoatsTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegDownImageId[direction]);
-    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegDownFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(kSplashBoats25DegDownImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(kSplashBoats25DegDownFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
@@ -668,8 +668,8 @@ static void PaintSplashBoatsTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegDownImageId[direction]);
-    auto frontImageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegDownFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(kSplashBoatsFlatTo25DegDownImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(kSplashBoatsFlatTo25DegDownFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
@@ -707,8 +707,8 @@ static void PaintSplashBoatsTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegDownToFlatImageId[direction]);
-    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegDownToFlatFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(kSplashBoats25DegDownToFlatImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(kSplashBoats25DegDownToFlatFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
@@ -814,9 +814,9 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours, RiverRaftsLeftQuarterTurn5_Top);
+        session, height, direction, trackSequence, session.TrackColours, kSplashBoatsLeftQuarterTurn5_Top);
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours, RiverRaftsLeftQuarterTurn5_Side);
+        session, height, direction, trackSequence, session.TrackColours, kSplashBoatsLeftQuarterTurn5_Side);
 
     DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -903,9 +903,9 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours, RiverRaftsRightQuarterTurn5_Top);
+        session, height, direction, trackSequence, session.TrackColours, kSplashBoatsRightQuarterTurn5_Top);
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours, RiverRaftsRightQuarterTurn5_Side);
+        session, height, direction, trackSequence, session.TrackColours, kSplashBoatsRightQuarterTurn5_Side);
 
     DrawSupportForSequenceA<TrackElemType::RightQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);

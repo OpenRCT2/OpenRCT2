@@ -16,7 +16,6 @@
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
 #include "../core/EnumUtils.hpp"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
@@ -114,7 +113,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
     if (_setting >= LandBuyRightSetting::Count)
     {
         LOG_ERROR("Invalid land buying setting %u", _setting);
-        return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, kErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
@@ -122,7 +121,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
     {
         LOG_ERROR("No surface at x = %d, y = %d", loc.x, loc.y);
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            GameActions::Status::InvalidParameters, kErrorTitles[EnumValue(_setting)], STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
 
     auto res = GameActions::Result();
@@ -138,7 +137,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
             {
                 return GameActions::Result(
-                    GameActions::Status::NotOwned, _ErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
+                    GameActions::Status::NotOwned, kErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
             }
             if (isExecuting)
             {
@@ -158,7 +157,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
             {
                 return GameActions::Result(
-                    GameActions::Status::NotOwned, _ErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
+                    GameActions::Status::NotOwned, kErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
             }
 
             if (isExecuting)
@@ -172,6 +171,6 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
 
         default:
             LOG_ERROR("Invalid land buying setting %u", _setting);
-            return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, kErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
     }
 }

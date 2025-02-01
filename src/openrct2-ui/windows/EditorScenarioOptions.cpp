@@ -10,8 +10,7 @@
 #include "../UiStringIds.h"
 #include "../interface/Dropdown.h"
 #include "../interface/Widget.h"
-#include "../interface/Window.h"
-#include "Window.h"
+#include "Windows.h"
 
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
@@ -26,6 +25,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT
     };
 
-    static constexpr StringId ClimateNames[] = {
+    static constexpr StringId kClimateNames[] = {
         STR_CLIMATE_COOL_AND_WET,
         STR_CLIMATE_WARM,
         STR_CLIMATE_HOT_AND_DRY,
@@ -123,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_editor_scenario_options_financial_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_financial_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
         MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
         MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -136,10 +136,9 @@ namespace OpenRCT2::Ui::Windows
         MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
         MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
         MakeWidget        ({  8, 116}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
-        kWidgetsEnd,
     };
 
-    static Widget window_editor_scenario_options_guests_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
         MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
         MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
@@ -151,10 +150,9 @@ namespace OpenRCT2::Ui::Windows
         MakeSpinnerWidgets({268,  99}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
         MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
         MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
-        kWidgetsEnd,
     };
 
-    static Widget window_editor_scenario_options_park_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_park_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
         MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
         MakeRemapWidget   ({  3,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -162,20 +160,19 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget   ({ 65,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
         MakeSpinnerWidgets({188,  48}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeSpinnerWidgets({188,  65}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeWidget        ({  8,  82}, {         210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeWidget        ({  8,  82}, {         210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeWidget        ({206,  83}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeSpinnerWidgets({328,  82}, {          67,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeWidget        ({188,  99}, {         207,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
+        MakeWidget        ({188,  99}, {         207,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                     STR_SELECT_CLIMATE_TIP            ),
         MakeWidget        ({383, 100}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
         MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
         MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
         MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
         MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
         MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
-        kWidgetsEnd,
     };
 
-    static Widget *window_editor_scenario_options_widgets[] = {
+    static constexpr std::span<const Widget> window_editor_scenario_options_widgets[] = {
         window_editor_scenario_options_financial_widgets,
         window_editor_scenario_options_guests_widgets,
         window_editor_scenario_options_park_widgets,
@@ -218,11 +215,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_editor_scenario_options_widgets[WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
-            hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets
-                [WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
-            WindowInitScrollWidgets(*this);
-            page = 0;
+            SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -355,17 +348,14 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t newPage)
         {
-            if (page == newPage)
-                return;
-
             page = newPage;
             frame_no = 0;
             hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
-            widgets = window_editor_scenario_options_widgets[page];
+            SetWidgets(window_editor_scenario_options_widgets[page]);
             Invalidate();
             OnResize();
             OnPrepareDraw();
-            WindowInitScrollWidgets(*this);
+            InitScrollWidgets();
             Invalidate();
         }
 
@@ -377,7 +367,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -426,7 +416,7 @@ namespace OpenRCT2::Ui::Windows
             for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
             {
                 gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItems[i].Args = ClimateNames[i];
+                gDropdownItems[i].Args = kClimateNames[i];
             }
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() + 1,
@@ -448,7 +438,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_CASH, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_CASH, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -461,7 +451,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_CASH, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_CASH, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -474,7 +464,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_INIT_LOAN, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_INIT_LOAN, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -487,7 +477,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_INIT_LOAN, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_INIT_LOAN, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -500,7 +490,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_MAX_LOAN, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_MAX_LOAN, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -513,7 +503,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_MAX_LOAN, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_MAX_LOAN, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -526,7 +516,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_INTEREST_RATE, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -539,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_INTEREST_RATE, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -547,8 +537,9 @@ namespace OpenRCT2::Ui::Windows
 
             if (gScreenFlags == SCREEN_FLAGS_PLAYING)
             {
-                WindowInvalidateByClass(WindowClass::Finances);
-                WindowInvalidateByClass(WindowClass::BottomToolbar);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateByClass(WindowClass::Finances);
+                windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
             }
         }
 
@@ -556,18 +547,11 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             FinancialPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_1);
         }
 
         void FinancialPrepareDraw()
         {
-            Widget* newWidgets = window_editor_scenario_options_widgets[page];
-            if (widgets != newWidgets)
-            {
-                widgets = newWidgets;
-                WindowInitScrollWidgets(*this);
-            }
-
             SetPressedTab();
 
             auto& gameState = GetGameState();
@@ -686,7 +670,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -734,7 +718,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -747,7 +731,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -760,7 +744,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -773,7 +757,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -786,7 +770,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -799,7 +783,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -812,7 +796,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -825,7 +809,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -836,18 +820,11 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             GuestsPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_2);
         }
 
         void GuestsPrepareDraw()
         {
-            Widget* newWidgets = window_editor_scenario_options_widgets[page];
-            if (widgets != newWidgets)
-            {
-                widgets = newWidgets;
-                WindowInitScrollWidgets(*this);
-            }
-
             SetPressedTab();
 
             auto& gameState = GetGameState();
@@ -939,7 +916,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -1015,7 +992,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -1028,7 +1005,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -1041,7 +1018,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -1054,12 +1031,12 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
                 case WIDX_ENTRY_PRICE_INCREASE:
-                    if (gameState.Park.EntranceFee < MAX_ENTRANCE_FEE)
+                    if (gameState.Park.EntranceFee < kMaxEntranceFee)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
                             ScenarioSetSetting::ParkChargeEntryFee, gameState.Park.EntranceFee + 1.00_GBP);
@@ -1067,7 +1044,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -1080,7 +1057,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
                     }
                     Invalidate();
                     break;
@@ -1142,18 +1119,11 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             ParkPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_3);
         }
 
         void ParkPrepareDraw()
         {
-            Widget* newWidgets = window_editor_scenario_options_widgets[page];
-            if (widgets != newWidgets)
-            {
-                widgets = newWidgets;
-                WindowInitScrollWidgets(*this);
-            }
-
             SetPressedTab();
 
             auto& gameState = GetGameState();
@@ -1276,7 +1246,7 @@ namespace OpenRCT2::Ui::Windows
             // Climate value
             screenCoords = windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
             auto ft = Formatter();
-            ft.Add<StringId>(ClimateNames[EnumValue(gameState.Climate)]);
+            ft.Add<StringId>(kClimateNames[EnumValue(gameState.Climate)]);
             DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 
@@ -1285,6 +1255,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* EditorScenarioOptionsOpen()
     {
-        return WindowFocusOrCreate<EditorScenarioOptionsWindow>(WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<EditorScenarioOptionsWindow>(
+            WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
     }
 } // namespace OpenRCT2::Ui::Windows

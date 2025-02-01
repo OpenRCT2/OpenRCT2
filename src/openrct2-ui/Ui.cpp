@@ -24,6 +24,10 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+#endif
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;
@@ -43,6 +47,12 @@ int NormalisedMain(int argc, const char** argv)
 int main(int argc, const char** argv)
 #endif
 {
+#ifdef __EMSCRIPTEN__
+    MAIN_THREAD_EM_ASM({
+        specialHTMLTargets["!canvas"] = Module.canvas;
+        Module.canvas.addEventListener("contextmenu", function(e) { e.preventDefault(); });
+    });
+#endif
     std::unique_ptr<IContext> context;
     int32_t rc = EXIT_SUCCESS;
     int runGame = CommandLineRun(argv, argc);

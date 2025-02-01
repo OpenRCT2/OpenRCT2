@@ -42,8 +42,8 @@ void StationObject::Unload()
     UnloadImages();
 
     NameStringId = 0;
-    BaseImageId = ImageIndexUndefined;
-    ShelterImageId = ImageIndexUndefined;
+    BaseImageId = kImageIndexUndefined;
+    ShelterImageId = kImageIndexUndefined;
 }
 
 void StationObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const

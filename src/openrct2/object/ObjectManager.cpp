@@ -17,10 +17,10 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/JobPool.h"
 #include "../core/Memory.hpp"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
+#include "../ui/WindowManager.h"
 #include "BannerSceneryEntry.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -80,7 +80,7 @@ public:
     Object* GetLoadedObject(ObjectType objectType, size_t index) override
     {
         // This is sometimes done deliberately (to avoid boilerplate), so no need to log_warn for this.
-        if (index == OBJECT_ENTRY_INDEX_NULL)
+        if (index == kObjectEntryIndexNull)
         {
             return nullptr;
         }
@@ -88,7 +88,7 @@ public:
         if (index >= static_cast<size_t>(getObjectEntryGroupCount(objectType)))
         {
 #ifdef DEBUG
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 LOG_WARNING("Object index %u exceeds maximum for type %d.", index, objectType);
             }
@@ -121,7 +121,7 @@ public:
         {
             return GetLoadedObjectEntryIndex(obj);
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     ObjectEntryIndex GetLoadedObjectEntryIndex(const ObjectEntryDescriptor& descriptor) override
@@ -131,12 +131,12 @@ public:
         {
             return GetLoadedObjectEntryIndex(obj);
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) override
     {
-        ObjectEntryIndex result = OBJECT_ENTRY_INDEX_NULL;
+        ObjectEntryIndex result = kObjectEntryIndexNull;
         size_t index = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
@@ -503,10 +503,6 @@ private:
                 sgObject->UpdateEntryIndexes();
             }
         }
-
-        // HACK Scenery window will lose its tabs after changing the scenery group indexing
-        //      for now just close it, but it will be better to later tell it to invalidate the tabs
-        WindowCloseByClass(WindowClass::Scenery);
     }
 
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
@@ -515,7 +511,7 @@ private:
         const auto& primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object* sgObject = GetLoadedObject(primarySGEntry);
 
-        auto entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        auto entryIndex = kObjectEntryIndexNull;
         if (sgObject != nullptr)
         {
             entryIndex = GetLoadedObjectEntryIndex(sgObject);

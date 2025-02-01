@@ -18,7 +18,7 @@
 
 namespace OpenRCT2::Drawing
 {
-    constexpr int32_t PALETTE_TRANSPARENT = -1;
+    static constexpr int32_t kPaletteTransparent = -1;
 
     ImageImporter::ImportResult ImageImporter::Import(const Image& image, ImageImportMeta& meta) const
     {
@@ -101,7 +101,7 @@ namespace OpenRCT2::Drawing
                     // The 1st index is always transparent
                     if (paletteIndex == 0)
                     {
-                        paletteIndex = PALETTE_TRANSPARENT;
+                        paletteIndex = kPaletteTransparent;
                     }
                     palettedSrc += 1;
                     buffer.push_back(paletteIndex);
@@ -133,7 +133,7 @@ namespace OpenRCT2::Drawing
         for (auto i = 0; i < bufferLength; i++)
         {
             auto p = pixels[i];
-            buffer[i] = (p == PALETTE_TRANSPARENT ? 0 : static_cast<uint8_t>(p));
+            buffer[i] = (p == kPaletteTransparent ? 0 : static_cast<uint8_t>(p));
         }
         return buffer;
     }
@@ -166,7 +166,7 @@ namespace OpenRCT2::Drawing
             for (auto x = 0; x < size.width; x++)
             {
                 int32_t paletteIndex = *src++;
-                if (paletteIndex == PALETTE_TRANSPARENT)
+                if (paletteIndex == kPaletteTransparent)
                 {
                     if (npixels != 0)
                     {
@@ -315,7 +315,7 @@ namespace OpenRCT2::Drawing
                 }
             }
         }
-        return PALETTE_TRANSPARENT;
+        return kPaletteTransparent;
     }
 
     bool ImageImporter::IsTransparentPixel(const int16_t* colour)
@@ -328,7 +328,7 @@ namespace OpenRCT2::Drawing
      */
     bool ImageImporter::IsInPalette(const GamePalette& palette, int16_t* colour)
     {
-        return !(GetPaletteIndex(palette, colour) == PALETTE_TRANSPARENT && !IsTransparentPixel(colour));
+        return !(GetPaletteIndex(palette, colour) == kPaletteTransparent && !IsTransparentPixel(colour));
     }
 
     /**
@@ -363,7 +363,7 @@ namespace OpenRCT2::Drawing
     int32_t ImageImporter::GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour)
     {
         auto smallestError = static_cast<uint32_t>(-1);
-        auto bestMatch = PALETTE_TRANSPARENT;
+        auto bestMatch = kPaletteTransparent;
         for (uint32_t x = 0; x < kGamePaletteSize; x++)
         {
             if (IsChangablePixel(x))

@@ -23,8 +23,8 @@ namespace OpenRCT2
         // FIXME: Move the checksum implementation out.
         std::array<std::byte, 20>& _checksum;
 
-        static constexpr uint64_t Seed = 0xcbf29ce484222325ULL;
-        static constexpr uint64_t Prime = 0x00000100000001B3ULL;
+        static constexpr uint64_t kSeed = 0xcbf29ce484222325ULL;
+        static constexpr uint64_t kPrime = 0x00000100000001B3ULL;
 
     public:
         ChecksumStream(std::array<std::byte, 20>& buf);

@@ -93,12 +93,13 @@ STR_0088    :Montaña Rusa Impulso Inverso
 STR_0089    :Mini Montaña Rusa
 STR_0090    :Trenes Mineros
 STR_0091    :Atracc. Desconocida (59)
-STR_0092    :Montaña Rusa Impulso MLI
-STR_0093    :Montaña Rusa Híbrida 
+STR_0092    :Montaña Rusa acelerada por LIM
+STR_0093    :Montaña Rusa Híbrida
 STR_0094    :Montaña Rusa de un solo carril
 STR_0095    :Montaña Rusa Alpina
 STR_0096    :Montaña Rusa de madera clásica
 STR_0097    :Montaña Rusa de pie clásica
+STR_0098    :Montaña Rusa acelerada por LSM
 STR_0512    :Una montaña rusa pequeña de acero con una subida en espiral y vagones con asientos en línea.
 STR_0513    :Una montaña rusa en el que los pasajeros permanecen de pie.
 STR_0514    :Los vagones suspendidos bajo los raíles se balancean hacia los lados en las curvas.
@@ -112,7 +113,7 @@ STR_0521    :Una montaña rusa rápida con curvas cerradas y fuertes caídas. La
 STR_0522    :Pequeña montaña rusa en donde los pasajeros se montan en unos vagones que recorren un monorriel.
 STR_0523    :Los pasajeros viajan lentamente en vehículos autopropulsados sobre una vía.
 STR_0524    :Un vagón es lanzado en un neumático a lo alto de una elevada torre de acero, cayendo libremente.
-STR_0525    :Los pasajeros viajan por unas vías retorcidas en vagones tipo bobsleigh guiados únicamente por la curvatura y los peraltes de la vía semicircular.
+STR_0525    :Los pasajeros viajan por unas vías con giro en vagones tipo bobsleigh guiados únicamente por la curvatura y los peraltes de la vía semicircular.
 STR_0526    :Los pasajeros viajan en una cabina de observación giratoria que se desplaza hacia arriba en una torre alta.
 STR_0527    :Una montaña rusa de acero capaz de rizos verticales.
 STR_0528    :Los pasajeros viajan en botes hinchables por tubos semicirculares o totalmente cerrados.
@@ -156,7 +157,7 @@ STR_0569    :Montados bajo la vía con un arnés especial, los visitantes experi
 STR_0571    :Vagones circulares giran mientras recorren sobre la zigzagueante vía de madera.
 STR_0572    :Botes de gran capacidad viajan por un amplio canal, los cuales son impulsados por una cinta transportadora para después caer y hacer grandes salpicaduras.
 STR_0573    :Vagones con forma de helicópteros corren por una vía de acero controlados por los pedales de los pasajeros.
-STR_0574    :Los pasajeros son sujetados tumbados por unos arneses especiales, mientras viajan por una vía retorcida con inversiones de espaldas o boca abajo.
+STR_0574    :Los pasajeros son sujetados tumbados por unos arneses especiales, mientras viajan por una vía con giros e inversiones de espaldas o boca abajo.
 STR_0575    :Trenes monorraíl suspendidos transportan a la gente por el parque.
 STR_0577    :Vagones que corren por una vía de madera girando en secciones especiales de inversión.
 STR_0578    :Los vagones circulan por vías formando aros y recorriendo bruscas caídas y giros.
@@ -175,14 +176,15 @@ STR_0590    :Los pasajeros viajan en un submarino sumergido que viaja sobre una 
 STR_0591    :Barcos en forma de balsa viajan suavemente sobre un río.
 STR_0593    :
 STR_0598    :Los vagones de la montaña rusa invertida aceleran saliendo del andén y tomando un tramo de vía vertical, entonces vuelven marcha atrás pasando por el andén y subiendo por otro tramo de vía vertical.
-STR_0599    :Una montaña rusa compacta con vagones individuales y caídas y giros suaves.
-STR_0600    :Trenes mineros autopropulsados corren a lo largo de una vía suave y retorcida.
-STR_0602    :Los vagones se aceleran por los motores lineales de inducción.
+STR_0599    :Una montaña rusa compacta con vagones individuales y caídas con giro suaves.
+STR_0600    :Trenes mineros autopropulsados corren a lo largo de una vía suave y con giros.
+STR_0602    :Los vagones de la montaña rusa son acelerados fuera de la estación por motores de inducción lineal (LIM) para atravesar inversiones con giro a gran velocidad.
 STR_0603    :Una montaña rusa estilo de madera con vías de acero, lo que le permite caídas empinadas e inversiones.
 STR_0604    :Los pasajeros viajan en fila india en una pista de monorraíl estrecha, mientras corren a través de inversiones estrechas y cambios de dirección.
 STR_0605    :Los pasajeros bajan por una serpenteante vía de acero, frenando para controlar su velocidad.
 STR_0606    :Una montaña rusa de madera de estilo antiguo con un recorrido rápido y bruto, con muchas caídas, algunas fuerzas G laterales, y diseñada para ofrecer una experiencia ‘fuera de control’.
 STR_0607    :Una intensa montaña rusa en espiral de acero y de estilo antiguo en la que los pasajeros viajan de pie.
+STR_0608    :Los vagones de la montaña rusa son acelerados por motores síncronos lineales (LSM), avanzando a toda velocidad por giros y curvas cerradas.
 STR_0767    :Visitante {INT32}
 STR_0768    :Manitas {INT32}
 STR_0769    :Mecánico {INT32}
@@ -277,11 +279,11 @@ STR_0880    :No se puede elevar el terreno…
 STR_0881    :Un objeto interfiere
 STR_0882    :Cargar Partida
 STR_0883    :Guardar Partida
-STR_0884    :Cargar paisaje
-STR_0885    :Guardar paisaje
-STR_0887    :Salir del editor de escenarios
-STR_0888    :Salir del editor de Vías
-STR_0889    :Salir del admin. de Vías
+STR_0884    :Cargar Paisaje
+STR_0885    :Guardar Paisaje
+STR_0887    :Salir del Editor de escenarios
+STR_0888    :Salir del Diseñador de Vías
+STR_0889    :Salir del Gestor de Diseños de vías
 STR_0891    :Tomar captura de pantalla
 STR_0892    :Captura de pantalla guardada como ‘{STRINGID}’
 STR_0893    :¡No se pudo tomar la Captura de pantalla!
@@ -344,7 +346,7 @@ STR_0949    :¿Guardar antes de salir?
 STR_0950    :Cargar Partida
 STR_0951    :Salir del juego
 STR_0952    :Salir del juego
-STR_0953    :Cargar paisaje
+STR_0953    :Cargar Paisaje
 STR_0955    :Angulo de rotación de asiento en este tramo
 STR_0956    :-180°
 STR_0957    :-135°
@@ -436,7 +438,7 @@ STR_1042    :Guardar paisaje
 STR_1043    :OpenRCT2 Juegos guardados
 STR_1044    :OpenRCT2 Archivo de Escenario
 STR_1045    :OpenRCT2 Archivo de Paisaje
-STR_1046    :OpenRCT2 Archivo de diseño de vía
+STR_1046    :OpenRCT2 Archivo de Diseño de Vía
 STR_1047    :¡Guardar partida falló!
 STR_1048    :¡Guardar escenario falló!
 STR_1049    :¡Guardar paisaje falló!
@@ -1129,7 +1131,7 @@ STR_1738    :No se puede cambiar el numero de vueltas…
 STR_1739    :Carrera ganada por visitante {INT32}
 STR_1740    :Carrera ganada por {STRINGID}
 STR_1741    :¡Aún sin construir!
-STR_1742    :{WINDOW_COLOUR_2}Max. visitantes en juego:
+STR_1742    :{WINDOW_COLOUR_2}Máx. visitantes en juego:
 STR_1743    :Numero de visitantes máximo permitido en este juego al mismo tiempo
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :No puedes cambiar esto…
@@ -1161,17 +1163,6 @@ STR_1773    :Sólo se permite una sección de fotos por atracción.
 STR_1774    :Sólo un cable de elevación por atracción.
 STR_1777    :Música de atracción
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Disfraz de panda
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Disfraz de tigre
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Disfraz de elefante
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Disfraz de romano
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Disfraz de gorila
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Disfraz de muñeco de nieve
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Disfraz de caballero
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Disfraz de astronauta
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Disfraz de bandido
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Disfraz de sheriff
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Disfraz de pirata
 STR_1790    :Selecciona el color del uniforme para este tipo de empleados
 STR_1791    :{WINDOW_COLOUR_2}Color del uniforme:
 STR_1792    :Dirigiéndose a {STRINGID}
@@ -1665,11 +1656,11 @@ STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} 
 STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} refrescos
 STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} souvenir
 STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} souvenirs
-STR_2305    :Archivos Diseño Vía
-STR_2306    :Guardar Diseño Vía
-STR_2307    :Selecciona diseño de {STRINGID}
+STR_2305    :Archivos de diseño de vía
+STR_2306    :Guardar diseño de vía
+STR_2307    :Selecciona diseño {STRINGID}
 STR_2308    :{STRINGID} Diseños de Vía
-STR_2309    :Instalar Diseño de Vía
+STR_2309    :Instalar nuevo Diseño de Vía
 STR_2310    :Construir diseño personalizado
 STR_2311    :{WINDOW_COLOUR_2}Nivel de emoción: {BLACK}{COMMA2DP32} (aprox.)
 STR_2312    :{WINDOW_COLOUR_2}Nivel de intensidad: {BLACK}{COMMA2DP32} (aprox.)
@@ -1910,9 +1901,9 @@ STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :Investigación Completa
 STR_2684    :Llega un gran grupo de visitantes
-STR_2685    :Simplex Noise Parameters
-STR_2686    :Bajo:
-STR_2687    :Alto:
+STR_2685    :Parámetros del Ruido "Simplex" 
+STR_2686    :Altura mín. terreno:
+STR_2687    :Altura máx. terreno:
 STR_2688    :Frecuencia Base:
 STR_2689    :Octavas:
 STR_2690    :Generación Mapa
@@ -2050,9 +2041,9 @@ STR_2846    :{TOPAZ}¡Tu parque ha recibido el premio a ‘El parque con la disp
 STR_2847    :{TOPAZ}¡Tu parque ha recibido el premio a ‘El parque con las mejores atracciones suaves’!
 STR_2848    :{WINDOW_COLOUR_2}Sin premios recientes
 STR_2849    :Nuevo escenario instalado exitosamente
-STR_2850    :Nueva vía instalada exitosamente
+STR_2850    :Nuevo diseño de vía instalado exitosamente
 STR_2851    :Escenario ya instalado
-STR_2852    :Vía ya instalada
+STR_2852    :Diseño de vía ya instalada
 STR_2853    :¡Prohibido por las autoridades locales!
 STR_2854    :{RED}¡Los visitantes no encuentran la entrada de {STRINGID}!{NEWLINE}Construye un sendero hacia la entrada
 STR_2855    :{RED}¡{STRINGID} no tiene un sendero de salida!{NEWLINE}Construye un sendero desde la salida de la atracción.
@@ -2169,7 +2160,7 @@ STR_3128    :Guardar diseño de vía
 STR_3129    :Guardar diseño de vía con decorado
 STR_3130    :Guardar
 STR_3131    :Cancelar
-STR_3132    :{BLACK}Clic en elementos de escenario para guardar junto con el diseño de la vía …
+STR_3132    :{BLACK}Clic en elementos de escenario para guardar junto con el diseño de vía…
 STR_3133    :No es posible construir esto en una pendiente
 STR_3134    :{RED}(Este diseño incluye un decorado que no está disponible)
 STR_3135    :{RED}(Vehículo no disponible - El rendimiento puede verse afectado)
@@ -2223,8 +2214,8 @@ STR_3203    :Lista de inventos finalizada
 STR_3204    :Elección de opciones
 STR_3205    :Selección de objetivos
 STR_3206    :Guardar Escenario
-STR_3207    :Diseñador de Montañas Rusas
-STR_3208    :Diseñador de Vías
+STR_3207    :Diseñador de Vías
+STR_3208    :Gestor de diseños de vías
 STR_3209    :Regresar al paso anterior:
 STR_3210    :Avanzar al siguiente paso:
 STR_3211    :Tamaño de Mapa:
@@ -2349,7 +2340,7 @@ STR_3332    :La entrada del parque está al revés o no tiene un sendero que lle
 STR_3333    :Exportar complementos al guardar el juego
 STR_3334    :Selecciona si los complementos adicionales (datos no distribuidos con el juego principal) utilizados en un escenario deben exportarse al guardar el juego, lo que permite que otros jugadores que no tengan esos complementos puedan abrirlo.
 STR_3335    :Diseñador de Vías - Selecciona el tipo de Atracción y Vehículo
-STR_3336    :Gestor de Diseños de vías - Elige tipo de atracción 
+STR_3336    :Gestor de Diseños de Vías - Elige tipo de atracción 
 STR_3338    :{BLACK}Recorrido personalizado
 STR_3339    :{BLACK}{COMMA16} diseño disponible, o recorrido personalizado
 STR_3340    :{BLACK}{COMMA16} diseños disponibles, o recorrido personalizado
@@ -2357,13 +2348,13 @@ STR_3341    :Herramientas de juego
 STR_3342    :Editor de escenarios
 STR_3343    :Convertir partida guardada en escenario
 STR_3344    :Diseñador de Vías
-STR_3345    :Administrador de Vías
+STR_3345    :Gestor de Diseños de Vías
 STR_3346    :No se puede guardar el diseño de vía…
-STR_3347    :Atracc. demasiada larga, contiene demasiados elementos, o el paisaje está demasiado lejos.
+STR_3347    :Atracc. demasiado grande, contiene demasiados elementos, o el decorado está demasiado separado
 STR_3348    :Renombrar
 STR_3349    :Borrar
-STR_3350    :Nombrar Diseño Vía
-STR_3351    :Nuevo nombre de diseño de vía:
+STR_3350    :Nombre del Diseño de Vía
+STR_3351    :Nuevo nombre para el diseño de vía:
 STR_3352    :No se puede renombrar el diseño de vía…
 STR_3353    :El nuevo nombre contiene caracteres inválidos
 STR_3354    :Otro archivo ya tiene este nombre o se encuentra protegido contra escritura
@@ -2371,9 +2362,9 @@ STR_3355    :El archivo está bloqueado o protegido contra escritura
 STR_3356    :Borrar Archivo
 STR_3357    :{WINDOW_COLOUR_2}¿Estás seguro de borrar permanentemente {STRING} ?
 STR_3358    :No se puede eliminar el diseño da vía…
-STR_3359    :{BLACK}Sin diseños de vías para esta atracción
+STR_3359    :{BLACK}Sin diseños de vía de este tipo
 STR_3360    :¡Advertencia!
-STR_3361    :Demasiados diseños de vía - Algunos no se listarán.
+STR_3361    :Demasiados diseños de vía de este tipo. Algunos no serán listados.
 STR_3364    :Avanzado
 STR_3365    :Permitir la selección de escenario además de grupos de escenarios.
 STR_3366    :{BLACK}= Atracción
@@ -2393,8 +2384,8 @@ STR_3379    :Cancelar
 STR_3380    :No se pudo instalar este diseño de vía…
 STR_3381    :Archivo no compatible o contiene datos inválidos
 STR_3382    :Copia de archivo fallada
-STR_3383    :Selecc. nuevo nombre diseño de vía
-STR_3384    :Un diseño de vía ya tiene este nombre - escoge otro nombre:
+STR_3383    :Selecciona un nombre nuevo para el diseño de vía
+STR_3384    :Ya existe un diseño de vía con este nombre. Por favor, usa un nombre nuevo:
 STR_3389    :No es posible seleccionar el elemento adicional de escenario…
 STR_3390    :Demasiados elementos seleccionados
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
@@ -2471,9 +2462,9 @@ STR_5196    :Derechos de construcción
 STR_5197    :Escenario
 STR_5198    :Sendero
 STR_5199    :Construcción de Atracción
-STR_5200    :Editor de Vías
+STR_5200    :Localización de Diseño de Vía
 STR_5201    :Nueva atracción
-STR_5202    :Selección Editor de Vías
+STR_5202    :Selección de Diseño de Vía
 STR_5203    :Atracciones
 STR_5204    :Lista de Atracciones
 STR_5205    :Visitante
@@ -2486,8 +2477,8 @@ STR_5211    :Lista de Inventos
 STR_5212    :Opciones de Escenario
 STR_5213    :Opciones de Objetivos
 STR_5214    :Generación de Mapa
-STR_5215    :Gestor de Diseño de Vías
-STR_5216    :Gestor de Listado de Diseños de Vías
+STR_5215    :Gestor de Diseño de Vía
+STR_5216    :Listado de Gestor de Diseño de Vía
 STR_5217    :Trucos
 STR_5218    :Temas
 STR_5219    :Opciones
@@ -2579,8 +2570,8 @@ STR_5309    :OpenRCT2
 STR_5310    :Aleatorio
 STR_5311    :Herramientas de depuración
 STR_5312    :Mostrar consola
-STR_5313    :Mostrar inspc. cuadricula
-STR_5314    :Inspector de cuadricula
+STR_5313    :Mostrar inspc. cuadrícula
+STR_5314    :Inspector de cuadrícula
 STR_5335    :Entrada
 STR_5336    :Salida
 STR_5337    :Entrada del Parque
@@ -2595,7 +2586,7 @@ STR_5347    :Trucos del parque
 STR_5348    :Trucos de atracciones
 STR_5349    :Todas las atracciones
 STR_5350    :Máx.
-STR_5351    :Min.
+STR_5351    :Mín.
 STR_5352    :{BLACK}Felicidad:
 STR_5353    :{BLACK}Energía:
 STR_5354    :{BLACK}Hambre:
@@ -2783,7 +2774,7 @@ STR_5612    :Bandera Fantasma
 STR_5613    :B
 STR_5614    :Bandera Roto
 STR_5615    :L
-STR_5616    :Último elemento para bandera de cuadricula.
+STR_5616    :Último elemento para bandera de cuadrícula.
 STR_5617    :Mover elementos selec. arriba.
 STR_5618    :Mover elementos selec. abajo.
 #Estas líneas son en inglés
@@ -3098,7 +3089,7 @@ STR_5970    :ID Entrada: {BLACK}{COMMA16}
 STR_5971    :ID Salida: {BLACK}{COMMA16}
 STR_5972    :ID Atracción: {BLACK}{COMMA16}
 STR_5973    :Sujetar al siguiente
-STR_5974    :Cambia la altura base y de gálibo, de modo que sea la misma que el siguiente elemento en el cuadrado actual. Esto hace que sea más fácil de construir en esta cuadricula.
+STR_5974    :Cambia la altura base y de gálibo, de modo que sea la misma que el siguiente elemento en el cuadrado actual. Esto hace que sea más fácil de construir en esta cuadrícula.
 STR_5975    :Pendiente:
 STR_5976    :Plano
 STR_5977    :Lado derecho hacia arriba
@@ -3140,7 +3131,7 @@ STR_6012    :{COMMA1DP16}
 STR_6013    :Los visitantes sólo pagarán por la entrada del parque y los servicios.{NEWLINE}La entrada de la atracción es gratis.
 STR_6014    :Los visitantes sólo pagarán por la entrada de atracciones y servicios.{NEWLINE}Los visitantes no pagan por entrar al parque.
 STR_6015    :Inclinado
-STR_6016    :Modificar Cuadricula
+STR_6016    :Modificar Cuadrícula
 STR_6017    :Por favor más despacio
 STR_6018    :Construir Atrac. - Curva Izquierda
 STR_6019    :Construir Atrac. - Curva Derecha
@@ -3169,16 +3160,16 @@ STR_6041    :{BLACK}¡No hay mecánicos contratados!
 STR_6042    :Cargar mapa de altura
 STR_6043    :Seleccionar mapa de altura
 STR_6044    :Suavizar mapa de altura
-STR_6045    :Intensidad
+STR_6045    :Intensidad:
 STR_6046    :Normalizar mapa de altura
-STR_6047    :Suavizar cuadricula
+STR_6047    :Suavizar bordes de cuadrícula
 STR_6048    :Error de mapa de altura
 STR_6049    :Error al leer PNG
 STR_6050    :Error al leer bitmap
-STR_6052    :El mapa de altura es muy grande, será cortado.
-STR_6053    :El mapa de altura no puede ser normalizado.
+STR_6052    :El mapa de alturas es muy grande, será cortado
+STR_6053    :El mapa de alturas no puede ser normalizado
 STR_6054    :Sólo bitmaps de 24-bits son soportados
-STR_6055    :Mapa de altura de OpenRCT2
+STR_6055    :Mapa de alturas de OpenRCT2
 STR_6056    :Silenciar
 STR_6057    :Mostrar un botón separado para la Opción ‘Silenciar’ en la barra de herramientas.
 STR_6058    :Silenciar
@@ -3569,10 +3560,10 @@ STR_6493    :Este parque fue guardado en una versión más reciente de OpenRCT2,
 STR_6494    :Agrupar por tipo de atracción
 STR_6495    :Agrupar las atracciones por tipo en vez de mostrar cada vehículo por separado.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
-STR_6497    :Haz click en una casilla para mostrar sus elementos.{NEWLINE}Ctrl + click un elemento para seleccionarlo directamente.
+STR_6497    :Haz clic en una casilla para mostrar sus elementos.{NEWLINE}Ctrl + clic un elemento para seleccionarlo directamente.
 STR_6498    :Activa para mantener el mapa con forma cuadrada.
-STR_6499    :Tipo de vehículo no compatible con el formato de diseño de la vía
-STR_6500    :Elementos no compatibles con el formato de diseño de la vía
+STR_6499    :Tipo de vehículo no compatible con el formato del diseño de vía
+STR_6500    :Elementos no compatibles con el formato del diseño de vía
 STR_6501    :Color aleatorio
 STR_6502    :Introduce un valor entre {COMMA16} y {COMMA16}
 STR_6503    :Al menos un objeto de estación debe estar seleccionado
@@ -3590,7 +3581,7 @@ STR_6514    :¡Altura no válida!
 STR_6515    :{BLACK}RollerCoaster Tycoon 1 no ha sido enlazado - se utilizarán imágenes alternativas.
 STR_6516    :Uno o más objetos añadidos requieren haber enlazado RollerCoaster Tycoon 1 para su correcta visualización. Se utilizarán imágenes alternativas.
 STR_6517    :Uno o más objetos de este parque requieren haber enlazado RollerCoaster Tycoon 1 para su correcta visualización. Se utilizarán imágenes alternativas.
-STR_6518    :{BLACK}Posa el ratón sobre un escenario para ver su descripción y objetivos. Haz click para empezar a jugar.
+STR_6518    :{BLACK}Posa el ratón sobre un escenario para ver su descripción y objetivos. Haz clic para empezar a jugar.
 STR_6519    :Extras
 STR_6520    :Paquetes de Recursos
 STR_6521    :Prioridad baja
@@ -3613,7 +3604,7 @@ STR_6537    :Permitir usar senderos normales como cola
 STR_6538    :Muestra senderos normales en el menú desplegable de colas de la ventana Senderos.
 STR_6539    :Freno cerrado
 STR_6540    :{WINDOW_COLOUR_2}En especial gracias a las siguientes empresas for permitir el uso de su imagen:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Colaboradores
 STR_6543    :Colaboradores…
 STR_6544    :¡El préstamo no puede ser negativo!
@@ -3666,7 +3657,7 @@ STR_6590    :Mostrar los botones de ventana (como el de cerrar la ventana) a la 
 STR_6591    :El empleado está reparando una atracción y no puede ser despedido.
 STR_6592    :El empleado está inspeccionando una atracción y no puede ser despedido.
 STR_6593    :Eliminar vallas del parque
-STR_6594    :Inspector de cuadricula: Alternar inclinación del muro
+STR_6594    :Inspector de cuadrícula: Alternar inclinación del muro
 STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Autores: {BLACK}{STRING}
 STR_6597    :Parámetro no válido
@@ -3749,3 +3740,36 @@ STR_6673    :Translúcido
 STR_6674    :{MONTH}, Año {COMMA16}
 STR_6675    :Nombres de Personitas
 STR_6676    :Se debe seleccionar al menos un objeto de nombre de personita
+STR_6677    :Agregar playas alrededor de cuerpos de agua
+STR_6678    :Fuente del mapa de alturas:
+STR_6679    :Terreno plano
+STR_6680    :Ruido "Simplex"
+STR_6681    :Archivo de mapa de alturas
+STR_6682    :Generador de mapa - Generador
+STR_6683    :Generador de mapa - Terreno
+STR_6684    :Generador de mapa - Agua
+STR_6685    :Generador de mapa - Bosques
+STR_6686    :Relación árboles-terreno:
+STR_6687    :Altura mín. árboles:
+STR_6688    :Altura máx. árboles:
+STR_6689    :{UINT16}%
+STR_6690    :Altura mínima del terreno
+STR_6691    :Introduce una altura mínima del terreno entre {COMMA16} y {COMMA16}
+STR_6692    :Altura máxima del terreno
+STR_6693    :Introduce una altura máxima del terreno entre {COMMA16} y {COMMA16}
+STR_6694    :Altura mínima de los árboles
+STR_6695    :Introduce una altura mínima de árboles entre {COMMA16} y {COMMA16}
+STR_6696    :Altura máxima de los árboles
+STR_6697    :Introduce una altura máxima de árboles entre {COMMA16} y {COMMA16}
+STR_6698    :Relación árboles-terreno
+STR_6699    :Introduce una relación árboles-terreno entre {COMMA16} y {COMMA16}
+STR_6700    :Frecuencia Base del Ruido "Simplex"
+STR_6701    :Introduce una Frecuencia Base entre {COMMA2DP32} y {COMMA2DP32}
+STR_6702    :Octavas del Ruido "Simplex"
+STR_6703    :Introduce Octavas entre {COMMA16} y {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Examinar…
+STR_6706    :{WINDOW_COLOUR_2}Archivo de imagen actual: {BLACK}{STRING}
+STR_6707    :(ninguno seleccionado)
+STR_6708    :Fuerza de Suavizado
+STR_6709    :Introduce una Fuerza de Suavizado entre {COMMA16} y {COMMA16}

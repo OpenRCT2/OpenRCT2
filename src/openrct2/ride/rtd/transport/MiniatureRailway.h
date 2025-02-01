@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .UpkeepCosts = { 60, 20, 0, 10, 3, 5 },
     .BuildCosts = { 17.50_GBP, 3.00_GBP, 50, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 00) },
+        { MakeRideRating(2, 50), MakeRideRating(0, 00), MakeRideRating(0, 00) },
         11,
         -1,
         false,
