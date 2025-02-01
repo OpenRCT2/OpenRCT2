@@ -556,7 +556,7 @@ namespace OpenRCT2::RCT2
             // Pad13CA741;
             // Byte13CA742
             // Pad013CA747
-            gameState.ClimateUpdateTimer = _s6.ClimateUpdateTimer;
+            gameState.WeatherUpdateTimer = _s6.WeatherUpdateTimer;
             gameState.WeatherCurrent.Weather = WeatherType{ _s6.CurrentWeather };
             gameState.WeatherNext.Weather = WeatherType{ _s6.NextWeather };
             gameState.WeatherCurrent.Temperature = _s6.Temperature;

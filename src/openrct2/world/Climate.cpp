@@ -138,14 +138,14 @@ void ClimateUpdate()
 
     if (!GetGameState().Cheats.freezeWeather)
     {
-        if (gameState.ClimateUpdateTimer)
+        if (gameState.WeatherUpdateTimer)
         {
-            if (gameState.ClimateUpdateTimer == 960)
+            if (gameState.WeatherUpdateTimer == 960)
             {
                 auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                 ContextBroadcastIntent(&intent);
             }
-            gameState.ClimateUpdateTimer--;
+            gameState.WeatherUpdateTimer--;
         }
         else if (!(gameState.CurrentTicks & 0x7F))
         {
@@ -221,7 +221,7 @@ void ClimateForceWeather(WeatherType weather)
     gameState.WeatherCurrent.Level = trait.level;
     gameState.WeatherCurrent.WeatherEffect = trait.effectLevel;
     gameState.WeatherCurrent.Temperature = pattern.baseTemperature + trait.temperatureDelta;
-    gameState.ClimateUpdateTimer = 1920;
+    gameState.WeatherUpdateTimer = 1920;
 
     ClimateDetermineFutureWeather(ScenarioRand());
 
@@ -321,7 +321,7 @@ static void ClimateDetermineFutureWeather(uint32_t randomValue)
     gameState.WeatherNext.WeatherGloom = nextWeatherTrait.gloomLevel;
     gameState.WeatherNext.Level = nextWeatherTrait.level;
 
-    gameState.ClimateUpdateTimer = 1920;
+    gameState.WeatherUpdateTimer = 1920;
 }
 
 static void ClimateUpdateWeatherSound()

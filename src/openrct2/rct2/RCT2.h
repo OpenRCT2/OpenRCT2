@@ -979,7 +979,7 @@ namespace OpenRCT2::RCT2
         uint8_t Byte13CA742[4]; // unused
         uint8_t Climate;
         uint8_t Pad013CA747;
-        uint16_t ClimateUpdateTimer;
+        uint16_t WeatherUpdateTimer;
         uint8_t CurrentWeather;
         uint8_t NextWeather;
         uint8_t Temperature;

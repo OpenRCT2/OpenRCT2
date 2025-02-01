@@ -2352,7 +2352,7 @@ namespace OpenRCT2::RCT1
         void ImportClimate(GameState_t& gameState)
         {
             gameState.Climate = ClimateType{ _s4.Climate };
-            gameState.ClimateUpdateTimer = _s4.ClimateTimer;
+            gameState.WeatherUpdateTimer = _s4.ClimateTimer;
             gameState.WeatherCurrent.Temperature = _s4.Temperature;
             gameState.WeatherCurrent.Weather = WeatherType{ _s4.Weather };
             gameState.WeatherCurrent.WeatherEffect = WeatherEffectType::None;

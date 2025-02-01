@@ -50,7 +50,7 @@ namespace OpenRCT2
         ClimateType Climate;
         WeatherState WeatherCurrent;
         WeatherState WeatherNext;
-        uint16_t ClimateUpdateTimer;
+        uint16_t WeatherUpdateTimer;
         money64 Cash;
         money64 CashHistory[kFinanceHistorySize];
         money64 InitialCash;
