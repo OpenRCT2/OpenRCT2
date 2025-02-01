@@ -1403,7 +1403,9 @@ namespace OpenRCT2
 
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
     {
-        auto paintAsPartial = gClipHeightTransparency && ps->Element != nullptr && ps->Element->Flags & TILE_ELEMENT_FLAG_PARTIAL;
+        // the cut-away view is active, transparency is activated and the element is above the cut-off height
+        auto isClipped = (viewFlags & VIEWPORT_FLAG_CLIP_VIEW) && gClipHeightTransparency && ps->Element != nullptr
+            && (ps->Element->GetBaseZ() > gClipHeight * kCoordsZStep);
 
         switch (ps->InteractionItem)
         {
@@ -1414,14 +1416,14 @@ namespace OpenRCT2
                     {
                         case EntityType::Vehicle:
                         {
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || paintAsPartial)
+                            if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || isClipped)
                             {
                                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::Hidden
                                                                                       : VisibilityKind::Partial;
                             }
                             // Rides without track can technically have a 'vehicle':
                             // these should be hidden if 'hide rides' is enabled
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || paintAsPartial)
+                            if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || isClipped)
                             {
                                 auto vehicle = ps->Entity->As<Vehicle>();
                                 if (vehicle == nullptr)
@@ -1454,7 +1456,7 @@ namespace OpenRCT2
                 }
                 break;
             case ViewportInteractionItem::Ride:
-                if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || paintAsPartial)
+                if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || isClipped)
                 {
                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
                 }
@@ -1462,7 +1464,7 @@ namespace OpenRCT2
             case ViewportInteractionItem::Footpath:
             case ViewportInteractionItem::PathAddition:
             case ViewportInteractionItem::Banner:
-                if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS || paintAsPartial)
+                if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS || isClipped)
                 {
                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? VisibilityKind::Hidden : VisibilityKind::Partial;
                 }
@@ -1474,7 +1476,7 @@ namespace OpenRCT2
                 {
                     if (IsTileElementVegetation(ps->Element))
                     {
-                        if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION || paintAsPartial)
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION || isClipped)
                         {
                             return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEGETATION) ? VisibilityKind::Hidden
                                                                                     : VisibilityKind::Partial;
@@ -1482,7 +1484,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY || paintAsPartial)
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY || isClipped)
                         {
                             return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden
                                                                                  : VisibilityKind::Partial;
@@ -1490,7 +1492,7 @@ namespace OpenRCT2
                     }
                 }
                 if (ps->InteractionItem == ViewportInteractionItem::Wall
-                    && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE || paintAsPartial))
+                    && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE || isClipped))
                 {
                     return VisibilityKind::Partial;
                 }

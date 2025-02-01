@@ -222,16 +222,12 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         // Only paint tile_elements below the clip height.
         if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * kCoordsZStep))
         {
+            // transparency off: don't paint this tile_element at all
+            // transparency on: paint this tile_element as partial or hidden later on
             if (!gClipHeightTransparency)
             {
                 continue;
             }
-
-            tile_element->Flags |= TILE_ELEMENT_FLAG_PARTIAL;
-        }
-        else
-        {
-            tile_element->Flags &= ~TILE_ELEMENT_FLAG_PARTIAL;
         }
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);
