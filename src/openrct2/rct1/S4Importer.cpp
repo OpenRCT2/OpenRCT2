@@ -2359,15 +2359,15 @@ namespace OpenRCT2::RCT1
 
             gameState.WeatherUpdateTimer = _s4.WeatherUpdateTimer;
             gameState.WeatherCurrent = {
-                .Temperature = static_cast<int8_t>(_s4.Temperature),
                 .Weather = WeatherType{ _s4.Weather },
+                .Temperature = static_cast<int8_t>(_s4.Temperature),
                 .WeatherEffect = WeatherEffectType::None,
                 .WeatherGloom = _s4.WeatherGloom,
                 .Level = static_cast<WeatherLevel>(_s4.Rain),
             };
             gameState.WeatherNext = {
-                .Temperature = static_cast<int8_t>(_s4.TargetTemperature),
                 .Weather = WeatherType{ _s4.TargetWeather },
+                .Temperature = static_cast<int8_t>(_s4.TargetTemperature),
                 .WeatherEffect = WeatherEffectType::None,
                 .WeatherGloom = _s4.TargetWeatherGloom,
                 .Level = static_cast<WeatherLevel>(_s4.TargetRain),
