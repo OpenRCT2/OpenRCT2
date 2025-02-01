@@ -266,7 +266,7 @@ bool WeatherIsDry(WeatherType weather)
     return weather == WeatherType::Sunny || weather == WeatherType::PartiallyCloudy || weather == WeatherType::Cloudy;
 }
 
-FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state)
+FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state)
 {
     auto paletteId = FilterPaletteID::PaletteNull;
     auto gloom = state.WeatherGloom;
@@ -277,7 +277,7 @@ FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state)
     return paletteId;
 }
 
-uint32_t ClimateGetWeatherSpriteId(const ClimateState& state)
+uint32_t ClimateGetWeatherSpriteId(const WeatherState& state)
 {
     uint32_t spriteId = SPR_WEATHER_SUN;
     if (EnumValue(state.Weather) < std::size(kClimateWeatherTraits))

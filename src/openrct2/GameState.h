@@ -48,8 +48,8 @@ namespace OpenRCT2
         money64 CurrentProfit;
         uint32_t GuestsInParkHistory[kGuestsInParkHistorySize];
         ClimateType Climate;
-        ClimateState ClimateCurrent;
-        ClimateState ClimateNext;
+        WeatherState ClimateCurrent;
+        WeatherState ClimateNext;
         uint16_t ClimateUpdateTimer;
         money64 Cash;
         money64 CashHistory[kFinanceHistorySize];
