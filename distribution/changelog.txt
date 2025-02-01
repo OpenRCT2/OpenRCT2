@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#23328] Introducing peep animation objects, enabling custom entertainer costumes.
 - Feature: [#23569] Add large diagonal flat to steep and dive loop track pieces.
+- Feature: [#23759] Add see-through option to the “Cut-away View“.
 - Improved: [#20683] Allow Giga Coaster cable lift to start after block brake section.
 - Improved: [#23328] The costume list in the staff window is now ordered alphabetically.
 - Improved: [#23540] The file browser now optionally shows a file size column.

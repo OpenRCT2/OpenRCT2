@@ -1440,7 +1440,7 @@ namespace OpenRCT2
                                 if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                                 {
                                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden
-                                                                                                  : VisibilityKind::Partial;
+                                                                                       : VisibilityKind::Partial;
                                 }
                             }
                             break;
