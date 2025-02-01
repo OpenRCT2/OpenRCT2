@@ -87,7 +87,12 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         {
             if (entityPos.z > (gClipHeight * kCoordsZStep))
             {
-                continue;
+                // transparency off: don't paint this entity at all
+                // transparency on: paint this entity as partial or hidden later on
+                if (!gClipHeightTransparency)
+                {
+                    continue;
+                }
             }
             if (entityPos.x < gClipSelectionA.x || entityPos.x > (gClipSelectionB.x + kCoordsXYStep - 1))
             {
