@@ -2169,7 +2169,7 @@ STR_3136    :Advertencia: este aspecto crearase cun tipo de vehículo alternativ
 STR_3137    :Seleccionar. Escenario próximo
 STR_3138    :Restablecer selección.
 STR_3139    :O cable de elevación non pode funcionar neste modo
-STR_3140    :O cable do ascensor debería comezar despois da estación
+STR_3140    :O cable do telecadeira debe comezar inmediatamente despois da estación
 STR_3141    :Multicircuíto por atracción. non é posible cun cable de elevación
 STR_3142    :{WINDOW_COLOUR_2}Capacidade: {BLACK}{STRINGID}
 STR_3143    :Mostrar visitantes no mapa
@@ -2201,7 +2201,7 @@ STR_3188    :Sinais de camiños
 STR_3189    :Rutas antigas
 STR_3190    :Decoración de sendeiros
 STR_3191    :Escenarios
-STR_3192    :Entrada do parque
+STR_3192    :Entradas do parque
 STR_3193    :Auga
 STR_3195    :Lista de inventos
 STR_3196    :{WINDOW_COLOUR_2}Grupo de investigación: {BLACK}{STRINGID}
@@ -2606,7 +2606,7 @@ STR_5368    :Restablecer accidentes
 STR_5371    :Selección de obxectos
 STR_5372    :Inverte a compensación do clic dereito
 STR_5373    :Nome {STRINGID}
-STR_5374    :Data {STRINGID}
+STR_5374    :Data de modificación {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :O nome xa existe
@@ -3773,3 +3773,20 @@ STR_6707    :(Ningún escollido)
 STR_6708    :Intensidade de suavizado
 STR_6709    :Introduce a intensidade de suavizado entre {COMMA16} e {COMMA16}
 STR_6710    :Ordenación estable
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Nome do ficheiro
+STR_6715    :Data de modificación
+STR_6716    :Tamaño do ficheiro
+STR_6717    :Tamaño do ficheiro {STRINGID}
+STR_6718    :Animacións de personaxes
+STR_6719    :Debe seleccionarse polo menos un obxecto de animacións de personaxes invitados
+STR_6720    :Debe seleccionarse polo menos un obxecto de animacións de personaxes de operario
+STR_6721    :Debe seleccionarse polo menos un obxecto de animacións de personaxes de mecánico
+STR_6722    :Debe seleccionarse polo menos un obxecto de animacións de personaxes de seguridade
+STR_6723    :Debe seleccionarse polo menos un obxecto de animacións de personaxes de animador
+STR_6724    :Textos do escenario
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Bucle de mergullo (esquerda)
+STR_6728    :Loop de mergullo (dereita)
+STR_6729    :A subida da telecadeira debe comezar inmediatamente despois da estación ou do freno de bloqueo
