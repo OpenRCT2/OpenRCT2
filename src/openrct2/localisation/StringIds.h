@@ -1724,6 +1724,8 @@ enum : StringId
     STR_DIVE_LOOP_LEFT = 6727,
     STR_DIVE_LOOP_RIGHT = 6728,
 
+    STR_OBJECT_SELECTION_CLIMATE = 6743,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

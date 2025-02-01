@@ -11,6 +11,14 @@
 
 #include "Object.h"
 
-extern const std::string_view MinimumRequiredObjects[2];
-extern const std::string_view DefaultSelectedObjects[120];
-extern const std::string_view DesignerSelectedObjects[39];
+struct IReadObjectContext;
+
+class ClimateObject final : public Object
+{
+public:
+    static constexpr ObjectType kObjectType = ObjectType::climate;
+
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
+    void Load() override;
+    void Unload() override;
+};
