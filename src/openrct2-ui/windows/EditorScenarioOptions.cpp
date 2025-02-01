@@ -18,7 +18,6 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ClimateSetAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/Peep.h>
@@ -48,13 +47,6 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT
-    };
-
-    static constexpr StringId kClimateNames[] = {
-        STR_CLIMATE_COOL_AND_WET,
-        STR_CLIMATE_WARM,
-        STR_CLIMATE_HOT_AND_DRY,
-        STR_CLIMATE_COLD,
     };
 
     enum
@@ -113,8 +105,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ENTRY_PRICE,
         WIDX_ENTRY_PRICE_INCREASE,
         WIDX_ENTRY_PRICE_DECREASE,
-        WIDX_CLIMATE,
-        WIDX_CLIMATE_DROPDOWN,
         WIDX_FORBID_TREE_REMOVAL,
         WIDX_FORBID_LANDSCAPE_CHANGES,
         WIDX_FORBID_HIGH_CONSTRUCTION,
@@ -163,8 +153,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  8,  82}, {         210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeWidget        ({206,  83}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeSpinnerWidgets({328,  82}, {          67,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeWidget        ({188,  99}, {         207,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                     STR_SELECT_CLIMATE_TIP            ),
-        MakeWidget        ({383, 100}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
         MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
         MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
         MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
@@ -405,23 +393,6 @@ namespace OpenRCT2::Ui::Windows
         void FinancialResize()
         {
             WindowSetResize(*this, { 280, 149 }, { 280, 149 });
-        }
-
-        void ShowClimateDropdown()
-        {
-            int32_t i;
-
-            const auto& dropdownWidget = widgets[WIDX_CLIMATE];
-
-            for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
-            {
-                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItems[i].Args = kClimateNames[i];
-            }
-            WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, static_cast<uint8_t>(ClimateType::Count), dropdownWidget.width() - 3);
-            Dropdown::SetChecked(static_cast<uint8_t>(GetGameState().Climate), true);
         }
 
         void FinancialMouseDown(WidgetIndex widgetIndex)
@@ -1083,9 +1054,6 @@ namespace OpenRCT2::Ui::Windows
                         Dropdown::SetChecked(1, true);
 
                     break;
-                case WIDX_CLIMATE_DROPDOWN:
-                    ShowClimateDropdown();
-                    break;
             }
         }
 
@@ -1105,13 +1073,6 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 }
-                case WIDX_CLIMATE_DROPDOWN:
-                    if (static_cast<uint8_t>(GetGameState().Climate) != static_cast<uint8_t>(dropdownIndex))
-                    {
-                        auto gameAction = ClimateSetAction(ClimateType{ static_cast<uint8_t>(dropdownIndex) });
-                        GameActions::Execute(&gameAction);
-                    }
-                    break;
             }
         }
 
@@ -1237,17 +1198,6 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<money64>(gameState.Park.EntranceFee);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
-
-            // Climate label
-            const auto& climateWidget = widgets[WIDX_CLIMATE];
-            screenCoords = windowPos + ScreenCoordsXY{ 8, climateWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_CLIMATE_LABEL);
-
-            // Climate value
-            screenCoords = windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
-            auto ft = Formatter();
-            ft.Add<StringId>(kClimateNames[EnumValue(gameState.Climate)]);
-            DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 
 #pragma endregion
