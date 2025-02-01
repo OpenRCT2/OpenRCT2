@@ -1,4 +1,4 @@
-0.4.19 (in development)
+0.4.19 (2025-02-01)
 ------------------------------------------------------------------------
 - Feature: [#23328] Introducing peep animation objects, enabling custom entertainer costumes.
 - Feature: [#23569] Add large diagonal flat to steep and dive loop track pieces.
