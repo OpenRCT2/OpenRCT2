@@ -50,7 +50,7 @@ enum class WeatherLevel
     Heavy,
 };
 
-struct ClimateState
+struct WeatherState
 {
     WeatherType Weather;
     int8_t Temperature;
@@ -74,5 +74,5 @@ bool ClimateIsRaining();
 bool ClimateIsSnowing();
 bool ClimateIsSnowingHeavily();
 bool WeatherIsDry(WeatherType);
-FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state);
-uint32_t ClimateGetWeatherSpriteId(const ClimateState& state);
+FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state);
+uint32_t ClimateGetWeatherSpriteId(const WeatherState& state);

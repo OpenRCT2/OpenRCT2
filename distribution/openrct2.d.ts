@@ -4250,7 +4250,7 @@ declare global {
         "heavySnow" |
         "blizzard";
 
-    interface ClimateState {
+    interface WeatherState {
         readonly weather: WeatherType;
         readonly temperature: number;
     }
@@ -4264,12 +4264,12 @@ declare global {
         /**
          * The current weather in the park.
          */
-        readonly current: ClimateState;
+        readonly current: WeatherState;
 
         /**
          * The next weather the park will experience.
          */
-        readonly future: ClimateState;
+        readonly future: WeatherState;
     }
 
     interface Cheats {
