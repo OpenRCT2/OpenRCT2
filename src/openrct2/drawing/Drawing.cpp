@@ -1011,7 +1011,7 @@ void UpdatePaletteEffects()
         uint32_t shade = 0;
         if (Config::Get().general.RenderWeatherGloom)
         {
-            auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().WeatherCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
