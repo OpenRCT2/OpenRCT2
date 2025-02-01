@@ -2358,11 +2358,11 @@ namespace OpenRCT2::RCT1
             gameState.WeatherCurrent.WeatherEffect = WeatherEffectType::None;
             gameState.WeatherCurrent.WeatherGloom = _s4.WeatherGloom;
             gameState.WeatherCurrent.Level = static_cast<WeatherLevel>(_s4.Rain);
-            gameState.ClimateNext.Temperature = _s4.TargetTemperature;
-            gameState.ClimateNext.Weather = WeatherType{ _s4.TargetWeather };
-            gameState.ClimateNext.WeatherEffect = WeatherEffectType::None;
-            gameState.ClimateNext.WeatherGloom = _s4.TargetWeatherGloom;
-            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
+            gameState.WeatherNext.Temperature = _s4.TargetTemperature;
+            gameState.WeatherNext.Weather = WeatherType{ _s4.TargetWeather };
+            gameState.WeatherNext.WeatherEffect = WeatherEffectType::None;
+            gameState.WeatherNext.WeatherGloom = _s4.TargetWeatherGloom;
+            gameState.WeatherNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
         }
 
         void ImportScenarioNameDetails(GameState_t& gameState)

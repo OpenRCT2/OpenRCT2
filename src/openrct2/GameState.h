@@ -49,7 +49,7 @@ namespace OpenRCT2
         uint32_t GuestsInParkHistory[kGuestsInParkHistorySize];
         ClimateType Climate;
         WeatherState WeatherCurrent;
-        WeatherState ClimateNext;
+        WeatherState WeatherNext;
         uint16_t ClimateUpdateTimer;
         money64 Cash;
         money64 CashHistory[kFinanceHistorySize];
