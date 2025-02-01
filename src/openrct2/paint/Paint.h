@@ -243,7 +243,7 @@ extern PaintSession gPaintSession;
 
 // Globals for paint clipping
 extern uint8_t gClipHeight;
-extern bool gClipHeightTransparency;
+extern bool gClipHeightSeeThrough;
 extern CoordsXY gClipSelectionA;
 extern CoordsXY gClipSelectionB;
 

@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CLIP_HEIGHT_INCREASE,
         WIDX_CLIP_HEIGHT_DECREASE,
         WIDX_CLIP_HEIGHT_SLIDER,
-        WIDX_CLIP_TRANSPARENCY_CHECKBOX_ENABLE,
+        WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE,
         WIDX_GROUPBOX_HORIZONTAL,
         WIDX_CLIP_SELECTOR,
         WIDX_CLIP_CLEAR,
@@ -55,14 +55,14 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget _viewClippingWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,                  STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP                 ), // clip enable/disable check box
-        MakeWidget        ({      5,  36}, {WW - 10,  65}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                                                   ),
-        MakeSpinnerWidgets({     90,  51}, {     79,  12}, WindowWidgetType::Spinner,  WindowColour::Primary, kStringIdNone,                                    STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE               ), // clip height (3 widgets)
-        MakeWidget        ({     11,  66}, {    158,  13}, WindowWidgetType::Scroll,   WindowColour::Primary, SCROLL_HORIZONTAL,                                STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP                 ), // clip height scrollbar
-        MakeWidget        ({     11,  83}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_TRANSPARENCY, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_TRANSPARENCY_TIP), // clip height enable/disable transparency check box
-        MakeWidget        ({      5, 107}, {WW - 10,  60}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                                                 ),
-        MakeWidget        ({     11, 122}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                                                         ), // selector
-        MakeWidget        ({     11, 143}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                                                     ), // clear
+        MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,                  STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP               ), // clip enable/disable check box
+        MakeWidget        ({      5,  36}, {WW - 10,  65}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                                                 ),
+        MakeSpinnerWidgets({     90,  51}, {     79,  12}, WindowWidgetType::Spinner,  WindowColour::Primary, kStringIdNone,                                    STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE             ), // clip height (3 widgets)
+        MakeWidget        ({     11,  66}, {    158,  13}, WindowWidgetType::Scroll,   WindowColour::Primary, SCROLL_HORIZONTAL,                                STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP               ), // clip height scrollbar
+        MakeWidget        ({     11,  83}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH_TIP), // clip height enable/disable see-through check box
+        MakeWidget        ({      5, 107}, {WW - 10,  60}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                                               ),
+        MakeWidget        ({     11, 122}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                                                       ), // selector
+        MakeWidget        ({     11, 143}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                                                   ), // clear
     };
     // clang-format on
 
@@ -139,13 +139,13 @@ namespace OpenRCT2::Ui::Windows
                     gClipSelectionB = { kMaximumMapSizeBig - 1, kMaximumMapSizeBig - 1 };
                     GfxInvalidateScreen();
                     break;
-                case WIDX_CLIP_TRANSPARENCY_CHECKBOX_ENABLE:
+                case WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE:
                 {
-                    // Toggle height clipping transparency.
+                    // Toggle height clipping see-through.
                     WindowBase* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
                     {
-                        gClipHeightTransparency = !gClipHeightTransparency;
+                        gClipHeightSeeThrough = !gClipHeightSeeThrough;
                         mainWindow->Invalidate();
                     }
                     this->Invalidate();
@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
             if (mainWindow != nullptr)
             {
                 WidgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
-                WidgetSetCheckboxValue(*this, WIDX_CLIP_TRANSPARENCY_CHECKBOX_ENABLE, gClipHeightTransparency);
+                WidgetSetCheckboxValue(*this, WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE, gClipHeightSeeThrough);
             }
 
             if (IsActive())
@@ -377,7 +377,7 @@ namespace OpenRCT2::Ui::Windows
             // Turn on view clipping when the window is opened.
             if (mainWindow != nullptr)
             {
-                gClipHeightTransparency = false;
+                gClipHeightSeeThrough = false;
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
                 mainWindow->Invalidate();
             }
@@ -395,7 +395,7 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                gClipHeightTransparency = false;
+                gClipHeightSeeThrough = false;
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
                 mainWindow->Invalidate();
             }

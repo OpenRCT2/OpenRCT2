@@ -1403,8 +1403,8 @@ namespace OpenRCT2
 
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
     {
-        // the cut-away view is active and transparency is activated
-        auto cutAwayViewWithTransparency = (viewFlags & VIEWPORT_FLAG_CLIP_VIEW) && gClipHeightTransparency;
+        // the cut-away view is active and see-through is activated
+        auto cutAwayViewWithTransparency = (viewFlags & VIEWPORT_FLAG_CLIP_VIEW) && gClipHeightSeeThrough;
 
         // the element is above the cut-off height
         auto clipped = cutAwayViewWithTransparency && ps->Element == nullptr && ps->Entity != nullptr
