@@ -115,8 +115,8 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScWeatherState> future_get() const
         {
             auto& gameState = GetGameState();
-            std::string weatherType = WeatherTypeToString(gameState.ClimateNext.Weather);
-            return std::make_shared<ScWeatherState>(weatherType, gameState.ClimateNext.Temperature);
+            std::string weatherType = WeatherTypeToString(gameState.WeatherNext.Weather);
+            return std::make_shared<ScWeatherState>(weatherType, gameState.WeatherNext.Temperature);
         }
 
         static void Register(duk_context* ctx)
