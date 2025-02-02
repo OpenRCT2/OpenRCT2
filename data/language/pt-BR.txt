@@ -3790,3 +3790,6 @@ STR_6726    :Y:
 STR_6727    :Loop em mergulho (esquerda)
 STR_6728    :Loop em mergulho (direita)
 STR_6729    :Cabo de elevação deve estar imediatamente após a estação ou freio bloqueador
+STR_6730    :Exportar dados emscripten
+STR_6731    :Importar dados emscripten
+STR_6732    :Mostrar um botão na barra de ferramentas para girar a visualização no sentido anti-horário
