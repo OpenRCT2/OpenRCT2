@@ -1,6 +1,6 @@
 0.4.20 (in development)
 ------------------------------------------------------------------------
-- Improved: [#23677] Building new ride track inherits the colour scheme from the previous piece.
+- Improved: [#23677] Building new ride track now inherits the colour scheme from the previous piece.
 
 0.4.19.1 (2025-02-03)
 ------------------------------------------------------------------------
