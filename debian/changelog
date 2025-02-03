@@ -1,3 +1,7 @@
+openrct2 (0.4.19.1-develop-1) unstable; urgency=medium
+
+* Fix: [#23771] Weather transitions are horribly broken.
+
 openrct2 (0.4.19-develop-1) unstable; urgency=medium
 
  * Feature: [#23328] Introducing peep animation objects, enabling custom entertainer costumes.
