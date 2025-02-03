@@ -1,3 +1,7 @@
+0.4.20 (in development)
+------------------------------------------------------------------------
+- Fix: [#23771] Weather transitions are horribly broken.
+
 0.4.19 (2025-02-01)
 ------------------------------------------------------------------------
 - Feature: [#23328] Introducing peep animation objects, enabling custom entertainer costumes.
