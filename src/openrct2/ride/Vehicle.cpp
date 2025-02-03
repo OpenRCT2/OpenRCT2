@@ -81,9 +81,6 @@ constexpr int16_t kVehicleStoppingSpinSpeed = 600;
 constexpr uint8_t kTrackSpeedShiftAmount = 16;
 constexpr uint8_t kBoosterAccelerationShiftAmount = 16;
 
-constexpr uint8_t kTrackSpeedShiftAmount = 16;
-constexpr uint8_t kBoosterAccelerationShiftAmount = 16;
-
 Vehicle* gCurrentVehicle;
 
 static uint8_t _vehicleBreakdown;
