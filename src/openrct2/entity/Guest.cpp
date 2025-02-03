@@ -1709,18 +1709,18 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     ExpenditureType expenditure = ExpenditureType::ShopStock;
     if (shopItemDescriptor.IsFood())
     {
-        AmountOfFood = AddClamp<decltype(AmountOfFood)>(AmountOfFood, 1);
+        AmountOfFood = AddClamp<uint16_t>(AmountOfFood, 1);
         expendType = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
     else if (shopItemDescriptor.IsDrink())
     {
-        AmountOfDrinks = AddClamp<decltype(AmountOfDrinks)>(AmountOfDrinks, 1);
+        AmountOfDrinks = AddClamp<uint16_t>(AmountOfDrinks, 1);
         expendType = &PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
     else if (shopItemDescriptor.IsSouvenir())
-        AmountOfSouvenirs = AddClamp<decltype(AmountOfSouvenirs)>(AmountOfSouvenirs, 1);
+        AmountOfSouvenirs = AddClamp<uint16_t>(AmountOfSouvenirs, 1);
 
     if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
         FinancePayment(shopItemDescriptor.Cost, expenditure);
@@ -1767,7 +1767,7 @@ void Guest::OnEnterRide(Ride& ride)
     ride.updateSatisfaction(rideSatisfaction);
 
     // Update various peep stats.
-    GuestNumRides = AddClamp<decltype(GuestNumRides)>(GuestNumRides, 1);
+    GuestNumRides = AddClamp<uint16_t>(GuestNumRides, 1);
 
     SetHasRidden(ride);
     GuestUpdateFavouriteRide(*this, ride, satisfaction);
