@@ -5364,11 +5364,30 @@ void Guest::UpdateWalking()
         }
     }
 
-    if (PeepFlags & PEEP_FLAGS_LITTER)
+    const auto loc = GetLocation();
+    bool isSecurityNearby = false;
+    Staff* securityStaff = NULL;
+
+    for (auto innerPeep : EntityList<Staff>())
     {
-        if (!GetNextIsSurface())
+        if (innerPeep->AssignedStaffType != StaffType::Security || innerPeep->x == kLocationNull)
+            continue;
+
+        int32_t xDist = abs(innerPeep->x - loc.x);
+        int32_t yDist = abs(innerPeep->y - loc.y);
+
+        if (std::max(xDist, yDist) < 96)
         {
-            if ((0xFFFF & ScenarioRand()) <= 4096)
+            isSecurityNearby = true;
+            securityStaff = innerPeep;
+        }
+    }
+
+    if (PeepFlags & PEEP_FLAGS_LITTER && !GetNextIsSurface())
+    {
+        if ((0xFFFF & ScenarioRand()) <= 4096)
+        {
+            if (!isSecurityNearby)
             {
                 static constexpr Litter::Type litter_types[] = {
                     Litter::Type::EmptyCan,
@@ -5377,19 +5396,24 @@ void Guest::UpdateWalking()
                     Litter::Type::EmptyCup,
                 };
                 auto litterType = litter_types[ScenarioRand() & 0x3];
-                const auto loc = GetLocation();
                 int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
                 int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
                 Direction litterDirection = (ScenarioRand() & 0x3);
 
                 Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
             }
+            else if (securityStaff != nullptr)
+            {
+                securityStaff->StaffVandalsStopped = AddClamp(securityStaff->StaffVandalsStopped, 1u);
+            }
         }
     }
-    else if (HasEmptyContainer())
+    else if (HasEmptyContainer() &&
+        !GetNextIsSurface() &&
+        static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF) &&
+        (0xFFFF & ScenarioRand()) <= 4096)
     {
-        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
-            && ((0xFFFF & ScenarioRand()) <= 4096))
+        if (!isSecurityNearby)
         {
             int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
             auto litterType = Litter::Type::Vomit;
@@ -5404,13 +5428,17 @@ void Guest::UpdateWalking()
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             UpdateAnimationGroup();
 
-            const auto loc = GetLocation();
             int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
             int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
             Direction litterDirection = (ScenarioRand() & 0x3);
 
             Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
         }
+        else if (securityStaff != nullptr)
+        {
+            securityStaff->StaffVandalsStopped = AddClamp(securityStaff->StaffVandalsStopped, 1u);
+        }
+            
     }
 
     if (ShouldWaitForLevelCrossing())
