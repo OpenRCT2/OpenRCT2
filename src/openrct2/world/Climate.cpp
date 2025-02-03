@@ -80,7 +80,7 @@ static int32_t _thunderStereoEcho = 0;
 static std::shared_ptr<IAudioChannel> _weatherSoundChannel;
 
 static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWeatherLevel);
-static void ClimateDetermineFutureWeather(int32_t randomValue);
+static void ClimateDetermineFutureWeather(uint32_t randomValue);
 static void ClimateUpdateWeatherSound();
 static void ClimateUpdateThunderSound();
 static void ClimateUpdateLightning();
@@ -303,7 +303,7 @@ static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWea
  * for nextWeather. The other weather parameters are then looked up depending only on the
  * next weather.
  */
-static void ClimateDetermineFutureWeather(int32_t randomValue)
+static void ClimateDetermineFutureWeather(uint32_t randomValue)
 {
     int32_t month = GetDate().GetMonth();
     auto& gameState = GetGameState();
@@ -311,7 +311,8 @@ static void ClimateDetermineFutureWeather(int32_t randomValue)
     // Generate a random index with values 0 up to randomBias-1
     // and choose weather from the distribution table accordingly
     const auto& pattern = kClimatePatterns[EnumValue(gameState.Climate)][month];
-    auto randomIndex = ((randomValue % 256) * pattern.randomBias) / 256;
+    size_t randomIndex = ((randomValue % 256) * pattern.randomBias) / 256;
+
     auto nextWeather = pattern.distribution[randomIndex];
     gameState.ClimateNext.Weather = nextWeather;
 
