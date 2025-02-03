@@ -25,6 +25,7 @@
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
+#include "../paint/tile_element/Paint.Tunnel.h"
 #include "../paint/track/Support.h"
 #include "Ride.h"
 #include "RideAudio.h"
@@ -290,6 +291,8 @@ struct TrackDrawerEntry
 {
     TrackStyle trackStyle = TrackStyle::null;
     SupportType supportType{};
+    std::array<TunnelStyle, EnumValue(TrackGroup::count)> trackGroupTunnelStyles{};
+    TunnelGroup tunnelGroup{};
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
     RideTrackGroups enabledTrackGroups{};
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,

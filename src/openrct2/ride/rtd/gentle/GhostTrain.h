@@ -23,6 +23,8 @@ constexpr RideTypeDescriptor GhostTrainRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::ghostTrain,
         .supportType = MetalSupportType::Boxed,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::brakes, TrackGroup::spinningTunnel},
         .extraTrackGroups = {},
     }),

@@ -22,8 +22,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 enum
 {
     SPR_MONORAIL_FLAT_SW_NE = 23231,
@@ -425,15 +423,6 @@ static void PaintMonorailTrackFlat(
         PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
     }
 
-    if (direction == 0 || direction == 2)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
@@ -481,15 +470,6 @@ static void PaintMonorailStation(
         PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 2 } });
     }
 
-    if (direction == 0 || direction == 2)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
@@ -512,22 +492,6 @@ static void PaintMonorailTrack25DegUp(
     else
     {
         PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
-    }
-
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -559,22 +523,6 @@ static void PaintMonorailTrackFlatTo25DegUp(
         PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
     }
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
-
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
@@ -602,22 +550,6 @@ static void PaintMonorailTrack25DegUpToFlat(
     else
     {
         PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
-    }
-
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
-            break;
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -672,26 +604,6 @@ static void PaintMonorailTrackRightQuarterTurn5Tiles(
         case 6:
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 0 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 1 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     int32_t blockedSegments = 0;
@@ -766,20 +678,6 @@ static void PaintMonorailTrackSBendLeft(
         PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 3 });
     }
 
-    if (direction == 0 || direction == 2)
-    {
-        if (trackSequence == 0)
-        {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else
-    {
-        if (trackSequence == 3)
-        {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
     DrawSBendLeftSupports(session, supportType.metal, originalTrackSequence, direction, height, 0, 0);
 
     int32_t blockedSegments = 0;
@@ -836,20 +734,6 @@ static void PaintMonorailTrackSBendRight(
         PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 3 });
     }
 
-    if (direction == 0 || direction == 2)
-    {
-        if (trackSequence == 0)
-        {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else
-    {
-        if (trackSequence == 3)
-        {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
     DrawSBendRightSupports(session, supportType.metal, originalTrackSequence, direction, height, 0, 0);
 
     int32_t blockedSegments = 0;
@@ -887,7 +771,6 @@ static void PaintMonorailTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, monorail_track_pieces_flat_quarter_turn_3_tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -968,15 +851,6 @@ static void PaintMonorailTrackLeftEighthToDiag(
             break;
     }
 
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
     int32_t blockedSegments = 0;
     switch (trackSequence)
     {
@@ -1042,15 +916,6 @@ static void PaintMonorailTrackRightEighthToDiag(
                 MetalASupportsPaintSetup(
                     session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
             break;
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     int32_t blockedSegments = 0;

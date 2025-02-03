@@ -23,6 +23,8 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::chairlift,
         .supportType = MetalSupportType::Truss,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall},
         .extraTrackGroups = {},
     }),
