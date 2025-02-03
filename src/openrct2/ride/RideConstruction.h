@@ -13,6 +13,7 @@
 #include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
 #include "../world/Location.hpp"
+#include "RideColour.h"
 #include "Station.h"
 #include "Track.h"
 
@@ -79,6 +80,7 @@ extern TrackPitch _previousTrackPitchEnd;
 extern CoordsXYZ _previousTrackPiece;
 
 extern uint8_t _currentBrakeSpeed;
+extern RideColourScheme _currentColourScheme;
 extern uint8_t _currentSeatRotationAngle;
 
 extern CoordsXYZD _unkF440C5;
