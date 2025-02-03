@@ -65,7 +65,6 @@ static void PaintObservationTowerBase(
         imageId = session.TrackColours.WithIndex(SprObservationTowerSegment);
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 64 }, { { 8, 8, height + 64 }, { 2, 2, 30 } });
 
-        PaintUtilSetVerticalTunnel(session, height + 96);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
         PaintUtilSetGeneralSupportHeight(session, height + 96);
@@ -133,8 +132,6 @@ static void PaintObservationTowerSection(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-
-    PaintUtilSetVerticalTunnel(session, height + 32);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 

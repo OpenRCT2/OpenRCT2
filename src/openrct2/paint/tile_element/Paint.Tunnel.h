@@ -9,7 +9,10 @@
 
 #pragma once
 
+#include "../../core/EnumUtils.hpp"
+#include "../../ride/Track.h"
 #include "../../world/Location.hpp"
+#include "../../world/tile_element/TrackElement.h"
 
 #include <cstdint>
 
@@ -61,21 +64,33 @@ constexpr uint8_t kRegularTunnelTypeCount = 16;
 
 enum class TunnelGroup : uint8_t
 {
-    Standard = 0,
-    Square = 1,
-    Inverted = 2,
+    uninverted,
+    inverted,
+    invertedFlying,
 };
 constexpr uint8_t kTunnelGroupCount = 3;
 
-enum class TunnelSubType : uint8_t
+enum class TunnelStyle : uint8_t
 {
-    Flat = 0,
-    SlopeStart = 1,
-    SlopeEnd = 2,
-    FlatTo25Deg = 3,
-    Tall = 4,
+    standard = 0,
+    square = 1,
+    invertedStandard = 2,
+    semiInvertedSquare = 3,
+    standardWithPath = 4,
 };
-constexpr uint8_t kTunnelSubTypeCount = 5;
+constexpr uint8_t kTunnelStyleCount = 5;
+
+enum class TunnelSlope : uint8_t
+{
+    none = 0,
+    flat = 1,
+    slopeStart = 2,
+    slopeEnd = 3,
+    flatTo25Deg = 4,
+    tall = 5,
+    flatNoPath = 6,
+};
+constexpr uint8_t kTunnelSlopeCount = 7;
 
 struct TunnelEntry
 {
@@ -83,52 +98,62 @@ struct TunnelEntry
     TunnelType type;
 };
 
-TunnelType GetTunnelType(TunnelGroup tunnelGroup, TunnelSubType tunnelSubType);
+TunnelType GetTunnelType(TunnelStyle tunnelStyle, TunnelSlope tunnelSlope);
+
+TunnelType GetTunnelTypeDoors(const TrackElement& trackElement, const Direction tunnelDirection);
 
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type);
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, TunnelType type);
 void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height);
 void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, TunnelType type);
 
-inline void PaintUtilPushTunnelLeft(
-    PaintSession& session, uint16_t height, TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
+inline void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelStyle tunnelStyle, TunnelSlope tunnelSlope)
 {
-    PaintUtilPushTunnelLeft(session, height, GetTunnelType(tunnelGroup, tunnelSubType));
+    PaintUtilPushTunnelLeft(session, height, GetTunnelType(tunnelStyle, tunnelSlope));
 }
 
-inline void PaintUtilPushTunnelRight(
-    PaintSession& session, uint16_t height, TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
+inline void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, TunnelStyle tunnelStyle, TunnelSlope tunnelSlope)
 {
-    PaintUtilPushTunnelRight(session, height, GetTunnelType(tunnelGroup, tunnelSubType));
+    PaintUtilPushTunnelRight(session, height, GetTunnelType(tunnelStyle, tunnelSlope));
 }
 
 inline void PaintUtilPushTunnelRotated(
-    PaintSession& session, uint8_t direction, uint16_t height, TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
+    PaintSession& session, uint8_t direction, uint16_t height, TunnelStyle tunnelStyle, TunnelSlope tunnelSlope)
 {
-    PaintUtilPushTunnelRotated(session, direction, height, GetTunnelType(tunnelGroup, tunnelSubType));
+    PaintUtilPushTunnelRotated(session, direction, height, GetTunnelType(tunnelStyle, tunnelSlope));
 }
 
-void TrackPaintUtilRightQuarterTurn5TilesTunnel(
-    PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
-    uint8_t trackSequence);
+constexpr std::array<TunnelStyle, EnumValue(TrackGroup::count)> kTrackGroupTunnelStylesStandard = []() consteval {
+    std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
+    array.fill(TunnelStyle::standard);
+    array[EnumValue(TrackGroup::stationEnd)] = TunnelStyle::square;
+    array[EnumValue(TrackGroup::onridePhoto)] = TunnelStyle::square;
+    return array;
+}();
 
-void TrackPaintUtilRightQuarterTurn3Tiles25DegUpTunnel(
-    PaintSession& session, TunnelGroup group, int16_t height, Direction direction, uint8_t trackSequence,
-    TunnelSubType tunnelType0, TunnelSubType tunnelType3);
-void TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
-    PaintSession& session, TunnelGroup group, int16_t height, Direction direction, uint8_t trackSequence,
-    TunnelSubType tunnelType0, TunnelSubType tunnelType3);
+constexpr std::array<TunnelStyle, EnumValue(TrackGroup::count)> kTrackGroupTunnelStylesSquare = []() consteval {
+    std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
+    array.fill(TunnelStyle::square);
+    return array;
+}();
 
-void TrackPaintUtilLeftQuarterTurn3TilesTunnel(
-    PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
-    uint8_t trackSequence);
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
-    uint8_t trackSequence);
+constexpr std::array<TunnelStyle, EnumValue(TrackGroup::count)> kTrackGroupTunnelStylesInverted = []() consteval {
+    std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
+    array.fill(TunnelStyle::invertedStandard);
+    array[EnumValue(TrackGroup::stationEnd)] = TunnelStyle::semiInvertedSquare;
+    array[EnumValue(TrackGroup::onridePhoto)] = TunnelStyle::square;
+    return array;
+}();
 
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, TunnelGroup group, Direction direction, uint16_t baseHeight, int8_t startOffset,
-    TunnelSubType startTunnel, int8_t endOffset, TunnelSubType endTunnel);
-void TrackPaintUtilRightQuarterTurn1TileTunnel(
-    PaintSession& session, TunnelGroup group, Direction direction, uint16_t baseHeight, int8_t startOffset,
-    TunnelSubType startTunnel, int8_t endOffset, TunnelSubType endTunnel);
+constexpr std::array<TunnelStyle, EnumValue(TrackGroup::count)> kTrackGroupTunnelStylesSemiInvertedSquare = []() consteval {
+    std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
+    array.fill(TunnelStyle::semiInvertedSquare);
+    return array;
+}();
+
+constexpr std::array<TunnelStyle, EnumValue(TrackGroup::count)> kTrackGroupTunnelStylesWoodenRollerCoaster = []() consteval {
+    std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
+    array.fill(TunnelStyle::square);
+    array[EnumValue(TrackGroup::onridePhoto)] = TunnelStyle::semiInvertedSquare;
+    return array;
+}();
