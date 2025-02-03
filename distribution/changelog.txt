@@ -1,5 +1,6 @@
 0.4.20 (in development)
 ------------------------------------------------------------------------
+- Fix: [#22958] VirtualFloor for ride construction lags due to superfluous invalidation calls.
 
 0.4.19 (2025-02-01)
 ------------------------------------------------------------------------

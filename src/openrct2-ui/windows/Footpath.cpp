@@ -1777,9 +1777,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        // Invalidate previous footpath piece.
-        VirtualFloorInvalidate();
-
         if (!isToolActive(WindowClass::Scenery))
         {
             if (res.Error != GameActions::Status::Ok)
