@@ -312,7 +312,6 @@ static void ClimateDetermineFutureWeather(uint32_t randomValue)
     // and choose weather from the distribution table accordingly
     const auto& pattern = kClimatePatterns[EnumValue(gameState.Climate)][month];
     size_t randomIndex = ((randomValue % 256) * pattern.randomBias) / 256;
-
     auto nextWeather = pattern.distribution[randomIndex];
     gameState.ClimateNext.Weather = nextWeather;
 
