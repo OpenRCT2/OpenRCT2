@@ -124,6 +124,8 @@ static RawClimate readWeatherTable(json_t& weather)
             if (weight <= 0)
                 continue;
 
+            rawClimate[i].baseTemperature = Json::GetNumber<int8_t>(month["baseTemperature"]);
+            rawClimate[i].randomBias = Json::GetNumber<int8_t>(month["randomBias"]);
             rawClimate[i].distribution[j] = weight;
             rawClimate[i].distributionSum += weight;
         }
