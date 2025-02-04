@@ -28,18 +28,18 @@ struct WeatherPattern
 {
     union
     {
-        uint8_t weather[9];
+        uint8_t weather[9]{};
         struct
         {
-            uint8_t sunny{};
-            uint8_t partiallyCloudy{};
-            uint8_t cloudy{};
-            uint8_t rain{};
-            uint8_t heavyRain{};
-            uint8_t thunder{};
-            uint8_t snow{};
-            uint8_t heavySnow{};
-            uint8_t blizzard{};
+            uint8_t sunny;
+            uint8_t partiallyCloudy;
+            uint8_t cloudy;
+            uint8_t rain;
+            uint8_t heavyRain;
+            uint8_t thunder;
+            uint8_t snow;
+            uint8_t heavySnow;
+            uint8_t blizzard;
         };
     };
 };
@@ -62,7 +62,7 @@ static constexpr const char* kMonthKeys[] = {
     "march", "april", "may", "june", "july", "august", "september", "october",
 };
 
-constexpr size_t kWeatherDistSize = 24;
+constexpr uint8_t kWeatherDistSize = 24;
 
 void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
