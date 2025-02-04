@@ -79,7 +79,7 @@ struct WeatherState
 extern uint16_t gClimateLightningFlash;
 
 int32_t ClimateCelsiusToFahrenheit(int32_t celsius);
-void ClimateReset(ClimateType climate);
+void ClimateReset();
 void ClimateUpdate();
 void ClimateUpdateSound();
 void ClimateStopWeatherSound();
