@@ -9,12 +9,16 @@
 
 #pragma once
 
+#include "../world/Climate.h"
 #include "Object.h"
 
 struct IReadObjectContext;
 
 class ClimateObject final : public Object
 {
+private:
+    Climate _climate;
+
 public:
     static constexpr ObjectType kObjectType = ObjectType::climate;
 
