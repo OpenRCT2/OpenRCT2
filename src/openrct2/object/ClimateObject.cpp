@@ -62,7 +62,7 @@ static constexpr const char* kMonthKeys[] = {
     "march", "april", "may", "june", "july", "august", "september", "october",
 };
 
-constexpr uint8_t kWeatherDistSize = 24;
+constexpr uint8_t kWeatherDistSize = 23;
 
 void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
@@ -113,21 +113,29 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
             rawClimate[i].distributionSum += weight;
         }
 
+        printf("\rSum dist for %s: %d\n", monthKey, rawClimate[i].distributionSum);
         Guard::Assert(rawClimate[i].distributionSum != 0, "Month %s has no weather defined!", monthKey);
     }
 
     // Adjust distribution to fit internal format
     for (auto& climateMonth : rawClimate)
     {
+        printf("\r----\n");
         auto adjustedDistSum = 0U;
-        for (auto& weatherWeight : climateMonth.distribution.weather)
+        for (auto i = 0U; i < std::size(kWeatherTypes); i++)
         {
-            weatherWeight = weatherWeight * kWeatherDistSize / climateMonth.distributionSum;
-            adjustedDistSum += weatherWeight;
+            auto rawWeight = climateMonth.distribution.weather[i];
+            auto adjustedWeight = rawWeight * kWeatherDistSize / climateMonth.distributionSum;
+
+            climateMonth.distribution.weather[i] = adjustedWeight;
+            adjustedDistSum += adjustedWeight;
+
+            for (auto j = 0; j < adjustedWeight; j++)
+                printf("\r%s\n", kWeatherTypes[i]);
         }
 
         Guard::Assert(
-            adjustedDistSum == kWeatherDistSize - 1, "Weather distribution size mismatches: %d != %d", adjustedDistSum,
-            kWeatherDistSize - 1);
+            adjustedDistSum == kWeatherDistSize, "Weather distribution size mismatches: %d != %d", adjustedDistSum,
+            kWeatherDistSize);
     }
 }
