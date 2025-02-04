@@ -97,11 +97,49 @@ void TextComposition::HandleMessage(const SDL_Event* e)
             uint16_t modifier = e->key.keysym.mod;
             SDL_Keycode key = e->key.keysym.sym;
             SDL_Scancode scancode = e->key.keysym.scancode;
+            // Map numpad Enter to regular Enter
             if (key == SDLK_KP_ENTER)
             {
-                // Map Keypad enter to regular enter.
                 key = SDLK_RETURN;
                 scancode = SDL_SCANCODE_RETURN;
+                break;
+            }
+            // Map the numpad keys that can be used for navigation when num lock is off
+            if (!(SDL_GetModState() & KMOD_NUM))
+            {
+                switch (key)
+                {
+                    case SDLK_KP_1:
+                    {
+                        key = SDLK_END;
+                        scancode = SDL_SCANCODE_END;
+                        break;
+                    }
+                    case SDLK_KP_7:
+                    {
+                        key = SDLK_HOME;
+                        scancode = SDL_SCANCODE_HOME;
+                        break;
+                    }
+                    case SDLK_KP_4:
+                    {
+                        key = SDLK_LEFT;
+                        scancode = SDL_SCANCODE_LEFT;
+                        break;
+                    }
+                    case SDLK_KP_6:
+                    {
+                        key = SDLK_RIGHT;
+                        scancode = SDL_SCANCODE_RIGHT;
+                        break;
+                    }
+                    case SDLK_KP_PERIOD:
+                    {
+                        key = SDLK_DELETE;
+                        scancode = SDL_SCANCODE_DELETE;
+                        break;
+                    }
+                }
             }
 
             GetContext()->GetUiContext()->SetKeysPressed(key, scancode);
