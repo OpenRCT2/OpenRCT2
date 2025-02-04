@@ -87,7 +87,7 @@ int32_t ClimateCelsiusToFahrenheit(int32_t celsius)
 /**
  * Set climate and determine start weather.
  */
-void ClimateReset(ClimateType climate)
+void ClimateReset()
 {
     auto& objManager = GetContext()->GetObjectManager();
     auto* climateObj = objManager.GetLoadedObject<ClimateObject>(0);
@@ -101,7 +101,6 @@ void ClimateReset(ClimateType climate)
     const WeatherTrait& trait = kClimateWeatherTraits[EnumValue(weather)];
 
     auto& gameState = GetGameState();
-    gameState.Climate = climate;
     gameState.WeatherCurrent.weatherType = weather;
     gameState.WeatherCurrent.temperature = pattern.baseTemperature + trait.temperatureDelta;
     gameState.WeatherCurrent.weatherEffect = trait.effectLevel;

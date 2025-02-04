@@ -53,6 +53,7 @@ namespace OpenRCT2::Scripting
     class ScClimate
     {
     public:
+        // TODO: replace with climate object
         static std::string ClimateTypeToString(ClimateType token)
         {
             switch (token)
@@ -101,8 +102,8 @@ namespace OpenRCT2::Scripting
 
         std::string type_get() const
         {
-            auto& gameState = GetGameState();
-            return ClimateTypeToString(gameState.Climate);
+            // TODO: from climate object
+            return "";
         }
 
         std::shared_ptr<ScWeatherState> current_get() const

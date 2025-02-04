@@ -552,10 +552,7 @@ namespace OpenRCT2::RCT2
             // unk_13CA73E
             // Pad13CA73F
             // unk_13CA740
-
-            // TODO: remove
-            gameState.Climate = ClimateType{ _s6.Climate };
-
+            // gameState.Climate = ClimateType{ _s6.Climate };
             // Pad13CA741;
             // Byte13CA742
             // Pad013CA747
