@@ -3790,3 +3790,6 @@ STR_6726    :Y:
 STR_6727    :Plonĝlopo (maldekstre)
 STR_6728    :Plonĝlopo (dekstre)
 STR_6729    :Kablolifto-monteto devas komenci tuj post stacio aŭ bremso de blokparto
+STR_6730    :Eksporti datumojn de emscripten
+STR_6731    :Importi datumojn de emscripten
+STR_6732    :Montri butonon en la ilobreto por turni la vidon maldekstrumen
