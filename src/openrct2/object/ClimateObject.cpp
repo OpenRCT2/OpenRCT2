@@ -10,49 +10,27 @@
 #include "ClimateObject.h"
 
 #include "../Diagnostic.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../world/Climate.h"
 
 using namespace OpenRCT2;
 
-void ClimateObject::Load()
-{
-}
-
-void ClimateObject::Unload()
-{
-}
-
-struct WeatherPattern
-{
-    union
-    {
-        uint8_t weather[9]{};
-        struct
-        {
-            uint8_t sunny;
-            uint8_t partiallyCloudy;
-            uint8_t cloudy;
-            uint8_t rain;
-            uint8_t heavyRain;
-            uint8_t thunder;
-            uint8_t snow;
-            uint8_t heavySnow;
-            uint8_t blizzard;
-        };
-    };
-};
+static constexpr auto kNumWeatherTypes = EnumValue(WeatherType::Count);
+static constexpr auto kNumClimateMonths = 8;
+static constexpr auto kWeatherDistSize = 23;
 
 struct RawClimateMonth
 {
     int8_t baseTemperature;
     int8_t randomBias;
-    WeatherPattern distribution;
+    uint8_t distribution[kNumWeatherTypes]{};
     int16_t distributionSum{};
 };
 
-using RawClimate = std::array<RawClimateMonth, 8>;
+using RawClimate = std::array<RawClimateMonth, kNumClimateMonths>;
 
 static constexpr const char* kWeatherTypes[] = {
     "sunny", "partiallyCloudy", "cloudy", "rain", "heavyRain", "thunder", "snow", "heavySnow", "blizzard",
@@ -62,7 +40,13 @@ static constexpr const char* kMonthKeys[] = {
     "march", "april", "may", "june", "july", "august", "september", "october",
 };
 
-constexpr uint8_t kWeatherDistSize = 23;
+void ClimateObject::Load()
+{
+}
+
+void ClimateObject::Unload()
+{
+}
 
 void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
@@ -73,7 +57,7 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 
     // First read raw climate distribution from JSON
     RawClimate rawClimate{};
-    for (auto i = 0U; i < std::size(kMonthKeys); i++)
+    for (auto i = 0U; i < kNumClimateMonths; i++)
     {
         auto& monthKey = kMonthKeys[i];
         if (!root["weather"].contains(monthKey))
@@ -83,7 +67,7 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
         }
 
         auto& month = root["weather"][monthKey];
-        for (auto j = 0U; j < std::size(kWeatherTypes); j++)
+        for (auto j = 0U; j < kNumWeatherTypes; j++)
         {
             Guard::Assert(
                 month["baseTemperature"].is_number(),
@@ -102,7 +86,7 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
             if (weight <= 0)
                 continue;
 
-            rawClimate[i].distribution.weather[j] = weight;
+            rawClimate[i].distribution[j] = weight;
             rawClimate[i].distributionSum += weight;
         }
 
@@ -113,12 +97,12 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
     for (auto& climateMonth : rawClimate)
     {
         auto adjustedDistSum = 0U;
-        for (auto i = 0U; i < std::size(kWeatherTypes); i++)
+        for (auto i = 0U; i < kNumWeatherTypes; i++)
         {
-            auto rawWeight = climateMonth.distribution.weather[i];
+            auto rawWeight = climateMonth.distribution[i];
             auto adjustedWeight = rawWeight * kWeatherDistSize / climateMonth.distributionSum;
 
-            climateMonth.distribution.weather[i] = adjustedWeight;
+            climateMonth.distribution[i] = adjustedWeight;
             adjustedDistSum += adjustedWeight;
         }
 
