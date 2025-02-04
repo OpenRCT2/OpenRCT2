@@ -96,31 +96,22 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 
             auto& weatherKey = kWeatherTypes[j];
             if (!month["distribution"].contains(weatherKey))
-            {
-                printf("\rmonth: %s, weather: %s, weight: N/A\n", monthKey, weatherKey);
                 continue;
-            }
 
             auto weight = Json::GetNumber<uint8_t>(month["distribution"][weatherKey]);
             if (weight <= 0)
-            {
-                printf("\rmonth: %s, weather: %s, weight: %d -- skipping\n", monthKey, weatherKey, weight);
                 continue;
-            }
 
-            printf("\rmonth: %s, weather: %s, weight: %d\n", monthKey, weatherKey, weight);
             rawClimate[i].distribution.weather[j] = weight;
             rawClimate[i].distributionSum += weight;
         }
 
-        printf("\rSum dist for %s: %d\n", monthKey, rawClimate[i].distributionSum);
         Guard::Assert(rawClimate[i].distributionSum != 0, "Month %s has no weather defined!", monthKey);
     }
 
     // Adjust distribution to fit internal format
     for (auto& climateMonth : rawClimate)
     {
-        printf("\r----\n");
         auto adjustedDistSum = 0U;
         for (auto i = 0U; i < std::size(kWeatherTypes); i++)
         {
@@ -129,9 +120,6 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 
             climateMonth.distribution.weather[i] = adjustedWeight;
             adjustedDistSum += adjustedWeight;
-
-            for (auto j = 0; j < adjustedWeight; j++)
-                printf("\r%s\n", kWeatherTypes[i]);
         }
 
         Guard::Assert(
