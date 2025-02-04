@@ -137,8 +137,11 @@ namespace OpenRCT2::Ui::Windows
         void Initialise(EntityId entityId)
         {
             number = entityId.ToUnderlying();
+            auto* staff = GetStaff();
+            if (staff == nullptr)
+                return;
 
-            if (GetStaff()->AssignedStaffType == StaffType::Entertainer)
+            if (staff->AssignedStaffType == StaffType::Entertainer)
                 _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
@@ -154,7 +157,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnLanguageChange() override
         {
-            if (GetStaff()->AssignedStaffType == StaffType::Entertainer)
+            auto* staff = GetStaff();
+            if (staff == nullptr)
+                return;
+
+            if (staff->AssignedStaffType == StaffType::Entertainer)
                 _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
@@ -643,6 +650,8 @@ namespace OpenRCT2::Ui::Windows
         void OverviewUpdate()
         {
             auto* staff = GetStaff();
+            if (staff == nullptr)
+                return;
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 

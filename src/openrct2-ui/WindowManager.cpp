@@ -965,7 +965,8 @@ public:
             {
                 continue;
             }
-            Close(*foundW);
+            if (foundW != nullptr)
+                Close(*foundW);
         }
     }
 
