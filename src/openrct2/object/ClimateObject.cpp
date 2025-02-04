@@ -22,6 +22,15 @@ static constexpr auto kNumWeatherTypes = EnumValue(WeatherType::Count);
 static constexpr auto kNumClimateMonths = 8;
 static constexpr auto kWeatherDistSize = 23;
 
+struct ClimateMonth
+{
+    int8_t baseTemperature;
+    int8_t randomBias;
+    WeatherType distribution[kWeatherDistSize]{};
+};
+
+using Climate = std::array<ClimateMonth, kNumClimateMonths>;
+
 struct RawClimateMonth
 {
     int8_t baseTemperature;
@@ -35,10 +44,12 @@ using RawClimate = std::array<RawClimateMonth, kNumClimateMonths>;
 static constexpr const char* kWeatherTypes[] = {
     "sunny", "partiallyCloudy", "cloudy", "rain", "heavyRain", "thunder", "snow", "heavySnow", "blizzard",
 };
+static_assert(std::size(kWeatherTypes) == kNumWeatherTypes);
 
 static constexpr const char* kMonthKeys[] = {
     "march", "april", "may", "june", "july", "august", "september", "october",
 };
+static_assert(std::size(kMonthKeys) == kNumClimateMonths);
 
 void ClimateObject::Load()
 {
@@ -48,25 +59,62 @@ void ClimateObject::Unload()
 {
 }
 
+static RawClimate readWeatherTable(json_t& weather);
+static Climate convertRawClimate(const RawClimate& rawClimate);
+
 void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     Guard::Assert(root.is_object(), "ClimateObject::ReadJson expects parameter root to be an object");
     PopulateTablesFromJson(context, root);
 
     Guard::Assert(root["weather"].is_object(), "ClimateObject::ReadJson expects weather key to be an object");
+    auto rawClimate = readWeatherTable(root["weather"]);
+    [[maybe_unused]] auto climate = convertRawClimate(rawClimate);
+}
 
+static Climate convertRawClimate(const RawClimate& rawClimate)
+{
+    Climate climate{};
+
+    for (auto m = 0; m < kNumClimateMonths; m++)
+    {
+        auto& srcMonth = rawClimate[m];
+        auto& dstMonth = climate[m];
+
+        dstMonth.baseTemperature = srcMonth.baseTemperature;
+        dstMonth.randomBias = srcMonth.randomBias;
+
+        auto i = 0;
+        for (auto w = 0U; w < kNumWeatherTypes; w++)
+        {
+            if (i > kWeatherDistSize)
+                break;
+
+            for (auto k = 0U; k < srcMonth.distribution[w]; k++)
+            {
+                dstMonth.distribution[i] = WeatherType(w);
+                i++;
+            }
+        }
+    }
+
+    return climate;
+}
+
+static RawClimate readWeatherTable(json_t& weather)
+{
     // First read raw climate distribution from JSON
     RawClimate rawClimate{};
     for (auto i = 0U; i < kNumClimateMonths; i++)
     {
         auto& monthKey = kMonthKeys[i];
-        if (!root["weather"].contains(monthKey))
+        if (!weather.contains(monthKey))
         {
             LOG_ERROR("Climate month not defined: %s", monthKey);
             continue;
         }
 
-        auto& month = root["weather"][monthKey];
+        auto& month = weather[monthKey];
         for (auto j = 0U; j < kNumWeatherTypes; j++)
         {
             Guard::Assert(
@@ -110,4 +158,6 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
             adjustedDistSum == kWeatherDistSize, "Weather distribution size mismatches: %d != %d", adjustedDistSum,
             kWeatherDistSize);
     }
+
+    return rawClimate;
 }
