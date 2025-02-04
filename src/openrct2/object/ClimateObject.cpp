@@ -57,6 +57,11 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
     _climate = convertRawClimate(rawClimate);
 }
 
+const WeatherPattern& ClimateObject::getPatternForMonth(uint8_t month)
+{
+    return _climate[month];
+}
+
 static Climate convertRawClimate(const RawClimate& rawClimate)
 {
     Climate climate{};
