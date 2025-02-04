@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
+
+#include <array>
 #include <cstdint>
 
 // TODO: refactor usage and remove
@@ -34,6 +37,19 @@ enum class WeatherType : uint8_t
     Blizzard,
     Count
 };
+
+static constexpr auto kNumWeatherTypes = EnumValue(WeatherType::Count);
+static constexpr auto kNumClimateMonths = 8;
+static constexpr auto kWeatherDistSize = 23;
+
+struct ClimateMonth
+{
+    int8_t baseTemperature;
+    int8_t randomBias;
+    WeatherType distribution[kWeatherDistSize]{};
+};
+
+using Climate = std::array<ClimateMonth, kNumClimateMonths>;
 
 enum class WeatherEffectType : uint8_t
 {

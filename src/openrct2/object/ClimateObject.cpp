@@ -10,26 +10,11 @@
 #include "ClimateObject.h"
 
 #include "../Diagnostic.h"
-#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../world/Climate.h"
 
 using namespace OpenRCT2;
-
-static constexpr auto kNumWeatherTypes = EnumValue(WeatherType::Count);
-static constexpr auto kNumClimateMonths = 8;
-static constexpr auto kWeatherDistSize = 23;
-
-struct ClimateMonth
-{
-    int8_t baseTemperature;
-    int8_t randomBias;
-    WeatherType distribution[kWeatherDistSize]{};
-};
-
-using Climate = std::array<ClimateMonth, kNumClimateMonths>;
 
 struct RawClimateMonth
 {
@@ -69,7 +54,7 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 
     Guard::Assert(root["weather"].is_object(), "ClimateObject::ReadJson expects weather key to be an object");
     auto rawClimate = readWeatherTable(root["weather"]);
-    [[maybe_unused]] auto climate = convertRawClimate(rawClimate);
+    _climate = convertRawClimate(rawClimate);
 }
 
 static Climate convertRawClimate(const RawClimate& rawClimate)
