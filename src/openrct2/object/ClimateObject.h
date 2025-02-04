@@ -25,4 +25,6 @@ public:
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;
+
+    const WeatherPattern& getPatternForMonth(uint8_t month);
 };

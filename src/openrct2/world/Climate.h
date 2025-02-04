@@ -42,14 +42,14 @@ static constexpr auto kNumWeatherTypes = EnumValue(WeatherType::Count);
 static constexpr auto kNumClimateMonths = 8;
 static constexpr auto kWeatherDistSize = 23;
 
-struct ClimateMonth
+struct WeatherPattern
 {
     int8_t baseTemperature;
     int8_t randomBias;
-    WeatherType distribution[kWeatherDistSize]{};
+    WeatherType distribution[kWeatherDistSize];
 };
 
-using Climate = std::array<ClimateMonth, kNumClimateMonths>;
+using Climate = std::array<WeatherPattern, kNumClimateMonths>;
 
 enum class WeatherEffectType : uint8_t
 {
