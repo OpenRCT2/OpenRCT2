@@ -1943,81 +1943,81 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         if (paintFunction == TrackPaintFunctionDummy || rtd.specialType == RtdSpecialType::maze)
         {
             paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+            return;
+        }
+
+        const auto& ted = GetTrackElementDescriptor(trackType);
+
+        // Block segments and draw the track and supports
+        const auto trackStyleBlockedSegments = trackDrawerEntry.trackGroupBlockedSegmentTypes[EnumValue(ted.definition.group)];
+
+        if ((trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::inverted
+             || trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::suspendedSwinging)
+            != BlockedSegments::GetShouldInvertPrePostCall(trackType, trackSequence))
+        {
+            BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
+            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
         }
         else
         {
-            const auto& ted = GetTrackElementDescriptor(trackType);
+            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+            BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
+        }
 
-            // Block segments and draw the track and supports
-            const auto trackStyleBlockedSegments = trackDrawerEntry
-                                                       .trackGroupBlockedSegmentTypes[EnumValue(ted.definition.group)];
+        // Set the general support height (the clearance for wooden supports above a track)
+        if (!(ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT))
+        {
+            const int32_t rideClearance = rtd.Heights.ClearanceHeight;
+            const int32_t trackClearance = ted.sequences[trackSequence].clearance.clearanceZ;
+            const int32_t supportClearance = std::max<int32_t>(
+                ted.sequences[trackSequence].clearance.supportClearanceZ,
+                ted.sequences[trackSequence].clearance.minimumSupportClearanceZ);
+            PaintUtilSetGeneralSupportHeight(
+                session, (height + Numerics::floor2(rideClearance + trackClearance + supportClearance, kCoordsZStep)));
+        }
 
-            if ((trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::inverted
-                 || trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::suspendedSwinging)
-                != BlockedSegments::GetShouldInvertPrePostCall(trackType, trackSequence))
+        // Draw tunnels
+        if (!rtd.HasFlag(RtdFlag::trackMustBeOnWater))
+        {
+            for (const auto& tunnel :
+                 ted.sequences[trackSequence].tunnels.tunnelGroups[EnumValue(trackDrawerEntry.tunnelGroup)])
             {
-                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
-                paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
-            }
-            else
-            {
-                paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
-                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
-            }
-
-            // Set the general support height (the clearance for wooden supports above a track)
-            if (!(ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT))
-            {
-                const int32_t rideClearance = rtd.Heights.ClearanceHeight;
-                const int32_t trackClearance = ted.sequences[trackSequence].clearance.clearanceZ;
-                const int32_t supportClearance = std::max<int32_t>(
-                    ted.sequences[trackSequence].clearance.supportClearanceZ,
-                    ted.sequences[trackSequence].clearance.minimumSupportClearanceZ);
-                PaintUtilSetGeneralSupportHeight(
-                    session, (height + Numerics::floor2(rideClearance + trackClearance + supportClearance, kCoordsZStep)));
-            }
-
-            // Draw tunnels
-            if (!rtd.HasFlag(RtdFlag::trackMustBeOnWater))
-            {
-                for (const auto& tunnel :
-                     ted.sequences[trackSequence].tunnels.tunnelGroups[EnumValue(trackDrawerEntry.tunnelGroup)])
+                if (tunnel.subType == TunnelSlope::none)
                 {
-                    if (tunnel.subType != TunnelSlope::none)
+                    continue;
+                }
+
+                if (tunnel.doorable && rtd.HasFlag(RtdFlag::hasLandscapeDoors))
+                {
+                    if (tunnel.direction == direction)
                     {
-                        if (tunnel.doorable && rtd.HasFlag(RtdFlag::hasLandscapeDoors))
-                        {
-                            if (tunnel.direction == direction)
-                            {
-                                PaintUtilPushTunnelLeft(
-                                    session, height + tunnel.height,
-                                    GetTunnelTypeDoors(trackElement, tunnel.subType, tunnel.direction));
-                            }
-                            else if (tunnel.direction == DirectionNext(direction))
-                            {
-                                PaintUtilPushTunnelRight(
-                                    session, height + tunnel.height,
-                                    GetTunnelTypeDoors(trackElement, tunnel.subType, tunnel.direction));
-                            }
-                        }
-                        else
-                        {
-                            const auto tunnelStyle = trackDrawerEntry.trackGroupTunnelStyles[EnumValue(ted.definition.group)];
-                            if (tunnel.direction == direction)
-                            {
-                                PaintUtilPushTunnelLeft(session, height + tunnel.height, tunnelStyle, tunnel.subType);
-                            }
-                            else if (tunnel.direction == DirectionNext(direction))
-                            {
-                                PaintUtilPushTunnelRight(session, height + tunnel.height, tunnelStyle, tunnel.subType);
-                            }
-                        }
+                        PaintUtilPushTunnelLeft(
+                            session, height + tunnel.height,
+                            GetTunnelTypeDoors(trackElement, tunnel.subType, tunnel.direction));
+                    }
+                    else if (tunnel.direction == DirectionNext(direction))
+                    {
+                        PaintUtilPushTunnelRight(
+                            session, height + tunnel.height,
+                            GetTunnelTypeDoors(trackElement, tunnel.subType, tunnel.direction));
                     }
                 }
-                if (ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_VERTICAL_TUNNEL)
+                else
                 {
-                    PaintUtilSetVerticalTunnel(session, height + ted.sequences[trackSequence].tunnels.verticalTunnelHeight);
+                    const auto tunnelStyle = trackDrawerEntry.trackGroupTunnelStyles[EnumValue(ted.definition.group)];
+                    if (tunnel.direction == direction)
+                    {
+                        PaintUtilPushTunnelLeft(session, height + tunnel.height, tunnelStyle, tunnel.subType);
+                    }
+                    else if (tunnel.direction == DirectionNext(direction))
+                    {
+                        PaintUtilPushTunnelRight(session, height + tunnel.height, tunnelStyle, tunnel.subType);
+                    }
                 }
+            }
+            if (ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_VERTICAL_TUNNEL)
+            {
+                PaintUtilSetVerticalTunnel(session, height + ted.sequences[trackSequence].tunnels.verticalTunnelHeight);
             }
         }
     }
