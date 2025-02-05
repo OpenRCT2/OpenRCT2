@@ -22,7 +22,12 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniSuspendedCoaster,
         .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsSuspendedSwingingTrain,
-        .supportType = MetalSupportType::Fork,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(MetalSupportType::Fork));
+            array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(MetalSupportType::Boxed);
+            return array;
+        }(),
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
         .extraTrackGroups = {},
     }),

@@ -13,11 +13,8 @@
 #include "../../../ride/Vehicle.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 #include <cassert>
 
@@ -184,9 +181,6 @@ static void PaintVirginiaReelTrackFlat(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -218,8 +212,6 @@ static void PaintVirginiaReelTrack25DegUp(
         session.WoodenSupportsPrependTo = ps;
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     switch (direction)
     {
         case 0:
@@ -271,8 +263,6 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -306,8 +296,6 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
         session.WoodenSupportsPrependTo = ps;
     }
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     switch (direction)
     {
         case 0:
@@ -373,8 +361,6 @@ static void PaintVirginiaReelStation(
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2);
 
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -395,8 +381,7 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
             break;
         case 0:
         case 3:
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+
             break;
     }
 
@@ -428,8 +413,6 @@ static void PaintVirginiaReelTrackLeftQuarterTurn1Tile(
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 2, height, 0, direction, session.TrackColours, kPiecesFlatQuarterTurn1Tile);
 
-    DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn1Tile>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     switch (direction)
     {
         case 0:

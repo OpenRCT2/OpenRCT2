@@ -322,14 +322,14 @@ namespace OpenRCT2::TrackMetaData
             { 0, 2, 0, -280, 64, 32 },   // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
             { 0, 2, 0, 152, -32, 0 },    // TrackElemType::FlyerHalfLoopInvertedUp
             { 0, 2, 0, -152, 32, 0 },    // TrackElemType::FlyerHalfLoopUninvertedDown
-            { 0, 7, 0, 48, -64, -32 }, // TrackElemType::LeftEighthToDiagUp25          
-            { 0, 4, 0, 48, -64, 32 },  // TrackElemType::RightEighthToDiagUp25        
-            { 0, 7, 0,-48, -64, -32 }, // TrackElemType::LeftEighthToDiagDown25       
-            { 0, 4, 0,-48, -64, 32 },  // TrackElemType::RightEighthToDiagDown25      
-            { 4, 0, 0, 48, -64, 32 },  // TrackElemType::LeftEighthToOrthogonalUp25   
-            { 4, 1, 0, 48, -32, 64 },  // TrackElemType::RightEighthToOrthogonalUp25  
-            { 4, 0, 0,-48, -64, 32 },  // TrackElemType::LeftEighthToOrthogonalDown25 
-            { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthToOrthogonalDown25 
+            { 0, 7, 0, 48, -64, -32 }, // TrackElemType::LeftEighthToDiagUp25
+            { 0, 4, 0, 48, -64, 32 },  // TrackElemType::RightEighthToDiagUp25
+            { 0, 7, 0,-48, -64, -32 }, // TrackElemType::LeftEighthToDiagDown25
+            { 0, 4, 0,-48, -64, 32 },  // TrackElemType::RightEighthToDiagDown25
+            { 4, 0, 0, 48, -64, 32 },  // TrackElemType::LeftEighthToOrthogonalUp25
+            { 4, 1, 0, 48, -32, 64 },  // TrackElemType::RightEighthToOrthogonalUp25
+            { 4, 0, 0,-48, -64, 32 },  // TrackElemType::LeftEighthToOrthogonalDown25
+            { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthToOrthogonalDown25
         { 4, 4, 0, 16, -32, 32 },  // TrackElemType::DiagUp25ToLeftBankedUp25
         { 4, 4, 0, 16, -32, 32 },  // TrackElemType::DiagUp25ToRightBankedUp25
         { 4, 4, 0, 16, -32, 32 },  // TrackElemType::DiagLeftBankedUp25ToUp25
@@ -355,7 +355,7 @@ namespace OpenRCT2::TrackMetaData
         { 4, 4, 8, 0, -32, 32 },   // TrackElemType::DiagLeftBankedDown25ToFlat
         { 4, 4, 8, 0, -32, 32 },   // TrackElemType::DiagRightBankedDown25ToFlat
         { 4, 4, 0, 16, -32, 32 },  // TrackElemType::DiagUp25LeftBanked
-        { 4, 4, 0, 16, -32, 32 },  // TrackElemType::DiagUp25RightBanked 
+        { 4, 4, 0, 16, -32, 32 },  // TrackElemType::DiagUp25RightBanked
         { 4, 4, 16, 0, -32, 32 },  // TrackElemType::DiagDown25LeftBanked
         { 4, 4, 16, 0, -32, 32 },  // TrackElemType::DiagDown25RightBanked
         { 0, 7, 0, 48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagUp25
@@ -363,9 +363,9 @@ namespace OpenRCT2::TrackMetaData
         { 0, 7, 0,-48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagDown25
         { 0, 4, 0,-48, -64, 32 },  // TrackElemType::RightEighthBankToDiagDown25
         { 4, 0, 0, 48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalUp25
-        { 4, 1, 0, 48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalUp25 
+        { 4, 1, 0, 48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalUp25
         { 4, 0, 0,-48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalDown25
-        { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalDown25     
+        { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalDown25
         { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBrakes
         { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBlockBrakes
         { 0, 0, 16, 0, 0, 0 },     // TrackElemType::Down25Brakes
@@ -376,12 +376,12 @@ namespace OpenRCT2::TrackMetaData
         { 4, 4, 88, 0, -96, 96 },   // TrackElemType::DiagDown60ToFlatLongBase,
         { 4, 0, 0,152, -96, 32 },   // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
         { 4, 1, 0,152, -32, 96 },   // TrackElemType::RightEighthDiveLoopUpToOrthogonal
-        { 0, 7,152, 0, -96, -32 },   // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        { 0, 7,152, 0, -96, -32 },   // TrackElemType::LeftEighthDiveLoopDownToDiag
         { 0, 4,152, 0, -96, 32 },   // TrackElemType::RightEighthDiveLoopDownToDiag
         { 4, 4, 16, 0, -32, 32 }   // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kTrackCoordinates) == EnumValue(TrackElemType::Count));
-    
+
     static constexpr uint8_t kTrackPieceLengths[] = {
         32,     // TrackElemType::Flat
         32,     // TrackElemType::EndStation
@@ -676,14 +676,14 @@ namespace OpenRCT2::TrackMetaData
         100,    // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
         64,     // TrackElemType::FlyerHalfLoopInvertedUp
         64,     // TrackElemType::FlyerHalfLoopUninvertedDown
-        92, // TrackElemType::LeftEighthToDiagUp25          
-        92, // TrackElemType::RightEighthToDiagUp25        
-        92, // TrackElemType::LeftEighthToDiagDown25       
-        92, // TrackElemType::RightEighthToDiagDown25      
-        92, // TrackElemType::LeftEighthToOrthogonalUp25   
-        92, // TrackElemType::RightEighthToOrthogonalUp25  
-        92, // TrackElemType::LeftEighthToOrthogonalDown25 
-        92, // TrackElemType::RightEighthToOrthogonalDown25 
+        92, // TrackElemType::LeftEighthToDiagUp25
+        92, // TrackElemType::RightEighthToDiagUp25
+        92, // TrackElemType::LeftEighthToDiagDown25
+        92, // TrackElemType::RightEighthToDiagDown25
+        92, // TrackElemType::LeftEighthToOrthogonalUp25
+        92, // TrackElemType::RightEighthToOrthogonalUp25
+        92, // TrackElemType::LeftEighthToOrthogonalDown25
+        92, // TrackElemType::RightEighthToOrthogonalDown25
         45, // TrackElemType::DiagUp25ToLeftBankedUp25
         45, // TrackElemType::DiagUp25ToRightBankedUp25
         45, // TrackElemType::DiagLeftBankedUp25ToUp25
@@ -709,7 +709,7 @@ namespace OpenRCT2::TrackMetaData
         45, // TrackElemType::DiagLeftBankedDown25ToFlat
         45, // TrackElemType::DiagRightBankedDown25ToFlat
         45, // TrackElemType::DiagUp25LeftBanked
-        45, // TrackElemType::DiagUp25RightBanked 
+        45, // TrackElemType::DiagUp25RightBanked
         45, // TrackElemType::DiagDown25LeftBanked
         45, // TrackElemType::DiagDown25RightBanked
         92, // TrackElemType::LeftEighthBankToDiagUp25
@@ -717,7 +717,7 @@ namespace OpenRCT2::TrackMetaData
         92, // TrackElemType::LeftEighthBankToDiagDown25
         92, // TrackElemType::RightEighthBankToDiagDown25
         92, // TrackElemType::LeftEighthBankToOrthogonalUp25
-        92, // TrackElemType::RightEighthBankToOrthogonalUp25 
+        92, // TrackElemType::RightEighthBankToOrthogonalUp25
         92, // TrackElemType::LeftEighthBankToOrthogonalDown25
         92, // TrackElemType::RightEighthBankToOrthogonalDown25
         45, // TrackElemType::DiagBrakes
@@ -728,15 +728,15 @@ namespace OpenRCT2::TrackMetaData
         165, // TrackElemType::DiagUp60ToFlatLongBase,
         165, // TrackElemType::DiagFlatToDown60LongBase,
         165, // TrackElemType::DiagDown60ToFlatLongBase,
-        165, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal    
-        165, // TrackElemType::RightEighthDiveLoopUpToOrthogonal   
-        165, // TrackElemType::LeftEighthDiveLoopDownToDiag  
-        165, // TrackElemType::RightEighthDiveLoopDownToDiag      
+        165, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
+        165, // TrackElemType::RightEighthDiveLoopUpToOrthogonal
+        165, // TrackElemType::LeftEighthDiveLoopDownToDiag
+        165, // TrackElemType::RightEighthDiveLoopDownToDiag
         45, // TrackElemType::DiagDown25Brakes
     };
 
     static_assert(std::size(kTrackPieceLengths) == EnumValue(TrackElemType::Count));
-    
+
     // rct2: 0x00998C95
     static constexpr TrackCurveChain kTrackCurveChain[] = {
         { TrackCurve::None, TrackCurve::None },
@@ -1032,13 +1032,13 @@ namespace OpenRCT2::TrackMetaData
         { TrackCurve::None, TrackElemType::LeftFlyerLargeHalfLoopInvertedUp },      // RightFlyerLargeHalfLoopUninvertedDown
         { TrackCurve::None, TrackCurve::None }, // FlyerHalfLoopInvertedUp
         { TrackCurve::None, TrackCurve::None }, // FlyerHalfLoopUninvertedUp
-        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToDiagUp25         
-        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToDiagUp25        
-        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToDiagDown25       
-        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToDiagDown25      
-        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToOrthogonalUp25   
-        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToOrthogonalUp25  
-        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToOrthogonalDown25 
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToDiagUp25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToDiagUp25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToDiagDown25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToDiagDown25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToOrthogonalUp25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToOrthogonalUp25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToOrthogonalDown25
         { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToOrthogonalDown25
         { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagUp25ToLeftBankedUp25
         { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagUp25ToRightBankedUp25
@@ -1065,7 +1065,7 @@ namespace OpenRCT2::TrackMetaData
         { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagLeftBankedDown25ToFlat
         { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagRightBankedDown25ToFlat
         { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagUp25LeftBanked
-        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagUp25RightBanked 
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagUp25RightBanked
         { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagDown25LeftBanked
         { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagDown25RightBanked
         { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthBankToDiagUp25
@@ -1073,9 +1073,9 @@ namespace OpenRCT2::TrackMetaData
         { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthBankToDiagDown25
         { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToDiagDown25
         { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthBankToOrthogonalUp25
-        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToOrthogonalUp25 
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToOrthogonalUp25
         { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthBankToOrthogonalDown25
-        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToOrthogonalDown25     
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToOrthogonalDown25
         { TrackElemType::DiagBrakes, TrackElemType::DiagBrakes }, // TrackElemType::DiagBrakes
         { TrackCurve::None, TrackCurve::None },             // TrackElemType::DiagBlockBrakes
         { TrackElemType::Down25Brakes, TrackElemType::Down25Brakes }, // TrackElemType::Down25Brakes
@@ -1084,14 +1084,14 @@ namespace OpenRCT2::TrackMetaData
         { TrackCurve::None, TrackCurve::None },             // TrackElemType::DiagUp60ToFlatLongBase,
         { TrackCurve::None, TrackCurve::None },             // TrackElemType::DiagFlatToDown60LongBase,
         { TrackCurve::None, TrackCurve::None },             // TrackElemType::DiagDown60ToFlatLongBase,
-        { TrackElemType::RightEighthDiveLoopDownToDiag , TrackCurve::None },          // TrackElemType::LeftEighthDiveLoopUpToOrthogonal    
-        { TrackElemType::LeftEighthDiveLoopDownToDiag, TrackCurve::None },            // TrackElemType::RightEighthDiveLoopUpToOrthogonal   
-        { TrackCurve::None, TrackElemType::RightEighthDiveLoopUpToOrthogonal  },             // TrackElemType::LeftEighthDiveLoopDownToDiag  
-        { TrackCurve::None, TrackElemType::LeftEighthDiveLoopUpToOrthogonal },             // TrackElemType::RightEighthDiveLoopDownToDiag 
+        { TrackElemType::RightEighthDiveLoopDownToDiag , TrackCurve::None },          // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
+        { TrackElemType::LeftEighthDiveLoopDownToDiag, TrackCurve::None },            // TrackElemType::RightEighthDiveLoopUpToOrthogonal
+        { TrackCurve::None, TrackElemType::RightEighthDiveLoopUpToOrthogonal  },             // TrackElemType::LeftEighthDiveLoopDownToDiag
+        { TrackCurve::None, TrackElemType::LeftEighthDiveLoopUpToOrthogonal },             // TrackElemType::RightEighthDiveLoopDownToDiag
         { TrackElemType::DiagDown25Brakes, TrackElemType::DiagDown25Brakes }, // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kTrackCurveChain) == EnumValue(TrackElemType::Count));
-    
+
     const TrackDescriptor gTrackDescriptors[186] = {
         {   true,   TrackPitch::Down60,     TrackRoll::None,    TrackCurve::None,             TrackPitch::Down60,   TrackRoll::None,    TrackElemType::DiagDown60                              },
         {   true,   TrackPitch::Down60,     TrackRoll::None,    TrackCurve::None,             TrackPitch::Down25,   TrackRoll::None,    TrackElemType::DiagDown60ToDown25                      },
@@ -1280,7 +1280,7 @@ namespace OpenRCT2::TrackMetaData
         {   true,   TrackPitch::Down25,     TrackRoll::Left,    TrackCurve::LeftLarge,        TrackPitch::Down25,   TrackRoll::Left,    TrackElemType::LeftEighthBankToOrthogonalDown25        },
         {   true,   TrackPitch::Down25,     TrackRoll::Right,   TrackCurve::RightLarge,       TrackPitch::Down25,   TrackRoll::Right,   TrackElemType::RightEighthBankToOrthogonalDown25       },
     };
-    
+
     /** rct2: 0x00993D1C */
     static constexpr OpenRCT2::TrackElemType kAlternativeTrackTypes[] = {
         TrackElemType::FlatCovered,                        // TrackElemType::Flat
@@ -1576,14 +1576,14 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::None, // RightFlyerLargeHalfLoopInvertedDown
         TrackElemType::None, // FlyerHalfLoopInvertedUp
         TrackElemType::None, // FlyerHalfLoopUninvertedDown
-        TrackElemType::None, // TrackElemType::LeftEighthToDiagUp25          
-        TrackElemType::None, // TrackElemType::RightEighthToDiagUp25        
-        TrackElemType::None, // TrackElemType::LeftEighthToDiagDown25       
-        TrackElemType::None, // TrackElemType::RightEighthToDiagDown25      
-        TrackElemType::None, // TrackElemType::LeftEighthToOrthogonalUp25   
-        TrackElemType::None, // TrackElemType::RightEighthToOrthogonalUp25  
-        TrackElemType::None, // TrackElemType::LeftEighthToOrthogonalDown25 
-        TrackElemType::None, // TrackElemType::RightEighthToOrthogonalDown25 
+        TrackElemType::None, // TrackElemType::LeftEighthToDiagUp25
+        TrackElemType::None, // TrackElemType::RightEighthToDiagUp25
+        TrackElemType::None, // TrackElemType::LeftEighthToDiagDown25
+        TrackElemType::None, // TrackElemType::RightEighthToDiagDown25
+        TrackElemType::None, // TrackElemType::LeftEighthToOrthogonalUp25
+        TrackElemType::None, // TrackElemType::RightEighthToOrthogonalUp25
+        TrackElemType::None, // TrackElemType::LeftEighthToOrthogonalDown25
+        TrackElemType::None, // TrackElemType::RightEighthToOrthogonalDown25
         TrackElemType::None, // TrackElemType::DiagUp25ToLeftBankedUp25
         TrackElemType::None, // TrackElemType::DiagUp25ToRightBankedUp25
         TrackElemType::None, // TrackElemType::DiagLeftBankedUp25ToUp25
@@ -1609,7 +1609,7 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::None, // TrackElemType::DiagLeftBankedDown25ToFlat
         TrackElemType::None, // TrackElemType::DiagRightBankedDown25ToFlat
         TrackElemType::None, // TrackElemType::DiagUp25LeftBanked
-        TrackElemType::None, // TrackElemType::DiagUp25RightBanked 
+        TrackElemType::None, // TrackElemType::DiagUp25RightBanked
         TrackElemType::None, // TrackElemType::DiagDown25LeftBanked
         TrackElemType::None, // TrackElemType::DiagDown25RightBanked
         TrackElemType::None, // TrackElemType::LeftEighthBankToDiagUp25
@@ -1617,7 +1617,7 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::None, // TrackElemType::LeftEighthBankToDiagDown25
         TrackElemType::None, // TrackElemType::RightEighthBankToDiagDown25
         TrackElemType::None, // TrackElemType::LeftEighthBankToOrthogonalUp25
-        TrackElemType::None, // TrackElemType::RightEighthBankToOrthogonalUp25 
+        TrackElemType::None, // TrackElemType::RightEighthBankToOrthogonalUp25
         TrackElemType::None, // TrackElemType::LeftEighthBankToOrthogonalDown25
         TrackElemType::None, // TrackElemType::RightEighthBankToOrthogonalDown25
         TrackElemType::None, // TrackElemType::DiagBrakes
@@ -1628,14 +1628,14 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::None, // TrackElemType::DiagUp60ToFlatLongBase,
         TrackElemType::None, // TrackElemType::DiagFlatToDown60LongBase,
         TrackElemType::None, // TrackElemType::DiagDown60ToFlatLongBase,
-        TrackElemType::None, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
-        TrackElemType::None, // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
-        TrackElemType::None, // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        TrackElemType::None, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
+        TrackElemType::None, // TrackElemType::RightEighthDiveLoopUpToOrthogonal
+        TrackElemType::None, // TrackElemType::LeftEighthDiveLoopDownToDiag
         TrackElemType::None, // TrackElemType::RightEighthDiveLoopDownToDiag
         TrackElemType::None, // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kAlternativeTrackTypes) == EnumValue(TrackElemType::Count));
-    
+
     /** rct2: 0x0099DA34 */
     static constexpr money64 kTrackPricing[] = {
         65536,  // TrackElemType::Flat
@@ -1964,7 +1964,7 @@ namespace OpenRCT2::TrackMetaData
         108800, // TrackElemType::DiagLeftBankedDown25ToFlat
         108800, // TrackElemType::DiagRightBankedDown25ToFlat
         118809, // TrackElemType::DiagUp25LeftBanked
-        118809, // TrackElemType::DiagUp25RightBanked 
+        118809, // TrackElemType::DiagUp25RightBanked
         118809, // TrackElemType::DiagDown25LeftBanked
         118809, // TrackElemType::DiagDown25RightBanked
         233281, // TrackElemType::LeftEighthBankToDiagUp25
@@ -1972,7 +1972,7 @@ namespace OpenRCT2::TrackMetaData
         233281, // TrackElemType::LeftEighthBankToDiagDown25
         233281, // TrackElemType::RightEighthBankToDiagDown25
         233281, // TrackElemType::LeftEighthBankToOrthogonalUp25
-        233281, // TrackElemType::RightEighthBankToOrthogonalUp25 
+        233281, // TrackElemType::RightEighthBankToOrthogonalUp25
         233281, // TrackElemType::LeftEighthBankToOrthogonalDown25
         233281, // TrackElemType::RightEighthBankToOrthogonalDown25
         123456, // TrackElemType::DiagBrakes
@@ -1983,14 +1983,14 @@ namespace OpenRCT2::TrackMetaData
         399690, // TrackElemType::DiagUp60ToFlatLongBase,
         399690, // TrackElemType::DiagFlatToDown60LongBase,
         399690, // TrackElemType::DiagDown60ToFlatLongBase,
-        458752, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
-        458752, // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
-        458752, // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        458752, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
+        458752, // TrackElemType::RightEighthDiveLoopUpToOrthogonal
+        458752, // TrackElemType::LeftEighthDiveLoopDownToDiag
         458752, // TrackElemType::RightEighthDiveLoopDownToDiag
         109824, // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kTrackPricing) == EnumValue(TrackElemType::Count));
-    
+
     /** rct2: 0x0099EA1C */
     static constexpr OpenRCT2::TrackElemType kTrackElementMirrorMap[] = {
         TrackElemType::Flat,
@@ -2286,12 +2286,12 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown, // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
         TrackElemType::FlyerHalfLoopInvertedUp,
         TrackElemType::FlyerHalfLoopUninvertedDown,
-        TrackElemType::RightEighthToDiagUp25,          // TrackElemType::LeftEighthToDiagUp25           
-        TrackElemType::LeftEighthToDiagUp25,           // TrackElemType::RightEighthToDiagUp25        
-        TrackElemType::RightEighthToDiagDown25,        // TrackElemType::LeftEighthToDiagDown25       
-        TrackElemType::LeftEighthToDiagDown25,         // TrackElemType::RightEighthToDiagDown25      
-        TrackElemType::RightEighthToOrthogonalUp25,    // TrackElemType::LeftEighthToOrthogonalUp25   
-        TrackElemType::LeftEighthToOrthogonalUp25,     // TrackElemType::RightEighthToOrthogonalUp25  
+        TrackElemType::RightEighthToDiagUp25,          // TrackElemType::LeftEighthToDiagUp25
+        TrackElemType::LeftEighthToDiagUp25,           // TrackElemType::RightEighthToDiagUp25
+        TrackElemType::RightEighthToDiagDown25,        // TrackElemType::LeftEighthToDiagDown25
+        TrackElemType::LeftEighthToDiagDown25,         // TrackElemType::RightEighthToDiagDown25
+        TrackElemType::RightEighthToOrthogonalUp25,    // TrackElemType::LeftEighthToOrthogonalUp25
+        TrackElemType::LeftEighthToOrthogonalUp25,     // TrackElemType::RightEighthToOrthogonalUp25
         TrackElemType::RightEighthToOrthogonalDown25,  // TrackElemType::LeftEighthToOrthogonalDown25
         TrackElemType::LeftEighthToOrthogonalDown25,   // TrackElemType::RightEighthToOrthogonalDown25
         TrackElemType::DiagUp25ToRightBankedUp25,             // TrackElemType::DiagUp25ToRightBankedUp25
@@ -2319,7 +2319,7 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::DiagRightBankedDown25ToFlat,           // TrackElemType::DiagRightBankedDown25ToFlat
         TrackElemType::DiagLeftBankedDown25ToFlat,            // TrackElemType::DiagLeftBankedDown25ToFlat
         TrackElemType::DiagUp25RightBanked,                   // TrackElemType::DiagUp25RightBanked
-        TrackElemType::DiagUp25LeftBanked,                    // TrackElemType::DiagUp25LeftBanked 
+        TrackElemType::DiagUp25LeftBanked,                    // TrackElemType::DiagUp25LeftBanked
         TrackElemType::DiagDown25RightBanked,                 // TrackElemType::DiagDown25RightBanked
         TrackElemType::DiagDown25LeftBanked,                  // TrackElemType::DiagDown25LeftBanked
         TrackElemType::RightEighthBankToDiagUp25,             // TrackElemType::RightEighthBankToDiagUp25
@@ -2327,7 +2327,7 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::RightEighthBankToDiagDown25,           // TrackElemType::RightEighthBankToDiagDown25
         TrackElemType::LeftEighthBankToDiagDown25,            // TrackElemType::LeftEighthBankToDiagDown25
         TrackElemType::RightEighthBankToOrthogonalUp25,       // TrackElemType::RightEighthBankToOrthogonalUp25
-        TrackElemType::LeftEighthBankToOrthogonalUp25,        // TrackElemType::LeftEighthBankToOrthogonalUp25 
+        TrackElemType::LeftEighthBankToOrthogonalUp25,        // TrackElemType::LeftEighthBankToOrthogonalUp25
         TrackElemType::RightEighthBankToOrthogonalDown25,     // TrackElemType::RightEighthBankToOrthogonalDown25
         TrackElemType::LeftEighthBankToOrthogonalDown25,      // TrackElemType::LeftEighthBankToOrthogonalDown25
         TrackElemType::DiagBrakes,
@@ -2338,14 +2338,14 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::DiagUp60ToFlatLongBase,                // TrackElemType::DiagUp60ToFlatLongBase,
         TrackElemType::DiagFlatToDown60LongBase,              // TrackElemType::DiagFlatToDown60LongBase,
         TrackElemType::DiagDown60ToFlatLongBase,              // TrackElemType::DiagDown60ToFlatLongBase,
-        TrackElemType::RightEighthDiveLoopUpToOrthogonal,     // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
-        TrackElemType::LeftEighthDiveLoopUpToOrthogonal,      // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
-        TrackElemType::RightEighthDiveLoopDownToDiag,   // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        TrackElemType::RightEighthDiveLoopUpToOrthogonal,     // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
+        TrackElemType::LeftEighthDiveLoopUpToOrthogonal,      // TrackElemType::RightEighthDiveLoopUpToOrthogonal
+        TrackElemType::RightEighthDiveLoopDownToDiag,   // TrackElemType::LeftEighthDiveLoopDownToDiag
         TrackElemType::LeftEighthDiveLoopDownToDiag,    // TrackElemType::RightEighthDiveLoopDownToDiag
         TrackElemType::DiagDown25Brakes,
     };
     static_assert(std::size(kTrackElementMirrorMap) == EnumValue(TrackElemType::Count));
-    
+
     /** rct2: 0x00999694 */
     static constexpr uint32_t kTrackHeightMarkerPositions[] = {
         (1 << 0), // TrackElemType::Flat
@@ -2641,13 +2641,13 @@ namespace OpenRCT2::TrackMetaData
         (1 << 0) | (1 << 6), // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
         (1 << 0) | (1 << 3), // TrackElemType::FlyerHalfLoopInvertedUp
         (1 << 0) | (1 << 3), // TrackElemType::FlyerHalfLoopUninvertedDown
-        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthToDiagUp25         
-        (1 << 0) | (1 << 4), // TrackElemType::RightEighthToDiagUp25        
-        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthToDiagDown25       
-        (1 << 0) | (1 << 4), // TrackElemType::RightEighthToDiagDown25      
-        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthToOrthogonalUp25   
-        (1 << 0) | (1 << 4), // TrackElemType::RightEighthToOrthogonalUp25  
-        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthToOrthogonalDown25 
+        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthToDiagUp25
+        (1 << 0) | (1 << 4), // TrackElemType::RightEighthToDiagUp25
+        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthToDiagDown25
+        (1 << 0) | (1 << 4), // TrackElemType::RightEighthToDiagDown25
+        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthToOrthogonalUp25
+        (1 << 0) | (1 << 4), // TrackElemType::RightEighthToOrthogonalUp25
+        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthToOrthogonalDown25
         (1 << 0) | (1 << 4), // TrackElemType::RightEighthToOrthogonalDown25
         (1 << 0), // TrackElemType::DiagUp25ToRightBankedUp25
         (1 << 0), // TrackElemType::DiagUp25ToLeftBankedUp25
@@ -2674,7 +2674,7 @@ namespace OpenRCT2::TrackMetaData
         (1 << 0), // TrackElemType::DiagRightBankedDown25ToFlat
         (1 << 0), // TrackElemType::DiagLeftBankedDown25ToFlat
         (1 << 0), // TrackElemType::DiagUp25RightBanked
-        (1 << 0), // TrackElemType::DiagUp25LeftBanked 
+        (1 << 0), // TrackElemType::DiagUp25LeftBanked
         (1 << 0), // TrackElemType::DiagDown25RightBanked
         (1 << 0), // TrackElemType::DiagDown25LeftBanked
         (1 << 0) | (1 << 4), // TrackElemType::RightEighthBankToDiagUp25
@@ -2682,7 +2682,7 @@ namespace OpenRCT2::TrackMetaData
         (1 << 0) | (1 << 4), // TrackElemType::RightEighthBankToDiagDown25
         (1 << 0) | (1 << 4), // TrackElemType::LeftEighthBankToDiagDown25
         (1 << 0) | (1 << 4), // TrackElemType::RightEighthBankToOrthogonalUp25
-        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthBankToOrthogonalUp25 
+        (1 << 0) | (1 << 4), // TrackElemType::LeftEighthBankToOrthogonalUp25
         (1 << 0) | (1 << 4), // TrackElemType::RightEighthBankToOrthogonalDown25
         (1 << 0) | (1 << 4), // TrackElemType::LeftEighthBankToOrthogonalDown25
         (1 << 0), // TrackElemType::DiagBrakes
@@ -2693,17 +2693,17 @@ namespace OpenRCT2::TrackMetaData
         (1 << 0), // TrackElemType::DiagUp60ToFlatLongBase,
         (1 << 9), // TrackElemType::DiagFlatToDown60LongBase,
         (1 << 9), // TrackElemType::DiagDown60ToFlatLongBase,
-        (1 << 0) | (1 << 5), // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
-        (1 << 0) | (1 << 5), // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
-        (1 << 0) | (1 << 5), // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        (1 << 0) | (1 << 5), // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
+        (1 << 0) | (1 << 5), // TrackElemType::RightEighthDiveLoopUpToOrthogonal
+        (1 << 0) | (1 << 5), // TrackElemType::LeftEighthDiveLoopDownToDiag
         (1 << 0) | (1 << 5), // TrackElemType::RightEighthDiveLoopDownToDiag
         (1 << 3), // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(kTrackHeightMarkerPositions) == EnumValue(TrackElemType::Count));
-    
-    
-    
-    
+
+
+
+
     /** rct2: 0x0099423C */
     static constexpr uint32_t kTrackFlags[] = {
         /* TrackElemType::Flat                                          */   TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
@@ -3007,42 +3007,42 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::RightEighthToOrthogonalUp25                   */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
         /* TrackElemType::LeftEighthToOrthogonalDown25                  */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
         /* TrackElemType::RightEighthToOrthogonalDown25                 */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
-        /* TrackElemType::DiagUp25ToLeftBankedUp25               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::DiagUp25ToRightBankedUp25              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::DiagLeftBankedUp25ToUp25               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::DiagRightBankedUp25ToUp25              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::DiagDown25ToLeftBankedDown25           */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,    
-        /* TrackElemType::DiagDown25ToRightBankedDown25          */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,       
-        /* TrackElemType::DiagLeftBankedDown25ToDown25           */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,       
-        /* TrackElemType::DiagRightBankedDown25ToDown25          */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,       
-        /* TrackElemType::DiagLeftBankedFlatToLeftBankedUp25     */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED,   
-        /* TrackElemType::DiagRightBankedFlatToRightBankedUp25   */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED,   
-        /* TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat     */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::DiagRightBankedUp25ToRightBankedFlat   */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::DiagLeftBankedFlatToLeftBankedDown25   */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,       
-        /* TrackElemType::DiagRightBankedFlatToRightBankedDown25 */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,       
-        /* TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat   */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED,       
-        /* TrackElemType::DiagRightBankedDown25ToRightBankedFlat */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED,       
-        /* TrackElemType::DiagFlatToLeftBankedUp25               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED,   
-        /* TrackElemType::DiagFlatToRightBankedUp25              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED,   
-        /* TrackElemType::DiagLeftBankedUp25ToFlat               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::DiagRightBankedUp25ToFlat              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::DiagFlatToLeftBankedDown25             */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,       
-        /* TrackElemType::DiagFlatToRightBankedDown25            */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,       
-        /* TrackElemType::DiagLeftBankedDown25ToFlat             */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED,       
-        /* TrackElemType::DiagRightBankedDown25ToFlat            */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED,       
-        /* TrackElemType::Up25LeftBanked                         */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::Up25RightBanked                        */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,   
-        /* TrackElemType::Down25LeftBanked                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,       
-        /* TrackElemType::Down25RightBanked                      */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,       
-        /* TrackElemType::LeftEighthBankToDiagUp25               */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
-        /* TrackElemType::RightEighthBankToDiagUp25              */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
-        /* TrackElemType::LeftEighthBankToDiagDown25             */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
-        /* TrackElemType::RightEighthBankToDiagDown25            */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
-        /* TrackElemType::LeftEighthBankToOrthogonalUp25         */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
-        /* TrackElemType::RightEighthBankToOrthogonalUp25        */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
-        /* TrackElemType::LeftEighthBankToOrthogonalDown25       */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
-        /* TrackElemType::RightEighthBankToOrthogonalDown25      */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
+        /* TrackElemType::DiagUp25ToLeftBankedUp25               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagUp25ToRightBankedUp25              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagLeftBankedUp25ToUp25               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagRightBankedUp25ToUp25              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagDown25ToLeftBankedDown25           */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagDown25ToRightBankedDown25          */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagLeftBankedDown25ToDown25           */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagRightBankedDown25ToDown25          */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagLeftBankedFlatToLeftBankedUp25     */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED,
+        /* TrackElemType::DiagRightBankedFlatToRightBankedUp25   */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED,
+        /* TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat     */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagRightBankedUp25ToRightBankedFlat   */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagLeftBankedFlatToLeftBankedDown25   */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagRightBankedFlatToRightBankedDown25 */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat   */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED,
+        /* TrackElemType::DiagRightBankedDown25ToRightBankedFlat */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED,
+        /* TrackElemType::DiagFlatToLeftBankedUp25               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED,
+        /* TrackElemType::DiagFlatToRightBankedUp25              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED,
+        /* TrackElemType::DiagLeftBankedUp25ToFlat               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagRightBankedUp25ToFlat              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagFlatToLeftBankedDown25             */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagFlatToRightBankedDown25            */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::DiagLeftBankedDown25ToFlat             */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED,
+        /* TrackElemType::DiagRightBankedDown25ToFlat            */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED,
+        /* TrackElemType::Up25LeftBanked                         */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::Up25RightBanked                        */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::Down25LeftBanked                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::Down25RightBanked                      */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_BANKED | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+        /* TrackElemType::LeftEighthBankToDiagUp25               */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
+        /* TrackElemType::RightEighthBankToDiagUp25              */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
+        /* TrackElemType::LeftEighthBankToDiagDown25             */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
+        /* TrackElemType::RightEighthBankToDiagDown25            */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
+        /* TrackElemType::LeftEighthBankToOrthogonalUp25         */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
+        /* TrackElemType::RightEighthBankToOrthogonalUp25        */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
+        /* TrackElemType::LeftEighthBankToOrthogonalDown25       */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
+        /* TrackElemType::RightEighthBankToOrthogonalDown25      */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,
         /* TrackElemType::DiagBrakes                             */   0,
         /* TrackElemType::DiagBlockBrakes                        */   0,
         /* TrackElemType::Down25Brakes                           */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
@@ -3050,7 +3050,7 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::DiagFlatToUp60LongBase                 */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_IS_STEEP_UP,
         /* TrackElemType::DiagUp60ToFlatLongBase                 */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_IS_STEEP_UP,
         /* TrackElemType::DiagFlatToDown60LongBase               */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
-        /* TrackElemType::DiagDown60ToFlatLongBase               */   TRACK_ELEM_FLAG_DOWN,                                                                    
+        /* TrackElemType::DiagDown60ToFlatLongBase               */   TRACK_ELEM_FLAG_DOWN,
         /* TrackElemType::LeftEighthDiveLoopUpToOrthogonal       */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
         /* TrackElemType::RightEighthDiveLoopUpToOrthogonal      */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
         /* TrackElemType::LeftEighthDiveLoopDownToDiag     */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
@@ -3391,7 +3391,7 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::None,             TrackPitch::Down25,         TrackRoll::None,        TrackRoll::Left,       0    }, // TrackElemType::DiagLeftBankedDown25ToFlat
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::None,             TrackPitch::Down25,         TrackRoll::None,        TrackRoll::Right,      0    }, // TrackElemType::DiagRightBankedDown25ToFlat
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Up25,             TrackPitch::Up25,           TrackRoll::Left,        TrackRoll::Left,       0    }, // TrackElemType::Up25LeftBanked
-        { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Up25,             TrackPitch::Up25,           TrackRoll::Right,       TrackRoll::Right,      0    }, // TrackElemType::Up25RightBanked 
+        { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Up25,             TrackPitch::Up25,           TrackRoll::Right,       TrackRoll::Right,      0    }, // TrackElemType::Up25RightBanked
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::Left,        TrackRoll::Left,       0    }, // TrackElemType::Down25LeftBanked
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::Right,       TrackRoll::Right,      0    }, // TrackElemType::Down25RightBanked
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Up25,             TrackPitch::Up25,           TrackRoll::Left,        TrackRoll::Left,      16    }, // TrackElemType::LeftEighthBankToDiagUp25
@@ -3399,7 +3399,7 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::Left,        TrackRoll::Left,     -16    }, // TrackElemType::LeftEighthBankToDiagDown25
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::Right,       TrackRoll::Right,    -16    }, // TrackElemType::RightEighthBankToDiagDown25
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Up25,             TrackPitch::Up25,           TrackRoll::Left,        TrackRoll::Left,      16    }, // TrackElemType::LeftEighthBankToOrthogonalUp25
-        { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Up25,             TrackPitch::Up25,           TrackRoll::Right,       TrackRoll::Right,     16    }, // TrackElemType::RightEighthBankToOrthogonalUp25 
+        { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Up25,             TrackPitch::Up25,           TrackRoll::Right,       TrackRoll::Right,     16    }, // TrackElemType::RightEighthBankToOrthogonalUp25
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::Left,        TrackRoll::Left,     -16    }, // TrackElemType::LeftEighthBankToOrthogonalDown25
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::Right,       TrackRoll::Right,    -16    }, // TrackElemType::RightEighthBankToOrthogonalDown25
         { TrackGroup::diagBrakes,                        TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,       0    }, // TrackElemType::DiagBrakes
@@ -3410,9 +3410,9 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::slopeSteepLong,                    TrackPitch::None,             TrackPitch::Up60,           TrackRoll::None,        TrackRoll::None,        48   }, // TrackElemType::DiagUp60ToFlatLongBase,
         { TrackGroup::slopeSteepLong,                    TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        -32   }, // TrackElemType::DiagFlatToDown60LongBase,
         { TrackGroup::slopeSteepLong,                    TrackPitch::None,             TrackPitch::Down60,         TrackRoll::None,        TrackRoll::None,        -24   }, // TrackElemType::DiagDown60ToFlatLongBase,
-        { TrackGroup::diveLoop,                          TrackPitch::None,             TrackPitch::Up60,           TrackRoll::UpsideDown,  TrackRoll::None,        56  }, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
-        { TrackGroup::diveLoop,                          TrackPitch::None,             TrackPitch::Up60,           TrackRoll::UpsideDown,  TrackRoll::None,        56  }, // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
-        { TrackGroup::diveLoop,                          TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown,  -56 }, // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        { TrackGroup::diveLoop,                          TrackPitch::None,             TrackPitch::Up60,           TrackRoll::UpsideDown,  TrackRoll::None,        56  }, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
+        { TrackGroup::diveLoop,                          TrackPitch::None,             TrackPitch::Up60,           TrackRoll::UpsideDown,  TrackRoll::None,        56  }, // TrackElemType::RightEighthDiveLoopUpToOrthogonal
+        { TrackGroup::diveLoop,                          TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown,  -56 }, // TrackElemType::LeftEighthDiveLoopDownToDiag
         { TrackGroup::diveLoop,                          TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown,  -56 }, // TrackElemType::RightEighthDiveLoopDownToDiag
         { TrackGroup::inclinedBrakes,                    TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::None,        TrackRoll::None,       0    }, // TrackElemType::DiagDown25
     };
@@ -4852,8 +4852,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -4867,8 +4865,6 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
             | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             kSegmentsAll, // narrow
             kSegmentsAll, // inverted
@@ -4882,8 +4878,6 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
             | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             kSegmentsAll, // narrow
             kSegmentsAll, // inverted
@@ -4897,8 +4891,6 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
             | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             kSegmentsAll, // narrow
             kSegmentsAll, // inverted
@@ -4911,104 +4903,78 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp25ToUp60Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToUp60Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp60ToUp25Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToUp25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown25ToDown60Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToDown60Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown60ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToDown25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5021,7 +4987,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq1 = {
         .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
-        .woodenSupports = { WoodenSupportSubType::Null },
         .blockedSegments = { {
             kSegmentsNone,                                             // narrow
             kSegmentsNone,                                             // inverted
@@ -5034,7 +4999,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5047,7 +5011,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // inverted
@@ -5062,7 +5025,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq4 = {
         .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
-        .woodenSupports = { WoodenSupportSubType::Null },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             kSegmentsNone,                                             // narrow
             kSegmentsNone,                                             // inverted
@@ -5075,7 +5038,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq5 = {
         .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5089,8 +5052,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq6 = {
         .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -5104,8 +5065,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5118,7 +5077,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Null },
         .blockedSegments = { {
             kSegmentsNone,                                       // narrow
             kSegmentsNone,                                       // inverted
@@ -5131,7 +5089,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5145,7 +5102,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -5160,7 +5116,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq4 = {
         .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Null },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             kSegmentsNone,                                       // narrow
             kSegmentsNone,                                       // inverted
@@ -5173,7 +5129,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq5 = {
         .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5187,8 +5143,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq6 = {
         .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -5202,8 +5156,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToLeftBankSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                            // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5218,8 +5170,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToRightBankSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                    // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5233,8 +5183,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankToFlatSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                            // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5249,8 +5197,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankToFlatSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                    // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5264,50 +5210,43 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq1 = {
         .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
-        .woodenSupports = { WoodenSupportSubType::Null },
         .blockedSegments = kLeftQuarterTurn5TilesSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = kLeftQuarterTurn5TilesSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = kLeftQuarterTurn5TilesSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq4 = {
         .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
-        .woodenSupports = { WoodenSupportSubType::Null },
+        .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq5 = {
         .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq6 = {
         .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -5315,50 +5254,43 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Null },
         .blockedSegments = kRightQuarterTurn5TilesSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = kRightQuarterTurn5TilesSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = kRightQuarterTurn5TilesSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq4 = {
         .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Null },
+        .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq5 = {
         .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq6 = {
         .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -5366,8 +5298,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankToUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                            // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5382,8 +5312,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankToUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                    // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5397,8 +5325,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kUp25ToLeftBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                            // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5413,8 +5339,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kUp25ToRightBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                    // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5428,8 +5352,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankToDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                            // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5444,8 +5366,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankToDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                    // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5459,8 +5379,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown25ToLeftBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                            // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5475,8 +5393,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown25ToRightBankSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                    // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5490,8 +5406,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                            // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5506,8 +5420,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                                    // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5521,8 +5433,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -5535,34 +5445,31 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq2 = {
         .clearance = { -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = kLeftQuarterTurn5TilesSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq3 = {
         .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = kLeftQuarterTurn5TilesSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq4 = {
         .clearance = { -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq5 = {
         .clearance = { -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq6 = {
         .clearance = { -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -5570,8 +5477,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -5584,34 +5489,31 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq2 = {
         .clearance = { -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = kRightQuarterTurn5TilesSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq3 = {
         .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = kRightQuarterTurn5TilesSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq4 = {
         .clearance = { -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq5 = {
         .clearance = { -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq6 = {
         .clearance = { -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -5619,8 +5521,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq0 = {
         .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -5633,34 +5533,31 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq2 = {
         .clearance = { -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = kLeftQuarterTurn5TilesSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq3 = {
         .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = kLeftQuarterTurn5TilesSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq4 = {
         .clearance = { -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq5 = {
         .clearance = { -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq6 = {
         .clearance = { -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -5668,8 +5565,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq0 = {
         .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -5682,34 +5577,31 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq2 = {
         .clearance = { -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = kRightQuarterTurn5TilesSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq3 = {
         .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = kRightQuarterTurn5TilesSeq3.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq4 = {
         .clearance = { -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq4.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq5 = {
         .clearance = { -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq5.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq6 = {
         .clearance = { -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -5717,7 +5609,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kSBendLeftSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5730,7 +5621,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kSBendLeftSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5744,7 +5634,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kSBendLeftSeq2 = {
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
         .allowedWallEdges = 0b1100,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5759,7 +5648,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kSBendLeftSeq3 = {
         .clearance = { -64, -32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5772,7 +5660,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kSBendRightSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5785,7 +5672,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kSBendRightSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -5800,7 +5686,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kSBendRightSeq2 = {
         .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5814,7 +5699,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kSBendRightSeq3 = {
         .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -5827,7 +5711,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b0010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(
@@ -5856,6 +5739,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq2 = {
         .clearance = { -64, 0, 32, 96, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // inverted
@@ -5939,7 +5823,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq9 = {
         .clearance = { -32, -32, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(
@@ -5956,7 +5839,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightVerticalLoopSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1000,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(
@@ -6044,6 +5926,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightVerticalLoopSeq7 = {
         .clearance = { 32, 32, 32, 96, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -6068,7 +5951,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightVerticalLoopSeq9 = {
         .clearance = { -32, 32, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(
@@ -6085,8 +5967,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -6116,8 +5996,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -6131,8 +6009,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -6162,8 +6038,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -6177,8 +6051,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TilesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -6215,8 +6087,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TilesSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -6230,8 +6100,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -6268,8 +6136,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -6283,8 +6149,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -6314,8 +6178,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq3 = {
         .clearance = { -32, -32, 16, 16, { 0b0111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -6329,8 +6191,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -6360,8 +6220,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1011, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -6375,8 +6233,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq0 = {
         .clearance = { 0, 0, 16, 16, { 0b0111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -6406,8 +6262,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq3 = {
         .clearance = { -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -6421,8 +6275,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq0 = {
         .clearance = { 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -6452,8 +6304,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
@@ -6467,8 +6317,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // inverted
@@ -6481,8 +6329,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn1TileSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -6495,7 +6341,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftTwistDownToUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft),         // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -6539,7 +6384,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightTwistDownToUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft),         // inverted
@@ -6607,7 +6451,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftTwistUpToDownSeq2 = {
         .clearance = { -64, 0, -16, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft),         // inverted
@@ -6650,7 +6493,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightTwistUpToDownSeq2 = {
         .clearance = { -64, 0, -16, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft),         // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -6665,7 +6507,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHalfLoopUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -6678,7 +6519,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHalfLoopUpSeq1 = {
         .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsAll,           // inverted
@@ -6739,7 +6579,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHalfLoopDownSeq2 = {
         .clearance = { 0, 0, -136, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsAll,           // inverted
@@ -6752,7 +6591,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHalfLoopDownSeq3 = {
         .clearance = { 32, 0, -152, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -6765,7 +6603,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftCorkscrewUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(
@@ -6793,7 +6630,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftCorkscrewUpSeq2 = {
         .clearance = { -32, -32, 48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
-        .metalSupports = { MetalSupportPlace::Centre },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -6810,7 +6646,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightCorkscrewUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(
@@ -6838,7 +6673,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightCorkscrewUpSeq2 = {
         .clearance = { -32, 32, 48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
-        .metalSupports = { MetalSupportPlace::Centre },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -6855,7 +6689,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftCorkscrewDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -6884,7 +6717,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftCorkscrewDownSeq2 = {
         .clearance = { -32, -32, -80, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(
@@ -6900,7 +6732,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightCorkscrewDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -6929,7 +6760,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightCorkscrewDownSeq2 = {
         .clearance = { -32, 32, -80, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(
@@ -6945,87 +6775,70 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToUp60Seq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlat },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToDown60Seq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlat },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq1 = {
         .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq4 = {
         .clearance = { 0, -32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq5 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq6 = {
         .clearance = { 32, -32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq7 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kTowerBaseSeq8 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kTowerSectionSeq0 = {
@@ -7039,98 +6852,84 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatCoveredSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp25CoveredSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kUp25Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp60CoveredSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kUp60Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToUp25CoveredSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatToUp25Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp25ToUp60CoveredSeq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kUp25ToUp60Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp60ToUp25CoveredSeq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kUp60ToUp25Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp25ToFlatCoveredSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kUp25ToFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown25CoveredSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kDown25Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown60CoveredSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kDown60Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToDown25CoveredSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatToDown25Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown25ToDown60CoveredSeq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kDown25ToDown60Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown60ToDown25CoveredSeq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kDown60ToDown25Seq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown25ToFlatCoveredSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kDown25ToFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -7166,7 +6965,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq6 = {
         .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -7174,7 +6972,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -7210,7 +7007,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq6 = {
         .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -7266,7 +7062,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesCoveredSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kLeftQuarterTurn3TilesSeq0.blockedSegments,
     };
 
@@ -7285,7 +7080,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesCoveredSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn3TilesSeq3.blockedSegments,
     };
@@ -7293,7 +7087,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesCoveredSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kRightQuarterTurn3TilesSeq0.blockedSegments,
     };
 
@@ -7312,7 +7105,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesCoveredSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn3TilesSeq3.blockedSegments,
     };
@@ -7320,8 +7112,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                            // inverted
@@ -7334,7 +7124,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq1 = {
         .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             kSegmentsNone,          // narrow
             kSegmentsUnimplemented, // inverted
@@ -7359,8 +7148,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq3 = {
         .clearance = { -32, -32, 0, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7374,8 +7161,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq4 = {
         .clearance = { -32, -64, 8, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7389,7 +7174,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq5 = {
         .clearance = { 0, -64, 8, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             kSegmentsNone,          // narrow
             kSegmentsUnimplemented, // inverted
@@ -7402,6 +7187,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq6 = {
         .clearance = { -32, -96, 8, 4, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .extraSupportRotation = -2,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -7414,8 +7200,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq7 = {
         .clearance = { 0, -96, 8, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -2,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7429,8 +7213,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                  // inverted
@@ -7443,7 +7225,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             kSegmentsNone,          // narrow
             kSegmentsUnimplemented, // inverted
@@ -7468,8 +7249,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq3 = {
         .clearance = { -32, 32, 0, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7483,8 +7262,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq4 = {
         .clearance = { -32, 64, 8, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7498,7 +7275,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq5 = {
         .clearance = { 0, 64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             kSegmentsNone,          // narrow
             kSegmentsUnimplemented, // inverted
@@ -7511,6 +7288,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq6 = {
         .clearance = { -32, 96, 8, 4, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                              // inverted
@@ -7523,8 +7301,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq7 = {
         .clearance = { 0, 96, 8, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -7538,8 +7314,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq0 = {
         .clearance = { 0, 0, 8, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                            // inverted
@@ -7552,7 +7326,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq1 = {
         .clearance = { 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             kSegmentsNone,          // narrow
             kSegmentsUnimplemented, // inverted
@@ -7577,8 +7350,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq3 = {
         .clearance = { -32, -32, 8, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7592,8 +7363,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq4 = {
         .clearance = { -32, -64, 0, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7607,7 +7376,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq5 = {
         .clearance = { 0, -64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             kSegmentsNone,          // narrow
             kSegmentsUnimplemented, // inverted
@@ -7620,6 +7389,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq6 = {
         .clearance = { -32, -96, 0, 0, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .extraSupportRotation = -2,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -7632,8 +7402,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq7 = {
         .clearance = { 0, -96, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -2,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7647,8 +7415,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq0 = {
         .clearance = { 0, 0, 8, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                  // inverted
@@ -7661,7 +7427,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq1 = {
         .clearance = { 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             kSegmentsNone,          // narrow
             kSegmentsUnimplemented, // inverted
@@ -7686,8 +7451,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq3 = {
         .clearance = { -32, 32, 8, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7701,8 +7464,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq4 = {
         .clearance = { -32, 64, 0, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7716,7 +7477,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq5 = {
         .clearance = { 0, 64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             kSegmentsNone,          // narrow
             kSegmentsUnimplemented, // inverted
@@ -7729,6 +7490,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq6 = {
         .clearance = { -32, 96, 0, 0, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                              // inverted
@@ -7741,8 +7503,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq7 = {
         .clearance = { 0, 96, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -7756,8 +7516,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                            // inverted
@@ -7782,7 +7540,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -7794,7 +7551,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                 // inverted
@@ -7821,7 +7577,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq5 = {
         .clearance = { -64, -32, 0, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -7834,8 +7590,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq6 = {
         .clearance = { -64, -64, 0, 4, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7849,8 +7603,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq7 = {
         .clearance = { -64, -96, 8, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7864,6 +7616,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq8 = {
         .clearance = { -32, -96, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             kSegmentsNone,                                       // narrow
             kSegmentsUnimplemented,                              // inverted
@@ -7876,7 +7629,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq9 = {
         .clearance = { -64, -128, 8, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -7888,7 +7641,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq10 = {
         .clearance = { -32, -128, 8, 0, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -7903,6 +7656,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq11 = {
         .clearance = { 0, -128, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = -2,
         .blockedSegments = { {
             kSegmentsNone,                                       // narrow
             kSegmentsUnimplemented,                              // inverted
@@ -7915,7 +7669,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq12 = {
         .clearance = { -32, -160, 8, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = -2,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -7928,8 +7682,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq13 = {
         .clearance = { 0, -160, 8, 4, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -2,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -7943,8 +7695,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                  // inverted
@@ -7969,7 +7719,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -7981,7 +7730,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -8008,7 +7756,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq5 = {
         .clearance = { -64, 32, 0, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -8021,8 +7769,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq6 = {
         .clearance = { -64, 64, 0, 4, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -8036,8 +7782,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq7 = {
         .clearance = { -64, 96, 8, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -8051,6 +7795,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq8 = {
         .clearance = { -32, 96, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             kSegmentsNone,                                             // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -8063,7 +7808,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq9 = {
         .clearance = { -64, 128, 8, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -8075,7 +7820,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq10 = {
         .clearance = { -32, 128, 8, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                 // inverted
@@ -8090,6 +7835,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq11 = {
         .clearance = { 0, 128, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             kSegmentsNone,                                             // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -8102,7 +7848,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq12 = {
         .clearance = { -32, 160, 8, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -8115,8 +7861,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq13 = {
         .clearance = { 0, 160, 8, 4, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -8130,8 +7874,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq0 = {
         .clearance = { 0, 0, 8, 4, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                            // inverted
@@ -8156,7 +7898,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq2 = {
         .clearance = { -32, 0, 8, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -8168,7 +7909,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq3 = {
         .clearance = { -32, -32, 8, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                 // inverted
@@ -8195,7 +7935,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq5 = {
         .clearance = { -64, -32, 8, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -8208,8 +7948,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq6 = {
         .clearance = { -64, -64, 8, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -8223,8 +7961,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq7 = {
         .clearance = { -64, -96, 0, 4, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -8238,6 +7974,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq8 = {
         .clearance = { -32, -96, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             kSegmentsNone,                                       // narrow
             kSegmentsUnimplemented,                              // inverted
@@ -8250,7 +7987,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq9 = {
         .clearance = { -64, -128, 0, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -8262,7 +7999,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq10 = {
         .clearance = { -32, -128, 0, 0, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -8277,6 +8014,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq11 = {
         .clearance = { 0, -128, 0, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = -2,
         .blockedSegments = { {
             kSegmentsNone,                                       // narrow
             kSegmentsUnimplemented,                              // inverted
@@ -8289,7 +8027,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq12 = {
         .clearance = { -32, -160, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -2,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -8302,8 +8040,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq13 = {
         .clearance = { 0, -160, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -2,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -8317,8 +8053,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq0 = {
         .clearance = { 0, 0, 8, 4, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                  // inverted
@@ -8343,7 +8077,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq2 = {
         .clearance = { -32, 0, 8, 4, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -8355,7 +8088,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq3 = {
         .clearance = { -32, 32, 8, 0, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -8382,7 +8114,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq5 = {
         .clearance = { -64, 32, 8, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -8395,8 +8127,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq6 = {
         .clearance = { -64, 64, 8, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -8410,8 +8140,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq7 = {
         .clearance = { -64, 96, 0, 4, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -8425,6 +8153,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq8 = {
         .clearance = { -32, 96, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             kSegmentsNone,                                             // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -8437,7 +8166,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq9 = {
         .clearance = { -64, 128, 0, 4, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -8449,7 +8178,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq10 = {
         .clearance = { -32, 128, 0, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                 // inverted
@@ -8464,6 +8193,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq11 = {
         .clearance = { 0, 128, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             kSegmentsNone,                                             // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -8476,7 +8206,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq12 = {
         .clearance = { -32, 160, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -8489,8 +8219,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq13 = {
         .clearance = { 0, 160, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 2,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -8504,8 +8232,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             kSegmentsAll, // narrow
             kSegmentsAll, // inverted
@@ -8518,8 +8244,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn1TileUp60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             kSegmentsAll, // narrow
             kSegmentsAll, // inverted
@@ -8532,8 +8256,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn1TileDown60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             kSegmentsAll, // narrow
             kSegmentsAll, // inverted
@@ -8546,8 +8268,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn1TileDown60Seq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             kSegmentsAll, // narrow
             kSegmentsAll, // inverted
@@ -8560,16 +8280,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kBrakesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kBoosterSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
@@ -8577,7 +8293,6 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
             | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kMazeSeq1 = {
@@ -8658,7 +8373,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kBankedLeftQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -8694,7 +8408,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq6 = {
         .clearance = { -64, -64, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = kBankedLeftQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -8702,7 +8415,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kBankedRightQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -8738,7 +8450,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq6 = {
         .clearance = { -64, 64, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = kBankedRightQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -8746,7 +8457,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kBankedLeftQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -8782,7 +8492,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq6 = {
         .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = kBankedLeftQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -8790,7 +8499,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kBankedRightQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -8826,7 +8534,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq6 = {
         .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = kBankedRightQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -8834,7 +8541,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -8870,7 +8576,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq6 = {
         .clearance = { -64, -64, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -8878,7 +8583,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -8914,7 +8618,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq6 = {
         .clearance = { -64, 64, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -8922,7 +8625,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kLeftQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -8958,7 +8660,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq6 = {
         .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = -1,
         .blockedSegments = kLeftQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -8966,7 +8667,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq0 = {
         .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kRightQuarterTurn5TilesSeq0.blockedSegments,
     };
 
@@ -9002,7 +8702,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq6 = {
         .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterTurn5TilesSeq6.blockedSegments,
     };
@@ -9010,23 +8709,18 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kUp25LeftBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp25RightBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kWaterfallSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -9039,14 +8733,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRapidsSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kOnRidePhotoSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll, // narrow
             kSegmentsAll, // inverted
@@ -9059,23 +8751,18 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown25LeftBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown25RightBankedSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kWatersplashSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -9088,7 +8775,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kWatersplashSeq1 = {
         .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -9101,7 +8787,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kWatersplashSeq2 = {
         .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -9114,7 +8799,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kWatersplashSeq3 = {
         .clearance = { -96, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -9127,7 +8811,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kWatersplashSeq4 = {
         .clearance = { -128, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -9140,71 +8823,54 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq0 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq1 = {
         .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq1 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq2 = {
         .clearance = { -64, 0, 16, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq2 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq3 = {
         .clearance = { -96, 0, 40, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq3 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq0 = {
         .clearance = { 0, 0, 0, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq0 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq1 = {
         .clearance = { -32, 0, 40, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq1 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq2 = {
         .clearance = { -64, 0, 64, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq2 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq3 = {
         .clearance = { -96, 0, 80, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq3 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kWhirlpoolSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -9217,140 +8883,113 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq0 = {
         .clearance = { 0, 0, 40, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq0 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq1 = {
         .clearance = { -32, 0, 16, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq1 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq2 = {
         .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq2 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq3 = {
         .clearance = { -96, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq3 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq0 = {
         .clearance = { 0, 0, 80, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq0 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq1 = {
         .clearance = { -32, 0, 64, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq1 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq2 = {
         .clearance = { -64, 0, 40, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq2 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq3 = {
         .clearance = { -96, 0, 0, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq3 },
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq1 = {
         .clearance = { -32, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq2 = {
         .clearance = { -64, 0, -32, 32, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kCableLiftHillSeq3 = {
         .clearance = { -96, 0, -96, 64, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::Centre, true },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq1 = {
         .clearance = { -32, 0, 0, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq2 = {
         .clearance = { -64, 0, 0, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq3 = {
         .clearance = { -96, 0, 0, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq4 = {
         .clearance = { -128, 0, 0, 160, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq5 = {
         .clearance = { -192, 0, 0, 208, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1011,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq6 = {
         .clearance = { -160, 0, 0, 208, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
@@ -9387,7 +9026,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kUp60ToUp90Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1011,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
@@ -9398,21 +9036,18 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown90ToDown60Seq0 = {
         .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1110,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kUp90ToUp60Seq0 = {
         .clearance = { 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1011,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDown60ToDown90Seq0 = {
         .clearance = { 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1110,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
@@ -9423,16 +9058,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kBrakeForDropSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                   // inverted
@@ -9445,7 +9076,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -9459,7 +9089,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagSeq2 = {
         .clearance = { -32, -32, 0, 0, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomRight), // inverted
@@ -9472,7 +9101,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagSeq3 = {
         .clearance = { -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // inverted
@@ -9484,7 +9112,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthToDiagSeq4 = {
         .clearance = { -64, -32, 0, 0, { 0b0001, 0 }, 0 },
-        .metalSupports = { MetalSupportPlace::BottomCorner },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9499,8 +9127,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
-        .metalSupports = { MetalSupportPlace::Centre },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),               // inverted
@@ -9513,7 +9139,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9528,7 +9153,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagSeq2 = {
         .clearance = { -32, 32, 0, 0, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -9541,7 +9165,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagSeq3 = {
         .clearance = { -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9553,7 +9176,8 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthToDiagSeq4 = {
         .clearance = { -64, 32, 0, 0, { 0b0010, 0 }, 0 },
-        .metalSupports = { MetalSupportPlace::LeftCorner },
+        .extraSupportRotation = 1,
+        .extraSupportCoverRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9567,7 +9191,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9582,7 +9206,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9595,7 +9218,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq2 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -9608,7 +9230,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -9633,7 +9254,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9648,7 +9268,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::right, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::right, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -9661,7 +9280,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9674,7 +9292,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportCoverRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9688,6 +9306,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq4 = {
         .clearance = { -32, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::centre, Seg::topLeft, Seg::bottomRight),                // inverted
@@ -9700,7 +9319,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9713,7 +9331,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -9727,7 +9344,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq2 = {
         .clearance = { -32, -32, 0, 0, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomRight), // inverted
@@ -9740,7 +9356,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq3 = {
         .clearance = { -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // inverted
@@ -9768,7 +9383,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -9781,7 +9395,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9796,7 +9409,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagSeq2 = {
         .clearance = { -32, 32, 0, 0, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -9809,7 +9421,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagSeq3 = {
         .clearance = { -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9835,7 +9446,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(
@@ -9852,7 +9462,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9865,7 +9474,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq2 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -9878,7 +9486,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -9903,7 +9510,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(
@@ -9919,7 +9526,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::right, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::right, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -9932,7 +9538,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9945,7 +9550,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -9959,6 +9563,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq4 = {
         .clearance = { -32, 64, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomRight), // inverted
@@ -9982,7 +9587,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -9995,7 +9599,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10030,7 +9633,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10043,7 +9645,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10078,7 +9679,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp60Seq1 = {
         .clearance = { 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10091,7 +9691,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp60Seq2 = {
         .clearance = { -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10126,7 +9725,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10139,7 +9737,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10174,7 +9771,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToUp60Seq1 = {
         .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10187,7 +9783,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToUp60Seq2 = {
         .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10222,7 +9817,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp60ToUp25Seq1 = {
         .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10235,7 +9829,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp60ToUp25Seq2 = {
         .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10270,7 +9863,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10283,7 +9875,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10318,7 +9909,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10331,7 +9921,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10366,7 +9955,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown60Seq1 = {
         .clearance = { 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10379,7 +9967,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown60Seq2 = {
         .clearance = { -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10414,7 +10001,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10427,7 +10013,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10462,7 +10047,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToDown60Seq1 = {
         .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10475,7 +10059,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToDown60Seq2 = {
         .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10510,7 +10093,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown60ToDown25Seq1 = {
         .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10523,7 +10105,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown60ToDown25Seq2 = {
         .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10558,7 +10139,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10571,7 +10151,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10606,7 +10185,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToUp60Seq1 = {
         .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -10619,7 +10197,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToUp60Seq2 = {
         .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -10654,7 +10231,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp60ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -10667,7 +10243,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp60ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -10702,7 +10277,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToDown60Seq1 = {
         .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -10715,7 +10289,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToDown60Seq2 = {
         .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -10750,7 +10323,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown60ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -10763,7 +10335,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown60ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -10798,7 +10369,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToLeftBankSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10811,7 +10381,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToLeftBankSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10846,7 +10415,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToRightBankSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10859,7 +10427,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToRightBankSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10894,7 +10461,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankToFlatSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10907,7 +10473,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankToFlatSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10942,7 +10507,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankToFlatSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -10955,7 +10519,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankToFlatSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -10990,7 +10553,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11003,7 +10565,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11038,7 +10599,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankToUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11051,7 +10611,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankToUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11086,7 +10645,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11099,7 +10657,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11134,7 +10691,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11147,7 +10703,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11182,7 +10737,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11195,7 +10749,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11230,7 +10783,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankToDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11243,7 +10795,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankToDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11278,7 +10829,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11291,7 +10841,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11326,7 +10875,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11339,7 +10887,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11374,7 +10921,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11387,7 +10933,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11422,7 +10967,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -11435,7 +10979,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -11458,7 +11001,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLogFlumeReverserSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
@@ -11466,7 +11008,6 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .flags = TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -11479,7 +11020,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBarrelRollUpToDownSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                  // inverted
@@ -11492,7 +11032,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBarrelRollUpToDownSeq1 = {
         .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -11505,7 +11044,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBarrelRollUpToDownSeq2 = {
         .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -11519,7 +11057,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBarrelRollUpToDownSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                            // inverted
@@ -11532,7 +11069,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBarrelRollUpToDownSeq1 = {
         .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -11545,7 +11081,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBarrelRollUpToDownSeq2 = {
         .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -11559,7 +11094,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -11573,7 +11107,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -11586,7 +11119,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq2 = {
         .clearance = { -64, 0, -32, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                             // inverted
@@ -11599,7 +11131,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBarrelRollDownToUpSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -11613,7 +11144,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBarrelRollDownToUpSeq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -11626,7 +11156,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBarrelRollDownToUpSeq2 = {
         .clearance = { -64, 0, -32, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                   // inverted
@@ -11639,7 +11168,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankToLeftQuarterTurn3TilesUp25Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                              // inverted
@@ -11676,7 +11204,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankToLeftQuarterTurn3TilesUp25Seq3 = {
         .clearance = { -32, -32, 16, 16, { 0b0111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                 // inverted
@@ -11689,7 +11217,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                // inverted
@@ -11726,7 +11253,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1011, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                               // inverted
@@ -11739,7 +11266,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq0 = {
         .clearance = { 0, 0, 16, 16, { 0b0111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                              // inverted
@@ -11776,7 +11302,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq3 = {
         .clearance = { -32, -32, 0, 0, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                 // inverted
@@ -11789,7 +11315,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq0 = {
         .clearance = { 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                // inverted
@@ -11826,7 +11351,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                               // inverted
@@ -11839,7 +11364,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kPoweredLiftSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
@@ -12624,7 +12148,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHeartLineTransferUpSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12637,7 +12160,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHeartLineTransferUpSeq1 = {
         .clearance = { -32, 0, 0, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12650,7 +12172,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHeartLineTransferUpSeq2 = {
         .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12687,7 +12208,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHeartLineTransferDownSeq1 = {
         .clearance = { -32, 0, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12700,7 +12220,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHeartLineTransferDownSeq2 = {
         .clearance = { -64, 0, -16, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12713,7 +12232,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kHeartLineTransferDownSeq3 = {
         .clearance = { 0, 0, -32, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12726,7 +12244,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12739,7 +12256,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12752,7 +12268,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq2 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12765,7 +12280,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq3 = {
         .clearance = { -96, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12778,7 +12292,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq4 = {
         .clearance = { -128, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12791,7 +12304,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq5 = {
         .clearance = { -160, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12804,7 +12316,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHeartLineRollSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12817,7 +12328,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHeartLineRollSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12830,7 +12340,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHeartLineRollSeq2 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12843,7 +12352,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHeartLineRollSeq3 = {
         .clearance = { -96, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12856,7 +12364,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHeartLineRollSeq4 = {
         .clearance = { -128, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12869,7 +12376,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightHeartLineRollSeq5 = {
         .clearance = { -160, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -12881,7 +12387,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleASeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -12893,7 +12398,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleASeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -12905,7 +12409,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleBSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -12917,7 +12420,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleBSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -12929,7 +12431,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleCSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -12941,7 +12442,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleCSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -12953,7 +12453,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleDSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -12965,7 +12464,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleDSeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -12977,7 +12475,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleDSeq2 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -12989,7 +12487,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleESeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -13001,7 +12498,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleESeq1 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -13013,7 +12509,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleESeq2 = {
         .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             kSegmentsAll,           // narrow
             kSegmentsUnimplemented, // inverted
@@ -13060,7 +12556,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kUp90ToInvertedFlatQuarterLoopSeq1 = {
         .clearance = { 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -13073,7 +12568,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kUp90ToInvertedFlatQuarterLoopSeq2 = {
         .clearance = { 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -13098,7 +12592,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq1 = {
         .clearance = { -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -13111,7 +12604,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq2 = {
         .clearance = { -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -13135,7 +12627,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                              // inverted
@@ -13172,7 +12663,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq3 = {
         .clearance = { -32, -32, 0, 8, { 0b0111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                 // inverted
@@ -13185,7 +12676,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightCurvedLiftHillSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                // inverted
@@ -13222,7 +12712,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightCurvedLiftHillSeq3 = {
         .clearance = { -32, 32, 0, 8, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                               // inverted
@@ -13234,7 +12724,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftReverserSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13246,7 +12735,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftReverserSeq1 = {
         .clearance = { 0, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13258,7 +12746,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftReverserSeq2 = {
         .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13270,7 +12757,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftReverserSeq3 = {
         .clearance = { -64, -32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13282,7 +12768,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftReverserSeq4 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13294,7 +12779,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftReverserSeq5 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13306,7 +12790,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightReverserSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13318,7 +12801,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightReverserSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13330,7 +12812,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightReverserSeq2 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13342,7 +12823,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightReverserSeq3 = {
         .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13354,7 +12834,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightReverserSeq4 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13366,7 +12845,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightReverserSeq5 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13445,7 +12923,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq0 = {
         .clearance = { 0, 0, 0, 208, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13458,7 +12935,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq1 = {
         .clearance = { 32, 0, 0, 208, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13471,7 +12947,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq2 = {
         .clearance = { -32, 0, 0, 160, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13484,7 +12959,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq3 = {
         .clearance = { -64, 0, 0, 80, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13497,7 +12971,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq4 = {
         .clearance = { -96, 0, 0, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13510,7 +12983,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq5 = {
         .clearance = { -128, 0, 0, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13522,7 +12994,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq6 = {
         .clearance = { -160, 0, 0, 16, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13535,14 +13006,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kBlockBrakesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -13579,7 +13048,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq3 = {
         .clearance = { -32, -32, 16, 16, { 0b0111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomRight), // inverted
@@ -13592,7 +13061,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -13629,7 +13097,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1011, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomRight), // inverted
@@ -13642,7 +13110,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq0 = {
         .clearance = { 0, 0, 16, 16, { 0b0111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -13679,7 +13146,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq3 = {
         .clearance = { -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomRight), // inverted
@@ -13692,7 +13159,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq0 = {
         .clearance = { 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -13729,7 +13195,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq3 = {
         .clearance = { -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomRight), // inverted
@@ -13742,7 +13208,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -13767,7 +13232,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq2 = {
         .clearance = { -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -13779,7 +13243,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq3 = {
         .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // inverted
@@ -13794,6 +13257,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq4 = {
         .clearance = { -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             kSegmentsNone,                                             // narrow
             kSegmentsNone,                                             // inverted
@@ -13806,6 +13270,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq5 = {
         .clearance = { -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
         .allowedWallEdges = 0b0011,
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -13818,7 +13283,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq6 = {
         .clearance = { -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomRight), // inverted
@@ -13829,7 +13294,6 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq7 = {
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13842,7 +13306,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -13867,7 +13330,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq2 = {
         .clearance = { -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -13879,7 +13341,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq3 = {
         .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -13894,6 +13355,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq4 = {
         .clearance = { -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             kSegmentsNone,                                       // narrow
             kSegmentsNone,                                       // inverted
@@ -13906,6 +13368,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq5 = {
         .clearance = { -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
         .allowedWallEdges = 0b1001,
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -13918,7 +13381,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq6 = {
         .clearance = { -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomRight), // inverted
@@ -13929,7 +13392,6 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq7 = {
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -13942,7 +13404,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq0 = {
         .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft),                   // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -13967,7 +13428,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq2 = {
         .clearance = { -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -13979,7 +13439,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq3 = {
         .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomRight), // inverted
@@ -13994,6 +13453,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq4 = {
         .clearance = { -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1100,
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             kSegmentsNone,                                             // narrow
             kSegmentsNone,                                             // inverted
@@ -14006,6 +13466,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq5 = {
         .clearance = { -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
         .allowedWallEdges = 0b0011,
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -14018,7 +13479,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq6 = {
         .clearance = { -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .extraSupportRotation = -1,
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomRight), // inverted
@@ -14029,7 +13490,6 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq7 = {
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -14042,7 +13502,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq0 = {
         .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topRight, Seg::bottomLeft),               // narrow
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14067,7 +13526,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq2 = {
         .clearance = { -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -14079,7 +13537,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq3 = {
         .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
@@ -14094,6 +13551,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq4 = {
         .clearance = { -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             kSegmentsNone,                                       // narrow
             kSegmentsNone,                                       // inverted
@@ -14106,6 +13564,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq5 = {
         .clearance = { -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
         .allowedWallEdges = 0b1001,
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // inverted
@@ -14118,7 +13577,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq6 = {
         .clearance = { -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .extraSupportRotation = 1,
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomRight),                // narrow
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomRight), // inverted
@@ -14129,7 +13588,6 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq7 = {
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
             kSegmentsUnimplemented, // inverted
@@ -14142,7 +13600,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kUp25ToLeftBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14155,7 +13612,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kUp25ToRightBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14168,7 +13624,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedUp25ToUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14181,7 +13636,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedUp25ToUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14194,7 +13648,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown25ToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14207,7 +13660,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDown25ToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14220,7 +13672,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedDown25ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14233,7 +13684,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedDown25ToDown25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14246,7 +13696,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedFlatToLeftBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14259,7 +13708,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedFlatToRightBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14272,7 +13720,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedUp25ToLeftBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14285,7 +13732,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedUp25ToRightBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14298,7 +13744,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedFlatToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14311,7 +13756,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedFlatToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14324,7 +13768,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedDown25ToLeftBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14337,7 +13780,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedDown25ToRightBankedFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14350,7 +13792,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToLeftBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14363,7 +13804,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToRightBankedUp25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14376,7 +13816,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedUp25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14389,7 +13828,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedUp25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14402,7 +13840,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14415,7 +13852,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlatToRightBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14428,7 +13864,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftBankedDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14441,7 +13876,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedDown25ToFlatSeq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // inverted
@@ -14576,335 +14010,278 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRotationControlToggleSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4ASeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4ASeq1 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4ASeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4ASeq3 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x2Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x2Seq1 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x2Seq2 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x2Seq3 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq1 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq2 = {
         .clearance = { 0, 64, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq3 = {
         .clearance = { 0, 96, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq4 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq5 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq6 = {
         .clearance = { 32, 64, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq7 = {
         .clearance = { 32, 96, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq8 = {
         .clearance = { 64, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq9 = {
         .clearance = { 64, 32, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq10 = {
         .clearance = { 64, 64, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq11 = {
         .clearance = { 64, 96, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq12 = {
         .clearance = { 96, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq13 = {
         .clearance = { 96, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq14 = {
         .clearance = { 96, 64, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack4x4Seq15 = {
         .clearance = { 96, 96, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq1 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq2 = {
         .clearance = { 0, 64, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq3 = {
         .clearance = { 0, 96, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq4 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq5 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq6 = {
         .clearance = { 32, 64, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack2x4Seq7 = {
         .clearance = { 32, 96, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq1 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq3 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x5Seq4 = {
         .clearance = { 64, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x1ASeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4BSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4BSeq1 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4BSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4BSeq3 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x1BSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
             | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4CSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4CSeq1 = {
         .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4CSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack1x4CSeq3 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_ORIGIN,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq1 = {
         .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq2 = {
         .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq4 = {
         .clearance = { 0, -32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq5 = {
         .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq6 = {
         .clearance = { 32, -32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq7 = {
         .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kFlatTrack3x3Seq8 = {
         .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
         .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
     };
 
     static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq0 = {
@@ -15446,7 +14823,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftZeroGRollUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15459,7 +14835,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftZeroGRollUpSeq1 = {
         .clearance = { -32, 0, 8, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -15472,7 +14847,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftZeroGRollUpSeq2 = {
         .clearance = { -64, 0, 24, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -15486,7 +14860,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightZeroGRollUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15499,7 +14872,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightZeroGRollUpSeq1 = {
         .clearance = { -32, 0, 8, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -15512,7 +14884,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightZeroGRollUpSeq2 = {
         .clearance = { -64, 0, 24, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -15526,7 +14897,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftZeroGRollDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -15540,7 +14910,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftZeroGRollDownSeq1 = {
         .clearance = { -32, 0, -48, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -15553,7 +14922,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftZeroGRollDownSeq2 = {
         .clearance = { -64, 0, -56, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15566,7 +14934,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightZeroGRollDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -15580,7 +14947,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightZeroGRollDownSeq1 = {
         .clearance = { -32, 0, -48, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -15593,7 +14959,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightZeroGRollDownSeq2 = {
         .clearance = { -64, 0, -56, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15606,7 +14971,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15619,7 +14983,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq1 = {
         .clearance = { -32, 0, 56, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15632,7 +14995,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq2 = {
         .clearance = { -64, 0, 96, 40, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -15645,7 +15007,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq3 = {
         .clearance = { -96, 0, 120, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -15659,7 +15020,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15672,7 +15032,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq1 = {
         .clearance = { -32, 0, 56, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15685,7 +15044,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq2 = {
         .clearance = { -64, 0, 96, 40, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -15698,7 +15056,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq3 = {
         .clearance = { -96, 0, 120, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -15712,7 +15069,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
@@ -15726,7 +15082,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq1 = {
         .clearance = { -32, 0, -56, 40, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -15739,7 +15094,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq2 = {
         .clearance = { -64, 0, -96, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15752,7 +15106,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq3 = {
         .clearance = { -96, 0, -152, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15765,7 +15118,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
@@ -15779,7 +15131,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq1 = {
         .clearance = { -32, 0, -56, 40, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -15792,7 +15143,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq2 = {
         .clearance = { -64, 0, -96, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -15805,7 +15155,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq3 = {
         .clearance = { -96, 0, -152, 64, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -16624,7 +15973,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -16637,7 +15985,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq1 = {
         .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -16650,7 +15997,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq2 = {
         .clearance = { -32, -32, 32, 16, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                              // inverted
@@ -16663,7 +16009,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq3 = {
         .clearance = { -64, 0, 32, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                              // inverted
@@ -16687,7 +16032,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -16700,7 +16044,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq1 = {
         .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -16713,7 +16056,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq2 = {
         .clearance = { -32, 32, 32, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                                      // inverted
@@ -16726,7 +16068,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq3 = {
         .clearance = { -64, 0, 32, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -16750,7 +16091,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq0 = {
         .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -16763,7 +16103,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -16776,7 +16115,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq2 = {
         .clearance = { -32, -32, -48, 16, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                              // inverted
@@ -16789,7 +16127,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq3 = {
         .clearance = { -64, 0, -48, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                              // inverted
@@ -16813,7 +16150,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq0 = {
         .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -16826,7 +16162,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -16839,7 +16174,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq2 = {
         .clearance = { -32, 32, -48, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                                      // inverted
@@ -16852,7 +16186,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq3 = {
         .clearance = { -64, 0, -48, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -16887,7 +16220,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq1 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                // inverted
@@ -16900,7 +16232,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq2 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -16913,7 +16244,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -16926,7 +16256,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq4 = {
         .clearance = { -64, 32, 32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -16950,7 +16279,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::right, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                                       // inverted
@@ -16963,7 +16291,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -16976,7 +16303,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -16989,7 +16315,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq4 = {
         .clearance = { -32, 64, 32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -17001,7 +16326,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                                // inverted
@@ -17014,7 +16338,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq1 = {
         .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                // inverted
@@ -17027,7 +16350,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq2 = {
         .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17040,7 +16362,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq3 = {
         .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -17064,7 +16385,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                                // inverted
@@ -17077,7 +16397,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq1 = {
         .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::right, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                                       // inverted
@@ -17090,7 +16409,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq2 = {
         .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17103,7 +16421,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq3 = {
         .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -17139,7 +16456,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17152,7 +16468,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17187,7 +16502,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17200,7 +16514,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17235,7 +16548,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17248,7 +16560,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17283,7 +16594,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17296,7 +16606,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17331,7 +16640,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17344,7 +16652,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17379,7 +16686,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17392,7 +16698,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17427,7 +16732,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17440,7 +16744,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17475,7 +16778,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17488,7 +16790,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17523,7 +16824,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17536,7 +16836,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17571,7 +16870,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17584,7 +16882,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17619,7 +16916,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17632,7 +16928,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17667,7 +16962,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17680,7 +16974,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17715,7 +17008,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17728,7 +17020,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17763,7 +17054,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17776,7 +17066,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17811,7 +17100,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17824,7 +17112,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17859,7 +17146,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17872,7 +17158,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17907,7 +17192,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17920,7 +17204,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -17955,7 +17238,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -17968,7 +17250,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18003,7 +17284,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18016,7 +17296,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18051,7 +17330,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18064,7 +17342,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18099,7 +17376,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18112,7 +17388,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18147,7 +17422,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18160,7 +17434,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18195,7 +17468,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18208,7 +17480,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18243,7 +17514,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq1 = {
         .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18256,7 +17526,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq2 = {
         .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18291,7 +17560,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18304,7 +17572,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18339,7 +17606,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25RightBankedSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18352,7 +17618,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagUp25RightBankedSeq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18387,7 +17652,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18400,7 +17664,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18435,7 +17698,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25RightBankedSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18448,7 +17710,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagDown25RightBankedSeq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18472,7 +17733,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -18485,7 +17745,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq1 = {
         .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -18498,7 +17757,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq2 = {
         .clearance = { -32, -32, 32, 16, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                              // inverted
@@ -18511,7 +17769,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq3 = {
         .clearance = { -64, 0, 32, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                              // inverted
@@ -18535,7 +17792,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -18548,7 +17804,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq1 = {
         .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -18561,7 +17816,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq2 = {
         .clearance = { -32, 32, 32, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                                      // inverted
@@ -18574,7 +17828,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq3 = {
         .clearance = { -64, 0, 32, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18598,7 +17851,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq0 = {
         .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -18611,7 +17863,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -18624,7 +17875,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq2 = {
         .clearance = { -32, -32, -48, 16, { 0b1000, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                              // inverted
@@ -18637,7 +17887,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq3 = {
         .clearance = { -64, 0, -48, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0011,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                              // inverted
@@ -18661,7 +17910,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq0 = {
         .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -18674,7 +17922,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq1 = {
         .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                               // inverted
@@ -18687,7 +17934,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq2 = {
         .clearance = { -32, 32, -48, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                                      // inverted
@@ -18700,7 +17946,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq3 = {
         .clearance = { -64, 0, -48, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18735,7 +17980,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq1 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                // inverted
@@ -18748,7 +17992,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq2 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18761,7 +18004,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -18774,7 +18016,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq4 = {
         .clearance = { -64, 32, 32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -18798,7 +18039,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::right, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                                       // inverted
@@ -18811,7 +18051,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18824,7 +18063,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq3 = {
         .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -18837,7 +18075,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq4 = {
         .clearance = { -32, 64, 32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::NwSe },
         .blockedSegments = { {
             EnumsToFlags(Seg::centre, Seg::topLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                    // inverted
@@ -18849,7 +18086,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                                // inverted
@@ -18862,7 +18098,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq1 = {
         .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                // inverted
@@ -18875,7 +18110,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq2 = {
         .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                           // inverted
@@ -18888,7 +18122,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq3 = {
         .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft), // narrow
             kSegmentsUnimplemented,                                                                       // inverted
@@ -18912,7 +18145,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
         .blockedSegments = { {
             EnumsToFlags(Seg::right, Seg::centre, Seg::topLeft, Seg::topRight, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                                // inverted
@@ -18925,7 +18157,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq1 = {
         .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, 0 },
         .allowedWallEdges = 0b0100,
-        .woodenSupports = { WoodenSupportSubType::NeSw },
         .blockedSegments = { {
             EnumsToFlags(Seg::top, Seg::right, Seg::centre, Seg::topLeft, Seg::topRight), // narrow
             kSegmentsUnimplemented,                                                       // inverted
@@ -18938,7 +18169,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq2 = {
         .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner1 },
         .blockedSegments = { {
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                    // inverted
@@ -18951,7 +18181,6 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq3 = {
         .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
         .blockedSegments = { {
             EnumsToFlags(Seg::left, Seg::bottom, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // narrow
             kSegmentsUnimplemented,                                                                             // inverted
@@ -18981,14 +18210,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagBrakesSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = kDiagFlatSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagBrakesSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = kDiagFlatSeq2.blockedSegments,
     };
 
@@ -19005,14 +18232,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kDiagBlockBrakesSeq1 = {
         .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::Corner0 },
         .blockedSegments = kDiagFlatSeq1.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kDiagBlockBrakesSeq2 = {
         .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
         .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .blockedSegments = kDiagFlatSeq2.blockedSegments,
     };
 

@@ -23,7 +23,12 @@ constexpr RideTypeDescriptor CarRideRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::carRide,
         .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsCarRideGhostTrain,
-        .supportType = MetalSupportType::Boxed,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(MetalSupportType::Boxed));
+            array[EnumValue(TrackGroup::spinningTunnel)] = NewSupportType(WoodenSupportType::Truss);
+            return array;
+        }(),
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::spinningTunnel},
         .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::rapids},
     }),

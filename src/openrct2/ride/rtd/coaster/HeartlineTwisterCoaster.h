@@ -22,7 +22,12 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::heartlineTwisterCoaster,
         .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsWide,
-        .supportType = WoodenSupportType::Mine,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(WoodenSupportType::Mine));
+            array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(MetalSupportType::Tubes);
+            return array;
+        }(),
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::heartlineRoll, TrackGroup::heartlineTransfer},
         .extraTrackGroups = {},
     }),

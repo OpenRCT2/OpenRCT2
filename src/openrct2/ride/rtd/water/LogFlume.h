@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::logFlume,
         .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
-        .supportType = MetalSupportType::Boxed,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalBoxed,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::onridePhoto, TrackGroup::logFlumeReverser, TrackGroup::slopeSteepDown},
         .extraTrackGroups = {},
     }),

@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::suspendedMonorail,
         .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsInverted,
-        .supportType = MetalSupportType::Boxed,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalBoxed,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
         .extraTrackGroups = {},
     }),

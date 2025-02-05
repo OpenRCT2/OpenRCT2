@@ -23,8 +23,8 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .trackStyle = TrackStyle::dinghySlide,
-        .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
-            .supportType = MetalSupportType::Tubes,
+            .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
+            .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubes,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
             .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,
@@ -32,8 +32,8 @@ constexpr RideTypeDescriptor DinghySlideRTD =
         }, 
         {
             .trackStyle = TrackStyle::dinghySlideCovered,
-        .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
-            .supportType = MetalSupportType::Tubes,
+            .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
+            .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubes,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curve, TrackGroup::sBend, TrackGroup::curveSmall },
             .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,

@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::invertedImpulseCoaster,
         .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsInverted,
-        .supportType = MetalSupportType::TubesInverted,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubesInverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeVertical, TrackGroup::curveVertical},
         .extraTrackGroups = {},
     }),

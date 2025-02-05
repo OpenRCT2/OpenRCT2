@@ -15,9 +15,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
@@ -1361,9 +1358,6 @@ static void PaintGoKartsTrackFlat(
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1396,9 +1390,6 @@ static void PaintGoKartsTrack25DegUp(
     }
 
     session.WoodenSupportsPrependTo = ps;
-
-    DrawSupportForSequenceA<TrackElemType::Up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (direction)
     {
@@ -1449,9 +1440,6 @@ static void PaintGoKartsTrackFlatTo25DegUp(
 
     session.WoodenSupportsPrependTo = ps;
 
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     switch (direction)
     {
         case 0:
@@ -1500,9 +1488,6 @@ static void PaintGoKartsTrack25DegUpToFlat(
     }
 
     session.WoodenSupportsPrependTo = ps;
-
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (direction)
     {
@@ -1652,9 +1637,6 @@ static void PaintGoKartsStation(
         }
     }
 
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1722,9 +1704,6 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
             break;
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1747,9 +1726,6 @@ static void TrackUp60(
         session, session.TrackColours.WithIndex(kGoKartsUp60Sprites[direction][1]), height, { 0, 0, 0 },
         kGoKartsUp60BoundBoxes[direction][1]);
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up60Deg);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1772,9 +1748,6 @@ static void TrackUp25ToUp60(
         session, session.TrackColours.WithIndex(kGoKartsUp25ToUp60Sprites[direction][1]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][1]);
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25DegToUp60Deg);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1797,9 +1770,6 @@ static void TrackUp60ToUp25(
         session, session.TrackColours.WithIndex(kGoKartsUp60ToUp25Sprites[direction][1]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][1]);
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up60DegToUp25Deg);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1843,8 +1813,6 @@ static void TrackFlatToUp60LongBase(
         session, session.TrackColours.WithIndex(kGoKartsFlatToUp60LongBaseSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsFlatToUp60LongBaseBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<TrackElemType::FlatToUp60LongBase>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1868,8 +1836,6 @@ static void TrackUp60ToFlatLongBase(
         session, session.TrackColours.WithIndex(kGoKartsUp60ToFlatLongBaseSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsUp60ToFlatLongBaseBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<TrackElemType::Up60ToFlatLongBase>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1916,9 +1882,6 @@ static void TrackLeftQuarterTurn3Tiles(
     const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
     if (woodenSupportSubType != WoodenSupportSubType::Null)
     {
-        WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::None);
     }
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1947,8 +1910,6 @@ static void TrackLeftQuarterTurn5Tiles(
         session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1983,8 +1944,6 @@ static void TrackLeftEighthToDiag(
         session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToDiagBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftEighthToDiag>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -2006,8 +1965,6 @@ static void TrackRightEighthToDiag(
         session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagSprites[direction][trackSequence][2]), height,
         { 0, 0, 0 }, kGoKartsRightEighthToDiagBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::RightEighthToDiag>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -2044,8 +2001,6 @@ static void TrackDiagFlat(
         session, session.TrackColours.WithIndex(kGoKartsDiagFlatSprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagFlatBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -2060,8 +2015,6 @@ static void TrackDiagFlatToUp25(
         session, session.TrackColours.WithIndex(kGoKartsDiagFlatToUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagFlatToUp25BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagFlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -2076,8 +2029,6 @@ static void TrackDiagUp25ToFlat(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToFlatSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToFlatBoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -2092,8 +2043,6 @@ static void TrackDiagUp25(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp25Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagUp25BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp25>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -2135,8 +2084,6 @@ static void TrackDiagUp25ToUp60(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp25ToUp60Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp25ToUp60BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp25ToUp60>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
@@ -2151,8 +2098,6 @@ static void TrackDiagUp60ToUp25(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp60ToUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsDiagUp60ToUp25BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp60ToUp25>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
@@ -2167,8 +2112,6 @@ static void TrackDiagUp60(
         session, session.TrackColours.WithIndex(kGoKartsDiagUp60Sprites[direction][trackSequence][1]), height, { 0, 0, 0 },
         kGoKartsDiagUp60BoundBoxes[direction][trackSequence][1]);
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp60>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
@@ -2210,32 +2153,6 @@ static void TrackLeftQuarterTurn3TilesUp25(
         session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][1]);
 
-    static constexpr std::array<WoodenSupportSubType, 4> woodenSupportSubTypes = {
-        WoodenSupportSubType::NeSw,
-        WoodenSupportSubType::Null,
-        WoodenSupportSubType::Corner3,
-        WoodenSupportSubType::NeSw,
-    };
-    static constexpr std::array<WoodenSupportTransitionType, 4> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg,
-        WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::Up25Deg,
-    };
-    static constexpr std::array woodenSupportExtraRotation = {
-        0,
-        0,
-        0,
-        -1,
-    };
-    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
-    if (woodenSupportSubType != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
-            height, session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
-    }
-
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -2259,32 +2176,6 @@ static void TrackRightQuarterTurn3TilesUp25(
     PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn3TilesUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsRightQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][1]);
-
-    static constexpr std::array<WoodenSupportSubType, 4> woodenSupportSubTypes = {
-        WoodenSupportSubType::NeSw,
-        WoodenSupportSubType::Null,
-        WoodenSupportSubType::Corner2,
-        WoodenSupportSubType::NeSw,
-    };
-    static constexpr std::array<WoodenSupportTransitionType, 4> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg,
-        WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::Up25Deg,
-    };
-    static constexpr std::array woodenSupportExtraRotation = {
-        0,
-        0,
-        0,
-        1,
-    };
-    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
-    if (woodenSupportSubType != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
-            height, session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
-    }
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -2328,25 +2219,6 @@ static void TrackLeftQuarterTurn5TilesUp25(
         session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][1]);
 
-    static constexpr std::array<WoodenSupportSubType, 7> woodenSupportSubTypes = {
-        WoodenSupportSubType::NeSw, WoodenSupportSubType::Null,    WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
-        WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw,
-    };
-    static constexpr std::array<WoodenSupportTransitionType, 7> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,
-    };
-    static constexpr std::array woodenSupportHeight = { 0, 0, 0, -16, 0, 0, 0 };
-    static constexpr std::array woodenSupportExtraRotation = { 0, 0, 0, 0, 0, 0, -1 };
-    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
-    if (woodenSupportSubType != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
-            height + woodenSupportHeight[trackSequence], session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
-    }
-
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -2370,25 +2242,6 @@ static void TrackRightQuarterTurn5TilesUp25(
     PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn5TilesUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsRightQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][1]);
-
-    static constexpr std::array<WoodenSupportSubType, 7> woodenSupportSubTypes = {
-        WoodenSupportSubType::NeSw, WoodenSupportSubType::Null,    WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
-        WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NeSw,
-    };
-    static constexpr std::array<WoodenSupportTransitionType, 7> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,
-    };
-    static constexpr std::array woodenSupportHeight = { 0, 0, 0, -16, 0, 0, 0 };
-    static constexpr std::array woodenSupportExtraRotation = { 0, 0, 0, 0, 0, 0, 1 };
-    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
-    if (woodenSupportSubType != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
-            height + woodenSupportHeight[trackSequence], session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
-    }
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -2432,23 +2285,6 @@ static void TrackLeftEighthToDiagUp25(
         session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToDiagUp25BoundBoxes[direction][trackSequence][1]);
 
-    static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
-        WoodenSupportSubType::NeSw,    WoodenSupportSubType::NeSw,    WoodenSupportSubType::Corner1,
-        WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner2,
-    };
-    static constexpr std::array<WoodenSupportTransitionType, 5> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None,
-    };
-    static constexpr std::array woodenSupportHeight = { 0, 0, -16, 0, 0 };
-    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
-    if (woodenSupportSubType != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, direction, height + woodenSupportHeight[trackSequence],
-            session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
-    }
-
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -2467,23 +2303,6 @@ static void TrackRightEighthToDiagUp25(
     PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsRightEighthToDiagUp25BoundBoxes[direction][trackSequence][1]);
-
-    static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
-        WoodenSupportSubType::NeSw,    WoodenSupportSubType::NeSw,    WoodenSupportSubType::Corner0,
-        WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner3,
-    };
-    static constexpr std::array<WoodenSupportTransitionType, 5> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None,
-    };
-    static constexpr std::array woodenSupportHeight = { 0, 0, -16, 0, 0 };
-    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
-    if (woodenSupportSubType != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, direction, height + woodenSupportHeight[trackSequence],
-            session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
-    }
 
     if (trackSequence == 0 && (direction == 0 || direction == 3))
     {
@@ -2504,18 +2323,6 @@ static void TrackLeftEighthToOrthogonalUp25(
         session, session.TrackColours.WithIndex(kGoKartsLeftEighthToOrthogonalUp25Sprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsLeftEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][1]);
 
-    static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
-        WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
-        WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw,
-    };
-    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
-    if (woodenSupportSubType != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::None);
-    }
-
     if (trackSequence == 4 && (direction == 1 || direction == 2))
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
@@ -2534,18 +2341,6 @@ static void TrackRightEighthToOrthogonalUp25(
     PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsRightEighthToOrthogonalUp25Sprites[direction][trackSequence][1]),
         height, { 0, 0, 0 }, kGoKartsRightEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][1]);
-
-    static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
-        WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
-        WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe,
-    };
-    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
-    if (woodenSupportSubType != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetupRotated(
-            session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::None);
-    }
 
     if (trackSequence == 4 && (direction == 0 || direction == 1))
     {
@@ -2605,8 +2400,6 @@ static void TrackSBendLeft(
         session, session.TrackColours.WithIndex(kGoKartsSBendLeftSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
         kGoKartsSBendLeftBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::SBendLeft>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if ((trackSequence == 0 && (direction == 0 || direction == 3))
         || (trackSequence == 3 && (direction == 1 || direction == 2)))
     {
@@ -2629,8 +2422,6 @@ static void TrackSBendRight(
         session, session.TrackColours.WithIndex(kGoKartsSBendRightSprites[direction][trackSequence][2]), height, { 0, 0, 0 },
         kGoKartsSBendRightBoundBoxes[direction][trackSequence][2]);
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::SBendRight>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if ((trackSequence == 0 && (direction == 0 || direction == 3))
         || (trackSequence == 3 && (direction == 1 || direction == 2)))
     {

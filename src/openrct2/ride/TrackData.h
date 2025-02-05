@@ -77,28 +77,15 @@ namespace OpenRCT2::TrackMetaData
         return { 0, 0, 0, 0 };
     }
 
-    struct SequenceWoodenSupport
-    {
-        WoodenSupportSubType subType = WoodenSupportSubType::Null;
-        WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None;
-    };
-
-    struct SequenceMetalSupport
-    {
-        MetalSupportPlace place = MetalSupportPlace::None;
-        uint8_t alternates = false;
-    };
-
     struct SequenceDescriptor
     {
         SequenceClearance clearance{};
         /** rct2: 0x00999A94 */
         uint8_t allowedWallEdges{};
         /** rct2: 0x0099BA64 */
-        uint8_t flags{};
-        SequenceWoodenSupport woodenSupports{};
-        SequenceMetalSupport metalSupports{};
+        uint16_t flags{};
         int8_t extraSupportRotation = 0;
+        int8_t extraSupportCoverRotation = 0;
         bool invertSegmentBlocking = false;
         std::array<uint16_t, EnumValue(OpenRCT2::BlockedSegments::BlockedSegmentsType::count)> blockedSegments{
             kSegmentsNone, kSegmentsNone, kSegmentsNone, kSegmentsNone, kSegmentsNone

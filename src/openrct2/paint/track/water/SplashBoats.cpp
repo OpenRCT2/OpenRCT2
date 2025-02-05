@@ -12,11 +12,6 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
-#include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
@@ -496,9 +491,6 @@ static void PaintSplashBoatsTrack25DegUp(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
-    DrawSupportForSequenceA<TrackElemType::Up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -521,9 +513,6 @@ static void PaintSplashBoatsTrack60DegUp(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 98 } });
 
-    DrawSupportForSequenceA<TrackElemType::Up60>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -545,9 +534,6 @@ static void PaintSplashBoatsTrackFlatTo25DegUp(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -568,9 +554,6 @@ static void PaintSplashBoatsTrack25DegUpToFlat(
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
-
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -594,9 +577,6 @@ static void PaintSplashBoatsTrack25DegUpTo60DegUp(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
-    DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -619,9 +599,6 @@ static void PaintSplashBoatsTrack60DegUpTo25DegUp(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
-    DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -642,9 +619,6 @@ static void PaintSplashBoatsTrack25DegDown(
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
-
-    DrawSupportForSequenceA<TrackElemType::Down25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -673,9 +647,6 @@ static void PaintSplashBoatsTrackFlatTo25DegDown(
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
-
-    DrawSupportForSequenceA<TrackElemType::FlatToDown25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -712,9 +683,6 @@ static void PaintSplashBoatsTrack25DegDownToFlat(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
-    DrawSupportForSequenceA<TrackElemType::Down25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
@@ -737,9 +705,6 @@ static void PaintSplashBoatsTrackFlat(
     const ImageId frontId = session.TrackColours.WithIndex(kSplashBoatsFlatImageIndexes[direction][1]);
     PaintAddImageAsParentRotated(session, direction, frontId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
 
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     if (direction & 1)
     {
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
@@ -759,9 +724,6 @@ static void PaintSplashBoatsStation(
 {
     const ImageId trackId = session.TrackColours.WithIndex(kSplashBoatsFlatImageIndexes[direction][0]);
     PaintAddImageAsParentRotated(session, direction, trackId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
-
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (!TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 7, trackElement, StationBaseType::b, 0))
     {
@@ -783,9 +745,6 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
         session, height, direction, trackSequence, session.TrackColours, kSplashBoatsLeftQuarterTurn5_Top);
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours, kSplashBoatsLeftQuarterTurn5_Side);
-
-    DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (trackSequence)
     {
@@ -815,9 +774,6 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
         session, height, direction, trackSequence, session.TrackColours, kSplashBoatsRightQuarterTurn5_Top);
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours, kSplashBoatsRightQuarterTurn5_Side);
-
-    DrawSupportForSequenceA<TrackElemType::RightQuarterTurn5Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (trackSequence)
     {
@@ -880,17 +836,13 @@ static void PaintSplashBoatsTrackSBendLeft(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+
             break;
         case 1:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, bboy, height }, { 32, 26, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
-
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             break;
         case 2:
@@ -899,16 +851,12 @@ static void PaintSplashBoatsTrackSBendLeft(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
             break;
         case 3:
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+
             break;
     }
 
@@ -972,17 +920,13 @@ static void PaintSplashBoatsTrackSBendRight(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+
             break;
         case 1:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, bboy, height }, { 32, 26, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
-
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             break;
         case 2:
@@ -991,16 +935,12 @@ static void PaintSplashBoatsTrackSBendRight(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
             break;
         case 3:
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+
             break;
     }
 

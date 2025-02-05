@@ -17,7 +17,6 @@
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -905,8 +904,6 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     TrackPaintUtilRightQuarterTurn5TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
-    DrawSupportForSequenceA<TrackElemType::BankedRightQuarterTurn5Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1055,9 +1052,6 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
     TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
-
-    DrawSupportForSequenceA<TrackElemType::RightBankedQuarterTurn3Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

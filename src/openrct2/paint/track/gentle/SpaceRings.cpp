@@ -15,8 +15,6 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 
@@ -101,8 +99,6 @@ static void PaintSpaceRings(
     ImageId imageId;
 
     auto stationColour = GetStationColourScheme(session, trackElement);
-    DrawSupportForSequenceA<TrackElemType::FlatTrack3x3>(
-        session, supportType.wooden, trackSequence, direction, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);

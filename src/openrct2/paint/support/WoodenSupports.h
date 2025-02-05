@@ -46,65 +46,61 @@ enum class WoodenSupportTransitionType : uint8_t
     Up25DegToUp60Deg = 3,
     Up60DegToUp25Deg = 4,
     Up60Deg = 5,
+
     FlatToUp60Deg = 7,
     Up60DegToFlat = 8,
-    FlatToUp25DegRailway = 9,
-    Up25DegToFlatRailway = 10,
-    Up25DegRailway = 11,
-    Scenery = 12,
-    FlatToUp60DegLongBaseSeq0 = 13,
-    FlatToUp60DegLongBaseSeq1 = 14,
-    FlatToUp60DegLongBaseSeq2 = 15,
-    FlatToUp60DegLongBaseSeq3 = 16,
-    Up60DegToFlatLongBaseSeq0 = 17,
-    Up60DegToFlatLongBaseSeq1 = 18,
-    Up60DegToFlatLongBaseSeq2 = 19,
-    Up60DegToFlatLongBaseSeq3 = 20,
+    Scenery = 9,
+    FlatToUp60DegLongBaseSeq0 = 10,
+    FlatToUp60DegLongBaseSeq1 = 11,
+    FlatToUp60DegLongBaseSeq2 = 12,
+    FlatToUp60DegLongBaseSeq3 = 13,
+    Up60DegToFlatLongBaseSeq0 = 14,
+    Up60DegToFlatLongBaseSeq1 = 15,
+    Up60DegToFlatLongBaseSeq2 = 16,
+    Up60DegToFlatLongBaseSeq3 = 17,
 
     // Inverted versions
-    Down25DegToFlat = 21,
-    FlatToDown25Deg = 22,
-    Down25Deg = 23,
-    Down60DegToDown25Deg = 24,
-    Down25DegToDown60Deg = 25,
-    Down60Deg = 26,
-    Down60DegToFlat = 28,
-    FlatToDown60Deg = 29,
-    Down25DegToFlatRailway = 30,
-    FlatToDown25DegRailway = 31,
-    Down25DegRailway = 32,
+    Down25DegToFlat = 18,
+    FlatToDown25Deg = 19,
+    Down25Deg = 20,
+    Down60DegToDown25Deg = 21,
+    Down25DegToDown60Deg = 22,
+    Down60Deg = 23,
 
-    Down60DegToFlatLongBaseSeq3 = 34,
-    Down60DegToFlatLongBaseSeq2 = 35,
-    Down60DegToFlatLongBaseSeq1 = 36,
-    Down60DegToFlatLongBaseSeq0 = 37,
-    FlatToDown60DegLongBaseSeq3 = 38,
-    FlatToDown60DegLongBaseSeq2 = 39,
-    FlatToDown60DegLongBaseSeq1 = 40,
-    FlatToDown60DegLongBaseSeq0 = 41,
+    Down60DegToFlat = 25,
+    FlatToDown60Deg = 26,
+
+    Down60DegToFlatLongBaseSeq3 = 28,
+    Down60DegToFlatLongBaseSeq2 = 29,
+    Down60DegToFlatLongBaseSeq1 = 30,
+    Down60DegToFlatLongBaseSeq0 = 31,
+    FlatToDown60DegLongBaseSeq3 = 32,
+    FlatToDown60DegLongBaseSeq2 = 33,
+    FlatToDown60DegLongBaseSeq1 = 34,
+    FlatToDown60DegLongBaseSeq0 = 35,
 };
+
+constexpr uint8_t kUninvertedWoodenSupportTransitionTypeCount = 18;
 
 struct FootpathPaintInfo;
 struct PaintSession;
 
 bool WoodenASupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
-    WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0);
+    WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0,
+    const bool covered = false, const Direction coverDirection = 0);
 bool WoodenASupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
-    ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None);
+    ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None,
+    const bool covered = false, const Direction coverDirection = 0);
 bool WoodenBSupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
-    WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0);
+    WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0,
+    const bool covered = false, const Direction coverDirection = 0);
 bool WoodenBSupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
-    ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None);
+    ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None,
+    const bool covered = false, const Direction coverDirection = 0);
 bool PathBoxSupportsPaintSetup(
     PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
     ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo);
-bool DrawSupportForSequenceA(
-    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
-    Direction direction, int32_t height, ImageId imageTemplate);
-bool DrawSupportForSequenceB(
-    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
-    Direction direction, int32_t height, ImageId imageTemplate);

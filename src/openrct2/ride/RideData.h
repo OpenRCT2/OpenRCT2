@@ -291,7 +291,8 @@ struct TrackDrawerEntry
 {
     TrackStyle trackStyle = TrackStyle::null;
     std::array<OpenRCT2::BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> trackGroupBlockedSegmentTypes{};
-    SupportType supportType{};
+    SupportType supportType{ WoodenSupportType::Truss };
+    std::array<NewSupportType, EnumValue(TrackGroup::count)> trackGroupSupportTypes{};
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
     RideTrackGroups enabledTrackGroups{};
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
