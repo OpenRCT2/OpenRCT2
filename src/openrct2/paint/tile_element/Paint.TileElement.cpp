@@ -221,7 +221,14 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
         // Only paint tile_elements below the clip height.
         if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * kCoordsZStep))
-            continue;
+        {
+            // see-through off: don't paint this tile_element at all
+            // see-through on: paint this tile_element as partial or hidden later on
+            if (!gClipHeightSeeThrough)
+            {
+                continue;
+            }
+        }
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);
         int32_t baseZ = tile_element->GetBaseZ();
