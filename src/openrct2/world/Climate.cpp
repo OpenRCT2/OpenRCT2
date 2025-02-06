@@ -223,7 +223,7 @@ void ClimateForceWeather(WeatherType weather)
     gameState.ClimateCurrent.Temperature = pattern.baseTemperature + trait.temperatureDelta;
     gameState.ClimateUpdateTimer = 1920;
 
-    ClimateUpdate();
+    ClimateDetermineFutureWeather(ScenarioRand());
 
     // In case of change in gloom level force a complete redraw
     GfxInvalidateScreen();
@@ -311,8 +311,8 @@ static void ClimateDetermineFutureWeather(uint32_t randomValue)
     // Generate a random index with values 0 up to randomBias-1
     // and choose weather from the distribution table accordingly
     const auto& pattern = kClimatePatterns[EnumValue(gameState.Climate)][month];
-    size_t randomIndex = ((randomValue % 256) * pattern.randomBias) / 256;
-    auto nextWeather = pattern.distribution[randomIndex];
+    const auto randomIndex = ((randomValue % 256) * pattern.randomBias) / 256;
+    const auto nextWeather = pattern.distribution[randomIndex];
     gameState.ClimateNext.Weather = nextWeather;
 
     const auto& nextWeatherTrait = kClimateWeatherTraits[EnumValue(nextWeather)];
