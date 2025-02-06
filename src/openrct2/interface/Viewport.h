@@ -223,5 +223,9 @@ namespace OpenRCT2
 
     void ViewportSetSavedView();
 
+    void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords);
+    void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor);
+    void WindowCheckAllValidZoom();
+
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags);
 } // namespace OpenRCT2
