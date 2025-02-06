@@ -52,11 +52,11 @@ enum class WeatherLevel
 
 struct WeatherState
 {
-    WeatherType Weather;
-    int8_t Temperature;
-    WeatherEffectType WeatherEffect;
-    uint8_t WeatherGloom;
-    WeatherLevel Level;
+    WeatherType weatherType;
+    int8_t temperature;
+    WeatherEffectType weatherEffect;
+    uint8_t weatherGloom;
+    WeatherLevel level;
 };
 
 extern uint16_t gClimateLightningFlash;

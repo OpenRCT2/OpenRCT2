@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
             // Temperature
             screenCoords = { windowPos.x + rightPanelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
-            int32_t temperature = GetGameState().WeatherCurrent.Temperature;
+            int32_t temperature = GetGameState().WeatherCurrent.temperature;
             StringId format = STR_CELSIUS_VALUE;
             if (Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit)
             {
