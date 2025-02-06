@@ -2711,6 +2711,11 @@ declare global {
          * on the direction its moving in.
          */
         travelBy(distance: number): void;
+
+        /**
+         * Moves the vehicle to the track piece specified in the parameters.
+         */
+        moveToTrack(coord: CoordsXY, elemIndex: number): void;
     }
 
     type VehicleStatus =
