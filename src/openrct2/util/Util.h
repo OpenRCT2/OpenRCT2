@@ -11,6 +11,7 @@
 
 #include "../core/Money.hpp"
 
+#include <algorithm>
 #include <limits>
 #include <type_traits>
 
@@ -24,20 +25,9 @@ constexpr T AddClamp(T value, T valueToAdd)
     {
         static_assert(sizeof(money64) == sizeof(int64_t));
     }
-    auto maxCap = std::numeric_limits<T>::max();
     auto minCap = std::numeric_limits<T>::lowest();
-    if ((valueToAdd > 0) && (value > (maxCap - (valueToAdd))))
-    {
-        return maxCap;
-    }
-    else if ((valueToAdd < 0) && (value < (minCap - (valueToAdd))))
-    {
-        return minCap;
-    }
-    else
-    {
-        return value + valueToAdd;
-    }
+    auto maxCap = std::numeric_limits<T>::max();
+    return std::clamp(value + valueToAdd, minCap, maxCap);
 }
 
 uint8_t Lerp(uint8_t a, uint8_t b, float t);
