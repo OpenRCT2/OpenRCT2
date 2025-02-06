@@ -309,7 +309,7 @@ namespace OpenRCT2::Editor
             gameState.BankLoanInterestRate = std::clamp<uint8_t>(gameState.BankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
-        ClimateReset(gameState.Climate);
+        ClimateReset();
 
         News::InitQueue();
     }

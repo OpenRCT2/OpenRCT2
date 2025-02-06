@@ -26,6 +26,7 @@
 #include "../rct12/SawyerChunkReader.h"
 #include "AudioObject.h"
 #include "BannerObject.h"
+#include "ClimateObject.h"
 #include "EntranceObject.h"
 #include "FootpathObject.h"
 #include "FootpathRailingsObject.h"
@@ -394,6 +395,9 @@ namespace OpenRCT2::ObjectFactory
             case ObjectType::PeepAnimations:
                 result = std::make_unique<PeepAnimationsObject>();
                 break;
+            case ObjectType::Climate:
+                result = std::make_unique<ClimateObject>();
+                break;
             default:
                 throw std::runtime_error("Invalid object type");
         }
@@ -440,6 +444,8 @@ namespace OpenRCT2::ObjectFactory
             return ObjectType::PeepNames;
         if (s == "peep_animations")
             return ObjectType::PeepAnimations;
+        if (s == "climate")
+            return ObjectType::Climate;
         return ObjectType::None;
     }
 

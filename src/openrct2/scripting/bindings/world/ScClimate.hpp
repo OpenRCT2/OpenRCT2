@@ -20,14 +20,14 @@
 
 namespace OpenRCT2::Scripting
 {
-    class ScClimateState
+    class ScWeatherState
     {
     private:
         std::string _weather;
         int8_t _temperature;
 
     public:
-        ScClimateState(std::string weather, int8_t temperature)
+        ScWeatherState(std::string weather, int8_t temperature)
             : _weather(weather)
             , _temperature(temperature)
         {
@@ -45,14 +45,15 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScClimateState::weather_get, nullptr, "weather");
-            dukglue_register_property(ctx, &ScClimateState::temperature_get, nullptr, "temperature");
+            dukglue_register_property(ctx, &ScWeatherState::weather_get, nullptr, "weather");
+            dukglue_register_property(ctx, &ScWeatherState::temperature_get, nullptr, "temperature");
         }
     };
 
     class ScClimate
     {
     public:
+        // TODO: replace with climate object
         static std::string ClimateTypeToString(ClimateType token)
         {
             switch (token)
@@ -101,22 +102,22 @@ namespace OpenRCT2::Scripting
 
         std::string type_get() const
         {
-            auto& gameState = GetGameState();
-            return ClimateTypeToString(gameState.Climate);
+            // TODO: from climate object
+            return "";
         }
 
-        std::shared_ptr<ScClimateState> current_get() const
+        std::shared_ptr<ScWeatherState> current_get() const
         {
             auto& gameState = GetGameState();
-            std::string weatherType = WeatherTypeToString(gameState.ClimateCurrent.Weather);
-            return std::make_shared<ScClimateState>(weatherType, gameState.ClimateCurrent.Temperature);
+            std::string weatherType = WeatherTypeToString(gameState.WeatherCurrent.Weather);
+            return std::make_shared<ScWeatherState>(weatherType, gameState.WeatherCurrent.Temperature);
         }
 
-        std::shared_ptr<ScClimateState> future_get() const
+        std::shared_ptr<ScWeatherState> future_get() const
         {
             auto& gameState = GetGameState();
-            std::string weatherType = WeatherTypeToString(gameState.ClimateNext.Weather);
-            return std::make_shared<ScClimateState>(weatherType, gameState.ClimateNext.Temperature);
+            std::string weatherType = WeatherTypeToString(gameState.WeatherNext.Weather);
+            return std::make_shared<ScWeatherState>(weatherType, gameState.WeatherNext.Temperature);
         }
 
         static void Register(duk_context* ctx)

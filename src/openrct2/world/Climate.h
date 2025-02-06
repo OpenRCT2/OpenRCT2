@@ -9,8 +9,12 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
+
+#include <array>
 #include <cstdint>
 
+// TODO: refactor usage and remove
 enum class ClimateType : uint8_t
 {
     CoolAndWet,
@@ -34,6 +38,19 @@ enum class WeatherType : uint8_t
     Count
 };
 
+static constexpr auto kNumWeatherTypes = EnumValue(WeatherType::Count);
+static constexpr auto kNumClimateMonths = 8;
+static constexpr auto kWeatherDistSize = 23;
+
+struct WeatherPattern
+{
+    int8_t baseTemperature;
+    int8_t randomBias;
+    WeatherType distribution[kWeatherDistSize];
+};
+
+using Climate = std::array<WeatherPattern, kNumClimateMonths>;
+
 enum class WeatherEffectType : uint8_t
 {
     None,
@@ -50,7 +67,7 @@ enum class WeatherLevel
     Heavy,
 };
 
-struct ClimateState
+struct WeatherState
 {
     WeatherType Weather;
     int8_t Temperature;
@@ -62,7 +79,7 @@ struct ClimateState
 extern uint16_t gClimateLightningFlash;
 
 int32_t ClimateCelsiusToFahrenheit(int32_t celsius);
-void ClimateReset(ClimateType climate);
+void ClimateReset();
 void ClimateUpdate();
 void ClimateUpdateSound();
 void ClimateStopWeatherSound();
@@ -74,5 +91,5 @@ bool ClimateIsRaining();
 bool ClimateIsSnowing();
 bool ClimateIsSnowingHeavily();
 bool WeatherIsDry(WeatherType);
-FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state);
-uint32_t ClimateGetWeatherSpriteId(const ClimateState& state);
+FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state);
+uint32_t ClimateGetWeatherSpriteId(const WeatherState& state);

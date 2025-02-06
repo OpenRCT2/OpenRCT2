@@ -1562,6 +1562,9 @@ namespace OpenRCT2::RCT1
             auto animObjects = GetLegacyPeepAnimationObjects(result);
             AppendRequiredObjects(result, ObjectType::PeepAnimations, animObjects);
 
+            auto climateObjId = GetClimateObjectIdFromLegacyClimateType(RCT12::ClimateType{ _s4.Climate });
+            AppendRequiredObjects(result, ObjectType::Climate, std::vector({ climateObjId }));
+
             return result;
         }
 
@@ -2351,18 +2354,21 @@ namespace OpenRCT2::RCT1
 
         void ImportClimate(GameState_t& gameState)
         {
-            gameState.Climate = ClimateType{ _s4.Climate };
-            gameState.ClimateUpdateTimer = _s4.ClimateTimer;
-            gameState.ClimateCurrent.Temperature = _s4.Temperature;
-            gameState.ClimateCurrent.Weather = WeatherType{ _s4.Weather };
-            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType::None;
-            gameState.ClimateCurrent.WeatherGloom = _s4.WeatherGloom;
-            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s4.Rain);
-            gameState.ClimateNext.Temperature = _s4.TargetTemperature;
-            gameState.ClimateNext.Weather = WeatherType{ _s4.TargetWeather };
-            gameState.ClimateNext.WeatherEffect = WeatherEffectType::None;
-            gameState.ClimateNext.WeatherGloom = _s4.TargetWeatherGloom;
-            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
+            gameState.WeatherUpdateTimer = _s4.WeatherUpdateTimer;
+            gameState.WeatherCurrent = {
+                .Weather = WeatherType{ _s4.Weather },
+                .Temperature = static_cast<int8_t>(_s4.Temperature),
+                .WeatherEffect = WeatherEffectType::None,
+                .WeatherGloom = _s4.WeatherGloom,
+                .Level = static_cast<WeatherLevel>(_s4.Rain),
+            };
+            gameState.WeatherNext = {
+                .Weather = WeatherType{ _s4.TargetWeather },
+                .Temperature = static_cast<int8_t>(_s4.TargetTemperature),
+                .WeatherEffect = WeatherEffectType::None,
+                .WeatherGloom = _s4.TargetWeatherGloom,
+                .Level = static_cast<WeatherLevel>(_s4.TargetRain),
+            };
         }
 
         void ImportScenarioNameDetails(GameState_t& gameState)

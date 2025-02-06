@@ -9,8 +9,22 @@
 
 #pragma once
 
+#include "../world/Climate.h"
 #include "Object.h"
 
-extern const std::string_view MinimumRequiredObjects[2];
-extern const std::string_view DefaultSelectedObjects[120];
-extern const std::string_view DesignerSelectedObjects[39];
+struct IReadObjectContext;
+
+class ClimateObject final : public Object
+{
+private:
+    Climate _climate;
+
+public:
+    static constexpr ObjectType kObjectType = ObjectType::Climate;
+
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
+    void Load() override;
+    void Unload() override;
+
+    const WeatherPattern& getPatternForMonth(uint8_t month);
+};
