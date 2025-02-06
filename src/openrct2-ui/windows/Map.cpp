@@ -78,11 +78,11 @@ namespace OpenRCT2::Ui::Windows
     }
 
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
-    static constexpr int32_t WH = 259;
+    static constexpr int32_t WH = 247;
     static constexpr int32_t WW = 245;
 
     static constexpr uint16_t kReservedHSpace = 4;
-    static constexpr uint16_t kReservedTopSpace = 46;
+    static constexpr uint16_t kReservedTopSpace = 34;
     static constexpr uint16_t kEditorReservedHSpace = 26;
     static constexpr uint16_t kEditorReservedVSpace = 18;
     static constexpr uint16_t kRidesTabReservedVSpace = 4 * kListRowHeight + 4;
@@ -240,7 +240,7 @@ namespace OpenRCT2::Ui::Windows
 
             flags |= WF_RESIZABLE;
             min_width = WW;
-            min_height = WH;
+            minBodyheight = WH;
 
             SetInitialWindowDimensions();
             ResetMaxWindowDimensions();
@@ -623,20 +623,20 @@ namespace OpenRCT2::Ui::Windows
             ResizeFrameWithPage();
             ResizeMiniMap();
 
-            widgets[WIDX_MAP_SIZE_SPINNER_Y].top = height - 15;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y].bottom = height - 4;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].top = height - 14;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].bottom = height - 5;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].top = height - 14;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].bottom = height - 5;
-            widgets[WIDX_MAP_SIZE_LINK].top = height - 15;
-            widgets[WIDX_MAP_SIZE_LINK].bottom = height - 4;
-            widgets[WIDX_MAP_SIZE_SPINNER_X].top = height - 15;
-            widgets[WIDX_MAP_SIZE_SPINNER_X].bottom = height - 4;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].top = height - 14;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].bottom = height - 5;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].top = height - 14;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].bottom = height - 5;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y].top = height() - 15;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y].bottom = height() - 4;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].top = height() - 14;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].bottom = height() - 5;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].top = height() - 14;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].bottom = height() - 5;
+            widgets[WIDX_MAP_SIZE_LINK].top = height() - 15;
+            widgets[WIDX_MAP_SIZE_LINK].bottom = height() - 4;
+            widgets[WIDX_MAP_SIZE_SPINNER_X].top = height() - 15;
+            widgets[WIDX_MAP_SIZE_SPINNER_X].bottom = height() - 4;
+            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].top = height() - 14;
+            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].bottom = height() - 5;
+            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].top = height() - 14;
+            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].bottom = height() - 5;
 
             widgets[WIDX_SET_LAND_RIGHTS].left = width - 26;
             widgets[WIDX_SET_LAND_RIGHTS].right = width - 2;
@@ -1195,15 +1195,15 @@ namespace OpenRCT2::Ui::Windows
             // The initial mini map size should be able to show a reasonably sized map
             auto initSize = std::clamp(getPracticalMapSize(), 100, 254) * 2;
             width = initSize + GetReservedRightSpace();
-            height = initSize + kReservedTopSpace + GetReservedBottomSpace();
+            bodyHeight = initSize + kReservedTopSpace + GetReservedBottomSpace();
 
             auto scrollbarSize = getPracticalMapSize() > 254 ? kScrollBarWidth : 2;
             width += scrollbarSize;
-            height += scrollbarSize;
+            bodyHeight += scrollbarSize;
 
-            auto maxWindowHeight = ContextGetHeight() - 68;
+            auto maxWindowBodyHeight = ContextGetHeight() - 56 - GetTitleBarHeight();
             width = std::min<int16_t>(width, ContextGetWidth());
-            height = std::min<int16_t>(height, maxWindowHeight);
+            bodyHeight = std::min<int16_t>(bodyHeight, maxWindowBodyHeight);
 
             _adjustedForSandboxMode = isEditorOrSandbox();
         }
@@ -1211,18 +1211,18 @@ namespace OpenRCT2::Ui::Windows
         void ResetMaxWindowDimensions()
         {
             max_width = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), WW, ContextGetWidth());
-            max_height = std::clamp(
+            maxBodyHeight = std::clamp(
                 getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
 
             auto scrollbarSize = getMiniMapWidth() + GetReservedRightSpace() > ContextGetWidth() ? kScrollBarWidth : 2;
             max_width += scrollbarSize;
-            max_height += scrollbarSize;
+            maxBodyHeight += scrollbarSize;
         }
 
         void ResizeMiniMap()
         {
             widgets[WIDX_MAP].right = width - GetReservedRightSpace();
-            widgets[WIDX_MAP].bottom = height - 1 - GetReservedBottomSpace();
+            widgets[WIDX_MAP].bottom = height() - 1 - GetReservedBottomSpace();
         }
 
         void CalculateTextLayout()

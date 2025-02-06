@@ -68,11 +68,11 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = kStringIdNone;
     constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
-    constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;
+    constexpr int32_t kWindowSceneryMinBodyHeight = 183;
     constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
     constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
     constexpr int32_t InitTabPosX = 3;
-    constexpr int32_t InitTabPosY = 17;
+    constexpr int32_t InitTabPosY = 3;
     constexpr int32_t TabWidth = 31;
     constexpr int32_t TabHeight = 28;
     constexpr int32_t ReservedTabCount = 2;
@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget WindowSceneryBaseWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
+        WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, kWindowSceneryMinBodyHeight),
         MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
         MakeWidget     ({  2,  62}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
         MakeWidget     ({609,  59}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
@@ -204,7 +204,7 @@ namespace OpenRCT2::Ui::Windows
 
         std::vector<SceneryTabInfo> _tabEntries;
         int32_t _requiredWidth;
-        int32_t _actualMinHeight;
+        int32_t _actualMinBodyHeight;
         ScenerySelection _selectedScenery;
         int16_t _hoverCounter;
         SceneryTabInfo _filteredSceneryTab;
@@ -234,9 +234,9 @@ namespace OpenRCT2::Ui::Windows
             width = GetRequiredWidth();
             min_width = width;
             max_width = width;
-            height = _actualMinHeight;
-            min_height = height;
-            max_height = height;
+            bodyHeight = _actualMinBodyHeight;
+            minBodyheight = bodyHeight;
+            maxBodyHeight = bodyHeight;
             if (_activeTabIndex > _tabSelections.size())
             {
                 _activeTabIndex = 0;
@@ -350,20 +350,20 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
             }
 
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
                 Invalidate();
-                height = min_height;
+                bodyHeight = minBodyheight;
                 Invalidate();
                 // HACK: For some reason invalidate has not been called
                 OnPrepareDraw();
                 ContentUpdateScroll();
             }
 
-            if (height > max_height)
+            if (bodyHeight > maxBodyHeight)
             {
                 Invalidate();
-                height = max_height;
+                bodyHeight = maxBodyHeight;
                 Invalidate();
                 // HACK: For some reason invalidate has not been called
                 OnPrepareDraw();
@@ -471,22 +471,22 @@ namespace OpenRCT2::Ui::Windows
                         {
                             if (InputGetState() != InputState::ScrollLeft)
                             {
-                                min_height = _actualMinHeight;
-                                max_height = _actualMinHeight;
+                                minBodyheight = _actualMinBodyHeight;
+                                maxBodyHeight = _actualMinBodyHeight;
                             }
                         }
                         else
                         {
                             const auto& listWidget = widgets[WIDX_SCENERY_LIST];
-                            const auto nonListHeight = height - listWidget.height() + 12;
+                            const auto nonListHeight = bodyHeight - listWidget.height() + 12;
 
                             const auto numRows = static_cast<int32_t>(CountRows());
                             const auto maxContentHeight = numRows * SCENERY_BUTTON_HEIGHT;
-                            const auto maxWindowHeight = maxContentHeight + nonListHeight;
-                            const auto windowHeight = std::clamp(maxWindowHeight, _actualMinHeight, 473);
+                            const auto maxWindowBodyHeight = maxContentHeight + nonListHeight;
+                            const auto windowBodyHeight = std::clamp(maxWindowBodyHeight, _actualMinBodyHeight, 461);
 
-                            min_height = windowHeight;
-                            max_height = windowHeight;
+                            minBodyheight = windowBodyHeight;
+                            maxBodyHeight = windowBodyHeight;
                         }
                     }
                 }
@@ -496,8 +496,8 @@ namespace OpenRCT2::Ui::Windows
                 _hoverCounter = 0;
                 if (InputGetState() != InputState::ScrollLeft)
                 {
-                    min_height = _actualMinHeight;
-                    max_height = _actualMinHeight;
+                    minBodyheight = _actualMinBodyHeight;
+                    maxBodyHeight = _actualMinBodyHeight;
                 }
             }
 
@@ -782,13 +782,14 @@ namespace OpenRCT2::Ui::Windows
                 const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
                 windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
+                auto tabTop = InitTabPosY + widgets[WIDX_SCENERY_TITLE].bottom;
                 if (GetSceneryTabInfoForMisc() != nullptr)
                 {
                     auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
                     miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
                     miscTabWidget->right = windowWidth - TabWidth - 7;
-                    miscTabWidget->top = InitTabPosY;
-                    miscTabWidget->bottom = InitTabPosY + TabHeight;
+                    miscTabWidget->top = tabTop;
+                    miscTabWidget->bottom = tabTop + TabHeight;
                 }
 
                 if (_tabEntries.back().IsAll())
@@ -796,14 +797,14 @@ namespace OpenRCT2::Ui::Windows
                     auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
                     allTabWidget->left = windowWidth - TabWidth - 6;
                     allTabWidget->right = windowWidth - 7;
-                    allTabWidget->top = InitTabPosY;
-                    allTabWidget->bottom = InitTabPosY + TabHeight;
+                    allTabWidget->top = tabTop;
+                    allTabWidget->bottom = tabTop + TabHeight;
                 }
             }
 
             ResizeFrameWithPage();
             widgets[WIDX_SCENERY_LIST].right = windowWidth - 26;
-            widgets[WIDX_SCENERY_LIST].bottom = height - 24;
+            widgets[WIDX_SCENERY_LIST].bottom = height() - 24;
 
             widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].left = windowWidth - 25;
             widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].left = windowWidth - 25;
@@ -848,12 +849,13 @@ namespace OpenRCT2::Ui::Windows
 
                 // -14
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ width - 0x1A, height - 13 }, STR_COST_LABEL, ft, { TextAlignment::RIGHT });
+                    dpi, windowPos + ScreenCoordsXY{ width - 0x1A, height() - 13 }, STR_COST_LABEL, ft,
+                    { TextAlignment::RIGHT });
             }
 
             auto ft = Formatter();
             ft.Add<StringId>(name);
-            DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + height - 23 }, width - 19, STR_BLACK_STRING, ft);
+            DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + height() - 23 }, width - 19, STR_BLACK_STRING, ft);
 
             // Draw object author(s) if debugging tools are active
             if (Config::Get().general.DebuggingTools)
@@ -876,7 +878,7 @@ namespace OpenRCT2::Ui::Windows
                     ft = Formatter();
                     ft.Add<const char*>(authorsString.c_str());
                     DrawTextEllipsised(
-                        dpi, windowPos + ScreenCoordsXY{ 3, height - 13 }, width - 19,
+                        dpi, windowPos + ScreenCoordsXY{ 3, height() - 13 }, width - 19,
                         (sceneryObject->GetAuthors().size() == 1 ? STR_SCENERY_AUTHOR : STR_SCENERY_AUTHOR_PLURAL), ft);
                 }
             }
@@ -1121,7 +1123,7 @@ namespace OpenRCT2::Ui::Windows
 
             SetFilteredScenery(tabIndex);
 
-            const int32_t listHeight = height - 14 - widgets[WIDX_SCENERY_LIST].top - 1;
+            const int32_t listHeight = height() - 14 - widgets[WIDX_SCENERY_LIST].top - 1;
 
             const auto sceneryItem = ContentCountRowsWithSelectedItem(tabIndex);
             scrolls[SceneryContentScrollIndex].contentHeight = ContentRowsHeight(sceneryItem.allRows) + 1;
@@ -1369,14 +1371,14 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(WindowSceneryBaseWidgets);
 
             // Add tabs
-            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
+            _actualMinBodyHeight = kWindowSceneryMinBodyHeight;
             int32_t xInit = InitTabPosX;
             int32_t tabsInThisRow = 0;
 
             auto hasMisc = GetSceneryTabInfoForMisc() != nullptr;
             auto maxTabsInThisRow = MaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
 
-            ScreenCoordsXY pos = { xInit, InitTabPosY };
+            ScreenCoordsXY pos = { xInit, InitTabPosY + 14 };
             for (const auto& tabInfo : _tabEntries)
             {
                 auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
@@ -1411,7 +1413,7 @@ namespace OpenRCT2::Ui::Windows
                     pos.x = xInit;
                     pos.y += TabHeight;
                     tabsInThisRow = 0;
-                    _actualMinHeight += TabHeight;
+                    _actualMinBodyHeight += TabHeight;
                     maxTabsInThisRow = MaxTabsPerRow;
                 }
             }

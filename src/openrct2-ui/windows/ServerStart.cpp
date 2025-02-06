@@ -43,7 +43,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr int32_t WW = 300;
-    static constexpr int32_t WH = 154;
+    static constexpr int32_t WH = 142;
 
     // clang-format off
     static constexpr Widget _windowServerStartWidgets[] = {
@@ -76,9 +76,9 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
             frame_no = 0;
             min_width = width;
-            min_height = height;
+            minBodyheight = bodyHeight;
             max_width = min_width;
-            max_height = min_height;
+            maxBodyHeight = minBodyheight;
 
             page = 0;
             list_information_type = 0;

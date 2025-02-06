@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
     static constexpr int32_t WW = 310;
-    static constexpr int32_t WH = 332;
+    static constexpr int32_t WH = 320;
 
     #define MAIN_OPTIONS_WIDGETS \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
@@ -675,7 +675,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[widgetIdx];
                 y = std::max<int32_t>(y, widget.bottom);
             }
-            height = y + 6;
+            setHeight(y + 6);
             ResizeFrameWithPage();
         }
 

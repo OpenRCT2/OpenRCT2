@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(window_error_widgets);
 
             widgets[WIDX_BACKGROUND].right = width - 1;
-            widgets[WIDX_BACKGROUND].bottom = height - 1;
+            widgets[WIDX_BACKGROUND].bottom = height() - 1;
 
             _staleCount = 0;
 
@@ -142,7 +142,8 @@ namespace OpenRCT2::Ui::Windows
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
 
         return windowMgr->Create(
-            std::move(errorWindow), WindowClass::Error, windowPosition, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT);
+            std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
     }
 
     WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args, bool autoClose)

@@ -23,7 +23,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW = 250;
-    static constexpr int32_t WH = 90;
+    static constexpr int32_t WH = 78;
 
     enum WindowTextInputWidgetIdx
     {
@@ -169,8 +169,8 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             // Change window size if required.
-            int32_t newHeight = CalculateWindowHeight(_buffer.data());
-            if (newHeight != height)
+            int32_t newHeight = CalculateWindowBodyHeight(_buffer.data());
+            if (newHeight != bodyHeight)
             {
                 WindowSetResize(*this, WW, newHeight, WW, newHeight);
             }
@@ -198,8 +198,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
 
-            ScreenCoordsXY screenCoords;
-            screenCoords.y = windowPos.y + 25;
+            auto screenCoords = windowPos + ScreenCoordsXY{ WW / 2, widgets[WIDX_TITLE].bottom + 13 };
 
             int32_t no_lines = 0;
 
@@ -207,14 +206,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(_description.c_str());
-                DrawTextWrapped(
-                    dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+                DrawTextWrapped(dpi, screenCoords, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
             }
             else
             {
                 DrawTextWrapped(
-                    dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, _descriptionArgs,
-                    { colours[1], TextAlignment::CENTRE });
+                    dpi, screenCoords, WW, _descriptionStringId, _descriptionArgs, { colours[1], TextAlignment::CENTRE });
             }
 
             screenCoords.y += 25;
@@ -304,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
             Close();
         }
 
-        static int32_t CalculateWindowHeight(std::string_view text)
+        static int32_t CalculateWindowBodyHeight(std::string_view text)
         {
             // String length needs to add 12 either side of box +13 for cursor when max length.
             int32_t numLines{};
@@ -376,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::Textinput);
 
-        auto height = TextInputWindow::CalculateWindowHeight(existing_text);
+        auto height = TextInputWindow::CalculateWindowBodyHeight(existing_text);
         auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
@@ -391,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
         std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
     {
         auto* windowMgr = GetWindowManager();
-        auto height = TextInputWindow::CalculateWindowHeight(initialValue);
+        auto height = TextInputWindow::CalculateWindowBodyHeight(initialValue);
         auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {

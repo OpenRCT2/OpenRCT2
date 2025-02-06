@@ -15,7 +15,7 @@ namespace OpenRCT2
 
     void WindowBase::Invalidate()
     {
-        GfxSetDirtyBlocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
+        GfxSetDirtyBlocks({ windowPos, windowPos + ScreenCoordsXY{ width, height() } });
     }
 
     void WindowBase::RemoveViewport()

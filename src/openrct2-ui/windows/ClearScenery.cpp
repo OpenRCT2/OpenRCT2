@@ -39,7 +39,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr StringId WINDOW_TITLE = STR_CLEAR_SCENERY;
     static constexpr int32_t WW = 98;
-    static constexpr int32_t WH = 94;
+    static constexpr int32_t WH = 82;
 
     static constexpr ScreenSize CLEAR_SCENERY_BUTTON = { 24, 24 };
 

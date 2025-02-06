@@ -33,7 +33,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId kWindowTitle = STR_SELECT_SCENARIO;
     static constexpr int32_t kWindowWidth = 734;
-    static constexpr int32_t kWindowHeight = 384;
+    static constexpr int32_t kWindowBodyHeight = 372;
     static constexpr int32_t kSidebarWidth = 180;
     static constexpr int32_t kTabWidth = 92;
     static constexpr int32_t kTabHeight = 34;
@@ -94,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget _scenarioSelectWidgets[] = {
-        WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowHeight),
+        WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowBodyHeight),
         MakeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowWidth, 284 }, WindowWidgetType::Resize, WindowColour::Secondary), // tab content panel
         MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 0) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
         MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 1) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<utf8*>(shortPath.c_str());
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ kTabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
+                    dpi, windowPos + ScreenCoordsXY{ kTabWidth + 3, height() - 3 - 11 }, STR_STRING, ft, { colours[1] });
             }
 
             // Scenario name
@@ -290,7 +290,7 @@ namespace OpenRCT2::Ui::Windows
             ResizeFrameWithPage();
             const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
             widgets[WIDX_SCENARIOLIST].right = width - 179;
-            widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
+            widgets[WIDX_SCENARIOLIST].bottom = height() - bottomMargin;
         }
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
@@ -725,7 +725,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            int32_t y = kTabsStart;
+            int32_t y = widgets[WIDX_TAB1].top;
             for (int32_t i = 0; i < kNumTabs; i++)
             {
                 auto& widget = widgets[i + WIDX_TAB1];
@@ -779,9 +779,9 @@ namespace OpenRCT2::Ui::Windows
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
         ScreenCoordsXY screenPos = { (screenWidth - kWindowWidth) / 2,
-                                     std::max(kTopToolbarHeight + 1, (screenHeight - kWindowHeight) / 2) };
+                                     std::max(kTopToolbarHeight + 1, (screenHeight - kWindowBodyHeight) / 2) };
         window = windowMgr->Create<ScenarioSelectWindow>(
-            WindowClass::ScenarioSelect, screenPos, kWindowWidth, kWindowHeight, 0, callback);
+            WindowClass::ScenarioSelect, screenPos, kWindowWidth, kWindowBodyHeight, 0, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

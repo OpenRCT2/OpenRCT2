@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Widgets
 
     static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
-    static constexpr int32_t WH = 200;
+    static constexpr int32_t WH = 188;
     static constexpr int32_t WW = 166;
 
     enum : WidgetIndex

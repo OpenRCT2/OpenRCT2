@@ -45,7 +45,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId WINDOW_TITLE = STR_STRINGID;
 
     static constexpr int32_t WW = 190;
-    static constexpr int32_t WH = 180;
+    static constexpr int32_t WH = 168;
 
     enum WindowStaffPage
     {
@@ -511,11 +511,11 @@ namespace OpenRCT2::Ui::Windows
             }
 
             widgets[WIDX_VIEWPORT].right = width - 26;
-            widgets[WIDX_VIEWPORT].bottom = height - 14;
+            widgets[WIDX_VIEWPORT].bottom = height() - 14;
 
             widgets[WIDX_BTM_LABEL].right = width - 26;
-            widgets[WIDX_BTM_LABEL].top = height - 13;
-            widgets[WIDX_BTM_LABEL].bottom = height - 3;
+            widgets[WIDX_BTM_LABEL].top = height() - 13;
+            widgets[WIDX_BTM_LABEL].bottom = height() - 3;
 
             widgets[WIDX_PICKUP].left = width - 25;
             widgets[WIDX_PICKUP].right = width - 2;
@@ -607,8 +607,8 @@ namespace OpenRCT2::Ui::Windows
         {
             min_width = WW;
             max_width = 500;
-            min_height = WH;
-            max_height = 450;
+            minBodyheight = WH;
+            maxBodyHeight = 436;
 
             if (width < min_width)
             {
@@ -620,21 +620,23 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 width = max_width;
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
-                height = min_height;
+                bodyHeight = minBodyheight;
                 Invalidate();
             }
-            if (height > max_height)
+            if (bodyHeight > maxBodyHeight)
             {
                 Invalidate();
-                height = max_height;
+                bodyHeight = maxBodyHeight;
             }
 
             if (viewport != nullptr)
             {
-                int32_t newWidth = width - 30;
-                int32_t newHeight = height - 62;
+                auto widget = widgets[WIDX_VIEWPORT];
+                auto newWidth = widget.width() - 1;
+                auto newHeight = widget.height() - 1;
+                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
 
                 // Update the viewport size
                 if (viewport->width != newWidth || viewport->height != newHeight)
@@ -934,8 +936,8 @@ namespace OpenRCT2::Ui::Windows
         {
             min_width = 190;
             max_width = 190;
-            min_height = 126;
-            max_height = 126;
+            minBodyheight = 112 + titleBarHeight;
+            maxBodyHeight = 112 + titleBarHeight;
 
             if (width < min_width)
             {
@@ -947,15 +949,15 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 width = max_width;
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
-                height = min_height;
+                bodyHeight = minBodyheight;
                 Invalidate();
             }
-            if (height > max_height)
+            if (bodyHeight > maxBodyHeight)
             {
                 Invalidate();
-                height = max_height;
+                bodyHeight = maxBodyHeight;
             }
         }
 
@@ -1037,8 +1039,8 @@ namespace OpenRCT2::Ui::Windows
         {
             min_width = 190;
             max_width = 190;
-            min_height = 126;
-            max_height = 126;
+            minBodyheight = 112;
+            maxBodyHeight = 112;
 
             if (width < min_width)
             {
@@ -1050,15 +1052,15 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 width = max_width;
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
-                height = min_height;
+                bodyHeight = minBodyheight;
                 Invalidate();
             }
-            if (height > max_height)
+            if (bodyHeight > maxBodyHeight)
             {
                 Invalidate();
-                height = max_height;
+                bodyHeight = maxBodyHeight;
             }
         }
 

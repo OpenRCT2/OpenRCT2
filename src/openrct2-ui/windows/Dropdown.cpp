@@ -179,7 +179,7 @@ namespace OpenRCT2::Ui::Windows
             if (mainWindow == nullptr)
                 return 400;
 
-            return std::max(1, mainWindow->height - (screenPos.y + dropdownButtonHeight + 5));
+            return std::max(1, mainWindow->height() - (screenPos.y + dropdownButtonHeight + 5));
         }
 
         void SetTextItems(
@@ -303,7 +303,7 @@ namespace OpenRCT2::Ui::Windows
 
             Invalidate();
             width = ddWidth + 1;
-            height = ddHeight + 1;
+            bodyHeight = ddHeight + 1;
             windowPos = boundedScreenPos + ScreenCoordsXY{ 0, extraY };
             Invalidate();
         }
@@ -363,7 +363,8 @@ namespace OpenRCT2::Ui::Windows
 
         // Create the window (width/height position are set later)
         auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, width, customItemHeight, WF_STICK_TO_FRONT);
+        auto* w = windowMgr->Create<DropdownWindow>(
+            WindowClass::Dropdown, width, custom_height, WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
         if (w != nullptr)
         {
             auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;

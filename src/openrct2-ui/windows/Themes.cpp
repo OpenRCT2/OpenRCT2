@@ -72,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr StringId WINDOW_TITLE = STR_THEMES_TITLE;
     static constexpr int32_t WW = 320;
-    static constexpr int32_t WH = 107;
+    static constexpr int32_t WH = 95;
 
     const uint16_t kWindowHeaderWidth = 152;
 
@@ -272,9 +272,9 @@ namespace OpenRCT2::Ui::Windows
             _classIndex = -1;
             _buttonIndex = -1;
             min_width = 320;
-            min_height = 107;
+            minBodyheight = 95;
             max_width = 320;
-            max_height = 107;
+            maxBodyHeight = 95;
         }
 
         void OnResize() override
@@ -282,18 +282,18 @@ namespace OpenRCT2::Ui::Windows
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
             {
                 min_width = 320;
-                min_height = 107;
+                minBodyheight = 95;
                 max_width = 320;
-                max_height = 107;
+                maxBodyHeight = 95;
 
                 if (width < min_width)
                 {
                     width = min_width;
                     GfxInvalidateScreen();
                 }
-                if (height < min_height)
+                if (bodyHeight < minBodyheight)
                 {
-                    height = min_height;
+                    bodyHeight = minBodyheight;
                     GfxInvalidateScreen();
                 }
                 if (width > max_width)
@@ -301,27 +301,27 @@ namespace OpenRCT2::Ui::Windows
                     width = max_width;
                     GfxInvalidateScreen();
                 }
-                if (height > max_height)
+                if (bodyHeight > maxBodyHeight)
                 {
-                    height = max_height;
+                    bodyHeight = maxBodyHeight;
                     GfxInvalidateScreen();
                 }
             }
             else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
             {
                 min_width = 320;
-                min_height = 122;
+                minBodyheight = 110;
                 max_width = 320;
-                max_height = 122;
+                maxBodyHeight = 110;
 
                 if (width < min_width)
                 {
                     width = min_width;
                     GfxInvalidateScreen();
                 }
-                if (height < min_height)
+                if (bodyHeight < minBodyheight)
                 {
-                    height = min_height;
+                    bodyHeight = minBodyheight;
                     GfxInvalidateScreen();
                 }
                 if (width > max_width)
@@ -329,27 +329,27 @@ namespace OpenRCT2::Ui::Windows
                     width = max_width;
                     GfxInvalidateScreen();
                 }
-                if (height > max_height)
+                if (bodyHeight > maxBodyHeight)
                 {
-                    height = max_height;
+                    bodyHeight = maxBodyHeight;
                     GfxInvalidateScreen();
                 }
             }
             else
             {
                 min_width = 320;
-                min_height = 270;
+                minBodyheight = 268;
                 max_width = 320;
-                max_height = 450;
+                maxBodyHeight = 438;
 
                 if (width < min_width)
                 {
                     width = min_width;
                     Invalidate();
                 }
-                if (height < min_height)
+                if (bodyHeight < minBodyheight)
                 {
-                    height = min_height;
+                    bodyHeight = minBodyheight;
                     Invalidate();
                 }
                 if (width > max_width)
@@ -357,9 +357,9 @@ namespace OpenRCT2::Ui::Windows
                     width = max_width;
                     Invalidate();
                 }
-                if (height > max_height)
+                if (bodyHeight > maxBodyHeight)
                 {
-                    height = max_height;
+                    bodyHeight = maxBodyHeight;
                     Invalidate();
                 }
             }
@@ -395,7 +395,7 @@ namespace OpenRCT2::Ui::Windows
 
             ResizeFrameWithPage();
             widgets[WIDX_THEMES_LIST].right = width - 4;
-            widgets[WIDX_THEMES_LIST].bottom = height - 0x0F;
+            widgets[WIDX_THEMES_LIST].bottom = height() - 0x0F;
 
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
             {
