@@ -878,7 +878,7 @@ namespace OpenRCT2::RCT1
         uint8_t Unk1F4322[8];
         uint8_t Climate;
         uint8_t Unk1F432B;
-        uint16_t ClimateTimer;
+        uint16_t WeatherUpdateTimer;
         uint8_t Weather;
         uint8_t TargetWeather;
         uint8_t Temperature;

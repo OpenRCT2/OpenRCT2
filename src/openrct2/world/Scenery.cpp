@@ -184,7 +184,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gameState.ClimateCurrent.Weather)
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gameState.WeatherCurrent.weatherType)
         || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);

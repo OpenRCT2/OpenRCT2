@@ -50,13 +50,13 @@ enum class WeatherLevel
     Heavy,
 };
 
-struct ClimateState
+struct WeatherState
 {
-    WeatherType Weather;
-    int8_t Temperature;
-    WeatherEffectType WeatherEffect;
-    uint8_t WeatherGloom;
-    WeatherLevel Level;
+    WeatherType weatherType;
+    int8_t temperature;
+    WeatherEffectType weatherEffect;
+    uint8_t weatherGloom;
+    WeatherLevel level;
 };
 
 extern uint16_t gClimateLightningFlash;
@@ -74,5 +74,5 @@ bool ClimateIsRaining();
 bool ClimateIsSnowing();
 bool ClimateIsSnowingHeavily();
 bool WeatherIsDry(WeatherType);
-FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state);
-uint32_t ClimateGetWeatherSpriteId(const ClimateState& state);
+FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state);
+uint32_t ClimateGetWeatherSpriteId(const WeatherState& state);

@@ -578,7 +578,7 @@ static StringId window_cheats_page_titles[] = {
             // Current weather
             if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
-                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.ClimateCurrent.Weather)];
+                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.WeatherCurrent.weatherType)];
             }
 
             // Staff speed
@@ -1023,7 +1023,7 @@ static StringId window_cheats_page_titles[] = {
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 3);
 
-                    auto currentWeather = gameState.ClimateCurrent.Weather;
+                    auto currentWeather = gameState.WeatherCurrent.weatherType;
                     Dropdown::SetChecked(EnumValue(currentWeather), true);
 
                     break;
