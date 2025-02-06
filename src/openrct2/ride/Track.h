@@ -631,6 +631,7 @@ enum
     TRACK_SEQUENCE_FLAG_ORIGIN = (1 << 4),           // 0x10
     TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH = (1 << 5), // 0x20
     TRACK_SEQUENCE_FLAG_DISALLOW_DOORS = (1 << 6),   // 0x40
+    TRACK_SEQUENCE_FLAG_VERTICAL_TUNNEL = (1 << 7),  // Create a vertical tunnel
 };
 
 enum

@@ -23,6 +23,8 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniHelicopters,
         .supportType = MetalSupportType::Stick,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .extraTrackGroups = {TrackGroup::spinningTunnel},
     }),
