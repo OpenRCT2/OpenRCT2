@@ -58,6 +58,8 @@ GameActions::Result SignSetStyleAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
 
+    CoordsXYZ loc;
+
     if (_isLarge)
     {
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
@@ -72,6 +74,7 @@ GameActions::Result SignSetStyleAction::Query() const
                 "Tile element has type %u, expected %d (LargeScenery)", tileElement->GetType(), TileElementType::LargeScenery);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
+        loc = { banner->position.ToCoordsXY(), tileElement->GetBaseZ() };
     }
     else
     {
@@ -82,6 +85,16 @@ GameActions::Result SignSetStyleAction::Query() const
             LOG_ERROR("Wall element not found for bannerIndex", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
+        loc = { banner->position.ToCoordsXY(), wallElement->GetBaseZ() };
+    }
+
+    if (!LocationValid(loc))
+    {
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_OFF_EDGE_OF_MAP);
+    }
+    if (!MapCanBuildAt({ loc.x, loc.y, loc.z - 16 }))
+    {
+        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_RENAME_BANNER, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     return GameActions::Result();
