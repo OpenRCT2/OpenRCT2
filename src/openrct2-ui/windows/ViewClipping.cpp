@@ -376,7 +376,6 @@ namespace OpenRCT2::Ui::Windows
             // Turn on view clipping when the window is opened.
             if (mainWindow != nullptr)
             {
-                gClipHeightSeeThrough = false;
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
                 mainWindow->Invalidate();
             }
@@ -394,7 +393,6 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                gClipHeightSeeThrough = false;
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
                 mainWindow->Invalidate();
             }
