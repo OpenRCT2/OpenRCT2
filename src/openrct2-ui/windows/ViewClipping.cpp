@@ -142,13 +142,12 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE:
                 {
                     // Toggle height clipping see-through.
-                    WindowBase* mainWindow = WindowGetMain();
-                    if (mainWindow != nullptr)
+                    if (auto mainWindow = WindowGetMain(); mainWindow != nullptr)
                     {
                         gClipHeightSeeThrough = !gClipHeightSeeThrough;
                         mainWindow->Invalidate();
                     }
-                    this->Invalidate();
+                    Invalidate();
                     break;
                 }
             }
