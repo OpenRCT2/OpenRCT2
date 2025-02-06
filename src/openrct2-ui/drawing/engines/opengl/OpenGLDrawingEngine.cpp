@@ -17,6 +17,8 @@
     #include "GLSLTypes.h"
     #include "OpenGLAPI.h"
     #include "OpenGLFramebuffer.h"
+    #include "PostProcessShader.h"
+    #include "PostProcessing.h"
     #include "SwapFramebuffer.h"
     #include "TextureCache.h"
     #include "TransparencyDepth.h"
@@ -26,6 +28,7 @@
     #include <cassert>
     #include <cmath>
     #include <openrct2-ui/interface/Window.h>
+    #include <openrct2/GameState.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/Console.hpp>
     #include <openrct2/drawing/Drawing.h>
@@ -34,6 +37,8 @@
     #include <openrct2/drawing/LightFX.h>
     #include <openrct2/drawing/Weather.h>
     #include <openrct2/interface/Screenshot.h>
+    #include <openrct2/interface/Viewport.h>
+    #include <openrct2/interface/Window_internal.h>
     #include <openrct2/ui/UiContext.h>
     #include <openrct2/world/Climate.h>
 
@@ -195,6 +200,8 @@ private:
     std::unique_ptr<OpenGLFramebuffer> _screenFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
+    std::unique_ptr<PostProcessing> _postProcessing;
+
     OpenGLWeatherDrawer _weatherDrawer;
 
 public:
@@ -204,6 +211,7 @@ public:
     explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
         , _drawingContext(std::make_unique<OpenGLDrawingContext>(*this))
+        , _postProcessing(std::make_unique<PostProcessing>())
         , _weatherDrawer(_drawingContext.get())
     {
         _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
@@ -240,12 +248,16 @@ public:
         _drawingContext->Initialise();
 
         _applyPaletteShader = std::make_unique<ApplyPaletteShader>();
+        //_postProcessShader = std::make_unique<PostProcessShader>();
+
+        _postProcessing->Initialize();
     }
 
     void Resize(uint32_t width, uint32_t height) override
     {
         ConfigureBits(width, height, width);
         ConfigureCanvas();
+        _postProcessing->Resize(width, height);
         _drawingContext->Resize(width, height);
         _drawingContext->Clear(_bitsDPI, PALETTE_INDEX_10);
     }
@@ -287,6 +299,8 @@ public:
     {
         assert(_screenFramebuffer != nullptr);
 
+        _postProcessing->Update();
+
         _drawingContext->StartNewDraw();
     }
 
@@ -294,15 +308,19 @@ public:
     {
         _drawingContext->FlushCommandBuffers();
 
-        glDisable(GL_DEPTH_TEST);
+        glCall(glDisable, GL_DEPTH_TEST);
+
+        OpenGLFramebuffer* frameBuffer = nullptr;
         if (_scaleFramebuffer != nullptr)
         {
             // Render to intermediary RGB buffer for GL_LINEAR
             _scaleFramebuffer->Bind();
+            frameBuffer = _scaleFramebuffer.get();
         }
         else
         {
             _screenFramebuffer->Bind();
+            frameBuffer = _screenFramebuffer.get();
         }
 
         _applyPaletteShader->Use();
@@ -318,6 +336,8 @@ public:
         {
             _screenFramebuffer->Copy(*_scaleFramebuffer, GL_LINEAR);
         }
+
+        _postProcessing->Apply(*_screenFramebuffer);
 
         CheckGLError();
         Display();
@@ -441,16 +461,21 @@ private:
     {
         // Re-create screen framebuffer
         _screenFramebuffer = std::make_unique<OpenGLFramebuffer>(_window);
+        _screenFramebuffer->SetName("ScreenFrameBuffer");
+
         _smoothScaleFramebuffer.reset();
         _scaleFramebuffer.reset();
+
         if (GetContext()->GetUiContext()->GetScaleQuality() != ScaleQuality::NearestNeighbour)
         {
             _scaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width, _height, false, false);
+            _scaleFramebuffer->SetName("ScaleFrameBuffer");
         }
         if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
         {
             uint32_t scale = std::ceil(Config::Get().general.WindowScale);
             _smoothScaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width * scale, _height * scale, false, false);
+            _smoothScaleFramebuffer->SetName("SmoothScaleFrameBuffer");
         }
     }
 
@@ -503,6 +528,10 @@ void OpenGLDrawingContext::ResetPalette()
 
 void OpenGLDrawingContext::StartNewDraw()
 {
+    _drawRectShader->Update();
+    _drawLineShader->Update();
+    _applyTransparencyShader->Update();
+
     _drawCount = 0;
     _swapFramebuffer->Clear();
 }
@@ -1068,8 +1097,8 @@ void OpenGLDrawingContext::DrawTTFBitmap(
 
 void OpenGLDrawingContext::FlushCommandBuffers()
 {
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    glCall(glEnable, GL_DEPTH_TEST);
+    glCall(glDepthFunc, GL_LESS);
 
     _swapFramebuffer->BindOpaque();
     _drawRectShader->Use();
@@ -1122,8 +1151,8 @@ void OpenGLDrawingContext::HandleTransparency()
     {
         _swapFramebuffer->BindTransparent();
 
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_GREATER);
+        glCall(glEnable, GL_DEPTH_TEST);
+        glCall(glDepthFunc, GL_GREATER);
         _drawRectShader->Use();
 
         if (i > 0)

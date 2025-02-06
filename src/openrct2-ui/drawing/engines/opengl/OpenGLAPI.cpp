@@ -56,9 +56,9 @@ void OpenGLAPI::SetTexture(uint16_t index, GLenum type, GLuint texture)
 {
     if (OpenGLState::ActiveTexture != index)
     {
-        glActiveTexture(GL_TEXTURE0 + index);
+        glCall(glActiveTexture, GL_TEXTURE0 + index);
     }
-    glBindTexture(type, texture);
+    glCall(glBindTexture, type, texture);
 }
 
 bool OpenGLAPI::Initialise()
