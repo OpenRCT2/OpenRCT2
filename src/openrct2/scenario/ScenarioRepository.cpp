@@ -124,7 +124,7 @@ class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
-    static constexpr uint16_t VERSION = 8;
+    static constexpr uint16_t VERSION = 9;
     static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
@@ -177,6 +177,9 @@ protected:
         ds << item.InternalName;
         ds << item.Name;
         ds << item.Details;
+
+        ds << item.previewGenerated;
+        ds << item.preview;
     }
 
 private:
