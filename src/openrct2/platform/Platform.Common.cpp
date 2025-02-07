@@ -91,6 +91,18 @@ namespace OpenRCT2::Platform
         return outTime;
     }
 
+    bool IsHalloween()
+    {
+        auto date = GetDateLocal();
+        return date.month == 10 && date.day == 31;
+    }
+
+    bool IsChristmas()
+    {
+        auto date = GetDateLocal();
+        return date.month == 12 && date.day == 25;
+    }
+
     bool IsRCT2Path(std::string_view path)
     {
         auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));

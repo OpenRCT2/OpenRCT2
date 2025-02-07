@@ -25,6 +25,7 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../../platform/Platform.h"
 
 #include <iterator>
 #include <memory>
@@ -235,7 +236,8 @@ void ClimateUpdateSound()
     if (!OpenRCT2::Audio::IsAvailable())
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    // If it's Halloween there's constant rain during the title sequence, so we'll enable sound in this case
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO && !Platform::IsHalloween())
         return;
 
     ClimateUpdateWeatherSound();

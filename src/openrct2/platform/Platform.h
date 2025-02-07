@@ -79,6 +79,8 @@ namespace OpenRCT2::Platform
     bool ProcessIsElevated();
     float GetDefaultScale();
 
+    bool IsHalloween();
+    bool IsChristmas();
     bool IsRCT2Path(std::string_view path);
     bool IsRCTClassicPath(std::string_view path);
     bool OriginalGameDataExists(std::string_view path);

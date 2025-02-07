@@ -29,6 +29,7 @@
 #include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
 #include "../../windows/Intent.h"
+#include "../../platform/Platform.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
@@ -155,8 +156,15 @@ void TitleScene::Tick()
         {
             gameStateUpdateLogic();
         }
+        if (Platform::IsHalloween())
+        {
+            ClimateForceWeather(WeatherType::HeavyRain);
+        }
+        else if (Platform::IsChristmas())
+        {
+            ClimateForceWeather(WeatherType::Snow);
+        }
         UpdatePaletteEffects();
-        // update_weather_animation();
     }
 
     InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
