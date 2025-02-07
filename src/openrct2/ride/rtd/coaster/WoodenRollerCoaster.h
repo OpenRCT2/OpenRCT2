@@ -29,7 +29,7 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
             array[EnumValue(TrackGroup::halfLoopLarge)] = BlockedSegments::BlockedSegmentsType::narrow;
             return array;
         }(),
-        .supportType = WoodenSupportType::Truss,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalBoxed,
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesWoodenRollerCoaster,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::waterSplash, TrackGroup::slopeCurveBanked, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge},

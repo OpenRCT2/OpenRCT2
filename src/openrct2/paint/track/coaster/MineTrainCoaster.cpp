@@ -150,7 +150,6 @@ static void MineTrainRCTrackStation(
             session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 0, height }, { 32, 20, 1 } });
     }
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 }
 

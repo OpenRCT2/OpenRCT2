@@ -13,7 +13,6 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/Map.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -174,8 +173,6 @@ static void PaintCarRideTrackFlat(
     {
         PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 1 });
     }
-
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 }
 
 /** rct2: 0x006F72D8 */
@@ -193,8 +190,6 @@ static void PaintCarRideTrack25DegUp(
     {
         PaintAddImageAsParent(session, imageId, { 2, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
-
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
 }
 
 /** rct2: 0x006F72E8 */
@@ -212,8 +207,6 @@ static void PaintCarRideTrackFlatTo25DegUp(
     {
         PaintAddImageAsParent(session, imageId, { 2, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
-
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
 }
 
 /** rct2: 0x006F72F8 */
@@ -231,8 +224,6 @@ static void PaintCarRideTrack25DegUpToFlat(
     {
         PaintAddImageAsParent(session, imageId, { 2, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
-
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
 }
 
 /** rct2: 0x006F7308 */
@@ -287,8 +278,6 @@ static void PaintCarRideStation(
         PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
     }
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 }
 
@@ -300,14 +289,6 @@ static void PaintCarRideTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, kPiecesQuarterTurn3Tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-
-    switch (trackSequence)
-    {
-        case 0:
-        case 3:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-            break;
-    }
 }
 
 /** rct2: 0x006F7368 */
@@ -345,8 +326,6 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
             PaintAddImageAsParent(session, imageId, offset, { offset, { 24, 24, 1 } });
             break;
     }
-
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 }
 
 /** rct2: 0x006F7398 */
@@ -402,11 +381,6 @@ static void PaintCarRideTrack60DegUp(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
             break;
     }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 32, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x006F73C8 */
@@ -438,11 +412,6 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 66 } });
         }
     }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x006F73D8 */
@@ -473,11 +442,6 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
         {
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 66 } });
         }
-    }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
     }
 }
 
@@ -520,8 +484,6 @@ static void PaintCarRideTrackLogBumps(
     {
         PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 1 });
     }
-
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 }
 
 /**

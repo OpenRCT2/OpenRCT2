@@ -23,7 +23,6 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::goKarts,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsWide,
-        .supportType = WoodenSupportType::Truss,
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall},

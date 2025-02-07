@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::multiDimensionRollerCoaster,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsWideTrain,
-        .supportType = MetalSupportType::TubesInverted,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubesInverted,
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::blockBrakes, TrackGroup::inlineTwistUninverted,TrackGroup::quarterLoopUninvertedUp, TrackGroup::quarterLoopUninvertedDown, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::multiDimensionRollerCoasterInverted,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsInverted,
-        .supportType = MetalSupportType::TubesInverted,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubesInverted,
         .trackGroupTunnelStyles = []() consteval {
             std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
             array.fill(TunnelStyle::square);

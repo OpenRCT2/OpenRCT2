@@ -12,6 +12,9 @@
 #include "../support/MetalSupports.h"
 #include "../support/WoodenSupports.h"
 
+#include <array>
+#include <variant>
+
 constexpr int8_t kDefaultGeneralSupportHeight = 32;
 constexpr int8_t kGeneralSupportHeightOnRidePhoto = 48;
 constexpr int8_t kGeneralSupportHeightOnRidePhotoInverted = 64;
@@ -45,8 +48,40 @@ struct SupportType
     }
 };
 
-namespace OpenRCT2::SupportedSequences
-{
-    constexpr MetalSupportPlace kDiagStraightFlat[] = { MetalSupportPlace::None, MetalSupportPlace::None,
-                                                        MetalSupportPlace::None, MetalSupportPlace::LeftCorner };
-}
+using NewSupportType = std::variant<WoodenSupportType, MetalSupportType>;
+
+constexpr std::array<NewSupportType, EnumValue(TrackGroup::count)> kTrackGroupSupportTypesMetalTubes = []() consteval {
+    std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+    array.fill(NewSupportType(MetalSupportType::Tubes));
+    return array;
+}();
+
+constexpr std::array<NewSupportType, EnumValue(TrackGroup::count)> kTrackGroupSupportTypesMetalFork = []() consteval {
+    std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+    array.fill(NewSupportType(MetalSupportType::Fork));
+    return array;
+}();
+
+constexpr std::array<NewSupportType, EnumValue(TrackGroup::count)> kTrackGroupSupportTypesMetalBoxed = []() consteval {
+    std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+    array.fill(NewSupportType(MetalSupportType::Boxed));
+    return array;
+}();
+
+constexpr std::array<NewSupportType, EnumValue(TrackGroup::count)> kTrackGroupSupportTypesMetalStick = []() consteval {
+    std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+    array.fill(NewSupportType(MetalSupportType::Stick));
+    return array;
+}();
+
+constexpr std::array<NewSupportType, EnumValue(TrackGroup::count)> kTrackGroupSupportTypesMetalTruss = []() consteval {
+    std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+    array.fill(NewSupportType(MetalSupportType::Truss));
+    return array;
+}();
+
+constexpr std::array<NewSupportType, EnumValue(TrackGroup::count)> kTrackGroupSupportTypesMetalTubesInverted = []() consteval {
+    std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+    array.fill(NewSupportType(MetalSupportType::TubesInverted));
+    return array;
+}();

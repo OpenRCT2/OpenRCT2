@@ -16,7 +16,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -86,7 +85,6 @@ static void LatticeTriangleTrackAltStation(
             session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
             { 0, 0, height }, { 32, 32, 1 });
     }
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
 }
 
@@ -98,12 +96,6 @@ static void LatticeTriangleTrackAltBrakes(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 static void LatticeTriangleTrackAltBlockBrakes(
@@ -114,12 +106,6 @@ static void LatticeTriangleTrackAltBlockBrakes(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(kLatticeTriangleAltBlockBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 static void LatticeTriangleTrackAltBooster(
@@ -149,11 +135,6 @@ static void LatticeTriangleTrackAltBooster(
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 static void LatticeTriangleTrackAltPoweredLift(
@@ -163,11 +144,6 @@ static void LatticeTriangleTrackAltPoweredLift(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_POWERED_LIFT_ALT_1 + direction),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
-    }
 }
 
 static void LatticeTriangleTrackAltDiagBooster(

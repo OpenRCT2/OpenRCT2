@@ -16,7 +16,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -85,11 +84,6 @@ static void MiniRCTrackFlat(
                 break;
         }
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-    }
 }
 
 static void MiniRCTrackStation(
@@ -119,7 +113,6 @@ static void MiniRCTrackStation(
     PaintAddImageAsParentRotated(
         session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
 }
 
@@ -180,11 +173,6 @@ static void MiniRCTrack25DegUp(
                 break;
         }
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A4ADC */
@@ -214,11 +202,6 @@ static void MiniRCTrack60DegUp(
                 session, direction, session.TrackColours.WithIndex(18815), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 38, height, session.SupportColours);
     }
 }
 
@@ -279,11 +262,6 @@ static void MiniRCTrackFlatTo25DegUp(
                 break;
         }
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A4AFC */
@@ -320,11 +298,6 @@ static void MiniRCTrack25DegUpTo60DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 18, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A4B0C */
@@ -360,11 +333,6 @@ static void MiniRCTrack60DegUpTo25DegUp(
                 session, direction, session.TrackColours.WithIndex(18809), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 26, height, session.SupportColours);
     }
 }
 
@@ -424,11 +392,6 @@ static void MiniRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
     }
 }
 
@@ -511,8 +474,6 @@ static void MiniRCTrackLeftQuarterTurn5(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -617,9 +578,6 @@ static void MiniRCTrackLeftQuarterTurn5(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 6, height,
-                session.SupportColours);
             break;
     }
 }
@@ -667,11 +625,6 @@ static void MiniRCTrackFlatToLeftBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A4BBC */
@@ -707,11 +660,6 @@ static void MiniRCTrackFlatToRightBank(
                 session, direction, session.TrackColours.WithIndex(18759), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
     }
 }
 
@@ -749,11 +697,6 @@ static void MiniRCTrackLeftBankToFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A4BDC */
@@ -789,12 +732,6 @@ static void MiniRCTrackRightBankToFlat(
                 session, direction, session.TrackColours.WithIndex(18757), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
-    }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
     }
 }
 
@@ -832,8 +769,6 @@ static void MiniRCTrackBankedLeftQuarterTurn5(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -941,9 +876,6 @@ static void MiniRCTrackBankedLeftQuarterTurn5(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 6, height,
-                session.SupportColours);
             break;
     }
 }
@@ -991,11 +923,6 @@ static void MiniRCTrackLeftBankTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A4C1C */
@@ -1031,11 +958,6 @@ static void MiniRCTrackRightBankTo25DegUp(
                 session, direction, session.TrackColours.WithIndex(18771), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
     }
 }
 
@@ -1073,11 +995,6 @@ static void MiniRCTrack25DegUpToLeftBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A4C3C */
@@ -1113,11 +1030,6 @@ static void MiniRCTrack25DegUpToRightBank(
                 session, direction, session.TrackColours.WithIndex(18783), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
     }
 }
 
@@ -1181,11 +1093,6 @@ static void MiniRCTrackLeftBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A4C9C */
@@ -1227,8 +1134,6 @@ static void MiniRCTrackLeftQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1328,9 +1233,6 @@ static void MiniRCTrackLeftQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 14, height,
-                session.SupportColours);
             break;
     }
 }
@@ -1366,8 +1268,6 @@ static void MiniRCTrackRightQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1467,9 +1367,6 @@ static void MiniRCTrackRightQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 14, height,
-                session.SupportColours);
             break;
     }
 }
@@ -1523,7 +1420,6 @@ static void MiniRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 6, 6);
             break;
         case 1:
             switch (direction)
@@ -1547,7 +1443,6 @@ static void MiniRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 26, 3 } });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 3, 6);
             break;
         case 2:
             switch (direction)
@@ -1571,7 +1466,6 @@ static void MiniRCTrackSBendLeft(
                         session, direction, session.TrackColours.WithIndex(18905), { 0, 0, height }, { 32, 26, 3 });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 3, 6);
             break;
         case 3:
             switch (direction)
@@ -1597,8 +1491,6 @@ static void MiniRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -1634,7 +1526,6 @@ static void MiniRCTrackSBendRight(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 6, 6);
             break;
         case 1:
             switch (direction)
@@ -1658,7 +1549,6 @@ static void MiniRCTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(18914), { 0, 0, height }, { 32, 26, 3 });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 6, 6);
             break;
         case 2:
             switch (direction)
@@ -1682,7 +1572,6 @@ static void MiniRCTrackSBendRight(
                         { { 0, 6, height }, { 32, 26, 3 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 6, 6);
             break;
         case 3:
             switch (direction)
@@ -1708,7 +1597,6 @@ static void MiniRCTrackSBendRight(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 6, 6);
             break;
     }
 }
@@ -1744,8 +1632,6 @@ static void MiniRCTrackLeftQuarterTurn3(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1798,9 +1684,6 @@ static void MiniRCTrackLeftQuarterTurn3(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 6, height,
-                session.SupportColours);
             break;
     }
 }
@@ -1848,8 +1731,6 @@ static void MiniRCTrackLeftQuarterTurn3Bank(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1905,9 +1786,6 @@ static void MiniRCTrackLeftQuarterTurn3Bank(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 6, height,
-                session.SupportColours);
             break;
     }
 }
@@ -1948,8 +1826,6 @@ static void MiniRCTrackLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18965), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1975,9 +1851,6 @@ static void MiniRCTrackLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18964), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 14, height,
-                session.SupportColours);
             break;
     }
 }
@@ -2009,8 +1882,6 @@ static void MiniRCTrackRightQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18962), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2036,9 +1907,6 @@ static void MiniRCTrackRightQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18963), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 14, height,
-                session.SupportColours);
             break;
     }
 }
@@ -2095,8 +1963,6 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2152,9 +2018,6 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), (direction == 2) ? 15 : 12,
-                height, session.SupportColours);
             break;
         case 4:
             switch (direction)
@@ -2183,9 +2046,6 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 8, height,
-                session.SupportColours);
             break;
         case 5:
             break;
@@ -2241,9 +2101,6 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionReverse(direction), (direction == 3) ? 15 : 12,
-                height, session.SupportColours);
             break;
     }
 }
@@ -2282,8 +2139,6 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2340,10 +2195,6 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            constexpr uint8_t _specialValues[] = { 12, 15, 14, 12 };
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), _specialValues[direction],
-                height, session.SupportColours);
             break;
         }
         case 4:
@@ -2374,10 +2225,6 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            constexpr uint8_t _specialValues[] = { 8, 9, 11, 8 };
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), _specialValues[direction],
-                height, session.SupportColours);
             break;
         }
         case 5:
@@ -2435,10 +2282,6 @@ static void MiniRCTrackRightHalfBankedHelixUpSmall(
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
             }
-            constexpr uint8_t _specialValues[] = { 15, 14, 12, 12 };
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionReverse(direction), _specialValues[direction],
-                height, session.SupportColours);
             break;
         }
     }
@@ -2507,8 +2350,6 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2616,9 +2457,6 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 13, height,
-                session.SupportColours);
             break;
         case 7:
             switch (direction)
@@ -2647,9 +2485,6 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 7, height,
-                session.SupportColours);
             break;
         case 8:
             break;
@@ -2757,9 +2592,6 @@ static void MiniRCTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionReverse(direction), 13, height,
-                session.SupportColours);
             break;
     }
 }
@@ -2798,8 +2630,6 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2907,9 +2737,6 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 13, height,
-                session.SupportColours);
             break;
         case 7:
             switch (direction)
@@ -2938,9 +2765,6 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 7, height,
-                session.SupportColours);
             break;
         case 8:
             break;
@@ -3048,9 +2872,6 @@ static void MiniRCTrackRightHalfBankedHelixUpLarge(
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionReverse(direction), 13, height,
-                session.SupportColours);
             break;
     }
 }
@@ -3204,11 +3025,6 @@ static void MiniRCTrackBrakes(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A50CC */
@@ -3238,11 +3054,6 @@ static void MiniRCTrack25DegUpLeftBanked(
                 session, direction, session.TrackColours.WithIndex(19225), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
     }
 }
 
@@ -3274,11 +3085,6 @@ static void MiniRCTrack25DegUpRightBanked(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A4E8C */
@@ -3288,7 +3094,6 @@ static void MiniRCTrackOnRidePhoto(
 {
     PaintAddImageAsParentRotated(
         session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal, 6);
 
     switch (direction)
     {
@@ -3363,8 +3168,6 @@ static void MiniRCTrackLeftEighthToDiag(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -3440,8 +3243,6 @@ static void MiniRCTrackLeftEighthToDiag(
                         { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -3477,8 +3278,6 @@ static void MiniRCTrackRightEighthToDiag(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -3554,8 +3353,6 @@ static void MiniRCTrackRightEighthToDiag(
                         { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -3609,8 +3406,6 @@ static void MiniRCTrackLeftEighthBankToDiag(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -3686,8 +3481,6 @@ static void MiniRCTrackLeftEighthBankToDiag(
                         { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -3723,8 +3516,6 @@ static void MiniRCTrackRightEighthBankToDiag(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -3800,8 +3591,6 @@ static void MiniRCTrackRightEighthBankToDiag(
                         { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -3837,10 +3626,6 @@ static void MiniRCTrackDiagFlat(
     TrackPaintUtilDiagTilesPaint(
         session, 3, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
-
-    if (trackSequence == 3)
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
 }
 
 /** rct2: 0x008A4F4C */
@@ -3945,8 +3730,6 @@ static void MiniRCTrackDiag25DegUp(
                         break;
                 }
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 14, height, session.SupportColours);
             break;
     }
 }
@@ -3997,9 +3780,6 @@ static void MiniRCTrackDiag60DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, (direction & 1) ? 42 : 38, height,
-                session.SupportColours);
             break;
     }
 }
@@ -4106,8 +3886,6 @@ static void MiniRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -4158,8 +3936,6 @@ static void MiniRCTrackDiag25DegUpTo60DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 22, height, session.SupportColours);
             break;
     }
 }
@@ -4210,8 +3986,6 @@ static void MiniRCTrackDiag60DegUpTo25DegUp(
                         { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 27, height, session.SupportColours);
             break;
     }
 }
@@ -4318,8 +4092,6 @@ static void MiniRCTrackDiag25DegUpToFlat(
                         break;
                 }
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             break;
     }
 }
@@ -4426,8 +4198,6 @@ static void MiniRCTrackDiag25DegDown(
                         break;
                 }
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 14, height, session.SupportColours);
             break;
     }
 }
@@ -4478,9 +4248,6 @@ static void MiniRCTrackDiag60DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, (direction & 1) ? 34 : 30, height,
-                session.SupportColours);
             break;
     }
 }
@@ -4587,8 +4354,6 @@ static void MiniRCTrackDiagFlatTo25DegDown(
                         break;
                 }
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             break;
     }
 }
@@ -4639,8 +4404,6 @@ static void MiniRCTrackDiag25DegDownTo60DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 23, height, session.SupportColours);
             break;
     }
 }
@@ -4691,8 +4454,6 @@ static void MiniRCTrackDiag60DegDownTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 14, height, session.SupportColours);
             break;
     }
 }
@@ -4799,8 +4560,6 @@ static void MiniRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -4854,8 +4613,6 @@ static void MiniRCTrackDiagFlatToLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -4909,8 +4666,6 @@ static void MiniRCTrackDiagFlatToRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -4964,8 +4719,6 @@ static void MiniRCTrackDiagLeftBankToFlat(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -5019,8 +4772,6 @@ static void MiniRCTrackDiagRightBankToFlat(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -5074,8 +4825,6 @@ static void MiniRCTrackDiagLeftBankTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -5129,8 +4878,6 @@ static void MiniRCTrackDiagRightBankTo25DegUp(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -5184,8 +4931,6 @@ static void MiniRCTrackDiag25DegUpToLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             break;
     }
 }
@@ -5239,8 +4984,6 @@ static void MiniRCTrackDiag25DegUpToRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             break;
     }
 }
@@ -5294,8 +5037,6 @@ static void MiniRCTrackDiagLeftBankTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             break;
     }
 }
@@ -5349,8 +5090,6 @@ static void MiniRCTrackDiagRightBankTo25DegDown(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             break;
     }
 }
@@ -5404,8 +5143,6 @@ static void MiniRCTrackDiag25DegDownToLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -5459,8 +5196,6 @@ static void MiniRCTrackDiag25DegDownToRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -5511,8 +5246,6 @@ static void MiniRCTrackDiagLeftBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -5563,8 +5296,6 @@ static void MiniRCTrackDiagRightBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             break;
     }
 }
@@ -5578,11 +5309,6 @@ static void MiniRCTrackBlockBrakes(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(kMiniRCBlockBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A510C */
@@ -5613,8 +5339,6 @@ static void MiniRCTrackLeftBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(19315), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -5642,9 +5366,6 @@ static void MiniRCTrackLeftBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(19314), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 14, height,
-                session.SupportColours);
             break;
     }
 }
@@ -5677,8 +5398,6 @@ static void MiniRCTrackRightBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(19312), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -5706,9 +5425,6 @@ static void MiniRCTrackRightBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(19313), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 14, height,
-                session.SupportColours);
             break;
     }
 }
@@ -5764,8 +5480,6 @@ static void MiniRCTrackLeftBankedQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -5868,9 +5582,6 @@ static void MiniRCTrackLeftBankedQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 14, height,
-                session.SupportColours);
             break;
     }
 }
@@ -5906,8 +5617,6 @@ static void MiniRCTrackRightBankedQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -6010,9 +5719,6 @@ static void MiniRCTrackRightBankedQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 14, height,
-                session.SupportColours);
             break;
     }
 }
@@ -6068,11 +5774,6 @@ static void MiniRCTrack25DegUpToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A519C */
@@ -6105,11 +5806,6 @@ static void MiniRCTrack25DegUpToRightBanked25DegUp(
                 session, direction, session.TrackColours.WithIndex(19237), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
     }
 }
 
@@ -6144,11 +5840,6 @@ static void MiniRCTrackLeftBanked25DegUpTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A51BC */
@@ -6181,11 +5872,6 @@ static void MiniRCTrackRightBanked25DegUpTo25DegUp(
                 session, direction, session.TrackColours.WithIndex(19247), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
     }
 }
 
@@ -6251,11 +5937,6 @@ static void MiniRCTrackLeftBankedFlatToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A521C */
@@ -6285,11 +5966,6 @@ static void MiniRCTrackRightBankedFlatToRightBanked25DegUp(
                 session, direction, session.TrackColours.WithIndex(19257), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
     }
 }
 
@@ -6321,11 +5997,6 @@ static void MiniRCTrackLeftBanked25DegUpToLeftBankedFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A525C */
@@ -6355,11 +6026,6 @@ static void MiniRCTrackRightBanked25DegUpToRightBankedFlat(
                 session, direction, session.TrackColours.WithIndex(19265), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
     }
 }
 
@@ -6430,11 +6096,6 @@ static void MiniRCTrackFlatToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A529C */
@@ -6467,11 +6128,6 @@ static void MiniRCTrackFlatToRightBanked25DegUp(
                 session, direction, session.TrackColours.WithIndex(19209), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
     }
 }
 
@@ -6506,11 +6162,6 @@ static void MiniRCTrackLeftBanked25DegUpToFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x008A52BC */
@@ -6543,11 +6194,6 @@ static void MiniRCTrackRightBanked25DegUpToFlat(
                 session, direction, session.TrackColours.WithIndex(19219), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
     }
 }
 
@@ -6609,8 +6255,6 @@ static void MiniRCTrackLeftCurvedLiftHill(
                         session, direction, session.TrackColours.WithIndex(19331), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -6636,9 +6280,6 @@ static void MiniRCTrackLeftCurvedLiftHill(
                         session, direction, session.TrackColours.WithIndex(19330), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 17, height,
-                session.SupportColours);
             break;
     }
 }
@@ -6669,8 +6310,6 @@ static void MiniRCTrackRightCurvedLiftHill(
                         session, direction, session.TrackColours.WithIndex(19328), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -6696,9 +6335,6 @@ static void MiniRCTrackRightCurvedLiftHill(
                         session, direction, session.TrackColours.WithIndex(19329), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 17, height,
-                session.SupportColours);
             break;
     }
 }
@@ -6721,11 +6357,6 @@ static void MiniRCTrackBooster(
                 session, direction, session.TrackColours.WithIndex(SPR_G2_MINI_RC_BOOSTER_NW_SE), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
     }
 }
 

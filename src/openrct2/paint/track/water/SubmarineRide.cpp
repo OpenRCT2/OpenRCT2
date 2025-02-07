@@ -61,12 +61,6 @@ static void SubmarineRidePaintTrackFlat(
         imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
     }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, heightLower, session.SupportColours);
-    }
 }
 
 static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
@@ -76,20 +70,6 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height - 16, direction, trackSequence, session.TrackColours,
         kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
-
-    switch (trackSequence)
-    {
-        case 0:
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, -1, height - 16, session.SupportColours);
-            break;
-        case 2:
-            break;
-        case 3:
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, -1, height - 16, session.SupportColours);
-            break;
-    }
 }
 
 static constexpr uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = {

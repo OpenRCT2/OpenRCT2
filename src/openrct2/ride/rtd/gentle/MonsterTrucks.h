@@ -28,7 +28,7 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
             array[EnumValue(TrackGroup::curveVerySmall)] = BlockedSegments::BlockedSegmentsType::wide;
             return array;
         }(),
-        .supportType = MetalSupportType::Boxed,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalBoxed,
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::rapids},

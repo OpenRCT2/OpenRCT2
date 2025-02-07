@@ -21,6 +21,8 @@ constexpr RideTypeDescriptor SwingingShipRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x5,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::swingingShip,
+        .blocksOwnSegments = true,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubes,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

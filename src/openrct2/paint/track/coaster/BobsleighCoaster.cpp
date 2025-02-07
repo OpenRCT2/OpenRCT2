@@ -16,7 +16,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -64,10 +63,6 @@ static void BobsleighRCTrackFlat(
                     { { 0, 27, height }, { 32, 1, 26 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-        }
     }
     else
     {
@@ -92,10 +87,6 @@ static void BobsleighRCTrackFlat(
                     { { 0, 27, height }, { 32, 1, 26 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-        }
     }
 }
 
@@ -116,7 +107,6 @@ static void BobsleighRCTrackStation(
     PaintAddImageAsParentRotated(
         session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 }
 
@@ -162,10 +152,6 @@ static void BobsleighRCTrack25DegUp(
                     { { 0, 27, height }, { 32, 1, 50 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
-        }
     }
     else
     {
@@ -203,10 +189,6 @@ static void BobsleighRCTrack25DegUp(
                     session, direction, session.TrackColours.WithIndex(14617), { 0, 0, height },
                     { { 0, 27, height }, { 32, 1, 50 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
         }
     }
 }
@@ -253,10 +235,6 @@ static void BobsleighRCTrackFlatTo25DegUp(
                     { { 0, 27, height }, { 32, 1, 42 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
-        }
     }
     else
     {
@@ -294,10 +272,6 @@ static void BobsleighRCTrackFlatTo25DegUp(
                     session, direction, session.TrackColours.WithIndex(14601), { 0, 0, height },
                     { { 0, 27, height }, { 32, 1, 42 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
         }
     }
 }
@@ -344,10 +318,6 @@ static void BobsleighRCTrack25DegUpToFlat(
                     { { 0, 27, height }, { 32, 1, 34 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-        }
     }
     else
     {
@@ -385,10 +355,6 @@ static void BobsleighRCTrack25DegUpToFlat(
                     session, direction, session.TrackColours.WithIndex(14609), { 0, 0, height },
                     { { 0, 27, height }, { 32, 1, 34 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
         }
     }
 }
@@ -460,7 +426,6 @@ static void BobsleighRCTrackLeftQuarterTurn5(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -613,7 +578,6 @@ static void BobsleighRCTrackLeftQuarterTurn5(
                         { { 6, 0, height + 27 }, { 30, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -667,10 +631,6 @@ static void BobsleighRCTrackFlatToLeftBank(
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x006FE654 */
@@ -712,10 +672,6 @@ static void BobsleighRCTrackFlatToRightBank(
                 session, direction, session.TrackColours.WithIndex(14657), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 }
 
@@ -759,10 +715,6 @@ static void BobsleighRCTrackLeftBankToFlat(
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x006FE674 */
@@ -804,10 +756,6 @@ static void BobsleighRCTrackRightBankToFlat(
                 session, direction, session.TrackColours.WithIndex(14647), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 }
 
@@ -854,7 +802,6 @@ static void BobsleighRCTrackBankedLeftQuarterTurn5(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1007,7 +954,6 @@ static void BobsleighRCTrackBankedLeftQuarterTurn5(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -1062,10 +1008,6 @@ static void BobsleighRCTrackLeftBankTo25DegUp(
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x006FE6B4 */
@@ -1107,10 +1049,6 @@ static void BobsleighRCTrackRightBankTo25DegUp(
                 session, direction, session.TrackColours.WithIndex(14689), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 }
 
@@ -1154,10 +1092,6 @@ static void BobsleighRCTrack25DegUpToLeftBank(
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x006FE6D4 */
@@ -1199,10 +1133,6 @@ static void BobsleighRCTrack25DegUpToRightBank(
                 session, direction, session.TrackColours.WithIndex(14673), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 }
 
@@ -1278,10 +1208,6 @@ static void BobsleighRCTrackLeftBank(
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x006FE734 */
@@ -1335,7 +1261,6 @@ static void BobsleighRCTrackSBendLeft(
                         { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
         case 1:
             switch (direction)
@@ -1373,7 +1298,6 @@ static void BobsleighRCTrackSBendLeft(
                         { { 0, 6, height + 27 }, { 32, 26, 0 } });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
             break;
         case 2:
             switch (direction)
@@ -1411,7 +1335,6 @@ static void BobsleighRCTrackSBendLeft(
                         { { 0, 0, height + 27 }, { 32, 26, 0 } });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
             break;
         case 3:
             switch (direction)
@@ -1449,7 +1372,6 @@ static void BobsleighRCTrackSBendLeft(
                         { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
     }
 }
@@ -1497,7 +1419,6 @@ static void BobsleighRCTrackSBendRight(
                         { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
         case 1:
             switch (direction)
@@ -1535,7 +1456,6 @@ static void BobsleighRCTrackSBendRight(
                         { { 0, 0, height + 27 }, { 32, 26, 0 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
         case 2:
             switch (direction)
@@ -1573,7 +1493,6 @@ static void BobsleighRCTrackSBendRight(
                         { { 0, 6, height + 27 }, { 32, 26, 0 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
         case 3:
             switch (direction)
@@ -1611,7 +1530,6 @@ static void BobsleighRCTrackSBendRight(
                         { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
     }
 }
@@ -1659,7 +1577,6 @@ static void BobsleighRCTrackLeftQuarterTurn3(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1736,7 +1653,6 @@ static void BobsleighRCTrackLeftQuarterTurn3(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -1793,7 +1709,6 @@ static void BobsleighRCTrackLeftQuarterTurn3Bank(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1870,7 +1785,6 @@ static void BobsleighRCTrackLeftQuarterTurn3Bank(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -1927,7 +1841,6 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2004,7 +1917,6 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
         case 4:
             switch (direction)
@@ -2042,7 +1954,6 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             break;
         case 5:
             break;
@@ -2119,7 +2030,6 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
     }
 }
@@ -2167,7 +2077,6 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2244,7 +2153,6 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
         case 4:
             switch (direction)
@@ -2282,7 +2190,6 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             break;
         case 5:
             break;
@@ -2359,7 +2266,6 @@ static void BobsleighRCTrackRightHalfBankedHelixUpSmall(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
     }
 }
@@ -2437,7 +2343,6 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2590,7 +2495,6 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             break;
         case 7:
             switch (direction)
@@ -2628,7 +2532,6 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             break;
         case 8:
             break;
@@ -2781,7 +2684,6 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             break;
     }
 }
@@ -2829,7 +2731,6 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2982,7 +2883,6 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             break;
         case 7:
             switch (direction)
@@ -3020,7 +2920,6 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             break;
         case 8:
             break;
@@ -3173,7 +3072,6 @@ static void BobsleighRCTrackRightHalfBankedHelixUpLarge(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             break;
     }
 }
@@ -3234,10 +3132,6 @@ static void BobsleighRCTrackBrakes(
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x006FE864 */
@@ -3266,10 +3160,6 @@ static void BobsleighRCTrackBlockBrakes(
                 session, direction, session.TrackColours.WithIndex(14591), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 }
 

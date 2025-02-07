@@ -16,7 +16,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -75,12 +74,6 @@ static void InvertedHairpinRCTrackFlat(
                 break;
         }
     }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
-    }
 }
 
 /** rct2: 0x00890D84, 0x00890D94, 0x00890DA4 */
@@ -104,7 +97,6 @@ static void InvertedHairpinRCTrackStation(
     PaintAddImageAsChildRotated(
         session, direction, session.SupportColours.WithIndex(imageIds[direction][2]), { 0, 6, height + 24 },
         { { 0, 6, height + 24 }, { 32, 20, 1 } });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
 }
 
@@ -162,29 +154,6 @@ static void InvertedHairpinRCTrack25DegUp(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(17045), { 0, 0, height + 24 },
                     { { 0, 6, height + 40 }, { 32, 20, 3 } });
-                break;
-        }
-    }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 48, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 48, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 48, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 48, session.SupportColours);
                 break;
         }
     }
@@ -303,29 +272,6 @@ static void InvertedHairpinRCTrackFlatTo25DegUp(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(17037), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
-                break;
-        }
-    }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 40, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 40, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 40, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 40, session.SupportColours);
                 break;
         }
     }
@@ -471,29 +417,6 @@ static void InvertedHairpinRCTrack60DegUpTo25DegUp(
                 break;
         }
     }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 62, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 62, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 62, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 62, session.SupportColours);
-                break;
-        }
-    }
 }
 
 /** rct2: 0x00890D14 */
@@ -550,29 +473,6 @@ static void InvertedHairpinRCTrack25DegUpToFlat(
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(17041), { 0, 0, height + 24 },
                     { { 0, 6, height + 32 }, { 32, 20, 3 } });
-                break;
-        }
-    }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 38, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 38, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 38, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 38, session.SupportColours);
                 break;
         }
     }
@@ -659,10 +559,6 @@ static void InvertedHairpinRCTrackLeftQuarterTurn3(
                         { { 0, 6, height + 22 }, { 32, 20, 3 } });
                     break;
             }
-
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
-
             break;
         case 1:
             break;
@@ -715,10 +611,6 @@ static void InvertedHairpinRCTrackLeftQuarterTurn3(
                         { { 6, 0, height + 22 }, { 20, 32, 3 } });
                     break;
             }
-
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
-
             break;
     }
 }
@@ -760,10 +652,6 @@ static void InvertedHairpinRCTrackLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17139), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
             }
-
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
-
             break;
         case 1:
             break;
@@ -789,10 +677,6 @@ static void InvertedHairpinRCTrackLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17138), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
             }
-
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
-
             break;
     }
 }
@@ -824,10 +708,6 @@ static void InvertedHairpinRCTrackRightQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17136), { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
             }
-
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
-
             break;
         case 1:
             break;
@@ -853,10 +733,6 @@ static void InvertedHairpinRCTrackRightQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17137), { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
             }
-
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
-
             break;
     }
 }
@@ -909,9 +785,6 @@ static void InvertedHairpinRCTrackLeftQuarterTurn1(
                 { { 6, 6, height + 24 }, { 24, 24, 3 } });
             break;
     }
-
-    MetalASupportsPaintSetup(
-        session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
 }
 
 /** rct2: 0x00890E74 */
@@ -1063,26 +936,6 @@ static void InvertedHairpinRCTrack60DegUpToFlat(
                 break;
         }
     }
-
-    switch (direction)
-    {
-        case 0:
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 54, session.SupportColours);
-            break;
-        case 1:
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 54, session.SupportColours);
-            break;
-        case 2:
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 54, session.SupportColours);
-            break;
-        case 3:
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 54, session.SupportColours);
-            break;
-    }
 }
 
 /** rct2: 0x00890E44 */
@@ -1121,12 +974,6 @@ static void InvertedHairpinRCTrackBrakes(
                 { { 0, 6, height + 22 }, { 32, 20, 1 } });
             break;
     }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
-    }
 }
 
 /** rct2: 0x00890E84 */
@@ -1148,12 +995,6 @@ static void InvertedHairpinRCTrackBlockBrakes(
                 session, direction, session.TrackColours.WithIndex(17029), { 0, 0, height + 24 },
                 { { 0, 6, height + 22 }, { 32, 20, 1 } });
             break;
-    }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
     }
 }
 

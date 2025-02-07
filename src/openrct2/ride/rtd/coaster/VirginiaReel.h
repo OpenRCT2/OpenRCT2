@@ -22,7 +22,6 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::virginiaReel,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsWide,
-        .supportType = WoodenSupportType::Truss,
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall},

@@ -18,7 +18,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -75,11 +74,6 @@ static void TwisterRCTrackFlat(
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
             { { 0, 6, height }, { 32, 20, 3 } });
-
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-        }
     }
     else
     {
@@ -93,11 +87,6 @@ static void TwisterRCTrackFlat(
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
             { { 0, 6, height }, { 32, 20, 3 } });
-
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-        }
     }
 }
 
@@ -128,7 +117,6 @@ static void TwisterRCTrackStation(
     PaintAddImageAsParentRotated(
         session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 9, trackElement);
 }
@@ -162,10 +150,6 @@ static void TwisterRCTrack25DegUp(
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
-        }
     }
     else
     {
@@ -191,10 +175,6 @@ static void TwisterRCTrack25DegUp(
                     session, direction, session.TrackColours.WithIndex(17207), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
         }
     }
 }
@@ -228,10 +208,6 @@ static void TwisterRCTrack60DegUp(
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 32, height, session.SupportColours);
-        }
     }
     else
     {
@@ -257,10 +233,6 @@ static void TwisterRCTrack60DegUp(
                     session, direction, session.TrackColours.WithIndex(17223), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 32, height, session.SupportColours);
         }
     }
 }
@@ -294,10 +266,6 @@ static void TwisterRCTrackFlatTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
-        }
     }
     else
     {
@@ -323,10 +291,6 @@ static void TwisterRCTrackFlatTo25DegUp(
                     session, direction, session.TrackColours.WithIndex(17199), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
         }
     }
 }
@@ -366,10 +330,6 @@ static void TwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-        }
     }
     else
     {
@@ -401,10 +361,6 @@ static void TwisterRCTrack25DegUpTo60DegUp(
                     session, direction, session.TrackColours.WithIndex(17211), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
         }
     }
 }
@@ -444,10 +400,6 @@ static void TwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
-        }
     }
     else
     {
@@ -479,10 +431,6 @@ static void TwisterRCTrack60DegUpTo25DegUp(
                     session, direction, session.TrackColours.WithIndex(17217), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
         }
     }
 }
@@ -516,10 +464,6 @@ static void TwisterRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-        }
     }
     else
     {
@@ -545,10 +489,6 @@ static void TwisterRCTrack25DegUpToFlat(
                     session, direction, session.TrackColours.WithIndex(17203), { 0, 0, height },
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
         }
     }
 }
@@ -625,7 +565,6 @@ static void TwisterRCTrackLeftQuarterTurn5(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -730,7 +669,6 @@ static void TwisterRCTrackLeftQuarterTurn5(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -776,10 +714,6 @@ static void TwisterRCTrackFlatToLeftBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackFlatToRightBank(
@@ -814,10 +748,6 @@ static void TwisterRCTrackFlatToRightBank(
                 session, direction, session.TrackColours.WithIndex(17167), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 }
 
@@ -854,10 +784,6 @@ static void TwisterRCTrackLeftBankToFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackRightBankToFlat(
@@ -893,10 +819,6 @@ static void TwisterRCTrackRightBankToFlat(
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackBankedLeftQuarterTurn5(
@@ -915,29 +837,21 @@ static void TwisterRCTrackBankedLeftQuarterTurn5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17290), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17284), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17289), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17274), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -1047,7 +961,6 @@ static void TwisterRCTrackBankedLeftQuarterTurn5(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -1093,10 +1006,6 @@ static void TwisterRCTrackLeftBankTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackRightBankTo25DegUp(
@@ -1131,10 +1040,6 @@ static void TwisterRCTrackRightBankTo25DegUp(
                 session, direction, session.TrackColours.WithIndex(17179), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 }
 
@@ -1171,10 +1076,6 @@ static void TwisterRCTrack25DegUpToLeftBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrack25DegUpToRightBank(
@@ -1209,10 +1110,6 @@ static void TwisterRCTrack25DegUpToRightBank(
                 session, direction, session.TrackColours.WithIndex(17191), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 }
 
@@ -1271,10 +1168,6 @@ static void TwisterRCTrackLeftBank(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackRightBank(
@@ -1314,7 +1207,6 @@ static void TwisterRCTrackLeftQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1414,7 +1306,6 @@ static void TwisterRCTrackLeftQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
     }
 }
@@ -1449,7 +1340,6 @@ static void TwisterRCTrackRightQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1549,7 +1439,6 @@ static void TwisterRCTrackRightQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
     }
 }
@@ -1601,7 +1490,6 @@ static void TwisterRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
         case 1:
             switch (direction)
@@ -1625,7 +1513,6 @@ static void TwisterRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 26, 3 } });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
             break;
         case 2:
             switch (direction)
@@ -1649,7 +1536,6 @@ static void TwisterRCTrackSBendLeft(
                         session, direction, session.TrackColours.WithIndex(17313), { 0, 0, height }, { 32, 26, 3 });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
             break;
         case 3:
             switch (direction)
@@ -1675,7 +1561,6 @@ static void TwisterRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
     }
 }
@@ -1710,7 +1595,6 @@ static void TwisterRCTrackSBendRight(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
         case 1:
             switch (direction)
@@ -1734,7 +1618,6 @@ static void TwisterRCTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(17322), { 0, 0, height }, { 32, 26, 3 });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
         case 2:
             switch (direction)
@@ -1758,7 +1641,6 @@ static void TwisterRCTrackSBendRight(
                         { { 0, 6, height }, { 32, 26, 3 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
         case 3:
             switch (direction)
@@ -1784,7 +1666,6 @@ static void TwisterRCTrackSBendRight(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             break;
     }
 }
@@ -1801,26 +1682,18 @@ static void TwisterRCTrackLeftVerticalLoop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17594), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17602), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17601), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17609), { 0, 6, height }, { 32, 20, 7 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
             break;
@@ -1830,26 +1703,18 @@ static void TwisterRCTrackLeftVerticalLoop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17595), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17603), { 0, 14, height }, { 32, 2, 63 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17600), { 0, 6, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17608), { 0, 6, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
             }
             break;
@@ -1955,26 +1820,18 @@ static void TwisterRCTrackLeftVerticalLoop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17600), { 0, 6, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17608), { 0, 6, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17595), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17603), { 0, 14, height }, { 32, 2, 63 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, session.SupportColours);
                     break;
             }
             break;
@@ -1984,26 +1841,18 @@ static void TwisterRCTrackLeftVerticalLoop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17601), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17609), { 0, 6, height }, { 32, 20, 7 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17594), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17602), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
             break;
@@ -2036,7 +1885,6 @@ static void TwisterRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(17610), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -2044,26 +1892,18 @@ static void TwisterRCTrackRightVerticalLoop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17624), { 0, 6, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17616), { 0, 6, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17619), { 0, 14, height }, { 32, 2, 63 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17611), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
             }
             break;
@@ -2169,26 +2009,18 @@ static void TwisterRCTrackRightVerticalLoop(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17619), { 0, 14, height }, { 32, 2, 63 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17611), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17624), { 0, 6, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17616), { 0, 6, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
             }
             break;
@@ -2212,7 +2044,6 @@ static void TwisterRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(17617), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
     }
 }
@@ -2247,7 +2078,6 @@ static void TwisterRCTrackLeftQuarterTurn3(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2300,7 +2130,6 @@ static void TwisterRCTrackLeftQuarterTurn3(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -2346,7 +2175,6 @@ static void TwisterRCTrackLeftQuarterTurn3Bank(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2402,7 +2230,6 @@ static void TwisterRCTrackLeftQuarterTurn3Bank(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -2441,7 +2268,6 @@ static void TwisterRCTrackLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17373), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2467,7 +2293,6 @@ static void TwisterRCTrackLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17372), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
     }
 }
@@ -2498,7 +2323,6 @@ static void TwisterRCTrackRightQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17370), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2510,26 +2334,18 @@ static void TwisterRCTrackRightQuarterTurn325DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17365), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17367), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17369), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17371), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
             break;
@@ -2586,7 +2402,6 @@ static void TwisterRCTrackLeftHalfBankedHelixUpSmall(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2642,7 +2457,6 @@ static void TwisterRCTrackLeftHalfBankedHelixUpSmall(
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
         case 4:
             switch (direction)
@@ -2671,7 +2485,6 @@ static void TwisterRCTrackLeftHalfBankedHelixUpSmall(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             break;
         case 5:
             break;
@@ -2727,7 +2540,6 @@ static void TwisterRCTrackLeftHalfBankedHelixUpSmall(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
     }
 }
@@ -2765,7 +2577,6 @@ static void TwisterRCTrackRightHalfBankedHelixUpSmall(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -2821,7 +2632,6 @@ static void TwisterRCTrackRightHalfBankedHelixUpSmall(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
         case 4:
             switch (direction)
@@ -2850,7 +2660,6 @@ static void TwisterRCTrackRightHalfBankedHelixUpSmall(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             break;
         case 5:
             break;
@@ -2906,7 +2715,6 @@ static void TwisterRCTrackRightHalfBankedHelixUpSmall(
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
     }
 }
@@ -2972,7 +2780,6 @@ static void TwisterRCTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -3080,7 +2887,6 @@ static void TwisterRCTrackLeftHalfBankedHelixUpLarge(
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             break;
         case 7:
             switch (direction)
@@ -3109,7 +2915,6 @@ static void TwisterRCTrackLeftHalfBankedHelixUpLarge(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             break;
         case 8:
             break;
@@ -3217,7 +3022,6 @@ static void TwisterRCTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             break;
     }
 }
@@ -3255,7 +3059,6 @@ static void TwisterRCTrackRightHalfBankedHelixUpLarge(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -3343,8 +3146,6 @@ static void TwisterRCTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17412), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -3353,22 +3154,16 @@ static void TwisterRCTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17428), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17422), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17427), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
             break;
@@ -3399,7 +3194,6 @@ static void TwisterRCTrackRightHalfBankedHelixUpLarge(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             break;
         case 8:
             break;
@@ -3490,29 +3284,21 @@ static void TwisterRCTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17428), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17422), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17427), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17412), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
             break;
@@ -3663,10 +3449,6 @@ static void TwisterRCTrackBrakes(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrack25DegUpLeftBanked(
@@ -3696,10 +3478,6 @@ static void TwisterRCTrack25DegUpLeftBanked(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrack25DegUpRightBanked(
@@ -3728,10 +3506,6 @@ static void TwisterRCTrack25DegUpRightBanked(
                 session, direction, session.TrackColours.WithIndex(17921), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
 }
 
@@ -3962,7 +3736,6 @@ static void TwisterRCTrackLeftEighthToDiag(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -4021,29 +3794,21 @@ static void TwisterRCTrackLeftEighthToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17549), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17553), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17557), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17561), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -4080,7 +3845,6 @@ static void TwisterRCTrackRightEighthToDiag(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -4139,29 +3903,21 @@ static void TwisterRCTrackRightEighthToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17533), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17537), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17541), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17545), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -4214,7 +3970,6 @@ static void TwisterRCTrackLeftEighthBankToDiag(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -4273,29 +4028,21 @@ static void TwisterRCTrackLeftEighthBankToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17581), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17585), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17589), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17593), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -4332,7 +4079,6 @@ static void TwisterRCTrackRightEighthBankToDiag(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -4391,29 +4137,21 @@ static void TwisterRCTrackRightEighthBankToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17565), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17569), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17573), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17577), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -4533,23 +4271,15 @@ static void TwisterRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17871), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -4558,23 +4288,15 @@ static void TwisterRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17801), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -4666,23 +4388,15 @@ static void TwisterRCTrackDiag60DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17883), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 36, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 32, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height, session.SupportColours);
                         break;
                 }
             }
@@ -4691,23 +4405,15 @@ static void TwisterRCTrackDiag60DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17813), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 36, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 32, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height, session.SupportColours);
                         break;
                 }
             }
@@ -4799,23 +4505,15 @@ static void TwisterRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17863), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
             }
@@ -4824,23 +4522,15 @@ static void TwisterRCTrackDiagFlatTo25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17793), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
             }
@@ -4932,23 +4622,15 @@ static void TwisterRCTrackDiag25DegUpTo60DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17875), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
                         break;
                 }
             }
@@ -4957,23 +4639,15 @@ static void TwisterRCTrackDiag25DegUpTo60DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17805), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
                         break;
                 }
             }
@@ -5065,23 +4739,15 @@ static void TwisterRCTrackDiag60DegUpTo25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17879), { -16, -16, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 21, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 21, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height, session.SupportColours);
                         break;
                 }
             }
@@ -5090,23 +4756,15 @@ static void TwisterRCTrackDiag60DegUpTo25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17809), { -16, -16, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 21, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 21, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height, session.SupportColours);
                         break;
                 }
             }
@@ -5198,23 +4856,15 @@ static void TwisterRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17867), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                         break;
                 }
             }
@@ -5223,23 +4873,15 @@ static void TwisterRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17797), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                         break;
                 }
             }
@@ -5331,23 +4973,15 @@ static void TwisterRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17873), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -5356,23 +4990,15 @@ static void TwisterRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17803), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -5464,23 +5090,15 @@ static void TwisterRCTrackDiag60DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17885), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 28, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 24, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height, session.SupportColours);
                         break;
                 }
             }
@@ -5489,23 +5107,15 @@ static void TwisterRCTrackDiag60DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17815), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 28, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 24, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height, session.SupportColours);
                         break;
                 }
             }
@@ -5597,23 +5207,15 @@ static void TwisterRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17869), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                         break;
                 }
             }
@@ -5622,23 +5224,15 @@ static void TwisterRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17799), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                         break;
                 }
             }
@@ -5730,23 +5324,15 @@ static void TwisterRCTrackDiag25DegDownTo60DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17881), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 17, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 17, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height, session.SupportColours);
                         break;
                 }
             }
@@ -5755,23 +5341,15 @@ static void TwisterRCTrackDiag25DegDownTo60DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17811), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 17, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 17, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height, session.SupportColours);
                         break;
                 }
             }
@@ -5863,23 +5441,15 @@ static void TwisterRCTrackDiag60DegDownTo25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17877), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -5888,23 +5458,15 @@ static void TwisterRCTrackDiag60DegDownTo25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17807), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -5996,23 +5558,15 @@ static void TwisterRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17865), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
             }
@@ -6021,23 +5575,15 @@ static void TwisterRCTrackDiag25DegDownToFlat(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17795), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
             }
@@ -6129,23 +5675,15 @@ static void TwisterRCTrackDiagFlatTo60DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17887), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 4 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 5, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
                         break;
                 }
             }
@@ -6154,23 +5692,15 @@ static void TwisterRCTrackDiagFlatTo60DegUp(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17817), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 4 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 5, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
                         break;
                 }
             }
@@ -6262,23 +5792,15 @@ static void TwisterRCTrackDiag60DegUpToFlat(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17891), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 4 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
                         break;
                 }
             }
@@ -6287,23 +5809,15 @@ static void TwisterRCTrackDiag60DegUpToFlat(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17821), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 4 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
                         break;
                 }
             }
@@ -6395,23 +5909,15 @@ static void TwisterRCTrackDiagFlatTo60DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17893), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 4 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
                         break;
                 }
             }
@@ -6420,23 +5926,15 @@ static void TwisterRCTrackDiagFlatTo60DegDown(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17823), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 4 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
                         break;
                 }
             }
@@ -6528,23 +6026,15 @@ static void TwisterRCTrackDiag60DegDownToFlat(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17889), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 4 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 5, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
                         break;
                 }
             }
@@ -6553,23 +6043,15 @@ static void TwisterRCTrackDiag60DegDownToFlat(
                 switch (direction)
                 {
                     case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(17819), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 4 } });
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 5, height, session.SupportColours);
                         break;
                     case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                         break;
                     case 3:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
                         break;
                 }
             }
@@ -6620,23 +6102,15 @@ static void TwisterRCTrackDiagFlatToLeftBank(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17829), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -6686,23 +6160,15 @@ static void TwisterRCTrackDiagFlatToRightBank(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17834), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -6752,23 +6218,15 @@ static void TwisterRCTrackDiagLeftBankToFlat(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17836), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -6818,23 +6276,15 @@ static void TwisterRCTrackDiagRightBankToFlat(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17831), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -6884,23 +6334,15 @@ static void TwisterRCTrackDiagLeftBankTo25DegUp(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17849), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -6950,23 +6392,15 @@ static void TwisterRCTrackDiagRightBankTo25DegUp(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17854), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -7016,23 +6450,15 @@ static void TwisterRCTrackDiag25DegUpToLeftBank(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17839), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -7082,23 +6508,15 @@ static void TwisterRCTrackDiag25DegUpToRightBank(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17844), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -7148,23 +6566,15 @@ static void TwisterRCTrackDiagLeftBankTo25DegDown(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17846), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -7214,23 +6624,15 @@ static void TwisterRCTrackDiagRightBankTo25DegDown(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17841), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -7280,23 +6682,15 @@ static void TwisterRCTrackDiag25DegDownToLeftBank(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17856), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -7346,23 +6740,15 @@ static void TwisterRCTrackDiag25DegDownToRightBank(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17851), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -7409,23 +6795,15 @@ static void TwisterRCTrackDiagLeftBank(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17825), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -7472,23 +6850,15 @@ static void TwisterRCTrackDiagRightBank(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17827), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -7524,7 +6894,6 @@ static void TwisterRCTrackLeftBankToLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17723), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -7550,7 +6919,6 @@ static void TwisterRCTrackLeftBankToLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17722), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -7584,7 +6952,6 @@ static void TwisterRCTrackRightBankToRightQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(17720), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -7596,26 +6963,18 @@ static void TwisterRCTrackRightBankToRightQuarterTurn325DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17715), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17717), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17719), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17721), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -7634,26 +6993,18 @@ static void TwisterRCTrackLeftQuarterTurn325DegDownToLeftBank(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17717), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17719), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17721), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17715), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -7684,7 +7035,6 @@ static void TwisterRCTrackLeftQuarterTurn325DegDownToLeftBank(
                         session, direction, session.TrackColours.WithIndex(17714), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -7715,7 +7065,6 @@ static void TwisterRCTrackRightQuarterTurn325DegDownToRightBank(
                         session, direction, session.TrackColours.WithIndex(17728), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -7744,7 +7093,6 @@ static void TwisterRCTrackRightQuarterTurn325DegDownToRightBank(
                         session, direction, session.TrackColours.WithIndex(17729), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 }
@@ -7768,10 +7116,6 @@ static void TwisterRCTrackBlockBrakes(
                 session, direction, session.TrackColours.WithIndex(kTwisterRCBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 }
 
@@ -7802,7 +7146,6 @@ static void TwisterRCTrackLeftBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18023), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -7830,7 +7173,6 @@ static void TwisterRCTrackLeftBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18022), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
     }
 }
@@ -7862,7 +7204,6 @@ static void TwisterRCTrackRightBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18020), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -7874,28 +7215,20 @@ static void TwisterRCTrackRightBankedQuarterTurn325DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18015), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18017), { 6, 0, height },
                         { { 27, 0, height }, { 1, 32, 34 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18019), { 6, 0, height },
                         { { 27, 0, height }, { 1, 32, 34 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18021), { 6, 0, height }, { 20, 32, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
             break;
@@ -7950,7 +7283,6 @@ static void TwisterRCTrackLeftBankedQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -8053,7 +7385,6 @@ static void TwisterRCTrackLeftBankedQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
     }
 }
@@ -8088,7 +7419,6 @@ static void TwisterRCTrackRightBankedQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -8191,7 +7521,6 @@ static void TwisterRCTrackRightBankedQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
     }
 }
@@ -8244,10 +7573,6 @@ static void TwisterRCTrack25DegUpToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrack25DegUpToRightBanked25DegUp(
@@ -8279,10 +7604,6 @@ static void TwisterRCTrack25DegUpToRightBanked25DegUp(
                 session, direction, session.TrackColours.WithIndex(17929), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
 }
 
@@ -8316,10 +7637,6 @@ static void TwisterRCTrackLeftBanked25DegUpTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackRightBanked25DegUpTo25DegUp(
@@ -8351,10 +7668,6 @@ static void TwisterRCTrackRightBanked25DegUpTo25DegUp(
                 session, direction, session.TrackColours.WithIndex(17939), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
 }
 
@@ -8417,10 +7730,6 @@ static void TwisterRCTrackLeftBankedFlatToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackRightBankedFlatToRightBanked25DegUp(
@@ -8449,10 +7758,6 @@ static void TwisterRCTrackRightBankedFlatToRightBanked25DegUp(
                 session, direction, session.TrackColours.WithIndex(17949), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 }
 
@@ -8483,10 +7788,6 @@ static void TwisterRCTrackLeftBanked25DegUpToLeftBankedFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackRightBanked25DegUpToRightBankedFlat(
@@ -8515,10 +7816,6 @@ static void TwisterRCTrackRightBanked25DegUpToRightBankedFlat(
                 session, direction, session.TrackColours.WithIndex(17957), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 }
 
@@ -8584,10 +7881,6 @@ static void TwisterRCTrackFlatToLeftBanked25DegUp(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackFlatToRightBanked25DegUp(
@@ -8619,10 +7912,6 @@ static void TwisterRCTrackFlatToRightBanked25DegUp(
                 session, direction, session.TrackColours.WithIndex(17901), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 }
 
@@ -8656,10 +7945,6 @@ static void TwisterRCTrackLeftBanked25DegUpToFlat(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackRightBanked25DegUpToFlat(
@@ -8691,10 +7976,6 @@ static void TwisterRCTrackRightBanked25DegUpToFlat(
                 session, direction, session.TrackColours.WithIndex(17911), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 }
 
@@ -8863,7 +8144,6 @@ static void TwisterRCTrackFlatTo60DegUp(
                     { { 0, 2, height }, { 32, 27, 4 } });
                 break;
         }
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
     }
     else
     {
@@ -8896,7 +8176,6 @@ static void TwisterRCTrackFlatTo60DegUp(
                     { { 0, 2, height }, { 32, 27, 4 } });
                 break;
         }
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
     }
 }
 
@@ -8935,7 +8214,6 @@ static void TwisterRCTrack60DegUpToFlat(
                     { { 0, 2, height }, { 32, 27, 4 } });
                 break;
         }
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
     }
     else
     {
@@ -8968,7 +8246,6 @@ static void TwisterRCTrack60DegUpToFlat(
                     { { 0, 2, height }, { 32, 27, 4 } });
                 break;
         }
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
     }
 }
 
@@ -9019,7 +8296,6 @@ static void TwisterRCTrackBrakeForDrop(
                 { { 0, 4, height }, { 32, 2, 43 } });
             break;
     }
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
 }
 
 /* The following track elements used to be specific to the Steel Twister */
@@ -9049,7 +8325,6 @@ static void TwisterRCTrackHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(17641), { 0, 6, height }, { 32, 20, 7 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -9058,28 +8333,20 @@ static void TwisterRCTrackHalfLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17627), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17635), { 0, 14, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17632), { 0, 6, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17640), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
             }
             break;
@@ -9168,9 +8435,6 @@ static void TwisterRCTrackLeftCorkscrewUp(
                     break;
             }
 
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-
             break;
         case 1:
             switch (direction)
@@ -9222,9 +8486,6 @@ static void TwisterRCTrackLeftCorkscrewUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, session.SupportColours);
-
             break;
     }
 }
@@ -9259,7 +8520,6 @@ static void TwisterRCTrackRightCorkscrewUp(
                         { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -9311,9 +8571,6 @@ static void TwisterRCTrackRightCorkscrewUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, session.SupportColours);
-
             break;
     }
 }
@@ -9362,11 +8619,6 @@ void TwisterRCTrackFlatTo60DegUpLongBase(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
-            }
             break;
         case 1:
             switch (direction)
@@ -9391,11 +8643,6 @@ void TwisterRCTrackFlatTo60DegUpLongBase(
                         session, direction, session.TrackColours.WithIndex(18043), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             }
             break;
         case 2:
@@ -9422,11 +8669,6 @@ void TwisterRCTrackFlatTo60DegUpLongBase(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
             break;
         case 3:
             switch (direction)
@@ -9451,11 +8693,6 @@ void TwisterRCTrackFlatTo60DegUpLongBase(
                         session, direction, session.TrackColours.WithIndex(18045), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 18, height, session.SupportColours);
             }
             break;
     }
@@ -9492,11 +8729,6 @@ void TwisterRCTrack60DegUpToFlatLongBase(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
-            }
             break;
         case 1:
             switch (direction)
@@ -9521,11 +8753,6 @@ void TwisterRCTrack60DegUpToFlatLongBase(
                         session, direction, session.TrackColours.WithIndex(18059), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
             }
             break;
         case 2:
@@ -9552,11 +8779,6 @@ void TwisterRCTrack60DegUpToFlatLongBase(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
-            }
             break;
         case 3:
             switch (direction)
@@ -9581,11 +8803,6 @@ void TwisterRCTrack60DegUpToFlatLongBase(
                         session, direction, session.TrackColours.WithIndex(18061), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
             }
             break;
     }
@@ -9623,8 +8840,6 @@ static void TwisterRCTrackLeftBarrelRollUpToDown(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17666), { 0, 0, height },
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 2, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -9633,8 +8848,6 @@ static void TwisterRCTrackLeftBarrelRollUpToDown(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17669), { 0, 0, height },
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -9643,8 +8856,6 @@ static void TwisterRCTrackLeftBarrelRollUpToDown(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17672), { 0, 0, height },
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 2, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9653,8 +8864,6 @@ static void TwisterRCTrackLeftBarrelRollUpToDown(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17675), { 0, 0, height },
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
                     break;
             }
             break;
@@ -9751,8 +8960,6 @@ static void TwisterRCTrackRightBarrelRollUpToDown(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17678), { 0, 0, height },
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -9761,8 +8968,6 @@ static void TwisterRCTrackRightBarrelRollUpToDown(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17681), { 0, 0, height },
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 2, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -9771,8 +8976,6 @@ static void TwisterRCTrackRightBarrelRollUpToDown(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17684), { 0, 0, height },
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9781,8 +8984,6 @@ static void TwisterRCTrackRightBarrelRollUpToDown(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17687), { 0, 0, height },
                         { { 0, 6, height + 28 }, { 32, 20, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 2, height, session.SupportColours);
                     break;
             }
             break;
@@ -9906,7 +9107,6 @@ static void TwisterRCTrackPoweredLift(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
 }
 
 void TwisterRCTrackLeftLargeHalfLoopUp(
@@ -9939,7 +9139,6 @@ void TwisterRCTrackLeftLargeHalfLoopUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -9965,7 +9164,6 @@ void TwisterRCTrackLeftLargeHalfLoopUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -9999,29 +9197,21 @@ void TwisterRCTrackLeftLargeHalfLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17735), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 20, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17742), { 0, 0, height },
                         { { 0, 0, height + 200 }, { 32, 16, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 22, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17749), { 0, 0, height },
                         { { 0, 16, height + 200 }, { 32, 16, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 20, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17756), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 20, height, session.SupportColours);
                     break;
             }
             break;
@@ -10133,7 +9323,6 @@ void TwisterRCTrackRightLargeHalfLoopUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -10159,7 +9348,6 @@ void TwisterRCTrackRightLargeHalfLoopUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -10193,29 +9381,21 @@ void TwisterRCTrackRightLargeHalfLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17784), { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 20, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17777), { 0, 0, height },
                         { { 0, 16, height + 200 }, { 32, 16, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 20, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17770), { 0, 0, height },
                         { { 0, 0, height + 200 }, { 32, 16, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 22, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17763), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 20, height, session.SupportColours);
                     break;
             }
             break;
@@ -10422,10 +9602,6 @@ void TwisterRCTrackBooster(
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 static void TwisterRCTrackLeftTwistDownToUp(
@@ -10458,8 +9634,6 @@ static void TwisterRCTrackLeftTwistDownToUp(
                         { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height - 5, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -10502,8 +9676,6 @@ static void TwisterRCTrackLeftTwistDownToUp(
                         session, direction, session.TrackColours.WithIndex(27433), { 0, 6, height - 8 }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 4, session.SupportColours);
 
             break;
     }
@@ -10539,8 +9711,6 @@ static void TwisterRCTrackRightTwistDownToUp(
                         { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height - 5, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -10583,8 +9753,6 @@ static void TwisterRCTrackRightTwistDownToUp(
                         session, direction, session.TrackColours.WithIndex(27445), { 0, 6, height - 8 }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 4, session.SupportColours);
 
             break;
     }
@@ -10616,8 +9784,6 @@ static void TwisterRCTrackLeftTwistUpToDown(
                         session, direction, session.TrackColours.WithIndex(27438), { 0, 6, height - 8 }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 4, session.SupportColours);
 
             break;
         case 1:
@@ -10665,8 +9831,6 @@ static void TwisterRCTrackLeftTwistUpToDown(
                         { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height - 5, session.SupportColours);
             break;
     }
 }
@@ -10697,8 +9861,6 @@ static void TwisterRCTrackRightTwistUpToDown(
                         session, direction, session.TrackColours.WithIndex(27450), { 0, 6, height - 8 }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 4, session.SupportColours);
 
             break;
         case 1:
@@ -10746,8 +9908,6 @@ static void TwisterRCTrackRightTwistUpToDown(
                         { { 0, 0, height + 6 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height - 5, session.SupportColours);
             break;
     }
 }
@@ -10762,8 +9922,6 @@ void TwisterRCTrackDiagBrakes(
 
     if (trackSequence == 3)
     {
-        MetalASupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 }
 
@@ -10777,8 +9935,6 @@ void TwisterRCTrackDiagBlockBrakes(
 
     if (trackSequence == 3)
     {
-        MetalASupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 }
 
@@ -10813,8 +9969,6 @@ static void TwisterRCTrackLeftFlyerTwistUp(
                         { { 0, 6, height + 6 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height - 5, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -10860,9 +10014,6 @@ static void TwisterRCTrackLeftFlyerTwistUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, session.SupportColours);
-
             break;
     }
 }
@@ -10898,8 +10049,6 @@ static void TwisterRCTrackRightFlyerTwistUp(
                         { { 0, 6, height + 6 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height - 5, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -10943,9 +10092,6 @@ static void TwisterRCTrackRightFlyerTwistUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, session.SupportColours);
-
             break;
     }
 }
@@ -10977,7 +10123,6 @@ static void TwisterRCTrackFlyerHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(17641), { 0, 6, height }, { 32, 20, 7 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -10986,28 +10131,20 @@ static void TwisterRCTrackFlyerHalfLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17627), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17635), { 0, 14, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17632), { 0, 6, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17640), { 0, 6, height }, { 32, 20, 3 });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
             }
             break;
@@ -11088,7 +10225,6 @@ static void TwisterRCTrackLeftEighthToDiagUp25(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -11147,29 +10283,21 @@ static void TwisterRCTrackLeftEighthToDiagUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 3)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 7)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 11)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 15)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 1, height, session.SupportColours);
                     break;
             }
             break;
@@ -11206,7 +10334,6 @@ static void TwisterRCTrackRightEighthToDiagUp25(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -11265,29 +10392,21 @@ static void TwisterRCTrackRightEighthToDiagUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 19)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 1, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 23)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 27)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 3, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 31)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
                     break;
             }
             break;
@@ -11307,29 +10426,21 @@ static void TwisterRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 32)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 36)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 18, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 40)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 3, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 44)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -11407,7 +10518,6 @@ static void TwisterRCTrackLeftEighthToOrthogonalUp25(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
 
             break;
     }
@@ -11426,29 +10536,21 @@ static void TwisterRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 48)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 3, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 52)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 56)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 18, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE + 60)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -11526,7 +10628,6 @@ static void TwisterRCTrackRightEighthToOrthogonalUp25(
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
             break;
     }
 }
@@ -11610,23 +10711,15 @@ static void TwisterRCTrackDiagUp25ToLeftBankedUp25(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 2)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, session.SupportColours);
                     break;
             }
             break;
@@ -11676,23 +10769,15 @@ static void TwisterRCTrackDiagUp25ToRightBankedUp25(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 6)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, session.SupportColours);
                     break;
             }
             break;
@@ -11742,23 +10827,15 @@ static void TwisterRCTrackDiagLeftBankedUp25ToUp25(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 12)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 9, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 9, height, session.SupportColours);
                     break;
             }
             break;
@@ -11808,23 +10885,15 @@ static void TwisterRCTrackDiagRightBankedUp25ToUp25(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 16)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 9, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 9, height, session.SupportColours);
                     break;
             }
             break;
@@ -11903,23 +10972,15 @@ static void TwisterRCTrackDiagLeftBankedFlatToLeftBankedUp25(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 21)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -11966,23 +11027,15 @@ static void TwisterRCTrackDiagRightBankedFlatToRightBankedUp25(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 25)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -12029,23 +11082,15 @@ static void TwisterRCTrackDiagLeftBankedUp25ToLeftBankedFlat(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 29)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                     break;
             }
             break;
@@ -12092,23 +11137,15 @@ static void TwisterRCTrackDiagRightBankedUp25ToRightBankedFlat(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 33)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                     break;
             }
             break;
@@ -12187,23 +11224,15 @@ static void TwisterRCTrackDiagUp25LeftBanked(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 37)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 11, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 11, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 11, height, session.SupportColours);
                     break;
             }
             break;
@@ -12250,23 +11279,15 @@ static void TwisterRCTrackDiagUp25RightBanked(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 11, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 41)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 11, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 11, height, session.SupportColours);
                     break;
             }
             break;
@@ -12330,23 +11351,15 @@ static void TwisterRCTrackDiagFlatToLeftBankedUp25(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 46)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -12396,23 +11409,15 @@ static void TwisterRCTrackDiagFlatToRightBankedUp25(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 50)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             break;
@@ -12462,23 +11467,15 @@ static void TwisterRCTrackDiagLeftBankedUp25ToFlat(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 56)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
             break;
@@ -12528,23 +11525,15 @@ static void TwisterRCTrackDiagRightBankedUp25ToFlat(
             switch (direction)
             {
                 case 0:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 60)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
                     break;
                 case 2:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
             break;
@@ -12596,29 +11585,21 @@ static void TwisterRCTrackLeftEighthBankToDiagUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 64)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height - 4, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 68)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 72)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 76)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
             }
             break;
@@ -12679,29 +11660,21 @@ static void TwisterRCTrackLeftEighthBankToDiagUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 67)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 1, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 71)),
                         { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 75)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 79)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 7, height, session.SupportColours);
                     break;
             }
             break;
@@ -12721,29 +11694,21 @@ static void TwisterRCTrackRightEighthBankToDiagUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 80)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 84)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 88)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 92)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height - 4, session.SupportColours);
                     break;
             }
             break;
@@ -12804,29 +11769,21 @@ static void TwisterRCTrackRightEighthBankToDiagUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 83)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 87)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 91)),
                         { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 95)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 1, height, session.SupportColours);
                     break;
             }
             break;
@@ -12846,29 +11803,21 @@ static void TwisterRCTrackLeftEighthBankToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 96)),
                         { 0, 0, height }, { { 0, 0, height + 40 }, { 32, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 100)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 104)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                     break;
             }
             break;
@@ -12929,29 +11878,21 @@ static void TwisterRCTrackLeftEighthBankToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 99)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 103)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 107)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 111)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
             }
             break;
@@ -12971,29 +11912,21 @@ static void TwisterRCTrackRightEighthBankToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 112)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 116)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
                         { 0, 0, height }, { { 0, 0, height + 40 }, { 32, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                     break;
             }
             break;
@@ -13054,29 +11987,21 @@ static void TwisterRCTrackRightEighthBankToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 115)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 119)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 123)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_GENTLE_LARGE_CURVE_BANKED + 127)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
             }
             break;
@@ -13152,8 +12077,6 @@ static void TwisterRCTrackLeftLargeCorkscrewUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-
             break;
         case 1:
             switch (direction)
@@ -13162,29 +12085,21 @@ static void TwisterRCTrackLeftLargeCorkscrewUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 1)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 21, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 6)),
                         { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 19, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 11)),
                         { 0, 0, height }, { { 0, 6, height }, { 30, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 20, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 16, height, session.SupportColours);
                     break;
             }
             break;
@@ -13222,29 +12137,21 @@ static void TwisterRCTrackLeftLargeCorkscrewUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 3)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 63, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 8)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 63, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 13)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 63, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 18)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 63, session.SupportColours);
                     break;
             }
 
@@ -13309,8 +12216,6 @@ static void TwisterRCTrackRightLargeCorkscrewUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-
             break;
         case 1:
             switch (direction)
@@ -13319,29 +12224,21 @@ static void TwisterRCTrackRightLargeCorkscrewUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 21)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 16, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 26)),
                         { 0, 0, height }, { { 0, 6, height }, { 30, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 20, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 31)),
                         { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 19, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 36)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 21, height, session.SupportColours);
                     break;
             }
             break;
@@ -13379,29 +12276,21 @@ static void TwisterRCTrackRightLargeCorkscrewUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 23)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 63, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 28)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 63, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 33)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 63, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_CORKSCREW + 38)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 63, session.SupportColours);
                     break;
             }
             break;
@@ -13481,8 +12370,6 @@ static void TwisterRCTrackLeftMediumHalfLoopUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
-
             break;
         case 1:
             switch (direction)
@@ -13523,29 +12410,21 @@ static void TwisterRCTrackLeftMediumHalfLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_MEDIUM_HALF_LOOP + 2)),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_MEDIUM_HALF_LOOP + 7)),
                         { 0, 0, height }, { { 29, 0, height }, { 1, 32, 96 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 16, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_MEDIUM_HALF_LOOP + 12)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 18, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_MEDIUM_HALF_LOOP + 17)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 14, height, session.SupportColours);
                     break;
             }
             break;
@@ -13634,8 +12513,6 @@ static void TwisterRCTrackRightMediumHalfLoopUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
-
             break;
         case 1:
             switch (direction)
@@ -13676,29 +12553,21 @@ static void TwisterRCTrackRightMediumHalfLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_MEDIUM_HALF_LOOP + 22)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_MEDIUM_HALF_LOOP + 27)),
                         { 0, 0, height }, { { 30, 16, height }, { 0, 32, 96 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 18, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_MEDIUM_HALF_LOOP + 32)),
                         { 0, 0, height }, { { 29, 0, height }, { 0, 32, 96 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 16, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_MEDIUM_HALF_LOOP + 37)),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
-                    MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 14, height, session.SupportColours);
                     break;
             }
             break;
@@ -13787,8 +12656,6 @@ static void TwisterRCTrackLeftZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_ZERO_G_ROLL + 1)), { 0, 0, height },
                         { { 0, 6, height + 32 }, { 32, 20, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13797,22 +12664,16 @@ static void TwisterRCTrackLeftZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_ZERO_G_ROLL + 5)), { 0, 0, height },
                         { { 0, 31, height }, { 40, 1, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_ZERO_G_ROLL + 8)), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_ZERO_G_ROLL + 12)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
 
@@ -13872,8 +12733,6 @@ static void TwisterRCTrackLeftZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height + 36 }, { 32, 20, 0 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
             break;
     }
 }
@@ -13891,15 +12750,11 @@ static void TwisterRCTrackRightZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_ZERO_G_ROLL + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_ZERO_G_ROLL + 20)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -13908,8 +12763,6 @@ static void TwisterRCTrackRightZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_ZERO_G_ROLL + 25)),
                         { 0, 0, height }, { { 0, 31, height }, { 40, 1, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -13918,8 +12771,6 @@ static void TwisterRCTrackRightZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_ZERO_G_ROLL + 29)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
             }
             break;
@@ -13978,8 +12829,6 @@ static void TwisterRCTrackRightZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 40, 20, 1 } });
                     break;
             }
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
             break;
     }
 }
@@ -14031,7 +12880,6 @@ static void TwisterRCTrackLeftLargeZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 21, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -14096,15 +12944,11 @@ static void TwisterRCTrackLeftLargeZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_ZERO_G_ROLL + 4)),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 25, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_ZERO_G_ROLL + 8)),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 20 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 32, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -14113,15 +12957,11 @@ static void TwisterRCTrackLeftLargeZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_ZERO_G_ROLL + 14)),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 36, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_ZERO_G_ROLL + 19)),
                         { 0, 0, height }, { { 0, 18, height }, { 32, 1, 30 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 37, session.SupportColours);
                     break;
             }
             break;
@@ -14161,7 +13001,6 @@ static void TwisterRCTrackRightLargeZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 21, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -14227,8 +13066,6 @@ static void TwisterRCTrackRightLargeZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_ZERO_G_ROLL + 24)),
                         { 0, 0, height }, { { 0, 18, height }, { 32, 1, 30 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 37, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14237,22 +13074,16 @@ static void TwisterRCTrackRightLargeZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_ZERO_G_ROLL + 30)),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 36, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_ZERO_G_ROLL + 34)),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 20 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 32, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_LARGE_ZERO_G_ROLL + 39)),
                         { 0, 0, height }, { { 0, 26, height }, { 40, 0, 32 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 25, session.SupportColours);
                     break;
             }
             break;
@@ -14315,26 +13146,18 @@ static void TwisterRCTrackDiagFlatTo60DegUpLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 3)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 0, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 10)),
                         { -16, -16, height }, { { -20, -20, height + 8 }, { 24, 24, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14362,26 +13185,18 @@ static void TwisterRCTrackDiagFlatTo60DegUpLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 11, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 4)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 11, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 11, height + 0, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 11)),
                         { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 11, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14409,23 +13224,15 @@ static void TwisterRCTrackDiagFlatTo60DegUpLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 19, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 5)),
                         { -16, -16, height }, { { -16, -16, height + 80 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 19, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 19, height + 0, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 19, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14472,26 +13279,18 @@ static void TwisterRCTrackDiag60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 28, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 15)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 28, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 28, height + 0, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 22)),
                         { -16, -16, height }, { { -8, -8, height + 56 }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14519,26 +13318,18 @@ static void TwisterRCTrackDiag60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 16)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 10, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 10, height + 0, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 23)),
                         { -16, -16, height }, { { -16, -16, height + 24 }, { 24, 24, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14566,23 +13357,15 @@ static void TwisterRCTrackDiag60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 3, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 17)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 3, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 3, height + 0, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 3, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14629,26 +13412,18 @@ static void TwisterRCTrackDiagFlatTo60DegDownLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 23)),
                         { -16, -16, height }, { { -16, -16, height + 24 }, { 24, 24, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 24, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 24, height + 0, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 16)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 24, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14676,26 +13451,18 @@ static void TwisterRCTrackDiagFlatTo60DegDownLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 58, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 22)),
                         { -16, -16, height }, { { -8, -8, height + 56 }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 58, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 58, height + 0, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 15)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 58, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14723,23 +13490,15 @@ static void TwisterRCTrackDiagFlatTo60DegDownLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 14, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 21)),
                         { -16, -16, height }, { { -8, -8, height + 0 }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 14, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 14, height + 0, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 14, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14786,26 +13545,18 @@ static void TwisterRCTrackDiag60DegDownToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 38, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 11)),
                         { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 38, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 38, height + 0, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 4)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 38, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14833,26 +13584,18 @@ static void TwisterRCTrackDiag60DegDownToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 12, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 10)),
                         { -16, -16, height }, { { -8, -8, height + 8 }, { 24, 24, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 12, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 12, height + 0, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 3)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 12, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14880,23 +13623,15 @@ static void TwisterRCTrackDiag60DegDownToFlatLongBase(
             switch (direction)
             {
                 case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 0, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_FLAT_TO_STEEP_DIAGONAL + 9)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 0, session.SupportColours);
                     break;
                 case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 0, session.SupportColours);
                     break;
                 case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 0, session.SupportColours);
                     break;
             }
             break;
@@ -14951,29 +13686,21 @@ static void TwisterRCTrackLeftEighthDiveLoopUpToOrthogonal(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 1)),
                         { -16, -16, height }, { { 0, 31, height + 0 }, { 32, 1, 64 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 4, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 5)),
                         { -16, -16, height }, { { 0, 31, height + 0 }, { 32, 1, 64 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 4, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 9)),
                         { -16, -16, height }, { { 2, 2, height + 4 }, { 28, 28, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 4, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 13)),
                         { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 4, session.SupportColours);
                     break;
             }
             break;
@@ -15009,29 +13736,21 @@ static void TwisterRCTrackLeftEighthDiveLoopUpToOrthogonal(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 3)),
                         { -16, -16, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 7)),
                         { -16, -16, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 11)),
                         { -16, -16, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 15)),
                         { -16, -16, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, session.SupportColours);
                     break;
             }
             break;
@@ -15086,29 +13805,21 @@ static void TwisterRCTrackRightEighthDiveLoopUpToOrthogonal(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 17)),
                         { -16, -16, height }, { { 2, 2, height + 4 }, { 28, 28, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 4, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 21)),
                         { -16, -16, height }, { { 31, 0, height + 0 }, { 1, 32, 64 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 4, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 25)),
                         { -16, -16, height }, { { 31, 0, height + 0 }, { 1, 32, 64 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 4, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 29)),
                         { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 4, session.SupportColours);
                     break;
             }
             break;
@@ -15144,29 +13855,21 @@ static void TwisterRCTrackRightEighthDiveLoopUpToOrthogonal(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 19)),
                         { -16, -16, height }, { { 6, 0, height + 32 }, { 20, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 23)),
                         { -16, -16, height }, { { 6, 0, height + 32 }, { 20, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 27)),
                         { -16, -16, height }, { { 6, 0, height + 32 }, { 20, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 31)),
                         { -16, -16, height }, { { 6, 0, height + 32 }, { 20, 32, 1 } });
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, session.SupportColours);
                     break;
             }
             break;

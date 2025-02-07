@@ -158,12 +158,6 @@ static void classicStandUpRCTrackFlatToLeftBank(
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-    }
 }
 
 static void classicStandUpRCTrackFlatToRightBank(
@@ -179,12 +173,6 @@ static void classicStandUpRCTrackFlatToRightBank(
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-    }
 }
 
 static void classicStandUpRCTrackLeftBankToFlat(
@@ -221,8 +209,6 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
 
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
             break;
         }
         case 1:
@@ -321,8 +307,6 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(map[direction]), { 6, 0, height }, { 20, 32, 3 });
 
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
             break;
         }
     }
@@ -351,12 +335,6 @@ static void classicStandUpRCTrackLeftBankTo25DegUp(
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
-    }
 }
 
 static void classicStandUpRCTrackRightBankTo25DegUp(
@@ -372,12 +350,6 @@ static void classicStandUpRCTrackRightBankTo25DegUp(
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
-    }
 }
 
 static void classicStandUpRCTrack25DegUpToLeftBank(
@@ -393,12 +365,6 @@ static void classicStandUpRCTrack25DegUpToLeftBank(
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-    }
 }
 
 static void classicStandUpRCTrack25DegUpToRightBank(
@@ -414,12 +380,6 @@ static void classicStandUpRCTrack25DegUpToRightBank(
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-    }
 }
 
 static void classicStandUpRCTrackLeftBankTo25DegDown(
@@ -467,12 +427,6 @@ static void classicStandUpRCTrackLeftBank(
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-    }
 }
 
 static void classicStandUpRCTrackRightBank(
@@ -508,8 +462,6 @@ static void classicStandUpRCTrackLeftEighthBankToDiag(
                 session, direction, session.TrackColours.WithIndex(imageId), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
 
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -585,8 +537,6 @@ static void classicStandUpRCTrackLeftEighthBankToDiag(
                         { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 0, height, session.SupportColours);
 
             break;
     }
@@ -617,8 +567,6 @@ static void classicStandUpRCTrackRightEighthBankToDiag(
                 session, direction, session.TrackColours.WithIndex(imageId), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
 
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -694,8 +642,6 @@ static void classicStandUpRCTrackRightEighthBankToDiag(
                         { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
 
             break;
     }
@@ -742,8 +688,6 @@ static void classicStandUpRCTrackRightBankedQuarterTurn3(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(imageId), { 0, 6, height }, { 32, 20, 3 });
 
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -772,8 +716,6 @@ static void classicStandUpRCTrackRightBankedQuarterTurn3(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(imageId), { 6, 0, height }, { 20, 32, 3 });
 
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
             break;
     }
 }
@@ -835,8 +777,6 @@ static inline void classicStandUpRCTrackDiagFlatWithBank(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
 
             break;
     }
@@ -942,8 +882,6 @@ static void classicStandUpRCTrackDiagFlatTo25DegUpBanked(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
 
             break;
     }
@@ -1032,8 +970,6 @@ static void classicStandUpRCTrackDiag25DegUpToFlatBanked(
                         { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
-            MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 8, height, session.SupportColours);
 
             break;
     }

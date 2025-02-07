@@ -252,24 +252,6 @@ static void AirPoweredVerticalRCTrackRightQuarterTurn5(
     TrackPaintUtilRightQuarterTurn5TilesPaint3(session, height, direction, trackSequence, session.TrackColours, imageIds);
     DrawSupportForSequenceA<TrackElemType::RightQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-    switch (trackSequence)
-    {
-        case 0:
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        case 6:
-            break;
-    }
 }
 
 static void AirPoweredVerticalRCTrackLeftQuarterTurn5(
@@ -398,24 +380,6 @@ static void AirPoweredVerticalRCTrackBankedRightQuarterTurn5(
 
     DrawSupportForSequenceA<TrackElemType::BankedRightQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-    switch (trackSequence)
-    {
-        case 0:
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        case 6:
-            break;
-    }
 }
 
 static void AirPoweredVerticalRCTrackBankedLeftQuarterTurn5(

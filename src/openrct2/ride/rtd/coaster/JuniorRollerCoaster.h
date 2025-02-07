@@ -22,7 +22,12 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::juniorRollerCoaster,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
-        .supportType = MetalSupportType::Fork,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(MetalSupportType::Fork));
+            array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(MetalSupportType::Boxed);
+            return array;
+        }(),
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill,TrackGroup::liftHillCurve, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},

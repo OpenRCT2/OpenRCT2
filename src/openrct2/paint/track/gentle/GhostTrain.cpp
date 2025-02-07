@@ -14,7 +14,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -153,11 +152,6 @@ static void PaintGhostTrainTrackFlat(
     auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlat[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x00770BFC */
@@ -170,11 +164,6 @@ static void PaintGhostTrainTrack25DegUp(
 
     imageId = session.TrackColours.WithIndex(kGhostTrainTrackPieces25DegUp[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 23 } });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x00770C0C */
@@ -187,11 +176,6 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
 
     imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlatTo25DegUp[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 15 } });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
-    }
 }
 
 static void PaintGhostTrainTrack25DegUpToFlatShared(
@@ -203,11 +187,6 @@ static void PaintGhostTrainTrack25DegUpToFlatShared(
 
     imageId = session.TrackColours.WithIndex(kGhostTrainTrackPieces25DegUpToFlat[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 15 } });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x00770C1C */
@@ -263,8 +242,6 @@ static void PaintGhostTrainStation(
     imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlat[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 3 } });
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 }
 
@@ -276,14 +253,6 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, kGhostTrainTrackPiecesQuarterTurn3Tiles, nullptr,
         defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesBoundOffsets);
-
-    switch (trackSequence)
-    {
-        case 0:
-        case 3:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-            break;
-    }
 }
 
 /** rct2: 0x00770CAC */
@@ -303,8 +272,6 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
 {
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 3, height, 0, direction, session.TrackColours, kGhostTrainTrackPiecesQuarterTurn1Tile);
-
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 }
 
 /** rct2: 0x00770CBC */
@@ -340,11 +307,6 @@ static void PaintGhostTrainTrackBrakes(
     auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesBrakes[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
 }
 
 /**

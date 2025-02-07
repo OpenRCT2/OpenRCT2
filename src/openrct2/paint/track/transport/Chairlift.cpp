@@ -16,7 +16,6 @@
 #include "../../../world/tile_element/TileElement.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -84,44 +83,6 @@ const uint32_t chairlift_bullwheel_frames[] = {
     SPR_CHAIRLIFT_BULLWHEEL_FRAME_3,
     SPR_CHAIRLIFT_BULLWHEEL_FRAME_4,
 };
-
-static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segments, uint16_t height, SupportType supportType)
-{
-    bool success = false;
-
-    for (uint8_t s = 0; s < std::size(kSegmentOffsets); s++)
-    {
-        if (!(segments & kSegmentOffsets[s]))
-        {
-            continue;
-        }
-
-        if (MetalASupportsPaintSetup(
-                session, supportType.metal, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours))
-        {
-            success = true;
-        }
-    }
-
-    if (success)
-    {
-        return;
-    }
-
-    SupportHeight* supportSegments = session.SupportSegments;
-    for (uint8_t s = 0; s < std::size(kSegmentOffsets); s++)
-    {
-        if (!(segments & kSegmentOffsets[s]))
-        {
-            continue;
-        }
-        uint16_t temp = supportSegments[s].height;
-        supportSegments[s].height = session.Support.height;
-        MetalASupportsPaintSetup(
-            session, supportType.metal, static_cast<MetalSupportPlace>(s), 0, height, session.SupportColours);
-        supportSegments[s].height = temp;
-    }
-}
 
 static const TrackElement* ChairliftPaintUtilMapGetTrackElementAtFromRideFuzzy(
     int32_t x, int32_t y, int32_t z, const Ride& ride)
@@ -469,8 +430,6 @@ static void ChairliftPaintFlatTo25DegUp(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
             break;
     }
-
-    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height, supportType);
 }
 
 /** rct2: 0x00743FF8 */
@@ -514,8 +473,6 @@ static void ChairliftPaint25DegUpToFlat(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 1 }, { 4, 4, 25 } });
             break;
     }
-
-    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height, supportType);
 }
 
 /** rct2: 0x00744008 */
@@ -595,10 +552,6 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 16, 28, height }, { 2, 2, 27 } });
             break;
     }
-
-    ChairliftPaintUtilDrawSupports(
-        session, PaintUtilRotateSegments(EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::bottomLeftSide), direction),
-        height, supportType);
 }
 
 /** rct2: 0x00744048 */

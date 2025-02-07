@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::invertedImpulseCoaster,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsInverted,
-        .supportType = MetalSupportType::TubesInverted,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubesInverted,
         .trackGroupTunnelStyles = []() consteval {
             std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
             array.fill(TunnelStyle::invertedStandard);

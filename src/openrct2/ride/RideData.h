@@ -292,7 +292,9 @@ struct TrackDrawerEntry
 {
     TrackStyle trackStyle = TrackStyle::null;
     std::array<BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> trackGroupBlockedSegmentTypes{};
-    SupportType supportType{};
+    bool blocksOwnSegments = false;
+    SupportType supportType{ WoodenSupportType::Truss };
+    std::array<NewSupportType, EnumValue(TrackGroup::count)> trackGroupSupportTypes{};
     std::array<TunnelStyle, EnumValue(TrackGroup::count)> trackGroupTunnelStyles{};
     TunnelGroup tunnelGroup{};
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */

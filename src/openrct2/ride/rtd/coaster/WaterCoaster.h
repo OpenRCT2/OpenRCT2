@@ -25,7 +25,12 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         {
             .trackStyle = TrackStyle::waterCoaster,
             .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
-            .supportType = MetalSupportType::Fork,
+            .trackGroupSupportTypes = []() consteval {
+                std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+                array.fill(NewSupportType(MetalSupportType::Fork));
+                array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(MetalSupportType::Boxed);
+                return array;
+            }(),
             .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
             .tunnelGroup = TunnelGroup::uninverted,
             .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
@@ -36,7 +41,6 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         {
             .trackStyle = TrackStyle::splashBoats,
             .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsWide,
-            .supportType = WoodenSupportType::Truss,
             .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
             .tunnelGroup = TunnelGroup::uninverted,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend },

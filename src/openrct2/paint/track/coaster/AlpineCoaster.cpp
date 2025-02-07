@@ -16,7 +16,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
@@ -54,11 +53,6 @@ namespace OpenRCT2::AlpineRC
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-            }
         }
         else
         {
@@ -76,11 +70,6 @@ namespace OpenRCT2::AlpineRC
                         session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_FLAT + 1)), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
             }
         }
     }
@@ -111,7 +100,6 @@ namespace OpenRCT2::AlpineRC
         PaintAddImageAsParentRotated(
             session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][2]),
             { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
     }
 
@@ -144,11 +132,6 @@ namespace OpenRCT2::AlpineRC
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
-            }
         }
         else
         {
@@ -174,11 +157,6 @@ namespace OpenRCT2::AlpineRC
                         session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE + 11)), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
             }
         }
     }
@@ -212,11 +190,6 @@ namespace OpenRCT2::AlpineRC
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
-            }
         }
         else
         {
@@ -242,11 +215,6 @@ namespace OpenRCT2::AlpineRC
                         session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE + 3)), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
             }
         }
     }
@@ -280,11 +248,6 @@ namespace OpenRCT2::AlpineRC
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-            }
         }
         else
         {
@@ -310,11 +273,6 @@ namespace OpenRCT2::AlpineRC
                         session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE + 7)), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             }
         }
     }
@@ -370,8 +328,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -424,9 +380,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -469,8 +422,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -575,9 +526,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -620,8 +568,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
                 break;
             case 1:
                 switch (direction)
@@ -697,9 +643,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, DirectionPrev(direction), 0, height,
-                    session.SupportColours);
 
                 break;
         }
@@ -735,8 +678,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
                 break;
             case 1:
                 switch (direction)
@@ -812,9 +753,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::BottomCorner, DirectionNext(direction), 0, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -955,8 +893,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 9, height, session.SupportColours);
                 break;
         }
     }
@@ -1066,8 +1002,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
                 break;
         }
     }
@@ -1165,9 +1099,6 @@ namespace OpenRCT2::AlpineRC
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             break;
                     }
-                    MetalBSupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0,
-                        height + (direction & 1) ? 0 : 2, session.SupportColours);
                 }
                 else
                 {
@@ -1179,9 +1110,6 @@ namespace OpenRCT2::AlpineRC
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             break;
                     }
-                    MetalBSupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 2, height,
-                        session.SupportColours);
                 }
                 break;
         }
@@ -1292,8 +1220,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 8, height, session.SupportColours);
                 break;
         }
     }
@@ -1403,8 +1329,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 break;
         }
     }
@@ -1514,8 +1438,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -1553,11 +1475,6 @@ namespace OpenRCT2::AlpineRC
                     { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-        }
     }
 
     static void TrackFlatToRightBank(
@@ -1592,11 +1509,6 @@ namespace OpenRCT2::AlpineRC
                     session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION + 11)),
                     { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
         }
     }
 
@@ -1647,11 +1559,6 @@ namespace OpenRCT2::AlpineRC
                     { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
-        }
     }
 
     static void TrackRightBankTo25DegUp(
@@ -1686,11 +1593,6 @@ namespace OpenRCT2::AlpineRC
                     session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION + 23)),
                     { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
         }
     }
 
@@ -1727,11 +1629,6 @@ namespace OpenRCT2::AlpineRC
                     { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-        }
     }
 
     static void Track25DegUpToRightBank(
@@ -1766,11 +1663,6 @@ namespace OpenRCT2::AlpineRC
                     session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION + 35)),
                     { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
         }
     }
 
@@ -1828,11 +1720,6 @@ namespace OpenRCT2::AlpineRC
                     session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION + 39)),
                     { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                 break;
-        }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
         }
     }
 
@@ -1896,8 +1783,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -1955,8 +1840,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -2014,8 +1897,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -2073,8 +1954,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -2132,8 +2011,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -2191,8 +2068,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -2250,8 +2125,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 break;
         }
     }
@@ -2309,8 +2182,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 break;
         }
     }
@@ -2368,8 +2239,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 break;
         }
     }
@@ -2427,8 +2296,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 break;
         }
     }
@@ -2486,8 +2353,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -2545,8 +2410,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -2600,8 +2463,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -2655,8 +2516,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 break;
         }
     }
@@ -2694,8 +2553,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -2751,9 +2608,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 2, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -2799,8 +2653,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -2908,9 +2760,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 1, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -2953,8 +2802,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
                 break;
             case 1:
                 switch (direction)
@@ -3030,9 +2877,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, DirectionPrev(direction), 0, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -3067,8 +2911,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
                 break;
             case 1:
                 switch (direction)
@@ -3144,9 +2986,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::BottomCorner, DirectionNext(direction), 0, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -3197,8 +3036,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -3228,9 +3065,6 @@ namespace OpenRCT2::AlpineRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 8, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -3265,8 +3099,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -3296,9 +3128,6 @@ namespace OpenRCT2::AlpineRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), direction == 2 ? 10 : 8,
-                    height, session.SupportColours);
                 break;
         }
     }
@@ -3349,8 +3178,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -3455,9 +3282,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 8, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -3492,8 +3316,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -3598,9 +3420,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 8, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -3651,7 +3470,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 break;
             case 1:
                 switch (direction)
@@ -3677,8 +3495,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         break;
                 }
-                DrawSBendLeftSupports(
-                    session, supportType.metal, trackSequence, direction, direction == 1 ? height - 1 : height, 0, 1);
                 break;
             case 2:
                 switch (direction)
@@ -3704,8 +3520,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { 32, 26, 3 });
                         break;
                 }
-                DrawSBendLeftSupports(
-                    session, supportType.metal, trackSequence, direction, direction == 3 ? height - 1 : height, 0, 1);
                 break;
             case 3:
                 switch (direction)
@@ -3731,7 +3545,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 break;
         }
     }
@@ -3766,7 +3579,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 break;
             case 1:
                 switch (direction)
@@ -3792,7 +3604,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { 32, 26, 3 });
                         break;
                 }
-                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 break;
             case 2:
                 switch (direction)
@@ -3818,7 +3629,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         break;
                 }
-                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 break;
             case 3:
                 switch (direction)
@@ -3844,7 +3654,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 break;
         }
     }
@@ -3882,8 +3691,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 5, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -3939,9 +3746,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height + 8 }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 9, height,
-                    session.SupportColours);
                 break;
             case 4:
                 switch (direction)
@@ -3970,9 +3774,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 5, height,
-                    session.SupportColours);
                 break;
             case 5:
                 break;
@@ -4028,8 +3829,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
                 break;
         }
     }
@@ -4067,8 +3866,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 5, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -4124,9 +3921,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 9, height,
-                    session.SupportColours);
                 break;
             case 4:
                 switch (direction)
@@ -4155,9 +3949,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 5, height,
-                    session.SupportColours);
                 break;
             case 5:
                 break;
@@ -4213,8 +4004,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
                 break;
         }
     }
@@ -4278,8 +4067,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -4387,9 +4174,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height + 8 }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 9, height,
-                    session.SupportColours);
                 break;
             case 7:
                 switch (direction)
@@ -4418,9 +4202,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 3, height,
-                    session.SupportColours);
                 break;
             case 8:
                 break;
@@ -4528,8 +4309,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
                 break;
         }
     }
@@ -4566,8 +4345,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -4675,9 +4452,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), direction == 1 ? 5 : 9,
-                    height, session.SupportColours);
                 break;
             case 7:
                 switch (direction)
@@ -4706,9 +4480,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 3, height,
-                    session.SupportColours);
                 break;
             case 8:
                 break;
@@ -4816,9 +4587,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, direction == 0 ? 5 : 9, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -4868,11 +4636,6 @@ namespace OpenRCT2::AlpineRC
                     { { 0, 6, height }, { 32, 20, 3 } });
                 break;
         }
-        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-        }
     }
 
     static void TrackLeftBankToLeftQuarterTurn3Tile25DegUp(
@@ -4908,8 +4671,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -4939,9 +4700,6 @@ namespace OpenRCT2::AlpineRC
                             { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 10, height - 6,
-                    session.SupportColours);
                 break;
         }
     }
@@ -4979,8 +4737,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -5010,9 +4766,6 @@ namespace OpenRCT2::AlpineRC
                             { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 10, height - 6,
-                    session.SupportColours);
                 break;
         }
     }
@@ -5047,8 +4800,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height - 6, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -5081,9 +4832,6 @@ namespace OpenRCT2::AlpineRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 5, height,
-                    session.SupportColours);
                 break;
         }
     }
@@ -5118,8 +4866,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height - 6, session.SupportColours);
                 break;
             case 1:
                 break;
@@ -5152,9 +4898,6 @@ namespace OpenRCT2::AlpineRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 5, height,
-                    session.SupportColours);
                 break;
         }
     }

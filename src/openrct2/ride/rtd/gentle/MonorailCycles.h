@@ -23,7 +23,12 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::monorailCycles,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
-        .supportType = MetalSupportType::Stick,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(MetalSupportType::Stick));
+            array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(MetalSupportType::Boxed);
+            return array;
+        }(),
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve},

@@ -13,7 +13,6 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/Map.h"
 #include "../../Paint.h"
-#include "../../support/MetalSupports.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -45,8 +44,6 @@ static void PaintMiniHelicoptersTrackStation(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
     }
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
-
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 }
 
@@ -66,12 +63,6 @@ static void PaintMiniHelicoptersTrackFlat(
     {
         imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-    }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
     }
 }
 
@@ -101,11 +92,6 @@ static void PaintMiniHelicoptersTrackFlatTo25DegUp(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
             break;
     }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -4, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x0081F358 */
@@ -134,11 +120,6 @@ static void PaintMiniHelicoptersTrack25DegUp(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
             break;
     }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -9, height, session.SupportColours);
-    }
 }
 
 /** rct2: 0x0081F378 */
@@ -166,11 +147,6 @@ static void PaintMiniHelicoptersTrack25DegUpToFlat(
             imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SE_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
             break;
-    }
-
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -7, height, session.SupportColours);
     }
 }
 
@@ -208,18 +184,6 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours,
         kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
-
-    switch (trackSequence)
-    {
-        case 0:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
-            break;
-        case 2:
-            break;
-        case 3:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
-            break;
-    }
 }
 
 static constexpr uint8_t kMiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[] = {

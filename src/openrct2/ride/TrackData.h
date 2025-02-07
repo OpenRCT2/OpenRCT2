@@ -83,12 +83,6 @@ namespace OpenRCT2::TrackMetaData
         WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None;
     };
 
-    struct SequenceMetalSupport
-    {
-        MetalSupportPlace place = MetalSupportPlace::None;
-        uint8_t alternates = false;
-    };
-
     struct SequenceTunnel
     {
         int16_t height = 0;
@@ -158,7 +152,6 @@ namespace OpenRCT2::TrackMetaData
         /** rct2: 0x0099BA64 */
         uint16_t flags{};
         SequenceWoodenSupport woodenSupports{};
-        SequenceMetalSupport metalSupports{};
         int8_t extraSupportRotation = 0;
         SequenceTunnels tunnels{};
     };
