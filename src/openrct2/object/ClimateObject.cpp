@@ -21,6 +21,7 @@ struct RawClimateMonth
     int8_t baseTemperature;
     int8_t randomBias;
     uint8_t distribution[kNumWeatherTypes]{};
+    int8_t distRotation{};
     int16_t distributionSum{};
 };
 
@@ -86,6 +87,11 @@ static Climate convertRawClimate(const RawClimate& rawClimate)
                 i++;
             }
         }
+
+        // Rotate weather distribution to be less biased towards sunny weather
+        auto begin = std::begin(dstMonth.distribution);
+        auto end = std::end(dstMonth.distribution);
+        std::rotate(begin, begin + srcMonth.distRotation, end);
     }
 
     return climate;
@@ -127,6 +133,7 @@ static RawClimate readWeatherTable(json_t& weather)
             rawClimate[i].baseTemperature = Json::GetNumber<int8_t>(month["baseTemperature"]);
             rawClimate[i].randomBias = Json::GetNumber<int8_t>(month["randomBias"]);
             rawClimate[i].distribution[j] = weight;
+            rawClimate[i].distRotation = Json::GetNumber<int8_t>(month["distRotation"]);
             rawClimate[i].distributionSum += weight;
         }
 
