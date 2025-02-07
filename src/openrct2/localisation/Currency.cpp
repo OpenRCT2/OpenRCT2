@@ -16,6 +16,8 @@
 #include "Language.h"
 #include "StringIds.h"
 
+#include <cstring>
+
 using namespace OpenRCT2;
 
 // clang-format off
