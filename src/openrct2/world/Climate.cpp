@@ -9,6 +9,7 @@
 
 #include "Climate.h"
 
+#include "../../platform/Platform.h"
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
@@ -25,7 +26,6 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../../platform/Platform.h"
 
 #include <iterator>
 #include <memory>
