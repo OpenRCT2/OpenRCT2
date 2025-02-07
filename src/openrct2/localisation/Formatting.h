@@ -9,11 +9,11 @@
 
 #pragma once
 
+#include "../core/StringTypes.h"
 #include "FormatCodes.h"
-#include "Language.h"
+#include "StringIdType.h"
 
 #include <cstring>
-#include <sstream>
 #include <stack>
 #include <string>
 #include <string_view>
