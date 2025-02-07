@@ -29,7 +29,6 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
-#include <openrct2/localisation/Formatter.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -40,6 +39,8 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 using namespace OpenRCT2::Ui::Windows;
+
+class Formatter;
 
 namespace WindowCloseFlags
 {
