@@ -12,7 +12,6 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../core/Imaging.h"
-#include "../../localisation/Formatter.h"
 #include "../../localisation/StringIds.h"
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"

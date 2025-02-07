@@ -22,7 +22,6 @@
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectLimits.h"

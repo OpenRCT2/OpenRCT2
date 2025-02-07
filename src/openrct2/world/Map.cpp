@@ -30,7 +30,6 @@
 #include "../entity/Staff.h"
 #include "../interface/Cursors.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/LargeSceneryEntry.h"
