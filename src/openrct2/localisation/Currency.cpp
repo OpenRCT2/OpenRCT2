@@ -13,7 +13,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
-#include "Formatting.h"
+#include "Language.h"
 #include "StringIds.h"
 
 using namespace OpenRCT2;
