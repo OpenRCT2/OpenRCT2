@@ -9,7 +9,6 @@
 
 #include "Climate.h"
 
-#include "../../platform/Platform.h"
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
@@ -21,6 +20,7 @@
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"
 #include "../drawing/Drawing.h"
+#include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
