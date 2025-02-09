@@ -18,8 +18,10 @@
 #include <vector>
 
 #ifndef _WIN32
-    #if !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)
+    #if defined(__linux__) || defined(__sun)
         #include <alloca.h>
+    #else
+        #include <stdlib.h>
     #endif
     #include <unicode/ucnv.h>
     #include <unicode/unistr.h>

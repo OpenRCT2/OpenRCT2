@@ -38,7 +38,6 @@
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"

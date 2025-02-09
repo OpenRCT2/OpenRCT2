@@ -9,14 +9,14 @@
 
 #pragma once
 
-#include "../localisation/FormatCodes.h"
-
 #include <atomic>
 #include <cstdint>
 #include <string>
 
 struct DrawPixelInfo;
 struct TextInputSession;
+
+enum class FormatToken : uint8_t;
 
 enum class ConsoleInput : uint8_t
 {

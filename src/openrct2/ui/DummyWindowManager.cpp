@@ -7,8 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../localisation/Formatter.h"
 #include "WindowManager.h"
+
+class Formatter;
 
 namespace OpenRCT2::Ui
 {

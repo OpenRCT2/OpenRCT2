@@ -39,7 +39,6 @@
     #include "../core/String.hpp"
     #include "../drawing/IDrawingEngine.h"
     #include "../interface/Screenshot.h"
-    #include "../localisation/Language.h"
     #include "../object/ObjectManager.h"
     #include "../park/ParkFile.h"
     #include "../scenario/Scenario.h"
