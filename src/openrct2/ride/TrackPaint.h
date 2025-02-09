@@ -436,14 +436,6 @@ bool TrackPaintUtilShouldPaintSupports(const CoordsXY& position);
 void TrackPaintUtilDrawPier(
     PaintSession& session, const Ride& ride, const StationObject* stationObject, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation);
-inline void TrackPaintUtilDrawStationTunnel(PaintSession& session, Direction direction, int32_t height)
-{
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
-}
-inline void TrackPaintUtilDrawStationTunnelTall(PaintSession& session, Direction direction, int32_t height)
-{
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Tall);
-}
 
 void TrackPaintUtilRightQuarterTurn5TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
@@ -534,10 +526,6 @@ inline void TrackPaintUtilDiagTilesPaint(
 void TrackPaintUtilDiagTilesPaintExtra(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const uint32_t sprites[4], MetalSupportType supportType);
-
-void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence);
-
-void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction direction, uint16_t height);
 
 void DrawSBendLeftSupports(
     PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,

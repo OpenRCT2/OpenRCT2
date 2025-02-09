@@ -22,7 +22,10 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .trackStyle = TrackStyle::corkscrewRollerCoaster,
+            .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
             .supportType = MetalSupportType::TubesInverted,
+            .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+            .tunnelGroup = TunnelGroup::uninverted,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::corkscrewUninverted, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepLong, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeRollBanking, TrackGroup::slopeCurveBanked, TrackGroup::slopeCurveLarge },
             .extraTrackGroups = { TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::booster },
         }
@@ -30,7 +33,16 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor(
         {
             .trackStyle = TrackStyle::layDownRollerCoasterInverted,
+            .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsInverted,
             .supportType = MetalSupportType::TubesInverted,
+            .trackGroupTunnelStyles = []() consteval {
+                std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
+                array.fill(TunnelStyle::standard);
+                array[EnumValue(TrackGroup::stationEnd)] = TunnelStyle::semiInvertedSquare;
+                array[EnumValue(TrackGroup::onridePhoto)] = TunnelStyle::square;
+                return array;
+            }(),
+            .tunnelGroup = TunnelGroup::invertedFlying,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::corkscrewInverted, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes },
             .extraTrackGroups = { TrackGroup::flyingHalfLoopInvertedUp, TrackGroup::stationEnd, TrackGroup::liftHill },
         }

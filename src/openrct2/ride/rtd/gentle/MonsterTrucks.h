@@ -22,7 +22,15 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::carRide,
+        .trackGroupBlockedSegmentTypes = []() consteval {
+            std::array<BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegments::BlockedSegmentsType::narrow);
+            array[EnumValue(TrackGroup::curveVerySmall)] = BlockedSegments::BlockedSegmentsType::wide;
+            return array;
+        }(),
         .supportType = MetalSupportType::Boxed,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::rapids},
         .extraTrackGroups = {TrackGroup::spinningTunnel},
     }),

@@ -23,8 +23,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
-
 namespace OpenRCT2::AlpineRC
 {
     static void TrackFlat(
@@ -85,10 +83,6 @@ namespace OpenRCT2::AlpineRC
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
             }
         }
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackStation(
@@ -119,9 +113,6 @@ namespace OpenRCT2::AlpineRC
             { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
-        TrackPaintUtilDrawStationTunnel(session, direction, height);
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void Track25DegUp(
@@ -190,17 +181,6 @@ namespace OpenRCT2::AlpineRC
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
             }
         }
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-        }
-        else
-        {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-        }
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackFlatTo25DegUp(
@@ -269,17 +249,6 @@ namespace OpenRCT2::AlpineRC
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
             }
         }
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-        else
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-        }
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void Track25DegUpToFlat(
@@ -348,17 +317,6 @@ namespace OpenRCT2::AlpineRC
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             }
         }
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-        }
-        else
-        {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-        }
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void Track25DegDown(
@@ -414,22 +372,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -455,15 +399,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -492,24 +427,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -554,22 +471,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -595,15 +498,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -629,18 +523,8 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -666,15 +550,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -703,24 +578,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -765,13 +622,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -797,15 +647,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -831,26 +672,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topRightSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-                break;
-            case 3:
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -880,15 +701,6 @@ namespace OpenRCT2::AlpineRC
                     session, supportType.metal, MetalSupportPlace::LeftCorner, DirectionPrev(direction), 0, height,
                     session.SupportColours);
 
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -925,13 +737,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -957,15 +762,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -991,26 +787,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-                break;
-            case 3:
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -1039,15 +815,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::BottomCorner, DirectionNext(direction), 0, height,
                     session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1113,15 +880,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1147,15 +905,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1181,15 +930,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1217,15 +957,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 9, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -1260,15 +991,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1294,15 +1016,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1328,15 +1041,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1364,15 +1068,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -1407,15 +1102,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1441,15 +1127,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1475,15 +1152,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1515,15 +1183,6 @@ namespace OpenRCT2::AlpineRC
                         session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 2, height,
                         session.SupportColours);
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -1558,15 +1217,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1592,15 +1242,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1626,15 +1267,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1662,15 +1294,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 8, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -1705,14 +1328,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1738,14 +1353,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1771,14 +1378,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1806,18 +1405,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
         }
-
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiag25DegDownToFlat(
@@ -1850,15 +1439,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1884,15 +1464,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1918,15 +1489,6 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1954,15 +1516,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -2005,10 +1558,6 @@ namespace OpenRCT2::AlpineRC
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackFlatToRightBank(
@@ -2049,10 +1598,6 @@ namespace OpenRCT2::AlpineRC
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackLeftBankToFlat(
@@ -2107,17 +1652,6 @@ namespace OpenRCT2::AlpineRC
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
         }
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-        else
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-        }
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackRightBankTo25DegUp(
@@ -2158,17 +1692,6 @@ namespace OpenRCT2::AlpineRC
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
         }
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-        else
-        {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-        }
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void Track25DegUpToLeftBank(
@@ -2209,17 +1732,6 @@ namespace OpenRCT2::AlpineRC
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
         }
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-        }
-        else
-        {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-        }
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void Track25DegUpToRightBank(
@@ -2260,17 +1772,6 @@ namespace OpenRCT2::AlpineRC
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
         }
-        if (direction == 0 || direction == 3)
-        {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
-        }
-        else
-        {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
-        }
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackLeftBankTo25DegDown(
@@ -2333,10 +1834,6 @@ namespace OpenRCT2::AlpineRC
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackRightBank(
@@ -2362,15 +1859,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -2386,15 +1874,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -2406,15 +1885,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -2428,15 +1898,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -2457,15 +1918,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -2477,15 +1929,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -2501,15 +1944,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -2523,15 +1957,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -2552,15 +1977,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -2576,15 +1992,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -2596,15 +2003,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -2618,15 +2016,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -2647,15 +2036,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -2667,15 +2047,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -2691,15 +2062,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -2713,15 +2075,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -2742,15 +2095,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -2766,15 +2110,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -2786,15 +2121,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -2808,15 +2134,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -2837,15 +2154,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -2857,15 +2165,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -2881,15 +2180,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -2903,15 +2193,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -2932,15 +2213,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -2956,15 +2228,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -2976,15 +2239,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -2998,15 +2252,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -3027,15 +2272,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -3047,15 +2283,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -3071,15 +2298,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -3093,15 +2311,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -3122,14 +2331,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
             case 1:
                 switch (direction)
@@ -3145,14 +2346,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
             case 2:
                 switch (direction)
@@ -3164,14 +2357,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
             case 3:
                 switch (direction)
@@ -3185,18 +2370,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
         }
-
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiagRightBankTo25DegDown(
@@ -3215,14 +2390,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
             case 1:
                 switch (direction)
@@ -3234,14 +2401,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
             case 2:
                 switch (direction)
@@ -3257,14 +2416,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
             case 3:
                 switch (direction)
@@ -3278,18 +2429,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
                 break;
         }
-
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiag25DegDownToLeftBank(
@@ -3308,15 +2449,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -3332,15 +2464,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -3352,15 +2475,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -3374,15 +2488,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -3403,15 +2508,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -3423,15 +2519,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -3447,15 +2534,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -3469,15 +2547,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalBSupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -3498,15 +2567,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -3518,15 +2578,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -3538,15 +2589,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -3560,15 +2602,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -3589,15 +2622,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -3609,15 +2633,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -3629,15 +2644,6 @@ namespace OpenRCT2::AlpineRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -3651,15 +2657,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -3699,22 +2696,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -3740,15 +2723,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -3780,24 +2754,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 2, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -3845,22 +2801,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -3886,15 +2828,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -3920,18 +2853,8 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -3957,15 +2880,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -3997,24 +2911,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 1, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4059,13 +2955,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -4091,15 +2980,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4125,26 +3005,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topRightSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-                break;
-            case 3:
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -4173,15 +3033,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::LeftCorner, DirectionPrev(direction), 0, height,
                     session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4218,13 +3069,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -4250,15 +3094,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4284,26 +3119,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-                break;
-            case 3:
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -4332,15 +3147,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::BottomCorner, DirectionNext(direction), 0, height,
                     session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4393,25 +3199,10 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -4440,24 +3231,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 8, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -4494,25 +3267,10 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -4541,24 +3299,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), direction == 2 ? 10 : 8,
                     height, session.SupportColours);
-                switch (direction)
-                {
-                    case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                    case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -4611,22 +3351,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -4652,15 +3378,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -4686,18 +3403,8 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { 16, 16, 3 });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -4723,15 +3430,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -4760,24 +3458,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 8, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -4814,22 +3494,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -4855,15 +3521,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { 32, 16, 3 });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -4889,18 +3546,8 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -4926,15 +3573,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -4963,24 +3601,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 8, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                    case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -5032,19 +3652,6 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -5072,15 +3679,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 DrawSBendLeftSupports(
                     session, supportType.metal, trackSequence, direction, direction == 1 ? height - 1 : height, 0, 1);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5108,15 +3706,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 DrawSBendLeftSupports(
                     session, supportType.metal, trackSequence, direction, direction == 3 ? height - 1 : height, 0, 1);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5143,24 +3732,6 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
-                switch (direction)
-                {
-                    case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -5196,19 +3767,6 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -5235,15 +3793,6 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5270,15 +3819,6 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5305,24 +3845,6 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
-                switch (direction)
-                {
-                    case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -5362,22 +3884,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 5, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5403,15 +3911,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5443,24 +3942,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 9, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -5492,27 +3973,8 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 5, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 0:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 1:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -5538,15 +4000,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -5577,19 +4030,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -5629,22 +4069,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 5, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5670,15 +4096,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5710,24 +4127,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 9, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -5759,27 +4158,8 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 5, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -5805,15 +4185,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -5844,19 +4215,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -5922,22 +4280,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5963,15 +4307,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5997,18 +4332,8 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -6034,15 +4359,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -6074,24 +4390,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 9, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -6123,27 +4421,8 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 3, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 0:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 1:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 8:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 9:
                 switch (direction)
@@ -6169,15 +4448,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 10:
                 switch (direction)
@@ -6203,18 +4473,8 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 11:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 12:
                 switch (direction)
@@ -6240,15 +4500,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 13:
                 switch (direction)
@@ -6279,19 +4530,6 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -6330,22 +4568,8 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -6371,15 +4595,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -6405,18 +4620,8 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -6442,15 +4647,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -6482,24 +4678,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), direction == 1 ? 5 : 9,
                     height, session.SupportColours);
-                switch (direction)
-                {
-                    case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -6531,27 +4709,8 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 3, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 8:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 9:
                 switch (direction)
@@ -6577,15 +4736,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                            PaintSegment::topLeftSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 10:
                 switch (direction)
@@ -6611,18 +4761,8 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 11:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 12:
                 switch (direction)
@@ -6648,15 +4788,6 @@ namespace OpenRCT2::AlpineRC
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 13:
                 switch (direction)
@@ -6688,19 +4819,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, direction == 0 ? 5 : 9, height,
                     session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -6755,10 +4873,6 @@ namespace OpenRCT2::AlpineRC
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
         }
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-        PaintUtilSetSegmentSupportHeight(
-            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackLeftBankToLeftQuarterTurn3Tile25DegUp(
@@ -6796,25 +4910,10 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -6843,24 +4942,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 10, height - 6,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -6900,25 +4981,10 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -6947,24 +5013,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 10, height - 6,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 0:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                    case 1:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -7001,25 +5049,10 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height - 6, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -7051,24 +5084,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 5, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -7105,25 +5120,10 @@ namespace OpenRCT2::AlpineRC
                 }
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height - 6, session.SupportColours);
-                if (direction == 0 || direction == 3)
-                {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                            PaintSegment::bottomLeftSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -7155,24 +5155,6 @@ namespace OpenRCT2::AlpineRC
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 5, height,
                     session.SupportColours);
-                switch (direction)
-                {
-                    case 0:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                    case 1:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                        break;
-                }
-                PaintUtilSetSegmentSupportHeight(
-                    session,
-                    PaintUtilRotateSegments(
-                        EnumsToFlags(
-                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                            PaintSegment::bottomRightSide),
-                        direction),
-                    0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }

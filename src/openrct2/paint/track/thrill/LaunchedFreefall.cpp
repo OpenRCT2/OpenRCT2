@@ -65,8 +65,6 @@ static void PaintLaunchedFreefallBase(
         imageId = session.TrackColours.WithIndex(SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
-        PaintUtilSetVerticalTunnel(session, height + 32);
-
         height -= 64;
     }
 
@@ -136,8 +134,6 @@ static void PaintLaunchedFreefallTowerSection(
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-
-    PaintUtilSetVerticalTunnel(session, height + 32);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
