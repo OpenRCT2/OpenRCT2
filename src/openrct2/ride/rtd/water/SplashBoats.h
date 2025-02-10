@@ -23,6 +23,11 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::splashBoats,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsWide,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(WoodenSupportType::Truss));
+            return array;
+        }(),
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curve, TrackGroup::onridePhoto},

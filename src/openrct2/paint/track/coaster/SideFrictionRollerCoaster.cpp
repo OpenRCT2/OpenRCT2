@@ -16,8 +16,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -139,8 +137,6 @@ static void SideFrictionRCTrackFlat(
                 break;
         }
     }
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x007784AC, 0x007784BC, 0x007784CC */
@@ -158,8 +154,6 @@ static void SideFrictionRCTrackStation(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
         { { 0, 2, height }, { 32, 27, 2 } });
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
 }
 
@@ -244,8 +238,6 @@ static void SideFrictionRCTrack25DegUp(
                 break;
         }
     }
-    DrawSupportForSequenceA<TrackElemType::Up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x007783CC */
@@ -329,8 +321,6 @@ static void SideFrictionRCTrackFlatTo25DegUp(
                 break;
         }
     }
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x007783FC */
@@ -414,8 +404,6 @@ static void SideFrictionRCTrack25DegUpToFlat(
                 break;
         }
     }
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0077840C */
@@ -481,8 +469,6 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
                         { { 0, 2, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -516,8 +502,6 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
                         { { 0, 16, height + 27 }, { 32, 16, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             switch (direction)
@@ -551,8 +535,6 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
                         { { 0, 0, height + 27 }, { 16, 16, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 5:
             switch (direction)
@@ -586,8 +568,6 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
                         { { 16, 0, height + 27 }, { 16, 32, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 6:
             switch (direction)
@@ -621,8 +601,6 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
                         { { 2, 0, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -679,8 +657,6 @@ static void SideFrictionRCTrackSBendLeft(
                         { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -718,8 +694,6 @@ static void SideFrictionRCTrackSBendLeft(
                         { { 0, 6, height + 27 }, { 32, 26, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -757,8 +731,6 @@ static void SideFrictionRCTrackSBendLeft(
                         { { 0, 0, height + 27 }, { 32, 26, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             switch (direction)
@@ -796,8 +768,6 @@ static void SideFrictionRCTrackSBendLeft(
                         { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -845,8 +815,6 @@ static void SideFrictionRCTrackSBendRight(
                         { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -884,8 +852,6 @@ static void SideFrictionRCTrackSBendRight(
                         { { 0, 0, height + 27 }, { 32, 26, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -923,8 +889,6 @@ static void SideFrictionRCTrackSBendRight(
                         { { 0, 6, height + 27 }, { 32, 26, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             switch (direction)
@@ -962,8 +926,6 @@ static void SideFrictionRCTrackSBendRight(
                         { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -1011,8 +973,6 @@ static void SideFrictionRCTrackLeftQuarterTurn3(
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -1089,8 +1049,6 @@ static void SideFrictionRCTrackLeftQuarterTurn3(
                         { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -1130,8 +1088,6 @@ static void SideFrictionRCTrackBrakes(
                 { { 0, 2, height + 27 }, { 32, 27, 0 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::Brakes>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x007785DC */
@@ -1177,8 +1133,6 @@ static void SideFrictionRCTrackLeftEighthToDiag(
                         { { 0, 0, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftEighthToDiag>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -1216,8 +1170,6 @@ static void SideFrictionRCTrackLeftEighthToDiag(
                         { { 0, 16, height + 27 }, { 32, 16, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftEighthToDiag>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -1255,12 +1207,6 @@ static void SideFrictionRCTrackLeftEighthToDiag(
                         { { 0, 0, height + 27 }, { 16, 16, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftEighthToDiag>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            break;
-        case 3:
-            DrawSupportForSequenceA<TrackElemType::LeftEighthToDiag>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 4:
             switch (direction)
@@ -1345,8 +1291,6 @@ static void SideFrictionRCTrackRightEighthToDiag(
                         { { 0, 0, height + 27 }, { 32, 32, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::RightEighthToDiag>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -1384,8 +1328,6 @@ static void SideFrictionRCTrackRightEighthToDiag(
                         { { 0, 0, height + 27 }, { 32, 16, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::RightEighthToDiag>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -1423,12 +1365,6 @@ static void SideFrictionRCTrackRightEighthToDiag(
                         { { 0, 16, height + 27 }, { 16, 16, 0 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::RightEighthToDiag>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            break;
-        case 3:
-            DrawSupportForSequenceA<TrackElemType::RightEighthToDiag>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 4:
             switch (direction)
@@ -1525,8 +1461,6 @@ static void SideFrictionRCTrackDiagFlat(
             }
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::DiagFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0077853C */
@@ -1645,8 +1579,6 @@ static void SideFrictionRCTrackDiag25DegUp(
             }
             break;
     }
-    DrawSupportForSequenceB<TrackElemType::DiagUp25>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
 }
 
 /** rct2: 0x0077851C */
@@ -1709,8 +1641,6 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            DrawSupportForSequenceA<TrackElemType::DiagFlatToUp25>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -1741,8 +1671,6 @@ static void SideFrictionRCTrackDiagFlatTo25DegUp(
                         break;
                 }
             }
-            DrawSupportForSequenceA<TrackElemType::DiagFlatToUp25>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -1888,8 +1816,6 @@ static void SideFrictionRCTrackDiag25DegUpToFlat(
 
             break;
     }
-    DrawSupportForSequenceB<TrackElemType::DiagUp25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
 }
 
 /** rct2: 0x0077859C */
@@ -2009,8 +1935,6 @@ static void SideFrictionRCTrackDiag25DegDown(
 
             break;
     }
-    DrawSupportForSequenceB<TrackElemType::DiagDown25>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
 }
 
 /** rct2: 0x0077857C */
@@ -2129,9 +2053,6 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
             }
             break;
     }
-
-    DrawSupportForSequenceB<TrackElemType::DiagFlatToDown25>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
 }
 
 /** rct2: 0x0077858C */
@@ -2194,8 +2115,6 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            DrawSupportForSequenceA<TrackElemType::DiagDown25ToFlat>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             if (trackElement.HasChain())
@@ -2226,8 +2145,6 @@ static void SideFrictionRCTrackDiag25DegDownToFlat(
                         break;
                 }
             }
-            DrawSupportForSequenceA<TrackElemType::DiagDown25ToFlat>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             if (trackElement.HasChain())
@@ -2296,8 +2213,6 @@ static void SideFrictionRCTrack60DegUp(
                 { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::Up60>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 static void SideFrictionRCTrack60DegDown(
@@ -2346,8 +2261,6 @@ static void SideFrictionRCTrack25DegUpTo60DegUp(
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 static void SideFrictionRCTrack60DegDownTo25DegDown(
@@ -2396,8 +2309,6 @@ static void SideFrictionRCTrack60DegUpTo25DegUp(
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 static void SideFrictionRCTrack25DegDownTo60DegDown(
@@ -2461,8 +2372,6 @@ static void SideFrictionRCTrackDiag60DegUp(
 
             break;
     }
-    DrawSupportForSequenceB<TrackElemType::DiagUp60>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
 }
 
 static void SideFrictionRCTrackDiag60DegDown(
@@ -2532,8 +2441,6 @@ static void SideFrictionRCTrackDiag60DegUpTo25DegUp(
 
             break;
     }
-    DrawSupportForSequenceB<TrackElemType::DiagUp60ToUp25>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
 }
 
 static void SideFrictionRCTrackDiag25DegDownTo60DegDown(
@@ -2602,8 +2509,6 @@ static void SideFrictionRCTrackDiag25DegUpTo60DegUp(
 
             break;
     }
-    DrawSupportForSequenceB<TrackElemType::DiagUp25ToUp60>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
 }
 
 static void SideFrictionRCTrackDiag60DegDownTo25DegDown(

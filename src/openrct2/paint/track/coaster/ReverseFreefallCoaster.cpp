@@ -17,10 +17,7 @@
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Paint.TileElement.h"
-#include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
@@ -216,9 +213,6 @@ static void PaintReverseFreefallRCFlat(
         auto imageId = session.TrackColours.WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
-
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 static void PaintReverseFreefallRCStation(
@@ -247,9 +241,6 @@ static void PaintReverseFreefallRCStation(
         imageId = session.TrackColours.WithIndex(kPiecesStation[direction]);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
     }
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement);
 }
 
@@ -287,13 +278,11 @@ static void PaintReverseFreefallRCSlope(
                 PaintAddImageAsChildRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
-
-            DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 5:
-            if (DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
-                    session, supportType.wooden, trackSequence, direction, height, session.SupportColours))
+            if (WoodenASupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                    WoodenSupportTransitionType::None))
             {
                 ImageId floorImageId;
                 if (direction & 1)
@@ -331,8 +320,6 @@ static void PaintReverseFreefallRCSlope(
                 PaintAddImageAsChildRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 27, 6, height }, { 1, 20, 126 } });
             }
-            DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -385,10 +372,6 @@ static void PaintReverseFreefallRCOnridePhoto(
 
     PaintAddImageAsParentRotated(
         session, direction, colour.WithIndex(imageIds[direction]), { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-
-    DrawSupportForSequenceA<TrackElemType::OnRidePhoto>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    ;
 
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }

@@ -23,7 +23,12 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::chairlift,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsWide,
-        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTruss,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(MetalSupportType::Truss));
+            array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(WoodenSupportType::Truss);
+            return array;
+        }(),
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall},

@@ -16,8 +16,6 @@
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 
@@ -72,9 +70,6 @@ static void PaintHauntedHouse(
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
     int32_t edges = kEdges3x3[trackSequence];
-
-    DrawSupportForSequenceA<TrackElemType::FlatTrack3x3>(
-        session, supportType.wooden, trackSequence, direction, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 

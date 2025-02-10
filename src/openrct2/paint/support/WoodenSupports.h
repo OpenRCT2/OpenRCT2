@@ -102,9 +102,3 @@ bool WoodenBSupportsPaintSetupRotated(
 bool PathBoxSupportsPaintSetup(
     PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
     ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo);
-bool DrawSupportForSequenceA(
-    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
-    Direction direction, int32_t height, ImageId imageTemplate);
-bool DrawSupportForSequenceB(
-    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
-    Direction direction, int32_t height, ImageId imageTemplate);

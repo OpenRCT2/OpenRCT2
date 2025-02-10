@@ -14,11 +14,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
-#include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
@@ -151,9 +146,6 @@ static void PaintGoKartsTrackFlat(
         imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_FRONT_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 3 } });
     }
-
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0074A758 */
@@ -185,9 +177,6 @@ static void PaintGoKartsTrack25DegUp(
     }
 
     session.WoodenSupportsPrependTo = ps;
-
-    DrawSupportForSequenceA<TrackElemType::Up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0074A768 */
@@ -219,9 +208,6 @@ static void PaintGoKartsTrackFlatTo25DegUp(
     }
 
     session.WoodenSupportsPrependTo = ps;
-
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x */
@@ -253,9 +239,6 @@ static void PaintGoKartsTrack25DegUpToFlat(
     }
 
     session.WoodenSupportsPrependTo = ps;
-
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0074A788 */
@@ -381,9 +364,6 @@ static void PaintGoKartsStation(
                 break;
         }
     }
-
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0074A7E8 */
@@ -435,9 +415,6 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
             // The empty sprite isn't drawn
             break;
     }
-
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0074A7F8 */

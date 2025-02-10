@@ -17,8 +17,6 @@
 #include "../../../scenario/Scenario.h"
 #include "../../../world/Map.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
@@ -194,9 +192,6 @@ static void PaintRiverRapidsTrackFlat(
             (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
     }
-
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x007576C0 */
@@ -223,8 +218,6 @@ static void PaintRiverRapidsTrack25Deg(
 
     imageId = session.TrackColours.WithIndex(sprites[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 34 } });
-
-    DrawSupportForSequenceA<TrackElemType::Up25>(session, supportType.wooden, 0, direction, height, session.SupportColours);
 }
 
 static void PaintRiverRapidsTrack25DegToFlatA(
@@ -270,8 +263,6 @@ static void PaintRiverRapidsTrack25DegToFlatA(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 18 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, supportType.wooden, 0, direction, height, session.SupportColours);
 }
 
 static void PaintRiverRapidsTrack25DegToFlatB(
@@ -316,8 +307,6 @@ static void PaintRiverRapidsTrack25DegToFlatB(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 26 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, supportType.wooden, 0, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00757660 */
@@ -413,9 +402,6 @@ static void PaintRiverRapidsTrackLeftQuarterTurn1Tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 1, 1, 7 } });
             break;
     }
-
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00757700 */
@@ -462,9 +448,6 @@ static void PaintRiverRapidsTrackRightQuarterTurn1Tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 2, height }, { 1, 28, 7 } });
             break;
     }
-
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00757710 */
@@ -521,9 +504,6 @@ static void PaintRiverRapidsTrackWaterfall(
         imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_SIDE_SE_FRAME_0 + frameNum));
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
     }
-
-    DrawSupportForSequenceA<TrackElemType::Waterfall>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00757720 */
@@ -551,9 +531,6 @@ static void PaintRiverRapidsTrackRapids(
         imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RAPIDS_FRONT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 17 }, { 32, 1, 11 } });
     }
-
-    DrawSupportForSequenceA<TrackElemType::Rapids>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00757740 */
@@ -608,9 +585,6 @@ static void PaintRiverRapidsTrackWhirlpool(
             (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
     }
-
-    DrawSupportForSequenceA<TrackElemType::Whirlpool>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /**

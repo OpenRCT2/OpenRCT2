@@ -14,10 +14,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
@@ -293,10 +289,6 @@ static void PaintGhostTrainTrackSpinningTunnel(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 2, 6, height }, { 28, 20, 3 } });
 
     TrackPaintUtilSpinningTunnelPaint(session, 3, height, direction);
-
-    WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-        GetStationColourScheme(session, trackElement));
 }
 
 /** rct2: 0x00770CDC */

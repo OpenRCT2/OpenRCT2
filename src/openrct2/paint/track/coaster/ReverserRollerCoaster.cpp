@@ -17,8 +17,6 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -67,8 +65,6 @@ static void ReverserRCTrackFlat(
                 break;
         }
     }
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 static void ReverserRCTrackStation(
@@ -88,8 +84,6 @@ static void ReverserRCTrackStation(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
         { { 0, 2, height }, { 32, 27, 2 } });
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
 }
 
@@ -150,8 +144,6 @@ static void ReverserRCTrack25DegUp(
                 break;
         }
     }
-    DrawSupportForSequenceA<TrackElemType::Up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0086E67C */
@@ -211,8 +203,6 @@ static void ReverserRCTrackFlatTo25DegUp(
                 break;
         }
     }
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0086E68C */
@@ -272,8 +262,6 @@ static void ReverserRCTrack25DegUpToFlat(
                 break;
         }
     }
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0086E69C */
@@ -327,8 +315,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(21538), { 0, 2, height }, { 32, 32, 2 });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -350,8 +336,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(21537), { 0, 16, height }, { 32, 16, 2 });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             switch (direction)
@@ -373,8 +357,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(21536), { 0, 0, height }, { 16, 16, 2 });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 5:
             switch (direction)
@@ -396,8 +378,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(21535), { 16, 0, height }, { 16, 32, 2 });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 6:
             switch (direction)
@@ -419,8 +399,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours.WithIndex(21534), { 2, 0, height }, { 32, 32, 2 });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -465,8 +443,6 @@ static void ReverserRCTrackSBendLeft(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -492,8 +468,6 @@ static void ReverserRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 26, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -519,8 +493,6 @@ static void ReverserRCTrackSBendLeft(
                         { { 0, 0, height }, { 32, 26, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             switch (direction)
@@ -546,8 +518,6 @@ static void ReverserRCTrackSBendLeft(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendLeft>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -583,8 +553,6 @@ static void ReverserRCTrackSBendRight(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -610,8 +578,6 @@ static void ReverserRCTrackSBendRight(
                         { { 0, 0, height }, { 32, 26, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -637,8 +603,6 @@ static void ReverserRCTrackSBendRight(
                         { { 0, 6, height }, { 32, 26, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             switch (direction)
@@ -664,8 +628,6 @@ static void ReverserRCTrackSBendRight(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::SBendRight>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -701,8 +663,6 @@ static void ReverserRCTrackLeftQuarterTurn3(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             break;
@@ -755,8 +715,6 @@ static void ReverserRCTrackLeftQuarterTurn3(
                         { { 6, 0, height }, { 20, 32, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -790,8 +748,6 @@ static void ReverserRCTrackBrakes(
                 { { 0, 2, height }, { 32, 27, 2 } });
             break;
     }
-    DrawSupportForSequenceA<TrackElemType::Brakes>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0086E76C */
@@ -825,8 +781,6 @@ static void ReverserRCTrackLeftReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -852,8 +806,6 @@ static void ReverserRCTrackLeftReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -879,8 +831,6 @@ static void ReverserRCTrackLeftReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             switch (direction)
@@ -906,8 +856,6 @@ static void ReverserRCTrackLeftReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 4:
             switch (direction)
@@ -933,8 +881,6 @@ static void ReverserRCTrackLeftReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 5:
             switch (direction)
@@ -960,8 +906,6 @@ static void ReverserRCTrackLeftReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::LeftReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -997,8 +941,6 @@ static void ReverserRCTrackRightReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -1024,8 +966,6 @@ static void ReverserRCTrackRightReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
             switch (direction)
@@ -1051,8 +991,6 @@ static void ReverserRCTrackRightReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
             switch (direction)
@@ -1078,8 +1016,6 @@ static void ReverserRCTrackRightReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 4:
             switch (direction)
@@ -1105,8 +1041,6 @@ static void ReverserRCTrackRightReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 5:
             switch (direction)
@@ -1132,8 +1066,6 @@ static void ReverserRCTrackRightReverser(
                         { { 0, 2, height }, { 32, 27, 2 } });
                     break;
             }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }

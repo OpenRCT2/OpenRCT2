@@ -27,6 +27,7 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
             std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
             array.fill(NewSupportType(MetalSupportType::Stick));
             array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(MetalSupportType::Boxed);
+            array[EnumValue(TrackGroup::spinningTunnel)] = NewSupportType(WoodenSupportType::Truss);
             return array;
         }(),
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,

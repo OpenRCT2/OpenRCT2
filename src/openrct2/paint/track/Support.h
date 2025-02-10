@@ -48,7 +48,7 @@ struct SupportType
     }
 };
 
-using NewSupportType = std::variant<WoodenSupportType, MetalSupportType>;
+using NewSupportType = std::variant<std::monostate, WoodenSupportType, MetalSupportType>;
 
 constexpr std::array<NewSupportType, EnumValue(TrackGroup::count)> kTrackGroupSupportTypesMetalTubes = []() consteval {
     std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};

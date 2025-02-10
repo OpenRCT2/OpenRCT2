@@ -13,10 +13,6 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/Map.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
@@ -238,10 +234,6 @@ static void PaintMiniHelicoptersTrackSpinningTunnel(
     PaintAddImageAsParentRotated(session, direction, underlay, { 0, 6, height - 2 }, { { 0, 6, height }, { 32, 20, 1 } });
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     TrackPaintUtilSpinningTunnelPaint(session, 1, height, direction);
-
-    WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-        GetStationColourScheme(session, trackElement));
 }
 
 /**

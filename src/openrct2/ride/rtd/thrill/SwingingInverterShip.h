@@ -21,8 +21,6 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4B,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::swingingInverterShip,
-        .blocksOwnSegments = true,
-        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubes,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

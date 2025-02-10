@@ -22,6 +22,11 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::reverseFreefallCoaster,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsWide,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(WoodenSupportType::Truss));
+            return array;
+        }(),
         .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
         .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHillSteep, TrackGroup::reverseFreefall, TrackGroup::onridePhoto},

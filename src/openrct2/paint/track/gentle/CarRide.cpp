@@ -13,10 +13,6 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/Map.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
@@ -353,10 +349,6 @@ static void PaintCarRideTrackSpinningTunnel(
     }
 
     TrackPaintUtilSpinningTunnelPaint(session, 1, height, direction);
-
-    WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-        GetStationColourScheme(session, trackElement));
 }
 
 /** rct2: 0x006F73B8 */

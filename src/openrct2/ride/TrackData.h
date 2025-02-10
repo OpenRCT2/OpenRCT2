@@ -77,12 +77,6 @@ namespace OpenRCT2::TrackMetaData
         return { 0, 0, 0, 0 };
     }
 
-    struct SequenceWoodenSupport
-    {
-        WoodenSupportSubType subType = WoodenSupportSubType::Null;
-        WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None;
-    };
-
     struct SequenceTunnel
     {
         int16_t height = 0;
@@ -151,7 +145,6 @@ namespace OpenRCT2::TrackMetaData
         uint8_t allowedWallEdges{};
         /** rct2: 0x0099BA64 */
         uint16_t flags{};
-        SequenceWoodenSupport woodenSupports{};
         int8_t extraSupportRotation = 0;
         SequenceTunnels tunnels{};
     };

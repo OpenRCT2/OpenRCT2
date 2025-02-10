@@ -903,9 +903,6 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-
-    DrawSupportForSequenceA<TrackElemType::BankedRightQuarterTurn5Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 static void ClassicWoodenRCTrackBankedLeftQuarterTurn5(
@@ -1052,9 +1049,6 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-
-    DrawSupportForSequenceA<TrackElemType::RightBankedQuarterTurn3Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 static void ClassicWoodenRCTrackLeftQuarterTurn3Bank(

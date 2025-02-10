@@ -22,7 +22,12 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniGolf,
         .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
-        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalBoxed,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(MetalSupportType::Boxed));
+            array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(WoodenSupportType::Truss);
+            return array;
+        }(),
         .trackGroupTunnelStyles = []() consteval {
             std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
             array.fill(TunnelStyle::standardWithPath);

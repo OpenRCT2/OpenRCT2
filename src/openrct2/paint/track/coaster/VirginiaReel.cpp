@@ -13,8 +13,6 @@
 #include "../../../ride/Vehicle.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
@@ -179,9 +177,6 @@ static void PaintVirginiaReelTrackFlat(
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
-
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00811274 */
@@ -211,9 +206,6 @@ static void PaintVirginiaReelTrack25DegUp(
     {
         session.WoodenSupportsPrependTo = ps;
     }
-
-    DrawSupportForSequenceA<TrackElemType::Up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00811294 */
@@ -247,9 +239,6 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
             break;
     }
-
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00811294 */
@@ -279,9 +268,6 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
     {
         session.WoodenSupportsPrependTo = ps;
     }
-
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x008112A4 */
@@ -331,9 +317,6 @@ static void PaintVirginiaReelStation(
         imageId = session.TrackColours.WithIndex(SPR_VIRGINIA_REEL_FLAT_NW_SE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 2 } });
     }
-
-    DrawSupportForSequenceA<TrackElemType::EndStation>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 }
 
@@ -344,17 +327,6 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 2, height, direction, trackSequence, session.TrackColours, kPiecesFlatQuarterTurn3Tiles);
-
-    switch (trackSequence)
-    {
-        case 2:
-            break;
-        case 0:
-        case 3:
-            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            break;
-    }
 }
 
 static constexpr uint8_t virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = {
@@ -381,9 +353,6 @@ static void PaintVirginiaReelTrackLeftQuarterTurn1Tile(
 {
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 2, height, 0, direction, session.TrackColours, kPiecesFlatQuarterTurn1Tile);
-
-    DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn1Tile>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00811334 */

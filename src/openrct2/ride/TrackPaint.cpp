@@ -1855,41 +1855,65 @@ ImageId GetShopSupportColourScheme(PaintSession& session, const TrackElement& tr
 
 void PaintSupportsForTrackSequence(
     PaintSession& session, const NewSupportType& supportType, const uint8_t trackSequence, const Direction direction,
-    const int32_t height, const TrackElemType& trackElemType, const TrackDrawerEntry& trackDrawerEntry,
-    const Direction supportRotation)
+    const int32_t height, const TrackElement& trackElement, const TrackElemType& trackElemType,
+    const TrackDrawerEntry& trackDrawerEntry, const Direction supportRotation)
 {
-    if (!std::holds_alternative<MetalSupportType>(supportType))
+    if (std::holds_alternative<MetalSupportType>(supportType))
     {
-        return;
+        for (const SequenceMetalSupport& support :
+             GetMetalSupportsForTrackSequence(trackDrawerEntry.trackStyle, trackElemType, trackSequence))
+        {
+            if (!(support.flags & (1 << direction))
+                || (HasFlag(support.flags, MetalSupportFlags::alternateTiles)
+                    && !TrackPaintUtilShouldPaintSupports(session.MapPosition)))
+            {
+                continue;
+            }
+
+            const auto colours = HasFlag(support.flags, MetalSupportFlags::useTrackColours) ? session.TrackColours
+                                                                                            : session.SupportColours;
+
+            if (!HasFlag(support.flags, MetalSupportFlags::typeB))
+            {
+                MetalASupportsPaintSetupRotated(
+                    session, std::get<MetalSupportType>(supportType), support.place, direction, supportRotation,
+                    support.extraHeights[direction], height + support.baseHeights[direction], colours,
+                    HasFlag(support.flags, MetalSupportFlags::fallbackToGeneralSupportHeight));
+            }
+            else
+            {
+                MetalBSupportsPaintSetupRotated(
+                    session, std::get<MetalSupportType>(supportType), support.place, direction, supportRotation,
+                    support.extraHeights[direction], height + support.baseHeights[direction], colours,
+                    HasFlag(support.flags, MetalSupportFlags::fallbackToGeneralSupportHeight));
+            }
+        }
     }
-
-    for (const SequenceMetalSupport& support :
-         GetMetalSupportsForTrackSequence(trackDrawerEntry.trackStyle, trackElemType, trackSequence))
+    else if (std::holds_alternative<WoodenSupportType>(supportType))
     {
-        if (!(support.flags & (1 << direction))
-            || (HasFlag(support.flags, MetalSupportFlags::alternateTiles)
-                && !TrackPaintUtilShouldPaintSupports(session.MapPosition)))
-        {
-            continue;
-        }
+        const SequenceWoodenSupport& support = GetWoodenSupportForTrackSequence(
+            trackDrawerEntry.trackStyle, trackElemType, trackSequence);
 
-        const auto colours = HasFlag(support.flags, MetalSupportFlags::useTrackColours) ? session.TrackColours
-                                                                                        : session.SupportColours;
+        if (support.subType != WoodenSupportSubType::Null)
+        {
+            const auto colours = HasFlag(support.flags, WoodenSupportFlags::useStationColours)
+                ? GetStationColourScheme(session, trackElement)
+                : session.SupportColours;
 
-        if (!HasFlag(support.flags, MetalSupportFlags::typeB))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, std::get<MetalSupportType>(supportType), support.place, direction, supportRotation,
-                support.extraHeights[direction], height + support.baseHeights[direction], colours,
-                HasFlag(support.flags, MetalSupportFlags::fallbackToGeneralSupportHeight));
+            if (!HasFlag(support.flags, WoodenSupportFlags::typeB))
+            {
+                WoodenASupportsPaintSetupRotated(
+                    session, std::get<WoodenSupportType>(supportType), support.subType, (direction + supportRotation) & 3,
+                    height + support.height, colours, support.transitionType);
+            }
+            else
+            {
+                WoodenBSupportsPaintSetupRotated(
+                    session, std::get<WoodenSupportType>(supportType), support.subType, (direction + supportRotation) & 3,
+                    height + support.height, colours, support.transitionType);
+            }
         }
-        else
-        {
-            MetalBSupportsPaintSetupRotated(
-                session, std::get<MetalSupportType>(supportType), support.place, direction, supportRotation,
-                support.extraHeights[direction], height + support.baseHeights[direction], colours,
-                HasFlag(support.flags, MetalSupportFlags::fallbackToGeneralSupportHeight));
-        }
+        return;
     }
 }
 
@@ -1969,9 +1993,9 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         trackType = UncoverTrackElement(trackType);
         TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
 
-        // Don't do anything further if the paint function does nothing.
-        if (paintFunction == TrackPaintFunctionDummy)
+        if (paintFunction == TrackPaintFunctionDummy || rtd.HasFlag(RtdFlag::isFlatRide))
         {
+            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
             return;
         }
 
@@ -1991,22 +2015,15 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
             paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
             PaintSupportsForTrackSequence(
-                session, trackDrawerEntry.trackGroupSupportTypes[trackGroupId], trackSequence, direction, height, trackType,
-                trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation);
-        }
-        else if (trackDrawerEntry.blocksOwnSegments)
-        {
-            PaintSupportsForTrackSequence(
-                session, trackDrawerEntry.trackGroupSupportTypes[trackGroupId], trackSequence, direction, height, trackType,
-                trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation);
-            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+                session, trackDrawerEntry.trackGroupSupportTypes[trackGroupId], trackSequence, direction, height, trackElement,
+                trackType, trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation);
         }
         else
         {
             paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
             PaintSupportsForTrackSequence(
-                session, trackDrawerEntry.trackGroupSupportTypes[trackGroupId], trackSequence, direction, height, trackType,
-                trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation);
+                session, trackDrawerEntry.trackGroupSupportTypes[trackGroupId], trackSequence, direction, height, trackElement,
+                trackType, trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation);
             BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
         }
 

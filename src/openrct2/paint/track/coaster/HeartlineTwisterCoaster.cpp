@@ -92,9 +92,6 @@ static void HeartlineTwisterRCTrackFlat(
                 break;
         }
     }
-
-    DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 static void HeartlineTwisterRCTrackStation(
@@ -198,9 +195,6 @@ static void HeartlineTwisterRCTrack25DegUp(
                 break;
         }
     }
-
-    DrawSupportForSequenceA<TrackElemType::Up25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x008769FC */
@@ -284,9 +278,6 @@ static void HeartlineTwisterRCTrack60DegUp(
                 break;
         }
     }
-
-    DrawSupportForSequenceA<TrackElemType::Up60>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0087696C */
@@ -370,9 +361,6 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
                 break;
         }
     }
-
-    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x008769BC */
@@ -456,9 +444,6 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                 break;
         }
     }
-
-    DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x008769CC */
@@ -542,9 +527,6 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                 break;
         }
     }
-
-    DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0087697C */
@@ -628,9 +610,6 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
                 break;
         }
     }
-
-    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x0087698C */
@@ -726,9 +705,6 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height + 23 }, { 32, 20, 0 } });
                     break;
             }
-
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferUp>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 1:
             switch (direction)
@@ -790,10 +766,6 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     break;
             }
-
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferUp>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
             break;
         case 2:
             switch (direction)
@@ -831,10 +803,6 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferUp>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
             break;
         case 3:
             switch (direction)
@@ -980,10 +948,6 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 27, height + 16 }, { 32, 1, 34 } });
                     break;
             }
-
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferDown>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
             break;
         case 2:
             switch (direction)
@@ -1021,10 +985,6 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferDown>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
             break;
         case 3:
             switch (direction)
@@ -1062,9 +1022,6 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height + 23 }, { 32, 20, 0 } });
                     break;
             }
-
-            DrawSupportForSequenceA<TrackElemType::HeartLineTransferDown>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
     }
 }
@@ -1299,9 +1256,6 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
             }
             break;
     }
-
-    DrawSupportForSequenceA<TrackElemType::LeftHeartLineRoll>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 /** rct2: 0x00876A5C */
@@ -1534,9 +1488,6 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
             }
             break;
     }
-
-    DrawSupportForSequenceA<TrackElemType::RightHeartLineRoll>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 }
 
 TrackPaintFunction GetTrackPaintFunctionHeartlineTwisterRC(OpenRCT2::TrackElemType trackType)

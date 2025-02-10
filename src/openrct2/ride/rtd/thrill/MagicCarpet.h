@@ -21,8 +21,6 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::magicCarpet,
-        .blocksOwnSegments = true,
-        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubes,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),
