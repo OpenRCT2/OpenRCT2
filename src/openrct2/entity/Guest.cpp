@@ -3423,7 +3423,7 @@ void Guest::UpdateBuying()
 
                 UpdateCurrentAnimationType();
 
-                ride->no_primary_items_sold == AddClamp(ride->no_primary_items_sold, 1u);
+                ride->no_primary_items_sold = AddClamp(ride->no_primary_items_sold, 1u);
             }
         }
         else

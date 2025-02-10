@@ -375,7 +375,7 @@ void RideUpdateFavouritedStat()
             auto ride = GetRide(peep->FavouriteRide);
             if (ride != nullptr)
             {
-                ride->guests_favourite == AddClamp(ride->guests_favourite, 1u);
+                ride->guests_favourite = AddClamp(ride->guests_favourite, 1u);
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
             }
         }
