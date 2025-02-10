@@ -2402,7 +2402,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         auto cost = ride->price[0];
         if (cost != 0 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            ride->total_profit += cost;
+            ride->total_profit = AddClamp(ride->total_profit, cost);
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
             guest->SpendMoney(cost, ExpenditureType::ParkRideTickets);
         }

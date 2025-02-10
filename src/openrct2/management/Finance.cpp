@@ -76,7 +76,6 @@ bool FinanceCheckAffordability(money64 cost, uint32_t flags)
  */
 void FinancePayment(money64 amount, ExpenditureType type)
 {
-    // overflow check
     auto& gameState = GetGameState();
     gameState.Cash = AddClamp(gameState.Cash, -amount);
 
@@ -170,7 +169,7 @@ void FinancePayRideUpkeep()
             auto upkeep = ride.upkeep_cost;
             if (upkeep != kMoney64Undefined)
             {
-                ride.total_profit -= upkeep;
+                ride.total_profit = AddClamp(ride.total_profit, -upkeep);
                 ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
                 FinancePayment(upkeep, ExpenditureType::RideRunningCosts);
             }

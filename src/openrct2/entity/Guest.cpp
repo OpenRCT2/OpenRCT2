@@ -1733,7 +1733,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     {
         SpendMoney(*expend_type, price, expenditure);
     }
-    ride.total_profit += (price - shopItemDescriptor.Cost);
+    ride.total_profit = AddClamp(ride.total_profit, price - shopItemDescriptor.Cost);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride.cur_num_customers++;
     ride.total_customers = AddClamp(ride.total_customers++, 1u);
@@ -2330,9 +2330,9 @@ void Guest::SpendMoney(money64& peepExpendType, money64 amount, ExpenditureType 
     assert(!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY));
 
     CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - amount);
-    CashSpent += amount;
+    CashSpent = AddClamp(CashSpent, amount);
 
-    peep_expend_type += amount;
+    peepExpendType = AddClamp(peepExpendType, amount);
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
