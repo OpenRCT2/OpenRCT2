@@ -1736,7 +1736,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     ride.total_profit += (price - shopItemDescriptor.Cost);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride.cur_num_customers++;
-    ride.total_customers++;
+    ride.total_customers = AddClamp(ride.total_customers++, 1u);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
     return true;
@@ -1825,7 +1825,7 @@ void Guest::OnExitRide(Ride& ride)
         }
     }
 
-    ride.total_customers++;
+    ride.total_customers = AddClamp(ride.total_customers++, 1u);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 }
 
@@ -3351,7 +3351,7 @@ static bool PeepShouldUseCashMachine(Guest* peep, RideId rideIndex)
     {
         ride->UpdateSatisfaction(peep->Happiness >> 6);
         ride->cur_num_customers++;
-        ride->total_customers++;
+        ride->total_customers = AddClamp(ride->total_customers++, 1u);
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
     }
     return true;
@@ -5193,7 +5193,7 @@ void Guest::UpdateRideShopLeave()
     auto ride = GetRide(CurrentRide);
     if (ride != nullptr)
     {
-        ride->total_customers++;
+        ride->total_customers = AddClamp(ride->total_customers, 1u);
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
         ride->UpdateSatisfaction(Happiness / 64);
     }
