@@ -233,7 +233,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
     const auto& gameState = GetGameState();
     const auto maxFee = AddClamp(gameState.TotalRideValueForMoney, gameState.TotalRideValueForMoney / 2);
 
-    if ((gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > max_fee)
+    if ((gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > maxFee)
     {
         if (!gameState.Park.Entrances.empty())
         {
