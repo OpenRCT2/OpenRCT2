@@ -3423,7 +3423,7 @@ void Guest::UpdateBuying()
 
                 UpdateCurrentAnimationType();
 
-                ride->no_primary_items_sold++;
+                ride->no_primary_items_sold == AddClamp(ride->no_primary_items_sold, 1u);
             }
         }
         else
@@ -3440,7 +3440,7 @@ void Guest::UpdateBuying()
                 item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[1], price);
                 if (item_bought)
                 {
-                    ride->no_secondary_items_sold++;
+                    ride->no_secondary_items_sold = AddClamp(ride->no_secondary_items_sold, 1u);
                 }
             }
 
@@ -3451,7 +3451,7 @@ void Guest::UpdateBuying()
                 item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[0], price);
                 if (item_bought)
                 {
-                    ride->no_primary_items_sold++;
+                    ride->no_primary_items_sold = AddClamp(ride->no_primary_items_sold, 1u);
                 }
             }
         }
@@ -4460,7 +4460,7 @@ void Guest::UpdateRideInExit()
         ShopItem secondaryItem = ride->GetRideTypeDescriptor().PhotoItem;
         if (DecideAndBuyItem(*ride, secondaryItem, ride->price[1]))
         {
-            ride->no_secondary_items_sold++;
+            ride->no_secondary_items_sold = AddClamp(ride->no_secondary_items_sold, 1u);
         }
     }
     RideSubState = PeepRideSubState::LeaveExit;
