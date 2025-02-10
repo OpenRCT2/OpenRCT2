@@ -2325,7 +2325,7 @@ void Guest::SpendMoney(money64 amount, ExpenditureType expenditure)
  *  rct2: 0x0069926C
  * Expend type was previously an offset saved in 0x00F1AEC0
  */
-void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
+void Guest::SpendMoney(money64& peepExpendType, money64 amount, ExpenditureType expenditure)
 {
     assert(!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY));
 
