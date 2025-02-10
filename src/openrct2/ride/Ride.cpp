@@ -1300,9 +1300,7 @@ static uint8_t _breakdownProblemProbabilities[] = {
  */
 static void RideInspectionUpdate(Ride& ride)
 {
-    if (GetGameState().CurrentTicks & 2047)
-        return;
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+    if ((GetGameState().CurrentTicks & 2047) || (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
         return;
 
     if (ride.last_inspection != 0)
