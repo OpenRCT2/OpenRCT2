@@ -50,6 +50,7 @@
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/ConstructionClearance.h"
@@ -2049,12 +2050,12 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                 return true;
             }
 
-            gameState.TotalIncomeFromAdmissions += entranceFee;
+            gameState.TotalIncomeFromAdmissions = AddClamp(gameState.TotalIncomeFromAdmissions, entranceFee);
             guest->SpendMoney(guest->PaidToEnter, entranceFee, ExpenditureType::ParkEntranceTickets);
             guest->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
-        GetGameState().TotalAdmissions++;
+        gameState.TotalAdmissions = AddClamp<uint64_t>(gameState.TotalAdmissions, 1);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::ParkInformation, 0);
