@@ -3888,7 +3888,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         }
         else
         {
-            ride.total_profit = AddClamp<money64>(ride.total_profit, ridePrice);
+            ride.total_profit = AddClamp(ride.total_profit, ridePrice);
             ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
             SpendMoney(PaidOnRides, ridePrice, ExpenditureType::ParkRideTickets);
         }
