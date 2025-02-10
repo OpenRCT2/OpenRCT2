@@ -15,6 +15,7 @@
 #include "../interface/Fonts.h"
 #include "Language.h"
 #include "LanguagePack.h"
+
 #include <stdexcept>
 
 using namespace OpenRCT2;
