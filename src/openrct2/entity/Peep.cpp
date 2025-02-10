@@ -1422,10 +1422,7 @@ void PeepUpdateDaysInQueue()
     {
         if (!peep->OutsideOfPark && peep->State == PeepState::Queuing)
         {
-            if (peep->DaysInQueue < 255)
-            {
-                peep->DaysInQueue += 1;
-            }
+            peep->DaysInQueue = AddClamp<uint8_t>(peep->DaysInQueue, 1);
         }
     }
 }
