@@ -16,6 +16,8 @@
 #include "Language.h"
 #include "LanguagePack.h"
 
+#include <stdexcept>
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Localisation;
 
