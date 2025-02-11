@@ -9,7 +9,7 @@
 using namespace OpenRCT2;
 
 using TunnelSlopeMap = std::array<TunnelType, kTunnelSlopeCount>;
-static std::array<TunnelSlopeMap, kTunnelStyleCount> tunnelMap = {
+static constexpr std::array<TunnelSlopeMap, kTunnelStyleCount> kTunnelMap = {
     TunnelSlopeMap{ TunnelType::Null, TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd,
                     TunnelType::StandardFlatTo25Deg, TunnelType::InvertedFlat, TunnelType::StandardFlat },
     TunnelSlopeMap{ TunnelType::Null, TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd,
@@ -24,7 +24,7 @@ static std::array<TunnelSlopeMap, kTunnelStyleCount> tunnelMap = {
 
 TunnelType GetTunnelType(TunnelStyle tunnelStyle, TunnelSlope tunnelSlope)
 {
-    return tunnelMap[EnumValue(tunnelStyle)][EnumValue(tunnelSlope)];
+    return kTunnelMap[EnumValue(tunnelStyle)][EnumValue(tunnelSlope)];
 }
 
 static constexpr std::array<TunnelType, 8> kTunnelDoorOpeningInwardsToImage = { {
@@ -60,7 +60,7 @@ TunnelType GetTunnelTypeDoors(const TrackElement& trackElement, const Direction 
 {
     const uint8_t doorAState = trackElement.GetDoorAState();
     const uint8_t doorBState = trackElement.GetDoorBState();
-    std::array<uint8_t, kNumOrthogonalDirections> doorStates = { {
+    const std::array<uint8_t, kNumOrthogonalDirections> doorStates = { {
         doorAState,
         doorBState,
         doorBState,
