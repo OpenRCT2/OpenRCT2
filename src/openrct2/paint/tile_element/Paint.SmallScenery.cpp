@@ -243,11 +243,7 @@ static void PaintSmallSceneryBody(
             else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
             {
                 auto minuteImageOffset = ((gRealTimeOfDay.minute + 6) * 17) / 256;
-                auto timeImageBase = gRealTimeOfDay.hour;
-                while (timeImageBase >= 12)
-                {
-                    timeImageBase -= 12;
-                }
+                auto timeImageBase = gRealTimeOfDay.hour % 12;
                 timeImageBase = (timeImageBase * 4) + minuteImageOffset;
                 if (timeImageBase >= 48)
                 {
