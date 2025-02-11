@@ -1020,11 +1020,11 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                 auto ride = GetRide(CurrentRide);
                 if (ride != nullptr)
                 {
-                    PeepThoughtType thought_type = ride->GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
+                    PeepThoughtType thoughtType = ride->GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
                         ? PeepThoughtType::GetOut
                         : PeepThoughtType::GetOff;
 
-                    InsertNewThought(thought_type, CurrentRide);
+                    InsertNewThought(thoughtType, CurrentRide);
                 }
             }
         }
