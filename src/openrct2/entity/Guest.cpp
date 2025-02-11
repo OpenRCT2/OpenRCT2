@@ -3402,15 +3402,15 @@ void Guest::UpdateBuying()
         return;
     }
 
-    bool item_bought = false;
+    bool itemBought = false;
 
     if (CurrentRide != PreviousRide)
     {
         const auto& rtd = GetRideTypeDescriptor(ride->type);
         if (rtd.specialType == RtdSpecialType::cashMachine)
         {
-            item_bought = PeepShouldUseCashMachine(this, CurrentRide);
-            if (!item_bought)
+            itemBought = PeepShouldUseCashMachine(this, CurrentRide);
+            if (!itemBought)
             {
                 PreviousRide = CurrentRide;
                 PreviousRideTimeOut = 0;
@@ -3428,28 +3428,28 @@ void Guest::UpdateBuying()
         }
         else
         {
-            const auto* ride_type = GetRideEntryByIndex(ride->subtype);
-            if (ride_type == nullptr)
+            const auto* rideType = GetRideEntryByIndex(ride->subtype);
+            if (rideType == nullptr)
             {
                 return;
             }
-            if (ride_type->shop_item[1] != ShopItem::None)
+            if (rideType->shop_item[1] != ShopItem::None)
             {
                 auto price = ride->price[1];
 
-                item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[1], price);
-                if (item_bought)
+                itemBought = DecideAndBuyItem(*ride, rideType->shop_item[1], price);
+                if (itemBought)
                 {
                     ride->no_secondary_items_sold = AddClamp(ride->no_secondary_items_sold, 1u);
                 }
             }
 
-            if (!item_bought && ride_type->shop_item[0] != ShopItem::None)
+            if (!itemBought && rideType->shop_item[0] != ShopItem::None)
             {
                 auto price = ride->price[0];
 
-                item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[0], price);
-                if (item_bought)
+                itemBought = DecideAndBuyItem(*ride, rideType->shop_item[0], price);
+                if (itemBought)
                 {
                     ride->no_primary_items_sold = AddClamp(ride->no_primary_items_sold, 1u);
                 }
@@ -3457,7 +3457,7 @@ void Guest::UpdateBuying()
         }
     }
 
-    if (item_bought)
+    if (itemBought)
     {
         ride->UpdatePopularity(1);
 
