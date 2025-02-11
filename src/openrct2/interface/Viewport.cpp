@@ -710,7 +710,7 @@ namespace OpenRCT2
 
             if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
             {
-                int32_t height = (TileElementHeight({ sprite->x, sprite->y }))-16;
+                int32_t height = (TileElementHeight({ sprite->x, sprite->y })) - 16;
                 int32_t underground = sprite->z < height;
                 ViewportSetUndergroundFlag(underground, window, window->viewport);
             }
@@ -1404,7 +1404,8 @@ namespace OpenRCT2
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
     {
         // the cut-away view is active and see-through is activated
-        auto cutAwayViewWithTransparency = (viewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (viewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
+        auto cutAwayViewWithTransparency = (viewFlags & VIEWPORT_FLAG_CLIP_VIEW)
+            && (viewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
 
         // the element is above the cut-off height
         auto clipped = cutAwayViewWithTransparency && ps->Element == nullptr && ps->Entity != nullptr
