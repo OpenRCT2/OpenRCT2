@@ -91,7 +91,7 @@ namespace OpenRCT2::TrackMetaData
 
     struct SequenceTunnel
     {
-        int16_t height = 0;
+        int8_t height = 0;
         Direction direction{};
         TunnelSlope subType = TunnelSlope::none;
         bool doorable = false;
