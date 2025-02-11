@@ -1303,8 +1303,7 @@ static void RideInspectionUpdate(Ride& ride)
     if ((GetGameState().CurrentTicks & 2047) || (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
         return;
 
-    if (ride.last_inspection != 0)
-        ride.last_inspection = AddClamp<uint8_t>(ride.last_inspection, 1);
+    ride.last_inspection = AddClamp<uint8_t>(ride.last_inspection, 1);
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride.inspection_interval];
     // An inspection interval of 0 minutes means the ride is set to never be inspected.
