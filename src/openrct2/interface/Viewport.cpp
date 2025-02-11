@@ -710,7 +710,7 @@ namespace OpenRCT2
 
             if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
             {
-                int32_t height = (TileElementHeight({ sprite->x, sprite->y })) - 16;
+                int32_t height = (TileElementHeight({ sprite->x, sprite->y }))-16;
                 int32_t underground = sprite->z < height;
                 ViewportSetUndergroundFlag(underground, window, window->viewport);
             }
