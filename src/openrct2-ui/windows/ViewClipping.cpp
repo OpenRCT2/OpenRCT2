@@ -144,7 +144,7 @@ namespace OpenRCT2::Ui::Windows
                     // Toggle height clipping see-through.
                     if (auto mainWindow = WindowGetMain(); mainWindow != nullptr)
                     {
-                        gClipHeightSeeThrough = !gClipHeightSeeThrough;
+                        mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH;
                         mainWindow->Invalidate();
                     }
                     Invalidate();
@@ -275,7 +275,9 @@ namespace OpenRCT2::Ui::Windows
             if (mainWindow != nullptr)
             {
                 WidgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
-                WidgetSetCheckboxValue(*this, WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE, gClipHeightSeeThrough);
+                WidgetSetCheckboxValue(
+                    *this, WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE,
+                    mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
             }
 
             if (IsActive())

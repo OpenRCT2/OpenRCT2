@@ -224,7 +224,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         {
             // see-through off: don't paint this tile_element at all
             // see-through on: paint this tile_element as partial or hidden later on
-            if (!gClipHeightSeeThrough)
+            if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0)
             {
                 continue;
             }
