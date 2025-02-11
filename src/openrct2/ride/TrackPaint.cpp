@@ -2016,32 +2016,33 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             for (const auto& tunnel :
                  ted.sequences[trackSequence].tunnels.tunnelGroups[EnumValue(trackDrawerEntry.tunnelGroup)])
             {
-                if (tunnel.subType != TunnelSlope::none)
+                if (tunnel.subType == TunnelSlope::none)
                 {
-                    if (tunnel.doorable && rtd.HasFlag(RtdFlag::hasLandscapeDoors))
+                    continue;
+                }
+                else if (tunnel.doorable && rtd.HasFlag(RtdFlag::hasLandscapeDoors))
+                {
+                    if (tunnel.direction == direction)
                     {
-                        if (tunnel.direction == direction)
-                        {
-                            PaintUtilPushTunnelLeft(
-                                session, height + tunnel.height, GetTunnelTypeDoors(trackElement, tunnel.direction));
-                        }
-                        else if (tunnel.direction == DirectionNext(direction))
-                        {
-                            PaintUtilPushTunnelRight(
-                                session, height + tunnel.height, GetTunnelTypeDoors(trackElement, tunnel.direction));
-                        }
+                        PaintUtilPushTunnelLeft(
+                            session, height + tunnel.height, GetTunnelTypeDoors(trackElement, tunnel.direction));
                     }
-                    else
+                    else if (tunnel.direction == DirectionNext(direction))
                     {
-                        const auto tunnelStyle = trackDrawerEntry.trackGroupTunnelStyles[EnumValue(ted.definition.group)];
-                        if (tunnel.direction == direction)
-                        {
-                            PaintUtilPushTunnelLeft(session, height + tunnel.height, tunnelStyle, tunnel.subType);
-                        }
-                        else if (tunnel.direction == DirectionNext(direction))
-                        {
-                            PaintUtilPushTunnelRight(session, height + tunnel.height, tunnelStyle, tunnel.subType);
-                        }
+                        PaintUtilPushTunnelRight(
+                            session, height + tunnel.height, GetTunnelTypeDoors(trackElement, tunnel.direction));
+                    }
+                }
+                else
+                {
+                    const auto tunnelStyle = trackDrawerEntry.trackGroupTunnelStyles[EnumValue(ted.definition.group)];
+                    if (tunnel.direction == direction)
+                    {
+                        PaintUtilPushTunnelLeft(session, height + tunnel.height, tunnelStyle, tunnel.subType);
+                    }
+                    else if (tunnel.direction == DirectionNext(direction))
+                    {
+                        PaintUtilPushTunnelRight(session, height + tunnel.height, tunnelStyle, tunnel.subType);
                     }
                 }
             }
