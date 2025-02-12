@@ -431,6 +431,9 @@ static void ClimateUpdateLightning()
         return;
     if (!Config::Get().general.RenderWeatherEffects && !Config::Get().general.RenderWeatherGloom)
         return;
+    // Disable flashes at higher speeds because they become very annoying
+    if (gGameSpeed > 4)
+        return;
 
     _lightningTimer--;
     if (gClimateLightningFlash == 0)
