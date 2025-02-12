@@ -3556,14 +3556,14 @@ static constexpr CoordsXY kMazeEntranceStart[] = {
     { 24, 8 },
 };
 
-void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc)
+void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entranceLoc)
 {
-    peep->MazeLastEdge = entrance_loc.direction + 1;
+    peep->MazeLastEdge = entranceLoc.direction + 1;
 
-    entrance_loc.x += CoordsDirectionDelta[entrance_loc.direction].x;
-    entrance_loc.y += CoordsDirectionDelta[entrance_loc.direction].y;
+    entranceLoc.x += CoordsDirectionDelta[entranceLoc.direction].x;
+    entranceLoc.y += CoordsDirectionDelta[entranceLoc.direction].y;
 
-    uint8_t direction = entrance_loc.direction * 4 + 11;
+    uint8_t direction = entranceLoc.direction * 4 + 11;
     if (ScenarioRand() & 0x40)
     {
         direction += 4;
@@ -3575,29 +3575,29 @@ void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entran
     peep->Var37 = direction;
     peep->MazeLastEdge &= 3;
 
-    entrance_loc.x += kMazeEntranceStart[direction / 4].x;
-    entrance_loc.y += kMazeEntranceStart[direction / 4].y;
+    entranceLoc.x += kMazeEntranceStart[direction / 4].x;
+    entranceLoc.y += kMazeEntranceStart[direction / 4].y;
 
-    peep->SetDestination(entrance_loc, 3);
+    peep->SetDestination(entranceLoc, 3);
 
     ride.curNumCustomers++;
     peep->OnEnterRide(ride);
     peep->RideSubState = PeepRideSubState::MazePathfinding;
 }
 
-void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc)
+void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entranceLoc)
 {
-    entrance_loc = { ride.getStation(peep->CurrentRideStation).GetStart(), entrance_loc.direction };
+    entranceLoc = { ride.getStation(peep->CurrentRideStation).GetStart(), entranceLoc.direction };
 
-    TileElement* tile_element = RideGetStationStartTrackElement(ride, peep->CurrentRideStation);
+    TileElement* tileElement = RideGetStationStartTrackElement(ride, peep->CurrentRideStation);
 
-    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+    uint8_t trackDirection = (tileElement == nullptr ? 0 : tileElement->GetDirection());
 
-    peep->Var37 = (entrance_loc.direction << 2) | (direction_track << 4);
+    peep->Var37 = (entranceLoc.direction << 2) | (trackDirection << 4);
 
-    entrance_loc += kSpiralSlideWalkingPath[peep->Var37];
+    entranceLoc += kSpiralSlideWalkingPath[peep->Var37];
 
-    peep->SetDestination(entrance_loc);
+    peep->SetDestination(entranceLoc);
     peep->CurrentCar = 0;
 
     ride.curNumCustomers++;
@@ -3605,7 +3605,7 @@ void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD&
     peep->RideSubState = PeepRideSubState::ApproachSpiralSlide;
 }
 
-void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc)
+void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entranceLoc)
 {
     const auto currentTicks = getGameState().currentTicks;
 
@@ -3625,7 +3625,7 @@ void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& ent
     }
 }
 
-uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const
+uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t trackDirection) const
 {
     // The seatlocation can be split into segments around the ride base
     // to decide the segment first split off the segmentable seat location
@@ -3635,17 +3635,17 @@ uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehic
 
     // Enterprise has more segments (8) compared to the normal (4)
     if (ride.type != RIDE_TYPE_ENTERPRISE)
-        track_direction *= 2;
+        trackDirection *= 2;
 
     // Type 1 loading doesn't do segments and all peeps go to the same
     // location on the ride
     if (vehicle_type->peep_loading_waypoint_segments == 0)
     {
-        track_direction /= 2;
+        trackDirection /= 2;
         seatLocationSegment = 0;
         seatLocationFixed = 0;
     }
-    seatLocationSegment += track_direction;
+    seatLocationSegment += trackDirection;
     seatLocationSegment &= 0x7;
     return seatLocationSegment + seatLocationFixed;
 }
@@ -3657,11 +3657,11 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     {
         return;
     }
-    uint8_t direction_entrance = station.Entrance.direction;
+    uint8_t directionEntrance = station.Entrance.direction;
 
-    TileElement* tile_element = RideGetStationStartTrackElement(ride, CurrentRideStation);
+    TileElement* tileElement = RideGetStationStartTrackElement(ride, CurrentRideStation);
 
-    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+    uint8_t trackDirection = (tileElement == nullptr ? 0 : tileElement->GetDirection());
 
     auto vehicle = GetEntity<Vehicle>(ride.vehicles[CurrentTrain]);
     if (vehicle == nullptr)
@@ -3672,7 +3672,7 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     const auto* rideEntry = vehicle->GetRideEntry();
     const auto* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
 
-    Var37 = (direction_entrance | GetWaypointedSeatLocation(ride, carEntry, direction_track) * 4) * 4;
+    Var37 = (directionEntrance | GetWaypointedSeatLocation(ride, carEntry, trackDirection) * 4) * 4;
 
     const auto& rtd = ride.getRideTypeDescriptor();
     CoordsXY waypoint = rtd.GetGuestWaypointLocation(*vehicle, ride, CurrentRideStation);

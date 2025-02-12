@@ -140,18 +140,18 @@ static void SpiralSlidePaintTileFront(
 
     if (session.DPI.zoom_level <= ZoomLevel{ 0 } && ride.slideInUse != 0)
     {
-        uint8_t slide_progress = ride.spiralSlideProgress;
-        if (slide_progress != 0)
+        uint8_t slideProgress = ride.spiralSlideProgress;
+        if (slideProgress != 0)
         {
-            slide_progress--;
+            slideProgress--;
         }
 
-        if (slide_progress == 46)
+        if (slideProgress == 46)
         {
-            slide_progress--;
+            slideProgress--;
         }
 
-        if (slide_progress < 46)
+        if (slideProgress < 46)
         {
             int32_t offset = rideEntry->Cars[0].base_image_id + SpiralSlidePeep + 46 * direction;
             CoordsXYZ boundingBox = { 0, 0, 108 };
@@ -186,7 +186,7 @@ static void SpiralSlidePaintTileFront(
                 boundingBox.x = 8;
             }
 
-            imageId = ImageId(offset + slide_progress, ride.slidePeepTShirtColour, COLOUR_GREY);
+            imageId = ImageId(offset + slideProgress, ride.slidePeepTShirtColour, COLOUR_GREY);
 
             PaintAddImageAsChild(session, imageId, { 16, 16, height }, { boundingBoxOffset, boundingBox });
         }

@@ -1205,7 +1205,7 @@ void Ride::updatePopularity(const uint8_t pop_amount)
 }
 
 /** rct2: 0x0098DDB8, 0x0098DDBA */
-static constexpr CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
+static constexpr CoordsXY kRideSpiralSlideMainTileOffset[][4] = {
     {
         { 32, 32 },
         { 0, 32 },
@@ -1258,7 +1258,7 @@ void updateSpiralSlide(Ride& ride)
         }
     }
 
-    const uint8_t current_rotation = GetCurrentRotation();
+    const uint8_t currentRotation = GetCurrentRotation();
     // Invalidate something related to station start
     for (int32_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
     {
@@ -1272,7 +1272,7 @@ void updateSpiralSlide(Ride& ride)
             continue;
 
         int32_t rotation = tileElement->GetDirection();
-        startLoc += ride_spiral_slide_main_tile_offset[rotation][current_rotation];
+        startLoc += kRideSpiralSlideMainTileOffset[rotation][currentRotation];
 
         MapInvalidateTileZoom0({ startLoc, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
     }
