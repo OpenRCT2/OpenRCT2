@@ -25,7 +25,7 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
-#include <openrct2/sprites.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <vector>
 

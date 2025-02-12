@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/EnumMap.hpp"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 
 #include <map>
 #include <string>

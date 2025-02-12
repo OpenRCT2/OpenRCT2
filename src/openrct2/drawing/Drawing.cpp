@@ -20,7 +20,7 @@
 #include "../object/ObjectEntryManager.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"

@@ -15,7 +15,7 @@
 #include "../core/UnicodeChar.h"
 #include "../localisation/LocalisationService.h"
 #include "../rct12/CSChar.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "Drawing.h"
 #include "TTF.h"
 

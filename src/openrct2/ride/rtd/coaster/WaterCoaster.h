@@ -11,7 +11,7 @@
 
 #include "../../../drawing/LightFX.h"
 #include "../../../ride/RideStringIds.h"
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"

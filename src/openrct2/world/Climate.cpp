@@ -22,7 +22,7 @@
 #include "../drawing/Drawing.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 

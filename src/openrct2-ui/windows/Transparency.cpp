@@ -22,7 +22,7 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/network.h>
-#include <openrct2/sprites.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>

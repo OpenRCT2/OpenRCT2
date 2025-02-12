@@ -13,7 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "Drawing.h"
 
 #include <algorithm>

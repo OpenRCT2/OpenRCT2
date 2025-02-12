@@ -22,7 +22,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/sprites.h>
+#include <openrct2/SpriteIds.h>
 
 using namespace OpenRCT2;
 

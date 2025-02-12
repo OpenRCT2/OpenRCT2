@@ -25,7 +25,7 @@
 #include "../audio/audio.h"
 #include "../interface/Colour.h"
 #include "../management/Research.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "Ride.h"
 #include "ShopItem.h"
 #include "Track.h"

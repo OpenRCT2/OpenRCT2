@@ -26,7 +26,7 @@
 #include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
 #include "../scenario/Scenario.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "../world/Map.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideData.h"

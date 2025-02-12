@@ -12,7 +12,7 @@
 #include "../../../ride/Ride.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../Paint.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"

@@ -11,7 +11,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
-#include <openrct2/sprites.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows

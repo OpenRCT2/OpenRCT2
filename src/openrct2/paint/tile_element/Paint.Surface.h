@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../../interface/Colour.h"
-#include "../../sprites.h"
+#include "../../SpriteIds.h"
 #include "../../world/Location.hpp"
 
 #include <optional>

@@ -48,7 +48,7 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"

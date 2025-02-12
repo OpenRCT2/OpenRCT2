@@ -16,7 +16,7 @@
 #include <cassert>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/DrawingLock.hpp>
-#include <openrct2/sprites.h>
+#include <openrct2/SpriteIds.h>
 #include <shared_mutex>
 #include <unordered_map>
 #include <vector>

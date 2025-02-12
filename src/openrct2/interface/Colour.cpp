@@ -12,7 +12,7 @@
 #include "../core/EnumMap.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../drawing/Drawing.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 
 #include <cmath>
 

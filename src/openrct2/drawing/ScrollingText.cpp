@@ -18,7 +18,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "Drawing.h"
 #include "TTF.h"
 

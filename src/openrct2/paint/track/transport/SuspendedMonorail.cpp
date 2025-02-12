@@ -13,7 +13,7 @@
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../../world/Map.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"

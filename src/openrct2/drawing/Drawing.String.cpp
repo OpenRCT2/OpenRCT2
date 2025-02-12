@@ -20,7 +20,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/Platform.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "TTF.h"
 
 using namespace OpenRCT2;

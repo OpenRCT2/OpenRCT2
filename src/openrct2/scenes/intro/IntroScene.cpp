@@ -14,7 +14,7 @@
 #include "../../audio/AudioMixer.h"
 #include "../../audio/audio.h"
 #include "../../drawing/Drawing.h"
-#include "../../sprites.h"
+#include "../../SpriteIds.h"
 
 #include <memory>
 

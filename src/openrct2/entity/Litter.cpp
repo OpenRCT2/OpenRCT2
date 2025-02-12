@@ -7,7 +7,7 @@
 #include "../localisation/StringIds.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "EntityList.h"

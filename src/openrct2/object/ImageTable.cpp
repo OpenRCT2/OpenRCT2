@@ -21,7 +21,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/ImageImporter.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "Object.h"
 #include "ObjectFactory.h"
 

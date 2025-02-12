@@ -14,7 +14,7 @@
 #include "../localisation/StringIds.h"
 #include "../ride/RideEntry.h"
 #include "../ride/RideManager.hpp"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 
 using namespace OpenRCT2;
 

@@ -21,7 +21,7 @@
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 #include "../../ride/Vehicle.h"
-#include "../../sprites.h"
+#include "../../SpriteIds.h"
 #include "../Paint.h"
 
 #include <iterator>

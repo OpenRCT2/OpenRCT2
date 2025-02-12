@@ -16,7 +16,7 @@
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../profiling/Profiling.h"
-#include "../sprites.h"
+#include "../SpriteIds.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/TileElementsView.h"
