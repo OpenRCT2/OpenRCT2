@@ -5,6 +5,7 @@
 - Fix: [#9999, #10000, #10001, #10002, #10003] Truncated scenario strings when using Catalan, Czech, Japanese, Polish or Russian.
 - Fix: [#16357] Chairlift station covers draw incorrectly.
 - Fix: [#16657] Mine Ride right S-bend uses Mini Roller Coaster sprite (original bug).
+- Fix: [#18376] Ghost train gentle to flat track is not visible in tunnels.
 - Fix: [#18436] Scenery on the same tile as steep to vertical track can draw over the track (original bug).
 - Fix: [#18711] Park entrances with their sides underground can cause glitching.
 - Fix: [#21768] Dirty blocks debug overlay is rendered incorrectly on high DPI screens.
