@@ -262,7 +262,7 @@ namespace OpenRCT2::RCT1
                 desc.title = name.c_str();
             }
 
-            String::set(dst->InternalName, sizeof(dst->InternalName), desc.title);
+            dst->InternalName = desc.title;
 
             if (!desc.textObjectId.empty())
             {
@@ -284,8 +284,8 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            String::set(dst->Name, sizeof(dst->Name), name.c_str());
-            String::set(dst->Details, sizeof(dst->Details), details.c_str());
+            dst->Name = name;
+            dst->Details = details;
 
             return true;
         }
