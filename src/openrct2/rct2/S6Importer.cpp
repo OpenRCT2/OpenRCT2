@@ -555,17 +555,21 @@ namespace OpenRCT2::RCT2
             // Pad13CA741;
             // Byte13CA742
             // Pad013CA747
-            gameState.ClimateUpdateTimer = _s6.ClimateUpdateTimer;
-            gameState.ClimateCurrent.Weather = WeatherType{ _s6.CurrentWeather };
-            gameState.ClimateNext.Weather = WeatherType{ _s6.NextWeather };
-            gameState.ClimateCurrent.Temperature = _s6.Temperature;
-            gameState.ClimateNext.Temperature = _s6.NextTemperature;
-            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect };
-            gameState.ClimateNext.WeatherEffect = WeatherEffectType{ _s6.NextWeatherEffect };
-            gameState.ClimateCurrent.WeatherGloom = _s6.CurrentWeatherGloom;
-            gameState.ClimateNext.WeatherGloom = _s6.NextWeatherGloom;
-            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel);
-            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s6.NextWeatherLevel);
+            gameState.WeatherUpdateTimer = _s6.WeatherUpdateTimer;
+            gameState.WeatherCurrent = {
+                .weatherType = WeatherType{ _s6.CurrentWeather },
+                .temperature = static_cast<int8_t>(_s6.Temperature),
+                .weatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect },
+                .weatherGloom = _s6.CurrentWeatherGloom,
+                .level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel),
+            };
+            gameState.WeatherNext = {
+                .weatherType = WeatherType{ _s6.NextWeather },
+                .temperature = static_cast<int8_t>(_s6.NextTemperature),
+                .weatherEffect = WeatherEffectType{ _s6.NextWeatherEffect },
+                .weatherGloom = _s6.NextWeatherGloom,
+                .level = static_cast<WeatherLevel>(_s6.NextWeatherLevel),
+            };
 
             // News items
             News::InitQueue();

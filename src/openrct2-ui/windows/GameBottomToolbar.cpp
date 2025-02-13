@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
             // Temperature
             screenCoords = { windowPos.x + rightPanelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
-            int32_t temperature = GetGameState().ClimateCurrent.Temperature;
+            int32_t temperature = GetGameState().WeatherCurrent.temperature;
             StringId format = STR_CELSIUS_VALUE;
             if (Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit)
             {
@@ -212,14 +212,14 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.x += 30;
 
             // Current weather
-            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().ClimateCurrent);
+            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherCurrent);
             GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
             // Next weather
-            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().ClimateNext);
+            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherNext);
             if (currentWeatherSpriteId != nextWeatherSpriteId)
             {
-                if (GetGameState().ClimateUpdateTimer < 960)
+                if (GetGameState().WeatherUpdateTimer < 960)
                 {
                     GfxDrawSprite(dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
                     GfxDrawSprite(dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });

@@ -2352,17 +2352,21 @@ namespace OpenRCT2::RCT1
         void ImportClimate(GameState_t& gameState)
         {
             gameState.Climate = ClimateType{ _s4.Climate };
-            gameState.ClimateUpdateTimer = _s4.ClimateTimer;
-            gameState.ClimateCurrent.Temperature = _s4.Temperature;
-            gameState.ClimateCurrent.Weather = WeatherType{ _s4.Weather };
-            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType::None;
-            gameState.ClimateCurrent.WeatherGloom = _s4.WeatherGloom;
-            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s4.Rain);
-            gameState.ClimateNext.Temperature = _s4.TargetTemperature;
-            gameState.ClimateNext.Weather = WeatherType{ _s4.TargetWeather };
-            gameState.ClimateNext.WeatherEffect = WeatherEffectType::None;
-            gameState.ClimateNext.WeatherGloom = _s4.TargetWeatherGloom;
-            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
+            gameState.WeatherUpdateTimer = _s4.WeatherUpdateTimer;
+            gameState.WeatherCurrent = {
+                .weatherType = WeatherType{ _s4.Weather },
+                .temperature = static_cast<int8_t>(_s4.Temperature),
+                .weatherEffect = WeatherEffectType::None,
+                .weatherGloom = _s4.WeatherGloom,
+                .level = static_cast<WeatherLevel>(_s4.Rain),
+            };
+            gameState.WeatherNext = {
+                .weatherType = WeatherType{ _s4.TargetWeather },
+                .temperature = static_cast<int8_t>(_s4.TargetTemperature),
+                .weatherEffect = WeatherEffectType::None,
+                .weatherGloom = _s4.TargetWeatherGloom,
+                .level = static_cast<WeatherLevel>(_s4.TargetRain),
+            };
         }
 
         void ImportScenarioNameDetails(GameState_t& gameState)
