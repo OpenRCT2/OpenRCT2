@@ -171,7 +171,7 @@ static constexpr TunnelDescriptor kTunnels[] = {
     { 3, 5, -32,  4, TunnelType::StandardFlat,        44 },  // TunnelType::StandardSlopeEnd
     { 3, 3, 0,   15, TunnelType::InvertedFlat,        48 },  // TunnelType::InvertedFlat
     { 4, 4, 0,   15, TunnelType::InvertedFlat,        52 },  // TunnelType::InvertedSlopeStart
-    { 4, 6, -48,  4, TunnelType::InvertedFlat,        56 },  // TunnelType::InvertedSlopeEnd
+    { 4, 7, -48,  4, TunnelType::InvertedFlat,        56 },  // TunnelType::InvertedSlopeEnd
     { 2, 2, 0,   15, TunnelType::SquareFlat,          60 },  // TunnelType::SquareFlat
     { 3, 3, 0,   15, TunnelType::SquareFlat,          64 },  // TunnelType::SquareSlopeStart
     { 3, 5, -32,  4, TunnelType::SquareFlat,          68 },  // TunnelType::SquareSlopeEnd
@@ -658,7 +658,8 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         // Tunnels
         auto tunnelType = tunnelArray[tunnelIndex].type;
-        auto td = kTunnels[EnumValue(tunnelType)];
+        const auto tdOriginal = kTunnels[EnumValue(tunnelType)];
+        auto td = tdOriginal;
         uint8_t tunnelHeight = td.height;
         int16_t zOffset = curHeight;
 
@@ -671,8 +672,10 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         zOffset *= 16;
 
-        int16_t boundBoxOffsetZ = zOffset + td.boundBoxZOffset;
-        int8_t boundBoxLength = td.boundBoxLength * 16;
+        const int8_t boundBoxLengthBase = (tdOriginal.boundBoxLength + (td.height - tdOriginal.height)) * 16;
+
+        int16_t boundBoxOffsetZ = zOffset + tdOriginal.boundBoxZOffset;
+        int8_t boundBoxLength = boundBoxLengthBase;
         if (boundBoxOffsetZ < 16)
         {
             boundBoxOffsetZ += 16;
@@ -684,8 +687,8 @@ static void ViewportSurfaceDrawTileSideBottom(
             session, imageId, { offset, zOffset }, { { 0, 0, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
         boundBoxOffsetZ = curHeight * kCoordsZPerTinyZ;
-        boundBoxLength = td.boundBoxLength * 16;
-        boundBoxOffsetZ += td.boundBoxZOffset;
+        boundBoxLength = boundBoxLengthBase;
+        boundBoxOffsetZ += tdOriginal.boundBoxZOffset;
         if (boundBoxOffsetZ == 0)
         {
             boundBoxOffsetZ += 16;
