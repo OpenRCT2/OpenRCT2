@@ -15,6 +15,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
@@ -24,7 +25,6 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
-#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
 

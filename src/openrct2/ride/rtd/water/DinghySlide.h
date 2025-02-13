@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../../../ride/RideStringIds.h"
 #include "../../../SpriteIds.h"
+#include "../../../ride/RideStringIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"

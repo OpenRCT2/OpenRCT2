@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../SpriteIds.h"
 #include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
@@ -22,7 +23,6 @@
 #include "../drawing/Drawing.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
-#include "../SpriteIds.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 

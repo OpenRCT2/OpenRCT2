@@ -17,12 +17,12 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LandBuyRightsAction.h>
 #include <openrct2/actions/LandSetRightsAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>

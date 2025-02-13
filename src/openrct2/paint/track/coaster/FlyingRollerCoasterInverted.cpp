@@ -7,10 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../SpriteIds.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../track/Segment.h"
 

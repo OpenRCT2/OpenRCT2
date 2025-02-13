@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../../interface/Colour.h"
 #include "../../SpriteIds.h"
+#include "../../interface/Colour.h"
 #include "../../world/Location.hpp"
 
 #include <optional>

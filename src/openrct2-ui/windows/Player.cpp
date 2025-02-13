@@ -13,13 +13,13 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/PlayerKickAction.h>
 #include <openrct2/actions/PlayerSetGroupAction.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/NetworkAction.h>
 #include <openrct2/network/network.h>
-#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <utility>
 

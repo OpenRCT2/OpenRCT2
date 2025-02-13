@@ -19,6 +19,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/BannerPlaceAction.h>
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
@@ -48,7 +49,6 @@
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
-#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/ConstructionClearance.h>

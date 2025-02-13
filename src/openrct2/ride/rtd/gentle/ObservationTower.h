@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../../../drawing/LightFX.h"
 #include "../../../SpriteIds.h"
+#include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"

@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
@@ -25,7 +26,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <string>
 #include <vector>

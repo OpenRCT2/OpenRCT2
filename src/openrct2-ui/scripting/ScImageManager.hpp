@@ -14,9 +14,9 @@
     #include "CustomImages.h"
 
     #include <openrct2/Context.h>
+    #include <openrct2/SpriteIds.h>
     #include <openrct2/drawing/Image.h>
     #include <openrct2/scripting/Duktape.hpp>
-    #include <openrct2/SpriteIds.h>
 
 namespace OpenRCT2::Scripting
 {

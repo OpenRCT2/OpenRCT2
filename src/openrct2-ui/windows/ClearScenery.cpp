@@ -15,9 +15,9 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>

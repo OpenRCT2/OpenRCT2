@@ -16,6 +16,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/core/String.hpp>
@@ -25,7 +26,6 @@
 #include <openrct2/network/network.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/RideRatings.h>
-#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>

@@ -20,11 +20,11 @@
     #include "ScWindow.hpp"
 
     #include <limits>
+    #include <openrct2/SpriteIds.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/interface/Window.h>
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/scripting/Plugin.h>
-    #include <openrct2/SpriteIds.h>
     #include <optional>
     #include <string>
     #include <utility>

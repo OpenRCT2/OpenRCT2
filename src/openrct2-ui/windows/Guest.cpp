@@ -18,6 +18,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GuestSetFlagsAction.h>
 #include <openrct2/actions/GuestSetNameAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
@@ -37,7 +38,6 @@
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/SpriteIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
