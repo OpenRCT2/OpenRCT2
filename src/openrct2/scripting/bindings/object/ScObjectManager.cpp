@@ -245,14 +245,14 @@ void ScObjectManager::MarkAsResearched(const Object* object)
     // Defaults selected items to researched (if in-game)
     auto objectType = object->GetObjectType();
     auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(object);
-    if (objectType == ObjectType::Ride)
+    if (objectType == ObjectType::ride)
     {
         const auto* rideEntry = GetRideEntryByIndex(entryIndex);
         auto rideType = rideEntry->GetFirstNonNullRideType();
         auto category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
         ResearchInsertRideEntry(rideType, entryIndex, category, true);
     }
-    else if (objectType == ObjectType::SceneryGroup)
+    else if (objectType == ObjectType::sceneryGroup)
     {
         ResearchInsertSceneryGroupEntry(entryIndex, true);
     }
@@ -270,19 +270,19 @@ DukValue ScObjectManager::CreateScObject(duk_context* ctx, ObjectType type, int3
 {
     switch (type)
     {
-        case ObjectType::Ride:
+        case ObjectType::ride:
             return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(type, index));
-        case ObjectType::SmallScenery:
+        case ObjectType::smallScenery:
             return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(type, index));
-        case ObjectType::LargeScenery:
+        case ObjectType::largeScenery:
             return GetObjectAsDukValue(ctx, std::make_shared<ScLargeSceneryObject>(type, index));
-        case ObjectType::Walls:
+        case ObjectType::walls:
             return GetObjectAsDukValue(ctx, std::make_shared<ScWallObject>(type, index));
-        case ObjectType::PathAdditions:
+        case ObjectType::pathAdditions:
             return GetObjectAsDukValue(ctx, std::make_shared<ScFootpathAdditionObject>(type, index));
-        case ObjectType::Banners:
+        case ObjectType::banners:
             return GetObjectAsDukValue(ctx, std::make_shared<ScBannerObject>(type, index));
-        case ObjectType::SceneryGroup:
+        case ObjectType::sceneryGroup:
             return GetObjectAsDukValue(ctx, std::make_shared<ScSceneryGroupObject>(type, index));
         default:
             return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));

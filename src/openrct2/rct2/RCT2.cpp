@@ -236,7 +236,7 @@ namespace OpenRCT2::RCT2
         RCTObjectEntry result;
         std::memset(&result, 0, sizeof(result));
 
-        result.SetType(ObjectType::Paths);
+        result.SetType(ObjectType::paths);
 
         auto foundMapping = false;
         for (const auto& mapping : _footpathMappings)

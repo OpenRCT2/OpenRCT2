@@ -307,7 +307,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto& objManager = GetContext()->GetObjectManager();
                     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::TerrainSurface, gLandToolTerrainSurface));
+                        objManager.GetLoadedObject(ObjectType::terrainSurface, gLandToolTerrainSurface));
                     if (surfaceObj != nullptr)
                     {
                         price += numTiles * static_cast<money64>(surfaceObj->Price);
@@ -844,7 +844,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainSurface, _selectedFloorTexture));
+                objManager.GetLoadedObject(ObjectType::terrainSurface, _selectedFloorTexture));
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -854,7 +854,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainEdge, _selectedWallTexture));
+                objManager.GetLoadedObject(ObjectType::terrainEdge, _selectedWallTexture));
             ImageId edgeImage;
             if (edgeObj != nullptr)
             {

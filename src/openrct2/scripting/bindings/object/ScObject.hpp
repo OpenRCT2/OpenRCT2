@@ -53,7 +53,7 @@ namespace OpenRCT2::Scripting
 
         static std::optional<ObjectType> StringToObjectType(std::string_view type)
         {
-            for (uint8_t i = 0; i < EnumValue(ObjectType::Count); i++)
+            for (uint8_t i = 0; i < EnumValue(ObjectType::count); i++)
             {
                 auto s = ObjectTypeToString(i);
                 if (s == type)

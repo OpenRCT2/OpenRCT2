@@ -24,7 +24,7 @@ namespace OpenRCT2::STATION_OBJECT_FLAGS
 class StationObject final : public Object
 {
 public:
-    static constexpr ObjectType kObjectType = ObjectType::Station;
+    static constexpr ObjectType kObjectType = ObjectType::station;
 
     StringId NameStringId{};
     ImageIndex BaseImageId = kImageIndexUndefined;
