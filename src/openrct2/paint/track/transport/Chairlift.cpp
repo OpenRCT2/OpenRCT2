@@ -208,7 +208,7 @@ static void ChairliftPaintStationNeSw(
     if (!isStart && !isEnd)
     {
         imageId = session.TrackColours.WithIndex(((direction == 0) ? SPR_20502 : SPR_20504));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 13, height + 28 }, { 32, 6, 2 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 13, height + 22 }, { 32, 6, 1 } });
     }
 
     imageId = session.SupportColours.WithIndex(SPR_FLOOR_METAL);
@@ -232,7 +232,7 @@ static void ChairliftPaintStationNeSw(
     if (hasFence)
     {
         imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 30, height + 2 }, { 32, 1, 27 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 30, height + 2 }, { 32, 1, 20 } });
     }
     TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
 
@@ -301,7 +301,7 @@ static void ChairliftPaintStationSeNw(
     if (!isStart && !isEnd)
     {
         imageId = session.TrackColours.WithIndex(((direction == 1) ? SPR_20503 : SPR_20505));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 13, 0, height + 28 }, { 6, 32, 2 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 13, 0, height + 22 }, { 6, 32, 1 } });
     }
 
     imageId = session.SupportColours.WithIndex(SPR_FLOOR_METAL);
@@ -325,7 +325,7 @@ static void ChairliftPaintStationSeNw(
     if (hasFence)
     {
         imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_SW);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 27 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 20 } });
     }
     TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
 
