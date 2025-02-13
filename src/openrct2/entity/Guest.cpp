@@ -1735,7 +1735,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     }
     ride.total_profit = AddClamp(ride.total_profit, price - shopItemDescriptor.Cost);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-    ride.cur_num_customers = AddClamp<uint16_t>(ride.cur_num_customers, 1);
+    ride.cur_num_customers++;
     ride.total_customers = AddClamp(ride.total_customers, 1u);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
@@ -3350,7 +3350,7 @@ static bool PeepShouldUseCashMachine(Guest* peep, RideId rideIndex)
     if (ride != nullptr)
     {
         ride->UpdateSatisfaction(peep->Happiness >> 6);
-        ride->cur_num_customers = AddClamp<uint16_t>(ride->cur_num_customers, 1);
+        ride->cur_num_customers++;
         ride->total_customers = AddClamp(ride->total_customers, 1u);
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
     }
@@ -3577,7 +3577,7 @@ void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entran
 
     peep->SetDestination(entrance_loc, 3);
 
-    ride.cur_num_customers = AddClamp<uint16_t>(ride.cur_num_customers, 1);
+    ride.cur_num_customers++;
     peep->OnEnterRide(ride);
     peep->RideSubState = PeepRideSubState::MazePathfinding;
 }
@@ -3597,7 +3597,7 @@ void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD&
     peep->SetDestination(entrance_loc);
     peep->CurrentCar = 0;
 
-    ride.cur_num_customers = AddClamp<uint16_t>(ride.cur_num_customers, 1);
+    ride.cur_num_customers++;
     peep->OnEnterRide(ride);
     peep->RideSubState = PeepRideSubState::ApproachSpiralSlide;
 }
@@ -4110,7 +4110,7 @@ void Guest::UpdateRideEnterVehicle()
                         return;
 
                     vehicle->num_peeps++;
-                    ride->cur_num_customers = AddClamp<uint16_t>(ride->cur_num_customers, 1);
+                    ride->cur_num_customers++;
 
                     vehicle->ApplyMass(seatedGuest->Mass);
                     seatedGuest->MoveTo({ kLocationNull, 0, 0 });
@@ -4122,7 +4122,7 @@ void Guest::UpdateRideEnterVehicle()
             }
 
             vehicle->num_peeps++;
-            ride->cur_num_customers = AddClamp<uint16_t>(ride->cur_num_customers, 1);
+            ride->cur_num_customers++;
 
             vehicle->ApplyMass(Mass);
             vehicle->Invalidate();
