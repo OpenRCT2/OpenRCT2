@@ -76,12 +76,12 @@ static Climate convertRawClimate(const RawClimate& rawClimate)
         dstMonth.randomBias = srcMonth.randomBias;
 
         auto i = 0;
-        for (auto w = 0U; w < kNumWeatherTypes; w++)
+        for (auto w = 0u; w < kNumWeatherTypes; w++)
         {
             if (i > kWeatherDistSize)
                 break;
 
-            for (auto k = 0U; k < srcMonth.distribution[w]; k++)
+            for (auto k = 0u; k < srcMonth.distribution[w]; k++)
             {
                 dstMonth.distribution[i] = WeatherType(w);
                 i++;
@@ -101,7 +101,7 @@ static RawClimate readWeatherTable(json_t& weather)
 {
     // First read raw climate distribution from JSON
     RawClimate rawClimate{};
-    for (auto i = 0U; i < kNumClimateMonths; i++)
+    for (auto i = 0u; i < kNumClimateMonths; i++)
     {
         auto& monthKey = kMonthKeys[i];
         if (!weather.contains(monthKey))
@@ -111,7 +111,7 @@ static RawClimate readWeatherTable(json_t& weather)
         }
 
         auto& month = weather[monthKey];
-        for (auto j = 0U; j < kNumWeatherTypes; j++)
+        for (auto j = 0u; j < kNumWeatherTypes; j++)
         {
             Guard::Assert(
                 month["baseTemperature"].is_number(),
@@ -143,8 +143,8 @@ static RawClimate readWeatherTable(json_t& weather)
     // Adjust distribution to fit internal format
     for (auto& climateMonth : rawClimate)
     {
-        auto adjustedDistSum = 0U;
-        for (auto i = 0U; i < kNumWeatherTypes; i++)
+        auto adjustedDistSum = 0u;
+        for (auto i = 0u; i < kNumWeatherTypes; i++)
         {
             auto rawWeight = climateMonth.distribution[i];
             auto adjustedWeight = rawWeight * kWeatherDistSize / climateMonth.distributionSum;
