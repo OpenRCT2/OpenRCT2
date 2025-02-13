@@ -2314,7 +2314,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(14884), { 0, 0, height },
-                        { { 0, 6, height + 8 }, { 32, 20, 2 } });
+                        { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(14896), { 0, 0, height },
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
@@ -2551,7 +2551,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(14882), { 0, 0, height },
-                        { { 0, 6, height + 8 }, { 32, 20, 2 } });
+                        { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(14894), { 0, 0, height },
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
