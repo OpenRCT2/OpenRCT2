@@ -224,7 +224,7 @@ const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
 
-    auto obj = objMgr.GetLoadedObject(ObjectType::Ride, index);
+    auto obj = objMgr.GetLoadedObject(ObjectType::ride, index);
     if (obj == nullptr)
     {
         return nullptr;
@@ -235,13 +235,13 @@ const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index)
 
 std::string_view GetRideEntryName(ObjectEntryIndex index)
 {
-    if (index >= getObjectEntryGroupCount(ObjectType::Ride))
+    if (index >= getObjectEntryGroupCount(ObjectType::ride))
     {
         LOG_ERROR("invalid index %d for ride type", index);
         return {};
     }
 
-    auto objectEntry = ObjectEntryGetObject(ObjectType::Ride, index);
+    auto objectEntry = ObjectEntryGetObject(ObjectType::ride, index);
     if (objectEntry != nullptr)
     {
         return objectEntry->GetLegacyIdentifier();

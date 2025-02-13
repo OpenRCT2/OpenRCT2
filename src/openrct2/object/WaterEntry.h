@@ -19,7 +19,7 @@ enum
 
 struct WaterObjectEntry
 {
-    static constexpr auto kObjectType = ObjectType::Water;
+    static constexpr auto kObjectType = ObjectType::water;
 
     StringId string_idx;      // 0x00
     uint32_t image_id;        // 0x02

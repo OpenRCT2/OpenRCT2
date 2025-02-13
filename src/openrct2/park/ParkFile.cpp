@@ -303,7 +303,7 @@ namespace OpenRCT2
                                         RCTObjectEntry datEntry;
                                         cs.Read(&datEntry, sizeof(datEntry));
                                         ObjectEntryDescriptor desc(datEntry);
-                                        if (version <= 2 && datEntry.GetType() == ObjectType::Paths)
+                                        if (version <= 2 && datEntry.GetType() == ObjectType::paths)
                                         {
                                             auto footpathMapping = GetFootpathMapping(desc);
                                             if (footpathMapping != nullptr)
@@ -380,13 +380,13 @@ namespace OpenRCT2
                 if (version < kPeepNamesObjectsVersion)
                 {
                     AppendRequiredObjects(
-                        requiredObjects, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
+                        requiredObjects, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
                 }
 
                 if (version < kPeepAnimationObjectsVersion)
                 {
                     auto animObjects = GetLegacyPeepAnimationObjects(requiredObjects);
-                    AppendRequiredObjects(requiredObjects, ObjectType::PeepAnimations, animObjects);
+                    AppendRequiredObjects(requiredObjects, ObjectType::peepAnimations, animObjects);
                 }
 
                 RequiredObjects = std::move(requiredObjects);
