@@ -15,12 +15,12 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows

@@ -11,6 +11,7 @@
 
 #include "../../Game.h"
 #include "../../Input.h"
+#include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
@@ -19,7 +20,6 @@
 #include "../../ride/RideData.h"
 #include "../../ride/TrackData.h"
 #include "../../ride/TrackPaint.h"
-#include "../../sprites.h"
 #include "../../world/Banner.h"
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"

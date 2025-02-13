@@ -27,6 +27,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/Limits.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameAction.h>
 #include <openrct2/actions/ParkSetParameterAction.h>
 #include <openrct2/actions/RideSetAppearanceAction.h>
@@ -63,7 +64,6 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/ride/Vehicle.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>

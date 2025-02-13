@@ -16,6 +16,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/StaffSetPatrolAreaAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -23,7 +24,6 @@
 #include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 

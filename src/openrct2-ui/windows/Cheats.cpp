@@ -17,6 +17,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/core/EnumUtils.hpp>
@@ -24,7 +25,6 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/network.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>

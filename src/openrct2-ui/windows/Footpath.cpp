@@ -23,6 +23,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/FootpathPlaceAction.h>
 #include <openrct2/actions/FootpathRemoveAction.h>
 #include <openrct2/audio/audio.h>
@@ -35,7 +36,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/platform/Platform.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Footpath.h>

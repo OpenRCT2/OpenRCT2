@@ -18,6 +18,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LandLowerAction.h>
 #include <openrct2/actions/LandRaiseAction.h>
 #include <openrct2/actions/LandSmoothAction.h>
@@ -27,7 +28,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 

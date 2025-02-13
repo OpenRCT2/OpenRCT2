@@ -20,6 +20,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
@@ -41,7 +42,6 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/scenes/title/TitleSequenceManager.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
