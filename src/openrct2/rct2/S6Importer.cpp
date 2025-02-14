@@ -257,18 +257,17 @@ namespace OpenRCT2::RCT2
             if (String::isNullOrEmpty(_s6.Info.Name))
             {
                 // If the scenario doesn't have a name, set it to the filename
-                String::set(dst->Name, sizeof(dst->Name), Path::GetFileNameWithoutExtension(dst->Path).c_str());
+                dst->Name = Path::GetFileNameWithoutExtension(dst->Path);
             }
             else
             {
                 // Normalise the name to make the scenario as recognisable as possible.
-                auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
-                String::set(dst->Name, sizeof(dst->Name), normalisedName.c_str());
+                dst->Name = ScenarioSources::NormaliseName(_s6.Info.Name);
             }
 
             // Look up and store information regarding the origins of this scenario.
             SourceDescriptor desc;
-            if (ScenarioSources::TryGetByName(dst->Name, &desc))
+            if (ScenarioSources::TryGetByName(dst->Name.c_str(), &desc))
             {
                 dst->ScenarioId = desc.id;
                 dst->SourceIndex = desc.index;
@@ -290,8 +289,8 @@ namespace OpenRCT2::RCT2
             }
 
             // dst->name will be translated later so keep the untranslated name here
-            String::set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
-            String::set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
+            dst->InternalName = dst->Name;
+            dst->Details = _s6.Info.Details;
 
             if (!desc.textObjectId.empty())
             {
@@ -308,11 +307,8 @@ namespace OpenRCT2::RCT2
                 if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                 {
                     auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                    auto name = textObject->GetScenarioName();
-                    auto details = textObject->GetScenarioDetails();
-
-                    String::set(dst->Name, sizeof(dst->Name), name.c_str());
-                    String::set(dst->Details, sizeof(dst->Details), details.c_str());
+                    dst->Name = textObject->GetScenarioName();
+                    dst->Details = textObject->GetScenarioDetails();
                 }
             }
 

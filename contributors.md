@@ -247,6 +247,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Robert Yan (lewyche)
 * Tom Matalenas (tmatale)
 * Brendan Heinonen (staticinvocation)
+* (QuestionableDeer)
 
 ## Toolchain
 * (Balletie) - macOS
