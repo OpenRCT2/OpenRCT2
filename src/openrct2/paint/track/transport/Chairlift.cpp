@@ -244,20 +244,20 @@ static void ChairliftPaintStationNeSw(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 2, height + 4 }, { 1, 28, 27 } });
 
         imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairlift_bullwheel_rotation / 16384]);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 26 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 19 } });
 
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_STATION_END_CAP_NE);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 26 } });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 19 } });
 
         drawFrontColumn = false;
     }
     else if ((direction == 2 && isStart) || (direction == 0 && isEnd))
     {
         imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairlift_bullwheel_rotation / 16384]);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 26 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 19 } });
 
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_STATION_END_CAP_SW);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 26 } });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 19 } });
 
         drawBackColumn = false;
     }
@@ -334,10 +334,10 @@ static void ChairliftPaintStationSeNw(
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
         imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairlift_bullwheel_rotation / 16384]);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 26 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 19 } });
 
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_STATION_END_CAP_SE);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 26 } });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 19 } });
 
         drawLeftColumn = false;
     }
@@ -348,7 +348,7 @@ static void ChairliftPaintStationSeNw(
 
         imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairlift_bullwheel_rotation / 16384]);
 
-        auto bb = BoundBoxXYZ{ { 14, 14, height + 4 }, { 4, 4, 26 } };
+        auto bb = BoundBoxXYZ{ { 14, 14, height + 4 }, { 4, 4, 19 } };
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_STATION_END_CAP_NW);
