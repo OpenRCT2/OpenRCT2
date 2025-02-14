@@ -357,7 +357,7 @@ namespace OpenRCT2::ScenarioSources
 
 #pragma endregion
 
-    bool TryGetByName(const utf8* name, SourceDescriptor* outDesc)
+    bool TryGetByName(u8string_view name, SourceDescriptor* outDesc)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 

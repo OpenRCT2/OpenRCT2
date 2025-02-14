@@ -408,7 +408,7 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    // TODO: Move into sprites.h
+    // TODO: Move into SpriteIds.h
     constexpr uint32_t kJumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t kJumpingFountainWaterBaseImage = 22973;
 

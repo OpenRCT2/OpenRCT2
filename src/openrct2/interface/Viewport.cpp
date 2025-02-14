@@ -1084,7 +1084,7 @@ namespace OpenRCT2
 
     static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
     {
-        auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
+        auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().WeatherCurrent);
         if (paletteId != FilterPaletteID::PaletteNull)
         {
             auto x = dpi.x;

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideAudio.h"
 #include "../../RideData.h"
 #include "../../RideRatings.h"

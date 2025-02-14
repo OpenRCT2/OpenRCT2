@@ -12,6 +12,7 @@
 #include "../../Context.h"
 #include "../../Game.h"
 #include "../../GameState.h"
+#include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
@@ -23,7 +24,6 @@
 #include "../../profiling/Profiling.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
-#include "../../sprites.h"
 #include "../../world/Banner.h"
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
@@ -291,7 +291,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
 
     auto& objManager = GetContext()->GetObjectManager();
     auto entrance = reinterpret_cast<EntranceObject*>(
-        objManager.GetLoadedObject(ObjectType::ParkEntrance, entranceEl.getEntryIndex()));
+        objManager.GetLoadedObject(ObjectType::parkEntrance, entranceEl.getEntryIndex()));
     auto sequence = entranceEl.GetSequenceIndex();
     switch (sequence)
     {

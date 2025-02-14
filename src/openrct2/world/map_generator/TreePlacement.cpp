@@ -122,10 +122,10 @@ namespace OpenRCT2::World::MapGenerator
         std::vector<int32_t> desertTreeIds;
         std::vector<int32_t> snowTreeIds;
 
-        for (auto i = 0u; i < getObjectEntryGroupCount(ObjectType::SmallScenery); i++)
+        for (auto i = 0u; i < getObjectEntryGroupCount(ObjectType::smallScenery); i++)
         {
             auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
-            auto entry = ObjectEntryGetObject(ObjectType::SmallScenery, i);
+            auto entry = ObjectEntryGetObject(ObjectType::smallScenery, i);
 
             if (sceneryEntry == nullptr)
                 continue;

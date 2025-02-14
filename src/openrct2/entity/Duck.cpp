@@ -10,12 +10,12 @@
 
 #include "../Game.h"
 #include "../GameState.h"
+#include "../SpriteIds.h"
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
-#include "../sprites.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "EntityRegistry.h"
 

@@ -22,7 +22,7 @@ private:
     PathRailingsDescriptor _pathRailingsDescriptor = {};
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::Paths;
+    static constexpr ObjectType kObjectType = ObjectType::paths;
 
     void* GetLegacyData() override
     {

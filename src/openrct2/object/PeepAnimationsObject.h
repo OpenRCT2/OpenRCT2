@@ -27,7 +27,7 @@ private:
     bool _noRandomPlacement;
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::PeepAnimations;
+    static constexpr ObjectType kObjectType = ObjectType::peepAnimations;
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     OpenRCT2::PeepAnimations ReadAnimations(const EnumMap<PeepAnimationType>& requiredAnimationMap, json_t& animations);

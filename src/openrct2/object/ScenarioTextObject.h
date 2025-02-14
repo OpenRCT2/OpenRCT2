@@ -17,7 +17,7 @@
 class ScenarioTextObject final : public Object
 {
 public:
-    static constexpr ObjectType kObjectType = ObjectType::ScenarioText;
+    static constexpr ObjectType kObjectType = ObjectType::scenarioText;
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;

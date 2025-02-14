@@ -55,7 +55,7 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::Editor
 {
-    static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
+    static std::array<std::vector<uint8_t>, EnumValue(ObjectType::count)> _editorSelectedObjectFlags;
 
     static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
     static void SetAllLandOwned();
@@ -403,10 +403,10 @@ namespace OpenRCT2::Editor
     std::pair<ObjectType, StringId> CheckObjectSelection()
     {
         constexpr std::pair<ObjectType, StringId> kBasicCheckPairs[] = {
-            { ObjectType::Ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED },
-            { ObjectType::Station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED },
-            { ObjectType::TerrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED },
-            { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::terrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::terrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED },
         };
 
         for (auto& pair : kBasicCheckPairs)
@@ -421,23 +421,23 @@ namespace OpenRCT2::Editor
         const bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
         if (isTrackDesignerManager)
         {
-            return { ObjectType::None, kStringIdNone };
+            return { ObjectType::none, kStringIdNone };
         }
 
         if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
         {
-            return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
+            return { ObjectType::footpathSurface, STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
         if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(true))
         {
-            return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
+            return { ObjectType::footpathSurface, STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
 
         constexpr std::pair<ObjectType, StringId> kParkCheckPairs[] = {
-            { ObjectType::FootpathRailings, STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED },
-            { ObjectType::ParkEntrance, STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED },
-            { ObjectType::Water, STR_WATER_TYPE_MUST_BE_SELECTED },
-            { ObjectType::PeepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::footpathRailings, STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::parkEntrance, STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED },
+            { ObjectType::water, STR_WATER_TYPE_MUST_BE_SELECTED },
+            { ObjectType::peepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED },
         };
 
         for (auto& pair : kParkCheckPairs)
@@ -461,11 +461,11 @@ namespace OpenRCT2::Editor
         {
             if (!EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(EnumValue(pair.first)))
             {
-                return { ObjectType::PeepAnimations, pair.second };
+                return { ObjectType::peepAnimations, pair.second };
             }
         }
 
-        return { ObjectType::None, kStringIdNone };
+        return { ObjectType::none, kStringIdNone };
     }
 
     /**
@@ -537,7 +537,7 @@ namespace OpenRCT2::Editor
     {
         if (index != kObjectEntryIndexNull)
         {
-            assert(static_cast<size_t>(objectType) < getObjectEntryGroupCount(ObjectType::Paths));
+            assert(static_cast<size_t>(objectType) < getObjectEntryGroupCount(ObjectType::paths));
             auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
             if (list.size() <= index)
             {

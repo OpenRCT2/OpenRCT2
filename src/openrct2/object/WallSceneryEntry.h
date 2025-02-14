@@ -45,7 +45,7 @@ enum class DoorSoundType : uint8_t
 
 struct WallSceneryEntry
 {
-    static constexpr auto kObjectType = ObjectType::Walls;
+    static constexpr auto kObjectType = ObjectType::walls;
 
     StringId name;
     uint32_t image;

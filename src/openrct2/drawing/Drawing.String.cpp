@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../Context.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/CodepointView.hpp"
 #include "../core/String.hpp"
@@ -20,7 +21,6 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/Platform.h"
-#include "../sprites.h"
 #include "TTF.h"
 
 using namespace OpenRCT2;

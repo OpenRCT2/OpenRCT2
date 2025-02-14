@@ -18,6 +18,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LandLowerAction.h>
 #include <openrct2/actions/LandRaiseAction.h>
 #include <openrct2/actions/LandSmoothAction.h>
@@ -27,7 +28,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -307,7 +307,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto& objManager = GetContext()->GetObjectManager();
                     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::TerrainSurface, gLandToolTerrainSurface));
+                        objManager.GetLoadedObject(ObjectType::terrainSurface, gLandToolTerrainSurface));
                     if (surfaceObj != nullptr)
                     {
                         price += numTiles * static_cast<money64>(surfaceObj->Price);
@@ -844,7 +844,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainSurface, _selectedFloorTexture));
+                objManager.GetLoadedObject(ObjectType::terrainSurface, _selectedFloorTexture));
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -854,7 +854,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainEdge, _selectedWallTexture));
+                objManager.GetLoadedObject(ObjectType::terrainEdge, _selectedWallTexture));
             ImageId edgeImage;
             if (edgeObj != nullptr)
             {

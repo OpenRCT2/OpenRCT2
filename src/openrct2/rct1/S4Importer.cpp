@@ -262,7 +262,7 @@ namespace OpenRCT2::RCT1
                 desc.title = name.c_str();
             }
 
-            String::set(dst->InternalName, sizeof(dst->InternalName), desc.title);
+            dst->InternalName = desc.title;
 
             if (!desc.textObjectId.empty())
             {
@@ -272,7 +272,7 @@ namespace OpenRCT2::RCT1
                 std::lock_guard lock(mtx);
 
                 // Unload loaded scenario text object, if any.
-                if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                if (auto* obj = objManager.GetLoadedObject(ObjectType::scenarioText, 0); obj != nullptr)
                     objManager.UnloadObjects({ obj->GetDescriptor() });
 
                 // Load the one specified
@@ -284,8 +284,8 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            String::set(dst->Name, sizeof(dst->Name), name.c_str());
-            String::set(dst->Details, sizeof(dst->Details), details.c_str());
+            dst->Name = name;
+            dst->Details = details;
 
             return true;
         }
@@ -586,11 +586,11 @@ namespace OpenRCT2::RCT1
                         auto objectType = foundObject->Type;
                         switch (objectType)
                         {
-                            case ObjectType::SmallScenery:
-                            case ObjectType::LargeScenery:
-                            case ObjectType::Walls:
-                            case ObjectType::Banners:
-                            case ObjectType::PathAdditions:
+                            case ObjectType::smallScenery:
+                            case ObjectType::largeScenery:
+                            case ObjectType::walls:
+                            case ObjectType::banners:
+                            case ObjectType::pathAdditions:
                             {
                                 RCT12::EntryList* entries = GetEntryList(objectType);
 
@@ -1532,22 +1532,22 @@ namespace OpenRCT2::RCT1
         ObjectList GetRequiredObjects()
         {
             ObjectList result;
-            AppendRequiredObjects(result, ObjectType::Ride, _rideEntries);
-            AppendRequiredObjects(result, ObjectType::SmallScenery, _smallSceneryEntries);
-            AppendRequiredObjects(result, ObjectType::LargeScenery, _largeSceneryEntries);
-            AppendRequiredObjects(result, ObjectType::Walls, _wallEntries);
-            AppendRequiredObjects(result, ObjectType::Paths, _pathEntries);
-            AppendRequiredObjects(result, ObjectType::PathAdditions, _pathAdditionEntries);
-            AppendRequiredObjects(result, ObjectType::SceneryGroup, _sceneryGroupEntries);
-            AppendRequiredObjects(result, ObjectType::Banners, _bannerEntries);
+            AppendRequiredObjects(result, ObjectType::ride, _rideEntries);
+            AppendRequiredObjects(result, ObjectType::smallScenery, _smallSceneryEntries);
+            AppendRequiredObjects(result, ObjectType::largeScenery, _largeSceneryEntries);
+            AppendRequiredObjects(result, ObjectType::walls, _wallEntries);
+            AppendRequiredObjects(result, ObjectType::paths, _pathEntries);
+            AppendRequiredObjects(result, ObjectType::pathAdditions, _pathAdditionEntries);
+            AppendRequiredObjects(result, ObjectType::sceneryGroup, _sceneryGroupEntries);
+            AppendRequiredObjects(result, ObjectType::banners, _bannerEntries);
             AppendRequiredObjects(
-                result, ObjectType::ParkEntrance, std::vector<std::string_view>({ "rct2.park_entrance.pkent1" }));
-            AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
-            AppendRequiredObjects(result, ObjectType::TerrainSurface, _terrainSurfaceEntries);
-            AppendRequiredObjects(result, ObjectType::TerrainEdge, _terrainEdgeEntries);
-            AppendRequiredObjects(result, ObjectType::FootpathSurface, _footpathSurfaceEntries);
-            AppendRequiredObjects(result, ObjectType::FootpathRailings, _footpathRailingsEntries);
-            AppendRequiredObjects(result, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
+                result, ObjectType::parkEntrance, std::vector<std::string_view>({ "rct2.park_entrance.pkent1" }));
+            AppendRequiredObjects(result, ObjectType::water, _waterEntry);
+            AppendRequiredObjects(result, ObjectType::terrainSurface, _terrainSurfaceEntries);
+            AppendRequiredObjects(result, ObjectType::terrainEdge, _terrainEdgeEntries);
+            AppendRequiredObjects(result, ObjectType::footpathSurface, _footpathSurfaceEntries);
+            AppendRequiredObjects(result, ObjectType::footpathRailings, _footpathRailingsEntries);
+            AppendRequiredObjects(result, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(result);
 
             // Normalise the name to make the scenario as recognisable as possible
@@ -1556,11 +1556,11 @@ namespace OpenRCT2::RCT1
             // Infer what scenario text object to use, if any
             SourceDescriptor desc;
             if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
-                AppendRequiredObjects(result, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+                AppendRequiredObjects(result, ObjectType::scenarioText, std::vector<std::string_view>({ desc.textObjectId }));
 
             // Add all legacy peep animation objects
             auto animObjects = GetLegacyPeepAnimationObjects(result);
-            AppendRequiredObjects(result, ObjectType::PeepAnimations, animObjects);
+            AppendRequiredObjects(result, ObjectType::peepAnimations, animObjects);
 
             return result;
         }
@@ -2352,17 +2352,21 @@ namespace OpenRCT2::RCT1
         void ImportClimate(GameState_t& gameState)
         {
             gameState.Climate = ClimateType{ _s4.Climate };
-            gameState.ClimateUpdateTimer = _s4.ClimateTimer;
-            gameState.ClimateCurrent.Temperature = _s4.Temperature;
-            gameState.ClimateCurrent.Weather = WeatherType{ _s4.Weather };
-            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType::None;
-            gameState.ClimateCurrent.WeatherGloom = _s4.WeatherGloom;
-            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s4.Rain);
-            gameState.ClimateNext.Temperature = _s4.TargetTemperature;
-            gameState.ClimateNext.Weather = WeatherType{ _s4.TargetWeather };
-            gameState.ClimateNext.WeatherEffect = WeatherEffectType::None;
-            gameState.ClimateNext.WeatherGloom = _s4.TargetWeatherGloom;
-            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
+            gameState.WeatherUpdateTimer = _s4.WeatherUpdateTimer;
+            gameState.WeatherCurrent = {
+                .weatherType = WeatherType{ _s4.Weather },
+                .temperature = static_cast<int8_t>(_s4.Temperature),
+                .weatherEffect = WeatherEffectType::None,
+                .weatherGloom = _s4.WeatherGloom,
+                .level = static_cast<WeatherLevel>(_s4.Rain),
+            };
+            gameState.WeatherNext = {
+                .weatherType = WeatherType{ _s4.TargetWeather },
+                .temperature = static_cast<int8_t>(_s4.TargetTemperature),
+                .weatherEffect = WeatherEffectType::None,
+                .weatherGloom = _s4.TargetWeatherGloom,
+                .level = static_cast<WeatherLevel>(_s4.TargetRain),
+            };
         }
 
         void ImportScenarioNameDetails(GameState_t& gameState)
@@ -2383,7 +2387,7 @@ namespace OpenRCT2::RCT1
                     std::lock_guard lock(mtx);
 
                     // Unload loaded scenario text object, if any.
-                    if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                    if (auto* obj = objManager.GetLoadedObject(ObjectType::scenarioText, 0); obj != nullptr)
                         objManager.UnloadObjects({ obj->GetDescriptor() });
 
                     // Load the one specified
@@ -2518,23 +2522,23 @@ namespace OpenRCT2::RCT1
         {
             switch (objectType)
             {
-                case ObjectType::Ride:
+                case ObjectType::ride:
                     return &_rideEntries;
-                case ObjectType::SmallScenery:
+                case ObjectType::smallScenery:
                     return &_smallSceneryEntries;
-                case ObjectType::LargeScenery:
+                case ObjectType::largeScenery:
                     return &_largeSceneryEntries;
-                case ObjectType::Walls:
+                case ObjectType::walls:
                     return &_wallEntries;
-                case ObjectType::Banners:
+                case ObjectType::banners:
                     return &_bannerEntries;
-                case ObjectType::Paths:
+                case ObjectType::paths:
                     return &_pathEntries;
-                case ObjectType::PathAdditions:
+                case ObjectType::pathAdditions:
                     return &_pathAdditionEntries;
-                case ObjectType::SceneryGroup:
+                case ObjectType::sceneryGroup:
                     return &_sceneryGroupEntries;
-                case ObjectType::Water:
+                case ObjectType::water:
                     return &_waterEntry;
                 default:
                     // This switch processes only ObjectType for for Entries

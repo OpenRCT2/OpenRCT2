@@ -598,7 +598,7 @@
     <ClInclude Include="scripting\bindings\world\ScScenario.hpp" />
     <ClInclude Include="scripting\bindings\network\ScSocket.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTile.hpp" />
-    <ClInclude Include="sprites.h" />
+    <ClInclude Include="SpriteIds.h" />
     <ClInclude Include="System.hpp" />
     <ClInclude Include="TrackImporter.h" />
     <ClInclude Include="ui\UiContext.h" />

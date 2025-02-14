@@ -805,7 +805,7 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
     // Stations
     for (size_t i = 0; i < std::size(_stationStyles); i++)
     {
-        objectList.SetObject(ObjectType::Station, static_cast<ObjectEntryIndex>(i), _stationStyles[i]);
+        objectList.SetObject(ObjectType::station, static_cast<ObjectEntryIndex>(i), _stationStyles[i]);
     }
 
     // Music
@@ -813,7 +813,7 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
     {
         if (!_musicStyles[i].empty())
         {
-            objectList.SetObject(ObjectType::Music, static_cast<ObjectEntryIndex>(i), _musicStyles[i]);
+            objectList.SetObject(ObjectType::music, static_cast<ObjectEntryIndex>(i), _musicStyles[i]);
         }
     }
 }

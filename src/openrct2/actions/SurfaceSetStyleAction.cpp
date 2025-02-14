@@ -55,7 +55,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     if (_surfaceStyle != kObjectEntryIndexNull)
     {
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-            objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
+            objManager.GetLoadedObject(ObjectType::terrainSurface, _surfaceStyle));
 
         if (surfaceObj == nullptr)
         {
@@ -124,7 +124,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
                 if (_surfaceStyle != curSurfaceStyle)
                 {
                     const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
+                        objManager.GetLoadedObject(ObjectType::terrainSurface, _surfaceStyle));
                     if (surfaceObject != nullptr)
                     {
                         surfaceCost += surfaceObject->Price;
@@ -193,7 +193,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                 {
                     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
                     const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
+                        objManager.GetLoadedObject(ObjectType::terrainSurface, _surfaceStyle));
                     if (surfaceObject != nullptr)
                     {
                         surfaceCost += surfaceObject->Price;
