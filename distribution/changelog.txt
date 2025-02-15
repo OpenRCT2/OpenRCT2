@@ -1,6 +1,7 @@
 0.4.20 (in development)
 ------------------------------------------------------------------------
 - Improved: [#23677] Building new ride track now inherits the colour scheme from the previous piece.
+- Fix: [#1972, #11679] Vehicles passing by toilets can cause them to glitch.
 - Fix: [#9999, #10000, #10001, #10002, #10003] Truncated scenario strings when using Catalan, Czech, Japanese, Polish or Russian.
 - Fix: [#16357] Chairlift station covers draw incorrectly.
 - Fix: [#21768] Dirty blocks debug overlay is rendered incorrectly on high DPI screens.
