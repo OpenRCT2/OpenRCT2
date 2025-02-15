@@ -224,7 +224,9 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         {
             // see-through off: don't paint this tile_element at all
             // see-through on: paint this tile_element as partial or hidden later on
-            if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0)
+            // note: surface elements are not painted even with see-through turned on
+            if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0
+                || tile_element->GetType() == TileElementType::Surface)
             {
                 continue;
             }

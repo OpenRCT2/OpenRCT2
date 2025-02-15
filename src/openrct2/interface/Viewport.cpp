@@ -1467,6 +1467,10 @@ namespace OpenRCT2
                             }
                             break;
                         default:
+                            if (clipped)
+                            {
+                                return VisibilityKind::Partial;
+                            }
                             break;
                     }
                 }
@@ -1514,6 +1518,10 @@ namespace OpenRCT2
                 }
                 break;
             default:
+                if (clipped)
+                {
+                    return VisibilityKind::Partial;
+                }
                 break;
         }
         return VisibilityKind::Visible;
