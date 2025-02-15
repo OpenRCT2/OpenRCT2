@@ -18,6 +18,7 @@
     #include <pwd.h>
     #include <stdlib.h>
     #include <string>
+    #include <tuple>
     #include <unistd.h>
     #include <vector>
     #if defined(__FreeBSD__) || defined(__NetBSD__)
