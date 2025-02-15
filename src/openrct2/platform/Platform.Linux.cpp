@@ -55,8 +55,8 @@ namespace OpenRCT2::Platform
         // GNU recommends scripts/programs set LC_ALL to override
         // locales for uniform testing, clearing it after should let
         // LANG and other locale settings operate normally
-        static inline const char* _kOverrideVarName{ "LC_ALL" };
-        static inline const char* _kTargetLocale{ "C.UTF-8" };
+        static constexpr const char* _kOverrideVarName{ "LC_ALL" };
+        static constexpr const char* _kTargetLocale{ "C.UTF-8" };
     };
 
     EnvLangGuard::EnvLangGuard()
