@@ -55,14 +55,14 @@ namespace OpenRCT2::Platform
         // GNU recommends scripts/programs set LC_ALL to override
         // locales for uniform testing, clearing it after should let
         // LANG and other locale settings operate normally
-        static inline const std::string _kOverrideVarName{ "LC_ALL" };
-        static inline const std::string _kTargetLocale{ "C.UTF-8" };
+        static inline const char* _kOverrideVarName{ "LC_ALL" };
+        static inline const char* _kTargetLocale{ "C.UTF-8" };
     };
 
     EnvLangGuard::EnvLangGuard()
     {
         int overwrite = 1;
-        int result = setenv(_kOverrideVarName.c_str(), _kTargetLocale.c_str(), overwrite);
+        int result = setenv(_kOverrideVarName, _kTargetLocale, overwrite);
         if (result != 0)
         {
             LOG_VERBOSE("Could not update locale for font selection, some fonts may display incorrectly");
@@ -71,7 +71,7 @@ namespace OpenRCT2::Platform
 
     EnvLangGuard::~EnvLangGuard()
     {
-        int result = unsetenv(_kOverrideVarName.c_str());
+        int result = unsetenv(_kOverrideVarName);
         if (result != 0)
         {
             LOG_VERBOSE("Could not restore user locale");
