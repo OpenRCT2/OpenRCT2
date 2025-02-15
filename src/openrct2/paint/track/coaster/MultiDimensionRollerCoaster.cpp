@@ -5526,7 +5526,7 @@ static void MultiDimensionRCTrack60DegUpTo90DegUp(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16122), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            { { 4, 6, height + 8 }, { 13, 20, 55 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5541,7 +5541,7 @@ static void MultiDimensionRCTrack60DegUpTo90DegUp(
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16125), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            { { 4, 6, height + 8 }, { 13, 20, 55 } });
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -5621,7 +5621,7 @@ static void MultiDimensionRCTrack90DegUpTo60DegUp(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(16126), { 0, 0, height },
-                    { { 0, 6, height + 2 }, { 6, 20, 3 } });
+                    { { 4, 6, height + 8 }, { 2, 20, 48 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -5636,7 +5636,7 @@ static void MultiDimensionRCTrack90DegUpTo60DegUp(
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(16129), { 0, 0, height },
-                    { { 0, 6, height + 2 }, { 6, 20, 3 } });
+                    { { 4, 6, height + 8 }, { 2, 20, 48 } });
                 break;
         }
         switch (direction)
