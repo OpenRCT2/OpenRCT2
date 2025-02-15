@@ -16,6 +16,8 @@
     #include <limits.h>
     #include <locale.h>
     #include <pwd.h>
+    #include <stdlib.h>
+    #include <string>
     #include <unistd.h>
     #include <vector>
     #if defined(__FreeBSD__) || defined(__NetBSD__)
@@ -39,6 +41,44 @@
 
 namespace OpenRCT2::Platform
 {
+    // EnvLangGuard allows us to temporarily set the LANG variable
+    // to the generic C locale, in order to trick fontconfig into
+    // returning an English font face name, while using RAII to avoid
+    // changing locale settings in other parts of the program
+    class EnvLangGuard
+    {
+    public:
+        EnvLangGuard();
+        ~EnvLangGuard();
+
+    private:
+        static constexpr std::string _kLangVarName{ "LANG" };
+        static constexpr std::string _kTargetLang{ "C.UTF-8" };
+        std::string _prevLang;
+    };
+
+    EnvLangGuard::EnvLangGuard()
+        : _prevLang{}
+    {
+        const char* lang = getenv(_kLangVarName.c_str());
+        int overwrite = 1;
+        if (lang != nullptr)
+        {
+            _prevLang = lang;
+        }
+
+        (void)setenv(_kLangVarName.c_str(), _kTargetLang.c_str(), overwrite);
+    }
+
+    EnvLangGuard::~EnvLangGuard()
+    {
+        if (!_prevLang.empty())
+        {
+            int overwrite = 1;
+            (void)setenv(_kLangVarName.c_str(), _prevLang.c_str(), overwrite);
+        }
+    }
+
     std::string GetFolderPath(SPECIAL_FOLDER folder)
     {
         switch (folder)
@@ -352,6 +392,10 @@ namespace OpenRCT2::Platform
     #ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
+        // set LANG to portable C.UTF-8 so font face names from fontconfig
+        // are reported in English
+        EnvLangGuard elg;
+
         LOG_VERBOSE("Looking for font %s with FontConfig.", font.font_name);
         FcConfig* config = FcInitLoadConfigAndFonts();
         if (!config)
