@@ -168,7 +168,7 @@ namespace OpenRCT2::RCT2
         for (const auto& sceneryElement : _trackDesign.sceneryElements)
         {
             auto flags = sceneryElement.flags;
-            if (sceneryElement.sceneryObject.Entry.GetType() == ObjectType::Walls)
+            if (sceneryElement.sceneryObject.Entry.GetType() == ObjectType::walls)
             {
                 flags &= ~0xFC;
                 flags |= (sceneryElement.tertiaryColour << 2);

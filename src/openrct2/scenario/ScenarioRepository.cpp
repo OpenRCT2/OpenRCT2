@@ -71,10 +71,10 @@ static int32_t ScenarioIndexEntryCompareByCategory(const ScenarioIndexEntry& ent
             {
                 return static_cast<int32_t>(entryA.SourceGame) - static_cast<int32_t>(entryB.SourceGame);
             }
-            return strcmp(entryA.Name, entryB.Name);
+            return strcmp(entryA.Name.c_str(), entryB.Name.c_str());
         case SCENARIO_CATEGORY_REAL:
         case SCENARIO_CATEGORY_OTHER:
-            return strcmp(entryA.Name, entryB.Name);
+            return strcmp(entryA.Name.c_str(), entryB.Name.c_str());
     }
 }
 
@@ -124,7 +124,7 @@ class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
-    static constexpr uint16_t VERSION = 8;
+    static constexpr uint16_t VERSION = 9;
     static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
@@ -317,7 +317,7 @@ public:
         return nullptr;
     }
 
-    const ScenarioIndexEntry* GetByInternalName(const utf8* name) const override
+    const ScenarioIndexEntry* GetByInternalName(u8string_view name) const override
     {
         for (size_t i = 0; i < _scenarios.size(); i++)
         {

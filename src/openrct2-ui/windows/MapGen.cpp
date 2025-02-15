@@ -1181,7 +1181,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainSurface, _settings.landTexture));
+                objManager.GetLoadedObject(ObjectType::terrainSurface, _settings.landTexture));
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -1194,7 +1194,7 @@ namespace OpenRCT2::Ui::Windows
 
             ImageId edgeImage;
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainEdge, _settings.edgeTexture));
+                objManager.GetLoadedObject(ObjectType::terrainEdge, _settings.edgeTexture));
             if (edgeObj != nullptr)
             {
                 edgeImage = ImageId(edgeObj->IconImageId);

@@ -215,15 +215,15 @@ namespace OpenRCT2
 
                 std::string name;
                 ReadWriteStringTable(cs, name, "en-GB");
-                String::set(entry.Name, sizeof(entry.Name), name.c_str());
-                String::set(entry.InternalName, sizeof(entry.InternalName), name.c_str());
+                entry.Name = name;
+                entry.InternalName = name;
 
                 std::string parkName;
                 ReadWriteStringTable(cs, parkName, "en-GB");
 
                 std::string scenarioDetails;
                 ReadWriteStringTable(cs, scenarioDetails, "en-GB");
-                String::set(entry.Details, sizeof(entry.Details), scenarioDetails.c_str());
+                entry.Details = scenarioDetails;
 
                 entry.ObjectiveType = cs.Read<uint8_t>();
                 entry.ObjectiveArg1 = cs.Read<uint8_t>();
@@ -303,7 +303,7 @@ namespace OpenRCT2
                                         RCTObjectEntry datEntry;
                                         cs.Read(&datEntry, sizeof(datEntry));
                                         ObjectEntryDescriptor desc(datEntry);
-                                        if (version <= 2 && datEntry.GetType() == ObjectType::Paths)
+                                        if (version <= 2 && datEntry.GetType() == ObjectType::paths)
                                         {
                                             auto footpathMapping = GetFootpathMapping(desc);
                                             if (footpathMapping != nullptr)
@@ -380,13 +380,13 @@ namespace OpenRCT2
                 if (version < kPeepNamesObjectsVersion)
                 {
                     AppendRequiredObjects(
-                        requiredObjects, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
+                        requiredObjects, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
                 }
 
                 if (version < kPeepAnimationObjectsVersion)
                 {
                     auto animObjects = GetLegacyPeepAnimationObjects(requiredObjects);
-                    AppendRequiredObjects(requiredObjects, ObjectType::PeepAnimations, animObjects);
+                    AppendRequiredObjects(requiredObjects, ObjectType::peepAnimations, animObjects);
                 }
 
                 RequiredObjects = std::move(requiredObjects);

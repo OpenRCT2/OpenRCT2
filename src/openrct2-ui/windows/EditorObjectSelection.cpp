@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr uint8_t _numSourceGameItems = 8;
 
     static uint32_t _filter_flags;
-    static uint16_t _filter_object_counts[EnumValue(ObjectType::Count)];
+    static uint16_t _filter_object_counts[EnumValue(ObjectType::count)];
 
     static char _filter_string[MAX_PATH];
 
@@ -143,54 +143,54 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static ObjectSubTab kRideObjectSubTabs[] = {
-        { STR_OBJECT_FILTER_ALL_RIDES_TIP, ObjectType::Ride, FILTER_RIDES_ALL,      SPR_G2_INFINITY,                  1, 1 },
-        { STR_TRANSPORT_RIDES_TIP,         ObjectType::Ride, FILTER_RIDE_TRANSPORT, SPR_TAB_RIDES_TRANSPORT_0,       20, 4 },
-        { STR_GENTLE_RIDES_TIP,            ObjectType::Ride, FILTER_RIDE_GENTLE,    SPR_TAB_RIDES_GENTLE_0,          32, 8 },
-        { STR_ROLLER_COASTERS_TIP,         ObjectType::Ride, FILTER_RIDE_COASTER,   SPR_TAB_RIDES_ROLLER_COASTERS_0, 10, 2 },
-        { STR_THRILL_RIDES_TIP,            ObjectType::Ride, FILTER_RIDE_THRILL,    SPR_TAB_RIDES_THRILL_0,          72, 4 },
-        { STR_WATER_RIDES_TIP,             ObjectType::Ride, FILTER_RIDE_WATER,     SPR_TAB_RIDES_WATER_0,           24, 4 },
-        { STR_SHOPS_STALLS_TIP,            ObjectType::Ride, FILTER_RIDE_STALL,     SPR_TAB_RIDES_SHOP_0,            28, 4 },
+        { STR_OBJECT_FILTER_ALL_RIDES_TIP, ObjectType::ride, FILTER_RIDES_ALL,      SPR_G2_INFINITY,                  1, 1 },
+        { STR_TRANSPORT_RIDES_TIP,         ObjectType::ride, FILTER_RIDE_TRANSPORT, SPR_TAB_RIDES_TRANSPORT_0,       20, 4 },
+        { STR_GENTLE_RIDES_TIP,            ObjectType::ride, FILTER_RIDE_GENTLE,    SPR_TAB_RIDES_GENTLE_0,          32, 8 },
+        { STR_ROLLER_COASTERS_TIP,         ObjectType::ride, FILTER_RIDE_COASTER,   SPR_TAB_RIDES_ROLLER_COASTERS_0, 10, 2 },
+        { STR_THRILL_RIDES_TIP,            ObjectType::ride, FILTER_RIDE_THRILL,    SPR_TAB_RIDES_THRILL_0,          72, 4 },
+        { STR_WATER_RIDES_TIP,             ObjectType::ride, FILTER_RIDE_WATER,     SPR_TAB_RIDES_WATER_0,           24, 4 },
+        { STR_SHOPS_STALLS_TIP,            ObjectType::ride, FILTER_RIDE_STALL,     SPR_TAB_RIDES_SHOP_0,            28, 4 },
     };
 
     static ObjectSubTab kSceneryObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_SCENERY_GROUPS,    ObjectType::SceneryGroup,     FILTER_NONE, SPR_TAB_SCENERY_STATUES,    1, 1 },
-        { STR_OBJECT_SELECTION_SMALL_SCENERY,     ObjectType::SmallScenery,     FILTER_NONE, SPR_TAB_SCENERY_TREES,      1, 1 },
-        { STR_OBJECT_SELECTION_LARGE_SCENERY,     ObjectType::LargeScenery,     FILTER_NONE, SPR_TAB_SCENERY_URBAN,      1, 1 },
-        { STR_OBJECT_SELECTION_WALLS_FENCES,      ObjectType::Walls,            FILTER_NONE, SPR_TAB_SCENERY_WALLS,      1, 1 },
+        { STR_OBJECT_SELECTION_SCENERY_GROUPS,    ObjectType::sceneryGroup,     FILTER_NONE, SPR_TAB_SCENERY_STATUES,    1, 1 },
+        { STR_OBJECT_SELECTION_SMALL_SCENERY,     ObjectType::smallScenery,     FILTER_NONE, SPR_TAB_SCENERY_TREES,      1, 1 },
+        { STR_OBJECT_SELECTION_LARGE_SCENERY,     ObjectType::largeScenery,     FILTER_NONE, SPR_TAB_SCENERY_URBAN,      1, 1 },
+        { STR_OBJECT_SELECTION_WALLS_FENCES,      ObjectType::walls,            FILTER_NONE, SPR_TAB_SCENERY_WALLS,      1, 1 },
     };
 
     static ObjectSubTab kPathObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES, ObjectType::FootpathSurface,  FILTER_NONE, SPR_G2_PATH_SURFACE_TAB,    1, 1 },
-        { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS, ObjectType::FootpathRailings, FILTER_NONE, SPR_G2_PATH_RAILINGS_TAB,   1, 1 },
-        { STR_OBJECT_SELECTION_FOOTPATHS,         ObjectType::Paths,            FILTER_NONE, SPR_G2_LEGACY_PATH_TAB,     1, 1 },
-        { STR_OBJECT_SELECTION_PATH_EXTRAS,       ObjectType::PathAdditions,    FILTER_NONE, SPR_TAB_SCENERY_PATH_ITEMS, 1, 1 },
-        { STR_OBJECT_SELECTION_PATH_SIGNS,        ObjectType::Banners,          FILTER_NONE, SPR_TAB_SCENERY_SIGNAGE,    1, 1 },
+        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES, ObjectType::footpathSurface,  FILTER_NONE, SPR_G2_PATH_SURFACE_TAB,    1, 1 },
+        { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS, ObjectType::footpathRailings, FILTER_NONE, SPR_G2_PATH_RAILINGS_TAB,   1, 1 },
+        { STR_OBJECT_SELECTION_FOOTPATHS,         ObjectType::paths,            FILTER_NONE, SPR_G2_LEGACY_PATH_TAB,     1, 1 },
+        { STR_OBJECT_SELECTION_PATH_EXTRAS,       ObjectType::pathAdditions,    FILTER_NONE, SPR_TAB_SCENERY_PATH_ITEMS, 1, 1 },
+        { STR_OBJECT_SELECTION_PATH_SIGNS,        ObjectType::banners,          FILTER_NONE, SPR_TAB_SCENERY_SIGNAGE,    1, 1 },
     };
 
     static ObjectSubTab kEntrancesObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_PARK_ENTRANCE,     ObjectType::ParkEntrance,     FILTER_NONE, SPR_TAB_PARK,            1, 1 },
-        { STR_OBJECT_SELECTION_STATIONS,          ObjectType::Station,          FILTER_NONE, SPR_G2_RIDE_STATION_TAB, 1, 1 },
+        { STR_OBJECT_SELECTION_PARK_ENTRANCE,     ObjectType::parkEntrance,     FILTER_NONE, SPR_TAB_PARK,            1, 1 },
+        { STR_OBJECT_SELECTION_STATIONS,          ObjectType::station,          FILTER_NONE, SPR_G2_RIDE_STATION_TAB, 1, 1 },
     };
 
     static ObjectSubTab kTerrainObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,  ObjectType::TerrainSurface,   FILTER_NONE, SPR_G2_TAB_LAND,         1, 1 },
-        { STR_OBJECT_SELECTION_TERRAIN_EDGES,     ObjectType::TerrainEdge,      FILTER_NONE, SPR_G2_TERRAIN_EDGE_TAB, 1, 1 },
-        { STR_OBJECT_SELECTION_WATER,             ObjectType::Water,            FILTER_NONE, SPR_TAB_WATER,           1, 1 },
+        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,  ObjectType::terrainSurface,   FILTER_NONE, SPR_G2_TAB_LAND,         1, 1 },
+        { STR_OBJECT_SELECTION_TERRAIN_EDGES,     ObjectType::terrainEdge,      FILTER_NONE, SPR_G2_TERRAIN_EDGE_TAB, 1, 1 },
+        { STR_OBJECT_SELECTION_WATER,             ObjectType::water,            FILTER_NONE, SPR_TAB_WATER,           1, 1 },
     };
 
     static ObjectSubTab kPeepObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_PEEP_ANIMATIONS,   ObjectType::PeepAnimations,   FILTER_NONE, SPR_G2_PEEP_ANIMATIONS, 1, 1 },
-        { STR_OBJECT_SELECTION_PEEP_NAMES,        ObjectType::PeepNames,        FILTER_NONE, SPR_TAB_GUESTS_0,       1, 1 },
+        { STR_OBJECT_SELECTION_PEEP_ANIMATIONS,   ObjectType::peepAnimations,   FILTER_NONE, SPR_G2_PEEP_ANIMATIONS, 1, 1 },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,        ObjectType::peepNames,        FILTER_NONE, SPR_TAB_GUESTS_0,       1, 1 },
     };
 
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
-        { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,            SPR_TAB_RIDE_16,         kRideObjectSubTabs },
-        { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,    SPR_TAB_SCENERY_STATUES, kSceneryObjectSubTabs },
-        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::FootpathSurface, SPR_G2_LEGACY_PATH_TAB,  kPathObjectSubTabs },
-        { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,    SPR_TAB_PARK,            kEntrancesObjectSubTabs },
-        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,  SPR_G2_TAB_LAND,         kTerrainObjectSubTabs },
-        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,           SPR_TAB_MUSIC_0,         {} },
-        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::PeepNames,       SPR_TAB_GUESTS_0,        kPeepObjectSubTabs },
+        { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::ride,            SPR_TAB_RIDE_16,         kRideObjectSubTabs },
+        { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::sceneryGroup,    SPR_TAB_SCENERY_STATUES, kSceneryObjectSubTabs },
+        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::footpathSurface, SPR_G2_LEGACY_PATH_TAB,  kPathObjectSubTabs },
+        { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::parkEntrance,    SPR_TAB_PARK,            kEntrancesObjectSubTabs },
+        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::terrainSurface,  SPR_G2_TAB_LAND,         kTerrainObjectSubTabs },
+        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::music,           SPR_TAB_MUSIC_0,         {} },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::peepNames,       SPR_TAB_GUESTS_0,        kPeepObjectSubTabs },
     };
     // clang-format on
 
@@ -727,7 +727,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // ScrollPaint
             ScreenCoordsXY screenCoords;
-            bool ridePage = (GetSelectedObjectType() == ObjectType::Ride);
+            bool ridePage = (GetSelectedObjectType() == ObjectType::ride);
 
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
@@ -976,7 +976,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WindowWidgetType::Empty;
 
             // The ride tab has two headers for the list
-            bool isRideTab = GetSelectedObjectType() == ObjectType::Ride;
+            bool isRideTab = GetSelectedObjectType() == ObjectType::ride;
             if (isRideTab)
             {
                 int32_t width_limit = (widgets[WIDX_LIST].width() - 15) / 2;
@@ -1162,7 +1162,7 @@ namespace OpenRCT2::Ui::Windows
             scrolls[0].contentOffsetY = 0;
             frame_no = 0;
 
-            if (_page == EnumValue(ObjectType::Ride))
+            if (_page == EnumValue(ObjectType::ride))
             {
                 _listSortType = RIDE_SORT_TYPE;
                 _listSortDescending = false;
@@ -1283,7 +1283,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft);
                 screenPos.y += kListRowHeight;
             }
-            if (GetSelectedObjectType() == ObjectType::Ride)
+            if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
                 const auto& rideEntry = rideObject->GetEntry();
@@ -1305,14 +1305,14 @@ namespace OpenRCT2::Ui::Windows
                     screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
                 }
             }
-            else if (GetSelectedObjectType() == ObjectType::SceneryGroup)
+            else if (GetSelectedObjectType() == ObjectType::sceneryGroup)
             {
                 const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
                 auto ft = Formatter();
                 ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
                 screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_INCLUDES_X_OBJECTS, ft) + 2;
             }
-            else if (GetSelectedObjectType() == ObjectType::Music)
+            else if (GetSelectedObjectType() == ObjectType::music)
             {
                 screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
                 const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
@@ -1363,14 +1363,14 @@ namespace OpenRCT2::Ui::Windows
             screenPos.y += kListRowHeight;
 
             // Draw ride type.
-            if (GetSelectedObjectType() == ObjectType::Ride)
+            if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
                 DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
 
             // Draw peep animation object type
-            if (GetSelectedObjectType() == ObjectType::PeepAnimations)
+            if (GetSelectedObjectType() == ObjectType::peepAnimations)
             {
                 auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
                 auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
@@ -1452,7 +1452,7 @@ namespace OpenRCT2::Ui::Windows
 
         static bool IsFilterInRideType(const ObjectRepositoryItem& item, std::string_view filter)
         {
-            if (item.Type == ObjectType::Ride)
+            if (item.Type == ObjectType::ride)
             {
                 auto rideTypeName = LanguageGetString(GetRideTypeStringId(&item));
                 if (String::contains(rideTypeName, filter, true))
@@ -1526,7 +1526,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool FilterChunks(const ObjectRepositoryItem* item)
         {
-            if (item->Type == ObjectType::Ride)
+            if (item->Type == ObjectType::ride)
             {
                 ride_type_t rideType = 0;
                 for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
@@ -1567,7 +1567,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (object->GetObjectType())
             {
-                case ObjectType::Ride:
+                case ObjectType::ride:
                 {
                     const RideObject* rideObject = static_cast<const RideObject*>(object);
                     return rideObject->GetDescription();
@@ -1625,7 +1625,7 @@ namespace OpenRCT2::Ui::Windows
             GetGameState().EditorStep = EditorStep::DesignsManager;
 
             int32_t entry_index = 0;
-            for (; ObjectEntryGetChunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
+            for (; ObjectEntryGetChunk(ObjectType::ride, entry_index) == nullptr; entry_index++)
                 ;
 
             const auto* rideEntry = GetRideEntryByIndex(entry_index);
@@ -1708,14 +1708,14 @@ namespace OpenRCT2::Ui::Windows
                         // Defaults selected items to researched (if in-game)
                         auto objectType = loadedObject->GetObjectType();
                         auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
-                        if (objectType == ObjectType::Ride)
+                        if (objectType == ObjectType::ride)
                         {
                             const auto* rideEntry = GetRideEntryByIndex(entryIndex);
                             auto rideType = rideEntry->GetFirstNonNullRideType();
                             ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                             ResearchInsertRideEntry(rideType, entryIndex, category, true);
                         }
-                        else if (objectType == ObjectType::SceneryGroup)
+                        else if (objectType == ObjectType::sceneryGroup)
                         {
                             ResearchInsertSceneryGroupEntry(entryIndex, true);
                         }
@@ -1727,7 +1727,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
         }
-        if (_numSelectedObjectsForType[EnumValue(ObjectType::Water)] == 0)
+        if (_numSelectedObjectsForType[EnumValue(ObjectType::water)] == 0)
         {
             // Reloads the default cyan water palette if no palette was selected.
             LoadPalette();
@@ -1741,7 +1741,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
 
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
-        if (missingObjectType == ObjectType::None)
+        if (missingObjectType == ObjectType::none)
         {
             windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
             return true;

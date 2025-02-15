@@ -291,7 +291,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
 
     auto& objManager = GetContext()->GetObjectManager();
     auto entrance = reinterpret_cast<EntranceObject*>(
-        objManager.GetLoadedObject(ObjectType::ParkEntrance, entranceEl.getEntryIndex()));
+        objManager.GetLoadedObject(ObjectType::parkEntrance, entranceEl.getEntryIndex()));
     auto sequence = entranceEl.GetSequenceIndex();
     switch (sequence)
     {

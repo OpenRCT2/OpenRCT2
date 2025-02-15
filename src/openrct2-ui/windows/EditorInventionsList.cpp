@@ -96,7 +96,7 @@ namespace OpenRCT2::Ui::Windows
         for (const auto& ride : GetRideManager())
         {
             Editor::SetSelectedObject(
-                ObjectType::Ride, ride.subtype, ObjectSelectionFlags::Selected | ObjectSelectionFlags::InUse);
+                ObjectType::ride, ride.subtype, ObjectSelectionFlags::Selected | ObjectSelectionFlags::InUse);
         }
     }
 
@@ -390,9 +390,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Preview image
-            ObjectType objectEntryType = ObjectType::SceneryGroup;
+            ObjectType objectEntryType = ObjectType::sceneryGroup;
             if (researchItem->type == Research::EntryType::Ride)
-                objectEntryType = ObjectType::Ride;
+                objectEntryType = ObjectType::ride;
 
             auto chunk = ObjectEntryGetChunk(objectEntryType, researchItem->entryIndex);
             if (chunk == nullptr)
