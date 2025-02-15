@@ -52,31 +52,22 @@ namespace OpenRCT2::Platform
         ~EnvLangGuard();
 
     private:
-        static inline const std::string _kLangVarName{ "LANG" };
+        // GNU recommends scripts/programs set LC_ALL to override
+        // locales for uniform testing, clearing it after should let
+        // LANG and other locale settings operate normally
+        static inline const std::string _kLangVarName{ "LC_ALL" };
         static inline const std::string _kTargetLang{ "C.UTF-8" };
-        std::string _prevLang;
     };
 
     EnvLangGuard::EnvLangGuard()
-        : _prevLang{}
     {
-        const char* lang = getenv(_kLangVarName.c_str());
         int overwrite = 1;
-        if (lang != nullptr)
-        {
-            _prevLang = lang;
-        }
-
-        (void)setenv(_kLangVarName.c_str(), _kTargetLang.c_str(), overwrite);
+        std::ignore = setenv(_kLangVarName.c_str(), _kTargetLang.c_str(), overwrite);
     }
 
     EnvLangGuard::~EnvLangGuard()
     {
-        if (!_prevLang.empty())
-        {
-            int overwrite = 1;
-            (void)setenv(_kLangVarName.c_str(), _prevLang.c_str(), overwrite);
-        }
+        std::ignore = unsetenv(_kLangVarName.c_str());
     }
 
     std::string GetFolderPath(SPECIAL_FOLDER folder)
