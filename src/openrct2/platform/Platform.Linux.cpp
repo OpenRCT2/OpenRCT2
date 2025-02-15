@@ -52,8 +52,8 @@ namespace OpenRCT2::Platform
         ~EnvLangGuard();
 
     private:
-        static constexpr std::string _kLangVarName{ "LANG" };
-        static constexpr std::string _kTargetLang{ "C.UTF-8" };
+        static inline const std::string _kLangVarName{ "LANG" };
+        static inline const std::string _kTargetLang{ "C.UTF-8" };
         std::string _prevLang;
     };
 
