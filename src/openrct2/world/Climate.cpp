@@ -208,9 +208,9 @@ void ClimateUpdate()
         gameState.weatherCurrent.weatherEffect == WeatherEffectType::Storm
         || gameState.weatherCurrent.weatherEffect == WeatherEffectType::Blizzard)
     {
-        // Create new thunder and lightning. In OpenRCT2, we scale their amount inversely
-        // proportional to the game speed otherwise it becomes annoying at very high speeds.
-        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= static_cast<uint32_t>(0x1B4 >> gGameSpeed))
+        // Create new thunder and lightning. Their amount is scaled inversely proportional
+        // to the game speed, otherwise they become annoying at very high speeds
+        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= (0x1B4u >> gGameSpeed))
         {
             randomNumber >>= 16;
             _thunderTimer = 43 + (randomNumber % 64);
