@@ -1904,7 +1904,7 @@ namespace OpenRCT2::RCT2
                 AppendRequiredObjects(
                     objectList, ObjectType::scenarioText, std::vector<std::string_view>({ desc.textObjectId }));
 
-            auto animObjects = GetLegacyPeepAnimationObjects(objectList);
+            auto animObjects = GetLegacyPeepAnimationObjects();
             AppendRequiredObjects(objectList, ObjectType::peepAnimations, animObjects);
 
             return objectList;
