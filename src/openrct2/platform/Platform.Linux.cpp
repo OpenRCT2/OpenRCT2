@@ -18,7 +18,6 @@
     #include <pwd.h>
     #include <stdlib.h>
     #include <string>
-    #include <tuple>
     #include <unistd.h>
     #include <vector>
     #if defined(__FreeBSD__) || defined(__NetBSD__)
@@ -42,7 +41,7 @@
 
 namespace OpenRCT2::Platform
 {
-    // EnvLangGuard allows us to temporarily set the LANG variable
+    // EnvLangGuard allows us to temporarily set the user's locale
     // to the generic C locale, in order to trick fontconfig into
     // returning an English font face name, while using RAII to avoid
     // changing locale settings in other parts of the program
@@ -56,19 +55,27 @@ namespace OpenRCT2::Platform
         // GNU recommends scripts/programs set LC_ALL to override
         // locales for uniform testing, clearing it after should let
         // LANG and other locale settings operate normally
-        static inline const std::string _kLangVarName{ "LC_ALL" };
-        static inline const std::string _kTargetLang{ "C.UTF-8" };
+        static inline const std::string _kOverrideVarName{ "LC_ALL" };
+        static inline const std::string _kTargetLocale{ "C.UTF-8" };
     };
 
     EnvLangGuard::EnvLangGuard()
     {
         int overwrite = 1;
-        std::ignore = setenv(_kLangVarName.c_str(), _kTargetLang.c_str(), overwrite);
+        int result = setenv(_kOverrideVarName.c_str(), _kTargetLocale.c_str(), overwrite);
+        if (result != 0)
+        {
+            LOG_VERBOSE("Could not update locale for font selection, some fonts may display incorrectly");
+        }
     }
 
     EnvLangGuard::~EnvLangGuard()
     {
-        std::ignore = unsetenv(_kLangVarName.c_str());
+        int result = unsetenv(_kOverrideVarName.c_str());
+        if (result != 0)
+        {
+            LOG_VERBOSE("Could not restore user locale");
+        }
     }
 
     std::string GetFolderPath(SPECIAL_FOLDER folder)
