@@ -5,6 +5,7 @@
 - Fix: [#16357] Chairlift station covers draw incorrectly.
 - Fix: [#21768] Dirty blocks debug overlay is rendered incorrectly on high DPI screens.
 - Fix: [#22617] Sloped Wooden and Side-Friction supports draw out of order when built directly above diagonal track pieces.
+- Fix: [#22620] RCT1 Mine Train Coaster trains glitch on large banked turns.
 - Fix: [#23522] Diagonal sloped Steeplechase supports have glitched sprites at the base.
 - Fix: [#23795] Looping Roller Coaster vertical loop supports are drawn incorrectly.
 - Fix: [#23809] Trains glitch on Bobsleigh Coaster small helixes.
