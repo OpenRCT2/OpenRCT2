@@ -866,11 +866,11 @@ static void PaintMiniGolfHoleC(
     {
         case 0x01:
         case 0x20:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 26, 3 } });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 3, height + 2 }, { 4, 26, 5 } });
             break;
         case 0x10:
         case 0x31:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 30, height + 4 }, { 26, 2, 3 } });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 28, height + 2 }, { 26, 4, 5 } });
             break;
         default:
             PaintAddImageAsParent(
