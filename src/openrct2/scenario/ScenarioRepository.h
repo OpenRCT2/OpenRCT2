@@ -58,9 +58,9 @@ struct ScenarioIndexEntry
     int16_t ObjectiveArg3;
     ScenarioHighscoreEntry* Highscore = nullptr;
 
-    utf8 InternalName[64]; // Untranslated name
-    utf8 Name[64];         // Translated name
-    utf8 Details[256];
+    u8string InternalName; // Untranslated name
+    u8string Name;         // Translated name
+    u8string Details;
 };
 
 namespace OpenRCT2
@@ -83,7 +83,7 @@ struct IScenarioRepository
     /**
      * Does not return custom scenarios due to the fact that they may have the same name.
      */
-    virtual const ScenarioIndexEntry* GetByInternalName(const utf8* name) const = 0;
+    virtual const ScenarioIndexEntry* GetByInternalName(u8string_view name) const = 0;
     virtual const ScenarioIndexEntry* GetByPath(const utf8* path) const = 0;
 
     virtual bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money64 companyValue, const utf8* name) = 0;
