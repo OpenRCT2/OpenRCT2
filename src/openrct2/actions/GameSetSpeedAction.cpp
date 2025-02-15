@@ -15,7 +15,7 @@
 
 using namespace OpenRCT2;
 
-GameSetSpeedAction::GameSetSpeedAction(int32_t speed)
+GameSetSpeedAction::GameSetSpeedAction(uint8_t speed)
     : _speed(speed)
 {
 }
@@ -70,7 +70,7 @@ GameActions::Result GameSetSpeedAction::Execute() const
     return res;
 }
 
-bool GameSetSpeedAction::IsValidSpeed(int32_t speed) const
+bool GameSetSpeedAction::IsValidSpeed(uint8_t speed) const
 {
     return (speed >= 1 && speed <= 4) || (Config::Get().general.DebuggingTools && speed == 8);
 }
