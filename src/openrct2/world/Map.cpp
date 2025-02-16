@@ -20,7 +20,7 @@
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/ParkEntranceRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../entity/Duck.h"

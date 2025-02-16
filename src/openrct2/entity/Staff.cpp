@@ -15,7 +15,7 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../actions/StaffSetOrdersAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../core/EnumUtils.hpp"
 #include "../entity/EntityRegistry.h"

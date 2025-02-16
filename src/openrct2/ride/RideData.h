@@ -19,7 +19,7 @@
 #define kDefaultFlatRideColourPreset TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_YELLOW })
 #define kDefaultStallColourPreset TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED })
 
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../drawing/ImageIndexType.h"

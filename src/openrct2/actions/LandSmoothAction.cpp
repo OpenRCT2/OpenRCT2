@@ -15,7 +15,7 @@
 #include "../actions/LandLowerAction.h"
 #include "../actions/LandRaiseAction.h"
 #include "../actions/LandSetHeightAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"

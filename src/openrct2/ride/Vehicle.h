@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"

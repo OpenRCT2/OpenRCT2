@@ -16,7 +16,7 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"

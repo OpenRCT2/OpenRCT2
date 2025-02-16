@@ -9,7 +9,7 @@
 
 #include "CableLift.h"
 
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../entity/EntityList.h"
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"

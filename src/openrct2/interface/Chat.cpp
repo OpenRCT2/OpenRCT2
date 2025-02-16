@@ -10,8 +10,8 @@
 #include "Chat.h"
 
 #include "../Context.h"
+#include "../audio/Audio.h"
 #include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
 #include "../core/UTF8.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/Text.h"
