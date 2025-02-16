@@ -5,6 +5,7 @@
 - Fix: [#9999, #10000, #10001, #10002, #10003] Truncated scenario strings when using Catalan, Czech, Japanese, Polish or Russian.
 - Fix: [#16357] Chairlift station covers draw incorrectly.
 - Fix: [#18433] CJK TrueType fonts could not be located when font names are translated by the OS.
+- Fix: [#18436] Scenery on the same tile as steep to vertical track can draw over the track.
 - Fix: [#21768] Dirty blocks debug overlay is rendered incorrectly on high DPI screens.
 - Fix: [#22617] Sloped Wooden and Side-Friction supports draw out of order when built directly above diagonal track pieces.
 - Fix: [#22620] RCT1 Mine Train Coaster trains glitch on large banked turns.
