@@ -4994,7 +4994,7 @@ static void TwisterRCTrack60DegUpTo90DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17518), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
+                        { { 4, 6, height + 8 }, { 13, 20, 55 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -5009,7 +5009,7 @@ static void TwisterRCTrack60DegUpTo90DegUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(17521), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
+                        { { 4, 6, height + 8 }, { 13, 20, 55 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -5042,7 +5042,7 @@ static void TwisterRCTrack90DegUpTo60DegUp(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(17522), { 0, 0, height },
-                { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -5057,7 +5057,7 @@ static void TwisterRCTrack90DegUpTo60DegUp(
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(17525), { 0, 0, height },
-                { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
     }
     switch (direction)
