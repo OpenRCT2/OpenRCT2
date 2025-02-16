@@ -4,6 +4,7 @@
 - Fix: [#1972, #11679] Vehicles passing by toilets can cause them to glitch (original bug).
 - Fix: [#9999, #10000, #10001, #10002, #10003] Truncated scenario strings when using Catalan, Czech, Japanese, Polish or Russian.
 - Fix: [#16357] Chairlift station covers draw incorrectly.
+- Fix: [#16657] Mine Ride right S-bend uses Mini Roller Coaster sprite (original bug).
 - Fix: [#18436] Scenery on the same tile as steep to vertical track can draw over the track (original bug).
 - Fix: [#21768] Dirty blocks debug overlay is rendered incorrectly on high DPI screens.
 - Fix: [#22229] Opening a park save file from a newer version of OpenRCT2 yields an unhelpful error message.
