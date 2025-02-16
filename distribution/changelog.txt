@@ -25,6 +25,7 @@
 - Fix: [#23811] Land edges glitch when vehicles go through gentle to flat tunnels.
 - Fix: [#23814] Scenarios not indexed on first start.
 - Fix: [#23818] Spinning tunnels can draw over sloped terrain in front of them.
+- Fix: [#23831] Hybrid Coaster large gentle banked right turns glitch when diagonal track is above them.
 - Fix: [#23836] Adjacent track can draw over large turns (original bug).
 - Fix: [#23858] LSM launched lift hill has a misaligned sprite.
 
