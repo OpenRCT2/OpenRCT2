@@ -4130,7 +4130,7 @@ static void InvertedFlyingRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27501), { 0, 0, height + 24 },
-                        { { 4, 4, height + 22 }, { 28, 28, 3 } });
+                        { { 16, 16, height + 22 }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(

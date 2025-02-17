@@ -4920,7 +4920,7 @@ static void MineTrainRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20446), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 1 } });
+                        { { 16, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
                     break;

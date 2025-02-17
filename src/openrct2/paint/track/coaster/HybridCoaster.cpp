@@ -1111,7 +1111,7 @@ namespace OpenRCT2::HybridRC
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_LARGE_CURVE + 6),
-                            { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                            { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         WoodenASupportsPaintSetup(
                             session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
                         break;
@@ -1286,7 +1286,7 @@ namespace OpenRCT2::HybridRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_LARGE_CURVE + 26),
-                            { 0, 0, height }, { { 4, 4, height }, { 28, 28, 3 } });
+                            { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         WoodenASupportsPaintSetup(
                             session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
                         break;
