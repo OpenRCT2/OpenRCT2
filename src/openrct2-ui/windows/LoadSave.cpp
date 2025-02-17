@@ -311,8 +311,12 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    // Not the best message...
-                    ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
+                    auto windowManager = GetWindowManager();
+                    if (!windowManager->FindByClass(WindowClass::Error))
+                    {
+                        // Not the best message...
+                        ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
+                    }
                     InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
                 }
                 break;
