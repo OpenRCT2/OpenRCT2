@@ -14,7 +14,7 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/Numerics.hpp"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"

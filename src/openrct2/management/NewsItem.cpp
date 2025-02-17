@@ -14,7 +14,7 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
 #include "../localisation/Formatter.h"

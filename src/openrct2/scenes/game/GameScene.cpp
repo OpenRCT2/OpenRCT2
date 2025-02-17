@@ -14,7 +14,7 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
-#include "../../audio/audio.h"
+#include "../../audio/Audio.h"
 
 using namespace OpenRCT2;
 
