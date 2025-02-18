@@ -211,20 +211,6 @@ namespace OpenRCT2::Ui::Windows
                 static_cast<int32_t>(_changelogLines.size()) * FontGetLineHeight(FontStyle::Medium));
         }
 
-        // TODO: This probably should be a utility function defined elsewhere for reusability
-        /**
-         * @brief Reimplementation of Window's GetCentrePositionForNewWindow for ChangelogWindow.
-         *
-         * @return ScreenCoordsXY
-         */
-        static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
-        {
-            auto uiContext = GetContext()->GetUiContext();
-            auto screenWidth = uiContext->GetWidth();
-            auto screenHeight = uiContext->GetHeight();
-            return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
-        }
-
     private:
         /**
          * @brief Converts NewVersionInfo into changelog lines
@@ -322,14 +308,10 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::Changelog);
         if (window == nullptr)
         {
-            // Create a new centred window
-            int32_t screenWidth = ContextGetWidth();
-            int32_t screenHeight = ContextGetHeight();
-            int32_t width = (screenWidth * 4) / 5;
-            int32_t height = (screenHeight * 4) / 5;
-
-            auto pos = ChangelogWindow::GetCentrePositionForNewWindow(width, height);
-            auto* newWindow = windowMgr->Create<ChangelogWindow>(WindowClass::Changelog, pos, width, height, WF_RESIZABLE);
+            int32_t width = (ContextGetWidth() * 4) / 5;
+            int32_t height = (ContextGetHeight() * 4) / 5;
+            auto* newWindow = windowMgr->Create<ChangelogWindow>(
+                WindowClass::Changelog, width, height, WF_CENTRE_SCREEN | WF_RESIZABLE);
             newWindow->SetPersonality(personality);
             return newWindow;
         }
