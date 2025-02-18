@@ -467,11 +467,11 @@ namespace OpenRCT2::Ui::FileBrowser
         StringId title = GetTitleStringId(type, isSave);
 
         Ui::FileDialogDesc desc = {
-            .InitialDirectory = defaultDirectory,
             .Type = isSave ? FileDialogType::Save : FileDialogType::Open,
+            .Title = LanguageGetString(title),
+            .InitialDirectory = defaultDirectory,
             .DefaultFilename = isSave ? path : u8string(),
             .Filters = { GetFilterForType(type, isSave), { LanguageGetString(STR_ALL_FILES), "*" } },
-            .Title = LanguageGetString(title),
         };
 
         return ContextOpenCommonFileDialog(desc);
