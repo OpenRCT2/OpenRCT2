@@ -808,7 +808,7 @@ void Peep::UpdateFalling()
                                      { x, y }, tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
                     + tile_element->GetBaseZ();
 
-                if (height < z - 1 || height > z + 4)
+                if (height < z - 1 || height > z + 8)
                     continue;
 
                 saved_height = height;
