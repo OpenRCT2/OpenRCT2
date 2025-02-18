@@ -59,6 +59,7 @@
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Legacy.h"
+#include "ParkPreview.h"
 
 #include <cassert>
 #include <cstdint>
@@ -94,6 +95,7 @@ namespace OpenRCT2
         constexpr uint32_t CHEATS               = 0x36;
         constexpr uint32_t RESTRICTED_OBJECTS   = 0x37;
         constexpr uint32_t PLUGIN_STORAGE       = 0x38;
+        constexpr uint32_t PREVIEW              = 0x39;
         constexpr uint32_t PACKED_OBJECTS       = 0x80;
         // clang-format on
     }; // namespace ParkFileChunkType
@@ -196,6 +198,7 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
+            ReadWritePreviewChunk(gameState, os);
             ReadWritePackedObjectsChunk(os);
         }
 
@@ -233,6 +236,24 @@ namespace OpenRCT2
                 entry.SourceGame = ScenarioSource::Other;
             });
             return entry;
+        }
+
+        ParkPreview ReadPreviewChunk()
+        {
+            ParkPreview preview{};
+            auto& os = *_os;
+            os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&preview](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(preview.parkName);
+                cs.ReadWrite(preview.parkRating);
+                cs.ReadWrite(preview.year);
+                cs.ReadWrite(preview.month);
+                cs.ReadWrite(preview.day);
+                cs.ReadWrite(preview.parkUsesMoney);
+                cs.ReadWrite(preview.cash);
+                cs.ReadWrite(preview.numRides);
+                cs.ReadWrite(preview.numGuests);
+            });
+            return preview;
         }
 
     private:
@@ -474,6 +495,23 @@ namespace OpenRCT2
                 {
                     cs.ReadWrite(gameState.ScenarioFileName);
                 }
+            });
+        }
+
+        void ReadWritePreviewChunk(GameState_t& gameState, OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&gameState](OrcaStream::ChunkStream& cs) {
+                auto preview = OpenRCT2::generatePreviewFromGameState(gameState);
+
+                cs.ReadWrite(preview.parkName);
+                cs.ReadWrite(preview.parkRating);
+                cs.ReadWrite(preview.year);
+                cs.ReadWrite(preview.month);
+                cs.ReadWrite(preview.day);
+                cs.ReadWrite(preview.parkUsesMoney);
+                cs.ReadWrite(preview.cash);
+                cs.ReadWrite(preview.numRides);
+                cs.ReadWrite(preview.numGuests);
             });
         }
 
@@ -2744,6 +2782,11 @@ public:
     {
         *dst = _parkFile->ReadScenarioChunk();
         return true;
+    }
+
+    ParkPreview GetParkPreview() override
+    {
+        return _parkFile->ReadPreviewChunk();
     }
 };
 
