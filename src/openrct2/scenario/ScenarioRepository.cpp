@@ -227,7 +227,7 @@ private:
 
             if (importer)
             {
-                if (importer->GetDetails(entry))
+                if (importer->PopulateIndexEntry(entry))
                 {
                     entry->Path = path;
                     entry->Timestamp = timestamp;

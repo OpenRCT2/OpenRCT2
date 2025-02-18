@@ -225,7 +225,7 @@ namespace OpenRCT2::RCT1
             RestrictAllMiscScenery();
         }
 
-        bool GetDetails(ScenarioIndexEntry* dst) override
+        bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
         {
             *dst = {};
 

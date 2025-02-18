@@ -57,7 +57,7 @@ public:
         = 0;
 
     virtual void Import(OpenRCT2::GameState_t& gameState) = 0;
-    virtual bool GetDetails(ScenarioIndexEntry* dst) = 0;
+    virtual bool PopulateIndexEntry(ScenarioIndexEntry* dst) = 0;
 };
 
 namespace OpenRCT2::ParkImporter
