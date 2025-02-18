@@ -240,14 +240,25 @@ namespace OpenRCT2
 
         ParkPreview ReadPreviewChunk()
         {
-            /*
             ParkPreview preview{};
             auto& os = *_os;
             os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&preview](OrcaStream::ChunkStream& cs) {
+                cs.ReadWriteVector(preview.info, [&cs](PreviewInfo& info) {
+                    cs.ReadWrite(info.first);
+                    cs.ReadWrite(info.second);
+                });
 
+                cs.ReadWriteVector(preview.images, [&cs](PreviewImage& image) {
+                    cs.ReadWrite(image.type);
+                    cs.ReadWrite(image.width);
+                    cs.ReadWrite(image.height);
+                    cs.ReadWriteArray(image.pixels, [&cs](uint8_t& pixel) {
+                        cs.ReadWrite(pixel);
+                        return true;
+                    });
+                });
             });
-            */
-            return {};
+            return preview;
         }
 
     private:
@@ -2780,6 +2791,12 @@ public:
     bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
     {
         *dst = _parkFile->ReadScenarioChunk();
+        return true;
+    }
+
+    bool PopulateParkPreview(ParkPreview& dst) override
+    {
+        dst = _parkFile->ReadPreviewChunk();
         return true;
     }
 };

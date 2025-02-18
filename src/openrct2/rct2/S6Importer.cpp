@@ -315,6 +315,11 @@ namespace OpenRCT2::RCT2
             return true;
         }
 
+        bool PopulateParkPreview(ParkPreview& dst) override
+        {
+            return false;
+        }
+
         void Import(GameState_t& gameState) override
         {
             Initialise(gameState);

@@ -290,6 +290,11 @@ namespace OpenRCT2::RCT1
             return true;
         }
 
+        bool PopulateParkPreview(ParkPreview& dst) override
+        {
+            return false;
+        }
+
         money64 CorrectRCT1ParkValue(money32 oldParkValue)
         {
             if (oldParkValue == kMoney32Undefined)
