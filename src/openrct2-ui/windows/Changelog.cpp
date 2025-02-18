@@ -238,17 +238,6 @@ namespace OpenRCT2::Ui::Windows
         }
 
         /**
-         * @brief Get the absolute path for the changelog file
-         *
-         * @return std::string
-         */
-        std::string GetChangelogPath()
-        {
-            auto env = GetContext()->GetPlatformEnvironment();
-            return env->GetFilePath(PATHID::CHANGELOG);
-        }
-
-        /**
          * @brief Attempts to read the changelog file, returns true on success
          *
          */
