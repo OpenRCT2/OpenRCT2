@@ -47,7 +47,8 @@ namespace OpenRCT2::Ui::Windows
         TrackDesign* _trackDesign;
 
     public:
-    OverwritePromptWindow(const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr)
+        OverwritePromptWindow(
+            const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr)
             : _name(name)
             , _path(path)
             , _type(type)
@@ -95,7 +96,8 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr)
+    WindowBase* WindowOverwritePromptOpen(
+        const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr)
     {
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);

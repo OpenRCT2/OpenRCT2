@@ -187,7 +187,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* OptionsOpen();
 
     // OverwritePrompt
-    WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr);
+    WindowBase* WindowOverwritePromptOpen(
+        const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr);
     void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode);
 
     // Park
