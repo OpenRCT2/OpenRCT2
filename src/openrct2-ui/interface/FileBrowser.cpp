@@ -396,41 +396,54 @@ namespace OpenRCT2::Ui::FileBrowser
         }
     }
 
-    u8string OpenSystemFileBrowser(bool isSave, int32_t type, u8string defaultDirectory, u8string defaultPath)
+    static u8string GetDefaultExtensionByType(int32_t type)
     {
-        Ui::FileDialogDesc desc = {};
-        u8string extension;
-        StringId title = GetTitleStringId(type, isSave);
         switch (type & 0x0E)
         {
             case LOADSAVETYPE_GAME:
-                extension = u8".park";
-                desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(type, isSave));
-                break;
+                return u8".park";
 
             case LOADSAVETYPE_LANDSCAPE:
-                extension = u8".park";
-                desc.Filters.emplace_back(
-                    LanguageGetString(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(type, isSave));
-                break;
+                return u8".park";
 
             case LOADSAVETYPE_SCENARIO:
-                extension = u8".park";
-                desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(type, isSave));
-                break;
+                return u8".park";
 
             case LOADSAVETYPE_TRACK:
-                extension = u8".td6";
-                desc.Filters.emplace_back(
-                    LanguageGetString(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(type, isSave));
-                break;
+                return u8".td6";
+
+            default:
+                return {};
+        }
+    }
+
+    static Ui::FileDialogDesc::Filter GetFilterForType(int32_t type, bool isSave)
+    {
+        switch (type & 0x0E)
+        {
+            case LOADSAVETYPE_GAME:
+                return { LanguageGetString(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(type, isSave) };
+
+            case LOADSAVETYPE_LANDSCAPE:
+                return { LanguageGetString(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(type, isSave) };
+
+            case LOADSAVETYPE_SCENARIO:
+                return { LanguageGetString(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(type, isSave) };
+
+            case LOADSAVETYPE_TRACK:
+                return { LanguageGetString(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(type, isSave) };
 
             case LOADSAVETYPE_HEIGHTMAP:
-                desc.Filters.emplace_back(
-                    LanguageGetString(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(type, isSave));
-                break;
-        }
+                return { LanguageGetString(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(type, isSave) };
 
+            default:
+                Guard::Fail("Unsupported load/save directory type.");
+                return { "", "" };
+        }
+    }
+
+    u8string OpenSystemFileBrowser(bool isSave, int32_t type, u8string defaultDirectory, u8string defaultPath)
+    {
         u8string path = defaultDirectory;
         if (isSave)
         {
@@ -450,13 +463,17 @@ namespace OpenRCT2::Ui::FileBrowser
             }
         }
 
-        desc.InitialDirectory = defaultDirectory;
-        desc.Type = isSave ? FileDialogType::Save : FileDialogType::Open;
-        desc.DefaultFilename = isSave ? path : u8string();
+        u8string extension = GetDefaultExtensionByType(type);
+        StringId title = GetTitleStringId(type, isSave);
 
-        desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
+        Ui::FileDialogDesc desc = {
+            .InitialDirectory = defaultDirectory,
+            .Type = isSave ? FileDialogType::Save : FileDialogType::Open,
+            .DefaultFilename = isSave ? path : u8string(),
+            .Filters = { GetFilterForType(type, isSave), { LanguageGetString(STR_ALL_FILES), "*" } },
+            .Title = LanguageGetString(title),
+        };
 
-        desc.Title = LanguageGetString(title);
         return ContextOpenCommonFileDialog(desc);
     }
 } // namespace OpenRCT2::Ui::FileBrowser
