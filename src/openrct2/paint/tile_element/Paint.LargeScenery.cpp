@@ -284,6 +284,13 @@ static void PaintLargeScenery3DText(
                     it++;
                 }
 
+                // handle case where second line fully fits
+                if (it == view.end() && lineWidth < text->max_width)
+                {
+                    best = current;
+                    next = std::string_view{};
+                }
+
                 if (best.empty())
                 {
                     // No good split found, or reached end of string
