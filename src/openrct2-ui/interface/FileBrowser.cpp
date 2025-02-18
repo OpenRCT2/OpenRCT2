@@ -31,7 +31,30 @@
 
 namespace OpenRCT2::Ui::FileBrowser
 {
-    static std::function<void(int32_t result, std::string_view)> _loadSaveCallback;
+    static LoadSaveCallback _loadSaveCallback;
+
+    WindowBase* OpenPreferred(int32_t type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign)
+    {
+        RegisterCallback(callback);
+
+        auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
+        auto& config = Config::Get().general;
+
+        // Open system file picker?
+        if (config.UseNativeBrowseDialog && hasFilePicker)
+        {
+            bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
+            const u8string path = OpenSystemFileBrowser(isSave, type, defaultPath, defaultPath);
+            if (!path.empty())
+            {
+                Select(path.c_str(), type, trackDesign);
+            }
+            return nullptr;
+        }
+
+        // Use built-in load/save window
+        return Windows::LoadsaveOpen(type, defaultPath, callback, trackDesign);
+    }
 
     bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b)
     {

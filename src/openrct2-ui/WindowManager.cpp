@@ -9,6 +9,7 @@
 
 #include "WindowManager.h"
 
+#include "interface/FileBrowser.h"
 #include "interface/Theme.h"
 #include "interface/Window.h"
 #include "ride/VehicleSounds.h"
@@ -257,12 +258,12 @@ public:
             case WindowClass::Loadsave:
             {
                 uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
-                std::string defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
+                std::string defaultPath = intent->GetStringExtra(INTENT_EXTRA_PATH);
                 LoadSaveCallback callback = reinterpret_cast<LoadSaveCallback>(
                     intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK));
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
-                auto* w = LoadsaveOpen(
-                    type, defaultName,
+                auto* w = FileBrowser::OpenPreferred(
+                    type, defaultPath,
                     [callback](int32_t result, std::string_view path) {
                         if (callback != nullptr)
                         {

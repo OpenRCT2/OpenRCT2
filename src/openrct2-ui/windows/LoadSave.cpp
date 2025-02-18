@@ -916,29 +916,14 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
     };
 
-    WindowBase* LoadsaveOpen(
-        int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
-        TrackDesign* trackDesign)
+    WindowBase* LoadsaveOpen(int32_t type, std::string_view defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign)
     {
         _trackDesign = trackDesign;
         _defaultPath = defaultPath;
 
         RegisterCallback(callback);
 
-        auto& config = Config::Get().general;
         bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
-
-        // Bypass the lot?
-        auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
-        if (config.UseNativeBrowseDialog && hasFilePicker)
-        {
-            const u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath);
-            if (!path.empty())
-            {
-                Select(path.c_str(), type, _trackDesign);
-            }
-            return nullptr;
-        }
 
         const u8string path = GetDir(type);
 
@@ -946,6 +931,7 @@ namespace OpenRCT2::Ui::Windows
         auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::Loadsave));
         if (w == nullptr)
         {
+            auto& config = Config::Get().general;
             if (config.FileBrowserWidth < kWindowSizeMin.width || config.FileBrowserHeight < kWindowSizeMin.height
                 || config.FileBrowserWidth > kWindowSizeMax.width || config.FileBrowserHeight > kWindowSizeMax.height)
             {

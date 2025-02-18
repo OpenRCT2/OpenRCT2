@@ -17,6 +17,11 @@
 
 struct TrackDesign;
 
+namespace OpenRCT2
+{
+    struct WindowBase;
+}
+
 namespace OpenRCT2::Ui::FileBrowser
 {
     enum class FileType : uint8_t
@@ -39,6 +44,8 @@ namespace OpenRCT2::Ui::FileBrowser
         bool loaded{ false };
     };
 
+    using LoadSaveCallback = std::function<void(int32_t result, std::string_view)>;
+
     bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b);
     void SetAndSaveConfigPath(u8string& config_str, u8string_view path);
     bool IsValidPath(const char* path);
@@ -51,4 +58,5 @@ namespace OpenRCT2::Ui::FileBrowser
     void InvokeCallback(int32_t result, const utf8* path);
     void Select(const char* path, int32_t type, TrackDesign* trackDesignPtr);
     u8string OpenSystemFileBrowser(bool isSave, int32_t type, u8string defaultDirectory, u8string defaultPath);
+    WindowBase* OpenPreferred(int32_t type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign);
 } // namespace OpenRCT2::Ui::FileBrowser
