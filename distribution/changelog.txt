@@ -11,7 +11,7 @@
 - Fix: [#22620] RCT1 Mine Train Coaster trains glitch on large banked turns.
 - Fix: [#23522] Diagonal sloped Steeplechase supports have glitched sprites at the base.
 - Fix: [#23795] Looping Roller Coaster vertical loop supports are drawn incorrectly.
-- Fix: [#23797] 3D Text cut off too early on multi-line signs
+- Fix: [#23797] 3D Text cut off too early on multi-line signs.
 - Fix: [#23809] Trains glitch on Bobsleigh Coaster small helixes.
 - Fix: [#23818] Spinning tunnels can draw over sloped terrain in front of them.
 
