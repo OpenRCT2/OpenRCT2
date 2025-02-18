@@ -1228,7 +1228,7 @@ static void MineRideTrackSBendRight(
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19471), { 0, 0, height },
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINE_RIDE_TRACK_19471), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
@@ -1323,7 +1323,7 @@ static void MineRideTrackSBendRight(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19471), { 0, 0, height },
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINE_RIDE_TRACK_19471), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
