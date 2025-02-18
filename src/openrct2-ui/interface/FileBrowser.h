@@ -57,6 +57,7 @@ namespace OpenRCT2::Ui::FileBrowser
     void RegisterCallback(std::function<void(int32_t result, std::string_view)> callback);
     void InvokeCallback(int32_t result, const utf8* path);
     void Select(const char* path, int32_t type, TrackDesign* trackDesignPtr);
+    StringId GetTitleStringId(int32_t type, bool isSave);
     u8string OpenSystemFileBrowser(bool isSave, int32_t type, u8string defaultDirectory, u8string defaultPath);
     WindowBase* OpenPreferred(int32_t type, u8string defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign);
 } // namespace OpenRCT2::Ui::FileBrowser

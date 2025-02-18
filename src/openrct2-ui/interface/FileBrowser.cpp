@@ -372,41 +372,60 @@ namespace OpenRCT2::Ui::FileBrowser
         }
     }
 
+    StringId GetTitleStringId(int32_t type, bool isSave)
+    {
+        switch (type & 0x0E)
+        {
+            case LOADSAVETYPE_GAME:
+                return isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
+
+            case LOADSAVETYPE_LANDSCAPE:
+                return isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
+
+            case LOADSAVETYPE_SCENARIO:
+                return STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
+
+            case LOADSAVETYPE_TRACK:
+                return isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
+
+            case LOADSAVETYPE_HEIGHTMAP:
+                return STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
+
+            default:
+                return kStringIdNone;
+        }
+    }
+
     u8string OpenSystemFileBrowser(bool isSave, int32_t type, u8string defaultDirectory, u8string defaultPath)
     {
         Ui::FileDialogDesc desc = {};
         u8string extension;
-        StringId title = kStringIdNone;
+        StringId title = GetTitleStringId(type, isSave);
         switch (type & 0x0E)
         {
             case LOADSAVETYPE_GAME:
                 extension = u8".park";
-                title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
                 desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(type, isSave));
                 break;
 
             case LOADSAVETYPE_LANDSCAPE:
                 extension = u8".park";
-                title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
                 desc.Filters.emplace_back(
                     LanguageGetString(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(type, isSave));
                 break;
 
             case LOADSAVETYPE_SCENARIO:
                 extension = u8".park";
-                title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
                 desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(type, isSave));
                 break;
 
             case LOADSAVETYPE_TRACK:
                 extension = u8".td6";
-                title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
                 desc.Filters.emplace_back(
                     LanguageGetString(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(type, isSave));
                 break;
 
             case LOADSAVETYPE_HEIGHTMAP:
-                title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
                 desc.Filters.emplace_back(
                     LanguageGetString(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(type, isSave));
                 break;

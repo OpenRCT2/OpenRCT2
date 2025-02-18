@@ -948,34 +948,15 @@ namespace OpenRCT2::Ui::Windows
                 type);
         }
 
-        switch (type & 0x0E)
+        if ((type & 0x0E) == LOADSAVETYPE_HEIGHTMAP && !isSave)
         {
-            case LOADSAVETYPE_GAME:
-                w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
-                break;
+            Guard::Fail("Cannot save images through loadsave window");
+        }
 
-            case LOADSAVETYPE_LANDSCAPE:
-                w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE
-                                                     : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
-                break;
-
-            case LOADSAVETYPE_SCENARIO:
-                w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
-                break;
-
-            case LOADSAVETYPE_TRACK:
-                w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK
-                                                     : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
-                break;
-
-            case LOADSAVETYPE_HEIGHTMAP:
-                Guard::Assert(!isSave, "Cannot save images through loadsave window");
-                w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
-                break;
-
-            default:
-                Guard::Fail("Unsupported load/save type: %d", type & 0x0F);
-                break;
+        w->widgets[WIDX_TITLE].text = GetTitleStringId(type, isSave);
+        if (w->widgets[WIDX_TITLE].text == kStringIdNone)
+        {
+            Guard::Fail("Unsupported load/save type: %d", type & 0x0F);
         }
 
         return w;
