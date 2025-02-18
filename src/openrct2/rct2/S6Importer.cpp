@@ -242,7 +242,7 @@ namespace OpenRCT2::RCT2
             stream.Read(&_s6.EntityListsHead, postEntitiesSize);
         }
 
-        bool GetDetails(ScenarioIndexEntry* dst) override
+        bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
         {
             *dst = {};
 

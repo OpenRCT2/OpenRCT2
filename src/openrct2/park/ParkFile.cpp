@@ -2740,7 +2740,7 @@ public:
         GameFixSaveVars();
     }
 
-    bool GetDetails(ScenarioIndexEntry* dst) override
+    bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
     {
         *dst = _parkFile->ReadScenarioChunk();
         return true;
