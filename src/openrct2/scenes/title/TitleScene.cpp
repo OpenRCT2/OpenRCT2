@@ -15,9 +15,11 @@
 #include "../../GameState.h"
 #include "../../Input.h"
 #include "../../OpenRCT2.h"
+#include "../../PlatformEnvironment.h"
 #include "../../audio/Audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
+#include "../../core/File.h"
 #include "../../drawing/Text.h"
 #include "../../interface/Screenshot.h"
 #include "../../interface/Viewport.h"
@@ -127,8 +129,12 @@ void TitleScene::Load()
 
     if (gOpenRCT2ShowChangelog)
     {
-        gOpenRCT2ShowChangelog = false;
-        ContextOpenWindow(WindowClass::Changelog);
+        auto path = GetContext().GetPlatformEnvironment()->GetFilePath(PATHID::CHANGELOG);
+        if (File::Exists(path))
+        {
+            gOpenRCT2ShowChangelog = false;
+            ContextOpenWindow(WindowClass::Changelog);
+        }
     }
 
     LOG_VERBOSE("TitleScene::Load() finished");
