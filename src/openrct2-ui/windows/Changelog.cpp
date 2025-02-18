@@ -144,9 +144,9 @@ namespace OpenRCT2::Ui::Windows
             min_width = MIN_WW;
             min_height = MIN_WH;
 
-            auto download_button_width = widgets[WIDX_OPEN_URL].width();
-            widgets[WIDX_OPEN_URL].left = (width - download_button_width) / 2;
-            widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + download_button_width;
+            auto downloadButtonWidth = widgets[WIDX_OPEN_URL].width();
+            widgets[WIDX_OPEN_URL].left = (width - downloadButtonWidth) / 2;
+            widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + downloadButtonWidth;
 
             if (width < min_width)
             {
@@ -235,12 +235,12 @@ namespace OpenRCT2::Ui::Windows
             _newVersionInfo = GetContext()->GetNewVersionInfo();
             if (_newVersionInfo != nullptr)
             {
-                char version_info[256];
+                char versionInfo[256];
 
-                const char* version_info_ptr = _newVersionInfo->name.c_str();
-                FormatStringLegacy(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
+                const char* versionInfoPtr = _newVersionInfo->name.c_str();
+                FormatStringLegacy(versionInfo, 256, STR_NEW_RELEASE_VERSION_INFO, &versionInfoPtr);
 
-                _changelogLines.emplace_back(version_info);
+                _changelogLines.emplace_back(versionInfo);
                 _changelogLines.emplace_back("");
 
                 ProcessText(_newVersionInfo->changelog);
