@@ -136,7 +136,6 @@ namespace OpenRCT2::Ui::Windows
         int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
         TrackDesign* trackDesign);
     void WindowLoadSaveInputKey(WindowBase* w, uint32_t keycode);
-    void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode);
 
     // Main
     WindowBase* MainOpen();
@@ -186,6 +185,10 @@ namespace OpenRCT2::Ui::Windows
 
     // Options
     WindowBase* OptionsOpen();
+
+    // OverwritePrompt
+    WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr);
+    void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode);
 
     // Park
     WindowBase* ParkAwardsOpen();

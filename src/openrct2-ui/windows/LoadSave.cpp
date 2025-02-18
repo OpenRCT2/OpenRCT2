@@ -12,6 +12,7 @@
 #include <iterator>
 #include <memory>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/FileBrowser.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Editor.h>
@@ -45,6 +46,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    using namespace OpenRCT2::Ui::FileBrowser;
+
 #pragma region Widgets
 
     static constexpr ScreenSize kWindowSizeInit = { 400, 350 };
@@ -55,6 +58,14 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int kMebiByte = kKibiByte * 1024;
 
     static constexpr uint16_t kDateTimeGap = 2;
+
+    static std::vector<LoadSaveListItem> _listItems;
+    static char _directory[MAX_PATH];
+    static char _parentDirectory[MAX_PATH];
+    static char _currentFilename[MAX_PATH];
+    static u8string _extensionPattern;
+    static u8string _defaultPath;
+    static TrackDesign* _trackDesign;
 
     enum
     {
@@ -100,419 +111,6 @@ namespace OpenRCT2::Ui::Windows
     // clang-format on
 
 #pragma endregion
-
-    static WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path);
-
-    enum class FileType : uint8_t
-    {
-        directory,
-        file,
-    };
-
-    struct LoadSaveListItem
-    {
-        std::string name{};
-        std::string path{};
-        time_t date_modified{ 0 };
-        std::string date_formatted{};
-        std::string time_formatted{};
-        uint64_t fileSizeBytes;
-        uint64_t fileSizeFormatted;
-        StringId fileSizeUnit;
-        FileType type{};
-        bool loaded{ false };
-    };
-
-    static std::function<void(int32_t result, std::string_view)> _loadSaveCallback;
-    static TrackDesign* _trackDesign;
-
-    static std::vector<LoadSaveListItem> _listItems;
-    static char _directory[MAX_PATH];
-    static char _parentDirectory[MAX_PATH];
-    static char _currentFilename[MAX_PATH];
-    static u8string _extensionPattern;
-    static u8string _defaultPath;
-    static int32_t _type;
-
-    static bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b)
-    {
-        if (a.type != b.type)
-            return EnumValue(a.type) - EnumValue(b.type) < 0;
-
-        switch (Config::Get().general.LoadSaveSort)
-        {
-            case FileBrowserSort::NameAscending:
-                return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
-            case FileBrowserSort::NameDescending:
-                return -String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
-            case FileBrowserSort::DateDescending:
-                return -difftime(a.date_modified, b.date_modified) < 0;
-            case FileBrowserSort::DateAscending:
-                return difftime(a.date_modified, b.date_modified) < 0;
-            case FileBrowserSort::SizeDescending:
-                return a.fileSizeBytes - b.fileSizeBytes;
-            case FileBrowserSort::SizeAscending:
-                return b.fileSizeBytes - a.fileSizeBytes;
-        }
-        return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
-    }
-
-    static void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
-    {
-        config_str = Path::GetDirectory(path);
-        Config::Save();
-    }
-
-    static bool IsValidPath(const char* path)
-    {
-        // HACK This is needed because tracks get passed through with td?
-        //      I am sure this will change eventually to use the new FileScanner
-        //      which handles multiple patterns
-        auto filename = Path::GetFileNameWithoutExtension(path);
-
-        return Platform::IsFilenameValid(filename);
-    }
-
-    static u8string GetLastDirectoryByType(int32_t type)
-    {
-        switch (type & 0x0E)
-        {
-            case LOADSAVETYPE_GAME:
-                return Config::Get().general.LastSaveGameDirectory;
-
-            case LOADSAVETYPE_LANDSCAPE:
-                return Config::Get().general.LastSaveLandscapeDirectory;
-
-            case LOADSAVETYPE_SCENARIO:
-                return Config::Get().general.LastSaveScenarioDirectory;
-
-            case LOADSAVETYPE_TRACK:
-                return Config::Get().general.LastSaveTrackDirectory;
-
-            default:
-                return u8string();
-        }
-    }
-
-    static u8string GetInitialDirectoryByType(const int32_t type)
-    {
-        std::optional<OpenRCT2::DIRID> subdir = std::nullopt;
-        switch (type & 0x0E)
-        {
-            case LOADSAVETYPE_GAME:
-                subdir = OpenRCT2::DIRID::SAVE;
-                break;
-
-            case LOADSAVETYPE_LANDSCAPE:
-                subdir = OpenRCT2::DIRID::LANDSCAPE;
-                break;
-
-            case LOADSAVETYPE_SCENARIO:
-                subdir = OpenRCT2::DIRID::SCENARIO;
-                break;
-
-            case LOADSAVETYPE_TRACK:
-                subdir = OpenRCT2::DIRID::TRACK;
-                break;
-
-            case LOADSAVETYPE_HEIGHTMAP:
-                subdir = OpenRCT2::DIRID::HEIGHTMAP;
-                break;
-        }
-
-        auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-        if (subdir.has_value())
-            return env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, subdir.value());
-        else
-            return env->GetDirectoryPath(OpenRCT2::DIRBASE::USER);
-    }
-
-    static const char* GetFilterPatternByType(const int32_t type, const bool isSave)
-    {
-        switch (type & 0x0E)
-        {
-            case LOADSAVETYPE_GAME:
-                return isSave ? "*.park" : "*.park;*.sv6;*.sc6;*.sc4;*.sv4;*.sv7;*.sea";
-
-            case LOADSAVETYPE_LANDSCAPE:
-                return isSave ? "*.park" : "*.park;*.sc6;*.sv6;*.sc4;*.sv4;*.sv7;*.sea";
-
-            case LOADSAVETYPE_SCENARIO:
-                return isSave ? "*.park" : "*.park;*.sc6;*.sc4";
-
-            case LOADSAVETYPE_TRACK:
-                return isSave ? "*.td6" : "*.td6;*.td4";
-
-            case LOADSAVETYPE_HEIGHTMAP:
-                return "*.bmp;*.png";
-
-            default:
-                Guard::Fail("Unsupported load/save directory type.");
-        }
-
-        return "";
-    }
-
-    static u8string RemovePatternWildcard(u8string_view pattern)
-    {
-        while (pattern.length() >= 1 && pattern.front() == '*')
-        {
-            pattern.remove_prefix(1);
-        }
-        return u8string{ pattern };
-    }
-
-    static u8string GetDir(const int32_t type)
-    {
-        u8string result = GetLastDirectoryByType(type);
-        if (result.empty() || !Path::DirectoryExists(result))
-        {
-            result = GetInitialDirectoryByType(type);
-        }
-        return result;
-    }
-
-    static void InvokeCallback(int32_t result, const utf8* path)
-    {
-        if (_loadSaveCallback != nullptr)
-        {
-            _loadSaveCallback(result, path);
-        }
-    }
-
-    static void Select(const char* path)
-    {
-        if (!IsValidPath(path))
-        {
-            ContextShowError(STR_ERROR_INVALID_CHARACTERS, kStringIdNone, {});
-            return;
-        }
-
-        char pathBuffer[MAX_PATH];
-        String::safeUtf8Copy(pathBuffer, path, sizeof(pathBuffer));
-
-        // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
-        // no windows are open (besides the toolbars and LoadSave window).
-        auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::RideConstruction);
-        windowMgr->CloseAllExceptClass(WindowClass::Loadsave);
-
-        auto& gameState = GetGameState();
-
-        switch (_type & 0x0F)
-        {
-            case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
-                SetAndSaveConfigPath(Config::Get().general.LastSaveGameDirectory, pathBuffer);
-                if (OpenRCT2::GetContext()->LoadParkFromFile(pathBuffer))
-                {
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                    windowMgr->CloseByClass(WindowClass::Loadsave);
-                    GfxInvalidateScreen();
-                }
-                else
-                {
-                    auto windowManager = GetWindowManager();
-                    if (!windowManager->FindByClass(WindowClass::Error))
-                    {
-                        // Not the best message...
-                        ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
-                    }
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
-                }
-                break;
-
-            case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
-                SetAndSaveConfigPath(Config::Get().general.LastSaveGameDirectory, pathBuffer);
-                if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 1 : 0))
-                {
-                    gScenarioSavePath = pathBuffer;
-                    gCurrentLoadedPath = pathBuffer;
-                    gIsAutosaveLoaded = false;
-                    gFirstTimeSaving = false;
-
-                    windowMgr->CloseByClass(WindowClass::Loadsave);
-                    GfxInvalidateScreen();
-
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                }
-                else
-                {
-                    ContextShowError(STR_SAVE_GAME, STR_GAME_SAVE_FAILED, {});
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
-                }
-                break;
-
-            case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE):
-                SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
-                if (Editor::LoadLandscape(pathBuffer))
-                {
-                    gCurrentLoadedPath = pathBuffer;
-                    GfxInvalidateScreen();
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                }
-                else
-                {
-                    // Not the best message...
-                    ContextShowError(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
-                }
-                break;
-
-            case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
-                SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
-                gameState.ScenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
-                if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
-                {
-                    gCurrentLoadedPath = pathBuffer;
-                    windowMgr->CloseByClass(WindowClass::Loadsave);
-                    GfxInvalidateScreen();
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                }
-                else
-                {
-                    ContextShowError(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED, {});
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
-                }
-                break;
-
-            case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
-            {
-                SetAndSaveConfigPath(Config::Get().general.LastSaveScenarioDirectory, pathBuffer);
-                int32_t parkFlagsBackup = gameState.Park.Flags;
-                gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-                gameState.EditorStep = EditorStep::Invalid;
-                gameState.ScenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
-                int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
-                gameState.Park.Flags = parkFlagsBackup;
-
-                if (success)
-                {
-                    windowMgr->CloseByClass(WindowClass::Loadsave);
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-
-                    auto* context = OpenRCT2::GetContext();
-                    context->SetActiveScene(context->GetTitleScene());
-                }
-                else
-                {
-                    ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
-                    gameState.EditorStep = EditorStep::ObjectiveSelection;
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
-                }
-                break;
-            }
-
-            case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK):
-            {
-                SetAndSaveConfigPath(Config::Get().general.LastSaveTrackDirectory, pathBuffer);
-                auto intent = Intent(WindowClass::InstallTrack);
-                intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
-                ContextOpenIntent(&intent);
-                windowMgr->CloseByClass(WindowClass::Loadsave);
-                InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                break;
-            }
-
-            case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
-            {
-                SetAndSaveConfigPath(Config::Get().general.LastSaveTrackDirectory, pathBuffer);
-
-                const auto withExtension = Path::WithExtension(pathBuffer, ".td6");
-                String::set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
-
-                RCT2::T6Exporter t6Export{ *_trackDesign };
-
-                auto success = t6Export.SaveTrack(pathBuffer);
-
-                if (success)
-                {
-                    windowMgr->CloseByClass(WindowClass::Loadsave);
-                    WindowRideMeasurementsDesignCancel();
-                    InvokeCallback(MODAL_RESULT_OK, path);
-                }
-                else
-                {
-                    ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED, {});
-                    InvokeCallback(MODAL_RESULT_FAIL, path);
-                }
-                break;
-            }
-
-            case (LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP):
-                windowMgr->CloseByClass(WindowClass::Loadsave);
-                InvokeCallback(MODAL_RESULT_OK, pathBuffer);
-                break;
-        }
-    }
-
-    static u8string OpenSystemFileBrowser(bool isSave)
-    {
-        OpenRCT2::Ui::FileDialogDesc desc = {};
-        u8string extension;
-        StringId title = kStringIdNone;
-        switch (_type & 0x0E)
-        {
-            case LOADSAVETYPE_GAME:
-                extension = u8".park";
-                title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
-                desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(_type, isSave));
-                break;
-
-            case LOADSAVETYPE_LANDSCAPE:
-                extension = u8".park";
-                title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
-                desc.Filters.emplace_back(
-                    LanguageGetString(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(_type, isSave));
-                break;
-
-            case LOADSAVETYPE_SCENARIO:
-                extension = u8".park";
-                title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
-                desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(_type, isSave));
-                break;
-
-            case LOADSAVETYPE_TRACK:
-                extension = u8".td6";
-                title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
-                desc.Filters.emplace_back(
-                    LanguageGetString(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(_type, isSave));
-                break;
-
-            case LOADSAVETYPE_HEIGHTMAP:
-                title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
-                desc.Filters.emplace_back(
-                    LanguageGetString(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(_type, isSave));
-                break;
-        }
-
-        u8string path = _directory;
-        if (isSave)
-        {
-            // The file browser requires a file path instead of just a directory
-            if (!_defaultPath.empty())
-            {
-                path = Path::Combine(path, _defaultPath);
-            }
-            else
-            {
-                auto buffer = GetGameState().Park.Name;
-                if (buffer.empty())
-                {
-                    buffer = LanguageGetString(STR_UNNAMED_PARK);
-                }
-                path = Path::Combine(path, buffer);
-            }
-        }
-
-        desc.InitialDirectory = _directory;
-        desc.Type = isSave ? OpenRCT2::Ui::FileDialogType::Save : OpenRCT2::Ui::FileDialogType::Open;
-        desc.DefaultFilename = isSave ? path : u8string();
-
-        desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
-
-        desc.Title = LanguageGetString(title);
-        return ContextOpenCommonFileDialog(desc);
-    }
 
     class LoadSaveWindow final : public Window
     {
@@ -872,7 +470,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCROLL].right = width - 5;
             widgets[WIDX_SCROLL].bottom = height - 30;
 
-            if (_type & LOADSAVETYPE_SAVE)
+            if (type & LOADSAVETYPE_SAVE)
             {
                 widgets[WIDX_SCROLL].bottom -= 18;
 
@@ -958,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SORT_DATE], STR_DATE_COLUMN, FileBrowserSort::DateAscending, FileBrowserSort::DateDescending);
 
             // 'Filename:' label
-            if (_type & LOADSAVETYPE_SAVE)
+            if (type & LOADSAVETYPE_SAVE)
             {
                 auto& widget = widgets[WIDX_FILENAME_TEXTBOX];
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, {}, { COLOUR_GREY });
@@ -967,7 +565,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
-            bool isSave = (_type & 0x01) == LOADSAVETYPE_SAVE;
+            bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -993,10 +591,10 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_BROWSE:
                 {
-                    u8string path = OpenSystemFileBrowser(isSave);
+                    u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath);
                     if (!path.empty())
                     {
-                        Select(path.c_str());
+                        Select(path.c_str(), type, _trackDesign);
                     }
                     else
                     {
@@ -1051,7 +649,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_DEFAULT:
-                    PopulateList(isSave, GetInitialDirectoryByType(_type).c_str(), _extensionPattern);
+                    PopulateList(isSave, GetInitialDirectoryByType(type).c_str(), _extensionPattern);
                     InitScrollWidgets();
                     no_list_items = static_cast<uint16_t>(_listItems.size());
                     break;
@@ -1066,9 +664,9 @@ namespace OpenRCT2::Ui::Windows
                         Path::Combine(_directory, _currentFilename), RemovePatternWildcard(_extensionPattern));
 
                     if (File::Exists(path))
-                        WindowOverwritePromptOpen(_currentFilename, path);
+                        WindowOverwritePromptOpen(_currentFilename, path, type, _trackDesign);
                     else
-                        Select(path.c_str());
+                        Select(path.c_str(), type, _trackDesign);
                 }
             }
         }
@@ -1148,7 +746,7 @@ namespace OpenRCT2::Ui::Windows
                     no_list_items = 0;
                     selected_list_item = -1;
 
-                    PopulateList((_type & 1) == LOADSAVETYPE_SAVE, path, _extensionPattern);
+                    PopulateList((type & 1) == LOADSAVETYPE_SAVE, path, _extensionPattern);
                     InitScrollWidgets();
 
                     no_list_items = static_cast<uint16_t>(_listItems.size());
@@ -1162,9 +760,9 @@ namespace OpenRCT2::Ui::Windows
                         Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
                     if (File::Exists(path))
-                        WindowOverwritePromptOpen(text, path);
+                        WindowOverwritePromptOpen(text, path, type, _trackDesign);
                     else
-                        Select(path.c_str());
+                        Select(path.c_str(), type, _trackDesign);
                     break;
                 }
 
@@ -1213,7 +811,7 @@ namespace OpenRCT2::Ui::Windows
                 // The selected item is a folder
                 no_list_items = 0;
                 selected_list_item = -1;
-                bool includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
+                bool includeNewItem = (type & 1) == LOADSAVETYPE_SAVE;
 
                 char directory[MAX_PATH];
                 String::safeUtf8Copy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
@@ -1229,10 +827,10 @@ namespace OpenRCT2::Ui::Windows
                 String::set(_currentFilename, std::size(_currentFilename), _listItems[selectedItem].name.c_str());
                 InvalidateWidget(WIDX_FILENAME_TEXTBOX);
 
-                if ((_type & 0x01) == LOADSAVETYPE_SAVE)
-                    WindowOverwritePromptOpen(_listItems[selectedItem].name, _listItems[selectedItem].path);
+                if ((type & 0x01) == LOADSAVETYPE_SAVE)
+                    WindowOverwritePromptOpen(_listItems[selectedItem].name, _listItems[selectedItem].path, type, _trackDesign);
                 else
-                    Select(_listItems[selectedItem].path.c_str());
+                    Select(_listItems[selectedItem].path.c_str(), type, _trackDesign);
             }
         }
 
@@ -1322,10 +920,10 @@ namespace OpenRCT2::Ui::Windows
         int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
         TrackDesign* trackDesign)
     {
-        _loadSaveCallback = callback;
         _trackDesign = trackDesign;
-        _type = type;
         _defaultPath = defaultPath;
+
+        RegisterCallback(callback);
 
         auto& config = Config::Get().general;
         bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
@@ -1334,10 +932,10 @@ namespace OpenRCT2::Ui::Windows
         auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
         if (config.UseNativeBrowseDialog && hasFilePicker)
         {
-            const u8string path = OpenSystemFileBrowser(isSave);
+            const u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath);
             if (!path.empty())
             {
-                Select(path.c_str());
+                Select(path.c_str(), type, _trackDesign);
             }
             return nullptr;
         }
@@ -1415,109 +1013,4 @@ namespace OpenRCT2::Ui::Windows
             loadSaveWindow->Close();
         }
     }
-
-#pragma region Overwrite prompt
-
-    constexpr int32_t OVERWRITE_WW = 200;
-    constexpr int32_t OVERWRITE_WH = 100;
-
-    enum
-    {
-        WIDX_OVERWRITE_BACKGROUND,
-        WIDX_OVERWRITE_TITLE,
-        WIDX_OVERWRITE_CLOSE,
-        WIDX_OVERWRITE_OVERWRITE,
-        WIDX_OVERWRITE_CANCEL
-    };
-
-    // clang-format off
-    static constexpr Widget window_overwrite_prompt_widgets[] = {
-        WINDOW_SHIM_WHITE(STR_FILEBROWSER_OVERWRITE_TITLE, OVERWRITE_WW, OVERWRITE_WH),
-        MakeWidget({                10, OVERWRITE_WH - 20 }, { 84, 11 }, WindowWidgetType::Button, WindowColour::Primary, STR_FILEBROWSER_OVERWRITE_TITLE),
-        MakeWidget({ OVERWRITE_WW - 95, OVERWRITE_WH - 20 }, { 85, 11 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-    };
-    // clang-format on
-
-    class OverwritePromptWindow final : public Window
-    {
-        std::string _name;
-        std::string _path;
-
-    public:
-        OverwritePromptWindow(const std::string_view name, const std::string_view path)
-            : _name(name)
-            , _path(path)
-        {
-        }
-
-        void OnOpen() override
-        {
-            SetWidgets(window_overwrite_prompt_widgets);
-        }
-
-        void OnMouseUp(WidgetIndex widgetIndex) override
-        {
-            switch (widgetIndex)
-            {
-                case WIDX_OVERWRITE_OVERWRITE:
-                {
-                    Select(_path.c_str());
-
-                    // As the LoadSaveWindow::Select function can change the order of the
-                    // windows we can't use WindowClose(w).
-                    auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
-                    break;
-                }
-
-                case WIDX_OVERWRITE_CANCEL:
-                case WIDX_OVERWRITE_CLOSE:
-                    Close();
-                    break;
-            }
-        }
-
-        void OnDraw(DrawPixelInfo& dpi) override
-        {
-            DrawWidgets(dpi);
-
-            auto ft = Formatter();
-            ft.Add<StringId>(STR_STRING);
-            ft.Add<char*>(_name.c_str());
-
-            ScreenCoordsXY stringCoords(windowPos.x + width / 2, windowPos.y + (height / 2) - 3);
-            DrawTextWrapped(dpi, stringCoords, width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
-        }
-    };
-
-    static WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path)
-    {
-        auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
-
-        return windowMgr->Create<OverwritePromptWindow>(
-            WindowClass::LoadsaveOverwritePrompt, OVERWRITE_WW, OVERWRITE_WH,
-            WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name, path);
-    }
-
-    void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode)
-    {
-        if (w->classification != WindowClass::LoadsaveOverwritePrompt)
-        {
-            return;
-        }
-
-        auto promptWindow = static_cast<OverwritePromptWindow*>(w);
-
-        if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
-        {
-            promptWindow->OnMouseUp(WIDX_OVERWRITE_OVERWRITE);
-        }
-        else if (keycode == SDLK_ESCAPE)
-        {
-            promptWindow->OnMouseUp(WIDX_OVERWRITE_CANCEL);
-        }
-    }
-
-#pragma endregion
 } // namespace OpenRCT2::Ui::Windows
