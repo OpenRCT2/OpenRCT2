@@ -365,16 +365,32 @@ namespace OpenRCT2::Ui::Windows
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(_preview.parkName.c_str());
-            DrawTextEllipsised(dpi, namePos, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(dpi, namePos, kPreviewWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
 
             // Draw image, if available
+            bool foundImage = false;
             for (auto& image : _preview.images)
             {
                 if (image.type == PreviewImageType::screenshot)
                 {
                     auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
                     drawPreviewImage(image, dpi, imagePos);
+                    foundImage = true;
+                    break;
                 }
+            }
+
+            // Draw OpenRCT2 logo if no preview was found
+            if (!foundImage)
+            {
+                auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
+                auto colour = ColourMapA[colours[1].colour].dark;
+                GfxDrawSpriteSolid(dpi, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
+
+                auto textPos = imagePos + ScreenCoordsXY(kPreviewWidth / 2, kPreviewHeight / 2 - 6);
+                DrawTextBasic(
+                    dpi, textPos, STR_NO_PREVIEW_AVAILABLE, {},
+                    { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
             }
         }
 
@@ -765,7 +781,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[0].Args = STR_FILEBROWSER_CUSTOMISE_FILENAME;
             gDropdownItems[1].Args = STR_FILEBROWSER_CUSTOMISE_SIZE;
             gDropdownItems[2].Args = STR_FILEBROWSER_CUSTOMISE_DATE;
-            gDropdownItems[3].Args = 891; // TODO
+            gDropdownItems[3].Args = STR_FILEBROWSER_CUSTOMISE_PREVIEW;
 
             Widget* widget = &widgets[WIDX_SORT_CUSTOMISE];
 

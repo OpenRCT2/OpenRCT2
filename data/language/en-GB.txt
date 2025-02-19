@@ -3794,3 +3794,5 @@ STR_6732    :Show a button in the toolbar to rotate the view anti-clockwise
 STR_6733    :See-Through
 STR_6734    :Map elements that are at or above the cutting height are rendered translucent.
 STR_6735    :Go up to parent folder
+STR_6736    :Preview
+STR_6737    :No preview available
