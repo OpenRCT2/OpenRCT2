@@ -174,10 +174,6 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
-            , _objectRepository(CreateObjectRepository(_env))
-            , _objectManager(CreateObjectManager(*_objectRepository))
-            , _trackDesignRepository(CreateTrackDesignRepository(_env))
-            , _scenarioRepository(CreateScenarioRepository(_env))
             , _replayManager(CreateReplayManager())
             , _gameStateSnapshots(CreateGameStateSnapshots())
 #ifdef ENABLE_SCRIPTING
@@ -465,6 +461,13 @@ namespace OpenRCT2
                 }
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
+
+            // The repositories are all dependent on the RCT2 path being set,
+            // so they cannot be set in the constructor.
+            _objectRepository = CreateObjectRepository(_env);
+            _objectManager = CreateObjectManager(*_objectRepository);
+            _trackDesignRepository = CreateTrackDesignRepository(_env);
+            _scenarioRepository = CreateScenarioRepository(_env);
 
             if (!gOpenRCT2Headless)
             {
