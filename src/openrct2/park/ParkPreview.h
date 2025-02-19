@@ -10,12 +10,33 @@
 #pragma once
 
 #include "../core/Money.hpp"
+#include "../world/Location.hpp"
 
 #include <cstdint>
 #include <string>
+#include <vector>
+
+struct DrawPixelInfo;
 
 namespace OpenRCT2
 {
+    constexpr auto kMaxPreviewImageSize = 250;
+
+    enum class PreviewImageType : uint8_t
+    {
+        miniMap,
+        screenshot,
+        logo,
+    };
+
+    struct PreviewImage
+    {
+        PreviewImageType type;
+        uint8_t width;
+        uint8_t height;
+        uint8_t pixels[kMaxPreviewImageSize * kMaxPreviewImageSize]{};
+    };
+
     struct ParkPreview
     {
         std::string parkName{};
@@ -27,9 +48,11 @@ namespace OpenRCT2
         money64 cash{};
         uint16_t numRides{};
         uint16_t numGuests{};
+        std::vector<PreviewImage> images{};
     };
 
     struct GameState_t;
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState);
+    void drawPreviewImage(const PreviewImage& image, DrawPixelInfo& dpi, ScreenCoordsXY screenPos);
 } // namespace OpenRCT2

@@ -252,6 +252,16 @@ namespace OpenRCT2
                 cs.ReadWrite(preview.cash);
                 cs.ReadWrite(preview.numRides);
                 cs.ReadWrite(preview.numGuests);
+
+                cs.ReadWriteVector(preview.images, [&cs](PreviewImage& image) {
+                    cs.ReadWrite(image.type);
+                    cs.ReadWrite(image.width);
+                    cs.ReadWrite(image.height);
+                    cs.ReadWriteArray(image.pixels, [&cs](uint8_t& pixel) {
+                        cs.ReadWrite(pixel);
+                        return true;
+                    });
+                });
             });
             return preview;
         }
@@ -512,6 +522,16 @@ namespace OpenRCT2
                 cs.ReadWrite(preview.cash);
                 cs.ReadWrite(preview.numRides);
                 cs.ReadWrite(preview.numGuests);
+
+                cs.ReadWriteVector(preview.images, [&cs](PreviewImage& image) {
+                    cs.ReadWrite(image.type);
+                    cs.ReadWrite(image.width);
+                    cs.ReadWrite(image.height);
+                    cs.ReadWriteArray(image.pixels, [&cs](uint8_t& pixel) {
+                        cs.ReadWrite(pixel);
+                        return true;
+                    });
+                });
             });
         }
 
