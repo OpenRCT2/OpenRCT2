@@ -9,12 +9,19 @@
 
 #include "ParkPreview.h"
 
+#include "../Context.h"
 #include "../GameState.h"
+#include "../OpenRCT2.h"
 #include "../core/Numerics.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/X8DrawingEngine.h"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
 #include "../ride/RideManager.hpp"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
+
+#include <memory>
 
 namespace OpenRCT2
 {
@@ -25,6 +32,7 @@ namespace OpenRCT2
     }
 
     static PreviewImage generatePreviewMap();
+    static PreviewImage generatePreviewScreenshot();
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
     {
@@ -36,6 +44,8 @@ namespace OpenRCT2
 
         // TODO: extend
         preview.images.push_back(generatePreviewMap());
+        if (!gOpenRCT2Headless)
+            preview.images.push_back(generatePreviewScreenshot());
 
         return preview;
     }
@@ -123,6 +133,61 @@ namespace OpenRCT2
                 image.pixels[y * kPreviewSize + x] = getPreviewColourByTilePos(pos);
             }
         }
+
+        return image;
+    }
+
+    static PreviewImage generatePreviewScreenshot()
+    {
+        if (gOpenRCT2Headless)
+            return {};
+
+        const auto mainWindow = WindowGetMain();
+        const auto mainViewport = WindowGetViewport(mainWindow);
+        if (mainViewport == nullptr)
+            return {};
+
+        const auto centre = mainViewport->viewPos
+            + ScreenCoordsXY{ mainViewport->ViewWidth() / 2, mainViewport->ViewHeight() / 2 };
+        const auto mapPos = ViewportPosToMapPos(centre, 24, mainViewport->rotation);
+        const auto mapPosXYZ = CoordsXYZ(mapPos.x, mapPos.y, int32_t{ TileElementHeight(mapPos) });
+
+        PreviewImage image{
+            .type = PreviewImageType::miniMap,
+            .width = 256,
+            .height = 256,
+        };
+
+        Viewport saveVp{
+            .width = image.width,
+            .height = image.height,
+            .flags = 0,
+            .zoom = ZoomLevel{ 1 },
+            .rotation = mainViewport->rotation,
+        };
+
+        auto viewPos = centre_2d_coordinates(mapPosXYZ, &saveVp);
+        if (viewPos == std::nullopt)
+            return {};
+
+        saveVp.viewPos = *viewPos;
+
+        auto tempDrawingEngine = std::make_unique<Drawing::X8DrawingEngine>(GetContext()->GetUiContext());
+        if (!tempDrawingEngine)
+            return {};
+
+        DrawPixelInfo dpi{
+            .bits = static_cast<uint8_t*>(image.pixels),
+            .x = 0,
+            .y = 0,
+            .width = image.width,
+            .height = image.height,
+            .pitch = 0,
+            .zoom_level = saveVp.zoom,
+            .DrawingEngine = tempDrawingEngine.get(),
+        };
+
+        ViewportRender(dpi, &saveVp);
 
         return image;
     }
