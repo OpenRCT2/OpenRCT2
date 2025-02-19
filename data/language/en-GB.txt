@@ -3217,7 +3217,7 @@ STR_6102    :The value of a ride won’t decrease over time, so guests will not 
 STR_6103    :This option is disabled during network play.
 STR_6105    :Hypercoaster
 STR_6107    :Monster Trucks
-STR_6109    :Hyper-Twister
+STR_6109    :Hyper-Twister Roller Coaster
 STR_6111    :Classic Mini Roller Coaster
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
 STR_6115    :Powered giant 4 × 4 trucks which can climb steep slopes
