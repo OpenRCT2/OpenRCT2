@@ -258,6 +258,7 @@ namespace OpenRCT2::Config
             model->FileBrowserHeight = reader->GetInt32("file_browser_height", 0);
             model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
             model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
+            model->FileBrowserShowPreviews = reader->GetBoolean("file_browser_show_previews", true);
         }
     }
 
@@ -348,6 +349,7 @@ namespace OpenRCT2::Config
         writer->WriteInt32("file_browser_height", model->FileBrowserHeight);
         writer->WriteBoolean("file_browser_show_size_column", model->FileBrowserShowSizeColumn);
         writer->WriteBoolean("file_browser_show_date_column", model->FileBrowserShowDateColumn);
+        writer->WriteBoolean("file_browser_show_previews", model->FileBrowserShowPreviews);
     }
 
     static void ReadInterface(IIniReader* reader)

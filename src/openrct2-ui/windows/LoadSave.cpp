@@ -58,6 +58,9 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSizeMin = { 300, kWindowSizeInit.height / 2 };
     static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 3;
 
+    static constexpr auto kPreviewWidth = 250;
+    static constexpr auto kWindowSizeMinPreview = ScreenSize{ kWindowSizeInit.width + kPreviewWidth, kWindowSizeInit.height };
+
     static constexpr int kKibiByte = 1024;
     static constexpr int kMebiByte = kKibiByte * 1024;
 
@@ -127,6 +130,12 @@ namespace OpenRCT2::Ui::Windows
         int32_t maxTimeWidth{ 0 };
         int32_t type;
         ParkPreview _preview;
+
+        bool ShowPreviews()
+        {
+            auto& config = Config::Get().general;
+            return config.FileBrowserShowPreviews;
+        }
 
         void PopulateList(bool includeNewItem, const u8string& directory, std::string_view extensionPattern)
         {
@@ -309,6 +318,9 @@ namespace OpenRCT2::Ui::Windows
             if (selected_list_item == -1)
                 return;
 
+            if (!ShowPreviews())
+                return;
+
             if ((type & 0x0E) == LOADSAVETYPE_TRACK || (type & 0x0E) == LOADSAVETYPE_HEIGHTMAP)
                 return;
 
@@ -396,8 +408,9 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
             ComputeMaxDateWidth();
 
-            min_width = kWindowSizeMin.width;
-            min_height = kWindowSizeMin.height;
+            auto minSize = ShowPreviews() ? kWindowSizeMinPreview : kWindowSizeMin;
+            min_width = minSize.width;
+            min_height = minSize.height;
             max_width = kWindowSizeMax.width;
             max_height = kWindowSizeMax.height;
         }
@@ -421,7 +434,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, kWindowSizeMin.width, kWindowSizeMin.height, kWindowSizeMax.width, kWindowSizeMax.height);
+            auto minSize = ShowPreviews() ? kWindowSizeMinPreview : kWindowSizeMin;
+            WindowSetResize(*this, minSize.width, minSize.height, kWindowSizeMax.width, kWindowSizeMax.height);
 
             auto& config = Config::Get().general;
             config.FileBrowserWidth = width;
@@ -717,21 +731,24 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[0].Format = STR_TOGGLE_OPTION;
             gDropdownItems[1].Format = STR_TOGGLE_OPTION;
             gDropdownItems[2].Format = STR_TOGGLE_OPTION;
+            gDropdownItems[3].Format = STR_TOGGLE_OPTION;
             gDropdownItems[0].Args = STR_FILEBROWSER_CUSTOMISE_FILENAME;
             gDropdownItems[1].Args = STR_FILEBROWSER_CUSTOMISE_SIZE;
             gDropdownItems[2].Args = STR_FILEBROWSER_CUSTOMISE_DATE;
+            gDropdownItems[3].Args = 891; // TODO
 
             Widget* widget = &widgets[WIDX_SORT_CUSTOMISE];
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + widget->left - 70, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                Dropdown::Flag::StayOpen, 3, 90);
+                Dropdown::Flag::StayOpen, 4, 90);
 
             auto& config = Config::Get().general;
 
             Dropdown::SetChecked(0, true);
             Dropdown::SetChecked(1, config.FileBrowserShowSizeColumn);
             Dropdown::SetChecked(2, config.FileBrowserShowDateColumn);
+            Dropdown::SetChecked(3, config.FileBrowserShowPreviews);
         }
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
@@ -749,6 +766,18 @@ namespace OpenRCT2::Ui::Windows
             else if (selectedIndex == 2)
             {
                 config.FileBrowserShowDateColumn ^= true;
+                changed = true;
+            }
+            else if (selectedIndex == 3)
+            {
+                config.FileBrowserShowPreviews ^= true;
+
+                Invalidate();
+                if (config.FileBrowserShowPreviews)
+                    width += kPreviewWidth;
+                else
+                    width -= kPreviewWidth;
+
                 changed = true;
             }
 
