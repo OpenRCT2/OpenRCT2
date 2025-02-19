@@ -351,6 +351,19 @@ namespace OpenRCT2::Ui::Windows
             printf("\rLoaded %zu preview image items\n", _preview.images.size());
         }
 
+        void DrawPreview(DrawPixelInfo& dpi)
+        {
+            for (auto& image : _preview.images)
+            {
+                if (image.type == PreviewImageType::miniMap)
+                {
+                    auto& widget = widgets[WIDX_SCROLL];
+                    auto screenPos = windowPos + ScreenCoordsXY(width - kPreviewWidth, widget.top);
+                    drawPreviewImage(image, dpi, screenPos);
+                }
+            }
+        }
+
         void SortList()
         {
             std::sort(_listItems.begin(), _listItems.end(), ListItemSort);
@@ -464,8 +477,13 @@ namespace OpenRCT2::Ui::Windows
                 toolbarXPos = widget.left - 1;
             }
 
+            widgets[WIDX_SCROLL].right = width - 5;
+            widgets[WIDX_SCROLL].bottom = height - 15;
+            if (ShowPreviews())
+                widgets[WIDX_SCROLL].right -= kPreviewWidth;
+
             Widget& customiseWidget = widgets[WIDX_SORT_CUSTOMISE];
-            customiseWidget.right = width - 5;
+            customiseWidget.right = widgets[WIDX_SCROLL].right;
             customiseWidget.left = customiseWidget.right - 14;
 
             auto& config = Config::Get().general;
@@ -523,9 +541,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SORT_DATE].type = WindowWidgetType::Empty;
             }
 
-            widgets[WIDX_SCROLL].right = width - 5;
-            widgets[WIDX_SCROLL].bottom = height - 15;
-
             if (type & LOADSAVETYPE_SAVE)
             {
                 widgets[WIDX_SCROLL].bottom -= 18;
@@ -560,6 +575,7 @@ namespace OpenRCT2::Ui::Windows
         void OnDraw(DrawPixelInfo& dpi) override
         {
             DrawWidgets(dpi);
+            DrawPreview(dpi);
 
             {
                 const auto& widget = widgets[WIDX_PARENT_FOLDER];

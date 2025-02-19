@@ -11,6 +11,7 @@
 
 #include "../GameState.h"
 #include "../core/Numerics.hpp"
+#include "../drawing/Drawing.h"
 #include "../ride/RideManager.hpp"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
@@ -23,7 +24,7 @@ namespace OpenRCT2
         images.clear();
     }
 
-    PreviewImage generatePreviewMap();
+    static PreviewImage generatePreviewMap();
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
     {
@@ -100,7 +101,7 @@ namespace OpenRCT2
     }
 
     // 0x0046DB4C
-    PreviewImage generatePreviewMap()
+    static PreviewImage generatePreviewMap()
     {
         const auto& gameState = GetGameState();
         const auto kPreviewSize = 128; // sizeof(entry.preview[0]);
@@ -126,9 +127,8 @@ namespace OpenRCT2
         return image;
     }
 
-    void drawPreviewMap(const PreviewImage& image, DrawPixelInfo& dpi, ScreenCoordsXY screenPos)
+    void drawPreviewImage(const PreviewImage& image, DrawPixelInfo& dpi, ScreenCoordsXY screenPos)
     {
-        // Preview image
         const auto imageId = ImageId(0);
         auto* g1 = const_cast<G1Element*>(GfxGetG1Element(imageId));
         if (g1 != nullptr)
@@ -136,9 +136,9 @@ namespace OpenRCT2
             // Temporarily substitute a G1 image with the data in the scenario index
             const auto backupG1 = *g1;
             *g1 = {};
-            g1->offset = const_cast<uint8_t*>(&image.pixels[0]);
-            g1->width = 128;
-            g1->height = 128;
+            g1->offset = const_cast<uint8_t*>(image.pixels);
+            g1->width = image.width;
+            g1->height = image.height;
 
             // Draw preview image and restore original G1 image.
             GfxDrawSprite(dpi, imageId, screenPos);
