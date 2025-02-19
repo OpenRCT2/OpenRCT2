@@ -17,6 +17,7 @@
 - Fix: [#22617] Sloped Wooden and Side-Friction supports draw out of order when built directly above diagonal track pieces (original bug).
 - Fix: [#22620] Mine Train Coaster trains glitch on large banked turns.
 - Fix: [#23522] Diagonal sloped Steeplechase supports have glitched sprites at the base.
+- Fix: [#23641] Steep to flat track is not drawn correctly in tunnels (original bug).
 - Fix: [#23795] Looping Roller Coaster vertical loop supports are drawn incorrectly.
 - Fix: [#23809] Trains glitch on Bobsleigh Coaster small helixes.
 - Fix: [#23811] Land edges glitch when vehicles go through gentle to flat tunnels.
