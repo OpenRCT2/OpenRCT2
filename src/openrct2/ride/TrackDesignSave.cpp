@@ -10,7 +10,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../Game.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/SawyerCoding.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"

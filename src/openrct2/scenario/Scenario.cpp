@@ -18,7 +18,7 @@
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"

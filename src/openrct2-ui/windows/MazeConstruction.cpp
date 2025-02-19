@@ -19,7 +19,7 @@
 #include <openrct2/actions/MazeSetTrackAction.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ride/RideConstruction.h>

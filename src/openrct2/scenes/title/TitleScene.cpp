@@ -15,7 +15,7 @@
 #include "../../GameState.h"
 #include "../../Input.h"
 #include "../../OpenRCT2.h"
-#include "../../audio/audio.h"
+#include "../../audio/Audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
 #include "../../drawing/Text.h"

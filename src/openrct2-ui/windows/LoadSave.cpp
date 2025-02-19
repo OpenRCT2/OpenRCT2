@@ -21,7 +21,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/FileScanner.h>
@@ -311,8 +311,12 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    // Not the best message...
-                    ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
+                    auto windowManager = GetWindowManager();
+                    if (!windowManager->FindByClass(WindowClass::Error))
+                    {
+                        // Not the best message...
+                        ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
+                    }
                     InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
                 }
                 break;

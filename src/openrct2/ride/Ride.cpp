@@ -21,8 +21,8 @@
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
+#include "../audio/Audio.h"
 #include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"
@@ -4925,7 +4925,7 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
         {},                                                        // TrackGroup::slopeCurveLargeBanked
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBrakes
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBlockBrakes
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4 },  // TrackGroup::inclinedBrakes
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8 },  // TrackGroup::inclinedBrakes
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBooster
         { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,

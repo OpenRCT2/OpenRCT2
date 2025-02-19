@@ -30,7 +30,7 @@
 #include "../actions/TrackRemoveAction.h"
 #include "../actions/WallPlaceAction.h"
 #include "../actions/WallRemoveAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
 #include "../core/Numerics.hpp"

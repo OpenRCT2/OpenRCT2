@@ -15,7 +15,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/object/EntranceObject.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>

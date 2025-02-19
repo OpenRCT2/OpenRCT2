@@ -12,7 +12,7 @@
 #include "RideObject.h"
 
 #include "../OpenRCT2.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/EnumMap.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
