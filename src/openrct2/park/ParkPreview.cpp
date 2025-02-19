@@ -162,7 +162,7 @@ namespace OpenRCT2
         const auto mapPosXYZ = CoordsXYZ(mapPos.x, mapPos.y, int32_t{ TileElementHeight(mapPos) });
 
         PreviewImage image{
-            .type = PreviewImageType::miniMap,
+            .type = PreviewImageType::screenshot,
             .width = kMaxPreviewImageSize,
             .height = kMaxPreviewImageSize,
         };
