@@ -23,6 +23,8 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::monorailCycles,
         .supportType = MetalSupportType::Stick,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve},
         .extraTrackGroups = {},
     }),

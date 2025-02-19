@@ -22,6 +22,14 @@ constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::suspendedSwingingCoaster,
         .supportType = MetalSupportType::Tubes,
+        .trackGroupTunnelStyles = []() consteval {
+            std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
+            array.fill(TunnelStyle::invertedStandard);
+            array[EnumValue(TrackGroup::stationEnd)] = TunnelStyle::semiInvertedSquare;
+            array[EnumValue(TrackGroup::onridePhoto)] = TunnelStyle::semiInvertedSquare;
+            return array;
+        }(),
+        .tunnelGroup = TunnelGroup::inverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownUnbankedQuarter, TrackGroup::helixUpUnbankedQuarter, TrackGroup::brakes, TrackGroup::blockBrakes},
         .extraTrackGroups = {},
     }),

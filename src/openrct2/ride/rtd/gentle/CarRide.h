@@ -23,6 +23,8 @@ constexpr RideTypeDescriptor CarRideRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::carRide,
         .supportType = MetalSupportType::Boxed,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::spinningTunnel},
         .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::rapids},
     }),

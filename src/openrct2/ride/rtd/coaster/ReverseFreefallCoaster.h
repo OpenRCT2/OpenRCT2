@@ -22,6 +22,8 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::reverseFreefallCoaster,
         .supportType = WoodenSupportType::Truss,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHillSteep, TrackGroup::reverseFreefall, TrackGroup::onridePhoto},
         .extraTrackGroups = {},
     }),

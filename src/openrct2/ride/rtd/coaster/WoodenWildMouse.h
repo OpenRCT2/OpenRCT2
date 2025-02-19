@@ -22,6 +22,8 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::woodenWildMouse,
         .supportType = WoodenSupportType::Truss,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::flatToSteepSlope, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .extraTrackGroups = {},
     }),

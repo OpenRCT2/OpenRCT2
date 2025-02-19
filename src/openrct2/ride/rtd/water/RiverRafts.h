@@ -22,6 +22,8 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::splashBoats,
         .supportType = WoodenSupportType::Truss,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curve},
         .extraTrackGroups = {TrackGroup::slope, TrackGroup::slopeSteepDown, TrackGroup::onridePhoto},
     }),

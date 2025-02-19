@@ -22,6 +22,8 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::heartlineTwisterCoaster,
         .supportType = WoodenSupportType::Mine,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::heartlineRoll, TrackGroup::heartlineTransfer},
         .extraTrackGroups = {},
     }),

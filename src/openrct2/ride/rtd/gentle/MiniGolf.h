@@ -22,6 +22,14 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniGolf,
         .supportType = MetalSupportType::Boxed,
+        .trackGroupTunnelStyles = []() consteval {
+            std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
+            array.fill(TunnelStyle::standardWithPath);
+            array[EnumValue(TrackGroup::stationEnd)] = TunnelStyle::square;
+            array[EnumValue(TrackGroup::onridePhoto)] = TunnelStyle::square;
+            return array;
+        }(),
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::miniGolfHole},
         .extraTrackGroups = {},
     }),
