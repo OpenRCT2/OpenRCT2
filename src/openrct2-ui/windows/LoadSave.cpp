@@ -566,8 +566,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SAVE].type = WindowWidgetType::Button;
                 widgets[WIDX_SAVE].top = height - 30;
                 widgets[WIDX_SAVE].bottom = height - 18;
-                widgets[WIDX_SAVE].left = width - saveLabelWidth - kPadding;
-                widgets[WIDX_SAVE].right = width - kPadding;
+                widgets[WIDX_SAVE].right = widgets[WIDX_SCROLL].right;
+                widgets[WIDX_SAVE].left = widgets[WIDX_SCROLL].right - saveLabelWidth;
 
                 // Get 'Filename:' string width
                 auto filenameLabel = LanguageGetString(STR_FILENAME_LABEL);
