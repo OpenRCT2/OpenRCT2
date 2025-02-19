@@ -295,8 +295,8 @@ static void PaintLargeScenery3DText(
                 {
                     // No good split found, or reached end of string
                     auto index = it.GetIndex();
-                    best = current.substr(0, index);
-                    next = current.substr(index);
+                    best = current.substr(0, index - 1);
+                    next = current.substr(index - 1);
                 }
 
                 PaintLargeScenery3DTextLine(session, sceneryEntry, *text, best, imageTemplate, direction, offsetY);
