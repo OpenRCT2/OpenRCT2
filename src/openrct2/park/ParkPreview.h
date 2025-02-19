@@ -45,6 +45,8 @@ namespace OpenRCT2
     {
         std::vector<PreviewImage> images;
         std::vector<PreviewInfo> info;
+
+        void clear();
     };
 
     struct GameState_t;

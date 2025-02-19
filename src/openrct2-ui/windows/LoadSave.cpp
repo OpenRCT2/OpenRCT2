@@ -20,18 +20,22 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/FileScanner.h>
+#include <openrct2/core/FileStream.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
+#include <openrct2/object/ObjectRepository.h>
+#include <openrct2/park/ParkPreview.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
@@ -122,8 +126,8 @@ namespace OpenRCT2::Ui::Windows
         int32_t maxDateWidth{ 0 };
         int32_t maxTimeWidth{ 0 };
         int32_t type;
+        ParkPreview _preview;
 
-    public:
         void PopulateList(bool includeNewItem, const u8string& directory, std::string_view extensionPattern)
         {
             const auto absoluteDirectory = Path::GetAbsolute(directory);
@@ -297,6 +301,42 @@ namespace OpenRCT2::Ui::Windows
             // representable.
             std::string time = Platform::FormatTime(long_time);
             maxTimeWidth = GfxGetStringWidth(time.c_str(), FontStyle::Medium) + kDateTimeGap;
+        }
+
+        void LoadPreview()
+        {
+            _preview.clear();
+            if (selected_list_item == -1)
+                return;
+
+            if ((type & 0x0E) == LOADSAVETYPE_TRACK || (type & 0x0E) == LOADSAVETYPE_HEIGHTMAP)
+                return;
+
+            if (_listItems[selected_list_item].type == FileType::directory)
+                return;
+
+            auto path = _listItems[selected_list_item].path;
+            auto fs = FileStream(path, FILE_MODE_OPEN);
+
+            ClassifiedFileInfo info;
+            if (!TryClassifyFile(&fs, &info) || info.Type != FILE_TYPE::PARK)
+                return;
+
+            try
+            {
+                auto& objectRepository = GetContext()->GetObjectRepository();
+                auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
+                parkImporter->LoadFromStream(&fs, false, true, path.c_str());
+                parkImporter->PopulateParkPreview(_preview);
+            }
+            catch (std::exception e)
+            {
+                _preview.clear();
+                return;
+            }
+
+            printf("\rLoaded %zu preview info items\n", _preview.info.size());
+            printf("\rLoaded %zu preview image items\n", _preview.images.size());
         }
 
         void SortList()
@@ -771,15 +811,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int32_t selectedItem;
-
-            selectedItem = screenCoords.y / kScrollableRowHeight;
+            int32_t selectedItem = screenCoords.y / kScrollableRowHeight;
             if (selectedItem >= no_list_items)
                 return;
 
             if (selected_list_item != selectedItem)
             {
                 selected_list_item = selectedItem;
+                LoadPreview();
                 Invalidate();
             }
         }

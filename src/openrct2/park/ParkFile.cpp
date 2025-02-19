@@ -2796,6 +2796,7 @@ public:
 
     bool PopulateParkPreview(ParkPreview& dst) override
     {
+        dst.clear();
         dst = _parkFile->ReadPreviewChunk();
         return true;
     }

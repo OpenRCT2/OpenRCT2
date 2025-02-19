@@ -17,6 +17,12 @@
 
 namespace OpenRCT2
 {
+    void ParkPreview::clear()
+    {
+        info.clear();
+        images.clear();
+    }
+
     PreviewImage generatePreviewMap();
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
