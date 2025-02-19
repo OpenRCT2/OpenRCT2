@@ -163,8 +163,8 @@ namespace OpenRCT2
 
         PreviewImage image{
             .type = PreviewImageType::miniMap,
-            .width = 256,
-            .height = 256,
+            .width = kMaxPreviewImageSize,
+            .height = kMaxPreviewImageSize,
         };
 
         Viewport saveVp{
@@ -181,10 +181,6 @@ namespace OpenRCT2
 
         saveVp.viewPos = *viewPos;
 
-        printf("\rviewPos.x = %d, viewPos.y = %d\n", viewPos->x, viewPos->y);
-
-        printf("\rPreparing X8DrawingEngine\n");
-
         auto tempDrawingEngine = std::make_unique<Drawing::X8DrawingEngine>(GetContext()->GetUiContext());
         if (!tempDrawingEngine)
             return std::nullopt;
@@ -200,11 +196,7 @@ namespace OpenRCT2
             .DrawingEngine = tempDrawingEngine.get(),
         };
 
-        printf("\rInvoking ViewportRender\n");
-
         ViewportRender(dpi, &saveVp);
-
-        printf("\rFinished rendering\n");
 
         return image;
     }

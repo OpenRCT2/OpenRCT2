@@ -19,6 +19,8 @@ struct DrawPixelInfo;
 
 namespace OpenRCT2
 {
+    constexpr auto kMaxPreviewImageSize = 250;
+
     enum class PreviewImageType : uint8_t
     {
         miniMap,
@@ -29,9 +31,9 @@ namespace OpenRCT2
     struct PreviewImage
     {
         PreviewImageType type;
-        uint16_t width;
-        uint16_t height;
-        uint8_t pixels[250 * 250]{};
+        uint8_t width;
+        uint8_t height;
+        uint8_t pixels[kMaxPreviewImageSize * kMaxPreviewImageSize]{};
     };
 
     enum class PreviewInfoKind : uint8_t
