@@ -39,6 +39,8 @@ namespace OpenRCT2
     {
         ParkPreview preview{};
 
+        preview.parkName = gameState.Park.Name;
+
         // TODO: extend
         preview.info.push_back({ PreviewInfoKind::numGuests, gameState.NumGuestsInPark });
         preview.info.push_back({ PreviewInfoKind::numRides, RideManager().size() });

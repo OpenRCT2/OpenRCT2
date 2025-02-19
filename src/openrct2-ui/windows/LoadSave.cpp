@@ -360,6 +360,13 @@ namespace OpenRCT2::Ui::Windows
             auto frameEndPos = frameStartPos + ScreenCoordsXY(kPreviewWidth + 1, kPreviewHeight + 1);
             GfxFillRectInset(dpi, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
 
+            // Draw park name
+            auto namePos = frameStartPos + ScreenCoordsXY{ kPreviewWidth / 2, -kButtonFaceHeight };
+            auto ft = Formatter();
+            ft.Add<StringId>(STR_STRING);
+            ft.Add<const char*>(_preview.parkName.c_str());
+            DrawTextEllipsised(dpi, namePos, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+
             // Draw image, if available
             for (auto& image : _preview.images)
             {

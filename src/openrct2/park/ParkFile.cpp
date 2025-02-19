@@ -243,6 +243,8 @@ namespace OpenRCT2
             ParkPreview preview{};
             auto& os = *_os;
             os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&preview](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(preview.parkName);
+
                 cs.ReadWriteVector(preview.info, [&cs](PreviewInfo& info) {
                     cs.ReadWrite(info.first);
                     cs.ReadWrite(info.second);
@@ -507,6 +509,8 @@ namespace OpenRCT2
         {
             os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&gameState](OrcaStream::ChunkStream& cs) {
                 auto preview = OpenRCT2::generatePreviewFromGameState(gameState);
+
+                cs.ReadWrite(preview.parkName);
 
                 cs.ReadWriteVector(preview.info, [&cs](PreviewInfo& info) {
                     cs.ReadWrite(info.first);

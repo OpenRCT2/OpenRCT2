@@ -12,6 +12,7 @@
 #include "../world/Location.hpp"
 
 #include <cstdint>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -49,6 +50,7 @@ namespace OpenRCT2
 
     struct ParkPreview
     {
+        std::string parkName;
         std::vector<PreviewImage> images;
         std::vector<PreviewInfo> info;
 
