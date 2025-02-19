@@ -388,6 +388,10 @@ namespace OpenRCT2::Ui::Windows
             // Draw OpenRCT2 logo if no preview was found
             if (!foundImage)
             {
+                auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
+                auto colour = ColourMapA[colours[1].colour].dark;
+                GfxDrawSpriteSolid(dpi, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
+
                 auto textPos = imagePos + ScreenCoordsXY(kPreviewWidth / 2, kPreviewHeight / 2 - 6);
                 DrawTextBasic(
                     dpi, textPos, STR_NO_PREVIEW_AVAILABLE, {},
