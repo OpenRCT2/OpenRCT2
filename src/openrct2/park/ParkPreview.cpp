@@ -45,10 +45,16 @@ namespace OpenRCT2
 
         // TODO: extend
         if (auto image = generatePreviewMap(); image != std::nullopt)
+        {
+            printf("\rsaving preview map\n");
             preview.images.push_back(*image);
+        }
 
         if (auto image = generatePreviewScreenshot(); image != std::nullopt)
+        {
+            printf("\rsaving preview screenshot\n");
             preview.images.push_back(*image);
+        }
 
         return preview;
     }
@@ -174,6 +180,8 @@ namespace OpenRCT2
             return std::nullopt;
 
         saveVp.viewPos = *viewPos;
+
+        printf("\rviewPos.x = %d, viewPos.y = %d\n", viewPos->x, viewPos->y);
 
         printf("\rPreparing X8DrawingEngine\n");
 
