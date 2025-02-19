@@ -882,7 +882,7 @@ static void PaintMiniGolfHoleAb(
     auto bb = BoundBoxXYZ{ { boundBoxOffset, height + 24 }, { boundBox, 0 } };
 
     imageId = session.TrackColours.WithIndex(sprites[direction][trackSequence][1]);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 28, height + 1 }, { 32, 1, 12 } });
 
     bb.offset.z = height;
     bb.length.z = 1;
