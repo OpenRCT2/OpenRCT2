@@ -165,7 +165,7 @@
     <ClInclude Include="actions\WaterSetHeightAction.h" />
     <ClInclude Include="AssetPack.h" />
     <ClInclude Include="AssetPackManager.h" />
-    <ClInclude Include="audio\audio.h" />
+    <ClInclude Include="audio\Audio.h" />
     <ClInclude Include="audio\AudioChannel.h" />
     <ClInclude Include="audio\AudioContext.h" />
     <ClInclude Include="audio\AudioMixer.h" />

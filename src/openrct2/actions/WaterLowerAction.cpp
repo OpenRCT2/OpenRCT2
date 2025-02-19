@@ -11,7 +11,7 @@
 
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../ride/RideConstruction.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "WaterSetHeightAction.h"

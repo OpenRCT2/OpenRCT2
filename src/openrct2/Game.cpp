@@ -23,7 +23,7 @@
 #include "ReplayManager.h"
 #include "actions/GameSetSpeedAction.h"
 #include "actions/LoadOrQuitAction.h"
-#include "audio/audio.h"
+#include "audio/Audio.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/File.h"

@@ -19,7 +19,7 @@
 #include "actions/LandBuyRightsAction.h"
 #include "actions/LandSetRightsAction.h"
 #include "actions/ResultWithMessage.h"
-#include "audio/audio.h"
+#include "audio/Audio.h"
 #include "core/EnumUtils.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"

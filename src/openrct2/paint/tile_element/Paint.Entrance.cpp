@@ -323,9 +323,8 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
             if (entrance != nullptr)
             {
                 auto imageIndex = entrance->GetImage(sequence, direction);
-                auto y = ((direction / 2 + sequence / 2) & 1) ? 26 : 32;
                 PaintAddImageAsParent(
-                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 3, 3, height }, { 26, y, 79 } });
+                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 3, 3, height }, { 26, 26, 79 } });
             }
             break;
     }

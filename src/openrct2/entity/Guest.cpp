@@ -15,7 +15,7 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../SpriteIds.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"

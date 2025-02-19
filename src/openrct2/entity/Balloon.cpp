@@ -10,7 +10,7 @@
 #include "Balloon.h"
 
 #include "../Game.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../network/network.h"
 #include "../paint/Paint.h"

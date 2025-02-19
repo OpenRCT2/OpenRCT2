@@ -13,7 +13,7 @@
 #include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
