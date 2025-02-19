@@ -18,11 +18,14 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../ride/RideManager.hpp"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TileElement.h"
 
 #include <optional>
 
 namespace OpenRCT2
 {
+    static std::optional<PreviewImage> generatePreviewMap();
     static std::optional<PreviewImage> generatePreviewScreenshot();
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
@@ -39,10 +42,102 @@ namespace OpenRCT2
             .numGuests = static_cast<uint16_t>(gameState.NumGuestsInPark),
         };
 
+        if (auto image = generatePreviewMap(); image != std::nullopt)
+            preview.images.push_back(*image);
+
         if (auto image = generatePreviewScreenshot(); image != std::nullopt)
             preview.images.push_back(*image);
 
         return preview;
+    }
+
+    static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
+    {
+        PaletteIndex colour = PALETTE_INDEX_0;
+
+        auto tileElement = MapGetFirstElementAt(pos);
+        if (tileElement == nullptr)
+            return colour;
+
+        do
+        {
+            switch (tileElement->GetType())
+            {
+                case TileElementType::Surface:
+                {
+                    auto* surfaceElement = tileElement->AsSurface();
+                    if (surfaceElement == nullptr)
+                    {
+                        colour = PALETTE_INDEX_0;
+                        break;
+                    }
+
+                    if (surfaceElement->GetWaterHeight() > 0)
+                    {
+                        colour = PALETTE_INDEX_195;
+                        break;
+                    }
+
+                    const auto* surfaceObject = surfaceElement->GetSurfaceObject();
+                    if (surfaceObject != nullptr)
+                    {
+                        colour = surfaceObject->MapColours[1];
+                    }
+                    break;
+                }
+
+                case TileElementType::Path:
+                    colour = PALETTE_INDEX_17;
+                    break;
+
+                case TileElementType::Track:
+                    colour = PALETTE_INDEX_183;
+                    break;
+
+                case TileElementType::SmallScenery:
+                case TileElementType::LargeScenery:
+                    colour = PALETTE_INDEX_99; // 64
+                    break;
+
+                case TileElementType::Entrance:
+                    colour = PALETTE_INDEX_186;
+                    break;
+
+                default:
+                    break;
+            }
+        } while (!(tileElement++)->IsLastForTile());
+
+        return colour;
+    }
+
+    // 0x0046DB4C
+    static std::optional<PreviewImage> generatePreviewMap()
+    {
+        const auto& gameState = GetGameState();
+        const auto previewSize = 128;
+        const auto longEdgeSize = std::max(gameState.MapSize.x, gameState.MapSize.y);
+        const auto nearestPower = Numerics::ceil2(longEdgeSize, previewSize);
+        const auto mapSkipFactor = nearestPower / previewSize;
+        const auto offset = mapSkipFactor > 0 ? (nearestPower - longEdgeSize) / mapSkipFactor : 1;
+
+        PreviewImage image{
+            .type = PreviewImageType::miniMap,
+            .width = previewSize,
+            .height = previewSize,
+        };
+
+        for (auto y = 0u; y < image.height; y++)
+        {
+            for (auto x = 0u; x < image.width; x++)
+            {
+                auto pos = TileCoordsXY(gameState.MapSize.x - (x + 1) * mapSkipFactor + 1, y * mapSkipFactor + 1);
+
+                image.pixels[(y + offset) * previewSize + (x + offset)] = getPreviewColourByTilePos(pos);
+            }
+        }
+
+        return image;
     }
 
     static std::optional<PreviewImage> generatePreviewScreenshot()
