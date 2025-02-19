@@ -22,6 +22,7 @@
 #include "../world/tile_element/TileElement.h"
 
 #include <memory>
+#include <optional>
 
 namespace OpenRCT2
 {
@@ -31,8 +32,8 @@ namespace OpenRCT2
         images.clear();
     }
 
-    static PreviewImage generatePreviewMap();
-    static PreviewImage generatePreviewScreenshot();
+    static std::optional<PreviewImage> generatePreviewMap();
+    static std::optional<PreviewImage> generatePreviewScreenshot();
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
     {
@@ -43,9 +44,11 @@ namespace OpenRCT2
         preview.info.push_back({ PreviewInfoKind::numRides, RideManager().size() });
 
         // TODO: extend
-        preview.images.push_back(generatePreviewMap());
-        if (!gOpenRCT2Headless)
-            preview.images.push_back(generatePreviewScreenshot());
+        if (auto image = generatePreviewMap(); image != std::nullopt)
+            preview.images.push_back(*image);
+
+        if (auto image = generatePreviewScreenshot(); image != std::nullopt)
+            preview.images.push_back(*image);
 
         return preview;
     }
@@ -111,7 +114,7 @@ namespace OpenRCT2
     }
 
     // 0x0046DB4C
-    static PreviewImage generatePreviewMap()
+    static std::optional<PreviewImage> generatePreviewMap()
     {
         const auto& gameState = GetGameState();
         const auto kPreviewSize = 128; // sizeof(entry.preview[0]);
@@ -137,15 +140,15 @@ namespace OpenRCT2
         return image;
     }
 
-    static PreviewImage generatePreviewScreenshot()
+    static std::optional<PreviewImage> generatePreviewScreenshot()
     {
         if (gOpenRCT2Headless)
-            return {};
+            return std::nullopt;
 
         const auto mainWindow = WindowGetMain();
         const auto mainViewport = WindowGetViewport(mainWindow);
         if (mainViewport == nullptr)
-            return {};
+            return std::nullopt;
 
         const auto centre = mainViewport->viewPos
             + ScreenCoordsXY{ mainViewport->ViewWidth() / 2, mainViewport->ViewHeight() / 2 };
@@ -168,13 +171,15 @@ namespace OpenRCT2
 
         auto viewPos = centre_2d_coordinates(mapPosXYZ, &saveVp);
         if (viewPos == std::nullopt)
-            return {};
+            return std::nullopt;
 
         saveVp.viewPos = *viewPos;
 
+        printf("\rPreparing X8DrawingEngine\n");
+
         auto tempDrawingEngine = std::make_unique<Drawing::X8DrawingEngine>(GetContext()->GetUiContext());
         if (!tempDrawingEngine)
-            return {};
+            return std::nullopt;
 
         DrawPixelInfo dpi{
             .bits = static_cast<uint8_t*>(image.pixels),
@@ -187,7 +192,11 @@ namespace OpenRCT2
             .DrawingEngine = tempDrawingEngine.get(),
         };
 
+        printf("\rInvoking ViewportRender\n");
+
         ViewportRender(dpi, &saveVp);
+
+        printf("\rFinished rendering\n");
 
         return image;
     }
