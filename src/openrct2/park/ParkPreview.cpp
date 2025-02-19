@@ -164,7 +164,7 @@ namespace OpenRCT2
         PreviewImage image{
             .type = PreviewImageType::screenshot,
             .width = kMaxPreviewImageSize,
-            .height = kMaxPreviewImageSize,
+            .height = kMaxPreviewImageSize / 5 * 4, // 5:4 ratio
         };
 
         Viewport saveVp{

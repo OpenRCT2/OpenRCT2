@@ -58,6 +58,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSizeMin = { 300, kWindowSizeInit.height / 2 };
     static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 3;
 
+    static constexpr auto kPadding = 5;
+
     static constexpr auto kPreviewWidth = 250;
     static constexpr auto kWindowSizeMinPreview = ScreenSize{ kWindowSizeInit.width + kPreviewWidth, kWindowSizeInit.height };
 
@@ -346,20 +348,25 @@ namespace OpenRCT2::Ui::Windows
                 _preview.clear();
                 return;
             }
-
-            printf("\rLoaded %zu preview info items\n", _preview.info.size());
-            printf("\rLoaded %zu preview image items\n", _preview.images.size());
         }
 
         void DrawPreview(DrawPixelInfo& dpi)
         {
+            constexpr auto kPreviewHeight = kPreviewWidth / 5 * 4;
+
+            // Draw frame
+            auto& widget = widgets[WIDX_SCROLL];
+            auto frameStartPos = windowPos + ScreenCoordsXY(width - kPreviewWidth - kPadding - 1, widget.top);
+            auto frameEndPos = frameStartPos + ScreenCoordsXY(kPreviewWidth + 1, kPreviewHeight + 1);
+            GfxFillRectInset(dpi, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+
+            // Draw image, if available
             for (auto& image : _preview.images)
             {
-                if (image.type == PreviewImageType::miniMap)
+                if (image.type == PreviewImageType::screenshot)
                 {
-                    auto& widget = widgets[WIDX_SCROLL];
-                    auto screenPos = windowPos + ScreenCoordsXY(width - kPreviewWidth, widget.top);
-                    drawPreviewImage(image, dpi, screenPos);
+                    auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
+                    drawPreviewImage(image, dpi, imagePos);
                 }
             }
         }
@@ -477,10 +484,10 @@ namespace OpenRCT2::Ui::Windows
                 toolbarXPos = widget.left - 1;
             }
 
-            widgets[WIDX_SCROLL].right = width - 5;
+            widgets[WIDX_SCROLL].right = width - kPadding;
             widgets[WIDX_SCROLL].bottom = height - 15;
             if (ShowPreviews())
-                widgets[WIDX_SCROLL].right -= kPreviewWidth;
+                widgets[WIDX_SCROLL].right -= kPreviewWidth + kPadding;
 
             Widget& customiseWidget = widgets[WIDX_SORT_CUSTOMISE];
             customiseWidget.right = widgets[WIDX_SCROLL].right;
@@ -552,8 +559,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SAVE].type = WindowWidgetType::Button;
                 widgets[WIDX_SAVE].top = height - 30;
                 widgets[WIDX_SAVE].bottom = height - 18;
-                widgets[WIDX_SAVE].left = width - saveLabelWidth - 5;
-                widgets[WIDX_SAVE].right = width - 5;
+                widgets[WIDX_SAVE].left = width - saveLabelWidth - kPadding;
+                widgets[WIDX_SAVE].right = width - kPadding;
 
                 // Get 'Filename:' string width
                 auto filenameLabel = LanguageGetString(STR_FILENAME_LABEL);
