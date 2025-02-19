@@ -189,6 +189,26 @@ static TunnelType GetTunnelDoorsImageStraightFlat(const TrackElement& trackEleme
     return TunnelType::Doors2;
 }
 
+static constexpr TunnelType kDoorFlatTo25DegOpeningOutwardsToImage[] = {
+    TunnelType::DoorsFlatTo25Deg2, // Closed
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg3, // Half open
+    TunnelType::DoorsFlatTo25Deg4, // Fully open
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+};
+
+static constexpr TunnelType kDoorFlatTo25DegOpeningInwardsToImage[] = {
+    TunnelType::DoorsFlatTo25Deg2, // Closed
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg5, // Half open
+    TunnelType::DoorsFlatTo25Deg6, // Fully open
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+};
+
 /** rct2: 0x00770BEC */
 static void PaintGhostTrainTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -341,10 +361,10 @@ static void PaintGhostTrainTrack25DegUpToFlat(
             PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
+            PaintUtilPushTunnelRight(session, height + 8, kDoorFlatTo25DegOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
+            PaintUtilPushTunnelLeft(session, height + 8, kDoorFlatTo25DegOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 3:
             PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
@@ -374,10 +394,10 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
             PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kDoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
+            PaintUtilPushTunnelRight(session, height + 8, kDoorFlatTo25DegOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kDoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
+            PaintUtilPushTunnelLeft(session, height + 8, kDoorFlatTo25DegOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 3:
             PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);

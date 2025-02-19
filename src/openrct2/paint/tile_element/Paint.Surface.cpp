@@ -189,7 +189,15 @@ static constexpr TunnelDescriptor kTunnels[] = {
     { 2, 2, 0,   15, TunnelType::Doors4,              92 },  // TunnelType::Doors4
     { 2, 2, 0,   15, TunnelType::Doors5,              96 },  // TunnelType::Doors5
     { 2, 2, 0,   15, TunnelType::Doors6,              100 }, // TunnelType::Doors6
+    { 2, 3, -16,  4, TunnelType::Doors0,              76 },  // TunnelType::DoorsFlatTo25Deg0
+    { 2, 3, -16,  4, TunnelType::Doors1,              80 },  // TunnelType::DoorsFlatTo25Deg1
+    { 2, 3, -16,  4, TunnelType::Doors2,              84 },  // TunnelType::DoorsFlatTo25Deg2
+    { 2, 3, -16,  4, TunnelType::Doors3,              88 },  // TunnelType::DoorsFlatTo25Deg3
+    { 2, 3, -16,  4, TunnelType::Doors4,              92 },  // TunnelType::DoorsFlatTo25Deg4
+    { 2, 3, -16,  4, TunnelType::Doors5,              96 },  // TunnelType::DoorsFlatTo25Deg5
+    { 2, 3, -16,  4, TunnelType::Doors6,              100 }, // TunnelType::DoorsFlatTo25Deg6
 };
+static_assert(std::size(kTunnels) == EnumValue(TunnelType::Count));
 
 // clang-format on
 // tunnel offset
