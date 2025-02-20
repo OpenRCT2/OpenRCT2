@@ -22,6 +22,7 @@
 - Fix: [#23809] Trains glitch on Bobsleigh Coaster small helixes.
 - Fix: [#23811] Land edges glitch when vehicles go through gentle to flat tunnels.
 - Fix: [#23818] Spinning tunnels can draw over sloped terrain in front of them.
+- Fix: [#23858] LSM launched lift hill has a misaligned sprite.
 
 0.4.19.1 (2025-02-03)
 ------------------------------------------------------------------------
