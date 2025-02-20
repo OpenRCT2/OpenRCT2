@@ -2140,7 +2140,7 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawTabImages(DrawPixelInfo& dpi)
         {
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_TAB_PAINT_0);
+            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
@@ -2245,13 +2245,13 @@ namespace OpenRCT2::Ui::Windows
         };
 
         static constexpr int32_t TabAnimationFrames[] = {
-            8,  // WINDOW_OPTIONS_PAGE_DISPLAY,
-            1,  // WINDOW_OPTIONS_PAGE_RENDERING,
-            8,  // WINDOW_OPTIONS_PAGE_CULTURE,
-            16, // WINDOW_OPTIONS_PAGE_AUDIO,
-            4,  // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
-            16, // WINDOW_OPTIONS_PAGE_MISC,
-            16, // WINDOW_OPTIONS_PAGE_ADVANCED,
+            SPR_G2_MONITOR_TAB_END - SPR_G2_MONITOR_TAB_START, // WINDOW_OPTIONS_PAGE_DISPLAY,
+            1,                                                 // WINDOW_OPTIONS_PAGE_RENDERING,
+            8,                                                 // WINDOW_OPTIONS_PAGE_CULTURE,
+            16,                                                // WINDOW_OPTIONS_PAGE_AUDIO,
+            4,                                                 // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+            16,                                                // WINDOW_OPTIONS_PAGE_MISC,
+            16,                                                // WINDOW_OPTIONS_PAGE_ADVANCED,
         };
     };
 

@@ -364,6 +364,86 @@
         "x": 1
     },
     {
+        "path": "icons/monitor_0.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_1.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_2.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_3.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_4.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_5.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_6.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_7.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_8.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_9.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_10.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_11.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_12.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_13.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_14.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_15.png",
+        "x": 3,
+        "y": 3
+    },
+    {
         "path": "logo_mono_dithered.png"
     },
     {
