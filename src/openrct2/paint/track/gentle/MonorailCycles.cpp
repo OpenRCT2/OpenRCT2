@@ -14,7 +14,6 @@
 #include "../../Paint.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
@@ -222,20 +221,6 @@ static void PaintMonorailCyclesTrackRightQuarterTurn3Tiles(
     PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
         session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
-
-static constexpr int8_t kMonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[][7] = {
-    { -2, 0, -2, 0, 0, -3, -1 },
-    { -3, 0, 0, 0, 0, 0, 0 },
-    { 0 },
-    { 0, 0, 0, 0, 0, -2, -3 },
-};
-
-static constexpr int8_t kMonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[][7] = {
-    { 0, 0, 0, 0, 0, 0, 0 },
-    { 0, 0, 0, 0, 0, 0, 1 },
-    { 0, 0, 1, 0, 0, 1, 1 },
-    { 1, 0, 0, 0, 0, 0, 0 },
-};
 
 /** rct2: 0x0088ADB8 */
 static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(

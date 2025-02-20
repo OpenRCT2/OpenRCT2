@@ -18,8 +18,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr uint8_t kSupportHeight = 39;
-
 static constexpr const uint32_t kInvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_BM_INVERT_DIAG_BRAKES,
     SPR_G2_BM_INVERT_DIAG_BRAKES + 1,

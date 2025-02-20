@@ -7496,6 +7496,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToDiagSeq4 = {
         .clearance = { -64, 32, 0, 0, 0, 0, { 0b0010, 0 }, 0 },
         .extraSupportRotation = 1,
+        .extraSupportCoverRotation = 1,
     };
 
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq0 = {
@@ -7541,6 +7542,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq3 = {
         .clearance = { -32, 32, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
+        .extraSupportCoverRotation = 1,
     };
 
     static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq4 = {
@@ -8892,6 +8894,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleDSeq2 = {
         .clearance = { -32, 32, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .extraSupportRotation = 1,
         .tunnels = { { { { { 0, 1, TunnelSlope::flat } }, kSequenceTunnelUnimplemented, kSequenceTunnelUnimplemented } } },
     };
 
@@ -8906,6 +8909,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMinigolfHoleESeq2 = {
         .clearance = { -32, -32, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .extraSupportRotation = -1,
         .tunnels = { { { { { 0, 3, TunnelSlope::flat } }, kSequenceTunnelUnimplemented, kSequenceTunnelUnimplemented } } },
     };
 

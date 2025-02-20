@@ -19,11 +19,8 @@
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
-
-static constexpr uint8_t kSupportHeight = 30;
 
 /** rct2: 0x00890CB4 */
 static void InvertedHairpinRCTrackFlat(

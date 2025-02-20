@@ -16,9 +16,7 @@
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
@@ -565,28 +563,8 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
             }
             break;
         case 5:
-            if (WoodenASupportsPaintSetupRotated(
-                    session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::None))
-            {
-                ImageId floorImageId;
-                if (direction & 1)
-                {
-                    floorImageId = session.SupportColours.WithIndex(SPR_FLOOR_PLANKS_90_DEG);
-                }
-                else
-                {
-                    floorImageId = session.SupportColours.WithIndex(SPR_FLOOR_PLANKS);
-                }
-                PaintAddImageAsParent(session, floorImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 0 } });
-                PaintAddImageAsParentRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 126 } });
-            }
-            else
-            {
-                PaintAddImageAsParentRotated(
-                    session, direction, supportsImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 126 } });
-            }
+            PaintAddImageAsParentRotated(
+                session, direction, supportsImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 126 } });
             break;
         case 6:
             if (isDirection03)

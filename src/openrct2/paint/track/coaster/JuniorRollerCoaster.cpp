@@ -19,7 +19,6 @@
 #include "../../Paint.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 #include <algorithm>
 
@@ -1947,13 +1946,6 @@ static void JuniorRCPaintTrack25DegUpToFlat(
     auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_25_deg_up_to_flat[subTypeOffset][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
 }
-
-static constexpr int8_t junior_rc_track_right_quarter_turn_5_tiles_support_height_offset[][7] = {
-    { 0, 0, 0, 0, 0, 0, -1 },
-    { -1, 0, 0, 0, 0, 0, 0 },
-    { 0 },
-    { 0, 0, 0, 0, 0, 0, 0 },
-};
 
 static void JuniorRCRightQuarterTurn5TilesPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,

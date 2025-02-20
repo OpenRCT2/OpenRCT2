@@ -19,7 +19,6 @@
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
-#include "../../track/Support.h"
 #include "TwisterRollerCoaster.h"
 
 using namespace OpenRCT2;

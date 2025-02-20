@@ -23,8 +23,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr uint8_t kSupportHeight = 38;
-
 static constexpr ImageIndex kCompactInvertedDiagFlatImages[2][kNumOrthogonalDirections] = {
     { 26781, 26782, 26783, 26784 },
     { 26809, 26810, 26811, 26812 },

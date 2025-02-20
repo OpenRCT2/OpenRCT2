@@ -48,6 +48,7 @@ const SequenceMetalSupports& GetMetalSupportsForTrackSequence(
 enum class WoodenSupportFlags : uint8_t
 {
     typeB,
+    covered,
     useStationColours,
 };
 

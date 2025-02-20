@@ -1853,10 +1853,10 @@ ImageId GetShopSupportColourScheme(PaintSession& session, const TrackElement& tr
     return ShopSupportColour;
 }
 
-void PaintSupportsForTrackSequence(
+static void PaintSupportsForTrackSequence(
     PaintSession& session, const NewSupportType& supportType, const uint8_t trackSequence, const Direction direction,
     const int32_t height, const TrackElement& trackElement, const TrackElemType& trackElemType,
-    const TrackDrawerEntry& trackDrawerEntry, const Direction supportRotation)
+    const TrackDrawerEntry& trackDrawerEntry, const Direction supportRotation, const Direction supportCoverRotation)
 {
     if (std::holds_alternative<MetalSupportType>(supportType))
     {
@@ -1889,13 +1889,14 @@ void PaintSupportsForTrackSequence(
             }
         }
     }
-    else if (std::holds_alternative<WoodenSupportType>(supportType))
+    else if (std::holds_alternative<WoodenSupportTypeCovered>(supportType))
     {
         const SequenceWoodenSupport& support = GetWoodenSupportForTrackSequence(
             trackDrawerEntry.trackStyle, trackElemType, trackSequence);
 
         if (support.subType != WoodenSupportSubType::Null)
         {
+            const auto woodenSupportType = std::get<WoodenSupportTypeCovered>(supportType);
             const auto colours = HasFlag(support.flags, WoodenSupportFlags::useStationColours)
                 ? GetStationColourScheme(session, trackElement)
                 : session.SupportColours;
@@ -1903,14 +1904,16 @@ void PaintSupportsForTrackSequence(
             if (!HasFlag(support.flags, WoodenSupportFlags::typeB))
             {
                 WoodenASupportsPaintSetupRotated(
-                    session, std::get<WoodenSupportType>(supportType), support.subType, (direction + supportRotation) & 3,
-                    height + support.height, colours, support.transitionType);
+                    session, woodenSupportType.type, support.subType, (direction + supportRotation) & 3,
+                    height + support.height, colours, support.transitionType,
+                    woodenSupportType.covered || HasFlag(support.flags, WoodenSupportFlags::covered), supportCoverRotation);
             }
             else
             {
                 WoodenBSupportsPaintSetupRotated(
-                    session, std::get<WoodenSupportType>(supportType), support.subType, (direction + supportRotation) & 3,
-                    height + support.height, colours, support.transitionType);
+                    session, woodenSupportType.type, support.subType, (direction + supportRotation) & 3,
+                    height + support.height, colours, support.transitionType,
+                    woodenSupportType.covered || HasFlag(support.flags, WoodenSupportFlags::covered), supportCoverRotation);
             }
         }
         return;
@@ -2016,14 +2019,16 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
             PaintSupportsForTrackSequence(
                 session, trackDrawerEntry.trackGroupSupportTypes[trackGroupId], trackSequence, direction, height, trackElement,
-                trackType, trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation);
+                trackType, trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation,
+                ted.sequences[trackSequence].extraSupportCoverRotation);
         }
         else
         {
             paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
             PaintSupportsForTrackSequence(
                 session, trackDrawerEntry.trackGroupSupportTypes[trackGroupId], trackSequence, direction, height, trackElement,
-                trackType, trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation);
+                trackType, trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation,
+                ted.sequences[trackSequence].extraSupportCoverRotation);
             BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
         }
 

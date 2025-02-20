@@ -146,6 +146,7 @@ namespace OpenRCT2::TrackMetaData
         /** rct2: 0x0099BA64 */
         uint16_t flags{};
         int8_t extraSupportRotation = 0;
+        int8_t extraSupportCoverRotation = 0;
         SequenceTunnels tunnels{};
     };
 

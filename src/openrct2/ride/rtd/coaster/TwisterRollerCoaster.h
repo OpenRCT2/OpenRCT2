@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
-#include "../../../paint/support/MetalSupports.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
