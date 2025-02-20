@@ -9,20 +9,68 @@
 
 #pragma once
 
+#include "../../ride/TrackData.h"
+#include "../../world/tile_element/TrackElement.h"
+#include "../Paint.h"
 #include "../tile_element/Segment.h"
 
 #include <cstdint>
 
 namespace OpenRCT2::BlockedSegments
 {
-    constexpr uint16_t kStraightFlat = EnumsToFlags(
-        PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide);
-    constexpr uint16_t kDiagStraightFlat[] = {
-        EnumsToFlags(
-            PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
-        EnumsToFlags(PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide, PaintSegment::topCorner),
-        EnumsToFlags(
-            PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide),
-        EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide),
+    enum class BlockedSegmentsType : uint8_t
+    {
+        narrow = 0,
+        inverted = 1,
+        wide = 2,
+        suspendedSwinging = 3,
+        wideTrain = 4,
+
+        count = 5,
     };
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsNarrow =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::narrow);
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsInverted =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::inverted);
+            array[EnumValue(TrackGroup::stationEnd)] = BlockedSegments::BlockedSegmentsType::wide;
+            array[EnumValue(TrackGroup::onridePhoto)] = BlockedSegments::BlockedSegmentsType::wide;
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsWide =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::wide);
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)>
+        kTrackGroupBlockedSegmentsSuspendedSwinging = []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::suspendedSwinging);
+            array[EnumValue(TrackGroup::stationEnd)] = BlockedSegments::BlockedSegmentsType::wide;
+            array[EnumValue(TrackGroup::onridePhoto)] = BlockedSegments::BlockedSegmentsType::wide;
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsWideTrain =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::wideTrain);
+            return array;
+        }();
+
+    bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence);
+
+    void BlockSegmentsForTrackSequence(
+        PaintSession& session, const uint8_t trackSequence, const Direction direction, const uint16_t height,
+        const TrackElemType trackElemType, const BlockedSegmentsType blockedSegmentsType);
 } // namespace OpenRCT2::BlockedSegments
