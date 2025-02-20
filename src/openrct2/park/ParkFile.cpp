@@ -244,11 +244,13 @@ namespace OpenRCT2
             auto& os = *_os;
             os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&preview](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(preview.parkName);
-
-                cs.ReadWriteVector(preview.info, [&cs](PreviewInfo& info) {
-                    cs.ReadWrite(info.first);
-                    cs.ReadWrite(info.second);
-                });
+                cs.ReadWrite(preview.parkRating);
+                cs.ReadWrite(preview.year);
+                cs.ReadWrite(preview.month);
+                cs.ReadWrite(preview.day);
+                cs.ReadWrite(preview.cash);
+                cs.ReadWrite(preview.numRides);
+                cs.ReadWrite(preview.numGuests);
 
                 cs.ReadWriteVector(preview.images, [&cs](PreviewImage& image) {
                     cs.ReadWrite(image.type);
@@ -511,11 +513,13 @@ namespace OpenRCT2
                 auto preview = OpenRCT2::generatePreviewFromGameState(gameState);
 
                 cs.ReadWrite(preview.parkName);
-
-                cs.ReadWriteVector(preview.info, [&cs](PreviewInfo& info) {
-                    cs.ReadWrite(info.first);
-                    cs.ReadWrite(info.second);
-                });
+                cs.ReadWrite(preview.parkRating);
+                cs.ReadWrite(preview.year);
+                cs.ReadWrite(preview.month);
+                cs.ReadWrite(preview.day);
+                cs.ReadWrite(preview.cash);
+                cs.ReadWrite(preview.numRides);
+                cs.ReadWrite(preview.numGuests);
 
                 cs.ReadWriteVector(preview.images, [&cs](PreviewImage& image) {
                     cs.ReadWrite(image.type);

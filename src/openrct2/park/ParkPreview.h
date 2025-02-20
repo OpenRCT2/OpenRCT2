@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/Money.hpp"
 #include "../world/Location.hpp"
 
 #include <cstdint>
@@ -37,22 +38,17 @@ namespace OpenRCT2
         uint8_t pixels[kMaxPreviewImageSize * kMaxPreviewImageSize]{};
     };
 
-    enum class PreviewInfoKind : uint8_t
-    {
-        month,
-        day,
-        cash,
-        numGuests,
-        numRides,
-    };
-
-    using PreviewInfo = std::pair<PreviewInfoKind, int64_t>;
-
     struct ParkPreview
     {
-        std::string parkName;
-        std::vector<PreviewImage> images;
-        std::vector<PreviewInfo> info;
+        std::string parkName{};
+        uint16_t parkRating{};
+        int32_t year{};
+        int32_t month{};
+        int32_t day{};
+        money64 cash{};
+        uint16_t numRides{};
+        uint16_t numGuests{};
+        std::vector<PreviewImage> images{};
 
         void clear();
     };

@@ -28,7 +28,6 @@ namespace OpenRCT2
 {
     void ParkPreview::clear()
     {
-        info.clear();
         images.clear();
     }
 
@@ -37,26 +36,22 @@ namespace OpenRCT2
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
     {
-        ParkPreview preview{};
+        ParkPreview preview{
+            .parkName = gameState.Park.Name,
+            .parkRating = gameState.Park.Rating,
+            .year = gameState.Date.GetYear(),
+            .month = gameState.Date.GetMonth(),
+            .day = gameState.Date.GetDay(),
+            .cash = gameState.Cash,
+            .numRides = static_cast<uint16_t>(RideManager().size()),
+            .numGuests = static_cast<uint16_t>(gameState.NumGuestsInPark),
+        };
 
-        preview.parkName = gameState.Park.Name;
-
-        // TODO: extend
-        preview.info.push_back({ PreviewInfoKind::numGuests, gameState.NumGuestsInPark });
-        preview.info.push_back({ PreviewInfoKind::numRides, RideManager().size() });
-
-        // TODO: extend
         if (auto image = generatePreviewMap(); image != std::nullopt)
-        {
-            printf("\rsaving preview map\n");
             preview.images.push_back(*image);
-        }
 
         if (auto image = generatePreviewScreenshot(); image != std::nullopt)
-        {
-            printf("\rsaving preview screenshot\n");
             preview.images.push_back(*image);
-        }
 
         return preview;
     }
