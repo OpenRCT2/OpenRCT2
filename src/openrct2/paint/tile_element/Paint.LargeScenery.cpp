@@ -284,12 +284,19 @@ static void PaintLargeScenery3DText(
                     it++;
                 }
 
+                // handle case where second line fully fits
+                if (it == view.end() && lineWidth < text->max_width)
+                {
+                    best = current;
+                    next = std::string_view{};
+                }
+
                 if (best.empty())
                 {
                     // No good split found, or reached end of string
                     auto index = it.GetIndex();
-                    best = current.substr(0, index);
-                    next = current.substr(index);
+                    best = current.substr(0, index - 1);
+                    next = current.substr(index - 1);
                 }
 
                 PaintLargeScenery3DTextLine(session, sceneryEntry, *text, best, imageTemplate, direction, offsetY);

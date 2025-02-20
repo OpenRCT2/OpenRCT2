@@ -19,6 +19,7 @@
 - Fix: [#23522] Diagonal sloped Steeplechase supports have glitched sprites at the base.
 - Fix: [#23641] Steep to flat track is not drawn correctly in tunnels (original bug).
 - Fix: [#23795] Looping Roller Coaster vertical loop supports are drawn incorrectly.
+- Fix: [#23797] 3D Text cut off too early on multi-line signs.
 - Fix: [#23809] Trains glitch on Bobsleigh Coaster small helixes.
 - Fix: [#23811] Land edges glitch when vehicles go through gentle to flat tunnels.
 - Fix: [#23818] Spinning tunnels can draw over sloped terrain in front of them.
