@@ -120,23 +120,26 @@ namespace OpenRCT2
     static std::optional<PreviewImage> generatePreviewMap()
     {
         const auto& gameState = GetGameState();
-        const auto kPreviewSize = 128; // sizeof(entry.preview[0]);
-        const auto kMapSkipFactor = Numerics::ceil2(gameState.MapSize.x, kPreviewSize) / kPreviewSize;
+        const auto previewSize = 128;
+        const auto longEdgeSize = std::max(gameState.MapSize.x, gameState.MapSize.y);
+        const auto nearestPower = Numerics::ceil2(longEdgeSize, previewSize);
+        const auto mapSkipFactor = nearestPower / previewSize;
+        const auto offset = mapSkipFactor > 0 ? (nearestPower - longEdgeSize) / mapSkipFactor : 1;
 
         PreviewImage image{
             .type = PreviewImageType::miniMap,
-            .width = kPreviewSize,
-            .height = kPreviewSize,
+            .width = previewSize,
+            .height = previewSize,
         };
 
         for (auto y = 0u; y < image.height; y++)
         {
             for (auto x = 0u; x < image.width; x++)
             {
-                auto pos = TileCoordsXY(gameState.MapSize.x - (x + 1) * kMapSkipFactor + 1, y * kMapSkipFactor + 1);
+                auto pos = TileCoordsXY(gameState.MapSize.x - (x + 1) * mapSkipFactor + 1, y * mapSkipFactor + 1);
 
                 // TODO: 2D array
-                image.pixels[y * kPreviewSize + x] = getPreviewColourByTilePos(pos);
+                image.pixels[(y + offset) * previewSize + (x + offset)] = getPreviewColourByTilePos(pos);
             }
         }
 
