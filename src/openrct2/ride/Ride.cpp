@@ -1241,13 +1241,13 @@ void updateSpiralSlide(Ride& ride)
 {
     if (getGameState().currentTicks & 3)
         return;
-    if (ride.slideInUse == 0)
+    if (!ride.slideInUse)
         return;
 
     ride.spiralSlideProgress++;
     if (ride.spiralSlideProgress >= 48)
     {
-        ride.slideInUse--;
+        ride.slideInUse = 0;
 
         auto* peep = GetEntity<Guest>(ride.slidePeep);
         if (peep != nullptr)
