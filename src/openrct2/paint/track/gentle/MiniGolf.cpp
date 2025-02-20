@@ -378,6 +378,98 @@ static constexpr uint32_t kMiniGolfTrackSpritesHoleE[][3][2] = {
     },
 };
 
+static constexpr BoundBoxXYZ kMiniGolfTrackBoundingBoxesHoleD[kNumOrthogonalDirections][3] = {
+    {
+        { { 0, 3, 0 }, { 32, 26, 1 } },
+        { { 3, 3, 0 }, { 29, 29, 1 } },
+        { { 3, 0, 0 }, { 26, 32, 1 } },
+    },
+    {
+        { { 3, 0, 0 }, { 26, 32, 1 } },
+        { { 3, 0, 0 }, { 29, 29, 1 } },
+        { { 0, 3, 0 }, { 32, 26, 1 } },
+    },
+    {
+        { { 0, 3, 0 }, { 32, 26, 1 } },
+        { { 0, 0, 0 }, { 29, 29, 1 } },
+        { { 3, 0, 0 }, { 26, 32, 1 } },
+    },
+    {
+        { { 3, 0, 0 }, { 26, 32, 1 } },
+        { { 0, 3, 0 }, { 29, 29, 1 } },
+        { { 0, 3, 0 }, { 32, 26, 1 } },
+    },
+};
+
+static constexpr BoundBoxXYZ kMiniGolfTrackBoundingBoxesHoleDFront[kNumOrthogonalDirections][3] = {
+    {
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+        { { 26, 26, 1 }, { 1, 1, 12 } },
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+    },
+    {
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+    },
+    {
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+        { { 28, 28, 1 }, { 1, 1, 12 } },
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+    },
+    {
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+    },
+};
+
+static constexpr BoundBoxXYZ kMiniGolfTrackBoundingBoxesHoleE[kNumOrthogonalDirections][3] = {
+    {
+        { { 0, 3, 0 }, { 32, 26, 1 } },
+        { { 3, 0, 0 }, { 29, 29, 1 } },
+        { { 3, 0, 0 }, { 26, 32, 1 } },
+    },
+    {
+        { { 3, 0, 0 }, { 26, 32, 1 } },
+        { { 0, 0, 0 }, { 29, 29, 1 } },
+        { { 0, 3, 0 }, { 32, 26, 1 } },
+    },
+    {
+        { { 0, 3, 0 }, { 32, 26, 1 } },
+        { { 0, 3, 0 }, { 29, 29, 1 } },
+        { { 3, 0, 0 }, { 26, 32, 1 } },
+    },
+    {
+        { { 3, 0, 0 }, { 26, 32, 1 } },
+        { { 3, 3, 0 }, { 29, 29, 1 } },
+        { { 0, 3, 0 }, { 32, 26, 1 } },
+    },
+};
+
+static constexpr BoundBoxXYZ kMiniGolfTrackBoundingBoxesHoleEFront[kNumOrthogonalDirections][3] = {
+    {
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+    },
+    {
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+        { { 28, 28, 1 }, { 1, 1, 12 } },
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+    },
+    {
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+    },
+    {
+        { { 28, 0, 1 }, { 1, 32, 12 } },
+        { { 26, 26, 1 }, { 1, 1, 12 } },
+        { { 0, 28, 1 }, { 32, 1, 12 } },
+    },
+};
+
 static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackElement& trackElement)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -790,7 +882,7 @@ static void PaintMiniGolfHoleAb(
     auto bb = BoundBoxXYZ{ { boundBoxOffset, height + 24 }, { boundBox, 0 } };
 
     imageId = session.TrackColours.WithIndex(sprites[direction][trackSequence][1]);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 28, height + 1 }, { 32, 1, 12 } });
 
     bb.offset.z = height;
     bb.length.z = 1;
@@ -866,16 +958,15 @@ static void PaintMiniGolfHoleC(
     {
         case 0x01:
         case 0x20:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 26, 3 } });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 3, height + 2 }, { 4, 26, 5 } });
             break;
         case 0x10:
         case 0x31:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 30, height + 4 }, { 26, 2, 3 } });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 28, height + 2 }, { 26, 4, 5 } });
             break;
         default:
-            PaintAddImageAsParent(
-                session, imageId, { 0, 0, height },
-                { { boundBoxOffset.x, boundBoxOffset.y, height + 24 }, { boundBox.x, boundBox.y, 0 } });
+            PaintAddImageAsParentRotated(
+                session, direction, imageId, { 0, 0, height }, { { 0, 28, height + 1 }, { 32, 1, 12 } });
             break;
     }
 
@@ -900,14 +991,33 @@ static void PaintMiniGolfHoleD(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    ImageId imageId;
-    CoordsXY boundBox, boundBoxOffset;
-
     auto supportSubType = (direction & 1) ? WoodenSupportSubType::NwSe : WoodenSupportSubType::NeSw;
     if (trackSequence == 2)
         supportSubType = (direction & 1) ? WoodenSupportSubType::NeSw : WoodenSupportSubType::NwSe;
-    bool drewSupports = WoodenASupportsPaintSetup(
+    const bool drewSupports = WoodenASupportsPaintSetup(
         session, WoodenSupportType::Truss, supportSubType, height, session.SupportColours);
+
+    auto boundBox = kMiniGolfTrackBoundingBoxesHoleD[direction][trackSequence];
+    boundBox.offset.z += height;
+    const auto imageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleD[direction][trackSequence][0]);
+
+    if (drewSupports)
+    {
+        const auto supportImageId = session.SupportColours.WithIndex(
+            ((supportSubType == WoodenSupportSubType::NeSw) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS));
+        PaintAddImageAsParent(session, supportImageId, { 0, 0, height }, boundBox);
+
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, boundBox);
+    }
+    else
+    {
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, boundBox);
+    }
+
+    const auto frontImageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleD[direction][trackSequence][1]);
+    auto boundBoxFront = kMiniGolfTrackBoundingBoxesHoleDFront[direction][trackSequence];
+    boundBoxFront.offset.z += height;
+    PaintAddImageAsParent(session, frontImageId, { 0, 0, height }, boundBoxFront);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -924,69 +1034,6 @@ static void PaintMiniGolfHoleD(
             PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
             break;
     }
-
-    if (supportSubType == WoodenSupportSubType::NeSw)
-    {
-        boundBox = { 26, 32 };
-        boundBoxOffset = { 3, 0 };
-    }
-    else
-    {
-        boundBox = { 32, 26 };
-        boundBoxOffset = { 0, 3 };
-    }
-
-    imageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleD[direction][trackSequence][1]);
-
-    switch ((direction << 4) | trackSequence)
-    {
-        case 0x01:
-        case 0x32:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 26, 3 } });
-            break;
-        case 0x02:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 30, height + 4 }, { 23, 2, 3 } });
-            break;
-        case 0x10:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 24, 3 } });
-            break;
-        case 0x20:
-        case 0x31:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 30, height + 4 }, { 26, 2, 3 } });
-            break;
-        default:
-            PaintAddImageAsParent(
-                session, imageId, { 0, 0, height },
-                { { boundBoxOffset.x, boundBoxOffset.y, height + 24 }, { boundBox.x, boundBox.y, 0 } });
-            break;
-    }
-
-    switch ((direction << 4) | trackSequence)
-    {
-        case 0x02:
-            boundBox = { 23, 32 };
-            break;
-        case 0x10:
-            boundBox = { 24, 32 };
-            break;
-    }
-
-    auto bb = BoundBoxXYZ{ { boundBoxOffset, height }, { boundBox.x, boundBox.y, 1 } };
-    auto offset = CoordsXYZ{ 0, 0, height };
-    if (drewSupports)
-    {
-        imageId = session.SupportColours.WithIndex(
-            ((supportSubType == WoodenSupportSubType::NeSw) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS));
-        PaintAddImageAsParent(session, imageId, offset, bb);
-
-        imageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleD[direction][trackSequence][0]);
-        PaintAddImageAsChild(session, imageId, offset, bb);
-    }
-    else
-    {
-        imageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleD[direction][trackSequence][0]);
-        PaintAddImageAsParent(session, imageId, offset, bb);
-    }
 }
 
 /** rct2: 0x0087F1FC */
@@ -994,14 +1041,33 @@ static void PaintMiniGolfHoleE(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    ImageId imageId;
-    CoordsXY boundBox, boundBoxOffset;
-
     auto supportSubType = (direction & 1) ? WoodenSupportSubType::NwSe : WoodenSupportSubType::NeSw;
     if (trackSequence == 2)
         supportSubType = (direction & 1) ? WoodenSupportSubType::NeSw : WoodenSupportSubType::NwSe;
-    bool drewSupports = WoodenASupportsPaintSetup(
+    const bool drewSupports = WoodenASupportsPaintSetup(
         session, WoodenSupportType::Truss, supportSubType, height, session.SupportColours);
+
+    auto boundBox = kMiniGolfTrackBoundingBoxesHoleE[direction][trackSequence];
+    boundBox.offset.z += height;
+    const auto imageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleE[direction][trackSequence][0]);
+
+    if (drewSupports)
+    {
+        const auto supportImageId = session.SupportColours.WithIndex(
+            ((supportSubType == WoodenSupportSubType::NwSe) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS));
+        PaintAddImageAsParent(session, supportImageId, { 0, 0, height }, boundBox);
+
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, boundBox);
+    }
+    else
+    {
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, boundBox);
+    }
+
+    const auto frontImageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleE[direction][trackSequence][1]);
+    auto boundBoxFront = kMiniGolfTrackBoundingBoxesHoleEFront[direction][trackSequence];
+    boundBoxFront.offset.z += height;
+    PaintAddImageAsParent(session, frontImageId, { 0, 0, height }, boundBoxFront);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1017,69 +1083,6 @@ static void PaintMiniGolfHoleE(
         case (3 << 4 | 0):
             PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
             break;
-    }
-
-    if (supportSubType == WoodenSupportSubType::NwSe)
-    {
-        boundBox = { 26, 32 };
-        boundBoxOffset = { 3, 0 };
-    }
-    else
-    {
-        boundBox = { 32, 26 };
-        boundBoxOffset = { 0, 3 };
-    }
-
-    imageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleE[direction][trackSequence][1]);
-
-    switch ((direction << 4) | trackSequence)
-    {
-        case 0x01:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 26, 3 } });
-            break;
-        case 0x02:
-        case 0x20:
-        case 0x31:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 3, 30, height + 4 }, { 26, 2, 3 } });
-            break;
-        case 0x10:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 24, 3 } });
-            break;
-        case 0x32:
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 3, height + 4 }, { 2, 23, 3 } });
-            break;
-        default:
-            PaintAddImageAsParent(
-                session, imageId, { 0, 0, height },
-                { { boundBoxOffset.x, boundBoxOffset.y, height + 24 }, { boundBox.x, boundBox.y, 0 } });
-            break;
-    }
-
-    switch ((direction << 4) | trackSequence)
-    {
-        case 0x10:
-            boundBox = { 24, 32 };
-            break;
-        case 0x32:
-            boundBox = { 32, 23 };
-            break;
-    }
-
-    auto bb = BoundBoxXYZ{ { boundBoxOffset, height }, { boundBox.x, boundBox.y, 1 } };
-    auto offset = CoordsXYZ{ 0, 0, height };
-    if (drewSupports)
-    {
-        imageId = session.SupportColours.WithIndex(
-            ((supportSubType == WoodenSupportSubType::NwSe) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS));
-        PaintAddImageAsParent(session, imageId, offset, bb);
-
-        imageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleE[direction][trackSequence][0]);
-        PaintAddImageAsChild(session, imageId, offset, bb);
-    }
-    else
-    {
-        imageId = session.TrackColours.WithIndex(kMiniGolfTrackSpritesHoleE[direction][trackSequence][0]);
-        PaintAddImageAsParent(session, imageId, offset, bb);
     }
 }
 
