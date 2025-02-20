@@ -17,6 +17,7 @@
 - Fix: [#18436] Scenery on the same tile as steep to vertical track can draw over the track (original bug).
 - Fix: [#18711] Park entrances with their sides underground can cause glitching.
 - Fix: [#20848] Junior Roller Coaster booster track does not draw correctly in tunnels.
+- Fix: [#20948] Incorrect diagonal brakes supports on the Giga Coaster, Looping Roller Coaster and Wooden Roller Coaster.
 - Fix: [#21768] Dirty blocks debug overlay is rendered incorrectly on high DPI screens.
 - Fix: [#22229] Opening a park save file from a newer version of OpenRCT2 yields an unhelpful error message.
 - Fix: [#22617] Sloped Wooden and Side-Friction supports draw out of order when built directly above diagonal track pieces (original bug).
