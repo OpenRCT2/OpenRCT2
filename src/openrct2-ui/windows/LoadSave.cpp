@@ -33,6 +33,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/park/ParkPreview.h>
@@ -361,11 +362,13 @@ namespace OpenRCT2::Ui::Windows
             GfxFillRectInset(dpi, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
 
             // Draw park name
-            auto namePos = frameStartPos + ScreenCoordsXY{ kPreviewWidth / 2, -kButtonFaceHeight };
-            auto ft = Formatter();
-            ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(_preview.parkName.c_str());
-            DrawTextEllipsised(dpi, namePos, kPreviewWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+            {
+                auto namePos = frameStartPos + ScreenCoordsXY{ kPreviewWidth / 2, -kButtonFaceHeight };
+                auto ft = Formatter();
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<const char*>(_preview.parkName.c_str());
+                DrawTextEllipsised(dpi, namePos, kPreviewWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+            }
 
             // Draw image, if available
             bool foundImage = false;
@@ -391,6 +394,52 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(
                     dpi, textPos, STR_NO_PREVIEW_AVAILABLE, {},
                     { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
+                return;
+            }
+
+            auto summaryCoords = frameStartPos + ScreenCoordsXY(0, kPreviewHeight + kListRowHeight);
+
+            // Date
+            {
+                auto ft = Formatter();
+                ft.Add<StringId>(DateFormatStringFormatIds[Config::Get().general.DateFormat]);
+                ft.Add<StringId>(DateDayNames[_preview.day]);
+                ft.Add<int16_t>(_preview.month);
+                ft.Add<int16_t>(_preview.year + 1);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_DATE, ft);
+                summaryCoords.y += kListRowHeight;
+            }
+
+            // Park Rating
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(_preview.parkRating);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_PARK_RATING, ft);
+                summaryCoords.y += kListRowHeight;
+            }
+
+            // Cash
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(_preview.cash);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_CASH, ft);
+                summaryCoords.y += kListRowHeight;
+            }
+
+            // Num. Rides
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(_preview.numRides);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_NUM_RIDES, ft);
+                summaryCoords.y += kListRowHeight;
+            }
+
+            // Num. Guests
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(_preview.numGuests);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_NUM_GUESTS, ft);
+                summaryCoords.y += kListRowHeight;
             }
         }
 
@@ -605,7 +654,9 @@ namespace OpenRCT2::Ui::Windows
         void OnDraw(DrawPixelInfo& dpi) override
         {
             DrawWidgets(dpi);
-            DrawPreview(dpi);
+
+            if (ShowPreviews())
+                DrawPreview(dpi);
 
             {
                 const auto& widget = widgets[WIDX_PARENT_FOLDER];
