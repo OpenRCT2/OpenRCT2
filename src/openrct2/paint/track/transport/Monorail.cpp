@@ -294,7 +294,7 @@ static constexpr BoundBoxXY GhostTrainTrackPiecesRightEightToDiagBoxes[4][4] = {
 
         { { 0, 6 }, { 32, 20 } },
         { { 0, 0 }, { 34, 16 } },
-        { { 4, 4 }, { 28, 28 } },
+        { { 16, 16 }, { 16, 16 } },
         { { 0, 16 }, { 16, 18 } },
     },
     {

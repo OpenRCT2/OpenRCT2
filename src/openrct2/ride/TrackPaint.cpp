@@ -1056,7 +1056,7 @@ constexpr CoordsXY defaultRightEighthToDiagBoundLengths[4][4] = {
     {
         { 32, 20 },
         { 34, 16 },
-        { 28, 28 },
+        { 16, 16 },
         { 16, 18 },
     },
     {
@@ -1083,7 +1083,7 @@ constexpr CoordsXYZ defaultRightEighthToDiagBoundOffsets[4][4] = {
     {
         { 0, 6, 0 },
         { 0, 0, 0 },
-        { 4, 4, 0 },
+        { 16, 16, 0 },
         { 0, 16, 0 },
     },
     {
