@@ -1111,7 +1111,7 @@ namespace OpenRCT2::HybridRC
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_LARGE_CURVE + 6),
-                            { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                            { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         WoodenASupportsPaintSetup(
                             session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
                         break;
@@ -1286,7 +1286,7 @@ namespace OpenRCT2::HybridRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_LARGE_CURVE + 26),
-                            { 0, 0, height }, { { 4, 4, height }, { 28, 28, 3 } });
+                            { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         WoodenASupportsPaintSetup(
                             session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
                         break;
@@ -11291,10 +11291,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -14086,7 +14086,7 @@ namespace OpenRCT2::HybridRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             GetTrackColour(session).WithIndex((SPR_G2_HYBRID_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
-                            { 0, 0, height }, { { 0, 0, height }, { 34, 34, 16 } });
+                            { 0, 0, height }, { { 0, 16, height }, { 34, 18, 3 } });
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -14123,7 +14123,7 @@ namespace OpenRCT2::HybridRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             GetTrackColour(session).WithIndex((SPR_G2_HYBRID_TRACK_GENTLE_LARGE_CURVE_BANKED + 121)),
-                            { 0, 0, height }, { { 0, 0, height }, { 32, 1, 32 } });
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -14230,7 +14230,7 @@ namespace OpenRCT2::HybridRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             GetTrackColour(session).WithIndex((SPR_G2_HYBRID_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
-                            { 0, 0, height }, { { 16, 0, height }, { 18, 32, 3 } });
+                            { 0, 0, height }, { { 0, 0, height }, { 34, 32, 3 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(

@@ -23,9 +23,9 @@
 
 #ifdef __MACOSX__
     // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
-    #define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
+    #define KB_PRIMARY_MODIFIER KMOD_GUI
 #else
-    #define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
+    #define KB_PRIMARY_MODIFIER KMOD_CTRL
 #endif
 
 using namespace OpenRCT2;
@@ -56,6 +56,56 @@ void TextComposition::Stop()
     _imeActive = false;
 }
 
+/**
+ * Remaps keypad enter keypress to normal enter and the numpad keys that can be used for navigation when num lock is off.
+ * @return A pair with the remapped keycode and scancode.
+ */
+static std::pair<SDL_Keycode, SDL_Scancode> ProcessKeyPress(SDL_Keycode key, SDL_Scancode scancode)
+{
+    if (key == SDLK_KP_ENTER)
+    {
+        key = SDLK_RETURN;
+        scancode = SDL_SCANCODE_RETURN;
+    }
+    else if (!(SDL_GetModState() & KMOD_NUM))
+    {
+        switch (key)
+        {
+            case SDLK_KP_1:
+            {
+                key = SDLK_END;
+                scancode = SDL_SCANCODE_END;
+                break;
+            }
+            case SDLK_KP_4:
+            {
+                key = SDLK_LEFT;
+                scancode = SDL_SCANCODE_LEFT;
+                break;
+            }
+            case SDLK_KP_6:
+            {
+                key = SDLK_RIGHT;
+                scancode = SDL_SCANCODE_RIGHT;
+                break;
+            }
+            case SDLK_KP_7:
+            {
+                key = SDLK_HOME;
+                scancode = SDL_SCANCODE_HOME;
+                break;
+            }
+            case SDLK_KP_PERIOD:
+            {
+                key = SDLK_DELETE;
+                scancode = SDL_SCANCODE_DELETE;
+                break;
+            }
+        }
+    }
+    return { key, scancode };
+}
+
 void TextComposition::HandleMessage(const SDL_Event* e)
 {
     auto& console = GetInGameConsole();
@@ -84,7 +134,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 Insert(e->text.text);
 
                 console.RefreshCaret(_session.SelectionStart);
-                OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                Windows::WindowUpdateTextbox();
             }
             break;
         case SDL_KEYDOWN:
@@ -95,14 +145,10 @@ void TextComposition::HandleMessage(const SDL_Event* e)
             }
 
             uint16_t modifier = e->key.keysym.mod;
-            SDL_Keycode key = e->key.keysym.sym;
-            SDL_Scancode scancode = e->key.keysym.scancode;
-            if (key == SDLK_KP_ENTER)
-            {
-                // Map Keypad enter to regular enter.
-                key = SDLK_RETURN;
-                scancode = SDL_SCANCODE_RETURN;
-            }
+            SDL_Keycode rawKey = e->key.keysym.sym;
+            SDL_Scancode rawScancode = e->key.keysym.scancode;
+
+            auto [key, scancode] = ProcessKeyPress(rawKey, rawScancode);
 
             GetContext()->GetUiContext()->SetKeysPressed(key, scancode);
 
@@ -119,7 +165,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     if (_session.SelectionStart > 0)
                     {
                         size_t endOffset = _session.SelectionStart;
-                        if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                        if (modifier & KB_PRIMARY_MODIFIER)
                             CaretMoveToLeftToken();
                         else
                             CaretMoveLeft();
@@ -127,7 +173,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         Delete();
 
                         console.RefreshCaret(_session.SelectionStart);
-                        OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                        Windows::WindowUpdateTextbox();
                     }
                     break;
                 case SDLK_HOME:
@@ -141,7 +187,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 case SDLK_DELETE:
                 {
                     size_t startOffset = _session.SelectionStart;
-                    if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                    if (modifier & KB_PRIMARY_MODIFIER)
                         CaretMoveToRightToken();
                     else
                         CaretMoveRight();
@@ -149,40 +195,49 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     _session.SelectionStart = startOffset;
                     Delete();
                     console.RefreshCaret(_session.SelectionStart);
-                    OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                    Windows::WindowUpdateTextbox();
                     break;
                 }
                 case SDLK_RETURN:
-                    OpenRCT2::Ui::Windows::WindowCancelTextbox();
+                    Windows::WindowCancelTextbox();
                     break;
                 case SDLK_LEFT:
-                    if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                    if (modifier & KB_PRIMARY_MODIFIER)
                         CaretMoveToLeftToken();
                     else
                         CaretMoveLeft();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_RIGHT:
-                    if (modifier & KEYBOARD_PRIMARY_MODIFIER)
+                    if (modifier & KB_PRIMARY_MODIFIER)
                         CaretMoveToRightToken();
                     else
                         CaretMoveRight();
                     console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_c:
-                    if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && _session.Length)
+                    if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
                     {
-                        OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
+                        GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;
                 case SDLK_v:
-                    if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && SDL_HasClipboardText())
+                    if ((modifier & KB_PRIMARY_MODIFIER) && SDL_HasClipboardText())
                     {
                         utf8* text = SDL_GetClipboardText();
                         Insert(text);
                         SDL_free(text);
-                        OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                        Windows::WindowUpdateTextbox();
+                    }
+                    break;
+                case SDLK_x:
+                    if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
+                    {
+                        GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
+                        Clear();
+                        Windows::WindowUpdateTextbox();
+                        ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;
             }

@@ -6194,7 +6194,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(15990), { 0, 0, height },
-                            { { 4, 4, height }, { 28, 28, 3 } });
+                            { { 16, 16, height }, { 16, 16, 3 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -6350,7 +6350,7 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(26399), { 0, 0, height + 24 },
-                            { { 4, 4, height + 22 }, { 28, 28, 3 } });
+                            { { 16, 16, height + 22 }, { 16, 16, 3 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(

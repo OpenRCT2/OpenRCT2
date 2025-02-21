@@ -1445,7 +1445,7 @@ static void SideFrictionRCTrackLeftEighthToDiag(
                         { { 16, 16, height }, { 16, 16, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21812), { 0, 0, height },
-                        { { 16, 16, height + 27 }, { 16, 16, 0 } });
+                        { { 16, 16, height + 26 }, { 18, 18, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1632,10 +1632,10 @@ static void SideFrictionRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21768), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 2 } });
+                        { { 16, 16, height }, { 16, 16, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21784), { 0, 0, height },
-                        { { 4, 4, height + 27 }, { 28, 28, 0 } });
+                        { { 16, 16, height + 26 }, { 18, 18, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(

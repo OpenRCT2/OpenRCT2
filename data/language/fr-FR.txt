@@ -3226,7 +3226,7 @@ STR_6102    :La valeur d’une attraction ne se dégradera pas au fil du temps, 
 STR_6103    :Cette option est désactivée dans les parties multijoueurs.
 STR_6105    :Hyper montagnes russes
 STR_6107    :Camions monstrueux
-STR_6109    :Hyper-tornades
+STR_6109    :Montagnes russes hyper-tornade
 STR_6111    :Mini-montagnes russes classiques
 STR_6113    :Une grande montagne russe sans inversions avec de grandes descentes, une forte vitesse, et des trains confortables avec une simple ceinture
 STR_6115    :Des camions 4 x 4 géants qui peuvent grimper de pentes fortes
@@ -3799,4 +3799,7 @@ STR_6726    :Y :
 STR_6727    :Boucle plongeante (gauche)
 STR_6728    :Boucle plongeante (droite)
 STR_6729    :La remontée à chaîne doit commencer immédiatement à la sortie de la station ou des freins de bloc
+STR_6730    :Exporter les données emscripten
+STR_6731    :Importer les données emscripten
+STR_6732    :Afficher un bouton dans la barre d’outils pour tourner la vue dans le sens inverse des aiguilles d’une montre
 

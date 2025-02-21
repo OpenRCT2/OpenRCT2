@@ -3217,7 +3217,7 @@ STR_6102    :La valoro de atrakcio ne malpliiĝos tempe, do gastoj ne subite pen
 STR_6103    :Ĉi tiu opcio estas malŝaltita dum reĝimo plurludanta.
 STR_6105    :Hipergiganta Onda Fervojo
 STR_6107    :Monstraj Kamionoj
-STR_6109    :Hiper-Tvisto
+STR_6109    :Hiper-Tvista Onda Fervojo
 STR_6111    :Klasika Miniatura Onda Fervojo
 STR_6113    :Alta onda fervojo kun neniu inversigo, kiu havas grandajn malaltiĝojn, altan rapidecon, kaj komfortajn trajnojn kun nur sinobridoj
 STR_6115    :Ŝaltitaj gigantaj 4 x 4 kamionoj, kiuj povas eskaladi krutajn deklivojn
