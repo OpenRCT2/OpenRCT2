@@ -222,11 +222,11 @@ namespace OpenRCT2::Ui::Windows
                         LoadSaveListItem newListItem;
                         newListItem.path = scanner->GetPath();
                         newListItem.type = FileType::file;
-                        newListItem.date_modified = Platform::FileGetModifiedTime(newListItem.path.c_str());
+                        newListItem.dateModified = Platform::FileGetModifiedTime(newListItem.path.c_str());
 
                         // Cache a human-readable version of the modified date.
-                        newListItem.date_formatted = Platform::FormatShortDate(newListItem.date_modified);
-                        newListItem.time_formatted = Platform::FormatTime(newListItem.date_modified);
+                        newListItem.dateFormatted = Platform::FormatShortDate(newListItem.dateModified);
+                        newListItem.timeFormatted = Platform::FormatTime(newListItem.dateModified);
 
                         // File size
                         newListItem.fileSizeBytes = Platform::GetFileSize(newListItem.path.c_str());
@@ -902,13 +902,13 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ft = Formatter();
                     ft.Add<StringId>(STR_STRING);
-                    ft.Add<char*>(_listItems[i].date_formatted.c_str());
+                    ft.Add<char*>(_listItems[i].dateFormatted.c_str());
                     DrawTextEllipsised(
                         dpi, { dateAnchor - kDateTimeGap, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
 
                     ft = Formatter();
                     ft.Add<StringId>(STR_STRING);
-                    ft.Add<char*>(_listItems[i].time_formatted.c_str());
+                    ft.Add<char*>(_listItems[i].timeFormatted.c_str());
                     DrawTextEllipsised(dpi, { dateAnchor + kDateTimeGap, y }, maxTimeWidth, stringId, ft);
                 }
             }

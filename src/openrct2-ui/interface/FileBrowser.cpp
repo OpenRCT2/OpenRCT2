@@ -70,9 +70,9 @@ namespace OpenRCT2::Ui::FileBrowser
             case FileBrowserSort::NameDescending:
                 return -String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
             case FileBrowserSort::DateDescending:
-                return -difftime(a.date_modified, b.date_modified) < 0;
+                return -difftime(a.dateModified, b.dateModified) < 0;
             case FileBrowserSort::DateAscending:
-                return difftime(a.date_modified, b.date_modified) < 0;
+                return difftime(a.dateModified, b.dateModified) < 0;
             case FileBrowserSort::SizeDescending:
                 return a.fileSizeBytes - b.fileSizeBytes;
             case FileBrowserSort::SizeAscending:

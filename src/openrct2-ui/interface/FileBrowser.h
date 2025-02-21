@@ -34,9 +34,9 @@ namespace OpenRCT2::Ui::FileBrowser
     {
         std::string name{};
         std::string path{};
-        time_t date_modified{ 0 };
-        std::string date_formatted{};
-        std::string time_formatted{};
+        time_t dateModified{ 0 };
+        std::string dateFormatted{};
+        std::string timeFormatted{};
         uint64_t fileSizeBytes;
         uint64_t fileSizeFormatted;
         StringId fileSizeUnit;
