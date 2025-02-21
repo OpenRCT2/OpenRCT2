@@ -12,6 +12,7 @@
 - Fix: [#18376] Ghost train gentle to flat track is not visible in tunnels.
 - Fix: [#18389] Gentle sloped track pieces are not visible in low clearance height tunnels (original bug).
 - Fix: [#18423] Underground Mini Golf holes can draw over land edges (original bug).
+- Fix: [#18433] CJK TrueType fonts could not be located when font names are translated by the OS.
 - Fix: [#18436] Scenery on the same tile as steep to vertical track can draw over the track (original bug).
 - Fix: [#18711] Park entrances with their sides underground can cause glitching.
 - Fix: [#20848] Junior Roller Coaster booster track does not draw correctly in tunnels.
