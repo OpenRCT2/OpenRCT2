@@ -336,7 +336,7 @@ void Ride::removePeeps()
         }
     }
     numRiders = 0;
-    slideInUse = 0;
+    slideInUse = false;
     windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN;
 }
 
