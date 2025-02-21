@@ -12,6 +12,7 @@
 #include "../../Cheats.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
+#include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
@@ -26,7 +27,6 @@
 #include "../../paint/Paint.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
-#include "../../sprites.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
 #include "../../world/tile_element/TileElement.h"
@@ -161,34 +161,43 @@ struct TunnelDescriptor
     uint8_t height;
     uint8_t boundBoxLength;
     int16_t boundBoxZOffset;
+    int8_t lowerEdgeBoundingBoxZ;
     TunnelType lowClearanceAlternative;
     uint8_t imageOffset;
 };
 static constexpr TunnelDescriptor kTunnels[] = {
-    { 2, 2, 0,   TunnelType::StandardFlat,        36 },  // TunnelType::StandardFlat
-    { 3, 3, 0,   TunnelType::StandardFlat,        40 },  // TunnelType::StandardSlopeStart
-    { 3, 5, -32, TunnelType::StandardFlat,        44 },  // TunnelType::StandardSlopeEnd
-    { 3, 3, 0,   TunnelType::InvertedFlat,        48 },  // TunnelType::InvertedFlat
-    { 4, 4, 0,   TunnelType::InvertedFlat,        52 },  // TunnelType::InvertedSlopeStart
-    { 4, 6, -48, TunnelType::InvertedFlat,        56 },  // TunnelType::InvertedSlopeEnd
-    { 2, 2, 0,   TunnelType::SquareFlat,          60 },  // TunnelType::SquareFlat
-    { 3, 3, 0,   TunnelType::SquareFlat,          64 },  // TunnelType::SquareSlopeStart
-    { 3, 5, -32, TunnelType::SquareFlat,          68 },  // TunnelType::SquareSlopeEnd
-    { 3, 3, 0,   TunnelType::SquareFlat,          72 },  // TunnelType::InvertedSquare
-    { 2, 3, -16, TunnelType::PathAndMiniGolf,     76 },  // TunnelType::PathAndMiniGolf
-    { 2, 3, -16, TunnelType::Path11,              80 },  // TunnelType::Path11
-    { 2, 3, -16, TunnelType::StandardFlatTo25Deg, 36 },  // TunnelType::StandardFlatTo25Deg
-    { 3, 4, -16, TunnelType::InvertedFlatTo25Deg, 48 },  // TunnelType::InvertedFlatTo25Deg
-    { 2, 3, -16, TunnelType::SquareFlatTo25Deg,   60 },  // TunnelType::SquareFlatTo25Deg
-    { 3, 4, -16, TunnelType::SquareFlatTo25Deg,   72 },  // TunnelType::InvertedSquareFlatTo25Deg
-    { 2, 2, 0,   TunnelType::Doors0,              76 },  // TunnelType::Doors0
-    { 2, 2, 0,   TunnelType::Doors1,              80 },  // TunnelType::Doors1
-    { 2, 2, 0,   TunnelType::Doors2,              84 },  // TunnelType::Doors2
-    { 2, 2, 0,   TunnelType::Doors3,              88 },  // TunnelType::Doors3
-    { 2, 2, 0,   TunnelType::Doors4,              92 },  // TunnelType::Doors4
-    { 2, 2, 0,   TunnelType::Doors5,              96 },  // TunnelType::Doors5
-    { 2, 2, 0,   TunnelType::Doors6,              100 }, // TunnelType::Doors6
+    { 2, 2, 0,   15, TunnelType::StandardFlat,        36 },  // TunnelType::StandardFlat
+    { 3, 3, 0,   15, TunnelType::StandardFlat,        40 },  // TunnelType::StandardSlopeStart
+    { 3, 5, -32,  4, TunnelType::StandardFlat,        44 },  // TunnelType::StandardSlopeEnd
+    { 3, 3, 0,   15, TunnelType::InvertedFlat,        48 },  // TunnelType::InvertedFlat
+    { 4, 4, 0,   15, TunnelType::InvertedFlat,        52 },  // TunnelType::InvertedSlopeStart
+    { 4, 7, -48,  4, TunnelType::InvertedFlat,        56 },  // TunnelType::InvertedSlopeEnd
+    { 2, 2, 0,   15, TunnelType::SquareFlat,          60 },  // TunnelType::SquareFlat
+    { 3, 3, 0,   15, TunnelType::SquareFlat,          64 },  // TunnelType::SquareSlopeStart
+    { 3, 5, -32,  4, TunnelType::SquareFlat,          68 },  // TunnelType::SquareSlopeEnd
+    { 3, 3, 0,   15, TunnelType::SquareFlat,          72 },  // TunnelType::InvertedSquare
+    { 2, 3, -16, 15, TunnelType::PathAndMiniGolf,     76 },  // TunnelType::PathAndMiniGolf
+    { 2, 3, -16, 15, TunnelType::Path11,              80 },  // TunnelType::Path11
+    { 2, 3, -16,  4, TunnelType::StandardFlatTo25Deg, 36 },  // TunnelType::StandardFlatTo25Deg
+    { 3, 4, -16,  4, TunnelType::InvertedFlatTo25Deg, 48 },  // TunnelType::InvertedFlatTo25Deg
+    { 2, 3, -16,  4, TunnelType::SquareFlatTo25Deg,   60 },  // TunnelType::SquareFlatTo25Deg
+    { 3, 4, -16,  4, TunnelType::SquareFlatTo25Deg,   72 },  // TunnelType::InvertedSquareFlatTo25Deg
+    { 2, 2, 0,   15, TunnelType::Doors0,              76 },  // TunnelType::Doors0
+    { 2, 2, 0,   15, TunnelType::Doors1,              80 },  // TunnelType::Doors1
+    { 2, 2, 0,   15, TunnelType::Doors2,              84 },  // TunnelType::Doors2
+    { 2, 2, 0,   15, TunnelType::Doors3,              88 },  // TunnelType::Doors3
+    { 2, 2, 0,   15, TunnelType::Doors4,              92 },  // TunnelType::Doors4
+    { 2, 2, 0,   15, TunnelType::Doors5,              96 },  // TunnelType::Doors5
+    { 2, 2, 0,   15, TunnelType::Doors6,              100 }, // TunnelType::Doors6
+    { 2, 3, -16,  4, TunnelType::Doors0,              76 },  // TunnelType::DoorsFlatTo25Deg0
+    { 2, 3, -16,  4, TunnelType::Doors1,              80 },  // TunnelType::DoorsFlatTo25Deg1
+    { 2, 3, -16,  4, TunnelType::Doors2,              84 },  // TunnelType::DoorsFlatTo25Deg2
+    { 2, 3, -16,  4, TunnelType::Doors3,              88 },  // TunnelType::DoorsFlatTo25Deg3
+    { 2, 3, -16,  4, TunnelType::Doors4,              92 },  // TunnelType::DoorsFlatTo25Deg4
+    { 2, 3, -16,  4, TunnelType::Doors5,              96 },  // TunnelType::DoorsFlatTo25Deg5
+    { 2, 3, -16,  4, TunnelType::Doors6,              100 }, // TunnelType::DoorsFlatTo25Deg6
 };
+static_assert(std::size(kTunnels) == EnumValue(TunnelType::Count));
 
 // clang-format on
 // tunnel offset
@@ -638,7 +647,9 @@ static void ViewportSurfaceDrawTileSideBottom(
 
             if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
-                PaintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, 15 });
+                const auto td = kTunnels[EnumValue(tunnelArray[tunnelIndex].type)];
+                const auto boundBoxZ = curHeight == tunnelArray[tunnelIndex].height - 1 ? td.lowerEdgeBoundingBoxZ : 15;
+                PaintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, boundBoxZ });
 
                 curHeight++;
                 continue;
@@ -647,7 +658,8 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         // Tunnels
         auto tunnelType = tunnelArray[tunnelIndex].type;
-        auto td = kTunnels[EnumValue(tunnelType)];
+        const auto tdOriginal = kTunnels[EnumValue(tunnelType)];
+        auto td = tdOriginal;
         uint8_t tunnelHeight = td.height;
         int16_t zOffset = curHeight;
 
@@ -660,8 +672,10 @@ static void ViewportSurfaceDrawTileSideBottom(
 
         zOffset *= 16;
 
-        int16_t boundBoxOffsetZ = zOffset + td.boundBoxZOffset;
-        int8_t boundBoxLength = td.boundBoxLength * 16;
+        const int8_t boundBoxLengthBase = (tdOriginal.boundBoxLength + (td.height - tdOriginal.height)) * 16;
+
+        int16_t boundBoxOffsetZ = zOffset + tdOriginal.boundBoxZOffset;
+        int8_t boundBoxLength = boundBoxLengthBase;
         if (boundBoxOffsetZ < 16)
         {
             boundBoxOffsetZ += 16;
@@ -673,8 +687,8 @@ static void ViewportSurfaceDrawTileSideBottom(
             session, imageId, { offset, zOffset }, { { 0, 0, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
         boundBoxOffsetZ = curHeight * kCoordsZPerTinyZ;
-        boundBoxLength = td.boundBoxLength * 16;
-        boundBoxOffsetZ += td.boundBoxZOffset;
+        boundBoxLength = boundBoxLengthBase;
+        boundBoxOffsetZ += tdOriginal.boundBoxZOffset;
         if (boundBoxOffsetZ == 0)
         {
             boundBoxOffsetZ += 16;
@@ -841,7 +855,7 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
         int32_t waterHeight = surfaceElement.GetWaterHeight();
         if (waterHeight > height)
         {
-            localHeight += LAND_HEIGHT_STEP;
+            localHeight += kLandHeightStep;
 
             if (waterHeight != localHeight || !(localSurfaceShape & static_cast<int32_t>(kTileSlopeDiagonalFlag)))
             {

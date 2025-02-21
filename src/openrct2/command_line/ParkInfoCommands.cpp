@@ -26,7 +26,7 @@ static constexpr CommandLineOptionDefinition kNoOptions[]
 
 static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
 
-const CommandLineCommand CommandLine::ParkInfoCommands[]{
+const CommandLineCommand CommandLine::kParkInfoCommands[]{
     // Main commands
     DefineCommand("objects", "<savefile>", kNoOptions, HandleObjectsInfo),
 
@@ -100,23 +100,23 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
     };
 
     for (auto& objType : {
-             ObjectType::Ride,
-             ObjectType::SmallScenery,
-             ObjectType::LargeScenery,
-             ObjectType::Walls,
-             ObjectType::Banners,
-             ObjectType::Paths,
-             ObjectType::PathAdditions,
-             ObjectType::SceneryGroup,
-             ObjectType::ParkEntrance,
-             ObjectType::Water,
-             ObjectType::ScenarioText,
-             ObjectType::TerrainSurface,
-             ObjectType::TerrainEdge,
-             ObjectType::Station,
-             ObjectType::Music,
-             ObjectType::FootpathSurface,
-             ObjectType::FootpathRailings,
+             ObjectType::ride,
+             ObjectType::smallScenery,
+             ObjectType::largeScenery,
+             ObjectType::walls,
+             ObjectType::banners,
+             ObjectType::paths,
+             ObjectType::pathAdditions,
+             ObjectType::sceneryGroup,
+             ObjectType::parkEntrance,
+             ObjectType::water,
+             ObjectType::scenarioText,
+             ObjectType::terrainSurface,
+             ObjectType::terrainEdge,
+             ObjectType::station,
+             ObjectType::music,
+             ObjectType::footpathSurface,
+             ObjectType::footpathRailings,
          })
     {
         auto& list = loadResult.RequiredObjects.GetList(objType);

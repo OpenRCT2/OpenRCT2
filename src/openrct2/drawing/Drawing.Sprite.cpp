@@ -13,6 +13,7 @@
 #include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
@@ -20,7 +21,6 @@
 #include "../core/Path.hpp"
 #include "../platform/Platform.h"
 #include "../rct1/Csg.h"
-#include "../sprites.h"
 #include "../ui/UiContext.h"
 #include "ScrollingText.h"
 

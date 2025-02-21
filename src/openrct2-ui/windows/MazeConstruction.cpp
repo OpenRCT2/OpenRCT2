@@ -15,16 +15,16 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/MazeSetTrackAction.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
@@ -46,12 +46,12 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAZE_BUILD_MODE = 6,
         WIDX_MAZE_MOVE_MODE,
         WIDX_MAZE_FILL_MODE,
-        WIDX_MAZE_DIRECTION_GROUPBOX = 25,
+        WIDX_MAZE_DIRECTION_GROUPBOX = 27,
         WIDX_MAZE_DIRECTION_NW,
         WIDX_MAZE_DIRECTION_NE,
         WIDX_MAZE_DIRECTION_SW,
         WIDX_MAZE_DIRECTION_SE,
-        WIDX_MAZE_ENTRANCE = 30,
+        WIDX_MAZE_ENTRANCE = 32,
         WIDX_MAZE_EXIT,
     };
 
@@ -68,6 +68,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({35,  29}, { 32, 32}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_MAZE_CONSTRUCTION_BUILD),    STR_RIDE_CONSTRUCTION_BUILD_MODE                      ),
         MakeWidget({67,  29}, { 32, 32}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_MAZE_CONSTRUCTION_MOVE),     STR_RIDE_CONSTRUCTION_MOVE_MODE                       ),
         MakeWidget({99,  29}, { 32, 32}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_MAZE_CONSTRUCTION_FILL_IN),  STR_RIDE_CONSTRUCTION_FILL_IN_MODE                    ),
+        MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+        MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
@@ -188,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
                 {
-                    WidgetInvalidate(*this, i);
+                    InvalidateWidget(i);
                 }
             }
             disabled_widgets = disabledWidgets;
@@ -365,20 +367,21 @@ namespace OpenRCT2::Ui::Windows
 
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
+                auto* windowMgr = Ui::GetWindowManager();
+
                 auto currentRide = GetRide(rideIndex);
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                 {
                     ToolCancel();
                     if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     {
-                        auto* windowMgr = Ui::GetWindowManager();
                         windowMgr->CloseByClass(WindowClass::RideConstruction);
                     }
                 }
                 else
                 {
                     gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                    WindowInvalidateByClass(WindowClass::RideConstruction);
+                    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
 
                     auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WIDX_MAZE_ENTRANCE
                                                                                                           : WIDX_MAZE_EXIT;

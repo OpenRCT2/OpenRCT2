@@ -7,8 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../localisation/Formatter.h"
 #include "WindowManager.h"
+
+class Formatter;
 
 namespace OpenRCT2::Ui
 {
@@ -109,6 +110,14 @@ namespace OpenRCT2::Ui
         {
             return kWidgetIndexNull;
         }
+
+        void InvalidateByClass(WindowClass cls) override {};
+        void InvalidateByNumber(WindowClass cls, rct_windownumber number) override {};
+        void InvalidateByNumber(WindowClass cls, EntityId id) override {};
+        void InvalidateAll() override {};
+        void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) override {};
+        void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override {};
+        void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) override {};
 
         WindowBase* BringToFront(WindowBase& w) override
         {

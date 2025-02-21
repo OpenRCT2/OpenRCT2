@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/localisation/Formatter.h>
@@ -21,7 +22,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -760,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw campaign button text
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
-                auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
+                auto campaignButton = &widgets[WIDX_CAMPAIGN_1 + i];
                 if (campaignButton->type != WindowWidgetType::Empty)
                 {
                     // Draw button text

@@ -12,7 +12,6 @@
 #include "../Diagnostic.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
 #include "../ui/WindowManager.h"
 
 using namespace OpenRCT2;

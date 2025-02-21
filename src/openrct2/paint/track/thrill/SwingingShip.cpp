@@ -24,14 +24,14 @@
 using namespace OpenRCT2;
 
 // 1 2 0 3 4
-static constexpr uint8_t track_map_1x5[][5] = {
+static constexpr uint8_t kTrackMap1x5[][5] = {
     { 0, 1, 2, 3, 4 },
     { 0, 4, 3, 2, 1 },
     { 0, 4, 3, 2, 1 },
     { 0, 1, 2, 3, 4 },
 };
 /** rct2: 0x008A83B0 */
-static constexpr uint32_t SwingingShipBaseSpriteOffset[] = {
+static constexpr uint32_t kSwingingShipBaseSpriteOffset[] = {
     0,
     9,
     0,
@@ -39,7 +39,7 @@ static constexpr uint32_t SwingingShipBaseSpriteOffset[] = {
 };
 
 /** rct2: 0x008A83C0 */
-static constexpr BoundBoxXY SwingingShipData[] = {
+static constexpr BoundBoxXY kSwingingShipData[] = {
     { { 1, 8 }, { 31, 16 } },
     { { 8, 1 }, { 16, 31 } },
     { { 1, 8 }, { 31, 16 } },
@@ -54,7 +54,7 @@ enum
     SPR_SWINGING_SHIP_FRAME_FRONT_NW_SE = 21997,
 };
 
-static constexpr uint32_t SwingingShipFrameSprites[][2] = {
+static constexpr uint32_t kSwingingShipFrameSprites[][2] = {
     { SPR_SWINGING_SHIP_FRAME_SW_NE, SPR_SWINGING_SHIP_FRAME_FRONT_SW_NE },
     { SPR_SWINGING_SHIP_FRAME_NW_SE, SPR_SWINGING_SHIP_FRAME_FRONT_NW_SE },
 };
@@ -102,11 +102,11 @@ static void PaintSwingingShipStructure(
         session.CurrentlyDrawnEntity = vehicle;
     }
 
-    const auto& bounds = SwingingShipData[direction];
+    const auto& bounds = kSwingingShipData[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
     BoundBoxXYZ bb = { { bounds.offset, height + 7 }, { bounds.length, 80 } };
 
-    auto baseImageId = rideEntry->Cars[0].base_image_id + SwingingShipBaseSpriteOffset[direction];
+    auto baseImageId = rideEntry->Cars[0].base_image_id + kSwingingShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
         int32_t rotation = static_cast<int8_t>(vehicle->Pitch);
@@ -133,7 +133,7 @@ static void PaintSwingingShipStructure(
     }
 
     // Supports (back)
-    auto imageId = supportsImageTemplate.WithIndex(SwingingShipFrameSprites[(direction & 1)][0]);
+    auto imageId = supportsImageTemplate.WithIndex(kSwingingShipFrameSprites[(direction & 1)][0]);
     PaintAddImageAsParent(session, imageId, offset, bb);
 
     // Ship
@@ -146,7 +146,7 @@ static void PaintSwingingShipStructure(
     }
 
     // Supports (front)
-    imageId = supportsImageTemplate.WithIndex(SwingingShipFrameSprites[(direction & 1)][1]);
+    imageId = supportsImageTemplate.WithIndex(kSwingingShipFrameSprites[(direction & 1)][1]);
     PaintAddImageAsChild(session, imageId, offset, bb);
 
     session.CurrentlyDrawnEntity = nullptr;
@@ -157,7 +157,7 @@ static void PaintSwingingShip(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
+    uint8_t relativeTrackSequence = kTrackMap1x5[direction][trackSequence];
 
     ImageId imageId;
     bool hasFence;

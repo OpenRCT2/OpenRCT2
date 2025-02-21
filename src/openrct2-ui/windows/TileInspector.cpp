@@ -17,6 +17,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/TileModifyAction.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Formatter.h>
@@ -32,7 +33,6 @@
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Banner.h>
@@ -775,7 +775,7 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 case WIDX_SPINNER_X_INCREASE:
                     windowTileInspectorTile.x = std::min<int32_t>(windowTileInspectorTile.x + 1, kMaximumMapSizeTechnical - 1);
-                    _toolMap.x = std::min<int32_t>(_toolMap.x + 32, MAXIMUM_TILE_START_XY);
+                    _toolMap.x = std::min<int32_t>(_toolMap.x + 32, kMaximumTileStartXY);
                     LoadTile(nullptr);
                     break;
 
@@ -787,7 +787,7 @@ static uint64_t PageDisabledWidgets[] = {
 
                 case WIDX_SPINNER_Y_INCREASE:
                     windowTileInspectorTile.y = std::min<int32_t>(windowTileInspectorTile.y + 1, kMaximumMapSizeTechnical - 1);
-                    _toolMap.y = std::min<int32_t>(_toolMap.y + 32, MAXIMUM_TILE_START_XY);
+                    _toolMap.y = std::min<int32_t>(_toolMap.y + 32, kMaximumTileStartXY);
                     LoadTile(nullptr);
                     break;
 

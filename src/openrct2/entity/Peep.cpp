@@ -16,10 +16,11 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../SpriteIds.h"
 #include "../actions/GameAction.h"
+#include "../audio/Audio.h"
 #include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
@@ -48,8 +49,6 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
-#include "../sprites.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -608,13 +607,13 @@ void PeepWindowStateUpdate(Peep* peep)
             }
         }
 
-        WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
-        WindowInvalidateByClass(WindowClass::GuestList);
+        windowMgr->InvalidateByNumber(WindowClass::Peep, peep->Id);
+        windowMgr->InvalidateByClass(WindowClass::GuestList);
     }
     else
     {
-        WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
-        WindowInvalidateByClass(WindowClass::StaffList);
+        windowMgr->InvalidateByNumber(WindowClass::Peep, peep->Id);
+        windowMgr->InvalidateByClass(WindowClass::StaffList);
     }
 }
 
@@ -809,7 +808,7 @@ void Peep::UpdateFalling()
                                      { x, y }, tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
                     + tile_element->GetBaseZ();
 
-                if (height < z - 1 || height > z + 4)
+                if (height < z - 1 || height > z + 8)
                     continue;
 
                 saved_height = height;
@@ -2056,7 +2055,9 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         GetGameState().TotalAdmissions++;
-        WindowInvalidateByNumber(WindowClass::ParkInformation, 0);
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::ParkInformation, 0);
 
         guest->Var37 = 1;
         auto destination = guest->GetDestination();
@@ -2921,6 +2922,10 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 
     auto* guest = As<Guest>();
     if (guest == nullptr)
+        return;
+
+    // Can't display any accessories whilst drowning
+    if (Action == PeepActionType::Drowning)
         return;
 
     // There are only 6 walking frames available for each item,

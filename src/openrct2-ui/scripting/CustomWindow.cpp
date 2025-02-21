@@ -9,7 +9,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../UiContext.h"
     #include "../UiStringIds.h"
     #include "../interface/Dropdown.h"
     #include "../interface/Widget.h"
@@ -21,12 +20,11 @@
     #include "ScWindow.hpp"
 
     #include <limits>
+    #include <openrct2/SpriteIds.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/interface/Window.h>
     #include <openrct2/localisation/Formatter.h>
-    #include <openrct2/localisation/Language.h>
     #include <openrct2/scripting/Plugin.h>
-    #include <openrct2/sprites.h>
     #include <optional>
     #include <string>
     #include <utility>
@@ -465,7 +463,8 @@ namespace OpenRCT2::Ui::Windows
                     {
                         frame_no = 0;
                     }
-                    WidgetInvalidate(*this, WIDX_TAB_0 + this->page);
+
+                    InvalidateWidget(WIDX_TAB_0 + this->page);
                 }
             }
 
@@ -1203,7 +1202,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 customWidgetInfo->Text = value;
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
-                WidgetInvalidate(*w, widgetIndex);
+
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateWidget(*w, widgetIndex);
             }
         }
     }
@@ -1237,7 +1238,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     customWidgetInfo->Colour = colour;
                     widget.image = GetColourButtonImage(colour);
-                    WidgetInvalidate(*w, widgetIndex);
+
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->InvalidateWidget(*w, widgetIndex);
 
                     std::vector<DukValue> args;
                     auto ctx = customWidgetInfo->OnChange.context();
@@ -1282,7 +1285,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 customWidgetInfo->SelectedIndex = selectedIndex;
 
-                WidgetInvalidate(*w, widgetIndex);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateWidget(*w, widgetIndex);
 
                 if (lastSelectedIndex != selectedIndex)
                 {

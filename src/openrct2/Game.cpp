@@ -23,7 +23,7 @@
 #include "ReplayManager.h"
 #include "actions/GameSetSpeedAction.h"
 #include "actions/LoadOrQuitAction.h"
-#include "audio/audio.h"
+#include "audio/Audio.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/File.h"
@@ -140,7 +140,10 @@ void GameCreateWindows()
 void PauseToggle()
 {
     gGamePaused ^= GAME_PAUSED_NORMAL;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
         OpenRCT2::Audio::StopAll();

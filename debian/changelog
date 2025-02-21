@@ -1,3 +1,28 @@
+openrct2 (0.4.19.1-develop-1) unstable; urgency=medium
+
+* Fix: [#23771] Weather transitions are horribly broken.
+
+openrct2 (0.4.19-develop-1) unstable; urgency=medium
+
+ * Feature: [#23328] Introducing peep animation objects, enabling custom entertainer costumes.
+ * Feature: [#23569] Add large diagonal flat to steep and dive loop track pieces.
+ * Improved: [#20683] Allow Giga Coaster cable lift to start after block brake section.
+ * Improved: [#23328] The costume list in the staff window is now ordered alphabetically.
+ * Improved: [#23540] The file browser now optionally shows a file size column.
+ * Improved: [#23640] Building sprite repository with command line can use images array of JSON parkobj.
+ * Improved: [#23660] The ‘special elements’ dropdown has been reorganised, now using multiple columns and separators.
+ * Improved: [#23730] Added optional button to toolbar to rotate view anti-clockwise.
+ * Change: [#23328] All RCT2 entertainer costumes are now available in legacy parks.
+ * Fix: [#1479] Incorrect values provided by the in game console “get location” command.
+ * Fix: [#21794] Lay-down coaster cars reverse on first frames of downwards corkscrew.
+ * Fix: [#23221] Track designs are saved with an incorrect ‘air’ time statistic.
+ * Fix: [#23368] Incorrect refund amount when deleting track pieces at or above 96m.
+ * Fix: [#23508] Simultaneous virtual floors shown for ride and footpath.
+ * Fix: [#23512] Holding brakes are skipped if they’re too close together.
+ * Fix: [#23581] [Plugin] Food/drink items given to guests have no consumption duration set.
+ * Fix: [#23591] “Install new track” button in Track Designs Manager is misaligned.
+ * Fix: [#23618] Can no longer build diagonal brakes & block brakes on Steeplechase, Inverted Lay-down, & Inverted Multi-Dim roller coasters.
+
 openrct2 (0.4.18-develop-1) unstable; urgency=medium
 
  * Improved: [#23200] Add banked sloped turns and many other pieces to the Stand-Up and Classic Stand-Up Roller Coaster.

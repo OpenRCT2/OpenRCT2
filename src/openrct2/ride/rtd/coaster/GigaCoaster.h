@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
     .UpkeepCosts = { 10, 20, 80, 12, 3, 40 },
     .BuildCosts = { 60.00_GBP, 2.50_GBP, 55, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_3,
+    .DefaultMusic = kMusicObjectRock3,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -61,13 +61,13 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 85), RIDE_RATING(0, 40), RIDE_RATING(0, 35) },
+        { MakeRideRating(3, 85), MakeRideRating(0, 40), MakeRideRating(0, 35) },
         14,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             819, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                140434, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                51366, 85019, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                364088, 400497, 0 },
@@ -81,7 +81,7 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 16,               2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 40), 2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                36864, 30384, 49648 },
         },

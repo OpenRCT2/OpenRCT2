@@ -12,12 +12,12 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/paint/Paint.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 
@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
                     _previousClipSelectionA = gClipSelectionA;
                     _previousClipSelectionB = gClipSelectionB;
                     gClipSelectionA = { 0, 0 };
-                    gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
+                    gClipSelectionB = { kMaximumMapSizeBig - 1, kMaximumMapSizeBig - 1 };
                     GfxInvalidateScreen();
                     break;
                 case WIDX_CLIP_CLEAR:
@@ -134,7 +134,7 @@ namespace OpenRCT2::Ui::Windows
                         _toolActive = false;
                     }
                     gClipSelectionA = { 0, 0 };
-                    gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
+                    gClipSelectionB = { kMaximumMapSizeBig - 1, kMaximumMapSizeBig - 1 };
                     GfxInvalidateScreen();
                     break;
             }
@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
                 gClipSelectionB = _previousClipSelectionB;
             }
 
-            WidgetInvalidate(*this, WIDX_CLIP_HEIGHT_SLIDER);
+            InvalidateWidget(WIDX_CLIP_HEIGHT_SLIDER);
         }
 
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -304,7 +304,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // Height label is Units.
                         auto ft = Formatter();
-                        ft.Add<fixed16_1dp>(static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0)));
+                        ft.Add<fixed16_1dp>((MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2 - MakeFixed1dp<fixed16_1dp>(7, 0)));
                         DrawTextBasic(
                             dpi, screenCoords, STR_UNIT1DP_NO_SUFFIX, ft,
                             { this->colours[0] }); // Printing the value in Height Units.
@@ -320,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 auto ft = Formatter();
                                 ft.Add<fixed32_2dp>(
-                                    static_cast<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50)));
+                                    MakeFixed2dp<fixed32_2dp>(gClipHeight, 0) / 2 * 1.5f - MakeFixed2dp<fixed32_2dp>(10, 50));
                                 DrawTextBasic(dpi, screenCoords, STR_UNIT2DP_SUFFIX_METRES, ft, { this->colours[0] });
                                 break;
                             }
@@ -328,7 +328,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 auto ft = Formatter();
                                 ft.Add<fixed16_1dp>(
-                                    static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0)));
+                                    MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2.0f * 5 - MakeFixed1dp<fixed16_1dp>(35, 0));
                                 DrawTextBasic(dpi, screenCoords, STR_UNIT1DP_SUFFIX_FEET, ft, { this->colours[0] });
                                 break;
                             }

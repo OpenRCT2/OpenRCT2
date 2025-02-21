@@ -23,9 +23,7 @@
 #include "../entity/Staff.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.Date.h"
 #include "../network/network.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
@@ -78,6 +76,7 @@ TrackPitch _previousTrackPitchEnd;
 CoordsXYZ _previousTrackPiece;
 
 uint8_t _currentBrakeSpeed;
+RideColourScheme _currentColourScheme;
 uint8_t _currentSeatRotationAngle;
 
 CoordsXYZD _unkF440C5;
@@ -442,7 +441,13 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         }
         if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
         {
-            trackElement->SetColourScheme(static_cast<RideColourScheme>(extra_params & 0xFF));
+            auto newScheme = static_cast<RideColourScheme>(extra_params & 0xFF);
+            trackElement->SetColourScheme(newScheme);
+
+            if (_previousTrackPiece == retCoordsXYZ)
+            {
+                _currentColourScheme = newScheme;
+            }
         }
         if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
         {
@@ -632,12 +637,23 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackRollEnd = bank;
             _previousTrackRollEnd = bank;
 
+            const auto& trackElement = tileElement->AsTrack();
+
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain()
+            _currentTrackHasLiftHill = trackElement->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
                     || GetGameState().Cheats.enableChainLiftOnAllTrack);
+
+            if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
+                _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
+            _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
+            _currentSeatRotationAngle = trackElement->GetSeatRotation();
+
+            _previousTrackPiece.x = trackBeginEnd.begin_x;
+            _previousTrackPiece.y = trackBeginEnd.begin_y;
+            _previousTrackPiece.z = trackElement->GetBaseZ();
             break;
         }
         case RideConstructionState::Back:
@@ -680,13 +696,24 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackRollEnd = bank;
             _previousTrackRollEnd = bank;
 
+            const auto& trackElement = tileElement->AsTrack();
+
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
             if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
-                _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain();
+                _currentTrackHasLiftHill = trackElement->HasChain();
             }
+
+            if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
+                _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
+            _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
+            _currentSeatRotationAngle = trackElement->GetSeatRotation();
+
+            _previousTrackPiece.x = xyElement.x;
+            _previousTrackPiece.y = xyElement.y;
+            _previousTrackPiece.z = trackElement->GetBaseZ();
             break;
         }
         default:
@@ -874,7 +901,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
 
         rideEntranceExitRemove.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
             gRideEntranceExitPlaceType = entranceType;
-            WindowInvalidateByClass(WindowClass::RideConstruction);
+            windowMgr->InvalidateByClass(WindowClass::RideConstruction);
 
             auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                     : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
@@ -886,7 +913,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         GameActions::Execute(&rideEntranceExitRemove);
     }
 
-    WindowInvalidateByClass(WindowClass::RideConstruction);
+    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
     return true;
 }
 
@@ -1257,7 +1284,7 @@ void Ride::ValidateStations()
         }
     }
     // determine what entrances and exits exist
-    sfl::static_vector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
+    sfl::static_vector<TileCoordsXYZD, kMaxStationLocations> locations;
     for (auto& station : stations)
     {
         if (!station.Entrance.IsNull())

@@ -866,9 +866,9 @@ namespace OpenRCT2::Drawing::LightFx
 
         //  overExpose += ((lightMax - lightAvg) / lightMax) * 0.01f;
 
-        if (gameState.ClimateCurrent.Temperature > 20)
+        if (gameState.WeatherCurrent.temperature > 20)
         {
-            float offset = (static_cast<float>(gameState.ClimateCurrent.Temperature - 20)) * 0.04f;
+            float offset = (static_cast<float>(gameState.WeatherCurrent.temperature - 20)) * 0.04f;
             offset *= 1.0f - night;
             lightAvg /= 1.0f + offset;
             //      overExpose += offset * 0.1f;
@@ -890,12 +890,12 @@ namespace OpenRCT2::Drawing::LightFx
         natLightB *= 1.0f + overExpose;
         overExpose *= 255.0f;
 
-        float targetFogginess = static_cast<float>(gameState.ClimateCurrent.Level) / 8.0f;
+        float targetFogginess = static_cast<float>(gameState.WeatherCurrent.level) / 8.0f;
         targetFogginess += (night * night) * 0.15f;
 
-        if (gameState.ClimateCurrent.Temperature < 10)
+        if (gameState.WeatherCurrent.temperature < 10)
         {
-            targetFogginess += (static_cast<float>(10 - gameState.ClimateCurrent.Temperature)) * 0.01f;
+            targetFogginess += (static_cast<float>(10 - gameState.WeatherCurrent.temperature)) * 0.01f;
         }
 
         fogginess -= (fogginess - targetFogginess) * 0.00001f;
@@ -933,7 +933,7 @@ namespace OpenRCT2::Drawing::LightFx
         natLightG /= 1.0f + lightPolution;
         natLightB /= 1.0f + lightPolution;
 
-        reduceColourLit += static_cast<float>(gameState.ClimateCurrent.Level) / 2.0f;
+        reduceColourLit += static_cast<float>(gameState.WeatherCurrent.level) / 2.0f;
 
         reduceColourNat /= 1.0f + fogginess;
         reduceColourLit /= 1.0f + fogginess;

@@ -22,10 +22,10 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../audio/audio.h"
+#include "../SpriteIds.h"
+#include "../audio/Audio.h"
 #include "../interface/Colour.h"
 #include "../management/Research.h"
-#include "../sprites.h"
 #include "Ride.h"
 #include "ShopItem.h"
 #include "Track.h"
@@ -129,7 +129,7 @@ using namespace OpenRCT2::Entity::Yaw;
 
 // clang-format off
 
-const CarEntry CableLiftVehicle = {
+const CarEntry kCableLiftVehicle = {
     .TabRotationMask = 31,
     .spacing = 0,
     .car_mass = 0,
@@ -208,13 +208,13 @@ const CarEntry CableLiftVehicle = {
 };
 
 /* rct2: 0x009A0AA0 */
-const uint16_t RideFilmLength[3] = {
+const uint16_t kRideFilmLength[3] = {
     5000, // MOUSE_TAILS
     6000, // STORM_CHASERS
     7000, // SPACE_RAIDERS
 };
 
-const StringId RideModeNames[] = {
+const StringId kRideModeNames[] = {
         STR_RIDE_MODE_NORMAL,
         STR_RIDE_MODE_CONTINUOUS_CIRCUIT,
         STR_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
@@ -255,7 +255,7 @@ const StringId RideModeNames[] = {
 };
 // clang-format on
 
-constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
+constexpr RideTypeDescriptor kRideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SPIRAL_ROLLER_COASTER              */ SpiralRollerCoasterRTD,
     /* RIDE_TYPE_STAND_UP_ROLLER_COASTER            */ StandUpRollerCoasterRTD,
     /* RIDE_TYPE_SUSPENDED_SWINGING_COASTER         */ SuspendedSwingingCoasterRTD,
@@ -285,12 +285,12 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SWINGING_SHIP                      */ SwingingShipRTD,
     /* RIDE_TYPE_SWINGING_INVERTER_SHIP             */ SwingingInverterShipRTD,
     /* RIDE_TYPE_FOOD_STALL                         */ FoodStallRTD,
-    /* RIDE_TYPE_1D                                 */ DummyRTD,
+    /* RIDE_TYPE_1D                                 */ kDummyRTD,
     /* RIDE_TYPE_DRINK_STALL                        */ DrinkStallRTD,
-    /* RIDE_TYPE_1F                                 */ DummyRTD,
+    /* RIDE_TYPE_1F                                 */ kDummyRTD,
     /* RIDE_TYPE_SHOP                               */ ShopRTD,
     /* RIDE_TYPE_MERRY_GO_ROUND                     */ MerryGoRoundRTD,
-    /* RIDE_TYPE_22                                 */ DummyRTD,
+    /* RIDE_TYPE_22                                 */ kDummyRTD,
     /* RIDE_TYPE_INFORMATION_KIOSK                  */ InformationKioskRTD,
     /* RIDE_TYPE_TOILETS                            */ ToiletsRTD,
     /* RIDE_TYPE_FERRIS_WHEEL                       */ FerrisWheelRTD,
@@ -336,16 +336,16 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_MAGIC_CARPET                       */ MagicCarpetRTD,
     /* RIDE_TYPE_SUBMARINE_RIDE                     */ SubmarineRideRTD,
     /* RIDE_TYPE_RIVER_RAFTS                        */ RiverRaftsRTD,
-    /* RIDE_TYPE_50                                 */ DummyRTD,
+    /* RIDE_TYPE_50                                 */ kDummyRTD,
     /* RIDE_TYPE_ENTERPRISE                         */ EnterpriseRTD,
-    /* RIDE_TYPE_52                                 */ DummyRTD,
-    /* RIDE_TYPE_53                                 */ DummyRTD,
-    /* RIDE_TYPE_54                                 */ DummyRTD,
-    /* RIDE_TYPE_55                                 */ DummyRTD,
+    /* RIDE_TYPE_52                                 */ kDummyRTD,
+    /* RIDE_TYPE_53                                 */ kDummyRTD,
+    /* RIDE_TYPE_54                                 */ kDummyRTD,
+    /* RIDE_TYPE_55                                 */ kDummyRTD,
     /* RIDE_TYPE_INVERTED_IMPULSE_COASTER           */ InvertedImpulseCoasterRTD,
     /* RIDE_TYPE_MINI_ROLLER_COASTER                */ MiniRollerCoasterRTD,
     /* RIDE_TYPE_MINE_RIDE                          */ MineRideRTD,
-    /* RIDE_TYPE_59                                 */ DummyRTD,
+    /* RIDE_TYPE_59                                 */ kDummyRTD,
     /* RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER        */ LIMLaunchedRollerCoasterRTD,
     /* RIDE_TYPE_HYPERCOASTER,                      */ HypercoasterRTD,
     /* RIDE_TYPE_HYPER_TWISTER,                     */ HyperTwisterRTD,

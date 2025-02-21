@@ -201,7 +201,7 @@ namespace OpenRCT2::PathFinding
         assert(DirectionValid(direction));
         auto newTile = CoordsXY{ CoordsXY{ peep.NextLoc } + CoordsDirectionDelta[direction] }.ToTileCentre();
 
-        if (newTile.x >= MAXIMUM_MAP_SIZE_BIG || newTile.y >= MAXIMUM_MAP_SIZE_BIG)
+        if (newTile.x >= kMaximumMapSizeBig || newTile.y >= kMaximumMapSizeBig)
         {
             // This could loop!
             return GuestSurfacePathFinding(peep);

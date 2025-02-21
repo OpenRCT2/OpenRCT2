@@ -11,6 +11,7 @@
 
 #include "../../Game.h"
 #include "../../GameState.h"
+#include "../../SpriteIds.h"
 #include "../../core/Speed.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../drawing/LightFX.h"
@@ -21,7 +22,6 @@
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 #include "../../ride/Vehicle.h"
-#include "../../sprites.h"
 #include "../Paint.h"
 
 #include <iterator>
@@ -4326,7 +4326,7 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
     int32_t zOffset = 0;
     if (IsCableLift())
     {
-        carEntry = &CableLiftVehicle;
+        carEntry = &kCableLiftVehicle;
     }
     else
     {

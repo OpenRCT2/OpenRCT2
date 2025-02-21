@@ -18,7 +18,6 @@
 #include "../core/ZipStream.hpp"
 #include "../drawing/Image.h"
 #include "../localisation/Language.h"
-#include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
 #include "../world/Scenery.h"
 #include "ObjectLimits.h"

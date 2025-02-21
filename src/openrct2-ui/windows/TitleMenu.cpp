@@ -16,8 +16,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 

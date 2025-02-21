@@ -43,6 +43,7 @@
 #include "../entity/Staff.h"
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
+#include "../interface/Viewport.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/StringIds.h"
@@ -176,7 +177,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::Count); i++)
                     {
                         char mode_name[128] = { 0 };
-                        StringId mode_string_id = RideModeNames[i];
+                        StringId mode_string_id = kRideModeNames[i];
                         OpenRCT2::FormatStringLegacy(mode_name, 128, mode_string_id, nullptr);
                         console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
@@ -1109,7 +1110,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
         auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
 
         ObjectType objectType = entry->GetType();
-        if (objectType == ObjectType::Ride)
+        if (objectType == ObjectType::ride)
         {
             // Automatically research the ride so it's supported by the game.
             const auto* rideEntry = GetRideEntryByIndex(groupIndex);
@@ -1117,7 +1118,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
             for (int32_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
             {
                 auto rideType = rideEntry->ride_type[j];
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != kRideTypeNull)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                     ResearchInsertRideEntry(rideType, groupIndex, category, true);
@@ -1128,7 +1129,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
             ResearchResetCurrentItem();
             gSilentResearch = false;
         }
-        else if (objectType == ObjectType::SceneryGroup)
+        else if (objectType == ObjectType::sceneryGroup)
         {
             ResearchInsertSceneryGroupEntry(groupIndex, true);
 
@@ -1171,7 +1172,7 @@ constexpr auto _objectTypeNames = std::to_array<StringId>({
     STR_OBJECT_SELECTION_PEEP_NAMES,
     STR_OBJECT_SELECTION_PEEP_ANIMATIONS,
 });
-static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
+static_assert(_objectTypeNames.size() == EnumValue(ObjectType::count));
 
 static void ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
@@ -1285,7 +1286,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
     auto bannerCount = GetNumBanners();
 
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, kMaxEntities);
-    console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
+    console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, kMaxTileElements);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, OpenRCT2::Limits::kMaxRidesInPark);
     console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());
@@ -1343,7 +1344,9 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
 
     auto setDateAction = ParkSetDateAction(year - 1, month - 1, day - 1);
     GameActions::Execute(&setDateAction);
-    WindowInvalidateByClass(WindowClass::BottomToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
 }
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)

@@ -10,12 +10,12 @@
 #include "Font.h"
 
 #include "../Diagnostic.h"
+#include "../SpriteIds.h"
 #include "../core/EnumUtils.hpp"
 #include "../core/UTF8.h"
 #include "../core/UnicodeChar.h"
 #include "../localisation/LocalisationService.h"
 #include "../rct12/CSChar.h"
-#include "../sprites.h"
 #include "Drawing.h"
 #include "TTF.h"
 

@@ -184,7 +184,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gameState.ClimateCurrent.Weather)
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gameState.WeatherCurrent.weatherType)
         || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);
@@ -409,11 +409,11 @@ bool ObjectTypeCanBeRestricted(ObjectType objectType)
 {
     switch (objectType)
     {
-        case ObjectType::SmallScenery:
-        case ObjectType::LargeScenery:
-        case ObjectType::Walls:
-        case ObjectType::Banners:
-        case ObjectType::PathAdditions:
+        case ObjectType::smallScenery:
+        case ObjectType::largeScenery:
+        case ObjectType::walls:
+        case ObjectType::banners:
+        case ObjectType::pathAdditions:
             return true;
         default:
             return false;
@@ -448,39 +448,39 @@ static MiscScenery GetAllMiscScenery()
         const auto maxObjects = GetMaxObjectsForSceneryType(sceneryType);
         for (ObjectEntryIndex i = 0; i < maxObjects; i++)
         {
-            ObjectEntryIndex linkedSceneryGroup = OBJECT_ENTRY_INDEX_NULL;
+            ObjectEntryIndex linkedSceneryGroup = kObjectEntryIndexNull;
             const auto objectType = GetObjectTypeFromSceneryType(sceneryType);
             switch (objectType)
             {
-                case ObjectType::SmallScenery:
+                case ObjectType::smallScenery:
                 {
                     const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
                     if (objectEntry != nullptr)
                         linkedSceneryGroup = objectEntry->scenery_tab_id;
                     break;
                 }
-                case ObjectType::LargeScenery:
+                case ObjectType::largeScenery:
                 {
                     const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(i);
                     if (objectEntry != nullptr)
                         linkedSceneryGroup = objectEntry->scenery_tab_id;
                     break;
                 }
-                case ObjectType::Walls:
+                case ObjectType::walls:
                 {
                     const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(i);
                     if (objectEntry != nullptr)
                         linkedSceneryGroup = objectEntry->scenery_tab_id;
                     break;
                 }
-                case ObjectType::Banners:
+                case ObjectType::banners:
                 {
                     const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(i);
                     if (objectEntry != nullptr)
                         linkedSceneryGroup = objectEntry->scenery_tab_id;
                     break;
                 }
-                case ObjectType::PathAdditions:
+                case ObjectType::pathAdditions:
                 {
                     const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(i);
                     if (objectEntry != nullptr)
@@ -504,7 +504,7 @@ static MiscScenery GetAllMiscScenery()
 
             // An object may link itself against a scenery group, in which case it should not be marked as miscellaneous.
             bool isLinkedToKnownSceneryGroup = false;
-            if (linkedSceneryGroup != OBJECT_ENTRY_INDEX_NULL)
+            if (linkedSceneryGroup != kObjectEntryIndexNull)
             {
                 if (std::find(std::begin(sceneryGroupIds), std::end(sceneryGroupIds), linkedSceneryGroup)
                     != std::end(sceneryGroupIds))
@@ -556,15 +556,15 @@ ObjectType GetObjectTypeFromSceneryType(uint8_t type)
     switch (type)
     {
         case SCENERY_TYPE_SMALL:
-            return ObjectType::SmallScenery;
+            return ObjectType::smallScenery;
         case SCENERY_TYPE_PATH_ITEM:
-            return ObjectType::PathAdditions;
+            return ObjectType::pathAdditions;
         case SCENERY_TYPE_WALL:
-            return ObjectType::Walls;
+            return ObjectType::walls;
         case SCENERY_TYPE_LARGE:
-            return ObjectType::LargeScenery;
+            return ObjectType::largeScenery;
         case SCENERY_TYPE_BANNER:
-            return ObjectType::Banners;
+            return ObjectType::banners;
         default:
             throw std::runtime_error("Invalid scenery type");
     }
@@ -574,15 +574,15 @@ uint8_t GetSceneryTypeFromObjectType(ObjectType type)
 {
     switch (type)
     {
-        case ObjectType::SmallScenery:
+        case ObjectType::smallScenery:
             return SCENERY_TYPE_SMALL;
-        case ObjectType::PathAdditions:
+        case ObjectType::pathAdditions:
             return SCENERY_TYPE_PATH_ITEM;
-        case ObjectType::Walls:
+        case ObjectType::walls:
             return SCENERY_TYPE_WALL;
-        case ObjectType::LargeScenery:
+        case ObjectType::largeScenery:
             return SCENERY_TYPE_LARGE;
-        case ObjectType::Banners:
+        case ObjectType::banners:
             return SCENERY_TYPE_BANNER;
         default:
             throw std::runtime_error("Invalid object type");

@@ -12,7 +12,7 @@
 #include <string>
 
 #define OPENRCT2_NAME "OpenRCT2"
-#define kOpenRCT2Version "0.4.18"
+#define kOpenRCT2Version "0.4.19.1"
 
 #if defined(__amd64__) || defined(_M_AMD64)
     #define OPENRCT2_ARCHITECTURE "x86-64"
@@ -37,8 +37,10 @@
 #elif defined(__loongarch__)
     #define OPENRCT2_ARCHITECTURE "LoongArch"
 #endif
-#ifdef __EMSCRIPTEN__
-    #define OPENRCT2_ARCHITECTURE "Emscripten"
+#ifdef __wasm64__
+    #define OPENRCT2_ARCHITECTURE "wasm64"
+#elif defined(__wasm32__)
+    #define OPENRCT2_ARCHITECTURE "wasm32"
 #endif
 
 #ifndef OPENRCT2_ARCHITECTURE

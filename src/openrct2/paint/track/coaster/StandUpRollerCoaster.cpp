@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
@@ -31,21 +31,21 @@ static constexpr uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_OPEN = 25572;
 static constexpr uint32_t STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED = 25573;
 static constexpr uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED = 25574;
 
-static constexpr uint32_t _StandUpBlockBrakeImages[kNumOrthogonalDirections][2] = {
+static constexpr uint32_t kStandUpBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { STAND_UP_BLOCK_BRAKE_SW_NE_OPEN, STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_NW_SE_OPEN, STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_SW_NE_OPEN, STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_NW_SE_OPEN, STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
-static constexpr const uint32_t StandupRCDiagBrakeImages[kNumOrthogonalDirections] = {
+static constexpr const uint32_t kStandupRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_STANDUP_DIAG_BRAKES,
     SPR_G2_STANDUP_DIAG_BRAKES + 1,
     SPR_G2_STANDUP_DIAG_BRAKES,
     SPR_G2_STANDUP_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t StandupRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
+static constexpr const uint32_t kStandupRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_STANDUP_DIAG_BRAKES + 3,
         SPR_G2_STANDUP_DIAG_BRAKES + 5,
@@ -132,7 +132,7 @@ static void StandUpRCTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(_StandUpBlockBrakeImages[direction][isClosed]), { 0, 6, height },
+            session, direction, session.TrackColours.WithIndex(kStandUpBlockBrakeImages[direction][isClosed]), { 0, 6, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
@@ -5915,7 +5915,7 @@ static void StandUpRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(25637), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 3 } });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -6385,7 +6385,7 @@ static void StandUpRCTrackDiagBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, StandupRCDiagBrakeImages, supportType.metal);
+        session, 3, height, direction, trackSequence, kStandupRCDiagBrakeImages, supportType.metal);
 }
 
 static void StandUpRCTrackDiagBlockBrakes(
@@ -6393,7 +6393,7 @@ static void StandUpRCTrackDiagBlockBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, StandupRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        session, 3, height, direction, trackSequence, kStandupRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
         supportType.metal);
 }
 
@@ -9848,7 +9848,7 @@ static void StandUpRCTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_StandUpBlockBrakeImages[direction][isClosed]), { 0, 6, height },
+        session, direction, session.TrackColours.WithIndex(kStandUpBlockBrakeImages[direction][isClosed]), { 0, 6, height },
         { 32, 20, 3 });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -10669,10 +10669,10 @@ static void StandUpRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -10757,7 +10757,7 @@ static void StandUpRCTrack60DegUpTo90DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_VERTICAL + 0)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 13, 20, 55 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -10772,7 +10772,7 @@ static void StandUpRCTrack60DegUpTo90DegUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_VERTICAL + 3)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 13, 20, 55 } });
                     break;
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -10810,7 +10810,7 @@ static void StandUpRCTrack90DegUpTo60DegUp(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_VERTICAL + 4)), { 0, 0, height },
-                { { 6, 4, height + 8 }, { 20, 2, 56 } });
+                { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -10825,7 +10825,7 @@ static void StandUpRCTrack90DegUpTo60DegUp(
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_VERTICAL + 7)), { 0, 0, height },
-                { { 6, 4, height + 8 }, { 20, 2, 56 } });
+                { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
     }
     switch (direction)

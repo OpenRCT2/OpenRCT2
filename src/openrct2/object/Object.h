@@ -349,7 +349,7 @@ const Object* ObjectEntryGetObject(ObjectType objectType, ObjectEntryIndex index
 
 constexpr bool IsIntransientObjectType(ObjectType type)
 {
-    return type == ObjectType::Audio;
+    return type == ObjectType::audio;
 }
 
 u8string VersionString(const ObjectVersion& version);

@@ -365,8 +365,12 @@ private:
 
     void RenderDirtyVisuals()
     {
-        float scaleX = Config::Get().general.WindowScale;
-        float scaleY = Config::Get().general.WindowScale;
+        int windowX, windowY, renderX, renderY;
+        SDL_GetWindowSize(_window, &windowX, &windowY);
+        SDL_GetRendererOutputSize(_sdlRenderer, &renderX, &renderY);
+
+        float scaleX = Config::Get().general.WindowScale * renderX / static_cast<float>(windowX);
+        float scaleY = Config::Get().general.WindowScale * renderY / static_cast<float>(windowY);
 
         SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
         for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
@@ -377,7 +381,6 @@ private:
                 if (timeLeft > 0)
                 {
                     uint8_t alpha = static_cast<uint8_t>(timeLeft * 5 / 2);
-
                     SDL_Rect ddRect;
                     ddRect.x = static_cast<int32_t>(x * _dirtyGrid.BlockWidth * scaleX);
                     ddRect.y = static_cast<int32_t>(y * _dirtyGrid.BlockHeight * scaleY);

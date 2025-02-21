@@ -13,13 +13,13 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/PlayerKickAction.h>
 #include <openrct2/actions/PlayerSetGroupAction.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/NetworkAction.h>
 #include <openrct2/network/network.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <utility>
 
@@ -529,7 +529,8 @@ namespace OpenRCT2::Ui::Windows
             playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
-                    WindowInvalidateByNumber(windowHandle.first, windowHandle.second);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->InvalidateByNumber(windowHandle.first, windowHandle.second);
                 }
             });
             GameActions::Execute(&playerSetGroupAction);

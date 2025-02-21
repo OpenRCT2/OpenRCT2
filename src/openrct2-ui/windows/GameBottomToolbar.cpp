@@ -16,6 +16,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
@@ -28,7 +29,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
             // Temperature
             screenCoords = { windowPos.x + rightPanelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
-            int32_t temperature = GetGameState().ClimateCurrent.Temperature;
+            int32_t temperature = GetGameState().WeatherCurrent.temperature;
             StringId format = STR_CELSIUS_VALUE;
             if (Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit)
             {
@@ -212,14 +212,14 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.x += 30;
 
             // Current weather
-            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().ClimateCurrent);
+            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherCurrent);
             GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
             // Next weather
-            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().ClimateNext);
+            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherNext);
             if (currentWeatherSpriteId != nextWeatherSpriteId)
             {
-                if (GetGameState().ClimateUpdateTimer < 960)
+                if (GetGameState().WeatherUpdateTimer < 960)
                 {
                     GfxDrawSprite(dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
                     GfxDrawSprite(dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
@@ -260,8 +260,8 @@ namespace OpenRCT2::Ui::Windows
                     if (newsItem->HasButton())
                         break;
 
-                    DrawPixelInfo cliped_dpi;
-                    if (!ClipDrawPixelInfo(cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                    DrawPixelInfo clipped_dpi;
+                    if (!ClipDrawPixelInfo(clipped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                     {
                         break;
                     }
@@ -285,26 +285,38 @@ namespace OpenRCT2::Ui::Windows
                     image_id_base++;
 
                     auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
-                    GfxDrawSprite(cliped_dpi, image_id, clipCoords);
+                    GfxDrawSprite(clipped_dpi, image_id, clipCoords);
 
                     auto* guest = peep->As<Guest>();
-                    if (guest != nullptr)
+                    if (guest == nullptr)
+                        return;
+
+                    // There are only 6 walking frames available for each item,
+                    // as well as 1 sprite for sitting and 1 for standing still.
+                    auto itemFrame = (frame_no / 4) % 6;
+
+                    if (guest->AnimationGroup == PeepAnimationGroup::Hat)
                     {
-                        if (image_id_base >= kPeepSpriteBalloonStateWatchRideId
-                            && image_id_base < kPeepSpriteBalloonStateSittingIdleId + 4)
-                        {
-                            GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
-                        }
-                        if (image_id_base >= kPeepSpriteUmbrellaStateWalkingId
-                            && image_id_base < kPeepSpriteUmbrellaStateSittingIdleId + 4)
-                        {
-                            GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
-                        }
-                        if (image_id_base >= kPeepSpriteHatStateWatchRideId
-                            && image_id_base < kPeepSpriteHatStateSittingIdleId + 4)
-                        {
-                            GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->HatColour), clipCoords);
-                        }
+                        auto itemOffset = kPeepSpriteHatItemStart + 1;
+                        auto imageId = ImageId(itemOffset + itemFrame * 4, guest->HatColour);
+                        GfxDrawSprite(clipped_dpi, imageId, clipCoords);
+                        return;
+                    }
+
+                    if (guest->AnimationGroup == PeepAnimationGroup::Balloon)
+                    {
+                        auto itemOffset = kPeepSpriteBalloonItemStart + 1;
+                        auto imageId = ImageId(itemOffset + itemFrame * 4, guest->BalloonColour);
+                        GfxDrawSprite(clipped_dpi, imageId, clipCoords);
+                        return;
+                    }
+
+                    if (guest->AnimationGroup == PeepAnimationGroup::Umbrella)
+                    {
+                        auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
+                        auto imageId = ImageId(itemOffset + itemFrame * 4, guest->UmbrellaColour);
+                        GfxDrawSprite(clipped_dpi, imageId, clipCoords);
+                        return;
                     }
                     break;
                 }
@@ -690,7 +702,8 @@ namespace OpenRCT2::Ui::Windows
     {
         if (gScreenFlags == SCREEN_FLAGS_PLAYING)
         {
-            WidgetInvalidateByClass(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateWidgetByClass(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

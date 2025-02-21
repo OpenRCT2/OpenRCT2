@@ -75,7 +75,8 @@ namespace OpenRCT2::Ui::Windows
         if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
         {
             // The map tooltip is drawn by the bottom toolbar
-            WindowInvalidateByClass(WindowClass::BottomToolbar);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
             return;
         }
 

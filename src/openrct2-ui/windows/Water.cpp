@@ -15,11 +15,11 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/WaterLowerAction.h>
 #include <openrct2/actions/WaterRaiseAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -299,6 +299,8 @@ namespace OpenRCT2::Ui::Windows
         {
             MapInvalidateSelectionRect();
 
+            auto* windowMgr = Ui::GetWindowManager();
+
             if (gCurrentToolId == Tool::UpDownArrow)
             {
                 if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
@@ -319,7 +321,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _waterToolRaiseCost = raiseCost;
                     _waterToolLowerCost = lowerCost;
-                    WindowInvalidateByClass(WindowClass::Water);
+                    windowMgr->InvalidateByClass(WindowClass::Water);
                 }
                 return;
             }
@@ -335,7 +337,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _waterToolRaiseCost = kMoney64Undefined;
                     _waterToolLowerCost = kMoney64Undefined;
-                    WindowInvalidateByClass(WindowClass::Water);
+                    windowMgr->InvalidateByClass(WindowClass::Water);
                 }
                 return;
             }
@@ -410,7 +412,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _waterToolRaiseCost = raiseCost;
                 _waterToolLowerCost = lowerCost;
-                WindowInvalidateByClass(WindowClass::Water);
+                windowMgr->InvalidateByClass(WindowClass::Water);
             }
         }
 

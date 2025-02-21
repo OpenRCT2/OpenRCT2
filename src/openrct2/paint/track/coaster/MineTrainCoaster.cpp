@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
@@ -32,21 +32,21 @@ static constexpr uint32_t MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN = 20061;
 static constexpr uint32_t MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED = 20062;
 static constexpr uint32_t MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED = 20063;
 
-static constexpr uint32_t _MineTrainBlockBrakeImages[kNumOrthogonalDirections][2] = {
+static constexpr uint32_t kMineTrainBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { MINE_TRAIN_BLOCK_BRAKE_SW_NE_OPEN, MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED },
     { MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN, MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED },
     { MINE_TRAIN_BLOCK_BRAKE_SW_NE_OPEN, MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED },
     { MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN, MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
-static constexpr const uint32_t MinetrainRCDiagBrakeImages[kNumOrthogonalDirections] = {
+static constexpr const uint32_t kMinetrainRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_MINETRAIN_DIAG_BRAKES,
     SPR_G2_MINETRAIN_DIAG_BRAKES + 1,
     SPR_G2_MINETRAIN_DIAG_BRAKES,
     SPR_G2_MINETRAIN_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t MinetrainRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
+static constexpr const uint32_t kMinetrainRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_MINETRAIN_DIAG_BRAKES + 3,
         SPR_G2_MINETRAIN_DIAG_BRAKES + 5,
@@ -146,7 +146,7 @@ static void MineTrainRCTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsChildRotated(
-            session, direction, session.TrackColours.WithIndex(_MineTrainBlockBrakeImages[direction][isClosed]),
+            session, direction, session.TrackColours.WithIndex(kMineTrainBlockBrakeImages[direction][isClosed]),
             { 0, 0, height }, { { 0, 0, height }, { 32, 20, 1 } });
     }
     else
@@ -4920,7 +4920,7 @@ static void MineTrainRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20446), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 1 } });
+                        { { 16, 16, height }, { 16, 16, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
                     break;
@@ -5024,7 +5024,7 @@ static void MineTrainRCTrackLeftEighthBankToDiag(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(20496), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 32, 1 } });
+                        { { 0, 0, height }, { 32, 32, 1 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
                     break;
@@ -5349,7 +5349,7 @@ static void MineTrainRCTrackDiagBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, MinetrainRCDiagBrakeImages, defaultDiagTileOffsets,
+        session, 1, height, direction, trackSequence, kMinetrainRCDiagBrakeImages, defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
     if (MineTrainRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
@@ -5367,7 +5367,7 @@ static void MineTrainRCTrackDiagBlockBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 13, height, direction, trackSequence, MinetrainRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
+        session, 13, height, direction, trackSequence, kMinetrainRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (MineTrainRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
@@ -7011,7 +7011,7 @@ static void MineTrainRCTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_MineTrainBlockBrakeImages[direction][isClosed]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(kMineTrainBlockBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 1 } });
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
@@ -7298,10 +7298,10 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(

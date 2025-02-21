@@ -12,10 +12,10 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../interface/Window.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ui/WindowManager.h"
 
 using namespace OpenRCT2;
 
@@ -116,7 +116,7 @@ GameActions::Result RideSetSettingAction::Query() const
         case RideSetSetting::MusicType:
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto musicObj = objManager.GetLoadedObject(ObjectType::Music, _value);
+            auto musicObj = objManager.GetLoadedObject(ObjectType::music, _value);
             if (musicObj == nullptr)
             {
                 LOG_ERROR("Invalid music style: %u", _value);
@@ -220,7 +220,7 @@ GameActions::Result RideSetSettingAction::Execute() const
             if (_value != ride->music)
             {
                 ride->music = _value;
-                ride->music_tune_id = TUNE_ID_NULL;
+                ride->music_tune_id = kTuneIDNull;
             }
             break;
         case RideSetSetting::LiftHillSpeed:
@@ -251,7 +251,8 @@ GameActions::Result RideSetSettingAction::Execute() const
         auto location = ride->overall_view.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
-    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
     return res;
 }
 

@@ -10,11 +10,11 @@
 #include "IntroScene.h"
 
 #include "../../Context.h"
+#include "../../SpriteIds.h"
+#include "../../audio/Audio.h"
 #include "../../audio/AudioChannel.h"
 #include "../../audio/AudioMixer.h"
-#include "../../audio/audio.h"
 #include "../../drawing/Drawing.h"
-#include "../../sprites.h"
 
 #include <memory>
 

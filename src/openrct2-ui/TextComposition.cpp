@@ -19,6 +19,7 @@
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UTF8.h>
+#include <openrct2/ui/UiContext.h>
 
 #ifdef __MACOSX__
     // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
@@ -171,7 +172,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 case SDLK_c:
                     if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && _session.Length)
                     {
-                        SDL_SetClipboardText(_session.Buffer->c_str());
+                        OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;

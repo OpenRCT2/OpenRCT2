@@ -28,9 +28,9 @@
 
 using namespace OpenRCT2;
 
-// BannerBoundBoxes[rotation][0] is for the pole in the back
-// BannerBoundBoxes[rotation][1] is for the pole and the banner in the front
-constexpr CoordsXY BannerBoundBoxes[][2] = {
+// kBannerBoundBoxes[rotation][0] is for the pole in the back
+// kBannerBoundBoxes[rotation][1] is for the pole and the banner in the front
+constexpr CoordsXY kBannerBoundBoxes[][2] = {
     { { 1, 2 }, { 1, 29 } },
     { { 2, 32 }, { 29, 32 } },
     { { 32, 2 }, { 32, 29 } },
@@ -117,10 +117,10 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
 
     auto imageIndex = (direction << 1) + bannerEntry->image;
     auto imageId = imageTemplate.WithIndex(imageIndex);
-    auto bbOffset = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
+    auto bbOffset = CoordsXYZ(kBannerBoundBoxes[direction][0], height + 2);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
-    bbOffset = CoordsXYZ(BannerBoundBoxes[direction][1], height + 2);
+    bbOffset = CoordsXYZ(kBannerBoundBoxes[direction][1], height + 2);
     PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     PaintBannerScrollingText(session, *bannerEntry, *banner, bannerElement, direction, height, bbOffset);

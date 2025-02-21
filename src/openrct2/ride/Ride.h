@@ -46,11 +46,11 @@ struct TrackElement;
 
 constexpr uint8_t kRideAdjacencyCheckDistance = 5;
 
-constexpr uint8_t TUNE_ID_NULL = 0xFF;
+constexpr uint8_t kTuneIDNull = 0xFF;
 
-constexpr uint16_t MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsPerRide * 2; // Entrance and exit per station
+constexpr uint16_t kMaxStationLocations = OpenRCT2::Limits::kMaxStationsPerRide * 2; // Entrance and exit per station
 
-constexpr uint16_t MAZE_CLEARANCE_HEIGHT = 4 * kCoordsZStep;
+constexpr uint16_t kMazeClearanceHeight = 4 * kCoordsZStep;
 
 constexpr uint8_t kRideMaxDropsCount = 63;
 constexpr uint8_t kRideNumDropsMask = 0b00111111;
@@ -86,7 +86,7 @@ struct RideStation
 
 struct RideMeasurement
 {
-    static constexpr size_t MAX_ITEMS = 4800;
+    static constexpr size_t kMaxItems = 4800;
 
     uint8_t flags{};
     uint32_t last_use_tick{};
@@ -94,10 +94,10 @@ struct RideMeasurement
     uint16_t current_item{};
     uint8_t vehicle_index{};
     StationIndex current_station{};
-    int8_t vertical[MAX_ITEMS]{};
-    int8_t lateral[MAX_ITEMS]{};
-    uint8_t velocity[MAX_ITEMS]{};
-    uint8_t altitude[MAX_ITEMS]{};
+    int8_t vertical[kMaxItems]{};
+    int8_t lateral[kMaxItems]{};
+    uint8_t velocity[kMaxItems]{};
+    uint8_t altitude[kMaxItems]{};
 };
 
 enum class RideClassification
@@ -109,9 +109,9 @@ enum class RideClassification
 
 namespace OpenRCT2::ShelteredSectionsBits
 {
-    constexpr uint8_t NumShelteredSectionsMask = 0b00011111;
-    constexpr uint8_t RotatingWhileSheltered = 0b00100000;
-    constexpr uint8_t BankingWhileSheltered = 0b01000000;
+    constexpr uint8_t kNumShelteredSectionsMask = 0b00011111;
+    constexpr uint8_t kRotatingWhileSheltered = 0b00100000;
+    constexpr uint8_t kBankingWhileSheltered = 0b01000000;
 }; // namespace OpenRCT2::ShelteredSectionsBits
 
 struct TrackDesign;
@@ -128,10 +128,10 @@ enum class RideStatus : uint8_t;
 struct Ride
 {
     RideId id{ RideId::GetNull() };
-    ride_type_t type{ RIDE_TYPE_NULL };
+    ride_type_t type{ kRideTypeNull };
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
-    ObjectEntryIndex subtype{ OBJECT_ENTRY_INDEX_NULL };
+    ObjectEntryIndex subtype{ kObjectEntryIndexNull };
     RideMode mode{};
     VehicleColourSettings vehicleColourSettings{};
     VehicleColour vehicle_colours[OpenRCT2::Limits::kMaxVehicleColours]{};
@@ -265,8 +265,8 @@ struct Ride
     money64 income_per_hour{};
     money64 profit{};
     TrackColour track_colour[kNumRideColourSchemes]{};
-    ObjectEntryIndex music{ OBJECT_ENTRY_INDEX_NULL };
-    ObjectEntryIndex entrance_style{ OBJECT_ENTRY_INDEX_NULL };
+    ObjectEntryIndex music{ kObjectEntryIndexNull };
+    ObjectEntryIndex entrance_style{ kObjectEntryIndexNull };
     uint16_t vehicle_change_timeout{};
     uint8_t num_block_brakes{};
     uint8_t lift_hill_speed{};
@@ -870,11 +870,6 @@ enum
 {
     RIDE_ISSUE_NONE = 0,
     RIDE_ISSUE_GUESTS_STUCK = (1 << 0),
-};
-
-enum
-{
-    TRACK_BLOCK_2 = (1 << 2)
 };
 
 enum

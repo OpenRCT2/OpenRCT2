@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
@@ -31,7 +31,7 @@ static constexpr uint32_t BOBSLEIGH_BLOCK_BRAKE_NW_SE_OPEN = 14587;
 static constexpr uint32_t BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED = 14588;
 static constexpr uint32_t BOBSLEIGH_BLOCK_BRAKE_NW_SE_CLOSED = 14589;
 
-static constexpr uint32_t _BobsleighBlockBrakeImages[kNumOrthogonalDirections][2] = {
+static constexpr uint32_t kBobsleighBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN, BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED },
     { BOBSLEIGH_BLOCK_BRAKE_NW_SE_OPEN, BOBSLEIGH_BLOCK_BRAKE_NW_SE_CLOSED },
     { BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN, BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -2314,7 +2314,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(14884), { 0, 0, height },
-                        { { 0, 6, height + 8 }, { 32, 20, 2 } });
+                        { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(14896), { 0, 0, height },
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
@@ -2551,7 +2551,7 @@ static void BobsleighRCTrackLeftHalfBankedHelixUpSmall(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(14882), { 0, 0, height },
-                        { { 0, 6, height + 8 }, { 32, 20, 2 } });
+                        { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(14894), { 0, 0, height },
                         { { 0, 6, height + 27 }, { 32, 20, 0 } });
@@ -4049,7 +4049,7 @@ static void BobsleighRCTrackBlockBrakes(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(_BobsleighBlockBrakeImages[direction][isClosed]),
+                session, direction, session.TrackColours.WithIndex(kBobsleighBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(14590), { 0, 0, height },
@@ -4058,7 +4058,7 @@ static void BobsleighRCTrackBlockBrakes(
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(_BobsleighBlockBrakeImages[direction][isClosed]),
+                session, direction, session.TrackColours.WithIndex(kBobsleighBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(14591), { 0, 0, height },

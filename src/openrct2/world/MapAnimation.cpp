@@ -42,7 +42,7 @@ using map_animation_invalidate_event_handler = bool (*)(const CoordsXYZ& loc);
 
 static std::vector<MapAnimation> _mapAnimations;
 
-constexpr size_t MAX_ANIMATED_OBJECTS = 2000;
+constexpr size_t kMaxAnimatedObjects = 2000;
 
 static bool InvalidateMapAnimation(const MapAnimation& obj);
 
@@ -63,7 +63,7 @@ void MapAnimationCreate(int32_t type, const CoordsXYZ& loc)
 {
     if (!DoesAnimationExist(type, loc))
     {
-        if (_mapAnimations.size() < MAX_ANIMATED_OBJECTS)
+        if (_mapAnimations.size() < kMaxAnimatedObjects)
         {
             // Create new animation
             _mapAnimations.push_back({ static_cast<uint8_t>(type), loc });

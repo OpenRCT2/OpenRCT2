@@ -36,7 +36,7 @@ private:
     static constexpr auto kNumImagesInEntry = 19;
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::TerrainSurface;
+    static constexpr ObjectType kObjectType = ObjectType::terrainSurface;
 
     static constexpr uint8_t kNoValue = 0xFF;
     StringId NameStringId{};

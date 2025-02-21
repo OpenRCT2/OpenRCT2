@@ -60,7 +60,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     _legacyType.price = stream->ReadValue<int16_t>() * 10;
     _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
     stream->Seek(5, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.scenery_tab_id = kObjectEntryIndexNull;
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
 

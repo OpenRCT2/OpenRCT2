@@ -14,13 +14,13 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/BannerRemoveAction.h>
 #include <openrct2/actions/BannerSetNameAction.h>
 #include <openrct2/actions/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
@@ -83,7 +83,7 @@ namespace OpenRCT2::Ui::Windows
 
         void CreateViewport()
         {
-            const auto& viewportWidget = window_banner_widgets[WIDX_VIEWPORT];
+            const auto& viewportWidget = widgets[WIDX_VIEWPORT];
             ViewportCreate(
                 this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
                 (viewportWidget.width()) - 1, (viewportWidget.height()) - 1, Focus(_bannerViewPos));

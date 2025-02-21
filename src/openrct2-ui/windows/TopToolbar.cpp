@@ -26,11 +26,12 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/Version.h>
 #include <openrct2/actions/GameSetSpeedAction.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/PauseToggleAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/core/String.hpp>
@@ -40,7 +41,6 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -60,7 +60,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MUTE,
         WIDX_ZOOM_OUT,
         WIDX_ZOOM_IN,
-        WIDX_ROTATE,
+        WIDX_ROTATE_ANTI_CLOCKWISE,
+        WIDX_ROTATE_CLOCKWISE,
         WIDX_VIEW_MENU,
         WIDX_MAP,
 
@@ -196,7 +197,8 @@ namespace OpenRCT2::Ui::Windows
 
         WIDX_ZOOM_OUT,
         WIDX_ZOOM_IN,
-        WIDX_ROTATE,
+        WIDX_ROTATE_ANTI_CLOCKWISE,
+        WIDX_ROTATE_CLOCKWISE,
         WIDX_VIEW_MENU,
         WIDX_MAP,
     };
@@ -241,17 +243,18 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget({250, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
         MakeRemapWidget({100, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
         MakeRemapWidget({130, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
-        MakeRemapWidget({160, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
-        MakeRemapWidget({190, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
-        MakeRemapWidget({220, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
-        MakeRemapWidget({267, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
-        MakeRemapWidget({297, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
-        MakeRemapWidget({327, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
-        MakeRemapWidget({357, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
-        MakeRemapWidget({387, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
-        MakeRemapWidget({490, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
-        MakeRemapWidget({520, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
-        MakeRemapWidget({550, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
+        MakeRemapWidget({190, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TAB_TOOLBAR,            STR_ROTATE_ANTI_CLOCKWISE         ), // Rotate camera anti-clockwise
+        MakeRemapWidget({160, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ROTATE,         STR_ROTATE_CLOCKWISE              ), // Rotate camera clockwise
+        MakeRemapWidget({220, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
+        MakeRemapWidget({267, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
+        MakeRemapWidget({297, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
+        MakeRemapWidget({327, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
+        MakeRemapWidget({357, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
+        MakeRemapWidget({387, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
+        MakeRemapWidget({490, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
+        MakeRemapWidget({520, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
+        MakeRemapWidget({550, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
+        MakeRemapWidget({560, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
         MakeRemapWidget({560, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
         MakeRemapWidget({560, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
         MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
@@ -282,10 +285,6 @@ namespace OpenRCT2::Ui::Windows
         void InitFastforwardMenu(Widget& widget);
 
         void FastforwardMenuDropdown(int16_t dropdownIndex);
-
-        void InitRotateMenu(Widget& widget);
-
-        void RotateMenuDropdown(int16_t dropdownIndex);
 
         void InitFileMenu(Widget& widget);
 
@@ -323,6 +322,12 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ZOOM_IN:
                     if ((mainWindow = WindowGetMain()) != nullptr)
                         WindowZoomIn(*mainWindow, false);
+                    break;
+                case WIDX_ROTATE_CLOCKWISE:
+                    ViewportRotateAll(1);
+                    break;
+                case WIDX_ROTATE_ANTI_CLOCKWISE:
+                    ViewportRotateAll(-1);
                     break;
                 case WIDX_CLEAR_SCENERY:
                     ToggleClearSceneryWindow();
@@ -399,9 +404,6 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_FASTFORWARD:
                     InitFastforwardMenu(widget);
-                    break;
-                case WIDX_ROTATE:
-                    InitRotateMenu(widget);
                     break;
                 case WIDX_DEBUG:
                     InitDebugMenu(widget);
@@ -525,9 +527,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FASTFORWARD:
                     FastforwardMenuDropdown(selectedIndex);
                     break;
-                case WIDX_ROTATE:
-                    RotateMenuDropdown(selectedIndex);
-                    break;
                 case WIDX_DEBUG:
                     DebugMenuDropdown(selectedIndex);
                     break;
@@ -594,7 +593,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FILE_MENU].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_ZOOM_IN].type = WindowWidgetType::TrnBtn;
-            widgets[WIDX_ROTATE].type = WindowWidgetType::TrnBtn;
+            widgets[WIDX_ROTATE_CLOCKWISE].type = WindowWidgetType::TrnBtn;
+            widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_VIEW_MENU].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_MAP].type = WindowWidgetType::TrnBtn;
             widgets[WIDX_MUTE].type = WindowWidgetType::TrnBtn;
@@ -641,6 +641,9 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
                 widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
             }
+
+            if (!Config::Get().interface.ToolbarShowRotateAnticlockwise)
+                widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type = WindowWidgetType::Empty;
 
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR || gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
             {
@@ -690,7 +693,8 @@ namespace OpenRCT2::Ui::Windows
 
                 widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
                 widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
-                widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
+                widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type = WindowWidgetType::Empty;
+                widgets[WIDX_ROTATE_CLOCKWISE].type = WindowWidgetType::Empty;
                 widgets[WIDX_VIEW_MENU].type = WindowWidgetType::Empty;
             }
         }
@@ -988,6 +992,16 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<int32_t>(NetworkGetNumVisiblePlayers());
                 auto colour = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
                 DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::RIGHT });
+            }
+
+            if (widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type != WindowWidgetType::Empty)
+            {
+                screenPos = windowPos
+                    + ScreenCoordsXY{ widgets[WIDX_ROTATE_ANTI_CLOCKWISE].left + 2,
+                                      widgets[WIDX_ROTATE_ANTI_CLOCKWISE].top + 0 };
+                if (IsWidgetPressed(WIDX_ROTATE_ANTI_CLOCKWISE))
+                    screenPos.y++;
+                GfxDrawSprite(dpi, ImageId(SPR_G2_ICON_ROTATE_ANTI_CLOCKWISE), screenPos);
             }
         }
     };
@@ -1307,30 +1321,6 @@ namespace OpenRCT2::Ui::Windows
                 auto setSpeedAction = GameSetSpeedAction(newSpeed);
                 GameActions::Execute(&setSpeedAction);
             }
-        }
-    }
-
-    void TopToolbar::InitRotateMenu(Widget& widget)
-    {
-        gDropdownItems[0].Format = STR_ROTATE_CLOCKWISE;
-        gDropdownItems[1].Format = STR_ROTATE_ANTI_CLOCKWISE;
-
-        WindowDropdownShowText(
-            { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
-            colours[1].withFlag(ColourFlag::translucent, true), 0, 2);
-
-        gDropdownDefaultIndex = DDIDX_ROTATE_CLOCKWISE;
-    }
-
-    void TopToolbar::RotateMenuDropdown(int16_t dropdownIndex)
-    {
-        if (dropdownIndex == 0)
-        {
-            ViewportRotateAll(1);
-        }
-        else if (dropdownIndex == 1)
-        {
-            ViewportRotateAll(-1);
         }
     }
 

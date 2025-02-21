@@ -12,11 +12,11 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
 #include "../object/StationObject.h"
 #include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
@@ -27,7 +27,6 @@
 #include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
 #include "../scenario/Scenario.h"
-#include "../sprites.h"
 #include "../world/Map.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideData.h"
@@ -1057,7 +1056,7 @@ constexpr CoordsXY defaultRightEighthToDiagBoundLengths[4][4] = {
     {
         { 32, 20 },
         { 34, 16 },
-        { 28, 28 },
+        { 16, 16 },
         { 16, 18 },
     },
     {
@@ -1084,7 +1083,7 @@ constexpr CoordsXYZ defaultRightEighthToDiagBoundOffsets[4][4] = {
     {
         { 0, 6, 0 },
         { 0, 0, 0 },
-        { 4, 4, 0 },
+        { 16, 16, 0 },
         { 0, 16, 0 },
     },
     {
@@ -1750,11 +1749,11 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
     imageId = colourFlags.WithIndex(trackSpritesGhostTrainSpinningTunnel[direction & 1][1][frame]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 28, height }, { 26, 1, 23 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 28, height }, { 28, 1, 23 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 4, height }, { 1, 26, 23 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 2, height }, { 1, 28, 23 } });
     }
 }
 
@@ -1981,7 +1980,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             const auto* originElement = ride->GetOriginElement(StationIndex::FromUnderlying(0));
             if (originElement != nullptr && originElement->GetTrackType() == TrackElemType::FlatTrack1x1B)
                 LightFx::AddKioskLights(session.MapPosition, height, zOffset);
-            else if (rtd.HasFlag(RtdFlag::isShopOrFacility))
+            else if (kRideTypeDescriptors[ride->type].HasFlag(RtdFlag::isShopOrFacility))
                 LightFx::AddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 

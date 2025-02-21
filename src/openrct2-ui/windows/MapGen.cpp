@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/UnitConversion.h>
@@ -22,7 +23,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
@@ -1126,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainSurface == type)
                     {
-                        gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainSurface = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -1143,7 +1143,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainEdge == type)
                     {
-                        gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainEdge = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -1181,7 +1181,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainSurface, _settings.landTexture));
+                objManager.GetLoadedObject(ObjectType::terrainSurface, _settings.landTexture));
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -1194,7 +1194,7 @@ namespace OpenRCT2::Ui::Windows
 
             ImageId edgeImage;
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainEdge, _settings.edgeTexture));
+                objManager.GetLoadedObject(ObjectType::terrainEdge, _settings.edgeTexture));
             if (edgeObj != nullptr)
             {
                 edgeImage = ImageId(edgeObj->IconImageId);

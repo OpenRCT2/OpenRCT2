@@ -18,6 +18,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GuestSetFlagsAction.h>
 #include <openrct2/actions/GuestSetNameAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
@@ -37,7 +38,6 @@
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -596,9 +596,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DisableWidgets();
             OnPrepareDraw();
-
-            WidgetInvalidate(*this, WIDX_MARQUEE);
-
+            InvalidateWidget(WIDX_MARQUEE);
             OnResizeCommon();
 
             if (viewport != nullptr)
@@ -886,13 +884,13 @@ namespace OpenRCT2::Ui::Windows
             picked_peep_frame++;
             picked_peep_frame %= pickAnimLength * 4;
 
-            WidgetInvalidate(*this, WIDX_TAB_1);
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_2);
 
             if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
             {
                 peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
-                WidgetInvalidate(*this, WIDX_ACTION_LBL);
+                InvalidateWidget(WIDX_ACTION_LBL);
             }
 
             _marqueePosition += 2;
@@ -1215,8 +1213,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_3);
 
             const auto guest = GetGuest();
             if (guest == nullptr)
@@ -1388,8 +1386,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_4);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_4);
         }
 
         void OnDrawFinance(DrawPixelInfo& dpi)
@@ -1526,8 +1524,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_5);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_5);
 
             auto peep = GetGuest();
             if (peep == nullptr)
@@ -1601,8 +1599,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_6);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_6);
 
             auto peep = GetGuest();
             if (peep == nullptr)

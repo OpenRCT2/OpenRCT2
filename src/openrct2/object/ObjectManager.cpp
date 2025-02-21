@@ -12,7 +12,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../ParkImporter.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/Console.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../core/JobPool.h"
@@ -58,7 +58,7 @@ class ObjectManager final : public IObjectManager
 private:
     IObjectRepository& _objectRepository;
 
-    std::array<std::vector<Object*>, EnumValue(ObjectType::Count)> _loadedObjects;
+    std::array<std::vector<Object*>, EnumValue(ObjectType::count)> _loadedObjects;
     std::array<std::vector<ObjectEntryIndex>, RIDE_TYPE_COUNT> _rideTypeToObjectMap;
 
     // Used to return a safe empty vector back from GetAllRideEntries, can be removed when std::span is available
@@ -80,7 +80,7 @@ public:
     Object* GetLoadedObject(ObjectType objectType, size_t index) override
     {
         // This is sometimes done deliberately (to avoid boilerplate), so no need to log_warn for this.
-        if (index == OBJECT_ENTRY_INDEX_NULL)
+        if (index == kObjectEntryIndexNull)
         {
             return nullptr;
         }
@@ -88,7 +88,7 @@ public:
         if (index >= static_cast<size_t>(getObjectEntryGroupCount(objectType)))
         {
 #ifdef DEBUG
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 LOG_WARNING("Object index %u exceeds maximum for type %d.", index, objectType);
             }
@@ -121,7 +121,7 @@ public:
         {
             return GetLoadedObjectEntryIndex(obj);
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     ObjectEntryIndex GetLoadedObjectEntryIndex(const ObjectEntryDescriptor& descriptor) override
@@ -131,12 +131,12 @@ public:
         {
             return GetLoadedObjectEntryIndex(obj);
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) override
     {
-        ObjectEntryIndex result = OBJECT_ENTRY_INDEX_NULL;
+        ObjectEntryIndex result = kObjectEntryIndexNull;
         size_t index = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
@@ -488,13 +488,13 @@ private:
 
     void UpdateSceneryGroupIndexes()
     {
-        UpdateSceneryGroupIndexes<SmallSceneryEntry>(ObjectType::SmallScenery);
-        UpdateSceneryGroupIndexes<LargeSceneryEntry>(ObjectType::LargeScenery);
-        UpdateSceneryGroupIndexes<WallSceneryEntry>(ObjectType::Walls);
-        UpdateSceneryGroupIndexes<BannerSceneryEntry>(ObjectType::Banners);
-        UpdateSceneryGroupIndexes<PathAdditionEntry>(ObjectType::PathAdditions);
+        UpdateSceneryGroupIndexes<SmallSceneryEntry>(ObjectType::smallScenery);
+        UpdateSceneryGroupIndexes<LargeSceneryEntry>(ObjectType::largeScenery);
+        UpdateSceneryGroupIndexes<WallSceneryEntry>(ObjectType::walls);
+        UpdateSceneryGroupIndexes<BannerSceneryEntry>(ObjectType::banners);
+        UpdateSceneryGroupIndexes<PathAdditionEntry>(ObjectType::pathAdditions);
 
-        auto& list = GetObjectList(ObjectType::SceneryGroup);
+        auto& list = GetObjectList(ObjectType::sceneryGroup);
         for (auto* loadedObject : list)
         {
             auto sgObject = static_cast<SceneryGroupObject*>(loadedObject);
@@ -511,7 +511,7 @@ private:
         const auto& primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object* sgObject = GetLoadedObject(primarySGEntry);
 
-        auto entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        auto entryIndex = kObjectEntryIndexNull;
         if (sgObject != nullptr)
         {
             entryIndex = GetLoadedObjectEntryIndex(sgObject);
@@ -535,7 +535,7 @@ private:
                 if (entry.HasValue())
                 {
                     const auto* ori = _objectRepository.FindObject(entry);
-                    if (ori == nullptr && entry.GetType() == ObjectType::ScenarioText)
+                    if (ori == nullptr && entry.GetType() == ObjectType::scenarioText)
                     {
                         continue;
                     }
@@ -735,10 +735,10 @@ private:
         }
 
         // Build object lists
-        const auto maxRideObjects = static_cast<size_t>(getObjectEntryGroupCount(ObjectType::Ride));
+        const auto maxRideObjects = static_cast<size_t>(getObjectEntryGroupCount(ObjectType::ride));
         for (size_t i = 0; i < maxRideObjects; i++)
         {
-            auto* rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));
+            auto* rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::ride, i));
             if (rideObject == nullptr)
                 continue;
 

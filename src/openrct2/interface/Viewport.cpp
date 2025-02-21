@@ -25,6 +25,7 @@
 #include "../entity/Guest.h"
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
+#include "../interface/Cursors.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
@@ -34,7 +35,6 @@
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
@@ -1084,7 +1084,7 @@ namespace OpenRCT2
 
     static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
     {
-        auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
+        auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().WeatherCurrent);
         if (paletteId != FilterPaletteID::PaletteNull)
         {
             auto x = dpi.x;

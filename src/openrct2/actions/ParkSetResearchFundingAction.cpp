@@ -15,7 +15,6 @@
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Research.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 

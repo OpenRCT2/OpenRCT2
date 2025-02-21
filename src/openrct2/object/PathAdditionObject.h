@@ -18,7 +18,7 @@ private:
     PathAdditionEntry _legacyType = {};
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::PathAdditions;
+    static constexpr ObjectType kObjectType = ObjectType::pathAdditions;
 
     void* GetLegacyData() override
     {

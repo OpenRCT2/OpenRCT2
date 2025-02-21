@@ -2622,8 +2622,8 @@ STR_5454    :Odblokuj FPS
 STR_5455    :Włącz tryb piaskownicy
 STR_5456    :Wyłącz sprawdzanie kolizji
 STR_5457    :Wyłącz limity wsporników
-STR_5458    :Obróć zgodnie ze wskazówką zegara
-STR_5459    :Obróć odwrotnie względem wskazówki zegara
+STR_5458    :Obróć w prawo
+STR_5459    :Obróć w lewo
 STR_5460    :Widok odwrotny względem wskazówki zegara
 STR_5461    :Ustaw parametry dla wszystkich gości
 STR_5462    :{CURRENCY}
@@ -3790,3 +3790,6 @@ STR_6726    :Y:
 STR_6727    :Pętla nurkująca (w lewo)
 STR_6728    :Pętla nurkująca (w prawo)
 STR_6729    :Wyciągarka linowa musi znajdować się bezpośrednio po stacji lub hamulcu blokowym
+STR_6730    :Eksportuj dane emscripten
+STR_6731    :Importuj dane emscripten
+STR_6732    :Pokaż przycisk na pasku narzędzi do obracania widoku w kierunku przeciwnym do ruchu wskazówek zegara

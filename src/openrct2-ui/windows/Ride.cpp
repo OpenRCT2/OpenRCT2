@@ -27,6 +27,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/Limits.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameAction.h>
 #include <openrct2/actions/ParkSetParameterAction.h>
 #include <openrct2/actions/RideSetAppearanceAction.h>
@@ -35,7 +36,7 @@
 #include <openrct2/actions/RideSetPriceAction.h>
 #include <openrct2/actions/RideSetSettingAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UnitConversion.h>
@@ -63,7 +64,6 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/ride/Vehicle.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -611,8 +611,8 @@ namespace OpenRCT2::Ui::Windows
     };
     static_assert(std::size(GraphsYAxisDetails) == 4);
 
-    static constexpr auto RIDE_G_FORCES_RED_NEG_VERTICAL = -FIXED_2DP(2, 50);
-    static constexpr auto RIDE_G_FORCES_RED_LATERAL = FIXED_2DP(2, 80);
+    static constexpr auto kRideGForcesRedNegVertical = -MakeFixed16_2dp(2, 50);
+    static constexpr auto kRideGForcesRedLateral = MakeFixed16_2dp(2, 80);
 
     // Used for sorting the ride type cheat dropdown.
     struct RideTypeLabel
@@ -2265,7 +2265,7 @@ namespace OpenRCT2::Ui::Windows
             // Update tab animation
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_1);
 
             // Update status
             auto ride = GetRide(rideId);
@@ -2291,7 +2291,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MAIN;
             }
-            WidgetInvalidate(*this, WIDX_STATUS);
+            InvalidateWidget(WIDX_STATUS);
         }
 
         void MainOnTextInput(WidgetIndex widgetIndex, std::string_view text)
@@ -2717,7 +2717,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_2);
         }
 
         OpenRCT2String VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
@@ -3116,7 +3116,7 @@ namespace OpenRCT2::Ui::Windows
                 if (availableModes & (1uLL << i))
                 {
                     gDropdownItems[numAvailableModes].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numAvailableModes].Args = RideModeNames[i];
+                    gDropdownItems[numAvailableModes].Args = kRideModeNames[i];
 
                     if (ride->mode == static_cast<RideMode>(i))
                         checkedIndex = numAvailableModes;
@@ -3398,7 +3398,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_3);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_OPERATING)
@@ -3546,7 +3546,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Mode
-            widgets[WIDX_MODE].text = RideModeNames[EnumValue(ride->mode)];
+            widgets[WIDX_MODE].text = kRideModeNames[EnumValue(ride->mode)];
 
             // Waiting
             widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
@@ -3805,7 +3805,7 @@ namespace OpenRCT2::Ui::Windows
                     numItems = 1;
                     for (j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
                     {
-                        if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
+                        if (rideEntry->ride_type[j] != kRideTypeNull)
                             break;
                     }
                     gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
@@ -3928,7 +3928,9 @@ namespace OpenRCT2::Ui::Windows
                                 break;
                         }
                         ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
-                        WindowInvalidateByNumber(WindowClass::Ride, number);
+
+                        auto* windowMgr = GetWindowManager();
+                        windowMgr->InvalidateByNumber(WindowClass::Ride, number);
                         break;
                     }
                     if (ride->lifecycle_flags
@@ -3945,7 +3947,7 @@ namespace OpenRCT2::Ui::Windows
                         int32_t j;
                         for (j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
                         {
-                            if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
+                            if (rideEntry->ride_type[j] != kRideTypeNull)
                                 break;
                         }
                         int32_t i;
@@ -3976,7 +3978,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_4);
+            InvalidateWidget(WIDX_TAB_4);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAINTENANCE)
@@ -4543,8 +4545,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_5);
-            WidgetInvalidate(*this, WIDX_VEHICLE_PREVIEW);
+            InvalidateWidget(WIDX_TAB_5);
+            InvalidateWidget(WIDX_VEHICLE_PREVIEW);
         }
 
         void ColourOnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -5116,7 +5118,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_6);
+            InvalidateWidget(WIDX_TAB_6);
 
             if (auto ride = GetRide(rideId); ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MUSIC)
             {
@@ -5501,7 +5503,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_7);
+            InvalidateWidget(WIDX_TAB_7);
         }
 
         void MeasurementsOnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -5648,7 +5650,7 @@ namespace OpenRCT2::Ui::Windows
                     stringId = STR_INTENSITY_RATING;
                     if (!RideHasRatings(*ride))
                         stringId = STR_INTENSITY_RATING_NOT_YET_AVAILABLE;
-                    else if (ride->ratings.intensity >= RIDE_RATING(10, 00))
+                    else if (ride->ratings.intensity >= MakeRideRating(10, 00))
                         stringId = STR_INTENSITY_RATING_RED;
 
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
@@ -5784,7 +5786,7 @@ namespace OpenRCT2::Ui::Windows
                             screenCoords.y += kListRowHeight;
 
                             // Max. negative vertical G's
-                            stringId = ride->max_negative_vertical_g <= RIDE_G_FORCES_RED_NEG_VERTICAL
+                            stringId = ride->max_negative_vertical_g <= kRideGForcesRedNegVertical
                                 ? STR_MAX_NEGATIVE_VERTICAL_G_RED
                                 : STR_MAX_NEGATIVE_VERTICAL_G;
                             ft = Formatter();
@@ -5793,8 +5795,7 @@ namespace OpenRCT2::Ui::Windows
                             screenCoords.y += kListRowHeight;
 
                             // Max lateral G's
-                            stringId = ride->max_lateral_g > RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED
-                                                                                       : STR_MAX_LATERAL_G;
+                            stringId = ride->max_lateral_g > kRideGForcesRedLateral ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->max_lateral_g);
                             DrawTextBasic(dpi, screenCoords, stringId, ft);
@@ -5920,9 +5921,9 @@ namespace OpenRCT2::Ui::Windows
 
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_8);
+            InvalidateWidget(WIDX_TAB_8);
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_GRAPH);
+            InvalidateWidget(WIDX_GRAPH);
 
             widget = &widgets[WIDX_GRAPH];
             x = scrolls[0].contentOffsetX;
@@ -6163,13 +6164,13 @@ namespace OpenRCT2::Ui::Windows
                     case GRAPH_VERTICAL:
                         firstPoint = measurement->vertical[x] + VerticalGraphHeightOffset;
                         secondPoint = measurement->vertical[x + 1] + VerticalGraphHeightOffset;
-                        intensityThresholdNegative = (RIDE_G_FORCES_RED_NEG_VERTICAL / 8) + VerticalGraphHeightOffset;
+                        intensityThresholdNegative = (kRideGForcesRedNegVertical / 8) + VerticalGraphHeightOffset;
                         break;
                     case GRAPH_LATERAL:
                         firstPoint = measurement->lateral[x] + LateralGraphHeightOffset;
                         secondPoint = measurement->lateral[x + 1] + LateralGraphHeightOffset;
-                        intensityThresholdPositive = (RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
-                        intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
+                        intensityThresholdPositive = (kRideGForcesRedLateral / 8) + LateralGraphHeightOffset;
+                        intensityThresholdNegative = -(kRideGForcesRedLateral / 8) + LateralGraphHeightOffset;
                         break;
                     default:
                         LOG_ERROR("Wrong graph type %d", listType);
@@ -6469,7 +6470,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_9);
+            InvalidateWidget(WIDX_TAB_9);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_INCOME)
@@ -6769,7 +6770,7 @@ namespace OpenRCT2::Ui::Windows
                 picked_peep_frame = 0;
 
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_10);
+            InvalidateWidget(WIDX_TAB_10);
 
             auto ride = GetRide(rideId);
             if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_CUSTOMER)

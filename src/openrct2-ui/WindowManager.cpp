@@ -29,7 +29,6 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
-#include <openrct2/localisation/Formatter.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -40,6 +39,8 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 using namespace OpenRCT2::Ui::Windows;
+
+class Formatter;
 
 namespace WindowCloseFlags
 {
@@ -502,19 +503,19 @@ public:
 
             case INTENT_ACTION_UPDATE_CLIMATE:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-                WindowInvalidateByClass(WindowClass::GuestList);
+                InvalidateByClass(WindowClass::GuestList);
                 break;
 
             case INTENT_ACTION_UPDATE_GUEST_COUNT:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-                WindowInvalidateByClass(WindowClass::GuestList);
-                WindowInvalidateByClass(WindowClass::ParkInformation);
+                InvalidateByClass(WindowClass::GuestList);
+                InvalidateByClass(WindowClass::ParkInformation);
                 WindowGuestListRefreshList();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
-                WindowInvalidateByClass(WindowClass::ParkInformation);
+                InvalidateByClass(WindowClass::ParkInformation);
                 break;
 
             case INTENT_ACTION_UPDATE_DATE:
@@ -522,7 +523,7 @@ public:
                 break;
 
             case INTENT_ACTION_UPDATE_CASH:
-                WindowInvalidateByClass(WindowClass::Finances);
+                InvalidateByClass(WindowClass::Finances);
                 gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
                 break;
 
@@ -538,8 +539,8 @@ public:
                 break;
             }
             case INTENT_ACTION_UPDATE_RESEARCH:
-                WindowInvalidateByClass(WindowClass::Finances);
-                WindowInvalidateByClass(WindowClass::Research);
+                InvalidateByClass(WindowClass::Finances);
+                InvalidateByClass(WindowClass::Research);
                 break;
 
             case INTENT_ACTION_UPDATE_VEHICLE_SOUNDS:
@@ -558,7 +559,7 @@ public:
 
             case INTENT_ACTION_TILE_MODIFY:
             {
-                WindowInvalidateByClass(WindowClass::TileInspector);
+                InvalidateByClass(WindowClass::TileInspector);
                 break;
             }
 
@@ -925,8 +926,6 @@ public:
     /**
      * Closes the specified window.
      *  rct2: 0x006ECD4C
-     *
-     * @param window The window to close (esi).
      */
     void Close(WindowBase& w) override
     {
@@ -967,7 +966,8 @@ public:
             {
                 continue;
             }
-            Close(*foundW);
+            if (foundW != nullptr)
+                Close(*foundW);
         }
     }
 
@@ -994,7 +994,6 @@ public:
     /**
      * Closes all windows with the specified window class.
      *  rct2: 0x006ECCF4
-     * @param cls (cl) with bit 15 set
      */
     void CloseByClass(WindowClass cls) override
     {
@@ -1004,8 +1003,6 @@ public:
     /**
      * Closes all windows with specified window class and number.
      *  rct2: 0x006ECCF4
-     * @param cls (cl) without bit 15 set
-     * @param number (dx)
      */
     void CloseByNumber(WindowClass cls, rct_windownumber number) override
     {
@@ -1066,8 +1063,6 @@ public:
 
     /**
      * Closes all windows except the specified window number and class.
-     * @param number (dx)
-     * @param cls (cl) without bit 15 set
      */
     void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override
     {
@@ -1092,7 +1087,6 @@ public:
     /**
      * Finds the first window with the specified window class.
      *  rct2: 0x006EA8A0
-     * @param WindowClass enum
      * @returns the window or nullptr if no window was found.
      */
     WindowBase* FindByClass(WindowClass cls) override
@@ -1112,8 +1106,6 @@ public:
     /**
      * Finds the first window with the specified window class and number.
      *  rct2: 0x006EA8A0
-     * @param WindowClass enum
-     * @param window number
      * @returns the window or nullptr if no window was found.
      */
     WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) override
@@ -1168,8 +1160,6 @@ public:
     /**
      *
      *  rct2: 0x006EA594
-     * x (ax)
-     * y (bx)
      * returns widget_index if found, -1 otherwise
      */
     WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) override
@@ -1203,6 +1193,105 @@ public:
 
         // Return the widget index
         return widget_index;
+    }
+
+    /**
+     * Invalidates the specified window.
+     *  rct2: 0x006EB13A
+     */
+    template<typename TPred>
+    static void InvalidateByCondition(TPred pred)
+    {
+        WindowVisitEach([pred](WindowBase* w) {
+            if (pred(w))
+            {
+                w->Invalidate();
+            }
+        });
+    }
+
+    /**
+     * Invalidates all windows with the specified window class.
+     *  rct2: 0x006EC3AC
+     */
+    void InvalidateByClass(WindowClass cls) override
+    {
+        InvalidateByCondition([cls](WindowBase* w) -> bool { return w->classification == cls; });
+    }
+
+    /**
+     * Invalidates all windows with the specified window class and number.
+     *  rct2: 0x006EC3AC
+     */
+    void InvalidateByNumber(WindowClass cls, rct_windownumber number) override
+    {
+        InvalidateByCondition([cls, number](WindowBase* w) -> bool { return w->classification == cls && w->number == number; });
+    }
+
+    // TODO: Use variant for this once the window framework is done.
+    void InvalidateByNumber(WindowClass cls, EntityId id) override
+    {
+        InvalidateByNumber(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
+    }
+
+    /**
+     * Invalidates all windows.
+     */
+    void InvalidateAll() override
+    {
+        WindowVisitEach([](WindowBase* w) { w->Invalidate(); });
+    }
+
+    /**
+     * Invalidates the specified widget of a window.
+     *  rct2: 0x006EC402
+     */
+    void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) override
+    {
+        if (w.widgets.empty())
+        {
+            // This might be called before the window is fully created.
+            return;
+        }
+
+        if (static_cast<size_t>(widgetIndex) >= w.widgets.size())
+        {
+            return;
+        }
+
+        const auto& widget = w.widgets[widgetIndex];
+        if (widget.left == -2)
+            return;
+
+        GfxSetDirtyBlocks({ { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
+                            { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
+    }
+
+    /**
+     * Invalidates the specified widget of all windows that match the specified window class.
+     */
+    void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override
+    {
+        WindowVisitEach([this, cls, widgetIndex](WindowBase* w) {
+            if (w->classification == cls)
+            {
+                InvalidateWidget(*w, widgetIndex);
+            }
+        });
+    }
+
+    /**
+     * Invalidates the specified widget of all windows that match the specified window class and number.
+     *  rct2: 0x006EC3AC
+     */
+    void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) override
+    {
+        WindowVisitEach([this, cls, number, widgetIndex](WindowBase* w) {
+            if (w->classification == cls && w->number == number)
+            {
+                InvalidateWidget(*w, widgetIndex);
+            }
+        });
     }
 
     /**
@@ -1265,8 +1354,6 @@ public:
     /**
      *
      *  rct2: 0x006ED78A
-     * cls (cl)
-     * number (dx)
      */
     WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) override
     {

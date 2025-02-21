@@ -20,10 +20,11 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
-#include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/File.h>
@@ -41,9 +42,16 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/scenes/title/TitleSequenceManager.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
+
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+extern "C" {
+extern void ExportPersistentData();
+extern void ImportPersistentData();
+}
+#endif
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -180,6 +188,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOOLBAR_SHOW_MUTE,
         WIDX_TOOLBAR_SHOW_CHAT,
         WIDX_TOOLBAR_SHOW_ZOOM,
+        WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE,
 
         // Misc
         WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
@@ -217,6 +226,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PATH_TO_RCT1_BUTTON,
         WIDX_PATH_TO_RCT1_CLEAR,
         WIDX_ASSET_PACKS,
+#ifdef __EMSCRIPTEN__
+        WIDX_EXPORT_EMSCRIPTEN_DATA,
+        WIDX_IMPORT_EMSCRIPTEN_DATA,
+#endif
     };
 
     // clang-format off
@@ -341,16 +354,17 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
         MakeWidget({155, kThemesGroupStart + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 
-        MakeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
-        MakeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP),
-        MakeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
-        MakeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
-        MakeWidget({ 24, kToolbarGroupStart + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
-        MakeWidget({155, kToolbarGroupStart + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
-        MakeWidget({155, kToolbarGroupStart + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
-        MakeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
-        MakeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
-        MakeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
+        MakeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                         ), // Toolbar buttons group
+        MakeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP      ),
+        MakeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                      ),
+        MakeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP           ), // Finances
+        MakeWidget({ 24, kToolbarGroupStart + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP           ), // Research
+        MakeWidget({155, kToolbarGroupStart + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP             ), // Cheats
+        MakeWidget({155, kToolbarGroupStart + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP      ), // Recent messages
+        MakeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP               ), // Mute
+        MakeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP               ), // Chat
+        MakeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP               ), // Zoom
+        MakeWidget({155, kToolbarGroupStart + 91}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ROTATE_ANTI_CLOCKWISE,           STR_ROTATE_VIEW_ANTI_CLOCKWISE_IN_TOOLBAR_TIP), // Rotate anti-clockwise
     };
 
     constexpr int32_t kTitleSequenceStart = 53;
@@ -392,11 +406,15 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({165, 113}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
         MakeWidget        ({288, 114}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
         MakeWidget        ({ 23, 130}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
         MakeWidget        ({ 23, 145}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
-        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
+        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path button
         MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
-        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                     ), // Asset packs
+        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
+#ifdef __EMSCRIPTEN__
+        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
+        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
+#endif
     };
 
     static constexpr std::span<const Widget> window_options_page_widgets[] = {
@@ -1302,15 +1320,19 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_MASTER_SOUND_CHECKBOX:
+                {
                     Config::Get().sound.MasterSoundEnabled = !Config::Get().sound.MasterSoundEnabled;
                     if (!Config::Get().sound.MasterSoundEnabled)
                         OpenRCT2::Audio::Pause();
                     else
                         OpenRCT2::Audio::Resume();
-                    WindowInvalidateByClass(WindowClass::TopToolbar);
+
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
                     Config::Save();
                     Invalidate();
                     break;
+                }
 
                 case WIDX_MUSIC_CHECKBOX:
                     Config::Get().sound.RideMusicEnabled = !Config::Get().sound.RideMusicEnabled;
@@ -1526,11 +1548,15 @@ namespace OpenRCT2::Ui::Windows
             setting ^= true;
             Config::Save();
             Invalidate();
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
         }
 
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
+            auto* windowMgr = Ui::GetWindowManager();
+
             switch (widgetIndex)
             {
                 case WIDX_HOTKEY_DROPDOWN:
@@ -1576,11 +1602,14 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TOOLBAR_SHOW_ZOOM:
                     ToggleToolbarSetting(Config::Get().interface.ToolbarShowZoom);
                     break;
+                case WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowRotateAnticlockwise);
+                    break;
                 case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
                     Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
                     Config::Save();
                     Invalidate();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_ENLARGED_UI:
                     Config::Get().interface.EnlargedUi ^= 1;
@@ -1588,13 +1617,13 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().interface.TouchEnhancements = false;
                     Config::Save();
                     Invalidate();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_TOUCH_ENHANCEMENTS:
                     Config::Get().interface.TouchEnhancements ^= 1;
                     Config::Save();
                     Invalidate();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_INVERT_DRAG:
                     Config::Get().general.InvertViewportDrag ^= 1;
@@ -1661,6 +1690,7 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, Config::Get().interface.ToolbarShowMute);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.ToolbarShowChat);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.ToolbarShowZoom);
+            SetCheckboxValue(WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE, Config::Get().interface.ToolbarShowRotateAnticlockwise);
             SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
             SetCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
             SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
@@ -1962,6 +1992,14 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ASSET_PACKS:
                     ContextOpenWindow(WindowClass::AssetPacks);
                     break;
+#ifdef __EMSCRIPTEN__
+                case WIDX_EXPORT_EMSCRIPTEN_DATA:
+                    ExportPersistentData();
+                    break;
+                case WIDX_IMPORT_EMSCRIPTEN_DATA:
+                    ImportPersistentData();
+                    break;
+#endif
             }
         }
 

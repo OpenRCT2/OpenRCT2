@@ -52,20 +52,11 @@ enum class WeatherLevel
 
 struct WeatherState
 {
-    int8_t TemperatureDelta;
-    WeatherEffectType EffectLevel;
-    int8_t GloomLevel;
-    WeatherLevel Level;
-    uint32_t SpriteId;
-};
-
-struct ClimateState
-{
-    WeatherType Weather;
-    int8_t Temperature;
-    WeatherEffectType WeatherEffect;
-    uint8_t WeatherGloom;
-    WeatherLevel Level;
+    WeatherType weatherType;
+    int8_t temperature;
+    WeatherEffectType weatherEffect;
+    uint8_t weatherGloom;
+    WeatherLevel level;
 };
 
 extern uint16_t gClimateLightningFlash;
@@ -83,5 +74,5 @@ bool ClimateIsRaining();
 bool ClimateIsSnowing();
 bool ClimateIsSnowingHeavily();
 bool WeatherIsDry(WeatherType);
-FilterPaletteID ClimateGetWeatherGloomPaletteId(const ClimateState& state);
-uint32_t ClimateGetWeatherSpriteId(const ClimateState& state);
+FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state);
+uint32_t ClimateGetWeatherSpriteId(const WeatherState& state);

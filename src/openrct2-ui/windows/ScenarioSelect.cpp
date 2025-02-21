@@ -13,7 +13,8 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -25,23 +26,22 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_SELECT_SCENARIO;
-    static constexpr int32_t WW = 734;
-    static constexpr int32_t WH = 384;
-    static constexpr int32_t SidebarWidth = 180;
-    static constexpr int32_t TabWidth = 92;
-    static constexpr int32_t TabHeight = 34;
-    static constexpr int32_t TrueFontSize = 24;
-    static constexpr int32_t WidgetsStart = 17;
-    static constexpr int32_t TabsStart = WidgetsStart;
-    static constexpr int32_t InitialNumUnlockedScenarios = 5;
-    constexpr uint8_t NumTabs = 10;
+    static constexpr StringId kWindowTitle = STR_SELECT_SCENARIO;
+    static constexpr int32_t kWindowWidth = 734;
+    static constexpr int32_t kWindowHeight = 384;
+    static constexpr int32_t kSidebarWidth = 180;
+    static constexpr int32_t kTabWidth = 92;
+    static constexpr int32_t kTabHeight = 34;
+    static constexpr int32_t kTrueFontSize = 24;
+    static constexpr int32_t kWidgetsStart = 17;
+    static constexpr int32_t kTabsStart = kWidgetsStart;
+    static constexpr int32_t kInitialNumUnlockedScenarios = 5;
+    constexpr uint8_t kNumTabs = 10;
 
     enum class ListItemType : uint8_t
     {
@@ -94,19 +94,19 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget _scenarioSelectWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({ TabWidth + 1, WidgetsStart }, { WW, 284 }, WindowWidgetType::Resize, WindowColour::Secondary), // tab content panel
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 0) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 1) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 2) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 03
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 3) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 04
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 4) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 05
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 5) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 06
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 6) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 07
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 7) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 8) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 8) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
-        MakeWidget({ TabWidth + 3, WidgetsStart + 1 }, { WW - SidebarWidth, 362 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
+        WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowHeight),
+        MakeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowWidth, 284 }, WindowWidgetType::Resize, WindowColour::Secondary), // tab content panel
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 0) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 1) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 2) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 03
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 3) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 04
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 4) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 05
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 5) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 06
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 6) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 07
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 7) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
+        MakeWidget({ kTabWidth + 3, kWidgetsStart + 1 }, { kWindowWidth - kSidebarWidth, 362 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
     };
     // clang-format on
 
@@ -191,7 +191,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 { // old-style
-                    ft.Add<StringId>(ScenarioCategoryStringIds[i]);
+                    ft.Add<StringId>(kScenarioCategoryStringIds[i]);
                 }
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
@@ -226,11 +226,12 @@ namespace OpenRCT2::Ui::Windows
             // Scenario path
             if (Config::Get().general.DebuggingTools)
             {
-                const auto shortPath = ShortenPath(scenario->Path, width - 6 - TabWidth, FontStyle::Medium);
+                const auto shortPath = ShortenPath(scenario->Path, width - 6 - kTabWidth, FontStyle::Medium);
 
                 auto ft = Formatter();
                 ft.Add<utf8*>(shortPath.c_str());
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ TabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
+                DrawTextBasic(
+                    dpi, windowPos + ScreenCoordsXY{ kTabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
             }
 
             // Scenario name
@@ -238,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(scenario->Name);
+            ft.Add<const char*>(scenario->Name.c_str());
             DrawTextEllipsised(
                 dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
             screenPos.y += 15;
@@ -246,7 +247,7 @@ namespace OpenRCT2::Ui::Windows
             // Scenario details
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(scenario->Details);
+            ft.Add<const char*>(scenario->Details.c_str());
             screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_BLACK_STRING, ft) + 5;
 
             // Scenario objective
@@ -310,7 +311,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            return { WW, y };
+            return { kWindowWidth, y };
         }
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -444,13 +445,11 @@ namespace OpenRCT2::Ui::Windows
                         bool isDisabled = listItem.scenario.is_locked;
 
                         // Draw scenario name
-                        char buffer[64];
-                        String::safeUtf8Copy(buffer, scenario->Name, sizeof(buffer));
                         StringId format = isDisabled ? static_cast<StringId>(STR_STRINGID)
                                                      : (isHighlighted ? highlighted_format : unhighlighted_format);
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_STRING);
-                        ft.Add<char*>(buffer);
+                        ft.Add<const char*>(scenario->Name.c_str());
                         auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
                                                  : ColourWithFlags{ COLOUR_BLACK };
                         auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;
@@ -538,7 +537,7 @@ namespace OpenRCT2::Ui::Windows
             uint32_t rct1CompletedScenarios = 0;
             std::optional<size_t> megaParkListItemIndex = std::nullopt;
 
-            int32_t numUnlocks = InitialNumUnlockedScenarios;
+            int32_t numUnlocks = kInitialNumUnlockedScenarios;
             uint8_t currentHeading = UINT8_MAX;
             for (size_t i = 0; i < numScenarios; i++)
             {
@@ -554,7 +553,7 @@ namespace OpenRCT2::Ui::Windows
                     if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
                     {
                         currentHeading = scenario->Category;
-                        headingStringId = ScenarioCategoryStringIds[currentHeading];
+                        headingStringId = kScenarioCategoryStringIds[currentHeading];
                     }
                 }
                 else
@@ -577,7 +576,7 @@ namespace OpenRCT2::Ui::Windows
                         if (currentHeading != category)
                         {
                             currentHeading = category;
-                            headingStringId = ScenarioCategoryStringIds[category];
+                            headingStringId = kScenarioCategoryStringIds[category];
                         }
                     }
                 }
@@ -724,8 +723,8 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            int32_t y = TabsStart;
-            for (int32_t i = 0; i < NumTabs; i++)
+            int32_t y = kTabsStart;
+            for (int32_t i = 0; i < kNumTabs; i++)
             {
                 auto& widget = widgets[i + WIDX_TAB1];
                 if (!(showPages & (1 << i)))
@@ -736,8 +735,8 @@ namespace OpenRCT2::Ui::Windows
 
                 widget.type = WindowWidgetType::Tab;
                 widget.top = y;
-                widget.bottom = y + (TabHeight - 1);
-                y += TabHeight;
+                widget.bottom = y + (kTabHeight - 1);
+                y += kTabHeight;
             }
         }
 
@@ -749,7 +748,7 @@ namespace OpenRCT2::Ui::Windows
         static int32_t GetScenarioListItemSize()
         {
             if (!LocalisationService_UseTrueTypeFont())
-                return TrueFontSize;
+                return kTrueFontSize;
 
             // Scenario title
             int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
@@ -777,8 +776,10 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
-        ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - WH) / 2) };
-        window = windowMgr->Create<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback);
+        ScreenCoordsXY screenPos = { (screenWidth - kWindowWidth) / 2,
+                                     std::max(kTopToolbarHeight + 1, (screenHeight - kWindowHeight) / 2) };
+        window = windowMgr->Create<ScenarioSelectWindow>(
+            WindowClass::ScenarioSelect, screenPos, kWindowWidth, kWindowHeight, 0, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

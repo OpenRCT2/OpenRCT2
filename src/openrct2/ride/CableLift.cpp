@@ -9,7 +9,7 @@
 
 #include "CableLift.h"
 
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../entity/EntityList.h"
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
@@ -28,7 +28,7 @@ Vehicle* CableLiftSegmentCreate(
 {
     Vehicle* current = CreateEntity<Vehicle>();
     current->ride = ride.id;
-    current->ride_subtype = OBJECT_ENTRY_INDEX_NULL;
+    current->ride_subtype = kObjectEntryIndexNull;
     if (head)
     {
         ride.cable_lift = current->Id;

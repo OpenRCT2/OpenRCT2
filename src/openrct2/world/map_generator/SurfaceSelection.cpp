@@ -63,7 +63,7 @@ namespace OpenRCT2::World::MapGenerator
 
         if (edgeTexture.empty())
         {
-            auto surfaceObject = objectManager.GetLoadedObject(ObjectType::TerrainSurface, surfaceTextureId);
+            auto surfaceObject = objectManager.GetLoadedObject(ObjectType::terrainSurface, surfaceTextureId);
             auto surfaceTexture = surfaceObject->GetIdentifier();
 
             // Base edge type on surface type
@@ -95,7 +95,7 @@ namespace OpenRCT2::World::MapGenerator
             availableBeachTextures.push_back("rct2.terrain_surface.sand_brown");
 
         if (availableBeachTextures.empty())
-            return OBJECT_ENTRY_INDEX_NULL;
+            return kObjectEntryIndexNull;
 
         std::string_view beachTexture = availableBeachTextures[UtilRand() % availableBeachTextures.size()];
         return objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(beachTexture));

@@ -38,7 +38,6 @@
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -258,18 +257,17 @@ namespace OpenRCT2::RCT2
             if (String::isNullOrEmpty(_s6.Info.Name))
             {
                 // If the scenario doesn't have a name, set it to the filename
-                String::set(dst->Name, sizeof(dst->Name), Path::GetFileNameWithoutExtension(dst->Path).c_str());
+                dst->Name = Path::GetFileNameWithoutExtension(dst->Path);
             }
             else
             {
                 // Normalise the name to make the scenario as recognisable as possible.
-                auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
-                String::set(dst->Name, sizeof(dst->Name), normalisedName.c_str());
+                dst->Name = ScenarioSources::NormaliseName(_s6.Info.Name);
             }
 
             // Look up and store information regarding the origins of this scenario.
             SourceDescriptor desc;
-            if (ScenarioSources::TryGetByName(dst->Name, &desc))
+            if (ScenarioSources::TryGetByName(dst->Name.c_str(), &desc))
             {
                 dst->ScenarioId = desc.id;
                 dst->SourceIndex = desc.index;
@@ -291,8 +289,8 @@ namespace OpenRCT2::RCT2
             }
 
             // dst->name will be translated later so keep the untranslated name here
-            String::set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
-            String::set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
+            dst->InternalName = dst->Name;
+            dst->Details = _s6.Info.Details;
 
             if (!desc.textObjectId.empty())
             {
@@ -302,18 +300,15 @@ namespace OpenRCT2::RCT2
                 std::lock_guard lock(mtx);
 
                 // Unload loaded scenario text object, if any.
-                if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                if (auto* obj = objManager.GetLoadedObject(ObjectType::scenarioText, 0); obj != nullptr)
                     objManager.UnloadObjects({ obj->GetDescriptor() });
 
                 // Load the one specified
                 if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                 {
                     auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                    auto name = textObject->GetScenarioName();
-                    auto details = textObject->GetScenarioDetails();
-
-                    String::set(dst->Name, sizeof(dst->Name), name.c_str());
-                    String::set(dst->Details, sizeof(dst->Details), details.c_str());
+                    dst->Name = textObject->GetScenarioName();
+                    dst->Details = textObject->GetScenarioDetails();
                 }
             }
 
@@ -556,17 +551,21 @@ namespace OpenRCT2::RCT2
             // Pad13CA741;
             // Byte13CA742
             // Pad013CA747
-            gameState.ClimateUpdateTimer = _s6.ClimateUpdateTimer;
-            gameState.ClimateCurrent.Weather = WeatherType{ _s6.CurrentWeather };
-            gameState.ClimateNext.Weather = WeatherType{ _s6.NextWeather };
-            gameState.ClimateCurrent.Temperature = _s6.Temperature;
-            gameState.ClimateNext.Temperature = _s6.NextTemperature;
-            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect };
-            gameState.ClimateNext.WeatherEffect = WeatherEffectType{ _s6.NextWeatherEffect };
-            gameState.ClimateCurrent.WeatherGloom = _s6.CurrentWeatherGloom;
-            gameState.ClimateNext.WeatherGloom = _s6.NextWeatherGloom;
-            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel);
-            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s6.NextWeatherLevel);
+            gameState.WeatherUpdateTimer = _s6.WeatherUpdateTimer;
+            gameState.WeatherCurrent = {
+                .weatherType = WeatherType{ _s6.CurrentWeather },
+                .temperature = static_cast<int8_t>(_s6.Temperature),
+                .weatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect },
+                .weatherGloom = _s6.CurrentWeatherGloom,
+                .level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel),
+            };
+            gameState.WeatherNext = {
+                .weatherType = WeatherType{ _s6.NextWeather },
+                .temperature = static_cast<int8_t>(_s6.NextTemperature),
+                .weatherEffect = WeatherEffectType{ _s6.NextWeatherEffect },
+                .weatherGloom = _s6.NextWeatherGloom,
+                .level = static_cast<WeatherLevel>(_s6.NextWeatherLevel),
+            };
 
             // News items
             News::InitQueue();
@@ -640,7 +639,7 @@ namespace OpenRCT2::RCT2
             for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
-                if (src->Type != RIDE_TYPE_NULL)
+                if (src->Type != kRideTypeNull)
                 {
                     const auto rideId = RideId::FromUnderlying(index);
                     auto dst = RideAllocateAtIndex(rideId);
@@ -666,7 +665,7 @@ namespace OpenRCT2::RCT2
             for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
-                if (src->Type == RIDE_TYPE_NULL)
+                if (src->Type == kRideTypeNull)
                     continue;
 
                 auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->Subtype);
@@ -966,14 +965,14 @@ namespace OpenRCT2::RCT2
             // This stall was not colourable in RCT2.
             if (dst->type == RIDE_TYPE_FOOD_STALL)
             {
-                auto object = ObjectEntryGetObject(ObjectType::Ride, dst->subtype);
+                auto object = ObjectEntryGetObject(ObjectType::ride, dst->subtype);
                 if (object != nullptr && object->GetIdentifier() == "rct2.ride.icecr1")
                 {
                     dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
                 }
             }
 
-            auto musicStyle = OBJECT_ENTRY_INDEX_NULL;
+            auto musicStyle = kObjectEntryIndexNull;
             if (GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::allowMusic))
             {
                 musicStyle = src->Music;
@@ -981,7 +980,7 @@ namespace OpenRCT2::RCT2
             dst->music = musicStyle;
 
             // In SV7, "plain" entrances are invisible.
-            auto entranceStyle = OBJECT_ENTRY_INDEX_NULL;
+            auto entranceStyle = kObjectEntryIndexNull;
             if (!_isSV7 && GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::hasEntranceAndExit))
             {
                 entranceStyle = src->EntranceStyle;
@@ -1021,7 +1020,7 @@ namespace OpenRCT2::RCT2
             dst.ProximityStart = { src.ProximityStartX, src.ProximityStartY, src.ProximityStartZ };
             dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.CurrentRide);
             dst.State = src.State;
-            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(RideTypeDescriptors))
+            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(kRideTypeDescriptors))
             {
                 dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
                     src.ProximityTrackType, _s6.Rides[src.CurrentRide].Type, IsFlatRide(src.CurrentRide));
@@ -1312,7 +1311,7 @@ namespace OpenRCT2::RCT2
                     auto pathEntryIndex = src2->GetEntryIndex();
                     auto surfaceEntry = src2->IsQueue() ? _pathToQueueSurfaceMap[pathEntryIndex]
                                                         : _pathToSurfaceMap[pathEntryIndex];
-                    if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                    if (surfaceEntry == kObjectEntryIndexNull)
                     {
                         // Legacy footpath object
                         dst2->SetLegacyPathEntryIndex(pathEntryIndex);
@@ -1433,7 +1432,7 @@ namespace OpenRCT2::RCT2
                     {
                         auto pathEntryIndex = src2->GetPathType();
                         auto surfaceEntry = _pathToSurfaceMap[pathEntryIndex];
-                        if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                        if (surfaceEntry == kObjectEntryIndexNull)
                         {
                             // Legacy footpath object
                             dst2->SetLegacyPathEntryIndex(pathEntryIndex);
@@ -1446,7 +1445,7 @@ namespace OpenRCT2::RCT2
                     }
                     else
                     {
-                        dst2->SetSurfaceEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+                        dst2->SetSurfaceEntryIndex(kObjectEntryIndexNull);
                     }
                     break;
                 }
@@ -1650,7 +1649,7 @@ namespace OpenRCT2::RCT2
             dst->SubState = src->SubState;
 
             // TODO
-            dst->AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
+            dst->AnimationObjectIndex = kObjectEntryIndexNull;
             dst->AnimationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
 
             dst->TshirtColour = src->TshirtColour;
@@ -1799,22 +1798,22 @@ namespace OpenRCT2::RCT2
 
         ObjectList GetRequiredObjects()
         {
-            std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), kObjectEntryIndexNull);
 
             ObjectList objectList;
             int objectIt = 0;
             ObjectEntryIndex surfaceCount = 0;
             ObjectEntryIndex railingCount = 0;
-            for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
+            for (int16_t objectType = EnumValue(ObjectType::ride); objectType <= EnumValue(ObjectType::water); objectType++)
             {
                 for (int16_t i = 0; i < kRCT2ObjectEntryGroupCounts[objectType]; i++, objectIt++)
                 {
                     auto entry = ObjectEntryDescriptor(_s6.Objects[objectIt]);
                     if (entry.HasValue())
                     {
-                        if (objectType == EnumValue(ObjectType::Paths))
+                        if (objectType == EnumValue(ObjectType::paths))
                         {
                             auto footpathMapping = GetFootpathSurfaceId(entry);
                             if (footpathMapping == nullptr)
@@ -1826,28 +1825,28 @@ namespace OpenRCT2::RCT2
                             {
                                 // We have surface objects for this footpath
                                 auto surfaceIndex = objectList.Find(
-                                    ObjectType::FootpathSurface, footpathMapping->NormalSurface);
-                                if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                                    ObjectType::footpathSurface, footpathMapping->NormalSurface);
+                                if (surfaceIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(
-                                        ObjectType::FootpathSurface, surfaceCount, footpathMapping->NormalSurface);
+                                        ObjectType::footpathSurface, surfaceCount, footpathMapping->NormalSurface);
                                     surfaceIndex = surfaceCount++;
                                 }
                                 _pathToSurfaceMap[i] = surfaceIndex;
 
-                                surfaceIndex = objectList.Find(ObjectType::FootpathSurface, footpathMapping->QueueSurface);
-                                if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                                surfaceIndex = objectList.Find(ObjectType::footpathSurface, footpathMapping->QueueSurface);
+                                if (surfaceIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(
-                                        ObjectType::FootpathSurface, surfaceCount, footpathMapping->QueueSurface);
+                                        ObjectType::footpathSurface, surfaceCount, footpathMapping->QueueSurface);
                                     surfaceIndex = surfaceCount++;
                                 }
                                 _pathToQueueSurfaceMap[i] = surfaceIndex;
 
-                                auto railingIndex = objectList.Find(ObjectType::FootpathRailings, footpathMapping->Railing);
-                                if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
+                                auto railingIndex = objectList.Find(ObjectType::footpathRailings, footpathMapping->Railing);
+                                if (railingIndex == kObjectEntryIndexNull)
                                 {
-                                    objectList.SetObject(ObjectType::FootpathRailings, railingCount, footpathMapping->Railing);
+                                    objectList.SetObject(ObjectType::footpathRailings, railingCount, footpathMapping->Railing);
                                     railingIndex = railingCount++;
                                 }
                                 _pathToRailingMap[i] = railingIndex;
@@ -1890,10 +1889,10 @@ namespace OpenRCT2::RCT2
                 _terrainEdgeEntries.AddRange(OpenRCT2HybridTerrainEdges);
             }
 
-            AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);
-            AppendRequiredObjects(objectList, ObjectType::TerrainEdge, _terrainEdgeEntries);
+            AppendRequiredObjects(objectList, ObjectType::terrainSurface, _terrainSurfaceEntries);
+            AppendRequiredObjects(objectList, ObjectType::terrainEdge, _terrainEdgeEntries);
             AppendRequiredObjects(
-                objectList, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
+                objectList, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(objectList);
 
             // Normalise the name to make the scenario as recognisable as possible
@@ -1903,10 +1902,10 @@ namespace OpenRCT2::RCT2
             SourceDescriptor desc;
             if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
                 AppendRequiredObjects(
-                    objectList, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+                    objectList, ObjectType::scenarioText, std::vector<std::string_view>({ desc.textObjectId }));
 
             auto animObjects = GetLegacyPeepAnimationObjects(objectList);
-            AppendRequiredObjects(objectList, ObjectType::PeepAnimations, animObjects);
+            AppendRequiredObjects(objectList, ObjectType::peepAnimations, animObjects);
 
             return objectList;
         }

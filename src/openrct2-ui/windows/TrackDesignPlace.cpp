@@ -18,8 +18,9 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/TrackDesignAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -28,7 +29,6 @@
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -48,10 +48,10 @@ namespace OpenRCT2::Ui::Windows
     constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
     constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;
 
-    static constexpr uint8_t _PaletteIndexColourEntrance = PALETTE_INDEX_20; // White
-    static constexpr uint8_t _PaletteIndexColourExit = PALETTE_INDEX_10;     // Black
-    static constexpr uint8_t _PaletteIndexColourTrack = PALETTE_INDEX_248;   // Grey (dark)
-    static constexpr uint8_t _PaletteIndexColourStation = PALETTE_INDEX_252; // Grey (light)
+    static constexpr uint8_t kPaletteIndexColourEntrance = PALETTE_INDEX_20; // White
+    static constexpr uint8_t kPaletteIndexColourExit = PALETTE_INDEX_10;     // Black
+    static constexpr uint8_t kPaletteIndexColourTrack = PALETTE_INDEX_248;   // Grey (dark)
+    static constexpr uint8_t kPaletteIndexColourStation = PALETTE_INDEX_252; // Grey (light)
 
     enum
     {
@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
             if (cost != _placementCost)
             {
                 _placementCost = cost;
-                WidgetInvalidate(*this, WIDX_PRICE);
+                InvalidateWidget(WIDX_PRICE);
             }
 
             TrackDesignPreviewDrawOutlines(tds, *_trackDesign, RideGetTemporaryForPreview(), trackLoc);
@@ -567,7 +567,7 @@ namespace OpenRCT2::Ui::Windows
                     if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                     {
                         uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
-                        uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                        uint8_t colour = entrance.isExit ? kPaletteIndexColourExit : kPaletteIndexColourEntrance;
                         for (int32_t i = 0; i < 4; i++)
                         {
                             pixel[338 + i] = colour; // x + 2, y + 2
@@ -613,8 +613,8 @@ namespace OpenRCT2::Ui::Windows
                             auto bits = trackBlock.quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
-                            uint8_t colour = (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN) ? _PaletteIndexColourStation
-                                                                                                   : _PaletteIndexColourTrack;
+                            uint8_t colour = (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN) ? kPaletteIndexColourStation
+                                                                                                   : kPaletteIndexColourTrack;
 
                             for (int32_t i = 0; i < 4; i++)
                             {
@@ -673,7 +673,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
-                        uint8_t colour = _PaletteIndexColourTrack;
+                        uint8_t colour = kPaletteIndexColourTrack;
                         for (int32_t i = 0; i < 4; i++)
                         {
                             pixel[338 + i] = colour; // x + 2, y + 2

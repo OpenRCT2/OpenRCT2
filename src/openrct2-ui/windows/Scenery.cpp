@@ -19,6 +19,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/BannerPlaceAction.h>
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
@@ -29,7 +30,7 @@
 #include <openrct2/actions/SmallScenerySetColourAction.h>
 #include <openrct2/actions/WallPlaceAction.h>
 #include <openrct2/actions/WallSetColourAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/String.hpp>
@@ -48,7 +49,6 @@
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/ConstructionClearance.h>
@@ -156,7 +156,7 @@ namespace OpenRCT2::Ui::Windows
         struct SceneryTabInfo
         {
             SceneryTabType Type = SCENERY_TAB_TYPE_GROUP;
-            ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
+            ObjectEntryIndex SceneryGroupIndex = kObjectEntryIndexNull;
             std::deque<ScenerySelection> Entries{};
             u8string Filter = "";
 
@@ -504,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             Invalidate();
@@ -1067,7 +1067,9 @@ namespace OpenRCT2::Ui::Windows
             _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), MaxTabsPerRow) * TabWidth + 5;
 
             PrepareWidgets();
-            WindowInvalidateByClass(WindowClass::Scenery);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::Scenery);
         }
 
         int32_t GetRequiredWidth() const
@@ -1246,7 +1248,7 @@ namespace OpenRCT2::Ui::Windows
 
         void InitSceneryEntry(const ScenerySelection& selection, const ObjectEntryIndex sceneryGroupIndex)
         {
-            Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, OBJECT_ENTRY_INDEX_NULL);
+            Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, kObjectEntryIndexNull);
 
             if (IsSceneryAvailableToBuild(selection))
             {
@@ -1258,7 +1260,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Add scenery to primary group (usually trees or path additions)
-                if (sceneryGroupIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (sceneryGroupIndex != kObjectEntryIndexNull)
                 {
                     auto* tabInfo = GetSceneryTabInfoForGroup(sceneryGroupIndex);
                     if (tabInfo != nullptr)
@@ -1339,9 +1341,9 @@ namespace OpenRCT2::Ui::Windows
                 if (a.SceneryGroupIndex == b.SceneryGroupIndex)
                     return false;
 
-                if (a.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (a.SceneryGroupIndex == kObjectEntryIndexNull)
                     return false;
-                if (b.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (b.SceneryGroupIndex == kObjectEntryIndexNull)
                     return true;
 
                 const auto* entryA = a.GetSceneryGroupEntry();

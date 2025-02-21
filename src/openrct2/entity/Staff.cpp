@@ -15,12 +15,11 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../actions/StaffSetOrdersAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../core/EnumUtils.hpp"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -40,6 +39,7 @@
 #include "../ride/Track.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
@@ -403,7 +403,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
 
         if (GetNextIsSloped())
         {
-            if (surfaceElement->GetSlope() != PathSlopeToLandSlope[GetNextDirection()])
+            if (surfaceElement->GetSlope() != kPathSlopeToLandSlope[GetNextDirection()])
                 return INVALID_DIRECTION;
         }
         else if (surfaceElement->GetSlope() != kTileSlopeFlat)
@@ -1036,7 +1036,7 @@ void Staff::UpdateMowing()
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
             MapInvalidateTileZoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
-        StaffLawnsMown++;
+        StaffLawnsMown = AddClamp(StaffLawnsMown, 1u);
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1096,7 +1096,7 @@ void Staff::UpdateWatering()
 
             tile_element->AsSmallScenery()->SetAge(0);
             MapInvalidateTileZoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-            StaffGardensWatered++;
+            StaffGardensWatered = AddClamp(StaffGardensWatered, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
 
@@ -1180,7 +1180,7 @@ void Staff::UpdateEmptyingBin()
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
         MapInvalidateTileZoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-        StaffBinsEmptied++;
+        StaffBinsEmptied = AddClamp(StaffBinsEmptied, 1u);
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1199,7 +1199,7 @@ void Staff::UpdateSweeping()
     {
         // Remove sick at this location
         Litter::RemoveAt(GetLocation());
-        StaffLitterSwept++;
+        StaffLitterSwept = AddClamp(StaffLitterSwept, 1u);
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     if (auto loc = UpdateAction(); loc.has_value())
@@ -2412,13 +2412,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
         {
             UpdateRideInspected(CurrentRide);
 
-            StaffRidesInspected++;
+            StaffRidesInspected = AddClamp(StaffRidesInspected, 1u);
             WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
             ride.mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
             return true;
         }
 
-        StaffRidesFixed++;
+        StaffRidesFixed = AddClamp(StaffRidesFixed, 1u);
         WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         Orientation = PeepDirection << 3;

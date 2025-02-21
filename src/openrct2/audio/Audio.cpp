@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "audio.h"
+#include "Audio.h"
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
@@ -27,7 +27,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
 #include "../scenes/intro/IntroScene.h"
-#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/tile_element/SurfaceElement.h"
@@ -50,9 +50,9 @@ namespace OpenRCT2::Audio
 
     static std::vector<std::string> _audioDevices;
     static int32_t _currentAudioDevice = -1;
-    static ObjectEntryIndex _soundsAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-    static ObjectEntryIndex _soundsAdditionalAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-    static ObjectEntryIndex _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+    static ObjectEntryIndex _soundsAudioObjectEntryIndex = kObjectEntryIndexNull;
+    static ObjectEntryIndex _soundsAdditionalAudioObjectEntryIndex = kObjectEntryIndexNull;
+    static ObjectEntryIndex _titleAudioObjectEntryIndex = kObjectEntryIndexNull;
 
     bool gGameSoundsOff = false;
     int32_t gVolumeAdjustZoom = 0;
@@ -190,13 +190,13 @@ namespace OpenRCT2::Audio
         if (id >= SoundId::LiftRMC)
         {
             audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::Audio, _soundsAdditionalAudioObjectEntryIndex));
+                objManager.GetLoadedObject(ObjectType::audio, _soundsAdditionalAudioObjectEntryIndex));
             sampleIndex -= EnumValue(SoundId::LiftRMC);
         }
         else
         {
             audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::Audio, _soundsAudioObjectEntryIndex));
+                objManager.GetLoadedObject(ObjectType::audio, _soundsAudioObjectEntryIndex));
         }
         return std::make_tuple(audioObject, sampleIndex);
     }
@@ -207,7 +207,7 @@ namespace OpenRCT2::Audio
         if (pan != kAudioPlayAtCentre)
         {
             int32_t x2 = pan << 16;
-            uint16_t screenWidth = std::max<int32_t>(64, OpenRCT2::GetContext()->GetUiContext()->GetWidth());
+            uint16_t screenWidth = std::max<int32_t>(64, ContextGetWidth());
             mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
         }
 
@@ -285,7 +285,7 @@ namespace OpenRCT2::Audio
 
         if (it != musicMap.end())
         {
-            return ObjectEntryDescriptor(ObjectType::Audio, it->second);
+            return ObjectEntryDescriptor(ObjectType::audio, it->second);
         }
 
         // No music descriptor for the current setting, intentional for TitleMusicKind::None
@@ -360,15 +360,15 @@ namespace OpenRCT2::Audio
         }
 
         // Unload the audio object
-        if (_titleAudioObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
+        if (_titleAudioObjectEntryIndex != kObjectEntryIndexNull)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto* obj = objManager.GetLoadedObject(ObjectType::Audio, _titleAudioObjectEntryIndex);
+            auto* obj = objManager.GetLoadedObject(ObjectType::audio, _titleAudioObjectEntryIndex);
             if (obj != nullptr)
             {
                 objManager.UnloadObjects({ obj->GetDescriptor() });
             }
-            _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+            _titleAudioObjectEntryIndex = kObjectEntryIndexNull;
         }
     }
 
@@ -410,7 +410,8 @@ namespace OpenRCT2::Audio
             Pause();
         }
 
-        WindowInvalidateByClass(WindowClass::Options);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByClass(WindowClass::Options);
     }
 
     void Pause()

@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../config/ConfigTypes.h"
+#include "../localisation/FormatCodes.h"
 #include "../platform/Platform.h"
 #include "../scripting/ScriptEngine.h"
 

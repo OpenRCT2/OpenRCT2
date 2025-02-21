@@ -16,34 +16,34 @@
 #include <span>
 
 using ObjectEntryIndex = uint16_t;
-constexpr ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
+constexpr ObjectEntryIndex kObjectEntryIndexNull = std::numeric_limits<ObjectEntryIndex>::max();
 
 // First 0xF of RCTObjectEntry->flags
 enum class ObjectType : uint8_t
 {
-    Ride,
-    SmallScenery,
-    LargeScenery,
-    Walls,
-    Banners,
-    Paths,
-    PathAdditions,
-    SceneryGroup,
-    ParkEntrance,
-    Water,
-    ScenarioText,
-    TerrainSurface,
-    TerrainEdge,
-    Station,
-    Music,
-    FootpathSurface,
-    FootpathRailings,
-    Audio,
-    PeepNames,
-    PeepAnimations,
+    ride,
+    smallScenery,
+    largeScenery,
+    walls,
+    banners,
+    paths,
+    pathAdditions,
+    sceneryGroup,
+    parkEntrance,
+    water,
+    scenarioText,
+    terrainSurface,
+    terrainEdge,
+    station,
+    music,
+    footpathSurface,
+    footpathRailings,
+    audio,
+    peepNames,
+    peepAnimations,
 
-    Count,
-    None = 255
+    count,
+    none = 255
 };
 
 static constexpr size_t kNumTransientObjectTypes = 18;

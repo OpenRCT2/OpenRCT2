@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
     .UpkeepCosts = { 10, 20, 80, 12, 3, 40 },
     .BuildCosts = { 57.00_GBP, 2.50_GBP, 55, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_MODERN,
+    .DefaultMusic = kMusicObjectModern,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -60,13 +60,13 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 85), RIDE_RATING(0, 40), RIDE_RATING(0, 35) },
+        { MakeRideRating(3, 85), MakeRideRating(0, 40), MakeRideRating(0, 35) },
         14,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

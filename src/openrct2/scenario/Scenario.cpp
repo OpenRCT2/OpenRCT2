@@ -18,7 +18,7 @@
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"
@@ -31,7 +31,6 @@
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -69,7 +68,7 @@
 
 using namespace OpenRCT2;
 
-const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
+const StringId kScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
     STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS, STR_COMPETITIONS, STR_UCES_TM,    STR_UCES_KD,
 };
@@ -115,7 +114,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.Cash = gameState.InitialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
-    if (auto* object = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); object != nullptr)
+    if (auto* object = objManager.GetLoadedObject(ObjectType::scenarioText, 0); object != nullptr)
     {
         auto* textObject = reinterpret_cast<ScenarioTextObject*>(object);
 
@@ -151,7 +150,7 @@ void ScenarioReset(GameState_t& gameState)
     Staff::ResetStats();
 
     gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-    if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+    if (gameState.LastEntranceStyle == kObjectEntryIndexNull)
     {
         // Fall back to first entrance object
         gameState.LastEntranceStyle = 0;
@@ -188,7 +187,7 @@ static void ScenarioEnd()
  */
 void ScenarioFailure(GameState_t& gameState)
 {
-    gameState.ScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+    gameState.ScenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
     ScenarioEnd();
 }
 
@@ -661,8 +660,8 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
     BitSet<kMaxRideObjects> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(6, 00)
-            && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::Open && ride.ratings.excitement >= MakeRideRating(6, 00)
+            && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
@@ -729,7 +728,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
             return ObjectiveStatus::Failure;
         }
     }
-    else if (gameState.ScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+    else if (gameState.ScenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
     {
         gameState.ScenarioParkRatingWarningDays = 0;
     }
@@ -763,8 +762,8 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(7, 00)
-            && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::Open && ride.ratings.excitement >= MakeRideRating(7, 00)
+            && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)

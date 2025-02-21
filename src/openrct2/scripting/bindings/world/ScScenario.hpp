@@ -261,7 +261,7 @@ namespace OpenRCT2::Scripting
             const auto& gameState = GetGameState();
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined
-                || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                || gameState.ScenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
             {
                 return ToDuk(ctx, nullptr);
             }
@@ -278,7 +278,7 @@ namespace OpenRCT2::Scripting
             const auto& gameState = GetGameState();
             if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined)
                 return "inProgress";
-            if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+            if (gameState.ScenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
                 return "failed";
             return "completed";
         }
@@ -289,7 +289,7 @@ namespace OpenRCT2::Scripting
             if (value == "inProgress")
                 gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
             else if (value == "failed")
-                gameState.ScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+                gameState.ScenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
             else if (value == "completed")
                 gameState.ScenarioCompletedCompanyValue = gameState.CompanyValue;
         }

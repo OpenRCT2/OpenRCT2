@@ -365,9 +365,9 @@ bool InputManager::GetState(const RegisteredShortcut& shortcut) const
 
 bool InputManager::GetState(const ShortcutInput& shortcut) const
 {
-    constexpr uint32_t UsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
-    auto modifiers = SDL_GetModState() & UsefulModifiers;
-    if ((shortcut.Modifiers & UsefulModifiers) == modifiers)
+    constexpr uint32_t kUsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
+    auto modifiers = SDL_GetModState() & kUsefulModifiers;
+    if ((shortcut.Modifiers & kUsefulModifiers) == modifiers)
     {
         switch (shortcut.Kind)
         {

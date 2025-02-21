@@ -20,17 +20,17 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
-#include <openrct2/localisation/Formatter.h>
-#include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
+
+class Formatter;
 
 namespace OpenRCT2
 {
@@ -112,7 +112,9 @@ namespace OpenRCT2
         }
 
         WidgetScrollUpdateThumbs(w, widgetIndex);
-        WidgetInvalidate(w, widgetIndex);
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateWidget(w, widgetIndex);
     }
 
     /**
@@ -161,6 +163,9 @@ namespace OpenRCT2
         const auto& widgets = w.widgets;
 
         if (widgets[index].type != WindowWidgetType::Spinner && widgets[index].type != WindowWidgetType::ImgBtn)
+            return false;
+
+        if (static_cast<size_t>(index + 2) >= widgets.size())
             return false;
 
         if (widgets[index + 1].type != buttonType)
@@ -239,6 +244,8 @@ namespace OpenRCT2
             // Expected widget order: increase, decrease
             targetWidgetIndex += wheel < 0 ? 1 : 2;
         }
+
+        assert(targetWidgetIndex >= 0 && targetWidgetIndex < w.widgets.size());
 
         if (WidgetIsDisabled(w, targetWidgetIndex))
         {
@@ -361,7 +368,8 @@ namespace OpenRCT2
 
     void Window::InvalidateWidget(WidgetIndex widgetIndex)
     {
-        WidgetInvalidate(*this, widgetIndex);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateWidget(*this, widgetIndex);
     }
 
     bool Window::IsWidgetDisabled(WidgetIndex widgetIndex) const
@@ -527,12 +535,17 @@ namespace OpenRCT2
 
     void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
     {
+        assert(start_tab_id < w->widgets.size());
+        assert(end_tab_id < w->widgets.size());
+
         int32_t i, x = w->widgets[start_tab_id].left;
         int32_t tab_width = w->widgets[start_tab_id].width();
 
         for (i = start_tab_id; i <= end_tab_id; i++)
         {
             auto& widget = w->widgets[i];
+            assert(widget.type == WindowWidgetType::Tab);
+
             if (!WidgetIsDisabled(*w, i))
             {
                 widget.left = x;
@@ -620,7 +633,7 @@ namespace OpenRCT2::Ui::Windows
             _usingWidgetTextBox = false;
             if (w != nullptr)
             {
-                WidgetInvalidate(*w, _currentTextBox.widget_index);
+                windowMgr->InvalidateWidget(*w, _currentTextBox.widget_index);
             }
             _currentTextBox.widget_index = kWidgetIndexNull;
         }
@@ -640,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
             _textBoxFrameNo = 0;
             auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
-            WidgetInvalidate(*w, _currentTextBox.widget_index);
+            windowMgr->InvalidateWidget(*w, _currentTextBox.widget_index);
             w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
         }
     }

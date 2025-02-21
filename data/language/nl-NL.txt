@@ -2168,7 +2168,6 @@ STR_3136    :Waarschuwing: Dit ontwerp zal worden gebouwd met een ander type kar
 STR_3137    :Decor naast baan selecteren
 STR_3138    :Alles deselecteren
 STR_3139    :Kabellift kan niet functioneren in deze werkmodus
-STR_3140    :Kabellift moet meteen na het station beginnen
 STR_3141    :Meerdere circuits zijn niet mogelijk met een kabellift
 STR_3142    :{WINDOW_COLOUR_2}Capaciteit: {BLACK}{STRINGID}
 STR_3143    :Laat bezoekers zien op kaart
@@ -2200,7 +2199,7 @@ STR_3188    :Lichtkranten
 STR_3189    :Voetpaden (oude stijl)
 STR_3190    :Extra’s voor paden
 STR_3191    :Decorgroepen
-STR_3192    :Parkingang
+STR_3192    :Parkingangen
 STR_3193    :Water
 STR_3195    :Lijst van uitvindingen
 STR_3196    :{WINDOW_COLOUR_2}Onderzoeksgroep: {BLACK}{STRINGID}
@@ -3778,3 +3777,18 @@ STR_6714    :Naam
 STR_6715    :Gewijzigd
 STR_6716    :Grootte
 STR_6717    :Grootte {STRINGID}
+STR_6718    :NPC-animaties
+STR_6719    :Er moet minstens één object met bezoekersanimaties geselecteerd zijn.
+STR_6720    :Er moet minstens één object met klusjesmananimaties geselecteerd zijn.
+STR_6721    :Er moet minstens één object met monteuranimaties geselecteerd zijn.
+STR_6722    :Er moet minstens één object met bewakeranimaties geselecteerd zijn.
+STR_6723    :Er moet minstens één object met entertaineranimaties geselecteerd zijn.
+STR_6724    :Scenariobeschrijvingen
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Dive loop (links)
+STR_6728    :Dive loop (rechts)
+STR_6729    :Kabellift moet meteen na het station of een blokrem beginnen.
+STR_6730    :Emscripten-data exporteren
+STR_6731    :Emscripten-data importeren
+STR_6732    :Toon een knop in de werkbalk om het beeld tegen de klok in te draaien.

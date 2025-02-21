@@ -235,3 +235,4 @@ STR_6625    :Invalid color
 
 STR_6629    :Align toolbar buttons horizontally centered
 STR_6630    :This setting will align the toolbar buttons horizontally in the center of the screen. The traditional way of aligning them is in the left and right corner.
+STR_6732    :Show a button in the toolbar to rotate the view counterclockwise

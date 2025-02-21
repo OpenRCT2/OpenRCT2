@@ -18,6 +18,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LandLowerAction.h>
 #include <openrct2/actions/LandRaiseAction.h>
 #include <openrct2/actions/LandSmoothAction.h>
@@ -27,7 +28,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -95,8 +95,8 @@ namespace OpenRCT2::Ui::Windows
             WindowPushOthersBelow(*this);
 
             gLandToolSize = 1;
-            gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
-            gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
+            gLandToolTerrainSurface = kObjectEntryIndexNull;
+            gLandToolTerrainEdge = kObjectEntryIndexNull;
 
             _selectedFloorTexture = LandTool::GetSurfaceStyleFromDropdownIndex(0);
             _selectedWallTexture = LandTool::GetEdgeStyleFromDropdownIndex(0);
@@ -179,7 +179,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainSurface == type)
                     {
-                        gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainSurface = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -197,7 +197,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainEdge == type)
                     {
-                        gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainEdge = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -237,9 +237,9 @@ namespace OpenRCT2::Ui::Windows
         {
             pressed_widgets = 0;
             SetWidgetPressed(WIDX_PREVIEW, true);
-            if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
+            if (gLandToolTerrainSurface != kObjectEntryIndexNull)
                 SetWidgetPressed(WIDX_FLOOR, true);
-            if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
+            if (gLandToolTerrainEdge != kObjectEntryIndexNull)
                 SetWidgetPressed(WIDX_WALL, true);
             if (_landToolMountainMode)
                 SetWidgetPressed(WIDX_MOUNTAINMODE, true);
@@ -303,18 +303,18 @@ namespace OpenRCT2::Ui::Windows
                 // Draw paint price
                 numTiles = gLandToolSize * gLandToolSize;
                 price = 0;
-                if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
+                if (gLandToolTerrainSurface != kObjectEntryIndexNull)
                 {
                     auto& objManager = GetContext()->GetObjectManager();
                     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::TerrainSurface, gLandToolTerrainSurface));
+                        objManager.GetLoadedObject(ObjectType::terrainSurface, gLandToolTerrainSurface));
                     if (surfaceObj != nullptr)
                     {
                         price += numTiles * static_cast<money64>(surfaceObj->Price);
                     }
                 }
 
-                if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
+                if (gLandToolTerrainEdge != kObjectEntryIndexNull)
                     price += numTiles * 100LL;
 
                 if (price != 0)
@@ -608,6 +608,7 @@ namespace OpenRCT2::Ui::Windows
         void ToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
             const bool mapCtrlPressed = GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl);
+            auto* windowMgr = Ui::GetWindowManager();
 
             MapInvalidateSelectionRect();
 
@@ -623,7 +624,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    WindowInvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::Land);
                 }
                 return;
             }
@@ -649,7 +650,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _landToolRaiseCost = raise_cost;
                         _landToolLowerCost = lower_cost;
-                        WindowInvalidateByClass(WindowClass::Land);
+                        windowMgr->InvalidateByClass(WindowClass::Land);
                     }
                     return;
                 }
@@ -709,7 +710,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    WindowInvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::Land);
                 }
                 return;
             }
@@ -726,7 +727,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _landToolRaiseCost = raise_cost;
                     _landToolLowerCost = lower_cost;
-                    WindowInvalidateByClass(WindowClass::Land);
+                    windowMgr->InvalidateByClass(WindowClass::Land);
                 }
                 return;
             }
@@ -835,7 +836,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 _landToolRaiseCost = raise_cost;
                 _landToolLowerCost = lower_cost;
-                WindowInvalidateByClass(WindowClass::Land);
+                windowMgr->InvalidateByClass(WindowClass::Land);
             }
         }
 
@@ -843,7 +844,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainSurface, _selectedFloorTexture));
+                objManager.GetLoadedObject(ObjectType::terrainSurface, _selectedFloorTexture));
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -853,7 +854,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainEdge, _selectedWallTexture));
+                objManager.GetLoadedObject(ObjectType::terrainEdge, _selectedWallTexture));
             ImageId edgeImage;
             if (edgeObj != nullptr)
             {

@@ -10,7 +10,6 @@
 #include "../UiStringIds.h"
 #include "../interface/Dropdown.h"
 #include "../interface/Widget.h"
-#include "../interface/Window.h"
 #include "Windows.h"
 
 #include <openrct2/Context.h>
@@ -18,6 +17,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ClimateSetAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/drawing/Drawing.h>
@@ -25,7 +25,6 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
@@ -538,8 +537,9 @@ namespace OpenRCT2::Ui::Windows
 
             if (gScreenFlags == SCREEN_FLAGS_PLAYING)
             {
-                WindowInvalidateByClass(WindowClass::Finances);
-                WindowInvalidateByClass(WindowClass::BottomToolbar);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateByClass(WindowClass::Finances);
+                windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
             }
         }
 
@@ -547,7 +547,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             FinancialPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_1);
         }
 
         void FinancialPrepareDraw()
@@ -820,7 +820,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             GuestsPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_2);
         }
 
         void GuestsPrepareDraw()
@@ -1036,7 +1036,7 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_ENTRY_PRICE_INCREASE:
-                    if (gameState.Park.EntranceFee < MAX_ENTRANCE_FEE)
+                    if (gameState.Park.EntranceFee < kMaxEntranceFee)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
                             ScenarioSetSetting::ParkChargeEntryFee, gameState.Park.EntranceFee + 1.00_GBP);
@@ -1119,7 +1119,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             ParkPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_3);
         }
 
         void ParkPrepareDraw()

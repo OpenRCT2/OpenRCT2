@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
@@ -36,7 +36,7 @@ static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_2 = 18081;
 static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_2 = 18082;
 static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_NW_SE_CLOSED_2 = 18083;
 
-static constexpr uint32_t _LatticeTriangleBrakeImages[kNumOrthogonalDirections][2][2] = {
+static constexpr uint32_t kLatticeTriangleBrakeImages[kNumOrthogonalDirections][2][2] = {
     { { LATTICE_TRIANGLE_BRAKE_SW_NE_OPEN_1, LATTICE_TRIANGLE_BRAKE_SW_NE_OPEN_2 },
       { LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_1, LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_2 } },
     { { LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_1, LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_2 },
@@ -51,7 +51,7 @@ static constexpr uint32_t _LatticeTriangleBrakeImages[kNumOrthogonalDirections][
  * second level: background, foreground
  * third level: direction
  */
-static constexpr uint32_t LatticeTriangleBrakeImages[2][2][kNumOrthogonalDirections] = {
+static constexpr uint32_t kLatticeTriangleDiagBrakeImages[2][2][kNumOrthogonalDirections] = {
     {
         // Open
         {
@@ -187,7 +187,7 @@ static void LatticeTriangleTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(_LatticeTriangleBrakeImages[direction][isClosed][0]),
+            session, direction, session.TrackColours.WithIndex(kLatticeTriangleBrakeImages[direction][isClosed][0]),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
@@ -5051,10 +5051,10 @@ static void LatticeTriangleTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5516,7 +5516,7 @@ static void LatticeTriangleTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18408), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 3 } });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -9001,10 +9001,10 @@ static void LatticeTriangleTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_LatticeTriangleBrakeImages[direction][isClosed][0]),
+        session, direction, session.TrackColours.WithIndex(kLatticeTriangleBrakeImages[direction][isClosed][0]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_LatticeTriangleBrakeImages[direction][isClosed][1]),
+        session, direction, session.TrackColours.WithIndex(kLatticeTriangleBrakeImages[direction][isClosed][1]),
         { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 11 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -10419,7 +10419,7 @@ static void LatticeTriangleTrack60DegUpTo90DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 0)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 13, 20, 55 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -10434,7 +10434,7 @@ static void LatticeTriangleTrack60DegUpTo90DegUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 3)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 13, 20, 55 } });
                     break;
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -10472,7 +10472,7 @@ static void LatticeTriangleTrack90DegUpTo60DegUp(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 4)),
-                { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -10487,7 +10487,7 @@ static void LatticeTriangleTrack90DegUpTo60DegUp(
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 7)),
-                { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
     }
     switch (direction)
@@ -18404,11 +18404,11 @@ static void LatticeTriangleTrackDiagBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, LatticeTriangleBrakeImages[trackElement.IsBrakeClosed()][0],
+        session, 3, height, direction, trackSequence, kLatticeTriangleDiagBrakeImages[trackElement.IsBrakeClosed()][0],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, LatticeTriangleBrakeImages[trackElement.IsBrakeClosed()][1],
+        session, 3, height, direction, trackSequence, kLatticeTriangleDiagBrakeImages[trackElement.IsBrakeClosed()][1],
         defaultDiagTileOffsets, defaultDiagBoundLengths, diagBrakeBoundsOffsets);
 
     if (trackSequence == 3)

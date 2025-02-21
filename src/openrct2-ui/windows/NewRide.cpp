@@ -17,7 +17,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
@@ -33,7 +34,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -304,9 +304,9 @@ namespace OpenRCT2::Ui::Windows
             _filter.clear();
 
             frame_no = 0;
-            _newRideVars.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
-            _lastTrackDesignCountRideType.Type = RIDE_TYPE_NULL;
-            _lastTrackDesignCountRideType.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
+            _newRideVars.SelectedRide = { kRideTypeNull, kObjectEntryIndexNull };
+            _lastTrackDesignCountRideType.Type = kRideTypeNull;
+            _lastTrackDesignCountRideType.EntryIndex = kObjectEntryIndexNull;
 
             width = 1;
             RefreshWidgetSizing();
@@ -324,15 +324,15 @@ namespace OpenRCT2::Ui::Windows
             if (frame_no >= TabAnimationLoops[_currentTab])
                 frame_no = 0;
 
-            WidgetInvalidate(*this, WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
+            InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_currentTab));
 
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
-            if (_newRideVars.SelectedRide.Type != RIDE_TYPE_NULL && _newRideVars.SelectedRideCountdown-- == 0)
+            if (_newRideVars.SelectedRide.Type != kRideTypeNull && _newRideVars.SelectedRideCountdown-- == 0)
             {
                 RideSelect();
             }
@@ -346,8 +346,8 @@ namespace OpenRCT2::Ui::Windows
                 // Remove highlight when mouse leaves rides list
                 if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST))
                 {
-                    _newRideVars.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
-                    WidgetInvalidate(*this, WIDX_RIDE_LIST);
+                    _newRideVars.HighlightedRide = { kRideTypeNull, kObjectEntryIndexNull };
+                    InvalidateWidget(WIDX_RIDE_LIST);
                 }
             }
         }
@@ -425,7 +425,7 @@ namespace OpenRCT2::Ui::Windows
             if (_currentTab != RESEARCH_TAB)
             {
                 RideSelection item = _newRideVars.HighlightedRide;
-                if (item.Type != RIDE_TYPE_NULL || item.EntryIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (item.Type != kRideTypeNull || item.EntryIndex != kObjectEntryIndexNull)
                     DrawRideInformation(dpi, item, windowPos + ScreenCoordsXY{ 3, height - 64 }, width - 6);
             }
             else
@@ -439,7 +439,7 @@ namespace OpenRCT2::Ui::Windows
             RideSelection* listItem = _windowNewRideListItems;
 
             int32_t count = 0;
-            while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
+            while (listItem->Type != kRideTypeNull || listItem->EntryIndex != kObjectEntryIndexNull)
             {
                 count++;
                 listItem++;
@@ -462,7 +462,7 @@ namespace OpenRCT2::Ui::Windows
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             RideSelection item = ScrollGetRideListItemAt(screenCoords);
-            if (item.Type == RIDE_TYPE_NULL && item.EntryIndex == OBJECT_ENTRY_INDEX_NULL)
+            if (item.Type == kRideTypeNull && item.EntryIndex == kObjectEntryIndexNull)
             {
                 return;
             }
@@ -485,7 +485,7 @@ namespace OpenRCT2::Ui::Windows
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;
-            while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
+            while (listItem->Type != kRideTypeNull || listItem->EntryIndex != kObjectEntryIndexNull)
             {
                 // Draw flat button rectangle
                 int32_t buttonFlags = 0;
@@ -540,7 +540,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _currentTab = tab;
             frame_no = 0;
-            _newRideVars.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
+            _newRideVars.HighlightedRide = { kRideTypeNull, kObjectEntryIndexNull };
             _newRideVars.SelectedRideCountdown = std::numeric_limits<uint16_t>::max();
             PopulateRideList();
             RefreshWidgetSizing();
@@ -556,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
         void RideSelect()
         {
             RideSelection item = _newRideVars.SelectedRide;
-            if (item.Type == RIDE_TYPE_NULL)
+            if (item.Type == kRideTypeNull)
             {
                 return;
             }
@@ -655,7 +655,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < static_cast<int32_t>(std::size(RideTypeViewOrder)); i++)
             {
                 auto rideType = RideTypeViewOrder[i];
-                if (rideType == RIDE_TYPE_NULL)
+                if (rideType == kRideTypeNull)
                     continue;
 
                 if (GetRideTypeDescriptor(rideType).Category != currentCategory)
@@ -664,8 +664,8 @@ namespace OpenRCT2::Ui::Windows
                 nextListItem = IterateOverRideType(rideType, nextListItem, listEnd);
             }
 
-            nextListItem->Type = RIDE_TYPE_NULL;
-            nextListItem->EntryIndex = OBJECT_ENTRY_INDEX_NULL;
+            nextListItem->Type = kRideTypeNull;
+            nextListItem->EntryIndex = kObjectEntryIndexNull;
         }
 
         RideSelection* IterateOverRideType(ride_type_t rideType, RideSelection* nextListItem, RideSelection* listEnd)
@@ -875,8 +875,8 @@ namespace OpenRCT2::Ui::Windows
         RideSelection ScrollGetRideListItemAt(const ScreenCoordsXY& screenCoords)
         {
             RideSelection result;
-            result.Type = RIDE_TYPE_NULL;
-            result.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
+            result.Type = kRideTypeNull;
+            result.EntryIndex = kObjectEntryIndexNull;
 
             if (screenCoords.x <= 0 || screenCoords.y <= 0)
                 return result;
@@ -889,7 +889,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t index = column + (row * 5);
 
             RideSelection* listItem = _windowNewRideListItems;
-            while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
+            while (listItem->Type != kRideTypeNull || listItem->EntryIndex != kObjectEntryIndexNull)
             {
                 if (index-- == 0)
                 {

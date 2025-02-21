@@ -13,8 +13,8 @@
 #include "../Diagnostic.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
+#include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
 using namespace OpenRCT2;
@@ -74,7 +74,8 @@ GameActions::Result StaffSetOrdersAction::Execute() const
     }
     staff->StaffOrders = _ordersId;
 
-    WindowInvalidateByNumber(WindowClass::Peep, _spriteIndex);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Peep, _spriteIndex);
     auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
     ContextBroadcastIntent(&intent);
 

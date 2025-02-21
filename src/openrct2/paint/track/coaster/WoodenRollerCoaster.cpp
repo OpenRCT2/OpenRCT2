@@ -9,13 +9,13 @@
 
 #include "WoodenRollerCoaster.hpp"
 
+#include "../../../SpriteIds.h"
 #include "../../../config/Config.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
@@ -844,28 +844,28 @@ enum
     SPR_WOODEN_RC_LEFT_EIGHTH_BANK_TO_DIAG_FRONT_HANDRAIL_3_3 = 25074,
 };
 
-static constexpr uint32_t _wooden_rc_block_brakes_image_ids[4][3] = {
+static constexpr uint32_t kBlockBrakesImageIds[4][3] = {
     { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
 };
 
-static constexpr uint32_t _wooden_rc_station_block_brakes_image_ids[4][2] = {
+static constexpr uint32_t kStationBlockBrakesImageIds[4][2] = {
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
 };
 
-static constexpr const uint32_t WoodenRCDiagBrakeImages[kNumOrthogonalDirections] = {
+static constexpr const uint32_t kWoodenRCDiagBrakeImages[kNumOrthogonalDirections] = {
     SPR_G2_WOODEN_RC_DIAG_BRAKES,
     SPR_G2_WOODEN_RC_DIAG_BRAKES + 1,
     SPR_G2_WOODEN_RC_DIAG_BRAKES,
     SPR_G2_WOODEN_RC_DIAG_BRAKES + 1,
 };
 
-static constexpr const uint32_t WoodenRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
+static constexpr const uint32_t kWoodenRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
         SPR_G2_WOODEN_RC_DIAG_BRAKES + 3,
         SPR_G2_WOODEN_RC_DIAG_BRAKES + 5,
@@ -2044,8 +2044,8 @@ static void WoodenRCTrackStation(
     auto trackType = trackElement.GetTrackType();
     if (trackType == TrackElemType::EndStation)
     {
-        const auto brakeImg = trackElement.IsBrakeClosed() ? _wooden_rc_station_block_brakes_image_ids[direction][1]
-                                                           : _wooden_rc_station_block_brakes_image_ids[direction][0];
+        const auto brakeImg = trackElement.IsBrakeClosed() ? kStationBlockBrakesImageIds[direction][1]
+                                                           : kStationBlockBrakesImageIds[direction][0];
         WoodenRCTrackPaint<isClassic>(
             session, direction, brakeImg, SPR_G2_EMPTY, { 0, 2, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
@@ -2492,7 +2492,7 @@ static void WoodenRCTrack60DegUpTo25DegUp(
         {
             session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][0], imageIdsChained[direction][1], { 0, 0, height },
-                { { 4, 28, height - 16 }, { 24, 1, 61 } });
+                { { 28, 4, height + 2 }, { 2, 24, 43 } });
             WoodenRCTrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][2], imageIdsChained[direction][3], { 0, 0, height },
                 { { 0, 4, height }, { 32, 2, 43 } });
@@ -2510,7 +2510,7 @@ static void WoodenRCTrack60DegUpTo25DegUp(
         {
             session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
                 session, direction, imageIds[direction][0], imageIds[direction][1], { 0, 0, height },
-                { { 4, 28, height - 16 }, { 24, 1, 61 } });
+                { { 28, 4, height + 2 }, { 2, 24, 43 } });
             WoodenRCTrackPaint<isClassic>(
                 session, direction, imageIds[direction][2], imageIds[direction][3], { 0, 0, height },
                 { { 0, 4, height }, { 32, 2, 43 } });
@@ -5617,10 +5617,10 @@ static void WoodenRCTrackLeftQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24217), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 2, 2, height + 86 }, { 28, 28, 1 } });
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25083), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 2, 2, height + 86 }, { 28, 28, 1 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -5631,10 +5631,10 @@ static void WoodenRCTrackLeftQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24218), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 26, 26, height }, { 2, 2, 87 } });
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25084), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 26, 26, height }, { 2, 2, 87 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -5645,10 +5645,10 @@ static void WoodenRCTrackLeftQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24219), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 26, 28, height }, { 2, 2, 87 } });
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25085), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 26, 28, height }, { 2, 2, 87 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -5659,10 +5659,10 @@ static void WoodenRCTrackLeftQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24220), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 28, 28, height }, { 2, 2, 87 } });
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25086), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 28, 28, height }, { 2, 2, 87 } });
             break;
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
@@ -5688,10 +5688,10 @@ static void WoodenRCTrackRightQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24221), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 28, 28, height }, { 2, 2, 87 } });
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25087), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 28, 28, height }, { 2, 2, 87 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -5702,10 +5702,10 @@ static void WoodenRCTrackRightQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24222), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 26, 28, height }, { 2, 2, 87 } });
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25088), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 26, 28, height }, { 2, 2, 87 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -5716,10 +5716,10 @@ static void WoodenRCTrackRightQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24223), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 26, 26, height }, { 2, 2, 87 } });
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25089), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 26, 26, height }, { 2, 2, 87 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -5730,10 +5730,10 @@ static void WoodenRCTrackRightQuarterTurn160DegUp(
                 { { 2, 2, height }, { 28, 28, 3 } });
             PaintAddImageAsParentRotated(
                 session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24224), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 2, 2, height + 86 }, { 28, 28, 1 } });
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25090), { 0, 0, height },
-                { { 2, 2, height + 99 }, { 28, 28, 1 } });
+                { { 2, 2, height + 86 }, { 28, 28, 1 } });
             break;
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(
@@ -6489,10 +6489,10 @@ static void WoodenRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -7463,16 +7463,16 @@ static void WoodenRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24123), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 2 } });
+                        { { 16, 16, height }, { 16, 16, 2 } });
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24989), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 2 } });
+                        { { 16, 16, height }, { 16, 16, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24135), { 0, 0, height },
-                        { { 4, 4, height + 27 }, { 28, 28, 0 } });
+                        { { 16, 16, height + 27 }, { 16, 16, 0 } });
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(25001), { 0, 0, height },
-                        { { 4, 4, height + 27 }, { 28, 28, 0 } });
+                        { { 16, 16, height + 27 }, { 16, 16, 0 } });
                     WoodenASupportsPaintSetup(
                         session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
                     break;
@@ -7637,7 +7637,7 @@ static void WoodenRCTrackDiagBrakes(
             {
                 // direction 3
                 {
-                    WoodenRCDiagBrakeImages[3],
+                    kWoodenRCDiagBrakeImages[3],
                     24916, // diagonal vertical trim image
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
@@ -7650,7 +7650,7 @@ static void WoodenRCTrackDiagBrakes(
             {
                 // direction 0
                 {
-                    WoodenRCDiagBrakeImages[0],
+                    kWoodenRCDiagBrakeImages[0],
                     24913, // diagonal horizontal trim image
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
@@ -7693,7 +7693,7 @@ static void WoodenRCTrackDiagBrakes(
             {
                 // direction 2
                 {
-                    WoodenRCDiagBrakeImages[2],
+                    kWoodenRCDiagBrakeImages[2],
                     24913, // diagonal vertical trim image
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
@@ -7720,7 +7720,7 @@ static void WoodenRCTrackDiagBrakes(
             {
                 // direction 1
                 {
-                    WoodenRCDiagBrakeImages[1],
+                    kWoodenRCDiagBrakeImages[1],
                     24916, // diagonal vertical trim image
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
@@ -7743,10 +7743,10 @@ static void WoodenRCTrackDiagBrakes(
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
 
-    if (WoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
+    if (kWoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, supportType.wooden, WoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
+            session, supportType.wooden, kWoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -7781,7 +7781,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 3
                     {
-                        WoodenRCDiagBlockBrakeImages[0][3],
+                        kWoodenRCDiagBlockBrakeImages[0][3],
                         24916,           // diagonal vertical trim image
                         { -16, -16, 0 }, // todo: rotate these bboxes
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7794,7 +7794,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 0
                     {
-                        WoodenRCDiagBlockBrakeImages[0][0],
+                        kWoodenRCDiagBlockBrakeImages[0][0],
                         24913, // diagonal horizontal trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7837,7 +7837,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 2
                     {
-                        WoodenRCDiagBlockBrakeImages[0][2],
+                        kWoodenRCDiagBlockBrakeImages[0][2],
                         24913, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7865,7 +7865,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 1
                     {
-                        WoodenRCDiagBlockBrakeImages[0][1],
+                        kWoodenRCDiagBlockBrakeImages[0][1],
                         24916, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7905,7 +7905,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 3
                     {
-                        WoodenRCDiagBlockBrakeImages[1][3],
+                        kWoodenRCDiagBlockBrakeImages[1][3],
                         24916, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7918,7 +7918,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 0
                     {
-                        WoodenRCDiagBlockBrakeImages[1][0],
+                        kWoodenRCDiagBlockBrakeImages[1][0],
                         24913, // diagonal horizontal trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7961,7 +7961,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 2
                     {
-                        WoodenRCDiagBlockBrakeImages[1][2],
+                        kWoodenRCDiagBlockBrakeImages[1][2],
                         24913, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -7989,7 +7989,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                 {
                     // direction 1
                     {
-                        WoodenRCDiagBlockBrakeImages[1][1],
+                        kWoodenRCDiagBlockBrakeImages[1][1],
                         24916, // diagonal vertical trim image
                         { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
@@ -8013,10 +8013,10 @@ static void WoodenRCTrackDiagBlockBrakes(
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
 
-    if (WoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
+    if (kWoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, supportType.wooden, WoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
+            session, supportType.wooden, kWoodenRCDiagonalSupports[trackSequence][direction], height, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -8077,10 +8077,10 @@ static void WoodenRCTrackDiagFlat(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24051),
-                            { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                            { -16, -16, height }, { { -16, -16, height + 24 }, { 32, 32, 0 } });
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24917), { -16, -16, height },
-                            { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 24 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -8097,10 +8097,10 @@ static void WoodenRCTrackDiagFlat(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24009),
-                            { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                            { -16, -16, height }, { { -16, -16, height + 24 }, { 32, 32, 0 } });
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24875), { -16, -16, height },
-                            { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 24 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -8123,10 +8123,10 @@ static void WoodenRCTrackDiagFlat(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24052),
-                            { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                            { -16, -16, height }, { { -16, -16, height + 24 }, { 32, 32, 0 } });
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24918), { -16, -16, height },
-                            { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 24 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -8143,10 +8143,10 @@ static void WoodenRCTrackDiagFlat(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24010),
-                            { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                            { -16, -16, height }, { { -16, -16, height + 24 }, { 32, 32, 0 } });
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24876), { -16, -16, height },
-                            { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 24 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -9328,10 +9328,10 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24064),
-                            { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24930), { -16, -16, height },
-                            { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         break;
                 }
                 WoodenBSupportsPaintSetupRotated(
@@ -9350,10 +9350,10 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24022),
-                            { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24888), { -16, -16, height },
-                            { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         break;
                 }
                 WoodenBSupportsPaintSetupRotated(
@@ -9374,10 +9374,10 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24063),
-                            { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24929), { -16, -16, height },
-                            { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -9394,10 +9394,10 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24021),
-                            { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24887), { -16, -16, height },
-                            { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -10143,10 +10143,10 @@ static void WoodenRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const auto brakeImg = trackElement.IsBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
-                                                       : _wooden_rc_block_brakes_image_ids[direction][0];
+    const auto brakeImg = trackElement.IsBrakeClosed() ? kBlockBrakesImageIds[direction][1]
+                                                       : kBlockBrakesImageIds[direction][0];
     WoodenRCTrackPaint<isClassic>(
-        session, direction, brakeImg, _wooden_rc_block_brakes_image_ids[direction][2], { 0, 2, height },
+        session, direction, brakeImg, kBlockBrakesImageIds[direction][2], { 0, 2, height },
         { { 0, 3, height }, { 32, 25, 2 } });
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);

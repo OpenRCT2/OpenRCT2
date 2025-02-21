@@ -55,6 +55,16 @@ const char gVersionInfoFull[] = OPENRCT2_NAME ", "
 #endif
     ;
 
+#ifdef __EMSCRIPTEN__
+// This must be wrapped in extern "C", according to the emscripten docs, "to prevent C++ name mangling"
+extern "C" {
+const char* GetVersion()
+{
+    return gVersionInfoFull;
+}
+}
+#endif
+
 NewVersionInfo GetLatestVersion()
 {
     // If the check doesn't succeed, provide current version so we don't bother user

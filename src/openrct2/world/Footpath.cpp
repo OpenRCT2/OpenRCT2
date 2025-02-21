@@ -432,7 +432,7 @@ static bool FootpathReconnectQueueToPath(
     }
 
     int32_t z = tileElement->GetBaseZ();
-    TileElement* targetFootpathElement = FootpathGetElement({ targetQueuePos, z - LAND_HEIGHT_STEP, z }, direction);
+    TileElement* targetFootpathElement = FootpathGetElement({ targetQueuePos, z - kLandHeightStep, z }, direction);
     if (targetFootpathElement != nullptr && !targetFootpathElement->AsPath()->IsQueue())
     {
         auto targetQueueElement = targetFootpathElement->AsPath();
@@ -589,7 +589,7 @@ static void Loc6A6D7E(
                         }
                         return;
                     }
-                    if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
+                    if (tileElement->GetBaseZ() == initialTileElementPos.z - kLandHeightStep)
                     {
                         if (tileElement->AsPath()->IsSloped()
                             && tileElement->AsPath()->GetSlopeDirection() == DirectionReverse(direction))
@@ -726,7 +726,7 @@ static void Loc6A6C85(
             }
             if (tileElementPos.element->AsPath()->GetSlopeDirection() == direction)
             {
-                pos.z += LAND_HEIGHT_STEP;
+                pos.z += kLandHeightStep;
             }
         }
     }
@@ -823,7 +823,7 @@ void FootpathChainRideQueue(
             {
                 if (tileElement->AsPath()->GetSlopeDirection() == direction)
                 {
-                    baseZ += LAND_HEIGHT_STEP;
+                    baseZ += kLandHeightStep;
                 }
             }
         }
@@ -849,7 +849,7 @@ void FootpathChainRideQueue(
                     foundQueue = true;
                     break;
                 }
-                if (tileElement->GetBaseZ() == baseZ - LAND_HEIGHT_STEP)
+                if (tileElement->GetBaseZ() == baseZ - kLandHeightStep)
                 {
                     if (!tileElement->AsPath()->IsSloped())
                         break;
@@ -857,7 +857,7 @@ void FootpathChainRideQueue(
                     if (DirectionReverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
                         break;
 
-                    baseZ -= LAND_HEIGHT_STEP;
+                    baseZ -= kLandHeightStep;
                     foundQueue = true;
                     break;
                 }
@@ -1824,7 +1824,7 @@ static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
             }
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
@@ -1855,7 +1855,7 @@ static ObjectEntryIndex FootpathGetDefaultRailings()
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
@@ -1880,7 +1880,7 @@ static ObjectEntryIndex FootpathGetDefaultLegacyPath()
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 bool FootpathSelectDefault()
@@ -1909,7 +1909,7 @@ bool FootpathSelectDefault()
 
     // Select default legacy path
     auto legacyPathIndex = FootpathGetDefaultLegacyPath();
-    if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
+    if (gFootpathSelection.LegacyPath != kObjectEntryIndexNull)
     {
         if (FootpathIsLegacyPathEntryOkay(gFootpathSelection.LegacyPath))
         {
@@ -1919,13 +1919,13 @@ bool FootpathSelectDefault()
         else
         {
             // Reset legacy path, we default to a surface (if there are any)
-            gFootpathSelection.LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+            gFootpathSelection.LegacyPath = kObjectEntryIndexNull;
         }
     }
 
-    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (surfaceIndex == kObjectEntryIndexNull)
     {
-        if (legacyPathIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (legacyPathIndex == kObjectEntryIndexNull)
         {
             // No surfaces or legacy paths available
             return false;
@@ -1944,7 +1944,7 @@ bool FootpathSelectDefault()
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::paths, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
@@ -1955,7 +1955,7 @@ const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::footpathSurface, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
@@ -1965,7 +1965,7 @@ const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::footpathRailings, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
