@@ -145,12 +145,10 @@ void TextComposition::HandleMessage(const SDL_Event* e)
             }
 
             uint16_t modifier = e->key.keysym.mod;
-            SDL_Keycode key = e->key.keysym.sym;
-            SDL_Scancode scancode = e->key.keysym.scancode;
+            SDL_Keycode rawKey = e->key.keysym.sym;
+            SDL_Scancode rawScancode = e->key.keysym.scancode;
 
-            std::pair<SDL_Keycode, SDL_Scancode> processedKeyPress = ProcessKeyPress(key, scancode);
-            key = processedKeyPress.first;
-            scancode = processedKeyPress.second;
+            auto [key, scancode] = ProcessKeyPress(rawKey, rawScancode);
 
             GetContext()->GetUiContext()->SetKeysPressed(key, scancode);
 
