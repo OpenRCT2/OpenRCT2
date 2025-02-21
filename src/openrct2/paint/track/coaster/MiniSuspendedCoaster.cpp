@@ -1269,7 +1269,7 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(28469), { 0, 0, height + 24 },
-                        { { 4, 2, height + 24 }, { 28, 28, 1 } });
+                        { { 16, 16, height + 24 }, { 16, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(

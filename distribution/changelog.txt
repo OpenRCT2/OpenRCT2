@@ -5,10 +5,13 @@
 - Improved: [#23677] Building new ride track now inherits the colour scheme from the previous piece.
 - Fix: [#1972, #11679] Vehicles passing by toilets can cause them to glitch (original bug).
 - Fix: [#9999, #10000, #10001, #10002, #10003] Truncated scenario strings when using Catalan, Czech, Japanese, Polish or Russian.
+- Fix: [#14486] Guests will fall through upwards sloped paths when making their way through a park entrance or ride exit (original bug).
 - Fix: [#15826, #23835] Wooden Roller Coaster steep turn supports glitch when train goes over them (original bug).
 - Fix: [#16357] Chairlift station covers draw incorrectly.
 - Fix: [#16657] Mine Ride right S-bend uses Mini Roller Coaster sprite (original bug).
 - Fix: [#18376] Ghost train gentle to flat track is not visible in tunnels.
+- Fix: [#18389] Gentle sloped track pieces are not visible in low clearance height tunnels (original bug).
+- Fix: [#18423] Underground Mini Golf holes can draw over land edges (original bug).
 - Fix: [#18436] Scenery on the same tile as steep to vertical track can draw over the track (original bug).
 - Fix: [#18711] Park entrances with their sides underground can cause glitching.
 - Fix: [#20848] Junior Roller Coaster booster track does not draw correctly in tunnels.
@@ -17,10 +20,18 @@
 - Fix: [#22617] Sloped Wooden and Side-Friction supports draw out of order when built directly above diagonal track pieces (original bug).
 - Fix: [#22620] Mine Train Coaster trains glitch on large banked turns.
 - Fix: [#23522] Diagonal sloped Steeplechase supports have glitched sprites at the base.
+- Fix: [#23641] Steep to flat track is not drawn correctly in tunnels (original bug).
 - Fix: [#23795] Looping Roller Coaster vertical loop supports are drawn incorrectly.
+- Fix: [#23797] 3D Text cut off too early on multi-line signs.
 - Fix: [#23809] Trains glitch on Bobsleigh Coaster small helixes.
 - Fix: [#23811] Land edges glitch when vehicles go through gentle to flat tunnels.
+- Fix: [#23814] Scenarios not indexed on first start.
 - Fix: [#23818] Spinning tunnels can draw over sloped terrain in front of them.
+- Fix: [#23828] Vehicles passing by station entrances and exits can cause them to glitch (original bug).
+- Fix: [#23831] Hybrid Coaster large gentle banked right turns glitch when diagonal track is above them.
+- Fix: [#23832] Hybrid Coaster large gentle banked left turns supports glitch as train passes.
+- Fix: [#23836] Adjacent track can draw over large turns (original bug).
+- Fix: [#23858] LSM launched lift hill has a misaligned sprite.
 
 0.4.19.1 (2025-02-03)
 ------------------------------------------------------------------------

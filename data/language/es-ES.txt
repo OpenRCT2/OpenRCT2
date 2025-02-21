@@ -3776,3 +3776,5 @@ STR_6707    :(ninguno seleccionado)
 STR_6708    :Fuerza de Suavizado
 STR_6709    :Introduce una Fuerza de Suavizado entre {COMMA16} y {COMMA16}
 STR_6710    :Ordenación estable 
+STR_6711    :Nombre de archivo:
+STR_6712    :Guardar
