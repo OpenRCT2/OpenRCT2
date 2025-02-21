@@ -3165,7 +3165,7 @@ static void RideSetStartFinishPoints(RideId rideIndex, const CoordsXYE& startEle
     const auto& rtd = ride->GetRideTypeDescriptor();
     if (rtd.specialType == RtdSpecialType::maze)
         RideSetMazeEntranceExitPoints(*ride);
-    else if (ride->type == RIDE_TYPE_BOAT_HIRE)
+    else if (rtd.specialType == RtdSpecialType::boatHire)
         RideSetBoatHireReturnPoint(*ride, startElement);
 
     if (ride->IsBlockSectioned() && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
@@ -3353,8 +3353,7 @@ static Vehicle* VehicleCreateCar(
 
         int32_t direction = trackElement->GetDirection();
         vehicle->Orientation = direction << 3;
-
-        if (ride.type == RIDE_TYPE_SPACE_RINGS)
+        if (rtd.specialType == RtdSpecialType::spaceRings)
         {
             direction = 4;
         }
@@ -3366,7 +3365,7 @@ static Vehicle* VehicleCreateCar(
                 {
                     if (rtd.StartTrackPiece != TrackElemType::FlatTrack1x4A)
                     {
-                        if (ride.type == RIDE_TYPE_ENTERPRISE)
+                        if (rtd.specialType == RtdSpecialType::enterprise)
                         {
                             direction += 5;
                         }
@@ -3630,7 +3629,8 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     }
 
     //
-    if (type != RIDE_TYPE_SPACE_RINGS && !GetRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
+    const auto& rtd = GetRideTypeDescriptor();
+    if (rtd.specialType != RtdSpecialType::spaceRings && !rtd.HasFlag(RtdFlag::vehicleIsIntegral))
     {
         if (IsBlockSectioned())
         {
@@ -4695,7 +4695,8 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
  */
 void RideUpdateVehicleColours(const Ride& ride)
 {
-    if (ride.type == RIDE_TYPE_SPACE_RINGS || ride.GetRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
+    const auto& rtd = ride.GetRideTypeDescriptor();
+    if (rtd.specialType == RtdSpecialType::spaceRings || rtd.HasFlag(RtdFlag::vehicleIsIntegral))
     {
         GfxInvalidateScreen();
     }
