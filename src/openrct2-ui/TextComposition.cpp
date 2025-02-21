@@ -134,7 +134,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 Insert(e->text.text);
 
                 console.RefreshCaret(_session.SelectionStart);
-                OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                Windows::WindowUpdateTextbox();
             }
             break;
         case SDL_KEYDOWN:
@@ -175,7 +175,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         Delete();
 
                         console.RefreshCaret(_session.SelectionStart);
-                        OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                        Windows::WindowUpdateTextbox();
                     }
                     break;
                 case SDLK_HOME:
@@ -197,11 +197,11 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     _session.SelectionStart = startOffset;
                     Delete();
                     console.RefreshCaret(_session.SelectionStart);
-                    OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                    Windows::WindowUpdateTextbox();
                     break;
                 }
                 case SDLK_RETURN:
-                    OpenRCT2::Ui::Windows::WindowCancelTextbox();
+                    Windows::WindowCancelTextbox();
                     break;
                 case SDLK_LEFT:
                     if (modifier & KB_PRIMARY_MODIFIER)
@@ -220,7 +220,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 case SDLK_c:
                     if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
                     {
-                        OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
+                        GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;
@@ -230,15 +230,15 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         utf8* text = SDL_GetClipboardText();
                         Insert(text);
                         SDL_free(text);
-                        OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                        Windows::WindowUpdateTextbox();
                     }
                     break;
                 case SDLK_x:
                     if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
                     {
-                        OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
+                        GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
                         Clear();
-                        OpenRCT2::Ui::Windows::WindowUpdateTextbox();
+                        Windows::WindowUpdateTextbox();
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;
