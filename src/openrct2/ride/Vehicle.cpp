@@ -1468,6 +1468,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     if (curRide == nullptr)
         return;
 
+    const auto& rtd = curRide->GetRideTypeDescriptor();
     if (curRide->status == RideStatus::Open && !(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
         && !HasFlag(VehicleFlags::ReadyToDepart))
     {
@@ -1478,7 +1479,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     {
         // Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a
         // Boat Hire with passengers on it.
-        if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
+        if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && rtd.specialType != RtdSpecialType::boatHire)
         {
             curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
             sub_state = 2;
@@ -2776,7 +2777,8 @@ void Vehicle::CheckIfMissing()
     if (curRide->lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE)
         return;
 
-    uint16_t limit = curRide->type == RIDE_TYPE_BOAT_HIRE ? 15360 : 9600;
+    const auto& rtd = curRide->GetRideTypeDescriptor();
+    uint16_t limit = rtd.specialType == RtdSpecialType::boatHire ? 15360 : 9600;
 
     if (lost_time_out <= limit)
         return;
@@ -4285,7 +4287,8 @@ void Vehicle::UpdateRotating()
         if (curRide->status != RideStatus::Closed)
         {
             sprite = NumRotations + 1;
-            if (curRide->type == RIDE_TYPE_ENTERPRISE)
+            const auto& rtd = curRide->GetRideTypeDescriptor();
+            if (rtd.specialType == RtdSpecialType::enterprise)
                 sprite += 9;
 
             if (sprite < curRide->rotations)
