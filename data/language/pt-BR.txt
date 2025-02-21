@@ -3217,7 +3217,7 @@ STR_6102    :O valor de uma atração não diminuirá com o tempo, então visita
 STR_6103    :Esta opção é desabilitada durante jogo de rede.
 STR_6105    :Hipermontanha-Russa
 STR_6107    :Caminhões Monstruosos
-STR_6109    :Hipertornado
+STR_6109    :Montanha-russa Hipertornado
 STR_6111    :Minimontanha-Russa Clássica
 STR_6113    :Uma montanha russa alta que não inverte com grandes quedas, alta velocidade, e trens confortáveis com apenas uma trava de colo
 STR_6115    :Gigantes caminhões 4x4 eletrizados que podem subir colinas íngremes
