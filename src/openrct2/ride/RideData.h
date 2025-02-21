@@ -434,7 +434,7 @@ enum class RtdFlag : uint8_t
     hasOneStation,
     hasSeatRotation,
     allowReversedTrains,
-    dodgems,
+    dodgems
 };
 
 /**
@@ -452,6 +452,7 @@ enum class RtdSpecialType
     toilet,
     cashMachine,
     firstAid,
+    carousel,
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.

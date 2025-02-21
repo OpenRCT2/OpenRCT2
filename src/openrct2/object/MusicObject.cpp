@@ -21,6 +21,7 @@
 #include "../drawing/Image.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "RideObject.h"
 
 #include <memory>
@@ -196,7 +197,8 @@ bool MusicObject::SupportsRideType(ride_type_t rideType)
     if (_rideTypes.size() == 0)
     {
         // Default behaviour for music is to only exclude from merry-go-round
-        return rideType != RIDE_TYPE_MERRY_GO_ROUND;
+        const auto& rtd = GetRideTypeDescriptor(rideType);
+        return rtd.specialType != RtdSpecialType::carousel;
     }
 
     auto it = std::find(_rideTypes.begin(), _rideTypes.end(), rideType);
