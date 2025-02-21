@@ -280,6 +280,7 @@ using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const Ope
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 using TrackTypeMustBeMadeInvisibleFunc = bool (*) (OpenRCT2::TrackElemType trackType, int32_t parkFileVersion);
+using SetUnreliabilityFactorFunc = void (*) (Ride& ride);
 
 using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
@@ -549,6 +550,7 @@ struct RideTypeDescriptor
     {
         return TrackTypeMustBeMadeInvisibleEx(trackType, -1);
     }
+    SetUnreliabilityFactorFunc SetUnreliabilityFactor = SetUnreliabilityFactorDefault;
 };
 
 extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];

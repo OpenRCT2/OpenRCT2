@@ -102,7 +102,6 @@ static void RideRatingsAdd(RatingTuple& ratings, int32_t excitement, int32_t int
 
 static ShelteredEights GetNumOfShelteredEighths(const Ride& ride);
 static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride);
-static void SetUnreliabilityFactor(Ride& ride);
 
 static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple& ratings);
 static void RideRatingsApplyIntensityPenalty(RatingTuple& ratings);
@@ -873,7 +872,8 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
 
 static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
 {
-    const auto& rrd = ride.GetRideTypeDescriptor().RatingsData;
+    const auto& rtd = ride.GetRideTypeDescriptor();
+    const auto& rrd = rtd.RatingsData;
 
     switch (rrd.Type)
     {
@@ -893,7 +893,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     }
 
     ride.unreliability_factor = rrd.Unreliability;
-    SetUnreliabilityFactor(ride);
+    rtd.SetUnreliabilityFactor(ride);
 
     const auto shelteredEighths = GetNumOfShelteredEighths(ride);
     ride.sheltered_eighths = (rrd.RideShelter == -1) ? shelteredEighths.TotalShelteredEighths : rrd.RideShelter;
@@ -1343,28 +1343,35 @@ static void RideRatingsApplyIntensityPenalty(RatingTuple& ratings)
     ratings.excitement = excitement;
 }
 
-/**
- *
- *  rct2: 0x00655FD6
- */
-static void SetUnreliabilityFactor(Ride& ride)
+void SetUnreliabilityFactorDefault(Ride& ride)
+{
+    uint8_t minLiftSpeed = ride.GetRideTypeDescriptor().LiftData.minimum_speed;
+    ride.unreliability_factor += (ride.lift_hill_speed - minLiftSpeed) * 2;
+}
+
+void SetUnreliabilityFactorCompactInvertedCoaster(Ride& ride)
 {
     // Special unreliability for a few ride types
-    if (ride.type == RIDE_TYPE_COMPACT_INVERTED_COASTER && ride.mode == RideMode::ReverseInclineLaunchedShuttle)
+    if (ride.mode == RideMode::ReverseInclineLaunchedShuttle)
     {
         ride.unreliability_factor += 10;
     }
-    else if (ride.type == RIDE_TYPE_LOOPING_ROLLER_COASTER && ride.IsPoweredLaunched())
+    SetUnreliabilityFactorDefault(ride);
+}
+
+void SetUnreliabilityFactorLoopingRollerCoaster(Ride& ride)
+{
+    if (ride.IsPoweredLaunched())
     {
         ride.unreliability_factor += 5;
     }
-    else if (ride.type == RIDE_TYPE_CHAIRLIFT)
-    {
-        ride.unreliability_factor += (ride.speed * 2);
-    }
-    // The bigger the difference in lift speed and minimum the higher the unreliability
-    uint8_t minLiftSpeed = ride.GetRideTypeDescriptor().LiftData.minimum_speed;
-    ride.unreliability_factor += (ride.lift_hill_speed - minLiftSpeed) * 2;
+    SetUnreliabilityFactorDefault(ride);
+}
+
+void SetUnreliabilityFactorChairlift(Ride& ride)
+{
+    ride.unreliability_factor += (ride.speed * 2);
+    SetUnreliabilityFactorDefault(ride);
 }
 
 static uint32_t get_proximity_score_helper_1(uint16_t x, uint16_t max, uint32_t multiplier)

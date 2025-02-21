@@ -73,3 +73,8 @@ void RideRatingsUpdateAll();
 void SpecialTrackElementRatingsAjustment_Default(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 void SpecialTrackElementRatingsAjustment_GhostTrain(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 void SpecialTrackElementRatingsAjustment_LogFlume(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+
+void SetUnreliabilityFactorDefault(Ride& ride);
+void SetUnreliabilityFactorCompactInvertedCoaster(Ride& ride);
+void SetUnreliabilityFactorLoopingRollerCoaster(Ride& ride);
+void SetUnreliabilityFactorChairlift(Ride& ride);
