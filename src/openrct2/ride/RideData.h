@@ -552,6 +552,7 @@ struct RideTypeDescriptor
         return TrackTypeMustBeMadeInvisibleEx(trackType, -1);
     }
     SetUnreliabilityFactorFunc SetUnreliabilityFactor = SetUnreliabilityFactorDefault;
+    uint8_t PeepLoadingWaypointSegments = 4;
 };
 
 extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
