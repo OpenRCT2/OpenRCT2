@@ -222,7 +222,7 @@ static void PaintSpiralSlide(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
     }
 
-    const uint32_t spiral_slide_fence_sprites[] = {
+    const uint32_t spiralSlideFenceSprites[] = {
         rideEntry->Cars[0].base_image_id + SpiralSlideFenceTopRight,
         rideEntry->Cars[0].base_image_id + SpiralSlideFenceBottomRight,
         rideEntry->Cars[0].base_image_id + SpiralSlideFenceBottomLeft,
@@ -230,7 +230,7 @@ static void PaintSpiralSlide(
     };
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, spiral_slide_fence_sprites,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, spiralSlideFenceSprites,
         session.CurrentRotation);
 
     switch (trackSequence)
