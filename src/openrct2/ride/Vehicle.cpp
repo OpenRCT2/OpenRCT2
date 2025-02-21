@@ -1480,7 +1480,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     {
         // Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a
         // Boat Hire with passengers on it.
-        if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && rtd.specialType != RtdSpecialType::boatHire)
+        if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && rtd.specialType != RtdSpecialType::boatHire))
         {
             curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
             sub_state = 2;
