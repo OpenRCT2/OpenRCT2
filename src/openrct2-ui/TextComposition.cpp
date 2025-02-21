@@ -103,7 +103,7 @@ static std::pair<SDL_Keycode, SDL_Scancode> ProcessKeyPress(SDL_Keycode key, SDL
             }
         }
     }
-    return {key, scancode};
+    return { key, scancode };
 }
 
 void TextComposition::HandleMessage(const SDL_Event* e)
