@@ -15,6 +15,7 @@
 #include "../network/network.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
+#include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
 #include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"
@@ -153,7 +154,8 @@ bool Balloon::Collides() const
         if (tileElement->GetType() == TileElementType::Track)
         {
             const TrackElement* trackElement = tileElement->AsTrack();
-            if (trackElement->GetRideType() == RIDE_TYPE_DODGEMS)
+            const auto& rtd = GetRideTypeDescriptor(trackElement->GetRideType());
+            if (rtd.HasFlag(RtdFlag::dodgems))
             {
                 check_ceiling = true;
             }

@@ -434,6 +434,7 @@ enum class RtdFlag : uint8_t
     hasOneStation,
     hasSeatRotation,
     allowReversedTrains,
+    dodgems,
 };
 
 /**
