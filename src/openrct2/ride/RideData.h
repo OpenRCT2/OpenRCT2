@@ -26,6 +26,7 @@
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../paint/track/Support.h"
+#include "../park/Legacy.h"
 #include "Ride.h"
 #include "RideAudio.h"
 #include "RideConstruction.h"
@@ -35,7 +36,6 @@
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackStyle.h"
-#include "../park/Legacy.h"
 #include "Vehicle.h"
 
 enum class ResearchCategory : uint8_t;
@@ -279,8 +279,8 @@ using RideUpdateFunction = void (*)(Ride& ride);
 using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const OpenRCT2::TrackElemType trackType);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
-using TrackTypeMustBeMadeInvisibleFunc = bool (*) (OpenRCT2::TrackElemType trackType, int32_t parkFileVersion);
-using SetUnreliabilityFactorFunc = void (*) (Ride& ride);
+using TrackTypeMustBeMadeInvisibleFunc = bool (*)(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion);
+using SetUnreliabilityFactorFunc = void (*)(Ride& ride);
 
 using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t

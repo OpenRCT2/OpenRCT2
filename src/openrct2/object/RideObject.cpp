@@ -217,7 +217,9 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         if (_legacyType.Cars[i].flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS)
         {
             const auto& rtd = GetRideTypeDescriptor(_legacyType.ride_type[0]);
-            _legacyType.Cars[i].peep_loading_waypoint_segments = stream->ReadValue<int8_t>() == 0 ? 0 : rtd.PeepLoadingWaypointSegments;
+            _legacyType.Cars[i].peep_loading_waypoint_segments = stream->ReadValue<int8_t>() == 0
+                ? 0
+                : rtd.PeepLoadingWaypointSegments;
 
             Guard::Assert(((numPeepLoadingPositions - 1) % 8) == 0, "Malformed peep loading positions");
 
