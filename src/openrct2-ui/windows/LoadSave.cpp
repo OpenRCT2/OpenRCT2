@@ -326,7 +326,6 @@ namespace OpenRCT2::Ui::Windows
 
             // TODO: Split LOADSAVETYPE_* into two proper enum classes (one for load/save, the other for the type)
             const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
-            const auto path = GetDir(type);
 
             // Pause the game if not on title scene, nor in network play.
             if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
@@ -355,6 +354,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Populate file list
             const char* pattern = GetFilterPatternByType(type, isSave);
+            const auto path = GetDir(type);
             PopulateList(isSave, path, pattern);
             no_list_items = static_cast<uint16_t>(_listItems.size());
             selected_list_item = -1;
@@ -923,10 +923,6 @@ namespace OpenRCT2::Ui::Windows
 
         RegisterCallback(callback);
 
-        bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
-
-        const u8string path = GetDir(type);
-
         auto* windowMgr = GetWindowManager();
         auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::Loadsave));
         if (w == nullptr)
@@ -947,6 +943,8 @@ namespace OpenRCT2::Ui::Windows
                 WindowClass::Loadsave, width, height, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
                 type);
         }
+
+        bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
 
         if ((type & 0x0E) == LOADSAVETYPE_HEIGHTMAP && !isSave)
         {

@@ -43,8 +43,10 @@ namespace OpenRCT2::Ui::FileBrowser
         // Open system file picker?
         if (config.UseNativeBrowseDialog && hasFilePicker)
         {
-            bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
-            const u8string path = OpenSystemFileBrowser(isSave, type, defaultPath, defaultPath);
+            const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
+            const auto defaultDirectory = GetDir(type);
+
+            const u8string path = OpenSystemFileBrowser(isSave, type, defaultDirectory, defaultPath);
             if (!path.empty())
             {
                 Select(path.c_str(), type, trackDesign);
