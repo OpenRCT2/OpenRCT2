@@ -193,8 +193,9 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         // This used to be hard-coded. JSON objects set this themselves.
         _presetColours.count = 1;
         _presetColours.list[0] = { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED };
+        const auto& rtd = GetRideTypeDescriptor(_legacyType.ride_type[0]);
 
-        if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL || _legacyType.ride_type[0] == RIDE_TYPE_DRINK_STALL)
+        if (rtd.HasFlag(RtdFlag::sellsFood) || rtd.HasFlag(RtdFlag::sellsDrinks))
         {
             // In RCT2, no food or drink stall could be recoloured.
             _legacyType.flags |= RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB;
