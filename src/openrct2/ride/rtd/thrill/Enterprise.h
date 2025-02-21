@@ -70,6 +70,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationEnterprise,
+    .specialType = RtdSpecialType::enterprise,
     .PeepLoadingWaypointSegments = 8,
 };
 // clang-format on

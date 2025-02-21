@@ -3629,7 +3629,8 @@ uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehic
     uint8_t seatLocationFixed = CurrentSeat & 0xF8;
 
     // Enterprise has more segments (8) compared to the normal (4)
-    if (ride.type != RIDE_TYPE_ENTERPRISE)
+    const auto& rtd = ride.GetRideTypeDescriptor();
+    if (rtd.specialType != RtdSpecialType::enterprise)
         track_direction *= 2;
 
     // Type 1 loading doesn't do segments and all peeps go to the same
@@ -4349,7 +4350,7 @@ void Guest::UpdateRideLeaveVehicle()
         exitWaypointLoc.y += carEntry->peep_loading_waypoints[waypointIndex][2].y;
     }
 
-    if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
+    if (rtd.specialType == RtdSpecialType::motionSimulator)
         exitWaypointLoc.z += 15;
 
     MoveTo(exitWaypointLoc);
@@ -4573,7 +4574,8 @@ void Guest::UpdateRideApproachExitWaypoints()
     {
         int16_t actionZ;
 
-        if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (rtd.specialType == RtdSpecialType::motionSimulator)
         {
             actionZ = ride->GetStation(CurrentRideStation).GetBaseZ() + 2;
 
