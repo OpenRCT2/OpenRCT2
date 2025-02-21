@@ -83,5 +83,6 @@ constexpr RideTypeDescriptor MineTrainCoasterRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_MineTrainCoaster,
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleMineTrainCoaster,
 };
 // clang-format on

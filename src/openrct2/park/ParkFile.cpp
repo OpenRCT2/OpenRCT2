@@ -49,6 +49,7 @@
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ride/Vehicle.h"
+#include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
@@ -1157,8 +1158,8 @@ namespace OpenRCT2
                                 {
                                     auto* trackElement = it.element->AsTrack();
                                     auto trackType = trackElement->GetTrackType();
-                                    if (TrackTypeMustBeMadeInvisible(
-                                            trackElement->GetRideType(), trackType, os.GetHeader().TargetVersion))
+                                    const auto& rtd = GetRideTypeDescriptor(trackElement->GetRideType());
+                                    if (rtd.TrackTypeMustBeMadeInvisibleEx(trackType, os.GetHeader().TargetVersion))
                                     {
                                         it.element->SetInvisible(true);
                                     }

@@ -35,6 +35,7 @@
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackStyle.h"
+#include "../park/Legacy.h"
 #include "Vehicle.h"
 
 enum class ResearchCategory : uint8_t;
@@ -278,6 +279,7 @@ using RideUpdateFunction = void (*)(Ride& ride);
 using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const OpenRCT2::TrackElemType trackType);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+using TrackTypeMustBeMadeInvisibleFunc = bool (*) (OpenRCT2::TrackElemType trackType, int32_t parkFileVersion);
 
 using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
@@ -541,6 +543,12 @@ struct RideTypeDescriptor
      * vehicle. See https://github.com/OpenRCT2/OpenRCT2/discussions/23119 for more information about unified speed.
      */
     int32_t GetUnifiedBoosterSpeed(int32_t relativeSpeed) const;
+
+    TrackTypeMustBeMadeInvisibleFunc TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleDefault;
+    bool TrackTypeMustBeMadeInvisible(OpenRCT2::TrackElemType trackType) const
+    {
+        return TrackTypeMustBeMadeInvisibleEx(trackType, -1);
+    }
 };
 
 extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];

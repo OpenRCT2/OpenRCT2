@@ -2377,12 +2377,9 @@ void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState)
     LOG_INFO("Converted %d peep entities", numConverted);
 }
 
-bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+bool TrackTypeMustBeMadeInvisibleLogFlume(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
 {
-    // Lots of Log Flumes exist where the downward slopes are simulated by using other track
-    // types like the Splash Boats, but not actually made invisible, because they never needed
-    // to be.
-    if (rideType == RIDE_TYPE_LOG_FLUME && parkFileVersion < kLogFlumeSteepSlopeVersion)
+    if (parkFileVersion < kLogFlumeSteepSlopeVersion)
     {
         if (trackType == TrackElemType::Down25ToDown60 || trackType == TrackElemType::Down60
             || trackType == TrackElemType::Down60ToDown25)
@@ -2390,7 +2387,12 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
             return true;
         }
     }
-    else if (rideType == RIDE_TYPE_GIGA_COASTER && parkFileVersion < kGigaCoasterInversions)
+    return false;
+}
+
+bool TrackTypeMustBeMadeInvisibleGigaCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+{
+    if (parkFileVersion < kGigaCoasterInversions)
     {
         switch (trackType)
         {
@@ -2499,10 +2501,12 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
-    else if (
-        (rideType == RIDE_TYPE_WOODEN_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER
-         || rideType == RIDE_TYPE_MINE_TRAIN_COASTER)
-        && parkFileVersion < kWoodenFlatToSteepVersion)
+    return false;
+}
+
+bool TrackTypeMustBeMadeInvisibleWoodenRollerCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+{
+    if (parkFileVersion < kWoodenFlatToSteepVersion)
     {
         switch (trackType)
         {
@@ -2515,9 +2519,7 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
-    else if (
-        (rideType == RIDE_TYPE_WOODEN_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER)
-        && parkFileVersion < kWoodenRollerCoasterMediumLargeHalfLoopsVersion)
+    else if (parkFileVersion < kWoodenRollerCoasterMediumLargeHalfLoopsVersion)
     {
         switch (trackType)
         {
@@ -2534,10 +2536,30 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
-    else if (
-        (rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER || rideType == RIDE_TYPE_HYPERCOASTER
-         || rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER)
-        && parkFileVersion < kExtendedCorkscrewCoasterVersion)
+    return false;
+}
+
+bool TrackTypeMustBeMadeInvisibleMineTrainCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+{
+    if (parkFileVersion < kWoodenFlatToSteepVersion)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::FlatToUp60LongBase:
+            case TrackElemType::Up60ToFlatLongBase:
+            case TrackElemType::FlatToDown60LongBase:
+            case TrackElemType::Down60ToFlatLongBase:
+                return true;
+            default:
+                break;
+        }
+    }
+    return false;
+}
+
+bool TrackTypeMustBeMadeInvisibleCorkscrewCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+{
+    if (parkFileVersion < kExtendedCorkscrewCoasterVersion)
     {
         switch (trackType)
         {
@@ -2674,10 +2696,12 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
-    else if (
-        (rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-         || rideType == RIDE_TYPE_HYPER_TWISTER || rideType == RIDE_TYPE_FLYING_ROLLER_COASTER)
-        && parkFileVersion < kExtendedTwisterCoasterVersion)
+    return false;
+}
+
+bool TrackTypeMustBeMadeInvisibleTwisterRollerCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+{
+    if (parkFileVersion < kExtendedTwisterCoasterVersion)
     {
         switch (trackType)
         {
@@ -2746,7 +2770,12 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
-    else if (rideType == RIDE_TYPE_BOAT_HIRE && parkFileVersion < kExtendedBoatHireVersion)
+    return false;
+}
+
+bool TrackTypeMustBeMadeInvisibleBoatHire(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+{
+    if (parkFileVersion < kExtendedBoatHireVersion)
     {
         switch (trackType)
         {
@@ -2766,9 +2795,12 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
-    else if (
-        (rideType == RIDE_TYPE_STAND_UP_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER)
-        && parkFileVersion < kExtendedStandUpRollerCoasterVersion)
+    return false;
+}
+
+bool TrackTypeMustBeMadeInvisibleStandupRollerCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+{
+    if (parkFileVersion < kExtendedStandUpRollerCoasterVersion)
     {
         switch (trackType)
         {
@@ -2913,6 +2945,10 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
+    return false;
+}
 
+bool TrackTypeMustBeMadeInvisibleDefault(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+{
     return false;
 }

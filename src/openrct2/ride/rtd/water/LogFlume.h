@@ -82,5 +82,6 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .Classification = RideClassification::Ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_LogFlume,
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleLogFlume,
 };
 // clang-format on

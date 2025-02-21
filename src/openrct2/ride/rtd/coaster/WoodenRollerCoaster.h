@@ -88,5 +88,6 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 34555, 49648 },
         },
     },
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleWoodenRollerCoaster,
 };
 // clang-format on

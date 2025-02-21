@@ -87,5 +87,6 @@ constexpr RideTypeDescriptor HypercoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 49648 },
         },
     },
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleCorkscrewCoaster,
 };
 // clang-format on

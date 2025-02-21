@@ -1717,6 +1717,7 @@ namespace OpenRCT2::RCT1
                     auto src2 = src->AsTrack();
                     const auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
+                    const auto& rtd = GetRideTypeDescriptor(rideType);
                     auto rct1RideType = _s4.Rides[src2->GetRideIndex()].Type;
 
                     dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
@@ -1759,7 +1760,7 @@ namespace OpenRCT2::RCT1
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }
 
-                    if (TrackTypeMustBeMadeInvisible(rideType, trackType))
+                    if (rtd.TrackTypeMustBeMadeInvisible(trackType))
                     {
                         dst->SetInvisible(true);
                     }

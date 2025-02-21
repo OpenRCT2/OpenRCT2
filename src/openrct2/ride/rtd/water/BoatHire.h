@@ -74,5 +74,6 @@ constexpr RideTypeDescriptor BoatHireRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleBoatHire,
 };
 // clang-format on
