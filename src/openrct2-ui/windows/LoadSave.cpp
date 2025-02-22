@@ -541,7 +541,9 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(indicatorId);
 
                 auto cdpi = const_cast<const DrawPixelInfo&>(dpi);
-                DrawTextBasic(cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, strId, ft, { COLOUR_GREY });
+                DrawTextEllipsised(
+                    cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width(), strId, ft,
+                    { COLOUR_GREY });
             };
 
             auto& config = Config::Get().general;
