@@ -344,7 +344,7 @@ namespace OpenRCT2::Ui::Windows
                 parkImporter->LoadFromStream(&fs, false, true, path.c_str());
                 parkImporter->PopulateParkPreview(_preview);
             }
-            catch (std::exception e)
+            catch (std::exception& e)
             {
                 _preview.clear();
                 return;
