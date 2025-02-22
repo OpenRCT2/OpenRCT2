@@ -54,9 +54,20 @@ static Climate convertRawClimate(const RawClimate& rawClimate);
 
 void ClimateObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
-    // Write (no image)
-    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
+    const auto dist = getYearlyDistribution();
+    const auto totalSize = kNumClimateMonths * kWeatherDistSize;
+
+    for (auto i = 0u; i < EnumValue(WeatherType::Count); i++)
+    {
+        auto type = WeatherType(i);
+        auto imageId = ImageId(ClimateGetWeatherSpriteId(type));
+        auto coords = ScreenCoordsXY(8 + (i % 3) * 35, 3 + (i / 3) * 37);
+        GfxDrawSprite(dpi, imageId, coords);
+
+        auto ft = Formatter();
+        ft.Add<uint16_t>(dist[i] * 100 / totalSize);
+        DrawTextEllipsised(dpi, coords + ScreenCoordsXY{ 12, 22 }, 35, 6636, ft, { TextAlignment::CENTRE });
+    }
 }
 
 void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
@@ -77,7 +88,7 @@ const WeatherPattern& ClimateObject::getPatternForMonth(uint8_t month) const
 YearlyDistribution ClimateObject::getYearlyDistribution() const
 {
     auto weatherTypeCount = [](const WeatherPattern& pattern, const WeatherType target) {
-        auto count = 0U;
+        auto count = 0u;
         for (auto type : pattern.distribution)
         {
             if (type == target)
