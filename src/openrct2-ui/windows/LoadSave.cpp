@@ -481,8 +481,8 @@ namespace OpenRCT2::Ui::Windows
                 auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::Medium) + 16;
 
                 widgets[WIDX_SAVE].type = WindowWidgetType::Button;
-                widgets[WIDX_SAVE].top = height - 42;
-                widgets[WIDX_SAVE].bottom = height - 30;
+                widgets[WIDX_SAVE].top = height - 30;
+                widgets[WIDX_SAVE].bottom = height - 18;
                 widgets[WIDX_SAVE].left = width - saveLabelWidth - 5;
                 widgets[WIDX_SAVE].right = width - 5;
 
@@ -491,8 +491,8 @@ namespace OpenRCT2::Ui::Windows
                 auto filenameLabelWidth = GfxGetStringWidth(filenameLabel, FontStyle::Medium);
 
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::TextBox;
-                widgets[WIDX_FILENAME_TEXTBOX].top = height - 42;
-                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 30;
+                widgets[WIDX_FILENAME_TEXTBOX].top = height - 30;
+                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 18;
                 widgets[WIDX_FILENAME_TEXTBOX].left = 4 + filenameLabelWidth + 6;
                 widgets[WIDX_FILENAME_TEXTBOX].right = widgets[WIDX_SAVE].left - 5;
             }
