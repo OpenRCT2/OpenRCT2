@@ -28,6 +28,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/object/ClimateObject.h>
 #include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
@@ -1268,6 +1269,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft);
                 screenPos.y += kListRowHeight;
             }
+
             if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());

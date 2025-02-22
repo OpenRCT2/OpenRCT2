@@ -13,6 +13,10 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../localisation/Formatter.h"
+#include "../localisation/StringIds.h"
+
+#include <algorithm>
 
 using namespace OpenRCT2;
 
@@ -48,6 +52,26 @@ void ClimateObject::Unload()
 static RawClimate readWeatherTable(json_t& weather);
 static Climate convertRawClimate(const RawClimate& rawClimate);
 
+void ClimateObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+{
+    const auto dist = getYearlyDistribution();
+    const auto totalSize = kNumClimateMonths * kWeatherDistSize;
+
+    for (auto i = 0u; i < EnumValue(WeatherType::Count); i++)
+    {
+        auto type = WeatherType(i);
+        auto imageId = ImageId(ClimateGetWeatherSpriteId(type));
+        auto coords = ScreenCoordsXY(8 + (i % 3) * 35, 3 + (i / 3) * 37);
+        GfxDrawSprite(dpi, imageId, coords);
+
+        auto ft = Formatter();
+        ft.Add<uint16_t>(dist[i] * 100 / totalSize);
+        DrawTextEllipsised(
+            dpi, coords + ScreenCoordsXY{ 12, 22 }, 35, STR_CLIMATE_WEATHER_PERCENT, ft,
+            { FontStyle::Small, TextAlignment::CENTRE });
+    }
+}
+
 void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     Guard::Assert(root.is_object(), "ClimateObject::ReadJson expects parameter root to be an object");
@@ -58,9 +82,32 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
     _climate = convertRawClimate(rawClimate);
 }
 
-const WeatherPattern& ClimateObject::getPatternForMonth(uint8_t month)
+const WeatherPattern& ClimateObject::getPatternForMonth(uint8_t month) const
 {
     return _climate[month];
+}
+
+YearlyDistribution ClimateObject::getYearlyDistribution() const
+{
+    auto weatherTypeCount = [](const WeatherPattern& pattern, const WeatherType target) {
+        auto count = 0u;
+        for (auto type : pattern.distribution)
+        {
+            if (type == target)
+                count++;
+        }
+        return count;
+    };
+
+    YearlyDistribution dist{};
+    for (auto m = 0; m < kNumClimateMonths; m++)
+    {
+        auto& pattern = getPatternForMonth(m);
+        for (auto i = 0u; i < EnumValue(WeatherType::Count); i++)
+            dist[i] += weatherTypeCount(pattern, WeatherType(i));
+    }
+
+    return dist;
 }
 
 static Climate convertRawClimate(const RawClimate& rawClimate)
