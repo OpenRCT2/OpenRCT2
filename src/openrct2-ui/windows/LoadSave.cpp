@@ -528,23 +528,22 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextEllipsised(dpi, pathPos, pathWidth, STR_STRING, ft);
             }
 
-            const auto drawButtonCaption = [dpi, this](
-                                               Widget& widget, StringId strId, FileBrowserSort ascSort,
-                                               FileBrowserSort descSort) {
-                StringId indicatorId = kStringIdNone;
-                if (Config::Get().general.LoadSaveSort == ascSort)
-                    indicatorId = STR_UP;
-                else if (Config::Get().general.LoadSaveSort == descSort)
-                    indicatorId = STR_DOWN;
+            const auto drawButtonCaption =
+                [dpi, this](Widget& widget, StringId strId, FileBrowserSort ascSort, FileBrowserSort descSort) {
+                    StringId indicatorId = kStringIdNone;
+                    if (Config::Get().general.LoadSaveSort == ascSort)
+                        indicatorId = STR_UP;
+                    else if (Config::Get().general.LoadSaveSort == descSort)
+                        indicatorId = STR_DOWN;
 
-                auto ft = Formatter();
-                ft.Add<StringId>(indicatorId);
+                    auto ft = Formatter();
+                    ft.Add<StringId>(indicatorId);
 
-                auto cdpi = const_cast<const DrawPixelInfo&>(dpi);
-                DrawTextEllipsised(
-                    cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width(), strId, ft,
-                    { COLOUR_GREY });
-            };
+                    auto cdpi = const_cast<const DrawPixelInfo&>(dpi);
+                    DrawTextEllipsised(
+                        cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width(), strId, ft,
+                        { COLOUR_GREY });
+                };
 
             auto& config = Config::Get().general;
             drawButtonCaption(
