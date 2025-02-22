@@ -13,6 +13,8 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../localisation/Formatter.h"
+#include "../localisation/StringIds.h"
 
 using namespace OpenRCT2;
 
@@ -47,6 +49,13 @@ void ClimateObject::Unload()
 
 static RawClimate readWeatherTable(json_t& weather);
 static Climate convertRawClimate(const RawClimate& rawClimate);
+
+void ClimateObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+{
+    // Write (no image)
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
+}
 
 void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
