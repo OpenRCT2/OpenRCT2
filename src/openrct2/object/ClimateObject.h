@@ -20,6 +20,7 @@ class ClimateObject final : public Object
 {
 private:
     Climate _climate;
+    std::string _scriptName;
 
 public:
     static constexpr ObjectType kObjectType = ObjectType::climate;
@@ -31,5 +32,6 @@ public:
     void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
 
     const WeatherPattern& getPatternForMonth(uint8_t month) const;
+    std::string getScriptName() const;
     YearlyDistribution getYearlyDistribution() const;
 };
