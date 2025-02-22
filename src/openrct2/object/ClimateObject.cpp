@@ -16,6 +16,8 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
 
+#include <algorithm>
+
 using namespace OpenRCT2;
 
 struct RawClimateMonth
@@ -67,9 +69,32 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
     _climate = convertRawClimate(rawClimate);
 }
 
-const WeatherPattern& ClimateObject::getPatternForMonth(uint8_t month)
+const WeatherPattern& ClimateObject::getPatternForMonth(uint8_t month) const
 {
     return _climate[month];
+}
+
+YearlyDistribution ClimateObject::getYearlyDistribution() const
+{
+    auto weatherTypeCount = [](const WeatherPattern& pattern, const WeatherType target) {
+        auto count = 0U;
+        for (auto type : pattern.distribution)
+        {
+            if (type == target)
+                count++;
+        }
+        return count;
+    };
+
+    YearlyDistribution dist{};
+    for (auto m = 0; m < kNumClimateMonths; m++)
+    {
+        auto& pattern = getPatternForMonth(m);
+        for (auto i = 0u; i < EnumValue(WeatherType::Count); i++)
+            dist[i] += weatherTypeCount(pattern, WeatherType(i));
+    }
+
+    return dist;
 }
 
 static Climate convertRawClimate(const RawClimate& rawClimate)

@@ -14,6 +14,8 @@
 
 struct IReadObjectContext;
 
+using YearlyDistribution = std::array<uint8_t, EnumValue(WeatherType::Count)>;
+
 class ClimateObject final : public Object
 {
 private:
@@ -28,5 +30,6 @@ public:
 
     void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
 
-    const WeatherPattern& getPatternForMonth(uint8_t month);
+    const WeatherPattern& getPatternForMonth(uint8_t month) const;
+    YearlyDistribution getYearlyDistribution() const;
 };

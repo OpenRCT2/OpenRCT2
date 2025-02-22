@@ -28,6 +28,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/object/ClimateObject.h>
 #include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
@@ -1267,6 +1268,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft);
                 screenPos.y += kListRowHeight;
             }
+
             if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
@@ -1313,6 +1315,28 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<const char*>(track->Composer.c_str());
                     screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, descriptionWidth, stringId, ft);
                 }
+            }
+            else if (GetSelectedObjectType() == ObjectType::climate)
+            {
+                const auto* climateObject = reinterpret_cast<ClimateObject*>(_loadedObject.get());
+                const auto dist = climateObject->getYearlyDistribution();
+                const auto totalSize = kNumClimateMonths * kWeatherDistSize;
+
+                auto& widget = widgets[WIDX_PREVIEW];
+                auto basePos = windowPos + ScreenCoordsXY{ widget.left, widget.bottom + 15 };
+
+                for (auto i = 0u; i < EnumValue(WeatherType::Count); i++)
+                {
+                    auto type = WeatherType(i);
+                    auto imageId = ImageId(ClimateGetWeatherSpriteId(type));
+                    auto coords = basePos + ScreenCoordsXY(5 + (i % 3) * 35, (i / 3) * 35);
+                    GfxDrawSprite(dpi, imageId, coords);
+
+                    auto ft = Formatter();
+                    ft.Add<uint16_t>(dist[i] * 100 / totalSize);
+                    DrawTextBasic(dpi, coords + ScreenCoordsXY{ 0, 20 }, STR_CLIMATE_WEATHER_PERCENT, ft);
+                }
+
             }
         }
 
