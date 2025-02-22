@@ -477,9 +477,9 @@ const WeatherTrait kClimateWeatherTraits[EnumValue(WeatherType::Count)] = {
     {  -2, WeatherEffectType::Rain,     1, WeatherLevel::Light, SPR_WEATHER_LIGHT_RAIN }, // Rain
     {  -4, WeatherEffectType::Rain,     2, WeatherLevel::Heavy, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
     {   2, WeatherEffectType::Storm,    2, WeatherLevel::Heavy, SPR_WEATHER_STORM      }, // Thunderstorm
-    { -10, WeatherEffectType::Snow,     1, WeatherLevel::Light, SPR_WEATHER_SNOW       }, // Snow
-    { -15, WeatherEffectType::Snow,     2, WeatherLevel::Heavy, SPR_WEATHER_SNOW       }, // Heavy Snow
-    { -20, WeatherEffectType::Blizzard, 2, WeatherLevel::Heavy, SPR_WEATHER_SNOW       }, // Blizzard
+    { -10, WeatherEffectType::Snow,     1, WeatherLevel::Light, SPR_G2_WEATHER_SNOW      }, // Snow
+    { -15, WeatherEffectType::Snow,     2, WeatherLevel::Heavy, SPR_G2_WEATHER_HEAVY_SNOW}, // Heavy Snow
+    { -20, WeatherEffectType::Blizzard, 2, WeatherLevel::Heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
 };
 // clang-format on
 
