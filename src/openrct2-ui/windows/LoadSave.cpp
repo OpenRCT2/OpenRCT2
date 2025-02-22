@@ -556,8 +556,10 @@ namespace OpenRCT2::Ui::Windows
                 toolbarXPos = widget.left - 1;
             }
 
+            auto paddingBottom = ShowPreviews() ? kPadding : kPadding + 10;
+
             widgets[WIDX_SCROLL].right = width - kPadding;
-            widgets[WIDX_SCROLL].bottom = height - 15;
+            widgets[WIDX_SCROLL].bottom = height - paddingBottom;
             if (ShowPreviews())
                 widgets[WIDX_SCROLL].right -= kPreviewWidth + kPadding;
 
@@ -629,8 +631,8 @@ namespace OpenRCT2::Ui::Windows
                 auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::Medium) + 16;
 
                 widgets[WIDX_SAVE].type = WindowWidgetType::Button;
-                widgets[WIDX_SAVE].top = height - 30;
-                widgets[WIDX_SAVE].bottom = height - 18;
+                widgets[WIDX_SAVE].top = height - paddingBottom - 15;
+                widgets[WIDX_SAVE].bottom = height - paddingBottom - 3;
                 widgets[WIDX_SAVE].right = widgets[WIDX_SCROLL].right;
                 widgets[WIDX_SAVE].left = widgets[WIDX_SCROLL].right - saveLabelWidth;
 
@@ -639,8 +641,8 @@ namespace OpenRCT2::Ui::Windows
                 auto filenameLabelWidth = GfxGetStringWidth(filenameLabel, FontStyle::Medium);
 
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::TextBox;
-                widgets[WIDX_FILENAME_TEXTBOX].top = height - 30;
-                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 18;
+                widgets[WIDX_FILENAME_TEXTBOX].top = height - paddingBottom - 15;
+                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - paddingBottom - 3;
                 widgets[WIDX_FILENAME_TEXTBOX].left = 4 + filenameLabelWidth + 6;
                 widgets[WIDX_FILENAME_TEXTBOX].right = widgets[WIDX_SAVE].left - 5;
             }
