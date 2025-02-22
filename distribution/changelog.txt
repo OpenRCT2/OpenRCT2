@@ -34,6 +34,7 @@
 - Fix: [#23832] Hybrid Coaster large gentle banked left turns supports glitch as train passes.
 - Fix: [#23836] Adjacent track can draw over large turns (original bug).
 - Fix: [#23858] LSM launched lift hill has a misaligned sprite.
+- Fix: [#23871] Trains draw over rear facing steep Wooden RollerCoaster track if there is terrain directly below (original bug).
 
 0.4.19.1 (2025-02-03)
 ------------------------------------------------------------------------

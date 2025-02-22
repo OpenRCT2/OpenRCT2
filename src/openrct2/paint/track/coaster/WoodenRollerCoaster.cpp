@@ -2183,7 +2183,7 @@ static void WoodenRCTrack60DegUp(
         {
             session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
                 session, direction, imageIdsChained[direction][0], imageIdsChained[direction][1], { 0, 0, height },
-                { { 28, 4, height - 16 }, { 2, 24, 93 } });
+                { { 28, 4, height }, { 2, 24, 88 } });
         }
     }
     else
@@ -2198,7 +2198,7 @@ static void WoodenRCTrack60DegUp(
         {
             session.WoodenSupportsPrependTo = WoodenRCTrackPaint<isClassic>(
                 session, direction, imageIds[direction][0], imageIds[direction][1], { 0, 0, height },
-                { { 28, 4, height - 16 }, { 2, 24, 93 } });
+                { { 28, 4, height }, { 2, 24, 88 } });
         }
     }
 
