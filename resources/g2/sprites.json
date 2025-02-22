@@ -328,6 +328,25 @@
         "path": "icons/folder.png"
     },
     {
+        "path": "icons/folder_new.png",
+        "x": 2
+    },
+    {
+        "path": "icons/folder_parent.png",
+        "x": 2,
+        "y": 2
+    },
+    {
+        "path": "icons/folder_default.png",
+        "x": 2,
+        "y": 1
+    },
+    {
+        "path": "icons/system_browser.png",
+        "x": 1,
+        "y": 2
+    },
+    {
         "path": "icons/peep_animations.png",
         "x": 2,
         "y": 1
