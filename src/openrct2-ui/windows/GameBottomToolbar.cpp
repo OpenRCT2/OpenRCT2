@@ -212,11 +212,11 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.x += 30;
 
             // Current weather
-            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherCurrent);
+            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherCurrent.weatherType);
             GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
             // Next weather
-            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherNext);
+            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherNext.weatherType);
             if (currentWeatherSpriteId != nextWeatherSpriteId)
             {
                 if (GetGameState().WeatherUpdateTimer < 960)
