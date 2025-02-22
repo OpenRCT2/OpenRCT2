@@ -2292,7 +2292,7 @@ const std::vector<std::string_view> peepAnimObjects = {
     "rct2.peep_animations.entertainer_snowman",
 };
 
-const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList)
+const std::vector<std::string_view>& GetLegacyPeepAnimationObjects()
 {
     return peepAnimObjects;
 }
