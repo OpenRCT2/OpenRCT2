@@ -51,8 +51,8 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Widgets
 
     static constexpr ScreenSize kWindowSizeInit = { 400, 350 };
-    static constexpr ScreenSize kWindowSizeMin = kWindowSizeInit / 2;
-    static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 2;
+    static constexpr ScreenSize kWindowSizeMin = { 300, kWindowSizeInit.height / 2 };
+    static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 3;
 
     static constexpr int kKibiByte = 1024;
     static constexpr int kMebiByte = kKibiByte * 1024;
@@ -73,10 +73,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TITLE,
         WIDX_CLOSE,
         WIDX_RESIZE,
-        WIDX_DEFAULT,
-        WIDX_UP,
+        WIDX_PARENT_FOLDER,
         WIDX_NEW_FOLDER,
-        WIDX_NEW_FILE,
+        WIDX_DEFAULT_FOLDER,
+        WIDX_SYSTEM_BROWSER,
         WIDX_SORT_NAME,
         WIDX_SORT_SIZE,
         WIDX_SORT_DATE,
@@ -84,7 +84,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SCROLL,
         WIDX_FILENAME_TEXTBOX,
         WIDX_SAVE,
-        WIDX_BROWSE,
     };
 
     static constexpr int16_t WW = kWindowSizeInit.width;
@@ -94,19 +93,18 @@ namespace OpenRCT2::Ui::Windows
     static constexpr Widget window_loadsave_widgets[] =
     {
         WINDOW_SHIM(kStringIdNone, WW, WH),
-        MakeWidget({                0,      15 }, {       WW,  WH - 15 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
-        MakeWidget({                4,      36 }, {       84,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
-        MakeWidget({               88,      36 }, {       84,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
-        MakeWidget({              172,      36 }, {       87,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // WIDX_NEW_FOLDER
-        MakeWidget({              259,      36 }, {       87,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FILE                            ), // WIDX_NEW_FILE
-        MakeWidget({                4,      55 }, {      160,       14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
-        MakeWidget({ (WW - 5) / 3 + 1,      55 }, {      160,       14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_SIZE
-        MakeWidget({ (WW - 5) / 3 + 1,      55 }, {      160,       14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
-        MakeWidget({        (WW - 19),      55 }, {       14,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_DROPDOWN_GLYPH                                         ), // WIDX_SORT_CUSTOMISE
-        MakeWidget({                4,      68 }, {      342,      303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
-        MakeWidget({               64, WH - 50 }, { WW - 133,       14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
-        MakeWidget({          WW - 65, WH - 50 }, {       60,       14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_FILEBROWSER_SAVE_BUTTON                                ), // WIDX_SAVE
-        MakeWidget({                4, WH - 24 }, {      197,       19 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // WIDX_BROWSE
+        MakeWidget({                0,      15 }, {       WW,  WH - 15 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                                ), // WIDX_RESIZE
+        MakeWidget({     WW - 100 - 4,      20 }, {       20,       20 }, WindowWidgetType::FlatBtn,     WindowColour::Primary,   SPR_G2_FOLDER_PARENT,        STR_PARENT_FOLDER_TIP            ), // WIDX_PARENT_FOLDER
+        MakeWidget({     WW -  50 - 4,      20 }, {       20,       20 }, WindowWidgetType::FlatBtn,     WindowColour::Primary,   SPR_G2_FOLDER_NEW,           STR_FILEBROWSER_ACTION_NEW_FOLDER), // WIDX_NEW_FOLDER
+        MakeWidget({     WW -  75 - 4,      20 }, {       20,       20 }, WindowWidgetType::FlatBtn,     WindowColour::Primary,   SPR_G2_FOLDER_DEFAULT,       STR_LOADSAVE_DEFAULT_TIP         ), // WIDX_DEFAULT_FOLDER
+        MakeWidget({     WW -  25 - 4,      20 }, {       20,       20 }, WindowWidgetType::FlatBtn,     WindowColour::Primary,   SPR_G2_SYSTEM_BROWSER,       STR_FILEBROWSER_USE_SYSTEM_WINDOW), // WIDX_SYSTEM_BROWSER
+        MakeWidget({                4,      45 }, {      160,       14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                                  ), // WIDX_SORT_NAME
+        MakeWidget({ (WW - 5) / 3 + 1,      45 }, {      160,       14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                                  ), // WIDX_SORT_SIZE
+        MakeWidget({ (WW - 5) / 3 + 1,      45 }, {      160,       14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                                  ), // WIDX_SORT_DATE
+        MakeWidget({        (WW - 19),      45 }, {       14,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_DROPDOWN_GLYPH                                            ), // WIDX_SORT_CUSTOMISE
+        MakeWidget({                4,      58 }, {      342,      303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                               ), // WIDX_SCROLL
+        MakeWidget({               64, WH - 50 }, { WW - 133,       14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                                ), // WIDX_FILENAME_TEXTBOX
+        MakeWidget({          WW - 65, WH - 50 }, {       60,       14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_FILEBROWSER_SAVE_BUTTON                                   ), // WIDX_SAVE
     };
     // clang-format on
 
@@ -135,15 +133,11 @@ namespace OpenRCT2::Ui::Windows
 
             _listItems.clear();
 
-            // Show "new" buttons when saving
-            widgets[WIDX_NEW_FILE].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
-            widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
-
             int32_t drives = Platform::GetDrives();
             if (directory.empty() && drives)
             {
                 // List Windows drives
-                disabled_widgets |= (1uLL << WIDX_NEW_FILE) | (1uLL << WIDX_NEW_FOLDER) | (1uLL << WIDX_UP);
+                disabled_widgets |= (1uLL << WIDX_NEW_FOLDER) | (1uLL << WIDX_PARENT_FOLDER);
                 static constexpr auto NumDriveLetters = 26;
                 for (int32_t x = 0; x < NumDriveLetters; x++)
                 {
@@ -188,12 +182,11 @@ namespace OpenRCT2::Ui::Windows
 
                 // Disable the Up button if the current directory is the root directory
                 if (String::isNullOrEmpty(_parentDirectory) && !drives)
-                    disabled_widgets |= (1uLL << WIDX_UP);
+                    disabled_widgets |= (1uLL << WIDX_PARENT_FOLDER);
                 else
-                    disabled_widgets &= ~(1uLL << WIDX_UP);
+                    disabled_widgets &= ~(1uLL << WIDX_PARENT_FOLDER);
 
-                // Re-enable the "new" buttons if these were disabled
-                disabled_widgets &= ~(1uLL << WIDX_NEW_FILE);
+                // Re-enable the "new" button if it was disabled
                 disabled_widgets &= ~(1uLL << WIDX_NEW_FOLDER);
 
                 // List all directories
@@ -320,8 +313,8 @@ namespace OpenRCT2::Ui::Windows
             const auto uiContext = OpenRCT2::GetContext()->GetUiContext();
             if (!uiContext->HasFilePicker())
             {
-                disabled_widgets |= (1uLL << WIDX_BROWSE);
-                widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
+                disabled_widgets |= (1uLL << WIDX_SYSTEM_BROWSER);
+                widgets[WIDX_SYSTEM_BROWSER].type = WindowWidgetType::Empty;
             }
 
             // TODO: Split LOADSAVETYPE_* into two proper enum classes (one for load/save, the other for the type)
@@ -408,6 +401,15 @@ namespace OpenRCT2::Ui::Windows
         {
             ResizeFrameWithPage();
 
+            auto toolbarXPos = width - 5;
+            for (auto widgetIndex = 3; widgetIndex >= 0; widgetIndex--)
+            {
+                auto& widget = widgets[EnumValue(WIDX_PARENT_FOLDER) + widgetIndex];
+                widget.right = toolbarXPos;
+                widget.left = toolbarXPos - 20;
+                toolbarXPos = widget.left - 1;
+            }
+
             Widget& customiseWidget = widgets[WIDX_SORT_CUSTOMISE];
             customiseWidget.right = width - 5;
             customiseWidget.left = customiseWidget.right - 14;
@@ -468,7 +470,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             widgets[WIDX_SCROLL].right = width - 5;
-            widgets[WIDX_SCROLL].bottom = height - 30;
+            widgets[WIDX_SCROLL].bottom = height - 15;
 
             if (type & LOADSAVETYPE_SAVE)
             {
@@ -479,8 +481,8 @@ namespace OpenRCT2::Ui::Windows
                 auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::Medium) + 16;
 
                 widgets[WIDX_SAVE].type = WindowWidgetType::Button;
-                widgets[WIDX_SAVE].top = height - 42;
-                widgets[WIDX_SAVE].bottom = height - 30;
+                widgets[WIDX_SAVE].top = height - 30;
+                widgets[WIDX_SAVE].bottom = height - 18;
                 widgets[WIDX_SAVE].left = width - saveLabelWidth - 5;
                 widgets[WIDX_SAVE].right = width - 5;
 
@@ -489,8 +491,8 @@ namespace OpenRCT2::Ui::Windows
                 auto filenameLabelWidth = GfxGetStringWidth(filenameLabel, FontStyle::Medium);
 
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::TextBox;
-                widgets[WIDX_FILENAME_TEXTBOX].top = height - 42;
-                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 30;
+                widgets[WIDX_FILENAME_TEXTBOX].top = height - 30;
+                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 18;
                 widgets[WIDX_FILENAME_TEXTBOX].left = 4 + filenameLabelWidth + 6;
                 widgets[WIDX_FILENAME_TEXTBOX].right = widgets[WIDX_SAVE].left - 5;
             }
@@ -499,10 +501,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SAVE].type = WindowWidgetType::Empty;
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::Empty;
             }
-
-            // 'Use system file browser'
-            widgets[WIDX_BROWSE].top = height - 24;
-            widgets[WIDX_BROWSE].bottom = height - 6;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -510,7 +508,9 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
 
             {
-                const auto shortPath = ShortenPath(_directory, width - 8, FontStyle::Medium);
+                const auto& widget = widgets[WIDX_PARENT_FOLDER];
+                const auto pathWidth = widget.left - 8;
+                const auto shortPath = ShortenPath(_directory, pathWidth, FontStyle::Medium);
 
                 // Format text
                 std::string buffer;
@@ -523,24 +523,27 @@ namespace OpenRCT2::Ui::Windows
 
                 auto ft = Formatter();
                 ft.Add<const char*>(normalisedPathC);
-                DrawTextEllipsised(dpi, windowPos + ScreenCoordsXY{ 4, 20 }, width - 8, STR_STRING, ft);
+
+                auto pathPos = windowPos + ScreenCoordsXY{ 4, widget.top + 4 };
+                DrawTextEllipsised(dpi, pathPos, pathWidth, STR_STRING, ft);
             }
 
-            const auto drawButtonCaption = [dpi, this](
-                                               Widget& widget, StringId strId, FileBrowserSort ascSort,
-                                               FileBrowserSort descSort) {
-                StringId indicatorId = kStringIdNone;
-                if (Config::Get().general.LoadSaveSort == ascSort)
-                    indicatorId = STR_UP;
-                else if (Config::Get().general.LoadSaveSort == descSort)
-                    indicatorId = STR_DOWN;
+            const auto drawButtonCaption =
+                [dpi, this](Widget& widget, StringId strId, FileBrowserSort ascSort, FileBrowserSort descSort) {
+                    StringId indicatorId = kStringIdNone;
+                    if (Config::Get().general.LoadSaveSort == ascSort)
+                        indicatorId = STR_UP;
+                    else if (Config::Get().general.LoadSaveSort == descSort)
+                        indicatorId = STR_DOWN;
 
-                auto ft = Formatter();
-                ft.Add<StringId>(indicatorId);
+                    auto ft = Formatter();
+                    ft.Add<StringId>(indicatorId);
 
-                auto cdpi = const_cast<const DrawPixelInfo&>(dpi);
-                DrawTextBasic(cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, strId, ft, { COLOUR_GREY });
-            };
+                    auto cdpi = const_cast<const DrawPixelInfo&>(dpi);
+                    DrawTextEllipsised(
+                        cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width(), strId, ft,
+                        { COLOUR_GREY });
+                };
 
             auto& config = Config::Get().general;
             drawButtonCaption(
@@ -572,24 +575,19 @@ namespace OpenRCT2::Ui::Windows
                     Close();
                     break;
 
-                case WIDX_UP:
+                case WIDX_PARENT_FOLDER:
                     PopulateList(isSave, _parentDirectory, _extensionPattern);
                     InitScrollWidgets();
                     no_list_items = static_cast<uint16_t>(_listItems.size());
                     break;
 
-                case WIDX_NEW_FILE:
-                    WindowTextInputOpen(
-                        this, WIDX_NEW_FILE, kStringIdNone, STR_FILEBROWSER_FILE_NAME_PROMPT, {}, STR_STRING,
-                        reinterpret_cast<uintptr_t>(_defaultPath.c_str()), 64);
-                    break;
-
                 case WIDX_NEW_FOLDER:
                     WindowTextInputRawOpen(
-                        this, WIDX_NEW_FOLDER, kStringIdNone, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
+                        this, WIDX_NEW_FOLDER, STR_FILEBROWSER_ACTION_NEW_FOLDER, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "",
+                        64);
                     break;
 
-                case WIDX_BROWSE:
+                case WIDX_SYSTEM_BROWSER:
                 {
                     u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath);
                     if (!path.empty())
@@ -648,7 +646,7 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
 
-                case WIDX_DEFAULT:
+                case WIDX_DEFAULT_FOLDER:
                     PopulateList(isSave, GetInitialDirectoryByType(type).c_str(), _extensionPattern);
                     InitScrollWidgets();
                     no_list_items = static_cast<uint16_t>(_listItems.size());
@@ -751,18 +749,6 @@ namespace OpenRCT2::Ui::Windows
 
                     no_list_items = static_cast<uint16_t>(_listItems.size());
                     Invalidate();
-                    break;
-                }
-
-                case WIDX_NEW_FILE:
-                {
-                    const u8string path = Path::WithExtension(
-                        Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
-
-                    if (File::Exists(path))
-                        WindowOverwritePromptOpen(text, path, type, _trackDesign);
-                    else
-                        Select(path.c_str(), type, _trackDesign);
                     break;
                 }
 
