@@ -3778,3 +3778,8 @@ STR_6709    :Introduce una Fuerza de Suavizado entre {COMMA16} y {COMMA16}
 STR_6710    :Ordenación estable 
 STR_6711    :Nombre de archivo:
 STR_6712    :Guardar
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Nombre de archivo
+STR_6715    :Fecha de modificación
+STR_6716    :Tamaño de archivo
+STR_6717    :Tamaño de archivo {STRINGID}
