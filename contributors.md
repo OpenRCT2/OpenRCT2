@@ -248,6 +248,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Tom Matalenas (tmatale)
 * Brendan Heinonen (staticinvocation)
 * (QuestionableDeer)
+* David Sungaila (sungaila)
 
 ## Toolchain
 * (Balletie) - macOS

@@ -83,11 +83,16 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
-        if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
+        if (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW)
         {
             if (entityPos.z > (gClipHeight * kCoordsZStep))
             {
-                continue;
+                // see-through off: don't paint this entity at all
+                // see-through on: paint this entity as partial or hidden later on
+                if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0)
+                {
+                    continue;
+                }
             }
             if (entityPos.x < gClipSelectionA.x || entityPos.x > (gClipSelectionB.x + kCoordsXYStep - 1))
             {
