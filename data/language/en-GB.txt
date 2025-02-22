@@ -3795,4 +3795,4 @@ STR_6733    :See-Through
 STR_6734    :Map elements that are at or above the cutting height are rendered translucent.
 STR_6735    :Go up to parent folder
 STR_6736    :Climate
-STR_6637    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6737    :{WINDOW_COLOUR_2}{UINT16}%

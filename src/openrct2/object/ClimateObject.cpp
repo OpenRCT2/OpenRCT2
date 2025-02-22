@@ -66,7 +66,7 @@ void ClimateObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t heigh
 
         auto ft = Formatter();
         ft.Add<uint16_t>(dist[i] * 100 / totalSize);
-        DrawTextEllipsised(dpi, coords + ScreenCoordsXY{ 12, 22 }, 35, 6636, ft, { TextAlignment::CENTRE });
+        DrawTextEllipsised(dpi, coords + ScreenCoordsXY{ 12, 22 }, 35, 6737, ft, { TextAlignment::CENTRE });
     }
 }
 
