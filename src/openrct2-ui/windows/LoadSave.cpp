@@ -51,8 +51,8 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Widgets
 
     static constexpr ScreenSize kWindowSizeInit = { 400, 350 };
-    static constexpr ScreenSize kWindowSizeMin = kWindowSizeInit / 2;
-    static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 2;
+    static constexpr ScreenSize kWindowSizeMin = { 300, kWindowSizeInit.height / 2 };
+    static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 3;
 
     static constexpr int kKibiByte = 1024;
     static constexpr int kMebiByte = kKibiByte * 1024;
