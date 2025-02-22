@@ -69,6 +69,7 @@
     <ClInclude Include="input\ShortcutManager.h" />
     <ClInclude Include="interface\Dropdown.h" />
     <ClInclude Include="interface\Graph.h" />
+    <ClInclude Include="interface\FileBrowser.h" />
     <ClInclude Include="interface\InGameConsole.h" />
     <ClInclude Include="interface\LandTool.h" />
     <ClInclude Include="interface\Objective.h" />
@@ -134,6 +135,7 @@
     <ClCompile Include="input\ShortcutInput.cpp" />
     <ClCompile Include="input\ShortcutManager.cpp" />
     <ClCompile Include="interface\Graph.cpp" />
+    <ClCompile Include="interface\FileBrowser.cpp" />
     <ClCompile Include="interface\InGameConsole.cpp" />
     <ClCompile Include="interface\LandTool.cpp" />
     <ClCompile Include="interface\Objective.cpp" />
@@ -198,6 +200,7 @@
     <ClCompile Include="windows\NewsOptions.cpp" />
     <ClCompile Include="windows\ObjectLoadError.cpp" />
     <ClCompile Include="windows\Options.cpp" />
+    <ClCompile Include="windows\OverwritePrompt.cpp" />
     <ClCompile Include="windows\Park.cpp" />
     <ClCompile Include="windows\PatrolArea.cpp" />
     <ClCompile Include="windows\Player.cpp" />
