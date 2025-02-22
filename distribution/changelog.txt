@@ -4,6 +4,7 @@
 - Feature: [#23759] Add see-through option to the “Cut-away View“.
 - Improved: [#23677] Building new ride track now inherits the colour scheme from the previous piece.
 - Improved: [#23720] Text fields now allow cutting to clipboard (Ctrl+X) in addition to copy and paste.
+- Improved: [#23875] Rides forbidden to be modified or destroyed can now be edited with the All destructible cheat.
 - Fix: [#1972, #11679] Vehicles passing by toilets can cause them to glitch (original bug).
 - Fix: [#9999, #10000, #10001, #10002, #10003] Truncated scenario strings when using Catalan, Czech, Japanese, Polish or Russian.
 - Fix: [#14486] Guests will fall through upwards sloped paths when making their way through a park entrance or ride exit (original bug).
