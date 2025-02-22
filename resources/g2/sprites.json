@@ -352,6 +352,18 @@
         "y": 1
     },
     {
+        "path": "icons/weather_snow.png",
+        "x": 3
+    },
+    {
+        "path": "icons/weather_heavy_snow.png",
+        "x": 1
+    },
+    {
+        "path": "icons/weather_blizzard.png",
+        "x": 1
+    },
+    {
         "path": "loader/loader_hybrid_supports.png",
         "y": 10
     },
