@@ -80,11 +80,18 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
     Guard::Assert(root["weather"].is_object(), "ClimateObject::ReadJson expects weather key to be an object");
     auto rawClimate = readWeatherTable(root["weather"]);
     _climate = convertRawClimate(rawClimate);
+
+    _scriptName = Json::GetString(root["scriptName"], std::string(GetIdentifier()));
 }
 
 const WeatherPattern& ClimateObject::getPatternForMonth(uint8_t month) const
 {
     return _climate[month];
+}
+
+std::string ClimateObject::getScriptName() const
+{
+    return _scriptName;
 }
 
 YearlyDistribution ClimateObject::getYearlyDistribution() const
