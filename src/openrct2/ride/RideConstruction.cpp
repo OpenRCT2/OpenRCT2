@@ -966,7 +966,7 @@ bool RideModify(const CoordsXYE& input)
     if (rideEntry == nullptr || !ride_check_if_construction_allowed(*ride))
         return false;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE && !GetGameState().Cheats.makeAllDestructible)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
