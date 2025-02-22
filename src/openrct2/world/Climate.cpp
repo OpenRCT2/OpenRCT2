@@ -278,14 +278,9 @@ FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state)
     return paletteId;
 }
 
-uint32_t ClimateGetWeatherSpriteId(const WeatherState& state)
+uint32_t ClimateGetWeatherSpriteId(const WeatherType weatherType)
 {
-    uint32_t spriteId = SPR_WEATHER_SUN;
-    if (EnumValue(state.weatherType) < std::size(kClimateWeatherTraits))
-    {
-        spriteId = kClimateWeatherTraits[EnumValue(state.weatherType)].spriteId;
-    }
-    return spriteId;
+    return kClimateWeatherTraits[EnumValue(weatherType)].spriteId;
 }
 
 static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWeatherLevel)
