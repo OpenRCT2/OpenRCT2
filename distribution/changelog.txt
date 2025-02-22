@@ -4,6 +4,7 @@
 - Feature: [#23759] Add see-through option to the “Cut-away View“.
 - Improved: [#23677] Building new ride track now inherits the colour scheme from the previous piece.
 - Improved: [#23720] Text fields now allow cutting to clipboard (Ctrl+X) in addition to copy and paste.
+- Improved: [#23874] The load/save file browser window now uses icons for its action buttons.
 - Improved: [#23875] Rides forbidden to be modified or destroyed can now be edited with the All destructible cheat.
 - Fix: [#1972, #11679] Vehicles passing by toilets can cause them to glitch (original bug).
 - Fix: [#9999, #10000, #10001, #10002, #10003] Truncated scenario strings when using Catalan, Czech, Japanese, Polish or Russian.
@@ -23,6 +24,7 @@
 - Fix: [#22617] Sloped Wooden and Side-Friction supports draw out of order when built directly above diagonal track pieces (original bug).
 - Fix: [#22620] Mine Train Coaster trains glitch on large banked turns.
 - Fix: [#23522] Diagonal sloped Steeplechase supports have glitched sprites at the base.
+- Fix: [#23580] Table header labels may overlap if the window is made very small.
 - Fix: [#23641] Steep to flat track is not drawn correctly in tunnels (original bug).
 - Fix: [#23795] Looping Roller Coaster vertical loop supports are drawn incorrectly.
 - Fix: [#23797] 3D Text cut off too early on multi-line signs.
