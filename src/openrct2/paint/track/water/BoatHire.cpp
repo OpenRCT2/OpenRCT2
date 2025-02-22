@@ -16,7 +16,6 @@
 #include "../../Paint.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
-#include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
@@ -60,13 +59,6 @@ static void PaintBoatHireTrackFlat(
         imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_FRONT_SW_NE);
         PaintAddImageAsParent(session, imageId, offset, { { 0, 28, height }, { 32, 1, 3 } });
     }
-
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 /** rct2: 0x008B0E50 */
@@ -76,12 +68,8 @@ static void PaintBoatHireStation(
 {
     const auto* stationObj = ride.GetStationObject();
 
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
     TrackPaintUtilDrawPier(
         session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
-
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008B0E80 */
@@ -122,13 +110,6 @@ static void PaintBoatHireTrackLeftQuarterTurn1Tile(
             PaintAddImageAsParent(session, imageId, offset, { { 0, 0, height }, { 32, 32, 1 } });
             break;
     }
-
-    PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topLeftSide), direction),
-        0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 /** rct2: 0x008B0E90 */
@@ -267,9 +248,6 @@ static void PaintBoatHireTrackLeftQuarterTurn3Tiles(
             }
             break;
     }
-
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackRightQuarterTurn3Tiles(
@@ -473,9 +451,6 @@ static void PaintBoatHireTrackLeftQuarterTurn5Tiles(
             }
             break;
     }
-
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackRightQuarterTurn5Tiles(
@@ -655,9 +630,6 @@ static void PaintBoatHireTrackLeftEighthToDiag(
             }
             break;
     }
-
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackRightEighthToDiag(
@@ -828,9 +800,6 @@ static void PaintBoatHireTrackRightEighthToDiag(
             }
             break;
     }
-
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackLeftEighthToOrthogonal(
@@ -904,9 +873,6 @@ static void PaintBoatHireTrackDiagFlat(
             }
             break;
     }
-
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackSBendLeft(
@@ -1064,9 +1030,6 @@ static void PaintBoatHireTrackSBendLeft(
             }
             break;
     }
-
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 static void PaintBoatHireTrackSBendRight(
@@ -1224,9 +1187,6 @@ static void PaintBoatHireTrackSBendRight(
             }
             break;
     }
-
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
 
 /**

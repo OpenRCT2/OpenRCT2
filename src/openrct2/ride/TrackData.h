@@ -11,6 +11,7 @@
 
 #include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
+#include "../paint/tile_element/Paint.Tunnel.h"
 #include "Track.h"
 
 using namespace OpenRCT2;
@@ -76,17 +77,66 @@ namespace OpenRCT2::TrackMetaData
         return { 0, 0, 0, 0 };
     }
 
-    struct SequenceWoodenSupport
+    struct SequenceTunnel
     {
-        WoodenSupportSubType subType = WoodenSupportSubType::Null;
-        WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None;
+        int16_t height = 0;
+        Direction direction{};
+        TunnelSlope subType = TunnelSlope::none;
+        bool doorable = false;
     };
 
-    struct SequenceMetalSupport
+    constexpr uint8_t kSequenceTunnelMaxPerSequence = 2;
+
+    using SequenceTunnelGroup = std::array<SequenceTunnel, kSequenceTunnelMaxPerSequence>;
+
+    constexpr SequenceTunnelGroup kSequenceTunnelUnimplemented{};
+
+    struct SequenceTunnels
     {
-        MetalSupportPlace place = MetalSupportPlace::None;
-        uint8_t alternates = false;
+        std::array<SequenceTunnelGroup, kTunnelGroupCount> tunnelGroups{};
+        uint8_t verticalTunnelHeight = 0;
     };
+
+    constexpr SequenceTunnels SequenceTunnelsAllGroups(const SequenceTunnelGroup& tunnels, const uint8_t verticalTunnelHeight)
+    {
+        return { { { tunnels, tunnels, tunnels } }, verticalTunnelHeight };
+    }
+
+    constexpr SequenceTunnels SequenceTunnelsReverse(SequenceTunnels sequenceTunnels)
+    {
+        for (auto& tunnelGroup : sequenceTunnels.tunnelGroups)
+        {
+            for (auto& tunnel : tunnelGroup)
+            {
+                tunnel.direction = DirectionReverse(tunnel.direction);
+            }
+        }
+        return sequenceTunnels;
+    }
+
+    constexpr SequenceTunnels SequenceTunnelsPrev(SequenceTunnels sequenceTunnels)
+    {
+        for (auto& tunnelGroup : sequenceTunnels.tunnelGroups)
+        {
+            for (auto& tunnel : tunnelGroup)
+            {
+                tunnel.direction = DirectionPrev(tunnel.direction);
+            }
+        }
+        return sequenceTunnels;
+    }
+
+    constexpr SequenceTunnels SequenceTunnelsFlipXAxis(SequenceTunnels sequenceTunnels)
+    {
+        for (auto& tunnelGroup : sequenceTunnels.tunnelGroups)
+        {
+            for (auto& tunnel : tunnelGroup)
+            {
+                tunnel.direction = DirectionFlipXAxis(tunnel.direction);
+            }
+        }
+        return sequenceTunnels;
+    }
 
     struct SequenceDescriptor
     {
@@ -94,10 +144,10 @@ namespace OpenRCT2::TrackMetaData
         /** rct2: 0x00999A94 */
         uint8_t allowedWallEdges{};
         /** rct2: 0x0099BA64 */
-        uint8_t flags{};
-        SequenceWoodenSupport woodenSupports{};
-        SequenceMetalSupport metalSupports{};
+        uint16_t flags{};
         int8_t extraSupportRotation = 0;
+        int8_t extraSupportCoverRotation = 0;
+        SequenceTunnels tunnels{};
     };
 
     using TrackComputeFunction = int32_t (*)(const int16_t);

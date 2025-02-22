@@ -8,21 +8,119 @@
 
 using namespace OpenRCT2;
 
-using TunnelGroupMap = std::array<TunnelType, kTunnelSubTypeCount>;
-static std::array<TunnelGroupMap, kTunnelGroupCount> tunnelMap = {
-    TunnelGroupMap{ TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd,
-                    TunnelType::StandardFlatTo25Deg, TunnelType::InvertedFlat },
-    TunnelGroupMap{ TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd,
-                    TunnelType::SquareFlatTo25Deg, TunnelType::InvertedSquare },
-    TunnelGroupMap{ TunnelType::InvertedFlat, TunnelType::InvertedSlopeStart, TunnelType::InvertedSlopeEnd,
-                    TunnelType::InvertedFlatTo25Deg, TunnelType::InvertedFlat },
+using TunnelSlopeMap = std::array<TunnelType, kTunnelSlopeCount>;
+static std::array<TunnelSlopeMap, kTunnelStyleCount> tunnelMap = {
+    TunnelSlopeMap{ TunnelType::Null, TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd,
+                    TunnelType::StandardFlatTo25Deg, TunnelType::InvertedFlat, TunnelType::StandardFlat },
+    TunnelSlopeMap{ TunnelType::Null, TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd,
+                    TunnelType::SquareFlatTo25Deg, TunnelType::InvertedSquare, TunnelType::SquareFlat },
+    TunnelSlopeMap{ TunnelType::Null, TunnelType::InvertedFlat, TunnelType::InvertedSlopeStart, TunnelType::InvertedSlopeEnd,
+                    TunnelType::InvertedFlatTo25Deg, TunnelType::InvertedFlat, TunnelType::InvertedFlat },
+    TunnelSlopeMap{ TunnelType::Null, TunnelType::InvertedSquare, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd,
+                    TunnelType::InvertedSquare, TunnelType::InvertedSquare, TunnelType::InvertedSquare },
+    TunnelSlopeMap{ TunnelType::Null, TunnelType::PathAndMiniGolf, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd,
+                    TunnelType::PathAndMiniGolf, TunnelType::InvertedFlat, TunnelType::StandardFlat },
 };
 
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
-    int8_t endOffset, TunnelType endTunnel);
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
+TunnelType GetTunnelType(TunnelStyle tunnelStyle, TunnelSlope tunnelSlope)
+{
+    return tunnelMap[EnumValue(tunnelStyle)][EnumValue(tunnelSlope)];
+}
+
+static constexpr std::array<TunnelType, 8> kTunnelDoorOpeningInwardsToImage = { {
+    TunnelType::Doors2, // Closed
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors5, // Half open
+    TunnelType::Doors6, // Fully open
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+} };
+
+static constexpr std::array<TunnelType, 8> kTunnelDoorOpeningOutwardsToImage = { {
+    TunnelType::Doors2, // Closed
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors3, // Half open
+    TunnelType::Doors4, // Fully open
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+} };
+
+static constexpr std::array<TunnelType, 8> kDoorFlatTo25DegOpeningInwardsToImage = { {
+    TunnelType::DoorsFlatTo25Deg2, // Closed
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg5, // Half open
+    TunnelType::DoorsFlatTo25Deg6, // Fully open
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+} };
+
+static constexpr std::array<TunnelType, 8> kDoorFlatTo25DegOpeningOutwardsToImage = { {
+    TunnelType::DoorsFlatTo25Deg2, // Closed
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg3, // Half open
+    TunnelType::DoorsFlatTo25Deg4, // Fully open
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+} };
+
+static constexpr const std::array<std::array<std::array<TunnelType, 8>, kTunnelSlopeCount>, kNumOrthogonalDirections>
+    kTunnelDoorDirections = { {
+        { {
+            kTunnelDoorOpeningInwardsToImage,
+            kTunnelDoorOpeningInwardsToImage,
+            kTunnelDoorOpeningInwardsToImage,
+            kTunnelDoorOpeningInwardsToImage,
+            kDoorFlatTo25DegOpeningInwardsToImage,
+            kTunnelDoorOpeningInwardsToImage,
+            kTunnelDoorOpeningInwardsToImage,
+        } },
+        { {
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kDoorFlatTo25DegOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+        } },
+        { {
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kDoorFlatTo25DegOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+        } },
+        { {
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kDoorFlatTo25DegOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+            kTunnelDoorOpeningOutwardsToImage,
+        } },
+    } };
+
+TunnelType GetTunnelTypeDoors(const TrackElement& trackElement, const TunnelSlope tunnelSlope, const Direction tunnelDirection)
+{
+    const uint8_t doorAState = trackElement.GetDoorAState();
+    const uint8_t doorBState = trackElement.GetDoorBState();
+    std::array<uint8_t, kNumOrthogonalDirections> doorStates = { {
+        doorAState,
+        doorBState,
+        doorBState,
+        doorBState,
+    } };
+    return kTunnelDoorDirections[tunnelDirection][EnumValue(tunnelSlope)][doorStates[tunnelDirection]];
+}
 
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type)
 {
@@ -59,195 +157,4 @@ void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16
     {
         PaintUtilPushTunnelLeft(session, height, type);
     }
-}
-
-void TrackPaintUtilRightQuarterTurn5TilesTunnel(
-    PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
-    uint8_t trackSequence)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, group, tunnelType);
-    }
-    if (direction == 0 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height, group, tunnelType);
-    }
-    if (direction == 1 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height, group, tunnelType);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, group, tunnelType);
-    }
-}
-
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, tunnelType);
-    }
-
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height, tunnelType);
-    }
-
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height, tunnelType);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, tunnelType);
-    }
-}
-
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
-    uint8_t trackSequence)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, group, tunnelType);
-    }
-
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height, group, tunnelType);
-    }
-
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height, group, tunnelType);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, group, tunnelType);
-    }
-}
-
-void TrackPaintUtilRightQuarterTurn3Tiles25DegUpTunnel(
-    PaintSession& session, TunnelGroup group, int16_t height, Direction direction, uint8_t trackSequence,
-    TunnelSubType tunnelType0, TunnelSubType tunnelType3)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height - 8, group, tunnelType0);
-    }
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, group, tunnelType3);
-    }
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, group, tunnelType3);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height - 8, group, tunnelType0);
-    }
-}
-
-void TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
-    PaintSession& session, TunnelGroup group, int16_t height, Direction direction, uint8_t trackSequence,
-    TunnelSubType tunnelType0, TunnelSubType tunnelType3)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, group, tunnelType0);
-    }
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height - 8, group, tunnelType3);
-    }
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height - 8, group, tunnelType3);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, group, tunnelType0);
-    }
-}
-
-void TrackPaintUtilLeftQuarterTurn3TilesTunnel(
-    PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
-    uint8_t trackSequence)
-{
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, group, tunnelType);
-    }
-
-    if (direction == 2 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height, group, tunnelType);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, group, tunnelType);
-    }
-
-    if (direction == 3 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height, group, tunnelType);
-    }
-}
-
-void TrackPaintUtilRightQuarterTurn1TileTunnel(
-    PaintSession& session, TunnelGroup group, Direction direction, uint16_t baseHeight, int8_t startOffset,
-    TunnelSubType startTunnel, int8_t endOffset, TunnelSubType endTunnel)
-{
-    TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, group, DirectionPrev(direction), baseHeight, endOffset, endTunnel, startOffset, startTunnel);
-}
-
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
-    int8_t endOffset, TunnelType endTunnel)
-{
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, baseHeight + startOffset, startTunnel);
-            break;
-        case 2:
-            PaintUtilPushTunnelRight(session, baseHeight + endOffset, endTunnel);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, baseHeight + startOffset, startTunnel);
-            PaintUtilPushTunnelLeft(session, baseHeight + endOffset, endTunnel);
-            break;
-    }
-}
-
-void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, TunnelGroup group, Direction direction, uint16_t baseHeight, int8_t startOffset,
-    TunnelSubType startTunnel, int8_t endOffset, TunnelSubType endTunnel)
-{
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, baseHeight + startOffset, group, startTunnel);
-            break;
-        case 2:
-            PaintUtilPushTunnelRight(session, baseHeight + endOffset, group, endTunnel);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, baseHeight + startOffset, group, startTunnel);
-            PaintUtilPushTunnelLeft(session, baseHeight + endOffset, group, endTunnel);
-            break;
-    }
-}
-
-TunnelType GetTunnelType(TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
-{
-    return tunnelMap[EnumValue(tunnelGroup)][EnumValue(tunnelSubType)];
 }

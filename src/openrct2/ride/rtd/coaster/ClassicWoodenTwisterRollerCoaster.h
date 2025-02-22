@@ -21,7 +21,24 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
    .TrackPaintFunctions = TrackDrawerDescriptor({
        .trackStyle = TrackStyle::classicWoodenTwisterRollerCoaster,
-       .supportType = WoodenSupportType::Truss,
+        .trackGroupBlockedSegmentTypes = []() consteval {
+            std::array<BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegments::BlockedSegmentsType::wide);
+            array[EnumValue(TrackGroup::verticalLoop)] = BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopMedium)] = BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopLarge)] = BlockedSegments::BlockedSegmentsType::narrow;
+            return array;
+        }(),
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(WoodenSupportType::Truss));
+            array[EnumValue(TrackGroup::verticalLoop)] = NewSupportType(MetalSupportType::Boxed);
+            array[EnumValue(TrackGroup::halfLoopMedium)] = NewSupportType(MetalSupportType::Boxed);
+            array[EnumValue(TrackGroup::halfLoopLarge)] = NewSupportType(MetalSupportType::Boxed);
+            return array;
+        }(),
+       .trackGroupTunnelStyles = kTrackGroupTunnelStylesWoodenRollerCoaster,
+       .tunnelGroup = TunnelGroup::uninverted,
        .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::slopeCurveSteep, TrackGroup::slopeCurveBanked },
        .extraTrackGroups = { TrackGroup::verticalLoop, TrackGroup::waterSplash, TrackGroup::booster, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge },
    }),

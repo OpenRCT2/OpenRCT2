@@ -20,8 +20,7 @@
 #include "../object/StationObject.h"
 #include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
-#include "../paint/support/MetalSupports.h"
-#include "../paint/support/WoodenSupports.h"
+#include "../paint/support/TrackStyleSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../paint/tile_element/Segment.h"
 #include "../paint/track/Segment.h"
@@ -1192,17 +1191,6 @@ void TrackPaintUtilDiagTilesPaintExtra(
     TrackPaintUtilDiagTilesPaint(
         session, thickness, height, direction, trackSequence, sprites, defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
-
-    if (SupportedSequences::kDiagStraightFlat[trackSequence] != MetalSupportPlace::None)
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType, SupportedSequences::kDiagStraightFlat[trackSequence], direction, 0, height,
-            session.SupportColours);
-    }
-
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 const uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
@@ -1761,7 +1749,6 @@ void TrackPaintUtilOnridePhotoPlatformPaint(
     PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType)
 {
     PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType);
 }
 
 void TrackPaintUtilOnridePhotoSmallPaint(
@@ -1840,72 +1827,6 @@ void TrackPaintUtilOnridePhotoPaint(
     }
 }
 
-static constexpr uint16_t RightVerticalLoopSegments[] = {
-    EnumsToFlags(
-        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-    EnumsToFlags(
-        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-    EnumsToFlags(PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-    EnumsToFlags(
-        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-    0,
-    0,
-    EnumsToFlags(
-        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-    EnumsToFlags(PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-    EnumsToFlags(
-        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-    EnumsToFlags(
-        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-};
-
-void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence)
-{
-    if (trackSequence > 9)
-    {
-        // P
-        return;
-    }
-
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(RightVerticalLoopSegments[trackSequence], direction), 0xFFFF, 0);
-}
-
-void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction direction, uint16_t height)
-{
-    // TODO: Figure out which of these looks best, and use one to keep a consistent world
-    if (direction == 2)
-    {
-        PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(
-                    PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                    PaintSegment::bottomLeftSide),
-                direction),
-            0xFFFF, 0);
-    }
-    MetalASupportsPaintSetupRotated(
-        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-    if (direction != 2)
-    {
-        PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(
-                    PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                    PaintSegment::bottomLeftSide),
-                direction),
-            0xFFFF, 0);
-    }
-}
-
 ImageId GetStationColourScheme(PaintSession& session, const TrackElement& trackElement)
 {
     if (trackElement.IsGhost())
@@ -1930,6 +1851,73 @@ ImageId GetShopSupportColourScheme(PaintSession& session, const TrackElement& tr
         return HighlightMarker;
     }
     return ShopSupportColour;
+}
+
+static void PaintSupportsForTrackSequence(
+    PaintSession& session, const NewSupportType& supportType, const uint8_t trackSequence, const Direction direction,
+    const int32_t height, const TrackElement& trackElement, const TrackElemType& trackElemType,
+    const TrackDrawerEntry& trackDrawerEntry, const Direction supportRotation, const Direction supportCoverRotation)
+{
+    if (std::holds_alternative<MetalSupportType>(supportType))
+    {
+        for (const SequenceMetalSupport& support :
+             GetMetalSupportsForTrackSequence(trackDrawerEntry.trackStyle, trackElemType, trackSequence))
+        {
+            if (!(support.flags & (1 << direction))
+                || (HasFlag(support.flags, MetalSupportFlags::alternateTiles)
+                    && !TrackPaintUtilShouldPaintSupports(session.MapPosition)))
+            {
+                continue;
+            }
+
+            const auto colours = HasFlag(support.flags, MetalSupportFlags::useTrackColours) ? session.TrackColours
+                                                                                            : session.SupportColours;
+
+            if (!HasFlag(support.flags, MetalSupportFlags::typeB))
+            {
+                MetalASupportsPaintSetupRotated(
+                    session, std::get<MetalSupportType>(supportType), support.place, direction, supportRotation,
+                    support.extraHeights[direction], height + support.baseHeights[direction], colours,
+                    HasFlag(support.flags, MetalSupportFlags::fallbackToGeneralSupportHeight));
+            }
+            else
+            {
+                MetalBSupportsPaintSetupRotated(
+                    session, std::get<MetalSupportType>(supportType), support.place, direction, supportRotation,
+                    support.extraHeights[direction], height + support.baseHeights[direction], colours,
+                    HasFlag(support.flags, MetalSupportFlags::fallbackToGeneralSupportHeight));
+            }
+        }
+    }
+    else if (std::holds_alternative<WoodenSupportTypeCovered>(supportType))
+    {
+        const SequenceWoodenSupport& support = GetWoodenSupportForTrackSequence(
+            trackDrawerEntry.trackStyle, trackElemType, trackSequence);
+
+        if (support.subType != WoodenSupportSubType::Null)
+        {
+            const auto woodenSupportType = std::get<WoodenSupportTypeCovered>(supportType);
+            const auto colours = HasFlag(support.flags, WoodenSupportFlags::useStationColours)
+                ? GetStationColourScheme(session, trackElement)
+                : session.SupportColours;
+
+            if (!HasFlag(support.flags, WoodenSupportFlags::typeB))
+            {
+                WoodenASupportsPaintSetupRotated(
+                    session, woodenSupportType.type, support.subType, (direction + supportRotation) & 3,
+                    height + support.height, colours, support.transitionType,
+                    woodenSupportType.covered || HasFlag(support.flags, WoodenSupportFlags::covered), supportCoverRotation);
+            }
+            else
+            {
+                WoodenBSupportsPaintSetupRotated(
+                    session, woodenSupportType.type, support.subType, (direction + supportRotation) & 3,
+                    height + support.height, colours, support.transitionType,
+                    woodenSupportType.covered || HasFlag(support.flags, WoodenSupportFlags::covered), supportCoverRotation);
+            }
+        }
+        return;
+    }
 }
 
 /**
@@ -2002,12 +1990,104 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
-        bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
+        const bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
         const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
         trackType = UncoverTrackElement(trackType);
         TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
-        paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+
+        if (paintFunction == TrackPaintFunctionDummy || rtd.HasFlag(RtdFlag::isFlatRide))
+        {
+            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+            return;
+        }
+
+        // Mazes share bits with trackSequence.
+        trackSequence = rtd.specialType == RtdSpecialType::maze ? 0 : trackSequence;
+
+        const auto& ted = GetTrackElementDescriptor(trackType);
+
+        // Block segments and draw the track and supports
+        const auto trackGroupId = EnumValue(ted.definition.group);
+        const auto trackStyleBlockedSegments = trackDrawerEntry.trackGroupBlockedSegmentTypes[trackGroupId];
+
+        if ((trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::inverted
+             || trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::suspendedSwinging)
+            != BlockedSegments::GetShouldInvertPrePostCall(trackType, trackSequence))
+        {
+            BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
+            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+            PaintSupportsForTrackSequence(
+                session, trackDrawerEntry.trackGroupSupportTypes[trackGroupId], trackSequence, direction, height, trackElement,
+                trackType, trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation,
+                ted.sequences[trackSequence].extraSupportCoverRotation);
+        }
+        else
+        {
+            paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+            PaintSupportsForTrackSequence(
+                session, trackDrawerEntry.trackGroupSupportTypes[trackGroupId], trackSequence, direction, height, trackElement,
+                trackType, trackDrawerEntry, ted.sequences[trackSequence].extraSupportRotation,
+                ted.sequences[trackSequence].extraSupportCoverRotation);
+            BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
+        }
+
+        // Set the general support height (the clearance for wooden supports above a track)
+        if (!(ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT))
+        {
+            const int32_t rideClearance = rtd.Heights.ClearanceHeight;
+            const int32_t trackClearance = ted.sequences[trackSequence].clearance.clearanceZ;
+            const int32_t supportClearance = ted.sequences[trackSequence].clearance.supportClearanceZ;
+            const int32_t clearance = std::max<int32_t>(
+                rideClearance + trackClearance + supportClearance,
+                ted.sequences[trackSequence].clearance.minimumSupportClearanceZ);
+            PaintUtilSetGeneralSupportHeight(session, (height + Numerics::floor2(clearance, kCoordsZStep)));
+        }
+
+        // Draw tunnels
+        if (!rtd.HasFlag(RtdFlag::trackMustBeOnWater))
+        {
+            for (const auto& tunnel :
+                 ted.sequences[trackSequence].tunnels.tunnelGroups[EnumValue(trackDrawerEntry.tunnelGroup)])
+            {
+                if (tunnel.subType == TunnelSlope::none)
+                {
+                    continue;
+                }
+
+                if (tunnel.doorable && rtd.HasFlag(RtdFlag::hasLandscapeDoors))
+                {
+                    if (tunnel.direction == direction)
+                    {
+                        PaintUtilPushTunnelLeft(
+                            session, height + tunnel.height,
+                            GetTunnelTypeDoors(trackElement, tunnel.subType, tunnel.direction));
+                    }
+                    else if (tunnel.direction == DirectionNext(direction))
+                    {
+                        PaintUtilPushTunnelRight(
+                            session, height + tunnel.height,
+                            GetTunnelTypeDoors(trackElement, tunnel.subType, tunnel.direction));
+                    }
+                }
+                else
+                {
+                    const auto tunnelStyle = trackDrawerEntry.trackGroupTunnelStyles[trackGroupId];
+                    if (tunnel.direction == direction)
+                    {
+                        PaintUtilPushTunnelLeft(session, height + tunnel.height, tunnelStyle, tunnel.subType);
+                    }
+                    else if (tunnel.direction == DirectionNext(direction))
+                    {
+                        PaintUtilPushTunnelRight(session, height + tunnel.height, tunnelStyle, tunnel.subType);
+                    }
+                }
+            }
+            if (ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_VERTICAL_TUNNEL)
+            {
+                PaintUtilSetVerticalTunnel(session, height + ted.sequences[trackSequence].tunnels.verticalTunnelHeight);
+            }
+        }
     }
 }
 
@@ -2016,78 +2096,6 @@ void TrackPaintUtilOnridePhotoPaint2(
     int32_t supportsAboveHeightOffset, int32_t trackHeightOffset)
 {
     TrackPaintUtilOnridePhotoPaint(session, direction, height + trackHeightOffset, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + supportsAboveHeightOffset);
-}
-
-void DrawSBendLeftSupports(
-    PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
-    int32_t specialA, int32_t specialB)
-{
-    switch (sequence)
-    {
-        case 0:
-            MetalASupportsPaintSetupRotated(
-                session, supportType, MetalSupportPlace::Centre, direction, specialA, height, session.SupportColours);
-            break;
-        case 1:
-            if (direction == 0)
-                MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::TopLeftSide, direction, specialA, height, session.SupportColours);
-            if (direction == 1)
-                MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::TopLeftSide, direction, specialB, height, session.SupportColours);
-            break;
-        case 2:
-            if (direction == 2)
-                MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::BottomRightSide, direction, specialA, height,
-                    session.SupportColours);
-            if (direction == 3)
-                MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::BottomRightSide, direction, specialB, height,
-                    session.SupportColours);
-            break;
-        case 3:
-            MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, specialA, height, session.SupportColours);
-            break;
-    }
-}
-
-void DrawSBendRightSupports(
-    PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
-    int32_t specialA, int32_t specialB)
-{
-    switch (sequence)
-    {
-        case 0:
-            MetalASupportsPaintSetupRotated(
-                session, supportType, MetalSupportPlace::Centre, direction, specialA, height, session.SupportColours);
-            break;
-        case 1:
-            if (direction == 0)
-                MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::BottomRightSide, direction, specialA, height,
-                    session.SupportColours);
-            if (direction == 1)
-                MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::BottomRightSide, direction, specialB, height,
-                    session.SupportColours);
-            break;
-        case 2:
-            if (direction == 2)
-                MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::TopLeftSide, direction, specialA, height, session.SupportColours);
-            if (direction == 3)
-                MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::TopLeftSide, direction, specialB, height, session.SupportColours);
-            break;
-        case 3:
-            MetalASupportsPaintSetupRotated(
-                session, supportType, MetalSupportPlace::Centre, direction, specialA, height, session.SupportColours);
-            break;
-    }
 }
 
 void TrackPaintFunctionDummy(

@@ -66,7 +66,7 @@ static void PaintSmallScenerySupports(
 
     WoodenBSupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, supportHeight, supportImageTemplate,
-        transitionType);
+        transitionType, false, 0);
 }
 
 static void SetSupportHeights(

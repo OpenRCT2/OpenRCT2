@@ -21,7 +21,16 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::invertedImpulseCoaster,
-        .supportType = MetalSupportType::TubesInverted,
+        .trackGroupBlockedSegmentTypes = BlockedSegments::kTrackGroupBlockedSegmentsInverted,
+        .trackGroupSupportTypes = kTrackGroupSupportTypesMetalTubesInverted,
+        .trackGroupTunnelStyles = []() consteval {
+            std::array<TunnelStyle, EnumValue(TrackGroup::count)> array{};
+            array.fill(TunnelStyle::invertedStandard);
+            array[EnumValue(TrackGroup::stationEnd)] = TunnelStyle::semiInvertedSquare;
+            array[EnumValue(TrackGroup::onridePhoto)] = TunnelStyle::semiInvertedSquare;
+            return array;
+        }(),
+        .tunnelGroup = TunnelGroup::inverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeVertical, TrackGroup::curveVertical},
         .extraTrackGroups = {},
     }),

@@ -64,7 +64,6 @@ static void PaintLiftBase(
 
         PaintLiftCage(session, -1, session.TrackColours, height + 64, session.CurrentRotation);
 
-        PaintUtilSetVerticalTunnel(session, height + 96);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
         PaintUtilSetGeneralSupportHeight(session, height + 96);
@@ -136,8 +135,6 @@ static void PaintLiftTowerSection(
     PaintLiftCage(session, -1, session.TrackColours, height, session.CurrentRotation);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-
-    PaintUtilSetVerticalTunnel(session, height + 32);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
