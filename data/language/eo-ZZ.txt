@@ -1924,9 +1924,6 @@ STR_2706    :Neniam
 STR_2707    :Uzi sistemo-dosieresplorilon
 STR_2708    :{WINDOW_COLOUR_1}Ĉu vi vere volas anstataŭigi je {STRINGID}?
 STR_2709    :Anstataŭigi
-STR_2710    :Tajpu la nomon de la dosiero.
-STR_2718    :Supren
-STR_2719    :Nova dosiero
 STR_2720    :{UINT16} s
 STR_2721    :{UINT16} s
 STR_2722    :{UINT16} m k {UINT16} s
@@ -3004,7 +3001,6 @@ STR_5887    :Prefikso
 STR_5888    :Sufikso
 STR_5889    :Propra valuto-simbolo
 STR_5890    :Entajpu la valuto-simbolon por elmontri
-STR_5891    :Defaŭlta
 STR_5892    :Iri al la defaŭlta dosierujo
 STR_5893    :Kurzo
 STR_5894    :Entajpu la kurzon

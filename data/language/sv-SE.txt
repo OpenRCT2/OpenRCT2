@@ -1921,9 +1921,6 @@ STR_2706    :Aldrig
 STR_2707    :Använd operativsystemets filhanterare
 STR_2708    :{WINDOW_COLOUR_1}Är du säker på att du vill skriva över {STRINGID}?
 STR_2709    :Skriv över
-STR_2710    :Skriv namnet på filen.
-STR_2718    :Upp
-STR_2719    :Ny fil
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}min:{UINT16}s
@@ -3006,7 +3003,6 @@ STR_5887    :Prefix
 STR_5888    :Suffix
 STR_5889    :Skriv in valutatecken
 STR_5890    :Skriv in vilket valutatecken som ska visas
-STR_5891    :Standard
 STR_5892    :Gå till standardmappen
 STR_5893    :Valutakurs
 STR_5894    :Skriv in valutakurs

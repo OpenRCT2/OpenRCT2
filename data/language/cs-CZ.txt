@@ -1923,9 +1923,6 @@ STR_2706    :nikdy
 STR_2707    :Použít systémového průzkumníka souborů
 STR_2708    :{WINDOW_COLOUR_1}Opravdu chcete přepsat {STRINGID}?
 STR_2709    :Přepsat
-STR_2710    :Napište název souboru.
-STR_2718    :(up)
-STR_2719    :(new file)
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}min:{UINT16}s
@@ -3002,7 +2999,6 @@ STR_5887    :Předpona
 STR_5888    :Přípona
 STR_5889    :Značka vlastní měny
 STR_5890    :Zadejte symbol měny
-STR_5891    :Výchozí
 STR_5892    :Přejít do výchozí složky
 STR_5893    :Kurz měny
 STR_5894    :Zadejte kurz měny

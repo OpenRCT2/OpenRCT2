@@ -1931,9 +1931,6 @@ STR_2706    :Jamais
 STR_2707    :Explorateur de fichiers système
 STR_2708    :{WINDOW_COLOUR_1}Voulez-vous vraiment écraser {STRINGID} ?
 STR_2709    :Écraser
-STR_2710    :Entrez le nom du fichier.
-STR_2718    :Dossier parent
-STR_2719    :Nv. fichier
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}m {UINT16}s
@@ -3013,7 +3010,6 @@ STR_5887    :Préfixe
 STR_5888    :Suffixe
 STR_5889    :Symbole monétaire personnalisé
 STR_5890    :Entrez le symbole monétaire à utiliser
-STR_5891    :Par défaut
 STR_5892    :Aller au répertoire de sauvegarde par défaut
 STR_5893    :Taux de change
 STR_5894    :Entrez le taux de change

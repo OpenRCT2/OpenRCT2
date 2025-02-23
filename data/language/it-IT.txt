@@ -1925,9 +1925,6 @@ STR_2706    :Mai
 STR_2707    :Usa il file manager di sistema
 STR_2708    :{WINDOW_COLOUR_1}Sei sicuro di voler sovrascrivere {STRINGID}?
 STR_2709    :Sovrascrivi
-STR_2710    :Digitare il nome del file.
-STR_2718    :Sali di livello
-STR_2719    :Crea nuovo
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}sec
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -3008,7 +3005,6 @@ STR_5887    :Prefisso
 STR_5888    :Suffisso
 STR_5889    :Simbolo valuta personalizzato
 STR_5890    :Inserire il simbolo della valuta da visualizzare
-STR_5891    :Predefinita
 STR_5892    :Apre la cartella predefinita
 STR_5893    :Tasso di cambio
 STR_5894    :Inserire il tasso di cambio

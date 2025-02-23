@@ -1922,9 +1922,6 @@ STR_2706    :Nie
 STR_2707    :Systemdateibrowser verwenden
 STR_2708    :{WINDOW_COLOUR_1}Sind Sie sicher, dass Sie {STRINGID} überschreiben möchten?
 STR_2709    :Überschreiben
-STR_2710    :Geben Sie den Dateinamen ein:
-STR_2718    :Hoch
-STR_2719    :Neue Datei
 STR_2720    :{UINT16}Sek.
 STR_2721    :{UINT16}Sek.
 STR_2722    :{UINT16}Min:{UINT16}Sek.
@@ -2998,7 +2995,6 @@ STR_5887    :Präfix
 STR_5888    :Suffix
 STR_5889    :Benutzerdefiniertes Währungssymbol
 STR_5890    :Benutzerdef. Währungssymbol eingeben:
-STR_5891    :Standard
 STR_5892    :Zum Standardverzeichnis gehen
 STR_5893    :Wechselkurs
 STR_5894    :Wechselkurs eingeben:

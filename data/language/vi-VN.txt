@@ -1916,9 +1916,6 @@ STR_2706    :Never
 STR_2707    :Use system file browser
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
-STR_2718    :Up
-STR_2719    :New file
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -2997,7 +2994,6 @@ STR_5887    :Prefix
 STR_5888    :Suffix
 STR_5889    :Custom currency symbol
 STR_5890    :Enter the currency symbol to display
-STR_5891    :Default
 STR_5892    :Go to the default directory
 STR_5893    :Exchange Rate
 STR_5894    :Enter the exchange rate

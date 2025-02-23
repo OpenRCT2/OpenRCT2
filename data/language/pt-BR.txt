@@ -1924,9 +1924,6 @@ STR_2706    :Nunca
 STR_2707    :Usar explorador de arquivos do sistema
 STR_2708    :{WINDOW_COLOUR_1}Você tem certeza que quer sobrescrever {STRINGID}?
 STR_2709    :Sobrescrever
-STR_2710    :Tipo de nome para o arquivo.
-STR_2718    :Voltar Pasta
-STR_2719    :Novo Arquivo
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}min:{UINT16}s
@@ -3004,7 +3001,6 @@ STR_5887    :Prefixo
 STR_5888    :Sufixo
 STR_5889    :Símbolo de moeda personalizada
 STR_5890    :Insira o símbolo da moeda para exibir
-STR_5891    :Padrão
 STR_5892    :Vai para o diretório padrão
 STR_5893    :Taxa de Câmbio
 STR_5894    :Insira a taxa de câmbio

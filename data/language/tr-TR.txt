@@ -1911,9 +1911,6 @@ STR_2706    :Hiç
 STR_2707    :Sistem iletişim penceresini kullanınız
 STR_2708    :{WINDOW_COLOUR_1}{STRINGID} adlı dosya zaten bulunmakta. Kaydetmek istediğinizden emin misiniz?
 STR_2709    :Kaydet
-STR_2710    :Dosya ismini giriniz.
-STR_2718    :Geri
-STR_2719    :Yeni dosya
 STR_2720    :{UINT16}saniye
 STR_2721    :{UINT16}saniye
 STR_2722    :{UINT16}dk:{UINT16}san
@@ -2991,7 +2988,6 @@ STR_5887    :Ön ek
 STR_5888    :Son ek
 STR_5889    :Kendi para birimi sembolünüz
 STR_5890    :Kullanmak istediğiniz sembolü giriniz
-STR_5891    :Varsayılan
 STR_5892    :Varsayılan klasöre gidiniz
 STR_5893    :Döviz kuru
 STR_5894    :Döviz kurunu giriniz

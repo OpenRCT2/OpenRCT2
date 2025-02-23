@@ -1922,9 +1922,6 @@ STR_2706    :Aldrig
 STR_2707    :Brug system fil browser
 STR_2708    :{WINDOW_COLOUR_1}Er du sikker på at du vil overskrive {STRINGID}?
 STR_2709    :Overskriv
-STR_2710    :Skriv navnet på filen.
-STR_2718    :op
-STR_2719    :Ny fil
 STR_2720    :{UINT16}sek
 STR_2721    :{UINT16}sek
 STR_2722    :{UINT16}min:{UINT16}sek
@@ -3003,7 +3000,6 @@ STR_5887    :Præfiks
 STR_5888    :Suffiks
 STR_5889    :Brugerdefineret valuta symbol
 STR_5890    :Angiv hvilket valuta symbol der skal vises
-STR_5891    :Standard
 STR_5892    :Gå til standard biblioteket
 STR_5893    :Valutakurs
 STR_5894    :Angiv valutakursen

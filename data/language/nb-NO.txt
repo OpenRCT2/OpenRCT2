@@ -1918,9 +1918,6 @@ STR_2706    :Aldri
 STR_2707    :Bruk systemets fildialog
 STR_2708    :{WINDOW_COLOUR_1}Er du sikker på du vil overskrive {STRINGID}?
 STR_2709    :Overskriv
-STR_2710    :Skriv navnet på filen.
-STR_2718    :Opp
-STR_2719    :Ny fil
 STR_2720    :{UINT16}sek
 STR_2721    :{UINT16}sek
 STR_2722    :{UINT16}min:{UINT16}sek
@@ -2999,7 +2996,6 @@ STR_5887    :Prefiks
 STR_5888    :Suffiks
 STR_5889    :Symbol for egendefinert valuta
 STR_5890    :Skriv inn valutasymbol
-STR_5891    :Standard
 STR_5892    :Gå til standardmappen
 STR_5893    :Valutakurs
 STR_5894    :Skriv inn valutakurs

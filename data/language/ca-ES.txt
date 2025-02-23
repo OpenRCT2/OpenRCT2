@@ -1927,9 +1927,6 @@ STR_2706    :mai
 STR_2707    :Obre l’explorador de fitxers del sistema
 STR_2708    :{WINDOW_COLOUR_1}Esteu segur que voleu sobreescriure {STRINGID}?
 STR_2709    :Sobreescriu
-STR_2710    :Escriu el nom del fitxer
-STR_2718    :(amunt)
-STR_2719    :Fitxer nou
 STR_2720    :{UINT16} s
 STR_2721    :{UINT16} s
 STR_2722    :{UINT16} min {UINT16}s
@@ -3010,7 +3007,6 @@ STR_5887    :Prefix
 STR_5888    :Sufix
 STR_5889    :Símbol de la moneda personalitzada
 STR_5890    :Escriviu el símbol de la moneda personalitzada
-STR_5891    :Per defecte
 STR_5892    :Vés a la carpeta per defecte.
 STR_5893    :Canvi de tipus
 STR_5894    :Escriviu el canvi de tipus

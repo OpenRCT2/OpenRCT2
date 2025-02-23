@@ -1925,9 +1925,6 @@ STR_2706    :Nunca
 STR_2707    :Usar explorador de archivos del sistema
 STR_2708    :{WINDOW_COLOUR_1}¿Estás seguro de sobrescribir {STRINGID}?
 STR_2709    :Sobrescribir
-STR_2710    :Ingresar nombre para este archivo:
-STR_2718    :(arriba)
-STR_2719    :(nuevo archivo)
 STR_2720    :{UINT16}seg
 STR_2721    :{UINT16}segs
 STR_2722    :{UINT16}min:{UINT16}seg
@@ -3009,7 +3006,6 @@ STR_5887    :Prefijo
 STR_5888    :Sufijo
 STR_5889    :Símbolo de la moneda personalizada
 STR_5890    :Introduce el símbolo de la moneda personalizada
-STR_5891    :Por defecto
 STR_5892    :Ir a la carpeta por defecto.
 STR_5893    :Tasa de Cambio
 STR_5894    :Introduce la Tasa de Cambio

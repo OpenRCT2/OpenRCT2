@@ -1925,9 +1925,6 @@ STR_2706    :Nooit
 STR_2707    :Systeembestandsbrowser openen
 STR_2708    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt vervangen?
 STR_2709    :Vervangen
-STR_2710    :Kies een bestandsnaam.
-STR_2718    :Eén map omhoog
-STR_2719    :Nieuw bestand
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}m {UINT16}s
@@ -3003,7 +3000,6 @@ STR_5887    :Staat voor het bedrag
 STR_5888    :Staat na het bedrag
 STR_5889    :Symbool eigen valuta
 STR_5890    :Voer het te gebruiken valutasymbool in:
-STR_5891    :Standaardmap
 STR_5892    :Ga naar de standaardmap
 STR_5893    :Wisselkoers
 STR_5894    :Vul de wisselkoers in
@@ -3792,3 +3788,6 @@ STR_6729    :Kabellift moet meteen na het station of een blokrem beginnen.
 STR_6730    :Emscripten-data exporteren
 STR_6731    :Emscripten-data importeren
 STR_6732    :Toon een knop in de werkbalk om het beeld tegen de klok in te draaien.
+STR_6733    :Doorzichtig
+STR_6734    :Maakt kaartelementen die hoger staan dan de ingestelde bovengrens doorzichtig.
+STR_6735    :Naar bovenliggende map navigeren

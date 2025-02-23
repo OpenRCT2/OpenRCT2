@@ -1924,9 +1924,6 @@ STR_2706    :Xamais
 STR_2707    :Utiliza o explorador de ficheiros do sistema
 STR_2708    :{WINDOW_COLOUR_1}Estás certo de sobrescribir {STRINGID}?
 STR_2709    :Sobrescribir
-STR_2710    :Introduza o nome para este ficheiro:
-STR_2718    :(arriba)
-STR_2719    :(novo ficheiro)
 STR_2720    :{UINT16}seg
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}min:{UINT16}seg
@@ -3005,7 +3002,6 @@ STR_5887    :Prefixo
 STR_5888    :Sufixo
 STR_5889    :Símbolo de moeda personalizado
 STR_5890    :Introduce o símbolo de moeda personalizado
-STR_5891    :predeterminado
 STR_5892    :Ir ao cartafol predeterminado.
 STR_5893    :Taxa de cambio
 STR_5894    :Introduza o tipo de cambio

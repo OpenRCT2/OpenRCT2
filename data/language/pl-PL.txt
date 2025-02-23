@@ -1924,9 +1924,6 @@ STR_2706    :Nigdy
 STR_2707    :Otwórz nowe okno
 STR_2708    :{WINDOW_COLOUR_1}Jesteś pewien, że chcesz nadpisać {STRINGID}?
 STR_2709    :Nadpisz
-STR_2710    :Wprowadź nazwę pliku:
-STR_2718    :W górę
-STR_2719    :Nowy plik
 STR_2720    :{UINT16}sek
 STR_2721    :{UINT16}sek
 STR_2722    :{UINT16}min:{UINT16}sek
@@ -3004,7 +3001,6 @@ STR_5887    :Prefiks
 STR_5888    :Sufiks
 STR_5889    :Własny symbol waluty
 STR_5890    :Wprowadź własny symbol waluty:
-STR_5891    :Domyślny
 STR_5892    :Idź do domyślnego katalogu
 STR_5893    :Kurs wymiany
 STR_5894    :Wprowadź kurs wymiany:
