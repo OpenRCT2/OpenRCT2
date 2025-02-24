@@ -145,10 +145,7 @@ namespace OpenRCT2::Ui
         // Draw the frame
         GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, press);
 
-        // Check if the window can be resized
-        if (!(w.flags & WF_RESIZABLE))
-            return;
-        if (w.min_width == w.max_width && w.min_height == w.max_height)
+        if (!w.canBeResized())
             return;
 
         // Draw the resize sprite at the bottom right corner
@@ -175,10 +172,7 @@ namespace OpenRCT2::Ui
         // Draw the panel
         GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, 0);
 
-        // Check if the window can be resized
-        if (!(w.flags & WF_RESIZABLE))
-            return;
-        if (w.min_width == w.max_width && w.min_height == w.max_height)
+        if (!w.canBeResized())
             return;
 
         // Draw the resize sprite at the bottom right corner
