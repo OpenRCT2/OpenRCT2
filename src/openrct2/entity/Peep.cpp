@@ -2411,7 +2411,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         guest->RideSubState = PeepRideSubState::ApproachShop;
 
         guest->GuestTimeOnRide = 0;
-        ride->cur_num_customers = AddClamp<uint16_t>(ride->cur_num_customers, 1);
+        ride->cur_num_customers++;
         if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
         {
             auto ft = Formatter();
