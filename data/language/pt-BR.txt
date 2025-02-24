@@ -3789,3 +3789,6 @@ STR_6729    :Cabo de elevação deve estar imediatamente após a estação ou fr
 STR_6730    :Exportar dados emscripten
 STR_6731    :Importar dados emscripten
 STR_6732    :Mostrar um botão na barra de ferramentas para girar a visualização no sentido anti-horário
+STR_6733    :Ver através
+STR_6734    :Elementos do mapa que estiverem na altura de corte ou superior são desenhados translúcidos.
+STR_6735    :Ir para pasta acima
