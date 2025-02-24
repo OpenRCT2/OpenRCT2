@@ -22,8 +22,8 @@
     #include <openrct2/drawing/Text.h>
     #include <openrct2/interface/Colour.h>
     #include <openrct2/localisation/Formatter.h>
+    #include <openrct2/network/Network.h>
     #include <openrct2/network/ServerList.h>
-    #include <openrct2/network/network.h>
     #include <openrct2/platform/Platform.h>
     #include <openrct2/ui/WindowManager.h>
     #include <tuple>

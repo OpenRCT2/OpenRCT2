@@ -26,7 +26,7 @@
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/Research.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"

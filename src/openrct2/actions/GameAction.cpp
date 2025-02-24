@@ -18,7 +18,7 @@
 #include "../core/MemoryStream.h"
 #include "../entity/MoneyEffect.h"
 #include "../localisation/Formatter.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"

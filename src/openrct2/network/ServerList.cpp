@@ -25,8 +25,8 @@
     #include "../core/String.hpp"
     #include "../localisation/Language.h"
     #include "../platform/Platform.h"
+    #include "Network.h"
     #include "Socket.h"
-    #include "network.h"
 
     #include <numeric>
     #include <optional>

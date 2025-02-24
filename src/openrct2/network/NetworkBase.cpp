@@ -37,7 +37,7 @@
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
-#include "network.h"
+#include "Network.h"
 
 #include <cassert>
 #include <iterator>

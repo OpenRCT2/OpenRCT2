@@ -26,7 +26,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform.h"
 #include "../rct1/Csg.h"

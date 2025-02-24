@@ -25,8 +25,8 @@
     #include "../platform/Platform.h"
     #include "../world/Map.h"
     #include "../world/Park.h"
+    #include "Network.h"
     #include "Socket.h"
-    #include "network.h"
 
     #include <chrono>
     #include <cstring>

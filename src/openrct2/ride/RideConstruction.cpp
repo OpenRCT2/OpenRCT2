@@ -23,7 +23,7 @@
 #include "../entity/Staff.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"

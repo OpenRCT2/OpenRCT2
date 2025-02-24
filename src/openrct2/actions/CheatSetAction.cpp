@@ -21,7 +21,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../localisation/StringIds.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/PathAdditionEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/RideManager.hpp"

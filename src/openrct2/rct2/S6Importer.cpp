@@ -43,7 +43,7 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"

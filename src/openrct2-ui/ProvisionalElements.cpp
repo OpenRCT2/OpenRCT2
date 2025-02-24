@@ -13,7 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/WindowClasses.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ui/WindowManager.h>

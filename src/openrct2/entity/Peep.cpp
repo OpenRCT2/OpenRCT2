@@ -36,7 +36,7 @@
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
 #include "../paint/Paint.h"
