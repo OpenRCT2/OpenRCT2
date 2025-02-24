@@ -693,7 +693,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<GameBottomToolbar>(
             WindowClass::BottomToolbar, ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
 
         return window;
     }
