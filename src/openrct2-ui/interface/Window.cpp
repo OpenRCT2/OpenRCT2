@@ -470,32 +470,55 @@ namespace OpenRCT2
             this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
     }
 
-    void Window::ResizeFrame()
+    int32_t Window::ResizeFrame()
     {
         // Frame
         widgets[0].right = width - 1;
         widgets[0].bottom = height - 1;
+
         // Title
         widgets[1].right = width - 2;
+
         // Close button
+        auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
         {
             widgets[2].left = 2;
-            widgets[2].right = 2 + kCloseButtonSize;
+            widgets[2].right = 2 + closeButtonSize;
         }
         else
         {
-            widgets[2].left = width - 3 - kCloseButtonSize;
+            widgets[2].left = width - 3 - closeButtonSize;
             widgets[2].right = width - 3;
         }
+
+        auto defaultHeight = OpenRCT2::Ui::Windows::GetTitleBarHeight();
+        auto currentHeight = widgets[1].height();
+        auto heightDifference = defaultHeight - currentHeight;
+        if (heightDifference != 0)
+        {
+            widgets[1].bottom += heightDifference;
+            widgets[2].bottom += heightDifference;
+
+            for (size_t i = 3; i < widgets.size(); i++)
+            {
+                widgets[i].top += heightDifference;
+                widgets[i].bottom += heightDifference;
+            }
+        }
+
+        return heightDifference;
     }
 
-    void Window::ResizeFrameWithPage()
+    int32_t Window::ResizeFrameWithPage()
     {
-        ResizeFrame();
-        // Page background
-        widgets[3].right = width - 1;
-        widgets[3].bottom = height - 1;
+        auto heightDifference = ResizeFrame();
+
+        constexpr auto pageBackgroundOffset = 3;
+        widgets[pageBackgroundOffset].right = width - 1;
+        widgets[pageBackgroundOffset].bottom = height - 1;
+
+        return heightDifference;
     }
 
     void Window::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
@@ -1134,6 +1157,11 @@ namespace OpenRCT2::Ui::Windows
             WindowZoomIn(*mainWindow, atCursor);
         else
             WindowZoomOut(*mainWindow, atCursor);
+    }
+
+    int16_t GetTitleBarHeight()
+    {
+        return Config::Get().interface.EnlargedUi ? 24 : 12;
     }
 
 } // namespace OpenRCT2::Ui::Windows

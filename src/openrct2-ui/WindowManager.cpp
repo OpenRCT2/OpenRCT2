@@ -840,6 +840,8 @@ public:
         std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
         uint32_t flags) override
     {
+        // auto titleBarHeight = (flags & WF_NO_TITLE_BAR) ? 0 : GetTitleBarHeight();
+
         if (flags & WF_AUTO_POSITION)
         {
             if (flags & WF_CENTRE_SCREEN)

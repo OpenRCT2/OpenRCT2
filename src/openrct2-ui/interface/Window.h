@@ -40,8 +40,8 @@ namespace OpenRCT2
             WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs,
             StringId existingText, uintptr_t existingArgs, int32_t maxLength);
 
-        void ResizeFrame();
-        void ResizeFrameWithPage();
+        int32_t ResizeFrame();
+        int32_t ResizeFrameWithPage();
 
         void ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size);
         void ResizeDropdown(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size);
@@ -91,4 +91,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowZoomIn(WindowBase& w, bool atCursor);
     void WindowZoomOut(WindowBase& w, bool atCursor);
     void MainWindowZoom(bool zoomIn, bool atCursor);
+
+    int16_t GetTitleBarHeight();
 } // namespace OpenRCT2::Ui::Windows
