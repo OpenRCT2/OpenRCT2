@@ -11,8 +11,8 @@
 
 #include "../Cheats.h"
 #include "../entity/Guest.h"
+#include "../network/Network.h"
 #include "../network/NetworkTypes.h"
-#include "../network/network.h"
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
 #include "../ride/TrackDesign.h"

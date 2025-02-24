@@ -19,7 +19,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/ObjectRepository.h"
 #include "../park/ParkFile.h"
 #include "../platform/Crash.h"

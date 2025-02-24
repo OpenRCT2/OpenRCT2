@@ -308,7 +308,7 @@
     <ClInclude Include="management\Research.h" />
     <ClInclude Include="math\Trigonometry.hpp" />
     <ClInclude Include="network\DiscordService.h" />
-    <ClInclude Include="network\network.h" />
+    <ClInclude Include="network\Network.h" />
     <ClInclude Include="network\NetworkAction.h" />
     <ClInclude Include="network\NetworkBase.h" />
     <ClInclude Include="network\NetworkClient.h" />

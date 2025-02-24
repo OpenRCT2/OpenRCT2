@@ -31,7 +31,7 @@
 #include "../interface/Cursors.h"
 #include "../interface/Viewport.h"
 #include "../management/Finance.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectManager.h"
 #include "../object/SmallSceneryEntry.h"

@@ -17,7 +17,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>

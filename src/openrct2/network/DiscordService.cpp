@@ -19,7 +19,7 @@
     #include "../core/UTF8.h"
     #include "../localisation/Formatting.h"
     #include "../world/Park.h"
-    #include "network.h"
+    #include "Network.h"
 
     #include <chrono>
     #include <discord_rpc.h>

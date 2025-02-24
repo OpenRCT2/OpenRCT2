@@ -17,7 +17,7 @@
 #include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "../world/Location.hpp"
 

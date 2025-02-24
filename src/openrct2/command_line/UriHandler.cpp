@@ -10,7 +10,7 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "CommandLine.hpp"
 
 using namespace OpenRCT2;

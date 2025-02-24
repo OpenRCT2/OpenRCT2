@@ -43,7 +43,7 @@
 #include "management/Finance.h"
 #include "management/Marketing.h"
 #include "management/Research.h"
-#include "network/network.h"
+#include "network/Network.h"
 #include "object/Object.h"
 #include "object/ObjectEntryManager.h"
 #include "object/ObjectList.h"

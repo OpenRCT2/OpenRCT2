@@ -17,7 +17,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Formatting.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../world/Map.h"

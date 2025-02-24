@@ -14,8 +14,8 @@
     #include "../core/String.hpp"
     #include "../localisation/Formatting.h"
     #include "../platform/Platform.h"
+    #include "Network.h"
     #include "Socket.h"
-    #include "network.h"
 
     #include <sfl/small_vector.hpp>
 
