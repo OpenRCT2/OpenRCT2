@@ -5376,69 +5376,65 @@ void Guest::UpdateWalking()
         int32_t xDist = abs(innerPeep->x - loc.x);
         int32_t yDist = abs(innerPeep->y - loc.y);
 
-        if (std::max(xDist, yDist) < 96)
+        if (std::max(xDist, yDist) < 96 && innerPeep != nullptr)
         {
             isSecurityNearby = true;
             securityStaff = innerPeep;
         }
     }
 
-    if (PeepFlags & PEEP_FLAGS_LITTER && !GetNextIsSurface())
+    if (!GetNextIsSurface() && (0xFFFF & ScenarioRand()) <= 4096)
     {
-        if ((0xFFFF & ScenarioRand()) <= 4096)
+        if (HasEmptyContainer() && static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
         {
             if (!isSecurityNearby)
             {
-                static constexpr Litter::Type litter_types[] = {
-                    Litter::Type::EmptyCan,
-                    Litter::Type::Rubbish,
-                    Litter::Type::BurgerBox,
-                    Litter::Type::EmptyCup,
-                };
-                auto litterType = litter_types[ScenarioRand() & 0x3];
+                int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
+                auto litterType = Litter::Type::Vomit;
+
+                if (container != -1)
+                {
+                    auto item = static_cast<ShopItem>(container);
+                    RemoveItem(item);
+                    litterType = Litter::Type(GetShopItemDescriptor(item).Type);
+                }
+
+                WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                UpdateAnimationGroup();
+
                 int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
                 int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
                 Direction litterDirection = (ScenarioRand() & 0x3);
 
                 Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
             }
-            else if (securityStaff != nullptr)
+            else
             {
                 securityStaff->StaffVandalsStopped = AddClamp(securityStaff->StaffVandalsStopped, 1u);
             }
         }
-    }
-    else if (HasEmptyContainer() &&
-        !GetNextIsSurface() &&
-        static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF) &&
-        (0xFFFF & ScenarioRand()) <= 4096)
-    {
-        if (!isSecurityNearby)
+        else if (PeepFlags & PEEP_FLAGS_LITTER)
         {
-            int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
-            auto litterType = Litter::Type::Vomit;
-
-            if (container != -1)
+            if (!isSecurityNearby)
             {
-                auto item = static_cast<ShopItem>(container);
-                RemoveItem(item);
-                litterType = Litter::Type(GetShopItemDescriptor(item).Type);
+                static constexpr Litter::Type kLitterTypes[] = {
+                    Litter::Type::EmptyCan,
+                    Litter::Type::Rubbish,
+                    Litter::Type::BurgerBox,
+                    Litter::Type::EmptyCup,
+                };
+                auto litterType = kLitterTypes[ScenarioRand() & 0x3];
+                int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
+                int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
+                Direction litterDirection = (ScenarioRand() & 0x3);
+
+                Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
             }
-
-            WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-            UpdateAnimationGroup();
-
-            int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
-            int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
-            Direction litterDirection = (ScenarioRand() & 0x3);
-
-            Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
+            else
+            {
+                securityStaff->StaffVandalsStopped = AddClamp(securityStaff->StaffVandalsStopped, 1u);
+            }
         }
-        else if (securityStaff != nullptr)
-        {
-            securityStaff->StaffVandalsStopped = AddClamp(securityStaff->StaffVandalsStopped, 1u);
-        }
-            
     }
 
     if (ShouldWaitForLevelCrossing())
