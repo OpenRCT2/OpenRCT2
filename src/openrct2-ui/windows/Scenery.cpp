@@ -782,13 +782,14 @@ namespace OpenRCT2::Ui::Windows
                 const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
                 windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
+                auto tabTop = widgets[WIDX_SCENERY_TITLE].bottom + 3;
                 if (GetSceneryTabInfoForMisc() != nullptr)
                 {
                     auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
                     miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
                     miscTabWidget->right = windowWidth - TabWidth - 7;
-                    miscTabWidget->top = InitTabPosY;
-                    miscTabWidget->bottom = InitTabPosY + TabHeight;
+                    miscTabWidget->top = tabTop;
+                    miscTabWidget->bottom = tabTop + TabHeight;
                 }
 
                 if (_tabEntries.back().IsAll())
@@ -796,8 +797,8 @@ namespace OpenRCT2::Ui::Windows
                     auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
                     allTabWidget->left = windowWidth - TabWidth - 6;
                     allTabWidget->right = windowWidth - 7;
-                    allTabWidget->top = InitTabPosY;
-                    allTabWidget->bottom = InitTabPosY + TabHeight;
+                    allTabWidget->top = tabTop;
+                    allTabWidget->bottom = tabTop + TabHeight;
                 }
             }
 

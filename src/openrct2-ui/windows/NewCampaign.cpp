@@ -376,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
                 dpi, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
                 Campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, ft, { colours[0] });
 
-            screenCoords = windowPos + ScreenCoordsXY{ 14, 60 };
+            screenCoords = windowPos + ScreenCoordsXY{ 14, spinnerWidget->bottom + 6 };
 
             // Price per week
             ft = Formatter();

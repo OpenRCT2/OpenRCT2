@@ -723,7 +723,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            int32_t y = kTabsStart;
+            int32_t y = widgets[WIDX_TAB1].top;
             for (int32_t i = 0; i < kNumTabs; i++)
             {
                 auto& widget = widgets[i + WIDX_TAB1];
