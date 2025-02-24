@@ -150,7 +150,7 @@ namespace OpenRCT2
         }
     };
 
-    constexpr uint8_t kCloseButtonWidth = 10;
+    constexpr uint8_t kCloseButtonSize = 10;
 
     constexpr int32_t kScrollableRowHeight = 12;
     constexpr uint8_t kListRowHeight = 12;

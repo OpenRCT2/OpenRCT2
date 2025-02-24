@@ -562,13 +562,13 @@ namespace OpenRCT2::Ui
         int32_t width = widget->width() - 4;
         if ((widget + 1)->type == WindowWidgetType::CloseBox)
         {
-            width -= kCloseButtonWidth;
+            width -= kCloseButtonSize;
             if ((widget + 2)->type == WindowWidgetType::CloseBox)
-                width -= kCloseButtonWidth;
+                width -= kCloseButtonSize;
         }
         topLeft.x += width / 2;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
-            topLeft.x += kCloseButtonWidth;
+            topLeft.x += kCloseButtonSize;
 
         DrawTextEllipsised(
             dpi, topLeft, width, widget->text, Formatter::Common(),
