@@ -1,5 +1,48 @@
+0.4.20 (in development)
+------------------------------------------------------------------------
+- Feature: [#22905] Add diagonal downward-inclined brakes to hybrid coaster and single rail coaster.
+- Feature: [#23759] Add see-through option to the “Cut-away View“.
+- Improved: [#23677] Building new ride track now inherits the colour scheme from the previous piece.
+- Improved: [#23720] Text fields now allow cutting to clipboard (Ctrl+X) in addition to copy and paste.
+- Improved: [#23874] The load/save file browser window now uses icons for its action buttons.
+- Improved: [#23875] Rides forbidden to be modified or destroyed can now be edited with the All destructible cheat.
+- Improved: [#23879] Unique weather icons for snow, heavy snow and blizzard.
+- Fix: [#1972, #11679] Vehicles passing by toilets can cause them to glitch (original bug).
+- Fix: [#9999, #10000, #10001, #10002, #10003] Truncated scenario strings when using Catalan, Czech, Japanese, Polish or Russian.
+- Fix: [#14486] Guests will fall through upwards sloped paths when making their way through a park entrance or ride exit (original bug).
+- Fix: [#15826, #23835] Wooden Roller Coaster steep turn supports glitch when train goes over them (original bug).
+- Fix: [#16357] Chairlift station covers draw incorrectly.
+- Fix: [#16657] Mine Ride right S-bend uses Mini Roller Coaster sprite (original bug).
+- Fix: [#18376] Ghost train gentle to flat track is not visible in tunnels.
+- Fix: [#18389] Gentle sloped track pieces are not visible in low clearance height tunnels (original bug).
+- Fix: [#18423] Underground Mini Golf holes can draw over land edges (original bug).
+- Fix: [#18433] CJK TrueType fonts could not be located when font names are translated by the OS.
+- Fix: [#18436] Scenery on the same tile as steep to vertical track can draw over the track (original bug).
+- Fix: [#18711] Park entrances with their sides underground can cause glitching.
+- Fix: [#20848] Junior Roller Coaster booster track does not draw correctly in tunnels.
+- Fix: [#20948] Incorrect diagonal brakes supports on the Giga Coaster, Looping Roller Coaster and Wooden Roller Coaster.
+- Fix: [#21768] Dirty blocks debug overlay is rendered incorrectly on high DPI screens.
+- Fix: [#22229] Opening a park save file from a newer version of OpenRCT2 yields an unhelpful error message.
+- Fix: [#22617] Sloped Wooden and Side-Friction supports draw out of order when built directly above diagonal track pieces (original bug).
+- Fix: [#22620] Mine Train Coaster trains glitch on large banked turns.
+- Fix: [#23522] Diagonal sloped Steeplechase supports have glitched sprites at the base.
+- Fix: [#23580] Table header labels may overlap if the window is made very small.
+- Fix: [#23641] Steep to flat track is not drawn correctly in tunnels (original bug).
+- Fix: [#23795] Looping Roller Coaster vertical loop supports are drawn incorrectly.
+- Fix: [#23797] 3D Text cut off too early on multi-line signs.
+- Fix: [#23809] Trains glitch on Bobsleigh Coaster small helixes.
+- Fix: [#23811] Land edges glitch when vehicles go through gentle to flat tunnels.
+- Fix: [#23814] Scenarios not indexed on first start.
+- Fix: [#23818] Spinning tunnels can draw over sloped terrain in front of them.
+- Fix: [#23828] Vehicles passing by station entrances and exits can cause them to glitch (original bug).
+- Fix: [#23831] Hybrid Coaster large gentle banked right turns glitch when diagonal track is above them.
+- Fix: [#23832] Hybrid Coaster large gentle banked left turns supports glitch as train passes.
+- Fix: [#23836] Adjacent track can draw over large turns (original bug).
+- Fix: [#23858] LSM launched lift hill has a misaligned sprite.
+
 0.4.19.1 (2025-02-03)
 ------------------------------------------------------------------------
+- Fix: [#23719] Prevent staff statistics from overflowing.
 - Fix: [#23771] Weather transitions are horribly broken.
 
 0.4.19 (2025-02-01)

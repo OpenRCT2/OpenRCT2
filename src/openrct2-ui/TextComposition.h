@@ -15,9 +15,6 @@ union SDL_Event;
 
 namespace OpenRCT2::Ui
 {
-    /**
-     * Represents a
-     */
     class TextComposition
     {
     private:

@@ -19,10 +19,10 @@
 #include <memory>
 #include <mutex>
 #include <openrct2/Context.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/AudioSource.h>
-#include <openrct2/audio/audio.h>
 #include <vector>
 
 namespace OpenRCT2::Audio

@@ -36,7 +36,6 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
@@ -216,15 +215,15 @@ namespace OpenRCT2
 
                 std::string name;
                 ReadWriteStringTable(cs, name, "en-GB");
-                String::set(entry.Name, sizeof(entry.Name), name.c_str());
-                String::set(entry.InternalName, sizeof(entry.InternalName), name.c_str());
+                entry.Name = name;
+                entry.InternalName = name;
 
                 std::string parkName;
                 ReadWriteStringTable(cs, parkName, "en-GB");
 
                 std::string scenarioDetails;
                 ReadWriteStringTable(cs, scenarioDetails, "en-GB");
-                String::set(entry.Details, sizeof(entry.Details), scenarioDetails.c_str());
+                entry.Details = scenarioDetails;
 
                 entry.ObjectiveType = cs.Read<uint8_t>();
                 entry.ObjectiveArg1 = cs.Read<uint8_t>();
@@ -304,7 +303,7 @@ namespace OpenRCT2
                                         RCTObjectEntry datEntry;
                                         cs.Read(&datEntry, sizeof(datEntry));
                                         ObjectEntryDescriptor desc(datEntry);
-                                        if (version <= 2 && datEntry.GetType() == ObjectType::Paths)
+                                        if (version <= 2 && datEntry.GetType() == ObjectType::paths)
                                         {
                                             auto footpathMapping = GetFootpathMapping(desc);
                                             if (footpathMapping != nullptr)
@@ -381,13 +380,13 @@ namespace OpenRCT2
                 if (version < kPeepNamesObjectsVersion)
                 {
                     AppendRequiredObjects(
-                        requiredObjects, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
+                        requiredObjects, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
                 }
 
                 if (version < kPeepAnimationObjectsVersion)
                 {
-                    auto animObjects = GetLegacyPeepAnimationObjects(requiredObjects);
-                    AppendRequiredObjects(requiredObjects, ObjectType::PeepAnimations, animObjects);
+                    auto animObjects = GetLegacyPeepAnimationObjects();
+                    AppendRequiredObjects(requiredObjects, ObjectType::peepAnimations, animObjects);
                 }
 
                 RequiredObjects = std::move(requiredObjects);
@@ -793,15 +792,15 @@ namespace OpenRCT2
         {
             os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&gameState](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gameState.Climate);
-                cs.ReadWrite(gameState.ClimateUpdateTimer);
+                cs.ReadWrite(gameState.WeatherUpdateTimer);
 
-                for (auto* cl : { &gameState.ClimateCurrent, &gameState.ClimateNext })
+                for (auto* cl : { &gameState.WeatherCurrent, &gameState.WeatherNext })
                 {
-                    cs.ReadWrite(cl->Weather);
-                    cs.ReadWrite(cl->Temperature);
-                    cs.ReadWrite(cl->WeatherEffect);
-                    cs.ReadWrite(cl->WeatherGloom);
-                    cs.ReadWrite(cl->Level);
+                    cs.ReadWrite(cl->weatherType);
+                    cs.ReadWrite(cl->temperature);
+                    cs.ReadWrite(cl->weatherEffect);
+                    cs.ReadWrite(cl->weatherGloom);
+                    cs.ReadWrite(cl->level);
                 }
             });
         }

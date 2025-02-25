@@ -82,15 +82,15 @@ static std::optional<uint8_t> GetSceneryType(const ObjectType type)
 {
     switch (type)
     {
-        case ObjectType::SmallScenery:
+        case ObjectType::smallScenery:
             return SCENERY_TYPE_SMALL;
-        case ObjectType::LargeScenery:
+        case ObjectType::largeScenery:
             return SCENERY_TYPE_LARGE;
-        case ObjectType::Walls:
+        case ObjectType::walls:
             return SCENERY_TYPE_WALL;
-        case ObjectType::Banners:
+        case ObjectType::banners:
             return SCENERY_TYPE_BANNER;
-        case ObjectType::PathAdditions:
+        case ObjectType::pathAdditions:
             return SCENERY_TYPE_PATH_ITEM;
         default:
             return std::nullopt;

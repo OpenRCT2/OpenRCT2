@@ -62,7 +62,7 @@ enum LARGE_SCENERY_TEXT_FLAGS
 
 struct LargeSceneryEntry
 {
-    static constexpr auto kObjectType = ObjectType::LargeScenery;
+    static constexpr auto kObjectType = ObjectType::largeScenery;
 
     StringId name;
     uint32_t image;

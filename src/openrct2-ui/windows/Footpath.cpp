@@ -23,9 +23,10 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/FootpathPlaceAction.h>
 #include <openrct2/actions/FootpathRemoveAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/FootpathObject.h>
@@ -35,7 +36,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/platform/Platform.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Footpath.h>
@@ -366,7 +366,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_FOOTPATH_TYPE)
             {
                 gFootpathSelection.IsQueueSelected = false;
-                if (entryIndex.first == ObjectType::Paths)
+                if (entryIndex.first == ObjectType::paths)
                 {
                     gFootpathSelection.LegacyPath = entryIndex.second;
                 }
@@ -379,7 +379,7 @@ namespace OpenRCT2::Ui::Windows
             else if (widgetIndex == WIDX_QUEUELINE_TYPE)
             {
                 gFootpathSelection.IsQueueSelected = true;
-                if (entryIndex.first == ObjectType::Paths)
+                if (entryIndex.first == ObjectType::paths)
                 {
                     gFootpathSelection.LegacyPath = entryIndex.second;
                 }
@@ -500,7 +500,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
                     auto* pathObj = static_cast<FootpathObject*>(
-                        objManager.GetLoadedObject(ObjectType::Paths, gFootpathSelection.LegacyPath));
+                        objManager.GetLoadedObject(ObjectType::paths, gFootpathSelection.LegacyPath));
                     if (pathObj != nullptr)
                     {
                         auto pathEntry = reinterpret_cast<const FootpathEntry*>(pathObj->GetLegacyData());
@@ -641,7 +641,7 @@ namespace OpenRCT2::Ui::Windows
                 auto pathImage = kSpriteIdNull;
                 auto queueImage = kSpriteIdNull;
                 auto pathObj = static_cast<FootpathObject*>(
-                    objManager.GetLoadedObject(ObjectType::Paths, gFootpathSelection.LegacyPath));
+                    objManager.GetLoadedObject(ObjectType::paths, gFootpathSelection.LegacyPath));
                 if (pathObj != nullptr)
                 {
                     auto pathEntry = reinterpret_cast<FootpathEntry*>(pathObj->GetLegacyData());
@@ -677,7 +677,7 @@ namespace OpenRCT2::Ui::Windows
             for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
             {
                 const auto* pathType = static_cast<FootpathSurfaceObject*>(
-                    objManager.GetLoadedObject(ObjectType::FootpathSurface, i));
+                    objManager.GetLoadedObject(ObjectType::footpathSurface, i));
                 if (pathType == nullptr)
                 {
                     continue;
@@ -709,7 +709,7 @@ namespace OpenRCT2::Ui::Windows
 
                 gDropdownItems[numPathTypes].Format = kStringIdNone;
                 Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
-                _dropdownEntries.push_back({ ObjectType::FootpathSurface, i });
+                _dropdownEntries.push_back({ ObjectType::footpathSurface, i });
                 numPathTypes++;
             }
 
@@ -735,7 +735,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdownItems[numPathTypes].Format = kStringIdNone;
                 Dropdown::SetImage(
                     numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
-                _dropdownEntries.push_back({ ObjectType::Paths, i });
+                _dropdownEntries.push_back({ ObjectType::paths, i });
                 numPathTypes++;
             }
 
@@ -768,7 +768,7 @@ namespace OpenRCT2::Ui::Windows
 
                 gDropdownItems[numRailingsTypes].Format = kStringIdNone;
                 Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
-                _dropdownEntries.push_back({ ObjectType::FootpathRailings, i });
+                _dropdownEntries.push_back({ ObjectType::footpathRailings, i });
                 numRailingsTypes++;
             }
 

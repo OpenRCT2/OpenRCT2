@@ -13,7 +13,7 @@
 #include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
@@ -270,7 +270,7 @@ namespace OpenRCT2::ObjectFactory
 
             RCTObjectEntry entry = fs.ReadValue<RCTObjectEntry>();
 
-            if (entry.GetType() != ObjectType::ScenarioText)
+            if (entry.GetType() != ObjectType::scenarioText)
             {
                 result = CreateObject(entry.GetType());
                 result->SetDescriptor(ObjectEntryDescriptor(entry));
@@ -334,64 +334,64 @@ namespace OpenRCT2::ObjectFactory
         std::unique_ptr<Object> result;
         switch (type)
         {
-            case ObjectType::Ride:
+            case ObjectType::ride:
                 result = std::make_unique<RideObject>();
                 break;
-            case ObjectType::SmallScenery:
+            case ObjectType::smallScenery:
                 result = std::make_unique<SmallSceneryObject>();
                 break;
-            case ObjectType::LargeScenery:
+            case ObjectType::largeScenery:
                 result = std::make_unique<LargeSceneryObject>();
                 break;
-            case ObjectType::Walls:
+            case ObjectType::walls:
                 result = std::make_unique<WallObject>();
                 break;
-            case ObjectType::Banners:
+            case ObjectType::banners:
                 result = std::make_unique<BannerObject>();
                 break;
-            case ObjectType::Paths:
+            case ObjectType::paths:
                 result = std::make_unique<FootpathObject>();
                 break;
-            case ObjectType::PathAdditions:
+            case ObjectType::pathAdditions:
                 result = std::make_unique<PathAdditionObject>();
                 break;
-            case ObjectType::SceneryGroup:
+            case ObjectType::sceneryGroup:
                 result = std::make_unique<SceneryGroupObject>();
                 break;
-            case ObjectType::ParkEntrance:
+            case ObjectType::parkEntrance:
                 result = std::make_unique<EntranceObject>();
                 break;
-            case ObjectType::Water:
+            case ObjectType::water:
                 result = std::make_unique<WaterObject>();
                 break;
-            case ObjectType::ScenarioText:
+            case ObjectType::scenarioText:
                 result = std::make_unique<ScenarioTextObject>();
                 break;
-            case ObjectType::TerrainSurface:
+            case ObjectType::terrainSurface:
                 result = std::make_unique<TerrainSurfaceObject>();
                 break;
-            case ObjectType::TerrainEdge:
+            case ObjectType::terrainEdge:
                 result = std::make_unique<TerrainEdgeObject>();
                 break;
-            case ObjectType::Station:
+            case ObjectType::station:
                 result = std::make_unique<StationObject>();
                 break;
-            case ObjectType::Music:
+            case ObjectType::music:
                 result = std::make_unique<MusicObject>();
                 break;
-            case ObjectType::FootpathSurface:
+            case ObjectType::footpathSurface:
                 result = std::make_unique<FootpathSurfaceObject>();
                 break;
-            case ObjectType::FootpathRailings:
+            case ObjectType::footpathRailings:
                 result = std::make_unique<FootpathRailingsObject>();
                 break;
-            case ObjectType::Audio:
+            case ObjectType::audio:
                 result = std::make_unique<AudioObject>();
                 break;
-            case ObjectType::PeepNames:
+            case ObjectType::peepNames:
                 result = std::make_unique<PeepNamesObject>();
                 break;
-            case ObjectType::PeepAnimations:
+            case ObjectType::peepAnimations:
                 result = std::make_unique<PeepAnimationsObject>();
                 break;
             default:
@@ -403,44 +403,44 @@ namespace OpenRCT2::ObjectFactory
     static ObjectType ParseObjectType(const std::string& s)
     {
         if (s == "ride")
-            return ObjectType::Ride;
+            return ObjectType::ride;
         if (s == "footpath_banner")
-            return ObjectType::Banners;
+            return ObjectType::banners;
         if (s == "footpath_item")
-            return ObjectType::PathAdditions;
+            return ObjectType::pathAdditions;
         if (s == "scenery_small")
-            return ObjectType::SmallScenery;
+            return ObjectType::smallScenery;
         if (s == "scenery_large")
-            return ObjectType::LargeScenery;
+            return ObjectType::largeScenery;
         if (s == "scenery_wall")
-            return ObjectType::Walls;
+            return ObjectType::walls;
         if (s == "scenery_group")
-            return ObjectType::SceneryGroup;
+            return ObjectType::sceneryGroup;
         if (s == "park_entrance")
-            return ObjectType::ParkEntrance;
+            return ObjectType::parkEntrance;
         if (s == "water")
-            return ObjectType::Water;
+            return ObjectType::water;
         if (s == "scenario_text")
-            return ObjectType::ScenarioText;
+            return ObjectType::scenarioText;
         if (s == "terrain_surface")
-            return ObjectType::TerrainSurface;
+            return ObjectType::terrainSurface;
         if (s == "terrain_edge")
-            return ObjectType::TerrainEdge;
+            return ObjectType::terrainEdge;
         if (s == "station")
-            return ObjectType::Station;
+            return ObjectType::station;
         if (s == "music")
-            return ObjectType::Music;
+            return ObjectType::music;
         if (s == "footpath_surface")
-            return ObjectType::FootpathSurface;
+            return ObjectType::footpathSurface;
         if (s == "footpath_railings")
-            return ObjectType::FootpathRailings;
+            return ObjectType::footpathRailings;
         if (s == "audio")
-            return ObjectType::Audio;
+            return ObjectType::audio;
         if (s == "peep_names")
-            return ObjectType::PeepNames;
+            return ObjectType::peepNames;
         if (s == "peep_animations")
-            return ObjectType::PeepAnimations;
-        return ObjectType::None;
+            return ObjectType::peepAnimations;
+        return ObjectType::none;
     }
 
     std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path, bool loadImages)
@@ -539,7 +539,7 @@ namespace OpenRCT2::ObjectFactory
         std::unique_ptr<Object> result;
 
         auto objectType = ParseObjectType(Json::GetString(jRoot["objectType"]));
-        if (objectType != ObjectType::None)
+        if (objectType != ObjectType::none)
         {
             auto id = Json::GetString(jRoot["id"]);
 

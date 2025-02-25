@@ -199,13 +199,13 @@ static constexpr MetalSupportsImages kSupportBasesAndBeams[] = {
     { 3279, 3262, 3262 }, // MetalSupportGraphic::Fork
     { 3298, 3262, 3262 }, // MetalSupportGraphic::ForkAlt
     { 3334, 3317, 3317 }, // MetalSupportGraphic::Boxed
-    {    0, 3658, 3658 }, // MetalSupportGraphic::Stick
-    {    0, 3658, 3658 }, // MetalSupportGraphic::StickAlt
-    {    0, 3141, 3141 }, // MetalSupportGraphic::ThickCentred
-    {    0, 3158, 3158 }, // MetalSupportGraphic::Thick
-    {    0, 3175, 3175 }, // MetalSupportGraphic::ThickAlt
-    {    0, 3192, 3192 }, // MetalSupportGraphic::ThickAltCentred
-    {    0, 3124, 3124 }, // MetalSupportGraphic::Truss
+    { kImageIndexUndefined, 3658, 3658 }, // MetalSupportGraphic::Stick
+    { kImageIndexUndefined, 3658, 3658 }, // MetalSupportGraphic::StickAlt
+    { kImageIndexUndefined, 3141, 3141 }, // MetalSupportGraphic::ThickCentred
+    { kImageIndexUndefined, 3158, 3158 }, // MetalSupportGraphic::Thick
+    { kImageIndexUndefined, 3175, 3175 }, // MetalSupportGraphic::ThickAlt
+    { kImageIndexUndefined, 3192, 3192 }, // MetalSupportGraphic::ThickAltCentred
+    { kImageIndexUndefined, 3124, 3124 }, // MetalSupportGraphic::Truss
     { 3243, 3209, 3226 }, // MetalSupportGraphic::TubesInverted
     { 3334, 3353, 3353 }, // MetalSupportGraphic::BoxedCoated
 };
@@ -366,7 +366,7 @@ static bool MetalASupportsPaintSetup(
     }
     int16_t si = height;
     if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery || height - supportSegments[segment].height < 6
-        || kSupportBasesAndBeams[supportType].base == 0)
+        || kSupportBasesAndBeams[supportType].base == kImageIndexUndefined)
     {
         height = supportSegments[segment].height;
     }
@@ -583,7 +583,7 @@ static bool MetalBSupportsPaintSetup(
     int32_t si = baseHeight;
 
     if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (baseHeight - supportSegments[segment].height < 6)
-        || (kSupportBasesAndBeams[supportType].beamA == 0))
+        || (kSupportBasesAndBeams[supportType].base == kImageIndexUndefined))
     {
         baseHeight = supportSegments[segment].height;
     }

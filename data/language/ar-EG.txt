@@ -1921,9 +1921,6 @@ STR_2706    :أبداً
 STR_2707    :إستخدم متصفح ملف النظام
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
-STR_2718    :Up
-STR_2719    :New file
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -3004,7 +3001,6 @@ STR_5887    :السابقة
 STR_5888    :اللاحقة
 STR_5889    :رمز العملة المخصص
 STR_5890    :أدخل رمز العملة لعرضها
-STR_5891    :الإفتراضي
 STR_5892    :اذهب إلى الوجهة الافتراضية
 STR_5893    :سعر الصرف
 STR_5894    :أدخل سعر الصرف

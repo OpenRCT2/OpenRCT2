@@ -50,7 +50,7 @@
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
@@ -1110,7 +1110,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
         auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
 
         ObjectType objectType = entry->GetType();
-        if (objectType == ObjectType::Ride)
+        if (objectType == ObjectType::ride)
         {
             // Automatically research the ride so it's supported by the game.
             const auto* rideEntry = GetRideEntryByIndex(groupIndex);
@@ -1129,7 +1129,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
             ResearchResetCurrentItem();
             gSilentResearch = false;
         }
-        else if (objectType == ObjectType::SceneryGroup)
+        else if (objectType == ObjectType::sceneryGroup)
         {
             ResearchInsertSceneryGroupEntry(groupIndex, true);
 
@@ -1172,7 +1172,7 @@ constexpr auto _objectTypeNames = std::to_array<StringId>({
     STR_OBJECT_SELECTION_PEEP_NAMES,
     STR_OBJECT_SELECTION_PEEP_ANIMATIONS,
 });
-static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
+static_assert(_objectTypeNames.size() == EnumValue(ObjectType::count));
 
 static void ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {

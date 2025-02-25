@@ -19,6 +19,7 @@
 #include "Currency.h"
 #include "FormatCodes.h"
 #include "Formatter.h"
+#include "Language.h"
 #include "Localisation.Date.h"
 #include "StringIds.h"
 

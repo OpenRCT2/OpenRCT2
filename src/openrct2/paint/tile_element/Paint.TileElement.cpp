@@ -11,6 +11,7 @@
 
 #include "../../Game.h"
 #include "../../Input.h"
+#include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
@@ -19,7 +20,6 @@
 #include "../../ride/RideData.h"
 #include "../../ride/TrackData.h"
 #include "../../ride/TrackPaint.h"
-#include "../../sprites.h"
 #include "../../world/Banner.h"
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
@@ -221,7 +221,16 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
         // Only paint tile_elements below the clip height.
         if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * kCoordsZStep))
-            continue;
+        {
+            // see-through off: don't paint this tile_element at all
+            // see-through on: paint this tile_element as partial or hidden later on
+            // note: surface elements are not painted even with see-through turned on
+            if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0
+                || tile_element->GetType() == TileElementType::Surface)
+            {
+                continue;
+            }
+        }
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);
         int32_t baseZ = tile_element->GetBaseZ();

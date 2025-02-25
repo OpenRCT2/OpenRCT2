@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "audio.h"
+#include "Audio.h"
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
@@ -190,13 +190,13 @@ namespace OpenRCT2::Audio
         if (id >= SoundId::LiftRMC)
         {
             audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::Audio, _soundsAdditionalAudioObjectEntryIndex));
+                objManager.GetLoadedObject(ObjectType::audio, _soundsAdditionalAudioObjectEntryIndex));
             sampleIndex -= EnumValue(SoundId::LiftRMC);
         }
         else
         {
             audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::Audio, _soundsAudioObjectEntryIndex));
+                objManager.GetLoadedObject(ObjectType::audio, _soundsAudioObjectEntryIndex));
         }
         return std::make_tuple(audioObject, sampleIndex);
     }
@@ -285,7 +285,7 @@ namespace OpenRCT2::Audio
 
         if (it != musicMap.end())
         {
-            return ObjectEntryDescriptor(ObjectType::Audio, it->second);
+            return ObjectEntryDescriptor(ObjectType::audio, it->second);
         }
 
         // No music descriptor for the current setting, intentional for TitleMusicKind::None
@@ -363,7 +363,7 @@ namespace OpenRCT2::Audio
         if (_titleAudioObjectEntryIndex != kObjectEntryIndexNull)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto* obj = objManager.GetLoadedObject(ObjectType::Audio, _titleAudioObjectEntryIndex);
+            auto* obj = objManager.GetLoadedObject(ObjectType::audio, _titleAudioObjectEntryIndex);
             if (obj != nullptr)
             {
                 objManager.UnloadObjects({ obj->GetDescriptor() });

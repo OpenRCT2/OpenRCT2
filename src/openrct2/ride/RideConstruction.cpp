@@ -23,8 +23,7 @@
 #include "../entity/Staff.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.Date.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
@@ -77,6 +76,7 @@ TrackPitch _previousTrackPitchEnd;
 CoordsXYZ _previousTrackPiece;
 
 uint8_t _currentBrakeSpeed;
+RideColourScheme _currentColourScheme;
 uint8_t _currentSeatRotationAngle;
 
 CoordsXYZD _unkF440C5;
@@ -441,7 +441,13 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         }
         if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
         {
-            trackElement->SetColourScheme(static_cast<RideColourScheme>(extra_params & 0xFF));
+            auto newScheme = static_cast<RideColourScheme>(extra_params & 0xFF);
+            trackElement->SetColourScheme(newScheme);
+
+            if (_previousTrackPiece == retCoordsXYZ)
+            {
+                _currentColourScheme = newScheme;
+            }
         }
         if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
         {
@@ -631,12 +637,23 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackRollEnd = bank;
             _previousTrackRollEnd = bank;
 
+            const auto& trackElement = tileElement->AsTrack();
+
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain()
+            _currentTrackHasLiftHill = trackElement->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
                     || GetGameState().Cheats.enableChainLiftOnAllTrack);
+
+            if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
+                _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
+            _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
+            _currentSeatRotationAngle = trackElement->GetSeatRotation();
+
+            _previousTrackPiece.x = trackBeginEnd.begin_x;
+            _previousTrackPiece.y = trackBeginEnd.begin_y;
+            _previousTrackPiece.z = trackElement->GetBaseZ();
             break;
         }
         case RideConstructionState::Back:
@@ -679,13 +696,24 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackRollEnd = bank;
             _previousTrackRollEnd = bank;
 
+            const auto& trackElement = tileElement->AsTrack();
+
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
             if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
-                _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain();
+                _currentTrackHasLiftHill = trackElement->HasChain();
             }
+
+            if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
+                _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
+            _currentColourScheme = static_cast<RideColourScheme>(trackElement->GetColourScheme());
+            _currentSeatRotationAngle = trackElement->GetSeatRotation();
+
+            _previousTrackPiece.x = xyElement.x;
+            _previousTrackPiece.y = xyElement.y;
+            _previousTrackPiece.z = trackElement->GetBaseZ();
             break;
         }
         default:
@@ -938,7 +966,7 @@ bool RideModify(const CoordsXYE& input)
     if (rideEntry == nullptr || !ride_check_if_construction_allowed(*ride))
         return false;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE && !GetGameState().Cheats.makeAllDestructible)
     {
         Formatter ft;
         ride->FormatNameTo(ft);

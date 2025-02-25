@@ -21,8 +21,8 @@
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
+#include "../audio/Audio.h"
 #include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"
@@ -35,11 +35,10 @@
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/MusicObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
@@ -225,7 +224,7 @@ const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
 
-    auto obj = objMgr.GetLoadedObject(ObjectType::Ride, index);
+    auto obj = objMgr.GetLoadedObject(ObjectType::ride, index);
     if (obj == nullptr)
     {
         return nullptr;
@@ -236,13 +235,13 @@ const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index)
 
 std::string_view GetRideEntryName(ObjectEntryIndex index)
 {
-    if (index >= getObjectEntryGroupCount(ObjectType::Ride))
+    if (index >= getObjectEntryGroupCount(ObjectType::ride))
     {
         LOG_ERROR("invalid index %d for ride type", index);
         return {};
     }
 
-    auto objectEntry = ObjectEntryGetObject(ObjectType::Ride, index);
+    auto objectEntry = ObjectEntryGetObject(ObjectType::ride, index);
     if (objectEntry != nullptr)
     {
         return objectEntry->GetLegacyIdentifier();
@@ -4926,7 +4925,7 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
         {},                                                        // TrackGroup::slopeCurveLargeBanked
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBrakes
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBlockBrakes
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4 },  // TrackGroup::inclinedBrakes
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8 },  // TrackGroup::inclinedBrakes
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBooster
         { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,

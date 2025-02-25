@@ -13,12 +13,12 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/SawyerCoding.h"
 #include "../interface/Viewport.h"
 #include "../management/Finance.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "../rct1/RCT1.h"
 #include "../ride/RideColour.h"
@@ -638,6 +638,7 @@ bool TrackTypeIsBrakes(OpenRCT2::TrackElemType trackType)
         case TrackElemType::Brakes:
         case TrackElemType::DiagBrakes:
         case TrackElemType::Down25Brakes:
+        case TrackElemType::DiagDown25Brakes:
             return true;
         default:
             return false;

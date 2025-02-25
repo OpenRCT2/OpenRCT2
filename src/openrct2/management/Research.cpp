@@ -22,7 +22,6 @@
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectLimits.h"
@@ -543,19 +542,19 @@ bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index)
 {
     switch (objectType)
     {
-        case ObjectType::Ride:
+        case ObjectType::ride:
             return RideEntryIsInvented(index);
-        case ObjectType::SceneryGroup:
+        case ObjectType::sceneryGroup:
             return SceneryGroupIsInvented(index);
-        case ObjectType::SmallScenery:
+        case ObjectType::smallScenery:
             return SceneryIsInvented({ SCENERY_TYPE_SMALL, index });
-        case ObjectType::LargeScenery:
+        case ObjectType::largeScenery:
             return SceneryIsInvented({ SCENERY_TYPE_LARGE, index });
-        case ObjectType::Walls:
+        case ObjectType::walls:
             return SceneryIsInvented({ SCENERY_TYPE_WALL, index });
-        case ObjectType::Banners:
+        case ObjectType::banners:
             return SceneryIsInvented({ SCENERY_TYPE_BANNER, index });
-        case ObjectType::PathAdditions:
+        case ObjectType::pathAdditions:
             return SceneryIsInvented({ SCENERY_TYPE_PATH_ITEM, index });
         default:
             return true;

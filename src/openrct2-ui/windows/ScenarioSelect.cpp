@@ -13,7 +13,8 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -25,7 +26,6 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <vector>
 
@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(scenario->Name);
+            ft.Add<const char*>(scenario->Name.c_str());
             DrawTextEllipsised(
                 dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
             screenPos.y += 15;
@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui::Windows
             // Scenario details
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(scenario->Details);
+            ft.Add<const char*>(scenario->Details.c_str());
             screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_BLACK_STRING, ft) + 5;
 
             // Scenario objective
@@ -445,13 +445,11 @@ namespace OpenRCT2::Ui::Windows
                         bool isDisabled = listItem.scenario.is_locked;
 
                         // Draw scenario name
-                        char buffer[64];
-                        String::safeUtf8Copy(buffer, scenario->Name, sizeof(buffer));
                         StringId format = isDisabled ? static_cast<StringId>(STR_STRINGID)
                                                      : (isHighlighted ? highlighted_format : unhighlighted_format);
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_STRING);
-                        ft.Add<char*>(buffer);
+                        ft.Add<const char*>(scenario->Name.c_str());
                         auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
                                                  : ColourWithFlags{ COLOUR_BLACK };
                         auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;

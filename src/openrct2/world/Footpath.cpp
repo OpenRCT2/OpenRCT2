@@ -1944,7 +1944,7 @@ bool FootpathSelectDefault()
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::paths, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
@@ -1955,7 +1955,7 @@ const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::footpathSurface, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
@@ -1965,7 +1965,7 @@ const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::footpathRailings, entryIndex);
     if (obj == nullptr)
         return nullptr;
 

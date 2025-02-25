@@ -30,7 +30,7 @@
 #include "../actions/TrackRemoveAction.h"
 #include "../actions/WallPlaceAction.h"
 #include "../actions/WallRemoveAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
 #include "../core/Numerics.hpp"
@@ -41,7 +41,7 @@
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/LargeSceneryEntry.h"
@@ -116,7 +116,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
 {
     trackAndVehicle.rtdIndex = ride.type;
 
-    auto object = ObjectEntryGetObject(ObjectType::Ride, ride.subtype);
+    auto object = ObjectEntryGetObject(ObjectType::ride, ride.subtype);
     if (object != nullptr)
     {
         auto entry = object->GetObjectEntry();
@@ -498,7 +498,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
     {
         switch (scenery.sceneryObject.GetType())
         {
-            case ObjectType::Paths:
+            case ObjectType::paths:
             {
                 uint8_t slope = (scenery.getSlopeDirection() - _saveDirection) % kNumOrthogonalDirections;
                 scenery.setSlopeDirection(slope);
@@ -507,7 +507,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
                 scenery.setEdges(edges);
                 break;
             }
-            case ObjectType::Walls:
+            case ObjectType::walls:
             {
                 auto direction = (scenery.getRotation() - _saveDirection) % kNumOrthogonalDirections;
                 scenery.setRotation(direction);
@@ -637,7 +637,7 @@ static void TrackDesignLoadSceneryObjects(const TrackDesign& td)
 
 struct TrackSceneryEntry
 {
-    ObjectType Type = ObjectType::None;
+    ObjectType Type = ObjectType::none;
     ObjectEntryIndex Index = kObjectEntryIndexNull;
     ObjectEntryIndex SecondaryIndex = kObjectEntryIndexNull; // For footpath railing
 };
@@ -683,7 +683,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     TrackSceneryEntry result;
 
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (scenery.sceneryObject.GetType() == ObjectType::Paths)
+    if (scenery.sceneryObject.GetType() == ObjectType::paths)
     {
         auto footpathMapping = RCT2::GetFootpathSurfaceId(scenery.sceneryObject, true, scenery.isQueue());
         if (footpathMapping == nullptr)
@@ -697,12 +697,12 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
             }
             else
             {
-                result.Type = ObjectType::FootpathSurface;
+                result.Type = ObjectType::footpathSurface;
             }
         }
         else
         {
-            result.Type = ObjectType::FootpathSurface;
+            result.Type = ObjectType::footpathSurface;
             result.Index = objectMgr.GetLoadedObjectEntryIndex(
                 ObjectEntryDescriptor(scenery.isQueue() ? footpathMapping->QueueSurface : footpathMapping->NormalSurface));
             result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
@@ -757,7 +757,7 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
         auto obj = objectMgr.GetLoadedObject(entryInfo->Type, entryInfo->Index);
         switch (obj->GetObjectType())
         {
-            case ObjectType::LargeScenery:
+            case ObjectType::largeScenery:
             {
                 auto* sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
@@ -801,7 +801,7 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
                 scenery.setRotation(DirectionFlipXAxis(scenery.getRotation()));
                 break;
             }
-            case ObjectType::SmallScenery:
+            case ObjectType::smallScenery:
             {
                 auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
                 scenery.loc.y = -scenery.loc.y;
@@ -820,14 +820,14 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
                 scenery.setQuadrant(scenery.getQuadrant() ^ (1 << 0));
                 break;
             }
-            case ObjectType::Walls:
+            case ObjectType::walls:
             {
                 scenery.loc.y = -scenery.loc.y;
                 scenery.setRotation(DirectionFlipXAxis(scenery.getRotation()));
                 break;
             }
-            case ObjectType::Paths:
-            case ObjectType::FootpathSurface:
+            case ObjectType::paths:
+            case ObjectType::footpathSurface:
             {
                 scenery.loc.y = -scenery.loc.y;
 
@@ -956,7 +956,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     std::unique_ptr<GameAction> ga;
     switch (entryInfo->Type)
     {
-        case ObjectType::SmallScenery:
+        case ObjectType::smallScenery:
         {
             uint8_t quadrant = scenery.getQuadrant() + _currentTrackPieceDirection;
             quadrant &= 3;
@@ -972,14 +972,14 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
             ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entryInfo->Index);
             break;
         }
-        case ObjectType::LargeScenery:
+        case ObjectType::largeScenery:
             ga = std::make_unique<LargeSceneryRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation }, 0);
             break;
-        case ObjectType::Walls:
+        case ObjectType::walls:
             ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
             break;
-        case ObjectType::Paths:
-        case ObjectType::FootpathSurface:
+        case ObjectType::paths:
+        case ObjectType::footpathSurface:
             ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
@@ -1043,7 +1043,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
     switch (entryInfo->Type)
     {
-        case ObjectType::SmallScenery:
+        case ObjectType::smallScenery:
         {
             if (mode != 0)
             {
@@ -1086,7 +1086,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             cost = res.Error == GameActions::Status::Ok ? res.Cost : 0;
             break;
         }
-        case ObjectType::LargeScenery:
+        case ObjectType::largeScenery:
         {
             if (mode != 0)
             {
@@ -1127,7 +1127,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             cost = res.Cost;
             break;
         }
-        case ObjectType::Walls:
+        case ObjectType::walls:
         {
             if (mode != 0)
             {
@@ -1167,8 +1167,8 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             cost = res.Cost;
             break;
         }
-        case ObjectType::Paths:
-        case ObjectType::FootpathSurface:
+        case ObjectType::paths:
+        case ObjectType::footpathSurface:
             z = scenery.loc.z + originZ;
             if (mode == 0)
             {
@@ -1197,7 +1197,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 PathConstructFlags constructFlags = 0;
                 if (scenery.isQueue())
                     constructFlags |= PathConstructFlag::IsQueue;
-                if (entryInfo->Type == ObjectType::Paths)
+                if (entryInfo->Type == ObjectType::paths)
                     constructFlags |= PathConstructFlag::IsLegacyPathObject;
                 auto footpathPlaceAction = FootpathLayoutPlaceAction(
                     { mapCoord.x, mapCoord.y, z }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges, constructFlags);

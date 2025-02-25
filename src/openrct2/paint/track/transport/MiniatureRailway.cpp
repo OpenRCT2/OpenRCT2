@@ -7,11 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/PathElement.h"
 #include "../../../world/tile_element/TileElement.h"
@@ -318,7 +318,7 @@ static constexpr CoordsXYZ miniature_railway_track_pieces_right_eight_to_diag_bo
     {
         { 32, 32, 2 },
         { 34, 16, 2 },
-        { 28, 28, 2 },
+        { 16, 16, 2 },
         { 32, 34, 0 },
     },
     {
@@ -345,7 +345,7 @@ static constexpr CoordsXY miniature_railway_track_pieces_right_eight_to_diag_off
     {
         { 0, 0 },
         { 0, 0 },
-        { 4, 4 },
+        { 16, 16 },
         { 0, 0 },
     },
     {
@@ -507,7 +507,7 @@ static constexpr CoordsXYZ miniature_railway_track_pieces_left_eight_to_orthog_b
     {
         { 32, 32, 2 },
         { 34, 16, 2 },
-        { 28, 28, 2 },
+        { 16, 16, 2 },
         { 16, 18, 2 },
     },
     {
@@ -534,7 +534,7 @@ static constexpr CoordsXY miniature_railway_track_pieces_left_eight_to_orthog_of
     {
         { 0, 0 },
         { 0, 0 },
-        { 4, 4 },
+        { 16, 16 },
         { 0, 16 },
     },
     {
@@ -1663,7 +1663,7 @@ static constexpr CoordsXYZ kFloorPiecesRightEighthToDiagBounds[4][5] = {
     {
         { 32, 32, 2 },
         { 34, 16, 2 },
-        { 28, 28, 2 },
+        { 16, 16, 2 },
         { 16, 16, 0 },
         { 32, 34, 0 },
     },
@@ -1694,7 +1694,7 @@ static constexpr CoordsXY kFloorPiecesRightEighthToDiagOffset[4][5] = {
     {
         { 0, 0 },
         { 0, 0 },
-        { 4, 4 },
+        { 16, 16 },
         { 0, 0 },
         { 0, 0 },
     },

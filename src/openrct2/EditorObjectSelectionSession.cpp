@@ -47,8 +47,8 @@ using namespace OpenRCT2;
 
 std::optional<StringId> _gSceneryGroupPartialSelectError;
 std::vector<uint8_t> _objectSelectionFlags;
-uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
-static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
+uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
+static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::count)];
 
 static void SetupInUseSelectionFlags();
 static void SetupTrackDesignerObjects();
@@ -80,7 +80,7 @@ static void SetupTrackManagerObjects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        if (item->Type == ObjectType::Ride)
+        if (item->Type == ObjectType::ride)
         {
             *selectionFlags |= ObjectSelectionFlags::Flag6;
 
@@ -109,7 +109,7 @@ static void SetupTrackDesignerObjects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        if (item->Type == ObjectType::Ride)
+        if (item->Type == ObjectType::ride)
         {
             *selectionFlags |= ObjectSelectionFlags::Flag6;
 
@@ -165,8 +165,8 @@ void SetupInUseSelectionFlags()
                 auto surfaceIndex = surfaceEl->GetSurfaceObjectIndex();
                 auto edgeIndex = surfaceEl->GetEdgeObjectIndex();
 
-                Editor::SetSelectedObject(ObjectType::TerrainSurface, surfaceIndex, ObjectSelectionFlags::InUse);
-                Editor::SetSelectedObject(ObjectType::TerrainEdge, edgeIndex, ObjectSelectionFlags::InUse);
+                Editor::SetSelectedObject(ObjectType::terrainSurface, surfaceIndex, ObjectSelectionFlags::InUse);
+                Editor::SetSelectedObject(ObjectType::terrainEdge, edgeIndex, ObjectSelectionFlags::InUse);
                 break;
             }
             case TileElementType::Track:
@@ -179,23 +179,23 @@ void SetupInUseSelectionFlags()
                 {
                     auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
                     auto railingEntryIndex = footpathEl->GetRailingsEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
-                    Editor::SetSelectedObject(ObjectType::FootpathRailings, railingEntryIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::footpathRailings, railingEntryIndex, ObjectSelectionFlags::InUse);
                 }
                 else
                 {
-                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::paths, legacyPathEntryIndex, ObjectSelectionFlags::InUse);
                 }
                 if (footpathEl->HasAddition())
                 {
                     auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::PathAdditions, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::pathAdditions, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
                 }
                 break;
             }
             case TileElementType::SmallScenery:
                 type = iter.element->AsSmallScenery()->GetEntryIndex();
-                Editor::SetSelectedObject(ObjectType::SmallScenery, type, ObjectSelectionFlags::InUse);
+                Editor::SetSelectedObject(ObjectType::smallScenery, type, ObjectSelectionFlags::InUse);
                 break;
             case TileElementType::Entrance:
             {
@@ -204,7 +204,7 @@ void SetupInUseSelectionFlags()
                     break;
 
                 type = iter.element->AsEntrance()->getEntryIndex();
-                Editor::SetSelectedObject(ObjectType::ParkEntrance, type, ObjectSelectionFlags::InUse);
+                Editor::SetSelectedObject(ObjectType::parkEntrance, type, ObjectSelectionFlags::InUse);
 
                 // Skip if not the middle part
                 if (parkEntranceEl->GetSequenceIndex() != 0)
@@ -214,21 +214,21 @@ void SetupInUseSelectionFlags()
                 if (legacyPathEntryIndex == kObjectEntryIndexNull)
                 {
                     auto surfaceEntryIndex = parkEntranceEl->GetSurfaceEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
                 }
                 else
                 {
-                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::paths, legacyPathEntryIndex, ObjectSelectionFlags::InUse);
                 }
                 break;
             }
             case TileElementType::Wall:
                 type = iter.element->AsWall()->GetEntryIndex();
-                Editor::SetSelectedObject(ObjectType::Walls, type, ObjectSelectionFlags::InUse);
+                Editor::SetSelectedObject(ObjectType::walls, type, ObjectSelectionFlags::InUse);
                 break;
             case TileElementType::LargeScenery:
                 type = iter.element->AsLargeScenery()->GetEntryIndex();
-                Editor::SetSelectedObject(ObjectType::LargeScenery, type, ObjectSelectionFlags::InUse);
+                Editor::SetSelectedObject(ObjectType::largeScenery, type, ObjectSelectionFlags::InUse);
                 break;
             case TileElementType::Banner:
             {
@@ -236,7 +236,7 @@ void SetupInUseSelectionFlags()
                 if (banner != nullptr)
                 {
                     type = banner->type;
-                    Editor::SetSelectedObject(ObjectType::Banners, type, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::banners, type, ObjectSelectionFlags::InUse);
                 }
                 break;
             }
@@ -245,9 +245,9 @@ void SetupInUseSelectionFlags()
 
     for (auto& ride : GetRideManager())
     {
-        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, ObjectSelectionFlags::InUse);
-        Editor::SetSelectedObject(ObjectType::Station, ride.entrance_style, ObjectSelectionFlags::InUse);
-        Editor::SetSelectedObject(ObjectType::Music, ride.music, ObjectSelectionFlags::InUse);
+        Editor::SetSelectedObject(ObjectType::ride, ride.subtype, ObjectSelectionFlags::InUse);
+        Editor::SetSelectedObject(ObjectType::station, ride.entrance_style, ObjectSelectionFlags::InUse);
+        Editor::SetSelectedObject(ObjectType::music, ride.music, ObjectSelectionFlags::InUse);
     }
 
     ObjectEntryIndex lastIndex = kObjectEntryIndexNull;
@@ -257,7 +257,7 @@ void SetupInUseSelectionFlags()
             continue;
 
         lastIndex = peep->AnimationObjectIndex;
-        Editor::SetSelectedObject(ObjectType::PeepAnimations, lastIndex, ObjectSelectionFlags::InUse);
+        Editor::SetSelectedObject(ObjectType::peepAnimations, lastIndex, ObjectSelectionFlags::InUse);
     }
     for (auto* peep : EntityList<Staff>())
     {
@@ -265,7 +265,7 @@ void SetupInUseSelectionFlags()
             continue;
 
         lastIndex = peep->AnimationObjectIndex;
-        Editor::SetSelectedObject(ObjectType::PeepAnimations, lastIndex, ObjectSelectionFlags::InUse);
+        Editor::SetSelectedObject(ObjectType::peepAnimations, lastIndex, ObjectSelectionFlags::InUse);
     }
 
     // Apply selected object status for hacked vehicles that may not have an associated ride
@@ -274,7 +274,7 @@ void SetupInUseSelectionFlags()
         ObjectEntryIndex type = vehicle->ride_subtype;
         if (type != kObjectEntryIndexNull) // cable lifts use index null. Ignore them
         {
-            Editor::SetSelectedObject(ObjectType::Ride, type, ObjectSelectionFlags::InUse);
+            Editor::SetSelectedObject(ObjectType::ride, type, ObjectSelectionFlags::InUse);
         }
     }
     for (auto vehicle : EntityList<Vehicle>())
@@ -282,7 +282,7 @@ void SetupInUseSelectionFlags()
         ObjectEntryIndex type = vehicle->ride_subtype;
         if (type != kObjectEntryIndexNull) // cable lifts use index null. Ignore them
         {
-            Editor::SetSelectedObject(ObjectType::Ride, type, ObjectSelectionFlags::InUse);
+            Editor::SetSelectedObject(ObjectType::ride, type, ObjectSelectionFlags::InUse);
         }
     }
 
@@ -312,7 +312,7 @@ void Sub6AB211()
     int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
     _objectSelectionFlags = std::vector<uint8_t>(numObjects);
 
-    for (uint8_t objectType = 0; objectType < EnumValue(ObjectType::Count); objectType++)
+    for (uint8_t objectType = 0; objectType < EnumValue(ObjectType::count); objectType++)
     {
         _numSelectedObjectsForType[objectType] = 0;
         _numAvailableObjectsForType[objectType] = 0;
@@ -373,7 +373,7 @@ static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descr
         auto entryIndex = objManager.GetLoadedObjectEntryIndex(obj);
         switch (obj->GetObjectType())
         {
-            case ObjectType::Ride:
+            case ObjectType::ride:
             {
                 auto rideEntry = GetRideEntryByIndex(entryIndex);
                 for (auto rideType : rideEntry->ride_type)
@@ -386,7 +386,7 @@ static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descr
                 }
                 break;
             }
-            case ObjectType::SceneryGroup:
+            case ObjectType::sceneryGroup:
             {
                 ResearchItem tmp = {};
                 tmp.type = Research::EntryType::Scenery;
@@ -466,7 +466,7 @@ static void SelectDesignerObjects()
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto* oldPalette = objectManager.GetLoadedObject(ObjectType::Water, 0);
+    auto* oldPalette = objectManager.GetLoadedObject(ObjectType::water, 0);
 
     if (oldPalette != nullptr)
     {
@@ -581,7 +581,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         }
 
         ObjectType objectType = item->Type;
-        if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
+        if (objectType == ObjectType::sceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
@@ -620,7 +620,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
     }
 
-    if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
+    if (objectType == ObjectType::sceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
     {
         for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
         {
@@ -632,12 +632,12 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
             }
         }
     }
-    else if (objectType == ObjectType::Water)
+    else if (objectType == ObjectType::water)
     {
         // Replace old palette with newly selected palette immediately.
         ReplaceSelectedWaterPalette(item);
     }
-    else if (objectType == ObjectType::PeepNames)
+    else if (objectType == ObjectType::peepNames)
     {
         PeepUpdateNames();
     }
@@ -693,7 +693,7 @@ bool EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType)
 
     for (size_t i = 0; i < numObjects; i++)
     {
-        const auto isAnimObjectType = items[i].Type == ObjectType::PeepAnimations;
+        const auto isAnimObjectType = items[i].Type == ObjectType::peepAnimations;
         const bool isSelected = _objectSelectionFlags[i] & ObjectSelectionFlags::Selected;
         if (isAnimObjectType && isSelected && items[i].PeepAnimationsInfo.PeepType == peepType)
         {
@@ -711,7 +711,7 @@ bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue)
     {
         const auto& ori = items[i];
         auto isQueue = (ori.FootpathSurfaceInfo.Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0;
-        if (ori.Type == ObjectType::FootpathSurface && (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
+        if (ori.Type == ObjectType::footpathSurface && (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
             && queue == isQueue)
         {
             return true;
@@ -742,19 +742,19 @@ int32_t EditorRemoveUnusedObjects()
                     continue;
 
                 // The water type controls the entire palette. Removing that object can badly break the game state.
-                if (objectType == ObjectType::Water)
+                if (objectType == ObjectType::water)
                     continue;
 
                 // Avoid the used peep names object being deleted as no in-use checks are performed.
-                if (objectType == ObjectType::PeepNames)
+                if (objectType == ObjectType::peepNames)
                     continue;
 
                 // Avoid deleting peep animation objects, as it ensures we don't delete the last ones for a kind of peep.
-                if (objectType == ObjectType::PeepAnimations)
+                if (objectType == ObjectType::peepAnimations)
                     continue;
 
                 // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.
-                if (objectType == ObjectType::SceneryGroup)
+                if (objectType == ObjectType::sceneryGroup)
                     continue;
 
                 _numSelectedObjectsForType[EnumValue(objectType)]--;

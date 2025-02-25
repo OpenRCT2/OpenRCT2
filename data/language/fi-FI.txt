@@ -1926,9 +1926,6 @@ STR_2706    :Ei koskaan
 STR_2707    :Avaa uusi ikkuna
 STR_2708    :{WINDOW_COLOUR_1}Oletko varma, että haluat korvata tiedoston {STRINGID}?
 STR_2709    :Korvaa
-STR_2710    :Kirjoita tiedoston nimi
-STR_2718    :(ylös)
-STR_2719    :(uusi tiedosto)
 STR_2720    :{UINT16}sek
 STR_2721    :{UINT16}sek
 STR_2722    :{UINT16}min:{UINT16}sek
@@ -3009,7 +3006,6 @@ STR_5887    :Etuliite
 STR_5888    :Pääte
 STR_5889    :Mukautettu valuuttasymboli
 STR_5890    :Anna näytettävä valuuttasymboli
-STR_5891    :Oletus
 STR_5892    :Mene oletuskansioon
 STR_5893    :Vaihtokurssi
 STR_5894    :Anna vaihtokurssi

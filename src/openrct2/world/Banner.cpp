@@ -18,7 +18,7 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../management/Finance.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/BannerSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/WallSceneryEntry.h"

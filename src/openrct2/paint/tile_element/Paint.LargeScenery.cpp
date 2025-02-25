@@ -262,34 +262,34 @@ static void PaintLargeScenery3DText(
                 CodepointView view(current);
                 auto lineWidth = 0;
                 auto it = view.begin();
-                while (it != view.end() && lineWidth < text->max_width)
+                size_t lastWhitespaceIndex = 0;
+                while (it != view.end())
                 {
-                    // Trim any leading spaces
-                    auto codepoint = *it;
-                    if (codepoint != ' ' || lineWidth != 0)
+                    const auto codepoint = *it;
+                    const auto glyph = text->GetGlyph(codepoint, ' ');
+                    lineWidth += glyph.width;
+
+                    if (codepoint == ' ')
                     {
-                        // Determine if this is a good place to split
-                        if (codepoint == ' ' || codepoint == '\n')
-                        {
-                            auto index = it.GetIndex();
-                            best = current.substr(0, index);
-                            next = current.substr(index + 1);
-                            if (codepoint == '\n')
-                                break;
-                        }
-
-                        auto glyph = text->GetGlyph(*it, ' ');
-                        lineWidth += glyph.width;
+                        lastWhitespaceIndex = it.GetIndex();
                     }
-                    it++;
-                }
 
-                if (best.empty())
-                {
-                    // No good split found, or reached end of string
-                    auto index = it.GetIndex();
+                    if (lineWidth > text->max_width)
+                    {
+                        break;
+                    }
+
+                    it++;
+
+                    const auto index = it.GetIndex();
                     best = current.substr(0, index);
                     next = current.substr(index);
+                }
+
+                if (lastWhitespaceIndex != 0 && it != view.end())
+                {
+                    best = current.substr(0, lastWhitespaceIndex);
+                    next = current.substr(lastWhitespaceIndex + 1);
                 }
 
                 PaintLargeScenery3DTextLine(session, sceneryEntry, *text, best, imageTemplate, direction, offsetY);

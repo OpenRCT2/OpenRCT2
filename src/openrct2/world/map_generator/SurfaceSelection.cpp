@@ -63,7 +63,7 @@ namespace OpenRCT2::World::MapGenerator
 
         if (edgeTexture.empty())
         {
-            auto surfaceObject = objectManager.GetLoadedObject(ObjectType::TerrainSurface, surfaceTextureId);
+            auto surfaceObject = objectManager.GetLoadedObject(ObjectType::terrainSurface, surfaceTextureId);
             auto surfaceTexture = surfaceObject->GetIdentifier();
 
             // Base edge type on surface type

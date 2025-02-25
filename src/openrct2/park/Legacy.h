@@ -40,7 +40,7 @@ void UpdateFootpathsFromMapping(
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
     const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
 
-const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList);
+const std::vector<std::string_view>& GetLegacyPeepAnimationObjects();
 void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState);
 
 /**

@@ -23,6 +23,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/MazeSetTrackAction.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
@@ -30,12 +31,12 @@
 #include <openrct2/actions/TrackPlaceAction.h>
 #include <openrct2/actions/TrackRemoveAction.h>
 #include <openrct2/actions/TrackSetBrakeSpeedAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
@@ -45,7 +46,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/ConstructionClearance.h>
@@ -253,6 +253,7 @@ namespace OpenRCT2::Ui::Windows
 
             _currentTrackPrice = kMoney64Undefined;
             _currentBrakeSpeed = 8;
+            _currentColourScheme = RideColourScheme::main;
             _currentSeatRotationAngle = 4;
 
             _currentlySelectedTrack = currentRide->GetRideTypeDescriptor().StartTrackPiece;
@@ -2690,7 +2691,7 @@ namespace OpenRCT2::Ui::Windows
             tempTrackTileElement.AsTrack()->SetRideType(currentRide->type);
             tempTrackTileElement.AsTrack()->SetHasCableLift(false);
             tempTrackTileElement.AsTrack()->SetInverted(liftHillAndInvertedState.has(LiftHillAndInverted::inverted));
-            tempTrackTileElement.AsTrack()->SetColourScheme(RideColourScheme::main);
+            tempTrackTileElement.AsTrack()->SetColourScheme(_currentColourScheme);
             // Skipping seat rotation, should not be necessary for a temporary piece.
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
@@ -3108,6 +3109,7 @@ namespace OpenRCT2::Ui::Windows
                 _selectedTrackType = tileElement->AsTrack()->GetTrackType();
                 if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
                     _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+                _currentColourScheme = static_cast<RideColourScheme>(tileElement->AsTrack()->GetColourScheme());
                 _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
             }
         }
@@ -5045,6 +5047,8 @@ namespace OpenRCT2::Ui::Windows
         {
             properties = _currentSeatRotationAngle << 12;
         }
+
+        properties |= static_cast<uint8_t>(_currentColourScheme) << 8;
 
         if (_trackType != nullptr)
             *_trackType = trackType;

@@ -37,7 +37,7 @@
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
-#include "network.h"
+#include "Network.h"
 
 #include <cassert>
 #include <iterator>
@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kNetworkStreamVersion = 0;
+constexpr uint8_t kNetworkStreamVersion = 3;
 
 const std::string kNetworkStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kNetworkStreamVersion);
 

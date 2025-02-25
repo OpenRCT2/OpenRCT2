@@ -16,10 +16,11 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../SpriteIds.h"
 #include "../actions/GameAction.h"
+#include "../audio/Audio.h"
 #include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
@@ -35,7 +36,7 @@
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
 #include "../paint/Paint.h"
@@ -48,7 +49,6 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
-#include "../sprites.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -808,7 +808,7 @@ void Peep::UpdateFalling()
                                      { x, y }, tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
                     + tile_element->GetBaseZ();
 
-                if (height < z - 1 || height > z + 4)
+                if (height < z - 1 || height > z + 8)
                     continue;
 
                 saved_height = height;

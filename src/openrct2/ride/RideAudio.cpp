@@ -11,10 +11,10 @@
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
+#include "../audio/Audio.h"
 #include "../audio/AudioChannel.h"
 #include "../audio/AudioContext.h"
 #include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../object/AudioObject.h"
@@ -188,7 +188,7 @@ namespace OpenRCT2::RideAudio
     void CircusStartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        ObjectEntryDescriptor desc(ObjectType::Audio, AudioObjectIdentifiers::kRCT2Circus);
+        ObjectEntryDescriptor desc(ObjectType::audio, AudioObjectIdentifiers::kRCT2Circus);
         auto audioObj = static_cast<AudioObject*>(objManager.GetLoadedObject(desc));
         if (audioObj != nullptr)
         {

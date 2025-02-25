@@ -27,12 +27,12 @@
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/PauseToggleAction.h>
 #include <openrct2/actions/TileModifyAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Track.h>

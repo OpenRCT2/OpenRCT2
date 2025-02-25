@@ -11,13 +11,10 @@
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
-#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../interface/Fonts.h"
-#include "../object/ObjectManager.h"
 #include "Language.h"
 #include "LanguagePack.h"
-#include "StringIds.h"
 
 #include <stdexcept>
 

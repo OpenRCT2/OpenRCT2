@@ -1920,9 +1920,6 @@ STR_2706    :Soha
 STR_2707    :Rendszer fájlkezelőjének használata
 STR_2708    :{WINDOW_COLOUR_1}Biztos, hogy felül akarod írni ezt: {STRINGID}?
 STR_2709    :Felülírás
-STR_2710    :Írd be a fájl nevét.
-STR_2718    :Fel
-STR_2719    :Új fájl
 STR_2720    :{UINT16} mp
 STR_2721    :{UINT16} mp
 STR_2722    :{UINT16} perc {UINT16} mp
@@ -3001,7 +2998,6 @@ STR_5887    :Előtag
 STR_5888    :Utótag
 STR_5889    :Egyedi pénznem szimbólum
 STR_5890    :Add meg a megjelenítendő pénznem szimbólumot
-STR_5891    :Alapértelmezett
 STR_5892    :Vissza az alapértelmezett mappába
 STR_5893    :Árfolyam
 STR_5894    :Írd be az árfolyamot

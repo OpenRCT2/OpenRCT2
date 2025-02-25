@@ -32,7 +32,6 @@
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
     #include "../localisation/Language.h"
-    #include "../localisation/Localisation.Date.h"
     #include "Platform.h"
 
     #include <cstring>

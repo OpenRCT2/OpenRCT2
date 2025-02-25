@@ -7,10 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../track/Segment.h"
 
@@ -4130,7 +4130,7 @@ static void InvertedFlyingRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27501), { 0, 0, height + 24 },
-                        { { 4, 4, height + 22 }, { 28, 28, 3 } });
+                        { { 16, 16, height + 22 }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(

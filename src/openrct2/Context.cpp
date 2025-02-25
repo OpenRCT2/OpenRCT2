@@ -25,8 +25,8 @@
 #include "ReplayManager.h"
 #include "Version.h"
 #include "actions/GameAction.h"
+#include "audio/Audio.h"
 #include "audio/AudioContext.h"
-#include "audio/audio.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/File.h"
@@ -50,8 +50,8 @@
 #include "localisation/Localisation.Date.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
+#include "network/Network.h"
 #include "network/NetworkBase.h"
-#include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
@@ -174,10 +174,6 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
-            , _objectRepository(CreateObjectRepository(_env))
-            , _objectManager(CreateObjectManager(*_objectRepository))
-            , _trackDesignRepository(CreateTrackDesignRepository(_env))
-            , _scenarioRepository(CreateScenarioRepository(_env))
             , _replayManager(CreateReplayManager())
             , _gameStateSnapshots(CreateGameStateSnapshots())
 #ifdef ENABLE_SCRIPTING
@@ -465,6 +461,13 @@ namespace OpenRCT2
                 }
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
+
+            // The repositories are all dependent on the RCT2 path being set,
+            // so they cannot be set in the constructor.
+            _objectRepository = CreateObjectRepository(_env);
+            _objectManager = CreateObjectManager(*_objectRepository);
+            _trackDesignRepository = CreateTrackDesignRepository(_env);
+            _scenarioRepository = CreateScenarioRepository(_env);
 
             if (!gOpenRCT2Headless)
             {

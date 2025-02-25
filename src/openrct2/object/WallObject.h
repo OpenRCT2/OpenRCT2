@@ -18,7 +18,7 @@ private:
     WallSceneryEntry _legacyType = {};
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::Walls;
+    static constexpr ObjectType kObjectType = ObjectType::walls;
 
     void* GetLegacyData() override
     {
