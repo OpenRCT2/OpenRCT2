@@ -3001,7 +3001,7 @@ STR_5887    :Prefiks
 STR_5888    :Sufiks
 STR_5889    :Własny symbol waluty
 STR_5890    :Wprowadź własny symbol waluty:
-STR_5892    :Idź do domyślnego katalogu
+STR_5892    :Idź do katalogu domyślnego
 STR_5893    :Kurs wymiany
 STR_5894    :Wprowadź kurs wymiany:
 STR_5895    :Zapisz trasę
@@ -3789,3 +3789,6 @@ STR_6729    :Wyciągarka linowa musi znajdować się bezpośrednio po stacji lub
 STR_6730    :Eksportuj dane emscripten
 STR_6731    :Importuj dane emscripten
 STR_6732    :Pokaż przycisk na pasku narzędzi do obracania widoku w kierunku przeciwnym do ruchu wskazówek zegara
+STR_6733    :Półprzezroczystość
+STR_6734    :Elementy mapy, które znajdują się na lub powyżej wysokości cięcia, są wyświetlane jako półprzezroczyste
+STR_6735    :Idź do katalogu nadrzędnego
