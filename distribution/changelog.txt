@@ -1,3 +1,6 @@
+0.4.21 (in development)
+------------------------------------------------------------------------
+
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------
 - Feature: [#22905] Add diagonal downward-inclined brakes to hybrid coaster and single rail coaster.
