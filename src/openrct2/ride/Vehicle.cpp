@@ -1091,6 +1091,8 @@ void Vehicle::UpdateMeasurements()
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
         {
             uint8_t helixes = RideGetHelixSections(*curRide);
+            // helixes are stored on the last 5 bits of special_track_elements
+            // *DO NOT* change limits over 31 without revisiting this logic
             if (helixes != OpenRCT2::Limits::kMaxHelices)
                 helixes++;
 
