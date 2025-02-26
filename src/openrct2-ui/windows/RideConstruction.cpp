@@ -669,6 +669,12 @@ namespace OpenRCT2::Ui::Windows
                 {
                     disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
                 }
+                // Ensures that you can build an "unbanking turn", but not select a turn that start banked and
+                // turns to level (as that does not exist).
+                if (_currentTrackRollEnd != TrackRoll::None && _currentTrackPitchEnd != TrackPitch::None)
+                {
+                    disabledWidgets |= (1uLL << WIDX_LEVEL);
+                }
             }
             if (_currentTrackPitchEnd == TrackPitch::Up90 || _previousTrackPitchEnd == TrackPitch::Up90)
             {
