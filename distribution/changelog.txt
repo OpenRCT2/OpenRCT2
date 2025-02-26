@@ -1,6 +1,6 @@
 0.4.21 (in development)
 ------------------------------------------------------------------------
-- Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve.
+- Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve (original bug).
 
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------
