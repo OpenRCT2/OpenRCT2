@@ -9521,6 +9521,146 @@
         "palette": "keep"
     },
     {
+        "path": "track/wooden/left_bank_front_swne.png",
+        "x": -2,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/left_bank_front_nwse.png",
+        "x": -31,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/left_bank_rails_front_swne.png",
+        "x": -3,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/left_bank_rails_front_nwse.png",
+        "x": -31,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/24225_front.png",
+        "x": 9,
+        "y": -15
+    },
+    {
+        "path": "track/wooden/24232_front.png",
+        "x": -30,
+        "y": -15
+    },
+    {
+        "path": "track/wooden/24249_front.png",
+        "x": -4,
+        "y": -24
+    },
+    {
+        "path": "track/wooden/24256_front.png",
+        "x": -30,
+        "y": -24
+    },
+    {
+        "path": "track/wooden/24261_front.png",
+        "x": 9,
+        "y": -23
+    },
+    {
+        "path": "track/wooden/24262_front.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/24267_front.png",
+        "x": -3,
+        "y": -8
+    },
+    {
+        "path": "track/wooden/24268_front.png",
+        "x": -30,
+        "y": -23
+    },
+    {
+        "path": "track/wooden/24277_front.png",
+        "x": -2,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/24284_front.png",
+        "x": -32,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/24285_front.png",
+        "x": -2,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/24292_front.png",
+        "x": -31,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/25091_front.png",
+        "x": 0,
+        "y": -15
+    },
+    {
+        "path": "track/wooden/25098_front.png",
+        "x": -30,
+        "y": -15
+    },
+    {
+        "path": "track/wooden/25115_front.png",
+        "x": -4,
+        "y": -24
+    },
+    {
+        "path": "track/wooden/25122_front.png",
+        "x": -30,
+        "y": -24
+    },
+    {
+        "path": "track/wooden/25127_front.png",
+        "x": -1,
+        "y": -23
+    },
+    {
+        "path": "track/wooden/25128_front.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/25133_front.png",
+        "x": -4,
+        "y": -8
+    },
+    {
+        "path": "track/wooden/25134_front.png",
+        "x": -30,
+        "y": -23
+    },
+    {
+        "path": "track/wooden/25143_front.png",
+        "x": -2,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/25150_front.png",
+        "x": -32,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/25151_front.png",
+        "x": -2,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/25158_front.png",
+        "x": -31,
+        "y": -16
+    },
+    {
         "path": "track/wooden/booster_1.png",
         "x": -34,
         "y": -15
