@@ -224,9 +224,10 @@ namespace OpenRCT2
                 ReadWriteStringTable(cs, scenarioDetails, "en-GB");
                 entry.Details = scenarioDetails;
 
+                // wrong order is intentional here due to ReadWriteScenarioChunk writing guests first
                 entry.ObjectiveType = cs.Read<uint8_t>();
                 entry.ObjectiveArg1 = cs.Read<uint8_t>();
-                entry.ObjectiveArg3 = cs.Read<int16_t>();
+                entry.ObjectiveArg3 = cs.Read<uint16_t>();
                 entry.ObjectiveArg2 = cs.Read<int32_t>();
 
                 entry.SourceGame = ScenarioSource::Other;
