@@ -145,10 +145,7 @@ namespace OpenRCT2::Ui
         // Draw the frame
         GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, press);
 
-        // Check if the window can be resized
-        if (!(w.flags & WF_RESIZABLE))
-            return;
-        if (w.min_width == w.max_width && w.min_height == w.max_height)
+        if (!w.canBeResized())
             return;
 
         // Draw the resize sprite at the bottom right corner
@@ -175,10 +172,7 @@ namespace OpenRCT2::Ui
         // Draw the panel
         GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, 0);
 
-        // Check if the window can be resized
-        if (!(w.flags & WF_RESIZABLE))
-            return;
-        if (w.min_width == w.max_width && w.min_height == w.max_height)
+        if (!w.canBeResized())
             return;
 
         // Draw the resize sprite at the bottom right corner
@@ -568,13 +562,13 @@ namespace OpenRCT2::Ui
         int32_t width = widget->width() - 4;
         if ((widget + 1)->type == WindowWidgetType::CloseBox)
         {
-            width -= kCloseButtonWidth;
+            width -= kCloseButtonSize;
             if ((widget + 2)->type == WindowWidgetType::CloseBox)
-                width -= kCloseButtonWidth;
+                width -= kCloseButtonSize;
         }
         topLeft.x += width / 2;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
-            topLeft.x += kCloseButtonWidth;
+            topLeft.x += kCloseButtonSize;
 
         DrawTextEllipsised(
             dpi, topLeft, width, widget->text, Formatter::Common(),

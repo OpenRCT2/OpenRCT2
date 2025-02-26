@@ -155,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& list = widgets[WIDX_LIST];
             list.left = 6;
-            list.top = 20 + 11 + 3;
+            list.top = widgets[WIDX_TITLE].height() + 8 + 11 + 3;
             list.right = width - 2 - 24 - 1;
             list.bottom = height - 6 - 11 - 3;
 
@@ -168,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LOW_LABEL].left = list.left;
             widgets[WIDX_LOW_LABEL].right = list.right;
 
-            auto toolstripY = 20;
+            auto toolstripY = widgets[WIDX_TITLE].height() + 8;
             auto toolstripRight = width - 2;
             auto toolstripLeft = toolstripRight - 24;
             for (WidgetIndex i = WIDX_MOVE_UP; i <= WIDX_APPLY; i++)

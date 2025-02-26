@@ -481,11 +481,11 @@ namespace OpenRCT2
         if (Config::Get().interface.WindowButtonsOnTheLeft)
         {
             widgets[2].left = 2;
-            widgets[2].right = 2 + kCloseButtonWidth;
+            widgets[2].right = 2 + kCloseButtonSize;
         }
         else
         {
-            widgets[2].left = width - 3 - kCloseButtonWidth;
+            widgets[2].left = width - 3 - kCloseButtonSize;
             widgets[2].right = width - 3;
         }
     }
@@ -564,7 +564,7 @@ namespace OpenRCT2
 
     ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     {
-        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonWidth + 2 : 0;
+        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
         return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
     }
 } // namespace OpenRCT2

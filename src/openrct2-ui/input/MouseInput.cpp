@@ -1177,10 +1177,7 @@ namespace OpenRCT2
 
                     case WindowWidgetType::Frame:
                     case WindowWidgetType::Resize:
-                        if (!(window->flags & WF_RESIZABLE))
-                            break;
-
-                        if (window->min_width == window->max_width && window->min_height == window->max_height)
+                        if (!window->canBeResized())
                             break;
 
                         if (screenCoords.x < window->windowPos.x + window->width - 0x13)

@@ -492,9 +492,8 @@ namespace OpenRCT2::Ui::Windows
 
             // Having the content panel visible for transparent windows makes the borders darker than they should be
             // For now just hide it if there are no tabs and the window is not resizable
-            auto canResize = (flags & WF_RESIZABLE) != 0 && (min_width != max_width || min_height != max_height);
             auto numTabs = _info.Desc.Tabs.size();
-            if (canResize || numTabs != 0)
+            if (canBeResized() || numTabs != 0)
             {
                 widgets[WIDX_CONTENT_PANEL].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
             }

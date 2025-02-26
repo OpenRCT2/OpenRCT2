@@ -633,8 +633,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
-                int32_t newWidth = width - 30;
-                int32_t newHeight = height - 62;
+                auto widget = widgets[WIDX_VIEWPORT];
+                auto newWidth = widget.width() - 1;
+                auto newHeight = widget.height() - 1;
+                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
 
                 // Update the viewport size
                 if (viewport->width != newWidth || viewport->height != newHeight)

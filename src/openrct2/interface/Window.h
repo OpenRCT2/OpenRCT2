@@ -96,6 +96,8 @@ namespace OpenRCT2
         // Create only flags
         WF_AUTO_POSITION = (1 << 16),
         WF_CENTRE_SCREEN = (1 << 17),
+
+        WF_NO_TITLE_BAR = (1 << 18),
     };
 
     enum

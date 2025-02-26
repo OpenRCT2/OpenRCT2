@@ -300,7 +300,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ width - 155, 32 }, STR_COST_PER_MONTH, ft);
+                auto y = widgets[WIDX_STAFF_LIST_TITLE].bottom + 17;
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ width - 155, y }, STR_COST_PER_MONTH, ft);
             }
 
             if (GetSelectedStaffType() != StaffType::Entertainer)

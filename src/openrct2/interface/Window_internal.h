@@ -119,6 +119,11 @@ namespace OpenRCT2
 
         WindowBase& operator=(const WindowBase&) = delete;
 
+        constexpr bool canBeResized() const
+        {
+            return (flags & WF_RESIZABLE) && (min_width != max_width || min_height != max_height);
+        }
+
         // Events
         virtual void OnOpen()
         {
