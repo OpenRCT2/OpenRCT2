@@ -927,8 +927,10 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kFlatT
 } };
 
 static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kLeftBankImages = { {
-    { SPR_WOODEN_RC_LEFT_BANK_SW_NE, SPR_WOODEN_RC_LEFT_BANK_RAILS_SW_NE },
-    { SPR_WOODEN_RC_LEFT_BANK_NW_SE, SPR_WOODEN_RC_LEFT_BANK_RAILS_NW_SE },
+    { SPR_WOODEN_RC_LEFT_BANK_SW_NE, SPR_WOODEN_RC_LEFT_BANK_RAILS_SW_NE, SPR_G2_WOODEN_RC_LEFT_BANK_FRONT_SW_NE,
+      SPR_G2_WOODEN_RC_LEFT_BANK_RAILS_FRONT_SW_NE },
+    { SPR_WOODEN_RC_LEFT_BANK_NW_SE, SPR_WOODEN_RC_LEFT_BANK_RAILS_NW_SE, SPR_G2_WOODEN_RC_LEFT_BANK_FRONT_NW_SE,
+      SPR_G2_WOODEN_RC_LEFT_BANK_RAILS_FRONT_NW_SE },
     { SPR_WOODEN_RC_LEFT_BANK_NE_SW, SPR_WOODEN_RC_LEFT_BANK_RAILS_NE_SW },
     { SPR_WOODEN_RC_LEFT_BANK_SE_NW, SPR_WOODEN_RC_LEFT_BANK_RAILS_SE_NW },
 } };
@@ -5800,6 +5802,12 @@ static void WoodenRCTrack25DegUpLeftBanked(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25115), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24249_FRONT),
+                { 0, 0, height }, { { 4, 26, height + 5 }, { 24, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25115_FRONT), { 0, 0, height },
+                { { 4, 26, height + 5 }, { 24, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25Deg);
@@ -5922,6 +5930,12 @@ static void WoodenRCTrack25DegUpRightBanked(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25122), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24256_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25122_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25Deg);
@@ -11262,6 +11276,12 @@ static void WoodenRCTrack25DegUpToLeftBanked25DegUp(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25127), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24261_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25127_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25Deg);
@@ -11273,6 +11293,12 @@ static void WoodenRCTrack25DegUpToLeftBanked25DegUp(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25128), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24262_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25128_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25Deg);
@@ -11349,6 +11375,12 @@ static void WoodenRCTrack25DegUpToRightBanked25DegUp(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25133), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24267_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25133_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25Deg);
@@ -11360,6 +11392,12 @@ static void WoodenRCTrack25DegUpToRightBanked25DegUp(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25134), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24268_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25134_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25Deg);
@@ -11562,6 +11600,12 @@ static void WoodenRCTrackLeftBankedFlatToLeftBanked25DegUp(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25143), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24277_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25143_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::FlatToUp25Deg);
@@ -11684,6 +11728,12 @@ static void WoodenRCTrackRightBankedFlatToRightBanked25DegUp(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25150), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24284_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25150_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::FlatToUp25Deg);
@@ -11716,6 +11766,12 @@ static void WoodenRCTrackLeftBanked25DegUpToLeftBankedFlat(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25151), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24285_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25151_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25DegToFlat);
@@ -11838,6 +11894,12 @@ static void WoodenRCTrackRightBanked25DegUpToRightBankedFlat(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25158), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24292_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25158_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::Up25DegToFlat);
@@ -11910,6 +11972,12 @@ static void WoodenRCTrackFlatToLeftBanked25DegUp(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25091), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24225_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25091_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::FlatToUp25Deg);
@@ -12032,6 +12100,12 @@ static void WoodenRCTrackFlatToRightBanked25DegUp(
             PaintAddImageAsChildRotated(
                 session, direction, WoodenRCGetRailsColour(session).WithIndex(25098), { 0, 0, height },
                 { { 0, 3, height }, { 32, 25, 2 } });
+            PaintAddImageAsParentRotated(
+                session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_24232_FRONT),
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+            PaintAddImageAsChildRotated(
+                session, direction, WoodenRCGetRailsColour(session).WithIndex(SPR_G2_WOODEN_RC_25098_FRONT), { 0, 0, height },
+                { { 0, 26, height + 5 }, { 32, 1, 9 } });
             WoodenASupportsPaintSetupRotated(
                 session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
                 WoodenSupportTransitionType::FlatToUp25Deg);
