@@ -70,12 +70,9 @@ extern const TrackElementMetalSupports kBobsleighCoasterMetalSupports[EnumValue(
 extern const TrackElementMetalSupports kCarRideMetalSupports[EnumValue(TrackElemType::Count)];
 extern const TrackElementMetalSupports kChairliftMetalSupports[EnumValue(TrackElemType::Count)];
 extern const TrackElementMetalSupports kClassicStandUpRollerCoasterMetalSupports[EnumValue(TrackElemType::Count)];
-extern const TrackElementMetalSupports kClassicWoodenRollerCoasterMetalSupports[EnumValue(TrackElemType::Count)];
-extern const TrackElementMetalSupports kClassicWoodenTwisterRollerCoasterMetalSupports[EnumValue(TrackElemType::Count)];
 extern const TrackElementMetalSupports kCompactInvertedCoasterMetalSupports[EnumValue(TrackElemType::Count)];
 extern const TrackElementMetalSupports kCorkscrewRollerCoasterMetalSupports[EnumValue(TrackElemType::Count)];
 extern const TrackElementMetalSupports kDinghySlideMetalSupports[EnumValue(TrackElemType::Count)];
-extern const TrackElementMetalSupports kDinghySlideCoveredMetalSupports[EnumValue(TrackElemType::Count)];
 extern const TrackElementMetalSupports kFlyingRollerCoasterMetalSupports[EnumValue(TrackElemType::Count)];
 extern const TrackElementMetalSupports kFlyingRollerCoasterInvertedMetalSupports[EnumValue(TrackElemType::Count)];
 extern const TrackElementMetalSupports kGhostTrainMetalSupports[EnumValue(TrackElemType::Count)];
