@@ -94,6 +94,7 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
       SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 26, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 27 }, // Steep to flat large 3
     { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 28, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 29,
       SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 30, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 31 }, // Steep to flat large 4
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined },         // None steep adjacent
 } };
 static_assert(std::size(WoodenCurveSupportImageIds0) == kWoodenSupportTransitionTypeUninvertedCount);
 
@@ -126,6 +127,7 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportFrontImageIds0 = 
       SPR_G2_SUPPORT_WOODEN_TRUSS_STEEP_TO_FLAT_2_3_FRONT, kImageIndexUndefined },              // Steep to flat large 2
     { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Steep to flat large 3
     { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Steep to flat large 4
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // None steep adjacent
 } };
 static_assert(std::size(WoodenCurveSupportFrontImageIds0) == kWoodenSupportTransitionTypeUninvertedCount);
 
@@ -159,6 +161,7 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
       SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 26, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 27 }, // Steep to flat large 3
     { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 28, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 29,
       SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 30, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 31 }, // Steep to flat large 4
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined },       // None steep adjacent
 } };
 static_assert(std::size(WoodenCurveSupportImageIds1) == kWoodenSupportTransitionTypeUninvertedCount);
 
@@ -189,6 +192,7 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportFrontImageIds1 = 
       SPR_G2_SUPPORT_WOODEN_MINE_STEEP_TO_FLAT_2_3_FRONT, kImageIndexUndefined },               // Steep to flat large 2
     { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Steep to flat large 3
     { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Steep to flat large 4
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // None steep adjacent
 } };
 static_assert(std::size(WoodenCurveSupportFrontImageIds1) == kWoodenSupportTransitionTypeUninvertedCount);
 
@@ -328,6 +332,10 @@ static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // None steep adjacent
+    {{{0,  0,  0}, {1,  1,  8}},  true},
+    {{{0,  0,  0}, {1,  1,  8}},  true},
+    {{{0,  0,  0}, {1,  1,  8}},  false},    
 };
 static_assert(std::size(SupportsDescriptors) == kWoodenSupportTransitionTypeUninvertedCount * 4);
 

@@ -47,6 +47,7 @@ enum class WoodenSupportTransitionType : uint8_t
     Up25DegToUp60Deg = 3,
     Up60DegToUp25Deg = 4,
     Up60Deg = 5,
+    // 6
     FlatToUp60Deg = 7,
     Up60DegToFlat = 8,
     FlatToUp25DegRailway = 9,
@@ -61,28 +62,31 @@ enum class WoodenSupportTransitionType : uint8_t
     Up60DegToFlatLongBaseSeq1 = 18,
     Up60DegToFlatLongBaseSeq2 = 19,
     Up60DegToFlatLongBaseSeq3 = 20,
+    NoneSteepAdjacent = 21,
 
     // Inverted versions
-    Down25DegToFlat = 21,
-    FlatToDown25Deg = 22,
-    Down25Deg = 23,
-    Down60DegToDown25Deg = 24,
-    Down25DegToDown60Deg = 25,
-    Down60Deg = 26,
-    Down60DegToFlat = 28,
-    FlatToDown60Deg = 29,
-    Down25DegToFlatRailway = 30,
-    FlatToDown25DegRailway = 31,
-    Down25DegRailway = 32,
-
-    Down60DegToFlatLongBaseSeq3 = 34,
-    Down60DegToFlatLongBaseSeq2 = 35,
-    Down60DegToFlatLongBaseSeq1 = 36,
-    Down60DegToFlatLongBaseSeq0 = 37,
-    FlatToDown60DegLongBaseSeq3 = 38,
-    FlatToDown60DegLongBaseSeq2 = 39,
-    FlatToDown60DegLongBaseSeq1 = 40,
-    FlatToDown60DegLongBaseSeq0 = 41,
+    Down25DegToFlat = 22,
+    FlatToDown25Deg = 23,
+    Down25Deg = 24,
+    Down60DegToDown25Deg = 25,
+    Down25DegToDown60Deg = 26,
+    Down60Deg = 27,
+    // 28
+    Down60DegToFlat = 29,
+    FlatToDown60Deg = 30,
+    Down25DegToFlatRailway = 31,
+    FlatToDown25DegRailway = 32,
+    Down25DegRailway = 33,
+    // 34
+    Down60DegToFlatLongBaseSeq3 = 35,
+    Down60DegToFlatLongBaseSeq2 = 36,
+    Down60DegToFlatLongBaseSeq1 = 37,
+    Down60DegToFlatLongBaseSeq0 = 38,
+    FlatToDown60DegLongBaseSeq3 = 39,
+    FlatToDown60DegLongBaseSeq2 = 40,
+    FlatToDown60DegLongBaseSeq1 = 41,
+    FlatToDown60DegLongBaseSeq0 = 42,
+    // 43
 };
 
 constexpr uint8_t kWoodenSupportTransitionTypeUninvertedCount = EnumValue(WoodenSupportTransitionType::Down25DegToFlat);
