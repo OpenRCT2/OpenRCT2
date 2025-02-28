@@ -1,5 +1,8 @@
 0.4.23 (in development)
 ------------------------------------------------------------------------
+- Fix: [#22619] Rear facing steep supports on the Heartline Twister Coaster, Side-Friction Roller Coaster and Splash Boats are drawn incorrectly (original bug).
+- Fix: [#23871] Trains draw over rear facing steep Wooden RollerCoaster track if there is terrain directly below (original bug).
+- Fix: [#23908] rear facing steep wooden supports glitch as trains pass over them, and can draw over things in front of them (original bug).
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
