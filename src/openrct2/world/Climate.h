@@ -88,6 +88,7 @@ void ClimateForceWeather(WeatherType weather);
 enum class FilterPaletteID : int32_t;
 
 bool ClimateIsRaining();
+bool ClimateTransitioningToSnow();
 bool ClimateIsSnowing();
 bool ClimateIsSnowingHeavily();
 bool WeatherIsDry(WeatherType);
