@@ -204,9 +204,9 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* SavePromptOpen()
     {
         PromptMode prompt_mode = gSavePromptMode;
-        if (prompt_mode == PromptMode::Quit)
+        if (prompt_mode == PromptMode::quit)
         {
-            prompt_mode = PromptMode::SaveBeforeQuit;
+            prompt_mode = PromptMode::saveBeforeQuit;
         }
 
         // do not show save prompt if we're in the title demo and click on load game

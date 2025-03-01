@@ -196,11 +196,11 @@ constexpr int32_t WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE = 30;
 
 enum class PromptMode : uint8_t
 {
-    SaveBeforeLoad = 0,
-    SaveBeforeQuit,
-    SaveBeforeQuit2,
-    SaveBeforeNewGame,
-    Quit
+    saveBeforeLoad = 0,
+    saveBeforeQuit,
+    saveBeforeQuit2,
+    saveBeforeNewGame,
+    quit
 };
 
 enum BTM_TOOLBAR_DIRTY_FLAGS
