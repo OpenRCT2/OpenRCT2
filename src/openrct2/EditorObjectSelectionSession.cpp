@@ -753,6 +753,10 @@ int32_t EditorRemoveUnusedObjects()
                 if (objectType == ObjectType::peepAnimations)
                     continue;
 
+                // Avoid deleting climate objects, as they're not bound to entities.
+                if (objectType == ObjectType::climate)
+                    continue;
+
                 // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.
                 if (objectType == ObjectType::sceneryGroup)
                     continue;
