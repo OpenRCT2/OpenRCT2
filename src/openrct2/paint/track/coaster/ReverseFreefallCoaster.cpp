@@ -361,6 +361,7 @@ static void PaintReverseFreefallRCSlope(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence]);
+            PaintUtilSetVerticalTunnel(session, height + 240);
             break;
     }
 }
