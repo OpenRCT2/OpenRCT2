@@ -523,7 +523,7 @@ static uint64_t PageDisabledWidgets[] = {
             WindowInitScrollWidgets(*this);
             _tileSelected = false;
 
-            ToolSet(*this, WIDX_BACKGROUND, Tool::Crosshair);
+            ToolSet(*this, WIDX_BACKGROUND, Tool::crosshair);
         }
 
         void OnUpdate() override

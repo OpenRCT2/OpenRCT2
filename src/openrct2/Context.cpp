@@ -395,7 +395,7 @@ namespace OpenRCT2
 
         void Quit() override
         {
-            gSavePromptMode = PromptMode::Quit;
+            gSavePromptMode = PromptMode::quit;
             ContextOpenWindow(WindowClass::SavePrompt);
         }
 

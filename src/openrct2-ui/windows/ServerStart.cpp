@@ -271,9 +271,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        static void LoadSaveCallback(int32_t result, const utf8* path)
+        static void LoadSaveCallback(ModalResult result, const utf8* path)
         {
-            if (result == MODAL_RESULT_OK)
+            if (result == ModalResult::ok)
             {
                 GameNotifyMapChange();
                 GetContext()->LoadParkFromFile(path);

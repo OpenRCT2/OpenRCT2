@@ -15,6 +15,7 @@
 #include <openrct2/localisation/StringIdType.h>
 #include <string>
 
+enum class ModalResult : int8_t;
 struct TrackDesign;
 
 namespace OpenRCT2
@@ -44,7 +45,7 @@ namespace OpenRCT2::Ui::FileBrowser
         bool loaded{ false };
     };
 
-    using LoadSaveCallback = std::function<void(int32_t result, std::string_view)>;
+    using LoadSaveCallback = std::function<void(ModalResult result, std::string_view)>;
 
     bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b);
     void SetAndSaveConfigPath(u8string& config_str, u8string_view path);
@@ -54,8 +55,8 @@ namespace OpenRCT2::Ui::FileBrowser
     const char* GetFilterPatternByType(const int32_t type, const bool isSave);
     u8string RemovePatternWildcard(u8string_view pattern);
     u8string GetDir(const int32_t type);
-    void RegisterCallback(std::function<void(int32_t result, std::string_view)> callback);
-    void InvokeCallback(int32_t result, const utf8* path);
+    void RegisterCallback(std::function<void(ModalResult result, std::string_view)> callback);
+    void InvokeCallback(ModalResult result, const utf8* path);
     void Select(const char* path, int32_t type, TrackDesign* trackDesignPtr);
     StringId GetTitleStringId(int32_t type, bool isSave);
     u8string OpenSystemFileBrowser(bool isSave, int32_t type, u8string defaultDirectory, u8string defaultPath);

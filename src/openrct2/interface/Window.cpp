@@ -39,7 +39,7 @@ namespace OpenRCT2
     std::list<std::shared_ptr<WindowBase>> g_window_list;
     WindowBase* gWindowAudioExclusive;
 
-    WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::None };
+    WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::none };
 
     uint32_t gWindowUpdateTicks;
     colour_t gCurrentWindowColours[3];
@@ -850,16 +850,16 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         // w->visibility is used to prevent repeat calculations within an iteration by caching the result
 
-        if (w.visibility == VisibilityCache::Visible)
+        if (w.visibility == VisibilityCache::visible)
             return true;
-        if (w.visibility == VisibilityCache::Covered)
+        if (w.visibility == VisibilityCache::covered)
             return false;
 
         // only consider viewports, consider the main window always visible
         if (w.viewport == nullptr || w.classification == WindowClass::MainWindow)
         {
             // default to previous behaviour
-            w.visibility = VisibilityCache::Visible;
+            w.visibility = VisibilityCache::visible;
             return true;
         }
 
@@ -876,15 +876,15 @@ static constexpr float kWindowScrollLocations[][2] = {
                 && w_other.windowPos.x + w_other.width >= w.windowPos.x + w.width
                 && w_other.windowPos.y + w_other.height >= w.windowPos.y + w.height)
             {
-                w.visibility = VisibilityCache::Covered;
-                w.viewport->visibility = VisibilityCache::Covered;
+                w.visibility = VisibilityCache::covered;
+                w.viewport->visibility = VisibilityCache::covered;
                 return false;
             }
         }
 
         // default to previous behaviour
-        w.visibility = VisibilityCache::Visible;
-        w.viewport->visibility = VisibilityCache::Visible;
+        w.visibility = VisibilityCache::visible;
+        w.viewport->visibility = VisibilityCache::visible;
         return true;
     }
 
@@ -937,10 +937,10 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         // reset window visibility status to unknown
         WindowVisitEach([](WindowBase* w) {
-            w->visibility = VisibilityCache::Unknown;
+            w->visibility = VisibilityCache::unknown;
             if (w->viewport != nullptr)
             {
-                w->viewport->visibility = VisibilityCache::Unknown;
+                w->viewport->visibility = VisibilityCache::unknown;
             }
         });
     }

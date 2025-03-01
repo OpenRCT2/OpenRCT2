@@ -413,7 +413,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         case News::ItemType::Peeps:
         {
             auto intent = Intent(WindowClass::GuestList);
-            intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
+            intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsThinkingX));
             intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
             ContextOpenIntent(&intent);
             break;

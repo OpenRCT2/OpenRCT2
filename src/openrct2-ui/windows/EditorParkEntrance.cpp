@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
 
             pressed_widgets |= 1LL << WIDX_TAB;
 
-            ToolSet(*this, WIDX_LIST, Tool::EntranceDown);
+            ToolSet(*this, WIDX_LIST, Tool::entranceDown);
             InputSetFlag(INPUT_FLAG_6, true);
         }
 

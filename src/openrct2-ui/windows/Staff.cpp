@@ -391,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
                         WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
                         }
                     });
                     GameActions::Execute(&pickupAction);

@@ -612,9 +612,9 @@ void GameAutosave()
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 
-static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)
+static void GameLoadOrQuitNoSavePromptCallback(ModalResult result, const utf8* path)
 {
-    if (result == MODAL_RESULT_OK)
+    if (result == ModalResult::ok)
     {
         GameNotifyMapChange();
         GameUnloadScripts();
@@ -651,7 +651,7 @@ void GameLoadOrQuitNoSavePrompt()
 {
     switch (gSavePromptMode)
     {
-        case PromptMode::SaveBeforeLoad:
+        case PromptMode::saveBeforeLoad:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
@@ -669,7 +669,7 @@ void GameLoadOrQuitNoSavePrompt()
             }
             break;
         }
-        case PromptMode::SaveBeforeQuit:
+        case PromptMode::saveBeforeQuit:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
@@ -687,7 +687,7 @@ void GameLoadOrQuitNoSavePrompt()
             context->SetActiveScene(context->GetTitleScene());
             break;
         }
-        case PromptMode::SaveBeforeNewGame:
+        case PromptMode::saveBeforeNewGame:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);

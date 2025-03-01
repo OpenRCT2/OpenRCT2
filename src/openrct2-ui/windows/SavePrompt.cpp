@@ -73,9 +73,9 @@ namespace OpenRCT2::Ui::Windows
         { STR_NEW_GAME, STR_SAVE_BEFORE_QUITTING },
     };
 
-    static void WindowSavePromptCallback(int32_t result, const utf8* path)
+    static void WindowSavePromptCallback(ModalResult result, const utf8* path)
     {
-        if (result == MODAL_RESULT_OK)
+        if (result == ModalResult::ok)
         {
             GameLoadOrQuitNoSavePrompt();
         }
@@ -204,9 +204,9 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* SavePromptOpen()
     {
         PromptMode prompt_mode = gSavePromptMode;
-        if (prompt_mode == PromptMode::Quit)
+        if (prompt_mode == PromptMode::quit)
         {
-            prompt_mode = PromptMode::SaveBeforeQuit;
+            prompt_mode = PromptMode::saveBeforeQuit;
         }
 
         // do not show save prompt if we're in the title demo and click on load game

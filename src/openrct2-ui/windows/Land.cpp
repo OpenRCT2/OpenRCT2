@@ -533,7 +533,7 @@ namespace OpenRCT2::Ui::Windows
 
                         GameActions::Execute(&surfaceSetStyleAction);
 
-                        gCurrentToolId = Tool::UpDownArrow;
+                        gCurrentToolId = Tool::upDownArrow;
                     }
                     else
                     {
@@ -562,7 +562,7 @@ namespace OpenRCT2::Ui::Windows
 
                             // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
                             // cursor
-                            gCurrentToolId = Tool::Crosshair;
+                            gCurrentToolId = Tool::crosshair;
                         }
                     }
                     else
@@ -585,7 +585,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::DigDown;
+                    gCurrentToolId = Tool::digDown;
                     break;
             }
         }
@@ -612,7 +612,7 @@ namespace OpenRCT2::Ui::Windows
 
             MapInvalidateSelectionRect();
 
-            if (gCurrentToolId == Tool::UpDownArrow)
+            if (gCurrentToolId == Tool::upDownArrow)
             {
                 if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                     return;
@@ -892,7 +892,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ShowGridlines();
             auto* toolWindow = ContextOpenWindow(WindowClass::Land);
-            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::DigDown);
+            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::digDown);
             InputSetFlag(INPUT_FLAG_6, true);
         }
     }

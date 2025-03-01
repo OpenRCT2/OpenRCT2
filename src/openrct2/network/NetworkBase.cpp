@@ -2827,7 +2827,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         else
         {
             // Something went wrong, game is not loaded. Return to main screen.
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
             GameActions::Execute(&loadOrQuitAction);
         }
         if (has_to_free)

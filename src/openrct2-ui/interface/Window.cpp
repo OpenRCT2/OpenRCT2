@@ -421,11 +421,11 @@ namespace OpenRCT2
     {
         CloseWindowModifier modifier = GetCloseModifier();
 
-        if (modifier == CloseWindowModifier::Shift)
+        if (modifier == CloseWindowModifier::shift)
         {
             CloseOthers();
         }
-        else if (modifier == CloseWindowModifier::Control)
+        else if (modifier == CloseWindowModifier::control)
         {
             CloseOthersOfThisClass();
         }
@@ -450,14 +450,14 @@ namespace OpenRCT2
 
     CloseWindowModifier Window::GetCloseModifier()
     {
-        CloseWindowModifier lastModifier = CloseWindowModifier::None;
+        CloseWindowModifier lastModifier = CloseWindowModifier::none;
 
         if (gLastCloseModifier.window.number == number && gLastCloseModifier.window.classification == classification)
         {
             lastModifier = gLastCloseModifier.modifier;
         }
 
-        gLastCloseModifier.modifier = CloseWindowModifier::None;
+        gLastCloseModifier.modifier = CloseWindowModifier::none;
 
         return lastModifier;
     }

@@ -309,7 +309,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         void WindowMazeConstructionEntranceMouseup(WidgetIndex widgetIndex)
         {
-            if (ToolSet(*this, widgetIndex, Tool::Crosshair))
+            if (ToolSet(*this, widgetIndex, Tool::crosshair))
                 return;
 
             gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE
@@ -387,7 +387,7 @@ namespace OpenRCT2::Ui::Windows
                                                                                                           : WIDX_MAZE_EXIT;
 
                     ToolCancel();
-                    ToolSet(*this, newToolWidgetIndex, Tool::Crosshair);
+                    ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
 
                     WindowMazeConstructionUpdatePressedWidgets();
                 }

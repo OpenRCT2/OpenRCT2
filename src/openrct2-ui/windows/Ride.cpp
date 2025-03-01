@@ -4226,7 +4226,7 @@ namespace OpenRCT2::Ui::Windows
                     SetPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_PAINT_INDIVIDUAL_AREA:
-                    ToolSet(*this, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
+                    ToolSet(*this, WIDX_PAINT_INDIVIDUAL_AREA, Tool::paintDown);
                     break;
                 case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
                 {
@@ -5340,7 +5340,7 @@ namespace OpenRCT2::Ui::Windows
                 CancelScenerySelection();
             }
 
-            while (ToolSet(*this, WIDX_BACKGROUND, Tool::Crosshair))
+            while (ToolSet(*this, WIDX_BACKGROUND, Tool::crosshair))
                 ;
 
             gTrackDesignSaveRideIndex = rideId;
@@ -5378,9 +5378,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* path)
+        static void TrackDesignCallback(ModalResult result, [[maybe_unused]] const utf8* path)
         {
-            if (result == MODAL_RESULT_OK)
+            if (result == ModalResult::ok)
             {
                 TrackRepositoryScan();
             }
@@ -6741,7 +6741,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto intent = Intent(WindowClass::GuestList);
                     intent.PutExtra(
-                        INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingAboutRide));
+                        INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsThinkingAboutRide));
                     intent.PutExtra(INTENT_EXTRA_RIDE_ID, number);
                     ContextOpenIntent(&intent);
                     break;
@@ -6749,7 +6749,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_SHOW_GUESTS_ON_RIDE:
                 {
                     auto intent = Intent(WindowClass::GuestList);
-                    intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsOnRide));
+                    intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsOnRide));
                     intent.PutExtra(INTENT_EXTRA_RIDE_ID, number);
                     ContextOpenIntent(&intent);
                     break;
@@ -6757,7 +6757,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_SHOW_GUESTS_QUEUING:
                 {
                     auto intent = Intent(WindowClass::GuestList);
-                    intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsInQueue));
+                    intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsInQueue));
                     intent.PutExtra(INTENT_EXTRA_RIDE_ID, number);
                     ContextOpenIntent(&intent);
                     break;

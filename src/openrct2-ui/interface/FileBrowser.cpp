@@ -195,12 +195,12 @@ namespace OpenRCT2::Ui::FileBrowser
         return result;
     }
 
-    void RegisterCallback(std::function<void(int32_t result, std::string_view)> callback)
+    void RegisterCallback(std::function<void(ModalResult result, std::string_view)> callback)
     {
         _loadSaveCallback = callback;
     }
 
-    void InvokeCallback(int32_t result, const utf8* path)
+    void InvokeCallback(ModalResult result, const utf8* path)
     {
         if (_loadSaveCallback != nullptr)
         {
@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::FileBrowser
                 SetAndSaveConfigPath(Config::Get().general.LastSaveGameDirectory, pathBuffer);
                 if (GetContext()->LoadParkFromFile(pathBuffer))
                 {
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
+                    InvokeCallback(ModalResult::ok, pathBuffer);
                     windowMgr->CloseByClass(WindowClass::Loadsave);
                     GfxInvalidateScreen();
                 }
@@ -245,7 +245,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         // Not the best message...
                         ContextShowError(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
                     }
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
+                    InvokeCallback(ModalResult::fail, pathBuffer);
                 }
                 break;
 
@@ -261,12 +261,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     windowMgr->CloseByClass(WindowClass::Loadsave);
                     GfxInvalidateScreen();
 
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
+                    InvokeCallback(ModalResult::ok, pathBuffer);
                 }
                 else
                 {
                     ContextShowError(STR_SAVE_GAME, STR_GAME_SAVE_FAILED, {});
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
+                    InvokeCallback(ModalResult::fail, pathBuffer);
                 }
                 break;
 
@@ -276,13 +276,13 @@ namespace OpenRCT2::Ui::FileBrowser
                 {
                     gCurrentLoadedPath = pathBuffer;
                     GfxInvalidateScreen();
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
+                    InvokeCallback(ModalResult::ok, pathBuffer);
                 }
                 else
                 {
                     // Not the best message...
                     ContextShowError(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
+                    InvokeCallback(ModalResult::fail, pathBuffer);
                 }
                 break;
 
@@ -294,12 +294,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     gCurrentLoadedPath = pathBuffer;
                     windowMgr->CloseByClass(WindowClass::Loadsave);
                     GfxInvalidateScreen();
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
+                    InvokeCallback(ModalResult::ok, pathBuffer);
                 }
                 else
                 {
                     ContextShowError(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED, {});
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
+                    InvokeCallback(ModalResult::fail, pathBuffer);
                 }
                 break;
 
@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui::FileBrowser
                 if (success)
                 {
                     windowMgr->CloseByClass(WindowClass::Loadsave);
-                    InvokeCallback(MODAL_RESULT_OK, pathBuffer);
+                    InvokeCallback(ModalResult::ok, pathBuffer);
 
                     auto* context = GetContext();
                     context->SetActiveScene(context->GetTitleScene());
@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui::FileBrowser
                 {
                     ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
                     gameState.EditorStep = EditorStep::ObjectiveSelection;
-                    InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
+                    InvokeCallback(ModalResult::fail, pathBuffer);
                 }
                 break;
             }
@@ -337,7 +337,7 @@ namespace OpenRCT2::Ui::FileBrowser
                 intent.PutExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
                 ContextOpenIntent(&intent);
                 windowMgr->CloseByClass(WindowClass::Loadsave);
-                InvokeCallback(MODAL_RESULT_OK, pathBuffer);
+                InvokeCallback(ModalResult::ok, pathBuffer);
                 break;
             }
 
@@ -356,19 +356,19 @@ namespace OpenRCT2::Ui::FileBrowser
                 {
                     windowMgr->CloseByClass(WindowClass::Loadsave);
                     Windows::WindowRideMeasurementsDesignCancel();
-                    InvokeCallback(MODAL_RESULT_OK, path);
+                    InvokeCallback(ModalResult::ok, path);
                 }
                 else
                 {
                     ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED, {});
-                    InvokeCallback(MODAL_RESULT_FAIL, path);
+                    InvokeCallback(ModalResult::fail, path);
                 }
                 break;
             }
 
             case (LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP):
                 windowMgr->CloseByClass(WindowClass::Loadsave);
-                InvokeCallback(MODAL_RESULT_OK, pathBuffer);
+                InvokeCallback(ModalResult::ok, pathBuffer);
                 break;
         }
     }

@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
         Y,
     };
 
-    static void HeightmapLoadsaveCallback(int32_t result, const utf8* path);
+    static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path);
 
     class MapGenWindow final : public Window
     {
@@ -1504,9 +1504,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void AfterLoadingHeightMap(int32_t result, const utf8* path)
+        void AfterLoadingHeightMap(ModalResult result, const utf8* path)
         {
-            if (result == MODAL_RESULT_OK)
+            if (result == ModalResult::ok)
             {
                 if (!MapGenerator::LoadHeightmapImage(path))
                 {
@@ -1534,7 +1534,7 @@ namespace OpenRCT2::Ui::Windows
         return windowMgr->FocusOrCreate<MapGenWindow>(WindowClass::Mapgen, WW, WH, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
     }
 
-    static void HeightmapLoadsaveCallback(int32_t result, const utf8* path)
+    static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path)
     {
         auto* w = static_cast<MapGenWindow*>(MapgenOpen());
         w->AfterLoadingHeightMap(result, path);

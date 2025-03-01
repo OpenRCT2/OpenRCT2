@@ -248,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                if (!ToolSet(*this, 0, Tool::WalkDown))
+                if (!ToolSet(*this, 0, Tool::walkDown))
                 {
                     ShowGridlines();
                     InputSetFlag(INPUT_FLAG_6, true);
