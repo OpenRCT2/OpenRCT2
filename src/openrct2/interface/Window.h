@@ -241,9 +241,9 @@ enum class VisibilityCache : uint8_t
 
 enum class CloseWindowModifier : uint8_t
 {
-    None,
-    Shift,
-    Control
+    none,
+    shift,
+    control
 };
 
 enum class GuestListFilterType : int32_t

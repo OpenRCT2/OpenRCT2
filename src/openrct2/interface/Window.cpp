@@ -39,7 +39,7 @@ namespace OpenRCT2
     std::list<std::shared_ptr<WindowBase>> g_window_list;
     WindowBase* gWindowAudioExclusive;
 
-    WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::None };
+    WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::none };
 
     uint32_t gWindowUpdateTicks;
     colour_t gCurrentWindowColours[3];

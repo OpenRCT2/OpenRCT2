@@ -1326,13 +1326,13 @@ namespace OpenRCT2
                 {
                     gLastCloseModifier.window.number = w->number;
                     gLastCloseModifier.window.classification = w->classification;
-                    gLastCloseModifier.modifier = CloseWindowModifier::Shift;
+                    gLastCloseModifier.modifier = CloseWindowModifier::shift;
                 }
                 else if (im.IsModifierKeyPressed(ModifierKey::ctrl))
                 {
                     gLastCloseModifier.window.number = w->number;
                     gLastCloseModifier.window.classification = w->classification;
-                    gLastCloseModifier.modifier = CloseWindowModifier::Control;
+                    gLastCloseModifier.modifier = CloseWindowModifier::control;
                 }
             }
         }
