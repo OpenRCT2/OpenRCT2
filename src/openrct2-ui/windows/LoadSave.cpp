@@ -15,6 +15,7 @@
 #include <openrct2-ui/interface/FileBrowser.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/Editor.h>
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
@@ -345,8 +346,9 @@ namespace OpenRCT2::Ui::Windows
                 parkImporter->LoadFromStream(&fs, false, true, path.c_str());
                 _preview = parkImporter->GetParkPreview();
             }
-            catch (std::exception&)
+            catch (std::exception& e)
             {
+                LOG_ERROR("Could not get preview:", e.what());
                 _preview = {};
                 return;
             }
