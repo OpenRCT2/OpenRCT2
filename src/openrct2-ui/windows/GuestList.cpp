@@ -187,7 +187,7 @@ namespace OpenRCT2::Ui::Windows
 
             switch (type)
             {
-                case GuestListFilterType::GuestsOnRide:
+                case GuestListFilterType::guestsOnRide:
                 {
                     auto guestRide = GetRide(RideId::FromUnderlying(index));
                     if (guestRide != nullptr)
@@ -203,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case GuestListFilterType::GuestsInQueue:
+                case GuestListFilterType::guestsInQueue:
                 {
                     auto guestRide = GetRide(RideId::FromUnderlying(index));
                     if (guestRide != nullptr)
@@ -218,7 +218,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case GuestListFilterType::GuestsThinkingAboutRide:
+                case GuestListFilterType::guestsThinkingAboutRide:
                 {
                     auto guestRide = GetRide(RideId::FromUnderlying(index));
                     if (guestRide != nullptr)
@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case GuestListFilterType::GuestsThinkingX:
+                case GuestListFilterType::guestsThinkingX:
                 {
                     ft.Add<StringId>(kPeepThoughtIds[index & 0xFF]);
 

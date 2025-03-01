@@ -248,10 +248,10 @@ enum class CloseWindowModifier : uint8_t
 
 enum class GuestListFilterType : int32_t
 {
-    GuestsOnRide,
-    GuestsInQueue,
-    GuestsThinkingAboutRide,
-    GuestsThinkingX,
+    guestsOnRide,
+    guestsInQueue,
+    guestsThinkingAboutRide,
+    guestsThinkingX,
 };
 
 enum class Tool

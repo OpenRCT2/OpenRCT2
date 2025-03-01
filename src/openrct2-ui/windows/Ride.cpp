@@ -6741,7 +6741,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto intent = Intent(WindowClass::GuestList);
                     intent.PutExtra(
-                        INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingAboutRide));
+                        INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsThinkingAboutRide));
                     intent.PutExtra(INTENT_EXTRA_RIDE_ID, number);
                     ContextOpenIntent(&intent);
                     break;
@@ -6749,7 +6749,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_SHOW_GUESTS_ON_RIDE:
                 {
                     auto intent = Intent(WindowClass::GuestList);
-                    intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsOnRide));
+                    intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsOnRide));
                     intent.PutExtra(INTENT_EXTRA_RIDE_ID, number);
                     ContextOpenIntent(&intent);
                     break;
@@ -6757,7 +6757,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_SHOW_GUESTS_QUEUING:
                 {
                     auto intent = Intent(WindowClass::GuestList);
-                    intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsInQueue));
+                    intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsInQueue));
                     intent.PutExtra(INTENT_EXTRA_RIDE_ID, number);
                     ContextOpenIntent(&intent);
                     break;
