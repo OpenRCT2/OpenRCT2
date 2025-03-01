@@ -20,7 +20,6 @@
     #include <openrct2/core/String.hpp>
     #include <openrct2/entity/EntityRegistry.h>
     #include <openrct2/object/ObjectManager.h>
-    #include <openrct2/scenario/Scenario.h>
     #include <openrct2/scenes/title/TitleScene.h>
     #include <openrct2/scenes/title/TitleSequence.h>
     #include <openrct2/scenes/title/TitleSequenceManager.h>

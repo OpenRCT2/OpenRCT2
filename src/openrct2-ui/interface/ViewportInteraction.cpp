@@ -30,6 +30,7 @@
 #include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/entity/Balloon.h>
 #include <openrct2/entity/Duck.h>
+#include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
@@ -44,7 +45,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/Vehicle.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Banner.h>

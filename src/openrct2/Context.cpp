@@ -62,7 +62,6 @@
 #include "rct2/RCT2.h"
 #include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
-#include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
 #include "scenes/intro/IntroScene.h"
@@ -73,6 +72,7 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
+#include "world/MapAnimation.h"
 #include "world/Park.h"
 
 #include <chrono>

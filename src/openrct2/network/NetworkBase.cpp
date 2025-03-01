@@ -32,11 +32,11 @@
 #include "../localisation/LocalisationService.h"
 #include "../park/ParkFile.h"
 #include "../platform/Platform.h"
-#include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
+#include "../world/MapAnimation.h"
 #include "Network.h"
 
 #include <cassert>
@@ -81,7 +81,6 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     #include "../localisation/Localisation.Date.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
-    #include "../scenario/Scenario.h"
     #include "../world/Park.h"
     #include "NetworkAction.h"
     #include "NetworkConnection.h"

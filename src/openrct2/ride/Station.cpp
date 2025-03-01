@@ -12,7 +12,6 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../entity/Guest.h"
-#include "../scenario/Scenario.h"
 #include "../world/Location.hpp"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"

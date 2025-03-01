@@ -37,7 +37,6 @@
 #include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>

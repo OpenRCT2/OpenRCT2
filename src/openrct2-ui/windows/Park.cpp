@@ -29,7 +29,6 @@
 #include <openrct2/management/Award.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 

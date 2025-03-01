@@ -22,7 +22,6 @@
 #include "../core/EnumUtils.hpp"
 #include "../drawing/Drawing.h"
 #include "../profiling/Profiling.h"
-#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 

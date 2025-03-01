@@ -14,6 +14,7 @@
 #include "Editor.h"
 #include "Limits.h"
 #include "core/EnumUtils.hpp"
+#include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
 #include "management/Award.h"
 #include "management/Finance.h"

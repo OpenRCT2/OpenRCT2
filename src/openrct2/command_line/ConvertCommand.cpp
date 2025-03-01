@@ -16,7 +16,6 @@
 #include "../core/Path.hpp"
 #include "../object/ObjectManager.h"
 #include "../park/ParkFile.h"
-#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "CommandLine.hpp"
 

@@ -14,7 +14,6 @@
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../ride/TrackDesign.h"
-#include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
 #include "../world/Climate.h"
 #include "Drawing.h"

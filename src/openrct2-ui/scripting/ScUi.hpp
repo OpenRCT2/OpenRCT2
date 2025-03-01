@@ -21,6 +21,7 @@
     #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/Input.h>
+    #include <openrct2/scenario/Scenario.h>
     #include <openrct2/scenario/ScenarioRepository.h>
     #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
