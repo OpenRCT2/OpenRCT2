@@ -462,7 +462,7 @@ static void PaintSlopeTransitions(
     PaintSession& session, const ImageIndex imageIndex, const ImageId& imageTemplate, const uint16_t baseHeight)
 {
     PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, { { 0, 0, baseHeight }, { 1, 1, 1 } });
+        session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, { { 0, 0, baseHeight }, { 1, 1, 8 } });
 }
 
 static void PaintSlopeTransitionsFront(
@@ -470,7 +470,7 @@ static void PaintSlopeTransitionsFront(
     const ImageIndex imageIndexFront, const ImageId& imageTemplate, const uint16_t baseHeight)
 {
     PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, { { 1, 1, baseHeight }, { 1, 1, 1 } });
+        session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, { { 1, 1, baseHeight }, { 1, 1, 8 } });
 
     auto boundingBox = supportsDesc.BoundingBox;
     boundingBox.offset.z += baseHeight;
