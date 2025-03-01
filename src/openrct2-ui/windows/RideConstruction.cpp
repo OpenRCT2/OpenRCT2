@@ -2432,7 +2432,7 @@ namespace OpenRCT2::Ui::Windows
 
         void EntranceClick()
         {
-            if (ToolSet(*this, WIDX_ENTRANCE, Tool::Crosshair))
+            if (ToolSet(*this, WIDX_ENTRANCE, Tool::crosshair))
             {
                 auto currentRide = GetRide(_currentRideIndex);
                 if (currentRide != nullptr && !RideTryGetOriginElement(*currentRide, nullptr))
@@ -2458,7 +2458,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ExitClick()
         {
-            if (ToolSet(*this, WIDX_EXIT, Tool::Crosshair))
+            if (ToolSet(*this, WIDX_EXIT, Tool::crosshair))
             {
                 auto currentRide = GetRide(_currentRideIndex);
                 if (!RideTryGetOriginElement(*currentRide, nullptr))
@@ -2628,7 +2628,7 @@ namespace OpenRCT2::Ui::Windows
                         : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
 
                     ToolCancel();
-                    ToolSet(*this, newToolWidgetIndex, Tool::Crosshair);
+                    ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
                 }
             });
             auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
@@ -3671,7 +3671,7 @@ namespace OpenRCT2::Ui::Windows
                         w = windowMgr->FindByClass(WindowClass::RideConstruction);
                         if (w != nullptr)
                         {
-                            ToolSet(*w, WIDX_CONSTRUCT, Tool::Crosshair);
+                            ToolSet(*w, WIDX_CONSTRUCT, Tool::crosshair);
                             InputSetFlag(INPUT_FLAG_6, true);
                             _trackPlaceCtrlState = false;
                             _trackPlaceShiftState = false;

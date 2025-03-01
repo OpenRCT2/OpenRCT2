@@ -4226,7 +4226,7 @@ namespace OpenRCT2::Ui::Windows
                     SetPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_PAINT_INDIVIDUAL_AREA:
-                    ToolSet(*this, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
+                    ToolSet(*this, WIDX_PAINT_INDIVIDUAL_AREA, Tool::paintDown);
                     break;
                 case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
                 {
@@ -5340,7 +5340,7 @@ namespace OpenRCT2::Ui::Windows
                 CancelScenerySelection();
             }
 
-            while (ToolSet(*this, WIDX_BACKGROUND, Tool::Crosshair))
+            while (ToolSet(*this, WIDX_BACKGROUND, Tool::crosshair))
                 ;
 
             gTrackDesignSaveRideIndex = rideId;

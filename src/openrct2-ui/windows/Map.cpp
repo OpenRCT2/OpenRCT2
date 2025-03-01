@@ -298,7 +298,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_PEOPLE_STARTING_POSITION:
-                    if (ToolSet(*this, widgetIndex, Tool::UpArrow))
+                    if (ToolSet(*this, widgetIndex, Tool::upArrow))
                         break;
 
                     ShowGridlines();

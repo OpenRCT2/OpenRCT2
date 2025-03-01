@@ -879,7 +879,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         ToolSet(
             *constructionWindow,
             entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT,
-            Tool::Crosshair);
+            Tool::crosshair);
         gRideEntranceExitPlaceType = entranceType;
         gRideEntranceExitPlaceRideIndex = rideIndex;
         gRideEntranceExitPlaceStationIndex = stationIndex;
@@ -907,7 +907,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
                                                                                     : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
 
             ToolCancel();
-            ToolSet(*constructionWindow, newToolWidgetIndex, Tool::Crosshair);
+            ToolSet(*constructionWindow, newToolWidgetIndex, Tool::crosshair);
         });
 
         GameActions::Execute(&rideEntranceExitRemove);
@@ -1072,7 +1072,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
 
     w = ride_create_or_find_construction_window(ride.id);
 
-    ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
+    ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::crosshair);
     InputSetFlag(INPUT_FLAG_6, true);
 
     _currentlySelectedTrack = ride.GetRideTypeDescriptor().StartTrackPiece;

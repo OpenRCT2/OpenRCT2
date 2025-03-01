@@ -151,7 +151,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
-                    if (!ToolSet(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
+                    if (!ToolSet(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::crosshair))
                     {
                         ShowGridlines();
                         SetPatrolAreaToRender(GetSelectedStaffType());
@@ -585,7 +585,7 @@ namespace OpenRCT2::Ui::Windows
                         auto* wind = ContextOpenIntent(&intent);
                         if (wind != nullptr)
                         {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
                         }
                     });
                     GameActions::Execute(&pickupAction);

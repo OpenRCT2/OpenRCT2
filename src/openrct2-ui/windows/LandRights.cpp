@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets = (1uLL << widgetIndex);
             _landRightsMode = mode;
 
-            ToolSet(*this, widgetIndex, Tool::UpArrow);
+            ToolSet(*this, widgetIndex, Tool::upArrow);
             InputSetFlag(INPUT_FLAG_6, true);
 
             if (kLandRightsVisibleByMode[EnumValue(mode)])

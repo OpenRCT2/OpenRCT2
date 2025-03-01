@@ -207,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                     {
-                        gCurrentToolId = Tool::UpDownArrow;
+                        gCurrentToolId = Tool::upDownArrow;
                     }
                     break;
             }
@@ -230,7 +230,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::WaterDown;
+                    gCurrentToolId = Tool::waterDown;
                     break;
             }
         }
@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto* windowMgr = Ui::GetWindowManager();
 
-            if (gCurrentToolId == Tool::UpDownArrow)
+            if (gCurrentToolId == Tool::upDownArrow)
             {
                 if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                     return;
@@ -446,7 +446,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ShowGridlines();
             auto* toolWindow = ContextOpenWindow(WindowClass::Water);
-            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::WaterDown);
+            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::waterDown);
             InputSetFlag(INPUT_FLAG_6, true);
         }
     }

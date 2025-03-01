@@ -221,7 +221,7 @@ namespace OpenRCT2::Ui::Windows
 
             ToolCancel();
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-            ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
+            ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
             InputSetFlag(INPUT_FLAG_6, true);
             _footpathErrorOccured = false;
             WindowFootpathSetEnabledAndPressedWidgets();
@@ -332,7 +332,7 @@ namespace OpenRCT2::Ui::Windows
                     MapInvalidateMapSelectionTiles();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                     _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-                    ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
+                    ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
                     InputSetFlag(INPUT_FLAG_6, true);
                     _footpathErrorOccured = false;
                     WindowFootpathSetEnabledAndPressedWidgets();
@@ -349,7 +349,7 @@ namespace OpenRCT2::Ui::Windows
                     MapInvalidateMapSelectionTiles();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                     _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
-                    ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::Crosshair);
+                    ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::crosshair);
                     InputSetFlag(INPUT_FLAG_6, true);
                     _footpathErrorOccured = false;
                     WindowFootpathSetEnabledAndPressedWidgets();

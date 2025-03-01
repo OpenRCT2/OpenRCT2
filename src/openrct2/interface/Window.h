@@ -256,18 +256,18 @@ enum class GuestListFilterType : int32_t
 
 enum class Tool
 {
-    Arrow = 0,
-    UpArrow = 2,
-    UpDownArrow = 3,
-    Picker = 7,
-    Crosshair = 12,
-    PathDown = 17,
-    DigDown = 18,
-    WaterDown = 19,
-    WalkDown = 22,
-    PaintDown = 23,
-    EntranceDown = 24,
-    Bulldozer = 27,
+    arrow = 0,
+    upArrow = 2,
+    upDownArrow = 3,
+    picker = 7,
+    crosshair = 12,
+    pathDown = 17,
+    digDown = 18,
+    waterDown = 19,
+    walkDown = 22,
+    paintDown = 23,
+    entranceDown = 24,
+    bulldozer = 27,
 };
 
 namespace OpenRCT2

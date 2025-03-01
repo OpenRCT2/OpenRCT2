@@ -103,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_trackPlaceWidgets);
             WindowInitScrollWidgets(*this);
-            ToolSet(*this, WIDX_PRICE, Tool::Crosshair);
+            ToolSet(*this, WIDX_PRICE, Tool::crosshair);
             InputSetFlag(INPUT_FLAG_6, true);
             WindowPushOthersRight(*this);
             ShowGridlines();

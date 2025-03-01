@@ -517,11 +517,11 @@ namespace OpenRCT2::Ui::Windows
 
             if (gWindowSceneryEyedropperEnabled)
             {
-                gCurrentToolId = Tool::Crosshair;
+                gCurrentToolId = Tool::crosshair;
             }
             else if (_sceneryPaintEnabled)
             {
-                gCurrentToolId = Tool::PaintDown;
+                gCurrentToolId = Tool::paintDown;
             }
             else
             {
@@ -531,7 +531,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
                     {
-                        gCurrentToolId = Tool::EntranceDown;
+                        gCurrentToolId = Tool::entranceDown;
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
                     {
@@ -556,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gCurrentToolId = Tool::Arrow;
+                    gCurrentToolId = Tool::arrow;
                 }
             }
         }
@@ -3299,7 +3299,7 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             auto* toolWindow = ContextOpenWindow(WindowClass::Scenery);
-            ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::Arrow);
+            ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::arrow);
             InputSetFlag(INPUT_FLAG_6, true);
         }
     }
