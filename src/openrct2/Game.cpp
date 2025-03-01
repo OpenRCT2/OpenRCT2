@@ -656,7 +656,7 @@ void GameLoadOrQuitNoSavePrompt()
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
-            if (gScreenMode == ScreenMode::scenarioEditor)
+            if (gLegacyScene == LegacyScene::scenarioEditor)
             {
                 LoadLandscape();
             }

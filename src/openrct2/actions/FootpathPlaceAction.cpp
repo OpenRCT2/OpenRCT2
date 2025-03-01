@@ -86,7 +86,7 @@ GameActions::Result FootpathPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!(gScreenMode == ScreenMode::scenarioEditor || GetGameState().Cheats.sandboxMode) && !MapIsLocationOwned(_loc))
+    if (!(gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -446,7 +446,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
         {
             FootpathRemoveEdgesAt(_loc, pathElement->as<TileElement>());
         }
-        if (gScreenMode == ScreenMode::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (gLegacyScene == LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             AutomaticallySetPeepSpawn();
         }

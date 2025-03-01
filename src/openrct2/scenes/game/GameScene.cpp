@@ -22,7 +22,7 @@ void GameScene::Load()
 {
     LOG_VERBOSE("GameScene::Load()");
 
-    gScreenMode = ScreenMode::playing;
+    gLegacyScene = LegacyScene::playing;
 
     LOG_VERBOSE("GameScene::Load() finished");
 }

@@ -88,7 +88,7 @@ void DiscordService::RefreshPresence() const
 
     std::string state;
     std::string details;
-    switch (gScreenMode)
+    switch (gLegacyScene)
     {
         default:
             details = GetParkName();
@@ -127,16 +127,16 @@ void DiscordService::RefreshPresence() const
                 discordPresence.instance = 1;
             }
             break;
-        case ScreenMode::titleSequence:
+        case LegacyScene::titleSequence:
             details = "In Menus";
             break;
-        case ScreenMode::scenarioEditor:
+        case LegacyScene::scenarioEditor:
             details = "In Scenario Editor";
             break;
-        case ScreenMode::trackDesigner:
+        case LegacyScene::trackDesigner:
             details = "In Track Designer";
             break;
-        case ScreenMode::trackDesignsManager:
+        case LegacyScene::trackDesignsManager:
             details = "In Track Designs Manager";
             break;
     }

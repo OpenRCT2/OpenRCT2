@@ -315,7 +315,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
             int32_t i = 0;
-            if (gScreenMode != ScreenMode::titleSequence)
+            if (gLegacyScene != LegacyScene::titleSequence)
             {
                 bool found = false;
                 while (!found)

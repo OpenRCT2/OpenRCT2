@@ -1317,7 +1317,7 @@ void PeepUpdateCrowdNoise()
     if (!Config::Get().sound.SoundEnabled)
         return;
 
-    if (gScreenMode == ScreenMode::scenarioEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor)
         return;
 
     auto viewport = g_music_tracking_viewport;

@@ -116,11 +116,11 @@ namespace OpenRCT2::Ui::Windows
             if (canSave)
             {
                 StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
-                if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenMode == ScreenMode::scenarioEditor)
+                if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gLegacyScene == LegacyScene::scenarioEditor)
                 {
                     stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
                 }
-                else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenMode == ScreenMode::scenarioEditor)
+                else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gLegacyScene == LegacyScene::scenarioEditor)
                 {
                     stringId = STR_QUIT_SCENARIO_EDITOR;
                 }
@@ -144,8 +144,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
-            if (gScreenMode == ScreenMode::titleSequence || gScreenMode == ScreenMode::trackDesigner
-                || gScreenMode == ScreenMode::trackDesignsManager)
+            if (gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
+                || gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 switch (widgetIndex)
                 {
@@ -211,7 +211,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // do not show save prompt if we're in the title demo and click on load game
-        if (gScreenMode == ScreenMode::titleSequence)
+        if (gLegacyScene == LegacyScene::titleSequence)
         {
             GameLoadOrQuitNoSavePrompt();
             return nullptr;

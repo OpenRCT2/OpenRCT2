@@ -52,7 +52,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
     switch (_setting)
     {
         case ScenarioSetSetting::NoMoney:
-            if (gScreenMode == ScreenMode::scenarioEditor)
+            if (gLegacyScene == LegacyScene::scenarioEditor)
             {
                 if (_value != 0)
                 {
@@ -151,7 +151,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             gameState.ConstructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::ParkChargeMethod:
-            if (gScreenMode == ScreenMode::scenarioEditor)
+            if (gLegacyScene == LegacyScene::scenarioEditor)
             {
                 if (_value == 0)
                 {

@@ -46,7 +46,7 @@ protected:
         GameLoadInit();
 
         // Changed in some tests. Store to restore its value
-        _gScreenMode = gScreenMode;
+        _gLegacyScene = gLegacyScene;
         SUCCEED();
     }
 
@@ -55,16 +55,16 @@ protected:
         if (_context)
             _context.reset();
 
-        gScreenMode = _gScreenMode;
+        gLegacyScene = _gLegacyScene;
     }
 
 private:
     static std::shared_ptr<IContext> _context;
-    static ScreenMode _gScreenMode;
+    static LegacyScene _gLegacyScene;
 };
 
 std::shared_ptr<IContext> TileElementsViewTests::_context;
-ScreenMode TileElementsViewTests::_gScreenMode;
+LegacyScene TileElementsViewTests::_gLegacyScene;
 
 template<typename T>
 std::vector<T*> BuildListManual(const CoordsXY& pos)

@@ -1125,7 +1125,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     auto& gameState = GetGameState();
     // Draw Peep Spawns
-    if ((gScreenMode == ScreenMode::scenarioEditor || gameState.Cheats.sandboxMode)
+    if ((gLegacyScene == LegacyScene::scenarioEditor || gameState.Cheats.sandboxMode)
         && session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         const CoordsXY& pos = session.MapPosition;

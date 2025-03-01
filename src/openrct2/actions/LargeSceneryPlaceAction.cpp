@@ -174,7 +174,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (gScreenMode != ScreenMode::scenarioEditor && !MapIsLocationOwned({ curTile, zLow })
+        if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationOwned({ curTile, zLow })
             && !gameState.Cheats.sandboxMode)
         {
             return GameActions::Result(

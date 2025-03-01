@@ -112,7 +112,7 @@ void InputManager::Process()
 
 void InputManager::HandleViewScrolling()
 {
-    if (gScreenMode == ScreenMode::titleSequence)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     auto& console = GetInGameConsole();

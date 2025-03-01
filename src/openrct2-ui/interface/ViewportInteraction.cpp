@@ -83,11 +83,11 @@ namespace OpenRCT2::Ui
     {
         InteractionInfo info{};
         // No click input for scenario editor or track manager
-        if (gScreenMode == ScreenMode::scenarioEditor || gScreenMode == ScreenMode::trackDesignsManager)
+        if (gLegacyScene == LegacyScene::scenarioEditor || gLegacyScene == LegacyScene::trackDesignsManager)
             return info;
 
         //
-        if (gScreenMode == ScreenMode::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
             return info;
 
         info = GetMapCoordinatesFromPos(
@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui
         auto sprite = info.Entity;
 
         // Allows only balloons to be popped and ducks to be quacked in title screen
-        if (gScreenMode == ScreenMode::titleSequence)
+        if (gLegacyScene == LegacyScene::titleSequence)
         {
             if (info.interactionType == ViewportInteractionItem::Entity && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
                 return info;
@@ -270,11 +270,11 @@ namespace OpenRCT2::Ui
         int32_t i;
         InteractionInfo info{};
         // No click input for title screen or track manager
-        if (gScreenMode == ScreenMode::titleSequence || gScreenMode == ScreenMode::trackDesignsManager)
+        if (gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesignsManager)
             return info;
 
         //
-        if (gScreenMode == ScreenMode::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
             return info;
 
         constexpr auto flags = static_cast<int32_t>(
@@ -287,7 +287,7 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::Entity:
             {
                 auto sprite = info.Entity;
-                if (gScreenMode == ScreenMode::scenarioEditor || sprite->Type != EntityType::Vehicle)
+                if (gLegacyScene == LegacyScene::scenarioEditor || sprite->Type != EntityType::Vehicle)
                 {
                     info.interactionType = ViewportInteractionItem::None;
                     return info;
@@ -311,7 +311,7 @@ namespace OpenRCT2::Ui
             }
             case ViewportInteractionItem::Ride:
             {
-                if (gScreenMode == ScreenMode::scenarioEditor)
+                if (gLegacyScene == LegacyScene::scenarioEditor)
                 {
                     info.interactionType = ViewportInteractionItem::None;
                     return info;
@@ -510,7 +510,7 @@ namespace OpenRCT2::Ui
                 return info;
             }
             case ViewportInteractionItem::ParkEntrance:
-                if (gScreenMode != ScreenMode::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
                     break;
 
                 if (tileElement->GetType() != TileElementType::Entrance)

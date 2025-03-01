@@ -172,7 +172,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     auto& gameState = GetGameState();
-    if (gScreenMode != ScreenMode::scenarioEditor && !gameState.Cheats.sandboxMode
+    if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.Cheats.sandboxMode
         && !MapIsLocationOwned({ _loc.x, _loc.y, targetHeight }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);

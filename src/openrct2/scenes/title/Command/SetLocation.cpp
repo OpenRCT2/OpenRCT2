@@ -26,10 +26,10 @@ namespace OpenRCT2::Title
             int32_t z = TileElementHeight(loc);
 
             // Prevent scroll adjustment due to window placement when in-game
-            auto oldScreenMode = gScreenMode;
-            gScreenMode = ScreenMode::titleSequence;
+            auto oldLegacyScene = gLegacyScene;
+            gLegacyScene = LegacyScene::titleSequence;
             w->SetLocation({ loc, z });
-            gScreenMode = oldScreenMode;
+            gLegacyScene = oldLegacyScene;
 
             ViewportUpdatePosition(w);
         }

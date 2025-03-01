@@ -215,13 +215,13 @@ namespace OpenRCT2
         }
 
         // Always perform autosave check, even when paused
-        if (gScreenMode != ScreenMode::titleSequence && gScreenMode != ScreenMode::trackDesigner
-            && gScreenMode != ScreenMode::trackDesignsManager)
+        if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::trackDesigner
+            && gLegacyScene != LegacyScene::trackDesignsManager)
         {
             ScenarioAutosaveCheck();
         }
 
-        if (didRunSingleFrame && GameIsNotPaused() && gScreenMode != ScreenMode::titleSequence)
+        if (didRunSingleFrame && GameIsNotPaused() && gLegacyScene != LegacyScene::titleSequence)
         {
             PauseToggle();
         }

@@ -242,6 +242,6 @@ void ClearAction::ResetClearLargeSceneryFlag()
 
 bool ClearAction::MapCanClearAt(const CoordsXY& location)
 {
-    return gScreenMode == ScreenMode::scenarioEditor || GetGameState().Cheats.sandboxMode
+    return gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode
         || MapIsLocationOwnedOrHasRights(location);
 }

@@ -72,8 +72,8 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(
                 this,
-                gScreenMode == ScreenMode::scenarioEditor ? WindowClass::EditorScenarioBottomToolbar
-                                                          : WindowClass::EditorTrackBottomToolbar);
+                gLegacyScene == LegacyScene::scenarioEditor ? WindowClass::EditorScenarioBottomToolbar
+                                                            : WindowClass::EditorTrackBottomToolbar);
 
             uint16_t screenWidth = ContextGetWidth();
             widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::ImgBtn;
             widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::ImgBtn;
 
-            if (gScreenMode == ScreenMode::trackDesignsManager)
+            if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 HidePreviousStepButton();
                 HideNextStepButton();
@@ -103,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     HideNextStepButton();
                 }
-                else if (gScreenMode != ScreenMode::trackDesigner)
+                else if (gLegacyScene != LegacyScene::trackDesigner)
                 {
                     if (GetNumFreeEntities() != kMaxEntities || GetGameState().Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)
                     {
@@ -140,7 +140,7 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = GetGameState();
             if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
-                if (gScreenMode == ScreenMode::trackDesigner
+                if (gLegacyScene == LegacyScene::trackDesigner
                     || (GetNumFreeEntities() == kMaxEntities && !(gameState.Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)))
                 {
                     ((this)->*(kPreviousButtonMouseUp[EnumValue(gameState.EditorStep)]))();
@@ -200,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             FinishObjectSelection();
-            if (gScreenMode == ScreenMode::trackDesigner)
+            if (gLegacyScene == LegacyScene::trackDesigner)
             {
                 ContextOpenWindow(WindowClass::ConstructRide);
             }
@@ -311,7 +311,7 @@ namespace OpenRCT2::Ui::Windows
             int16_t textY = widgets[WIDX_PREVIOUS_IMAGE].top + 6 + windowPos.y;
 
             StringId stringId = kEditorStepNames[EnumValue(GetGameState().EditorStep) - 1];
-            if (gScreenMode == ScreenMode::trackDesigner)
+            if (gLegacyScene == LegacyScene::trackDesigner)
                 stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
             DrawTextBasic(dpi, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::CENTRE });
@@ -350,7 +350,7 @@ namespace OpenRCT2::Ui::Windows
             int16_t textY = widgets[WIDX_NEXT_IMAGE].top + 6 + windowPos.y;
 
             StringId stringId = kEditorStepNames[EnumValue(GetGameState().EditorStep) + 1];
-            if (gScreenMode == ScreenMode::trackDesigner)
+            if (gLegacyScene == LegacyScene::trackDesigner)
                 stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
             DrawTextBasic(dpi, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::CENTRE });

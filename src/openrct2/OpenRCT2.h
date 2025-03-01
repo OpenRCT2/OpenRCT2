@@ -22,7 +22,7 @@ enum class StartupAction
     Edit
 };
 
-enum class ScreenMode
+enum class LegacyScene
 {
     // Although this is labeled a flag it actually means when
     // zero the screen is in playing mode.
@@ -58,7 +58,7 @@ extern std::string gNetworkStartAddress;
 #endif
 
 extern uint32_t gCurrentDrawCount;
-extern ScreenMode gScreenMode;
+extern LegacyScene gLegacyScene;
 extern uint32_t gScreenAge;
 extern PromptMode gSavePromptMode;
 

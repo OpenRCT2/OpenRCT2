@@ -114,13 +114,13 @@ namespace OpenRCT2::Scripting
 
         std::string mode_get()
         {
-            if (gScreenMode == ScreenMode::titleSequence)
+            if (gLegacyScene == LegacyScene::titleSequence)
                 return "title";
-            else if (gScreenMode == ScreenMode::scenarioEditor)
+            else if (gLegacyScene == LegacyScene::scenarioEditor)
                 return "scenario_editor";
-            else if (gScreenMode == ScreenMode::trackDesigner)
+            else if (gLegacyScene == LegacyScene::trackDesigner)
                 return "track_designer";
-            else if (gScreenMode == ScreenMode::trackDesignsManager)
+            else if (gLegacyScene == LegacyScene::trackDesignsManager)
                 return "track_manager";
             return "normal";
         }

@@ -27,7 +27,7 @@ bool gOpenRCT2ShowChangelog;
 bool gOpenRCT2SilentBreakpad;
 
 uint32_t gCurrentDrawCount = 0;
-ScreenMode gScreenMode;
+LegacyScene gLegacyScene;
 uint32_t gScreenAge;
 PromptMode gSavePromptMode;
 
@@ -35,10 +35,10 @@ bool gSilentReplays = false;
 
 bool isInEditorMode()
 {
-    return EnumValue(gScreenMode) >= EnumValue(ScreenMode::scenarioEditor);
+    return EnumValue(gLegacyScene) >= EnumValue(LegacyScene::scenarioEditor);
 }
 
 bool isInTrackDesignerOrManager()
 {
-    return gScreenMode == ScreenMode::trackDesigner || gScreenMode == ScreenMode::trackDesignsManager;
+    return gLegacyScene == LegacyScene::trackDesigner || gLegacyScene == LegacyScene::trackDesignsManager;
 }

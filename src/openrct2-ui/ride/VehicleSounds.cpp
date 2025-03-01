@@ -105,10 +105,10 @@ namespace OpenRCT2::Audio
 
     static bool SoundCanPlay(const Vehicle& vehicle)
     {
-        if (gScreenMode == ScreenMode::scenarioEditor)
+        if (gLegacyScene == LegacyScene::scenarioEditor)
             return false;
 
-        if (gScreenMode == ScreenMode::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
             return false;
 
         if (vehicle.sound1_id == SoundId::Null && vehicle.sound2_id == SoundId::Null)

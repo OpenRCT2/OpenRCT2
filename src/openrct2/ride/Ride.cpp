@@ -962,7 +962,7 @@ void Ride::UpdateAll()
     PROFILED_FUNCTION();
 
     // Remove all rides if scenario editor
-    if (gScreenMode == ScreenMode::scenarioEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor)
     {
         switch (GetGameState().EditorStep)
         {
@@ -1302,7 +1302,7 @@ static void RideInspectionUpdate(Ride& ride)
 {
     if (GetGameState().CurrentTicks & 2047)
         return;
-    if (gScreenMode == ScreenMode::trackDesigner)
+    if (gLegacyScene == LegacyScene::trackDesigner)
         return;
 
     ride.last_inspection++;
@@ -1370,7 +1370,7 @@ static void RideBreakdownUpdate(Ride& ride)
     if (currentTicks & 255)
         return;
 
-    if (gScreenMode == ScreenMode::trackDesigner)
+    if (gLegacyScene == LegacyScene::trackDesigner)
         return;
 
     if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
@@ -2063,7 +2063,7 @@ void RideMeasurementsUpdate()
 {
     PROFILED_FUNCTION();
 
-    if (gScreenMode == ScreenMode::scenarioEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor)
         return;
 
     // For each ride measurement
@@ -5265,7 +5265,7 @@ void Ride::Crash(uint8_t vehicleIndex)
 {
     Vehicle* vehicle = GetEntity<Vehicle>(vehicles[vehicleIndex]);
 
-    if (gScreenMode != ScreenMode::titleSequence && vehicle != nullptr)
+    if (gLegacyScene != LegacyScene::titleSequence && vehicle != nullptr)
     {
         // Open ride window for crashed vehicle
         auto intent = Intent(WD_VEHICLE);

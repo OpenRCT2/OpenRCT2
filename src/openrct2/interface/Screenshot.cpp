@@ -465,7 +465,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             throw std::runtime_error("Failed to load park.");
         }
 
-        gScreenMode = ScreenMode::playing;
+        gLegacyScene = LegacyScene::playing;
 
         Viewport viewport{};
         if (giantScreenshot)

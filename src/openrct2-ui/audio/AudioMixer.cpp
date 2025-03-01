@@ -306,7 +306,7 @@ int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size
             volumeAdjust *= _adjustSoundVolume;
 
             // Cap sound volume on title screen so music is more audible
-            if (gScreenMode == ScreenMode::titleSequence)
+            if (gLegacyScene == LegacyScene::titleSequence)
             {
                 volumeAdjust = std::min(volumeAdjust, 0.75f);
             }

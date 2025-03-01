@@ -106,7 +106,7 @@ namespace OpenRCT2::Editor
         Audio::StopAll();
         ObjectListLoad();
         gameStateInitAll(gameState, kDefaultMapSize);
-        gScreenMode = ScreenMode::scenarioEditor;
+        gLegacyScene = LegacyScene::scenarioEditor;
         gameState.EditorStep = EditorStep::ObjectSelection;
         gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
@@ -146,7 +146,7 @@ namespace OpenRCT2::Editor
         auto& gameState = GetGameState();
         ScenarioReset(gameState);
 
-        gScreenMode = ScreenMode::scenarioEditor;
+        gLegacyScene = LegacyScene::scenarioEditor;
         gameState.EditorStep = EditorStep::ObjectiveSelection;
         gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
@@ -166,7 +166,7 @@ namespace OpenRCT2::Editor
         context->SetActiveScene(context->GetGameScene());
 
         Audio::StopAll();
-        gScreenMode = ScreenMode::trackDesigner;
+        gLegacyScene = LegacyScene::trackDesigner;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
@@ -191,7 +191,7 @@ namespace OpenRCT2::Editor
         context->SetActiveScene(context->GetGameScene());
 
         Audio::StopAll();
-        gScreenMode = ScreenMode::trackDesignsManager;
+        gLegacyScene = LegacyScene::trackDesignsManager;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
@@ -233,7 +233,7 @@ namespace OpenRCT2::Editor
 
         GetGameState().EditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
-        gScreenMode = ScreenMode::scenarioEditor;
+        gLegacyScene = LegacyScene::scenarioEditor;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
@@ -339,7 +339,7 @@ namespace OpenRCT2::Editor
                     return;
                 }
 
-                if (gScreenMode == ScreenMode::trackDesignsManager)
+                if (gLegacyScene == LegacyScene::trackDesignsManager)
                 {
                     ObjectManagerUnloadAllObjects();
                 }

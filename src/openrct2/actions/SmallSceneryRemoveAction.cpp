@@ -74,7 +74,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = _loc;
 
-    if (gScreenMode != ScreenMode::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
         && !GetGameState().Cheats.sandboxMode)
     {
         // Check if allowed to remove item

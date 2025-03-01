@@ -127,7 +127,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
         auto currentTile = CoordsXYZ{ baseTile.x, baseTile.y, baseTile.z } + rotatedTileCoords;
 
-        if (gScreenMode != ScreenMode::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
         {
             if (!MapIsLocationOwned(currentTile))
             {

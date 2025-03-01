@@ -2062,7 +2062,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     StashMap();
     TrackDesignPreviewClearMap();
 
-    if (gScreenMode == ScreenMode::trackDesignsManager)
+    if (gLegacyScene == LegacyScene::trackDesignsManager)
     {
         TrackDesignLoadSceneryObjects(td);
     }

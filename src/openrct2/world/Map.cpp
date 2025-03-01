@@ -827,7 +827,7 @@ bool MapIsEdge(const CoordsXY& coords)
 
 bool MapCanBuildAt(const CoordsXYZ& loc)
 {
-    if (gScreenMode == ScreenMode::scenarioEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor)
         return true;
     if (GetGameState().Cheats.sandboxMode)
         return true;
@@ -965,7 +965,7 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
 
             if (surfaceElement != nullptr && min_height > surfaceElement->BaseHeight)
             {
-                if (gScreenMode != ScreenMode::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {
@@ -994,7 +994,7 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
             {
-                if (gScreenMode != ScreenMode::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {

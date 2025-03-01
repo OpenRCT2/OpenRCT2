@@ -34,7 +34,7 @@ void PreloaderScene::Load()
 {
     LOG_VERBOSE("PreloaderScene::Load()");
 
-    gScreenMode = ScreenMode::playing;
+    gLegacyScene = LegacyScene::playing;
     gameStateInitAll(GetGameState(), kDefaultMapSize);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);

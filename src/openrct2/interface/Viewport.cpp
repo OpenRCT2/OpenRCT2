@@ -708,7 +708,7 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gScreenMode != ScreenMode::titleSequence)
+            if (gLegacyScene != LegacyScene::titleSequence)
             {
                 int32_t height = (TileElementHeight({ sprite->x, sprite->y }))-16;
                 int32_t underground = sprite->z < height;

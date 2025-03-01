@@ -355,7 +355,7 @@ static void ScenarioUpdateDayNightCycle()
     float currentDayNightCycle = gDayNightCycle;
     gDayNightCycle = 0;
 
-    if (gScreenMode == ScreenMode::playing && Config::Get().general.DayNightCycle)
+    if (gLegacyScene == LegacyScene::playing && Config::Get().general.DayNightCycle)
     {
         float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kTicksPerMonth);
         if (monthFraction < (1 / 8.0f))
@@ -395,7 +395,7 @@ void ScenarioUpdate(GameState_t& gameState)
 {
     PROFILED_FUNCTION();
 
-    if (gScreenMode == ScreenMode::playing)
+    if (gLegacyScene == LegacyScene::playing)
     {
         auto& date = GetDate();
         if (date.IsDayStart())

@@ -149,7 +149,7 @@ namespace OpenRCT2
      */
     static void WindowViewportWheelInput(WindowBase& w, int32_t wheel)
     {
-        if (gScreenMode == ScreenMode::trackDesignsManager || gScreenMode == ScreenMode::titleSequence)
+        if (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::titleSequence)
             return;
 
         if (wheel < 0)
@@ -914,7 +914,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
     {
         auto originalPos = w.windowPos;
-        int32_t minY = gScreenMode == ScreenMode::titleSequence ? 1 : kTopToolbarHeight + 2;
+        int32_t minY = gLegacyScene == LegacyScene::titleSequence ? 1 : kTopToolbarHeight + 2;
 
         newWindowCoords.y = std::clamp(newWindowCoords.y, minY, ContextGetHeight() - 34);
 
@@ -1116,13 +1116,13 @@ namespace OpenRCT2::Ui::Windows
         if (mainWindow == nullptr)
             return;
 
-        if (gScreenMode == ScreenMode::titleSequence)
+        if (gLegacyScene == LegacyScene::titleSequence)
             return;
 
-        if (gScreenMode == ScreenMode::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor)
             return;
 
-        if (gScreenMode == ScreenMode::trackDesignsManager)
+        if (gLegacyScene == LegacyScene::trackDesignsManager)
             return;
 
         if (zoomIn)
