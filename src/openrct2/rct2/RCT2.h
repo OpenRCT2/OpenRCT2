@@ -393,7 +393,7 @@ namespace OpenRCT2::RCT2
         int8_t ObjectiveType;
         int8_t ObjectiveArg1;
         int32_t objectiveArg2;
-        int16_t objectiveArg3;
+        uint16_t objectiveArg3;
         char Name[64];
         char Details[256];
         int32_t Flags;
@@ -758,11 +758,11 @@ namespace OpenRCT2::RCT2
     struct S6Info
     {
         ::EditorStep EditorStep;
-        uint8_t Category;      // 0x01
-        uint8_t ObjectiveType; // 0x02
-        uint8_t ObjectiveArg1; // 0x03
-        int32_t ObjectiveArg2; // 0x04
-        int16_t ObjectiveArg3; // 0x08
+        uint8_t Category;       // 0x01
+        uint8_t ObjectiveType;  // 0x02
+        uint8_t ObjectiveArg1;  // 0x03
+        int32_t ObjectiveArg2;  // 0x04
+        uint16_t ObjectiveArg3; // 0x08
         uint8_t Pad00A[0x3E];
         char Name[64];        // 0x48
         char Details[256];    // 0x88

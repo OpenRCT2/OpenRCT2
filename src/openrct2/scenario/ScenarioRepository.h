@@ -52,9 +52,9 @@ struct ScenarioIndexEntry
 
     // Objective
     uint8_t ObjectiveType;
-    uint8_t ObjectiveArg1;
-    int64_t ObjectiveArg2;
-    int16_t ObjectiveArg3;
+    uint8_t ObjectiveArg1;  // years
+    int64_t ObjectiveArg2;  // money or excitement
+    uint16_t ObjectiveArg3; // guests or rideID or coasterLength
     ScenarioHighscoreEntry* Highscore = nullptr;
 
     u8string InternalName; // Untranslated name
