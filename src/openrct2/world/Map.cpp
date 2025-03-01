@@ -44,7 +44,6 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
-#include "../scenario/Scenario.h"
 #include "../windows/Intent.h"
 #include "../world/TilePointerIndex.hpp"
 #include "Banner.h"

@@ -29,7 +29,7 @@
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct2/RCT2.h"
-#include "Scenario.h"
+#include "../scenario/Scenario.h"
 #include "ScenarioSources.h"
 
 #include <memory>

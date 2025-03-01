@@ -32,7 +32,6 @@
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>

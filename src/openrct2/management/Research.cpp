@@ -33,7 +33,6 @@
 #include "../ride/RideData.h"
 #include "../ride/RideEntry.h"
 #include "../ride/TrackData.h"
-#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"

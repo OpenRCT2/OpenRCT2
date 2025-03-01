@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Scenario.h"
-
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Date.h"

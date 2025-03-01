@@ -51,7 +51,6 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/Vehicle.h"
-#include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"

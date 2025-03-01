@@ -21,7 +21,6 @@
 #include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
-#include "../scenario/Scenario.h"
 #include "../scripting/Duktape.hpp"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"

@@ -33,7 +33,6 @@
 #include "../object/SceneryGroupObject.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
-#include "../scenario/Scenario.h"
 #include "Footpath.h"
 #include "Map.h"
 #include "Park.h"

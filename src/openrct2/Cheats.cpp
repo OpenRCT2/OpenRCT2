@@ -15,7 +15,6 @@
 #include "core/DataSerialiser.h"
 #include "network/Network.h"
 #include "ride/Ride.h"
-#include "scenario/Scenario.h"
 #include "world/Climate.h"
 #include "world/Footpath.h"
 #include "world/Map.h"

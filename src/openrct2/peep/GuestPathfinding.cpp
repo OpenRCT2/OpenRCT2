@@ -18,7 +18,6 @@
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
-#include "../scenario/Scenario.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/tile_element/BannerElement.h"

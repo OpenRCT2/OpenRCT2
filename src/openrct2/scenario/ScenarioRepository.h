@@ -1,4 +1,3 @@
-
 /*****************************************************************************
  * Copyright (c) 2014-2025 OpenRCT2 developers
  *
@@ -11,8 +10,8 @@
 #pragma once
 
 #include "../core/DateTime.h"
+#include "../core/Money.hpp"
 #include "../core/StringTypes.h"
-#include "../scenario/Scenario.h"
 
 #include <memory>
 

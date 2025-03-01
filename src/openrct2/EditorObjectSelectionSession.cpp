@@ -30,7 +30,6 @@
 #include "ride/RideManager.hpp"
 #include "ride/TrainManager.h"
 #include "ride/Vehicle.h"
-#include "scenario/Scenario.h"
 #include "windows/Intent.h"
 #include "world/tile_element/BannerElement.h"
 #include "world/tile_element/EntranceElement.h"

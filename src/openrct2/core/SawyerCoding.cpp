@@ -10,7 +10,6 @@
 #include "SawyerCoding.h"
 
 #include "../platform/Platform.h"
-#include "../scenario/Scenario.h"
 #include "Numerics.hpp"
 
 #include <cassert>

@@ -41,7 +41,6 @@
     #include "../interface/Screenshot.h"
     #include "../object/ObjectManager.h"
     #include "../park/ParkFile.h"
-    #include "../scenario/Scenario.h"
     #include "Platform.h"
 
     #define WSZ(x) L"" x

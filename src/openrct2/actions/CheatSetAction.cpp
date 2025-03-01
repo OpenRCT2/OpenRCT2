@@ -27,7 +27,6 @@
 #include "../ride/Ride.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
-#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
