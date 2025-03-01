@@ -322,13 +322,18 @@ namespace OpenRCT2::Audio
         }
     }
 
-    void StopAll()
+    void StopSFX()
     {
-        StopTitleMusic();
         StopVehicleSounds();
-        RideAudio::StopAllChannels();
         PeepStopCrowdNoise();
         ClimateStopWeatherSound();
+    }
+
+    void StopAll()
+    {
+        StopSFX();
+        StopTitleMusic();
+        RideAudio::StopAllChannels();
     }
 
     int32_t GetDeviceCount()
@@ -417,11 +422,7 @@ namespace OpenRCT2::Audio
     void Pause()
     {
         gGameSoundsOff = true;
-        StopVehicleSounds();
-        RideAudio::StopAllChannels();
-        PeepStopCrowdNoise();
-        ClimateStopWeatherSound();
-        StopTitleMusic();
+        StopAll();
     }
 
     void Resume()

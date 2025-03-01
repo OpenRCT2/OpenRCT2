@@ -170,6 +170,16 @@ namespace OpenRCT2::Audio
     const std::string& GetDeviceName(int32_t index);
 
     /**
+     * Stops all sound effects.
+     */
+    void StopSFX();
+
+    /**
+     * Stops all sound.
+     */
+    void StopAll();
+
+    /**
      * Returns the currently used device index, -1 if not available.
      */
     int32_t GetCurrentDeviceIndex();
@@ -200,7 +210,7 @@ namespace OpenRCT2::Audio
     void InitRideSounds(int32_t device);
 
     /**
-     * Temporarily stops playing sounds until audio_unpause_sounds() is called.
+     * Temporarily stops playing sounds until Resume() is called.
      * rct2: 0x006BABB4
      */
     void Pause();
@@ -217,9 +227,7 @@ namespace OpenRCT2::Audio
     /**
      * Plays the specified sound at a virtual location.
      * @param soundId The sound effect to play.
-     * @param x The x coordinate of the location.
-     * @param y The y coordinate of the location.
-     * @param z The z coordinate of the location.
+     * @param loc The coordinates of the location.
      */
     void Play3D(SoundId soundId, const CoordsXYZ& loc);
 
@@ -253,14 +261,10 @@ namespace OpenRCT2::Audio
     void ToggleAllSounds();
 
     /**
-     * Resumes playing sounds that had been paused by a call to audio_pause_sounds().
+     * Resumes playing sounds that had been paused by a call to Pause().
      * rct2: 0x006BABD8
      */
     void Resume();
-
-    void StopAll();
-
-    AudioObject* GetBaseAudioObject();
 
     std::shared_ptr<IAudioChannel> CreateAudioChannel(
         SoundId soundId, bool loop = false, int32_t volume = kMixerVolumeMax, float pan = 0.5f, double rate = 1,
