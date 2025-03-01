@@ -670,7 +670,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint32_t numPathTypes = 0;
             // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
-            bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode);
+            bool showEditorPaths = (gScreenMode == ScreenMode::scenarioEditor || GetGameState().Cheats.sandboxMode);
 
             _dropdownEntries.clear();
             std::optional<size_t> defaultIndex;

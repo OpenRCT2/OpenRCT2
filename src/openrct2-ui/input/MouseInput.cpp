@@ -320,7 +320,8 @@ namespace OpenRCT2
                             switch (widget->type)
                             {
                                 case WindowWidgetType::Viewport:
-                                    if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
+                                    if (!(gScreenMode == ScreenMode::trackDesignsManager
+                                          || gScreenMode == ScreenMode::titleSequence))
                                     {
                                         InputViewportDragBegin(*w);
                                     }
@@ -1655,7 +1656,8 @@ namespace OpenRCT2
         mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
-        if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
+        if ((mainWindow->flags & WF_NO_SCROLLING)
+            || (gScreenMode == ScreenMode::trackDesignsManager || gScreenMode == ScreenMode::titleSequence))
             return;
         if (mainWindow->viewport == nullptr)
             return;

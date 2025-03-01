@@ -606,10 +606,10 @@ void VehicleUpdateAll()
 {
     PROFILED_FUNCTION();
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    if (gScreenMode == ScreenMode::scenarioEditor)
         return;
 
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+    if (gScreenMode == ScreenMode::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
         return;
 
     for (auto vehicle : TrainManager::View())

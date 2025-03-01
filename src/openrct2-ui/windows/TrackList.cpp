@@ -118,7 +118,7 @@ namespace OpenRCT2::Ui::Windows
         void SelectFromList(int32_t listIndex)
         {
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, this->windowPos.x + (this->width / 2));
-            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+            if (!(gScreenMode == ScreenMode::trackDesignsManager))
             {
                 if (listIndex == 0)
                 {
@@ -143,7 +143,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint16_t trackDesignIndex = _filteredTrackIds[listIndex];
             TrackDesignFileRef* tdRef = &_trackDesigns[trackDesignIndex];
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gScreenMode == ScreenMode::trackDesignsManager)
             {
                 auto intent = Intent(WindowClass::ManageTrackDesign);
                 intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t GetListItemFromPosition(const ScreenCoordsXY& screenCoords)
         {
             size_t maxItems = _filteredTrackIds.size();
-            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+            if (!(gScreenMode == ScreenMode::trackDesignsManager))
             {
                 // Extra item: custom design
                 maxItems++;
@@ -221,7 +221,7 @@ namespace OpenRCT2::Ui::Windows
 
             LoadDesignsList(_window_track_list_item);
 
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gScreenMode == ScreenMode::trackDesignsManager)
             {
                 widgets[WIDX_BACK].type = WindowWidgetType::Empty;
             }
@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
             _reloadTrackDesigns = false;
             // Start with first track highlighted
             selected_list_item = 0;
-            if (_trackDesigns.size() != 0 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+            if (_trackDesigns.size() != 0 && !(gScreenMode == ScreenMode::trackDesignsManager))
             {
                 selected_list_item = 1;
             }
@@ -263,7 +263,7 @@ namespace OpenRCT2::Ui::Windows
             // to do it again. Otherwise, this window will get
             // another close signal from the track manager load function,
             // try to load the track manager again, and an infinite loop will result.
-            if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0)
+            if ((gScreenMode == ScreenMode::trackDesignsManager) && gScreenAge != 0)
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->CloseByNumber(WindowClass::ManageTrackDesign, number);
@@ -291,7 +291,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_BACK:
                     Close();
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+                    if (!(gScreenMode == ScreenMode::trackDesignsManager))
                     {
                         ContextOpenWindow(WindowClass::ConstructRide);
                     }
@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_FILTER_CLEAR:
                     // Keep the highlighted item selected
-                    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                    if (gScreenMode == ScreenMode::trackDesignsManager)
                     {
                         if (selected_list_item != -1 && _filteredTrackIds.size() > static_cast<size_t>(selected_list_item))
                             selected_list_item = _filteredTrackIds[selected_list_item];
@@ -324,7 +324,7 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize OnScrollGetSize(const int32_t scrollIndex) override
         {
             size_t numItems = _filteredTrackIds.size();
-            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+            if (!(gScreenMode == ScreenMode::trackDesignsManager))
             {
                 // Extra item: custom design
                 numItems++;
@@ -388,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             Formatter::Common().Add<StringId>(stringId);
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gScreenMode == ScreenMode::trackDesignsManager)
             {
                 widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
                 widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
@@ -399,7 +399,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
             }
 
-            if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || selected_list_item != 0)
+            if ((gScreenMode == ScreenMode::trackDesignsManager) || selected_list_item != 0)
             {
                 pressed_widgets |= 1uLL << WIDX_TRACK_PREVIEW;
                 disabled_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
@@ -454,7 +454,7 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
 
             int32_t listItemIndex = selected_list_item;
-            if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) == 0)
+            if ((gScreenMode == ScreenMode::trackDesignsManager) == 0)
             {
                 // Because the first item in the list is "Build a custom design", lower the index by one
                 listItemIndex--;
@@ -517,7 +517,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Warnings
             if ((_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable))
-                && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+                && !(gScreenMode == ScreenMode::trackDesignsManager))
             {
                 // Vehicle design not available
                 DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::CENTRE });
@@ -677,7 +677,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = ScreenCoordsXY{ 0, 0 };
             size_t listIndex = 0;
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gScreenMode == ScreenMode::trackDesignsManager)
             {
                 if (_trackDesigns.empty())
                 {
@@ -762,7 +762,7 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseConstructionWindows();
 
         ScreenCoordsXY screenPos{};
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+        if (gScreenMode == ScreenMode::trackDesignsManager)
         {
             int32_t screenWidth = ContextGetWidth();
             int32_t screenHeight = ContextGetHeight();

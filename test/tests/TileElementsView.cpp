@@ -46,7 +46,7 @@ protected:
         GameLoadInit();
 
         // Changed in some tests. Store to restore its value
-        _gScreenFlags = gScreenFlags;
+        _gScreenMode = gScreenMode;
         SUCCEED();
     }
 
@@ -55,16 +55,16 @@ protected:
         if (_context)
             _context.reset();
 
-        gScreenFlags = _gScreenFlags;
+        gScreenMode = _gScreenMode;
     }
 
 private:
     static std::shared_ptr<IContext> _context;
-    static uint8_t _gScreenFlags;
+    static ScreenMode _gScreenMode;
 };
 
 std::shared_ptr<IContext> TileElementsViewTests::_context;
-uint8_t TileElementsViewTests::_gScreenFlags;
+ScreenMode TileElementsViewTests::_gScreenMode;
 
 template<typename T>
 std::vector<T*> BuildListManual(const CoordsXY& pos)

@@ -303,7 +303,7 @@ void SceneryRemoveGhostToolPlacement()
 bool IsSceneryAvailableToBuild(const ScenerySelection& item)
 {
     // All scenery can be built when in the scenario editor
-    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    if (isInEditorMode())
     {
         return true;
     }
@@ -317,7 +317,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         }
     }
 
-    if (!gameState.Cheats.sandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!gameState.Cheats.sandboxMode && !isInEditorMode())
     {
         if (IsSceneryItemRestricted(item))
         {

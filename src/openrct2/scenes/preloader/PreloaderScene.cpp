@@ -34,7 +34,7 @@ void PreloaderScene::Load()
 {
     LOG_VERBOSE("PreloaderScene::Load()");
 
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
+    gScreenMode = ScreenMode::playing;
     gameStateInitAll(GetGameState(), kDefaultMapSize);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);

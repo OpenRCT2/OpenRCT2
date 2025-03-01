@@ -200,7 +200,7 @@ void PeepUpdateAll()
 {
     PROFILED_FUNCTION();
 
-    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    if (isInEditorMode())
         return;
 
     const auto currentTicks = GetGameState().CurrentTicks;
@@ -1317,7 +1317,7 @@ void PeepUpdateCrowdNoise()
     if (!Config::Get().sound.SoundEnabled)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    if (gScreenMode == ScreenMode::scenarioEditor)
         return;
 
     auto viewport = g_music_tracking_viewport;

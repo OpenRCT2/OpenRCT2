@@ -1383,7 +1383,7 @@ namespace OpenRCT2::Ui::Windows
                 || (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) != 0)
                 disabledTabs |= (1uLL << WIDX_TAB_9); // 0x1000
 
-            if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
+            if (gScreenMode == ScreenMode::trackDesigner)
                 disabledTabs |= (1uLL << WIDX_TAB_4 | 1uLL << WIDX_TAB_6 | 1uLL << WIDX_TAB_9 | 1uLL << WIDX_TAB_10); // 0x3280
 
             const auto* rideEntry = GetRideEntryByIndex(ride->subtype);

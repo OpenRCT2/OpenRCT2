@@ -320,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
             const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
 
             // Pause the game if not on title scene, nor in network play.
-            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (gScreenMode != ScreenMode::titleSequence && NetworkGetMode() == NETWORK_MODE_NONE)
             {
                 gGamePaused |= GAME_PAUSED_MODAL;
                 Audio::StopAll();
@@ -371,7 +371,7 @@ namespace OpenRCT2::Ui::Windows
             Config::Save();
 
             // Unpause the game if not on title scene, nor in network play.
-            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (gScreenMode != ScreenMode::titleSequence && NetworkGetMode() == NETWORK_MODE_NONE)
             {
                 gGamePaused &= ~GAME_PAUSED_MODAL;
                 Audio::Resume();

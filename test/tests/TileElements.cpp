@@ -39,7 +39,7 @@ protected:
         GameLoadInit();
 
         // Changed in some tests. Store to restore its value
-        _gScreenFlags = gScreenFlags;
+        _gScreenMode = gScreenMode;
         SUCCEED();
     }
 
@@ -48,16 +48,16 @@ protected:
         if (_context)
             _context.reset();
 
-        gScreenFlags = _gScreenFlags;
+        gScreenMode = _gScreenMode;
     }
 
 private:
     static std::shared_ptr<IContext> _context;
-    static uint8_t _gScreenFlags;
+    static ScreenMode _gScreenMode;
 };
 
 std::shared_ptr<IContext> TileElementWantsFootpathConnection::_context;
-uint8_t TileElementWantsFootpathConnection::_gScreenFlags;
+ScreenMode TileElementWantsFootpathConnection::_gScreenMode;
 
 TEST_F(TileElementWantsFootpathConnection, FlatPath)
 {
@@ -158,7 +158,7 @@ TEST_F(TileElementWantsFootpathConnection, MapEdge)
     auto* pathElement = MapGetFootpathElement(TileCoordsXYZ{ 1, 4, 14 }.ToCoordsXYZ());
 
     // Enable flag to simulate enabling the scenario editor
-    gScreenFlags |= SCREEN_FLAGS_SCENARIO_EDITOR;
+    gScreenMode = ScreenMode::scenarioEditor;
 
     // Calculate the connected edges and set the appropriate edge flags
     // FIXME: The footpath functions should only take PathElement and not TileElement.

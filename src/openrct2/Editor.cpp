@@ -106,7 +106,7 @@ namespace OpenRCT2::Editor
         Audio::StopAll();
         ObjectListLoad();
         gameStateInitAll(gameState, kDefaultMapSize);
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+        gScreenMode = ScreenMode::scenarioEditor;
         gameState.EditorStep = EditorStep::ObjectSelection;
         gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
@@ -146,7 +146,7 @@ namespace OpenRCT2::Editor
         auto& gameState = GetGameState();
         ScenarioReset(gameState);
 
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+        gScreenMode = ScreenMode::scenarioEditor;
         gameState.EditorStep = EditorStep::ObjectiveSelection;
         gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
@@ -166,7 +166,7 @@ namespace OpenRCT2::Editor
         context->SetActiveScene(context->GetGameScene());
 
         Audio::StopAll();
-        gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
+        gScreenMode = ScreenMode::trackDesigner;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
@@ -191,7 +191,7 @@ namespace OpenRCT2::Editor
         context->SetActiveScene(context->GetGameScene());
 
         Audio::StopAll();
-        gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
+        gScreenMode = ScreenMode::trackDesignsManager;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
@@ -233,7 +233,7 @@ namespace OpenRCT2::Editor
 
         GetGameState().EditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+        gScreenMode = ScreenMode::scenarioEditor;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
@@ -319,7 +319,7 @@ namespace OpenRCT2::Editor
      */
     void OpenWindowsForCurrentStep()
     {
-        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+        if (!isInEditorMode())
         {
             return;
         }
@@ -339,7 +339,7 @@ namespace OpenRCT2::Editor
                     return;
                 }
 
-                if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                if (gScreenMode == ScreenMode::trackDesignsManager)
                 {
                     ObjectManagerUnloadAllObjects();
                 }
@@ -417,7 +417,7 @@ namespace OpenRCT2::Editor
         }
 
         // No checks beyond this point apply to the track designer or track designs manager.
-        const bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+        const bool isTrackDesignerManager = isInTrackDesignerOrManager();
         if (isTrackDesignerManager)
         {
             return { ObjectType::none, kStringIdNone };

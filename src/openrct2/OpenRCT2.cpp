@@ -9,6 +9,8 @@
 
 #include "OpenRCT2.h"
 
+#include "core/EnumUtils.hpp"
+
 StartupAction gOpenRCT2StartupAction = StartupAction::Title;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 u8string gCustomUserDataPath = {};
@@ -25,8 +27,18 @@ bool gOpenRCT2ShowChangelog;
 bool gOpenRCT2SilentBreakpad;
 
 uint32_t gCurrentDrawCount = 0;
-uint8_t gScreenFlags;
+ScreenMode gScreenMode;
 uint32_t gScreenAge;
 PromptMode gSavePromptMode;
 
 bool gSilentReplays = false;
+
+bool isInEditorMode()
+{
+    return EnumValue(gScreenMode) >= EnumValue(ScreenMode::scenarioEditor);
+}
+
+bool isInTrackDesignerOrManager()
+{
+    return gScreenMode == ScreenMode::trackDesigner || gScreenMode == ScreenMode::trackDesignsManager;
+}

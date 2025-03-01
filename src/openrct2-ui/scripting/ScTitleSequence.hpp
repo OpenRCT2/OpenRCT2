@@ -266,7 +266,7 @@ namespace OpenRCT2::Scripting
 
                         // Unless we are already in the game, we have to re-create the windows
                         // so that the game toolbars are created.
-                        if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+                        if (gScreenMode == ScreenMode::playing)
                         {
                             gLoadKeepWindowsOpen = true;
                         }
@@ -480,7 +480,7 @@ namespace OpenRCT2::Scripting
                 {
                     duk_error(ctx, DUK_ERR_ERROR, "Failed to load title sequence");
                 }
-                else if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+                else if (gScreenMode != ScreenMode::titleSequence)
                 {
                     gPreviewingTitleSequenceInGame = true;
                 }

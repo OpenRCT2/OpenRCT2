@@ -49,7 +49,7 @@ bool FinanceCheckMoneyRequired(uint32_t flags)
 {
     if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
         return false;
-    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    if (isInEditorMode())
         return false;
     if (flags & GAME_COMMAND_FLAG_NO_SPEND)
         return false;

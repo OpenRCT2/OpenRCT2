@@ -52,7 +52,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     res.Position = { _coords, _height * kCoordsZStep };
 
     auto& gameState = GetGameState();
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode
+    if (gScreenMode != ScreenMode::scenarioEditor && !gameState.Cheats.sandboxMode
         && gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
@@ -69,7 +69,7 @@ GameActions::Result WaterSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, kStringIdNone, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode)
+    if (gScreenMode != ScreenMode::scenarioEditor && !gameState.Cheats.sandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {

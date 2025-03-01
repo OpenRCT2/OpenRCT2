@@ -22,17 +22,19 @@ enum class StartupAction
     Edit
 };
 
-enum
+enum class ScreenMode
 {
     // Although this is labeled a flag it actually means when
     // zero the screen is in playing mode.
-    SCREEN_FLAGS_PLAYING = 0,
-    SCREEN_FLAGS_TITLE_DEMO = 1,
-    SCREEN_FLAGS_SCENARIO_EDITOR = 2,
-    SCREEN_FLAGS_TRACK_DESIGNER = 4,
-    SCREEN_FLAGS_TRACK_MANAGER = 8,
-    SCREEN_FLAGS_EDITOR = (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER),
+    playing,
+    titleSequence,
+    scenarioEditor,
+    trackDesigner,
+    trackDesignsManager,
 };
+
+bool isInEditorMode();
+bool isInTrackDesignerOrManager();
 
 extern StartupAction gOpenRCT2StartupAction;
 extern utf8 gOpenRCT2StartupActionPath[512];
@@ -56,7 +58,7 @@ extern std::string gNetworkStartAddress;
 #endif
 
 extern uint32_t gCurrentDrawCount;
-extern uint8_t gScreenFlags;
+extern ScreenMode gScreenMode;
 extern uint32_t gScreenAge;
 extern PromptMode gSavePromptMode;
 

@@ -131,7 +131,7 @@ void ClimateUpdate()
     auto& gameState = GetGameState();
 
     // Only do climate logic if playing (not in scenario editor or title screen)
-    if (gScreenFlags & (~SCREEN_FLAGS_PLAYING))
+    if (gScreenMode != ScreenMode::playing)
         return;
 
     if (!GetGameState().Cheats.freezeWeather)
@@ -234,7 +234,7 @@ void ClimateUpdateSound()
     if (!OpenRCT2::Audio::IsAvailable())
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gScreenMode == ScreenMode::titleSequence)
         return;
 
     ClimateUpdateWeatherSound();

@@ -71,7 +71,7 @@ GameActions::Result LandSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, errorMessage);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode)
+    if (gScreenMode != ScreenMode::scenarioEditor && !gameState.Cheats.sandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {

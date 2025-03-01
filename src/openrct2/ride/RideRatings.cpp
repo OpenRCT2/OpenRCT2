@@ -192,7 +192,7 @@ void RideRatingsUpdateAll()
 {
     PROFILED_FUNCTION();
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    if (gScreenMode == ScreenMode::scenarioEditor)
         return;
 
     for (auto& updateState : GetGameState().RideRatingUpdateStates)

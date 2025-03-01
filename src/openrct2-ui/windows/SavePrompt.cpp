@@ -94,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            bool canSave = !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER));
+            bool canSave = !(isInTrackDesignerOrManager());
 
             if (canSave)
                 SetWidgets(_savePromptWidgets);
@@ -116,11 +116,11 @@ namespace OpenRCT2::Ui::Windows
             if (canSave)
             {
                 StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
-                if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenMode == ScreenMode::scenarioEditor)
                 {
                     stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
                 }
-                else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenMode == ScreenMode::scenarioEditor)
                 {
                     stringId = STR_QUIT_SCENARIO_EDITOR;
                 }
@@ -144,7 +144,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
-            if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+            if (gScreenMode == ScreenMode::titleSequence || gScreenMode == ScreenMode::trackDesigner
+                || gScreenMode == ScreenMode::trackDesignsManager)
             {
                 switch (widgetIndex)
                 {
@@ -165,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     std::unique_ptr<Intent> intent;
 
-                    if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
+                    if (isInEditorMode())
                     {
                         intent = std::make_unique<Intent>(WindowClass::Loadsave);
                         intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
@@ -210,7 +211,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // do not show save prompt if we're in the title demo and click on load game
-        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        if (gScreenMode == ScreenMode::titleSequence)
         {
             GameLoadOrQuitNoSavePrompt();
             return nullptr;
@@ -248,7 +249,7 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t width = WW_SAVE;
         int32_t height = WH_SAVE;
-        if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        if (isInTrackDesignerOrManager())
         {
             width = WW_QUIT;
             height = WH_QUIT;

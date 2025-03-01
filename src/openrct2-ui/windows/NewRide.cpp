@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TAB_7].type = WindowWidgetType::Tab;
             widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
 
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+            if (gScreenMode == ScreenMode::trackDesigner)
                 widgets[WIDX_TAB_7].type = WindowWidgetType::Empty;
 
             if (_currentTab == RESEARCH_TAB)
@@ -1056,7 +1056,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowNewRideInitVars()
     {
         // If we are in the track designer, default to the Roller Coaster tab
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+        if (gScreenMode == ScreenMode::trackDesigner)
         {
             NewRideWindow::SetOpeningPage(ROLLER_COASTER_TAB);
         }

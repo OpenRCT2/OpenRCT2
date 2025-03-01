@@ -1091,7 +1091,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const uint8_t image_offset = Byte97B444[surfaceShape];
 
         ImageId imageId;
-        if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        if (isInTrackDesignerOrManager())
         {
             imageId = ImageId(SPR_TERRAIN_TRACK_DESIGNER);
         }
@@ -1125,7 +1125,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     auto& gameState = GetGameState();
     // Draw Peep Spawns
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gameState.Cheats.sandboxMode)
+    if ((gScreenMode == ScreenMode::scenarioEditor || gameState.Cheats.sandboxMode)
         && session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         const CoordsXY& pos = session.MapPosition;
@@ -1274,7 +1274,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
 
     if ((session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE)
-        && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+        && !(isInTrackDesignerOrManager()))
     {
         const uint8_t image_offset = Byte97B444[surfaceShape];
         ImageId imageId;

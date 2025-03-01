@@ -112,7 +112,7 @@ void InputManager::Process()
 
 void InputManager::HandleViewScrolling()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gScreenMode == ScreenMode::titleSequence)
         return;
 
     auto& console = GetInGameConsole();

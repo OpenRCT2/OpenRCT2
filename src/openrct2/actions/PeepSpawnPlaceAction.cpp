@@ -45,7 +45,7 @@ void PeepSpawnPlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result PeepSpawnPlaceAction::Query() const
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
+    if (!isInEditorMode() && !GetGameState().Cheats.sandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, kStringIdNone);
     }

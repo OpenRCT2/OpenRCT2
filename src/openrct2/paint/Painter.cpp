@@ -96,7 +96,7 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
 
 static bool ShouldShowFPS()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gScreenMode == ScreenMode::titleSequence)
         return true;
 
     auto* windowMgr = Ui::GetWindowManager();
@@ -119,7 +119,7 @@ void Painter::PaintFPS(DrawPixelInfo& dpi)
     screenCoords.x = screenCoords.x - (stringWidth / 2);
 
     // Move counter below toolbar if buttons are centred
-    const bool isTitle = gScreenFlags == SCREEN_FLAGS_TITLE_DEMO;
+    const bool isTitle = gScreenMode == ScreenMode::titleSequence;
     if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
     {
         screenCoords.y = kTopToolbarHeight + 3;

@@ -88,7 +88,7 @@ void DiscordService::RefreshPresence() const
 
     std::string state;
     std::string details;
-    switch (gScreenFlags)
+    switch (gScreenMode)
     {
         default:
             details = GetParkName();
@@ -127,16 +127,16 @@ void DiscordService::RefreshPresence() const
                 discordPresence.instance = 1;
             }
             break;
-        case SCREEN_FLAGS_TITLE_DEMO:
+        case ScreenMode::titleSequence:
             details = "In Menus";
             break;
-        case SCREEN_FLAGS_SCENARIO_EDITOR:
+        case ScreenMode::scenarioEditor:
             details = "In Scenario Editor";
             break;
-        case SCREEN_FLAGS_TRACK_DESIGNER:
+        case ScreenMode::trackDesigner:
             details = "In Track Designer";
             break;
-        case SCREEN_FLAGS_TRACK_MANAGER:
+        case ScreenMode::trackDesignsManager:
             details = "In Track Designs Manager";
             break;
     }

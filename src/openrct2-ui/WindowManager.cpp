@@ -687,7 +687,7 @@ public:
     {
         if (loc.x < 0)
             return false;
-        if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (loc.y <= kTopToolbarHeight && gScreenMode != ScreenMode::titleSequence)
             return false;
         if (loc.x + width > ContextGetWidth())
             return false;
@@ -708,7 +708,7 @@ public:
         unk = screenWidth + (unk * 2);
         if (loc.x > unk)
             return false;
-        if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (loc.y <= kTopToolbarHeight && gScreenMode != ScreenMode::titleSequence)
             return false;
         unk = screenHeight - (height / 4);
         if (loc.y > unk)
@@ -726,7 +726,7 @@ public:
         else if (screenPos.x + width > screenWidth)
             screenPos.x = screenWidth - width;
 
-        auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (kTopToolbarHeight + 1);
+        auto toolbarAllowance = gScreenMode == ScreenMode::titleSequence ? 0 : (kTopToolbarHeight + 1);
         if (height - toolbarAllowance > screenHeight || screenPos.y < toolbarAllowance)
             screenPos.y = toolbarAllowance;
         else if (screenPos.y + height - toolbarAllowance > screenHeight)
@@ -1025,7 +1025,7 @@ public:
     {
         CloseByClass(WindowClass::Dropdown);
 
-        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        if (gScreenMode == ScreenMode::scenarioEditor)
         {
             if (GetGameState().EditorStep != EditorStep::LandscapeEditor)
                 return;
