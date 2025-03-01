@@ -26,11 +26,6 @@
 
 namespace OpenRCT2
 {
-    void ParkPreview::clear()
-    {
-        images.clear();
-    }
-
     static std::optional<PreviewImage> generatePreviewMap();
     static std::optional<PreviewImage> generatePreviewScreenshot();
 

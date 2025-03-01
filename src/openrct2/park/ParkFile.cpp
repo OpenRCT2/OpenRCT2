@@ -2802,11 +2802,9 @@ public:
         return true;
     }
 
-    bool PopulateParkPreview(ParkPreview& dst) override
+    ParkPreview GetParkPreview() override
     {
-        dst.clear();
-        dst = _parkFile->ReadPreviewChunk();
-        return true;
+        return _parkFile->ReadPreviewChunk();
     }
 };
 

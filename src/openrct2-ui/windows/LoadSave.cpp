@@ -317,7 +317,8 @@ namespace OpenRCT2::Ui::Windows
 
         void LoadPreview()
         {
-            _preview.clear();
+            _preview = {};
+
             if (selected_list_item == -1)
                 return;
 
@@ -342,11 +343,11 @@ namespace OpenRCT2::Ui::Windows
                 auto& objectRepository = GetContext()->GetObjectRepository();
                 auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
                 parkImporter->LoadFromStream(&fs, false, true, path.c_str());
-                parkImporter->PopulateParkPreview(_preview);
+                _preview = parkImporter->GetParkPreview();
             }
             catch (std::exception&)
             {
-                _preview.clear();
+                _preview = {};
                 return;
             }
         }

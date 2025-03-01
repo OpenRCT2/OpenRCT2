@@ -52,6 +52,7 @@
 #include "../object/ScenarioTextObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../park/Legacy.h"
+#include "../park/ParkPreview.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
@@ -315,9 +316,9 @@ namespace OpenRCT2::RCT2
             return true;
         }
 
-        bool PopulateParkPreview(ParkPreview& dst) override
+        ParkPreview GetParkPreview() override
         {
-            return false;
+            return {};
         }
 
         void Import(GameState_t& gameState) override

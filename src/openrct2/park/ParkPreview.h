@@ -49,8 +49,6 @@ namespace OpenRCT2
         uint16_t numRides{};
         uint16_t numGuests{};
         std::vector<PreviewImage> images{};
-
-        void clear();
     };
 
     struct GameState_t;
