@@ -151,6 +151,9 @@ namespace OpenRCT2
         }
     };
 
+    constexpr uint8_t kTitleHeightNormal = 12;
+    constexpr uint8_t kTitleHeightDouble = 24;
+
     constexpr uint8_t kCloseButtonSize = 10;
     constexpr uint8_t kCloseButtonSizeTouch = 20;
 
