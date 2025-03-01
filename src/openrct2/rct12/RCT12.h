@@ -34,11 +34,11 @@ namespace OpenRCT2::RCT12
 {
     enum class ClimateType : uint8_t
     {
-        CoolAndWet,
-        Warm,
-        HotAndDry,
-        Cold,
-        Count
+        coolAndWet,
+        warm,
+        hotAndDry,
+        cold,
+        count
     };
 
     class EntryList;
