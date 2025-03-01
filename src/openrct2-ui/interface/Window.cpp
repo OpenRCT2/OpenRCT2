@@ -485,7 +485,7 @@ namespace OpenRCT2
 
         // Close button
         auto& closeButton = widgets[2];
-        assert(closeButton.type == WindowWidgetType::CloseBox);
+        assert(closeButton.type == WindowWidgetType::CloseBox || closeButton.type == WindowWidgetType::Empty);
         auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
         {
