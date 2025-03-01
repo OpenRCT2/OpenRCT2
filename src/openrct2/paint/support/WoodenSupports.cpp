@@ -505,7 +505,7 @@ static bool WoodenABPaintSlopeTransitions(
 template<uint8_t zOffset, bool doHeightStepsCheck>
 static inline bool WoodenSupportsPaintSetupCommon(
     PaintSession& session, const SupportsIdDescriptor& supportImages, int32_t height, ImageId& imageTemplate, bool& hasSupports,
-    uint16_t& baseHeight, const bool rearFacingSteep)
+    uint16_t& baseHeight, const bool hasFrontSprite)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -534,8 +534,8 @@ static inline bool WoodenSupportsPaintSetupCommon(
     hasSupports = false;
     bool drawFlatPiece = false;
 
-    const int32_t boundBoxOffset = rearFacingSteep ? 1 : 0;
-    const int32_t boundBoxLength = rearFacingSteep ? 30 : 32;
+    const int32_t boundBoxOffset = hasFrontSprite ? 1 : 0;
+    const int32_t boundBoxLength = hasFrontSprite ? 30 : 32;
 
     // Draw base support (usually shaped to the slope)
     auto slope = session.Support.slope;
@@ -636,7 +636,7 @@ inline bool WoodenABSupportsPaintSetupCommon(
     auto supportIds = GetWoodenSupportIds(supportType, subType);
 
     size_t supportsDescriptorIndex = 0;
-    bool rearFacingSteep = false;
+    bool hasFrontSprite = false;
     if (transitionType != WoodenSupportTransitionType::None)
     {
         if (EnumValue(transitionType) >= kWoodenSupportTransitionTypeUninvertedCount)
@@ -647,11 +647,11 @@ inline bool WoodenABSupportsPaintSetupCommon(
         }
         supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
         const SlopedSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
-        rearFacingSteep = supportsDesc.hasFrontSprite;
+        hasFrontSprite = supportsDesc.hasFrontSprite;
     }
 
     if (!WoodenSupportsPaintSetupCommon<zOffset, doHeightStepsCheck>(
-            session, supportIds, height, imageTemplate, hasSupports, baseHeight, rearFacingSteep))
+            session, supportIds, height, imageTemplate, hasSupports, baseHeight, hasFrontSprite))
     {
         return false;
     }
