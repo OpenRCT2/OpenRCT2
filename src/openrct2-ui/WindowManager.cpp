@@ -257,13 +257,14 @@ public:
                     intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
             case WindowClass::Loadsave:
             {
-                uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
+                auto action = intent->GetEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION);
+                auto type = intent->GetEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE);
                 std::string defaultPath = intent->GetStringExtra(INTENT_EXTRA_PATH);
                 LoadSaveCallback callback = reinterpret_cast<LoadSaveCallback>(
                     intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK));
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
                 auto* w = FileBrowser::OpenPreferred(
-                    type, defaultPath,
+                    action, type, defaultPath,
                     [callback](ModalResult result, std::string_view path) {
                         if (callback != nullptr)
                         {

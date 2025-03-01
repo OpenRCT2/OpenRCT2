@@ -464,7 +464,8 @@ namespace OpenRCT2::Ui::Windows
                             if (gLegacyScene == LegacyScene::scenarioEditor)
                             {
                                 auto intent = Intent(WindowClass::Loadsave);
-                                intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                                intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
+                                intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
                                 intent.PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
                                 ContextOpenIntent(&intent);
                             }

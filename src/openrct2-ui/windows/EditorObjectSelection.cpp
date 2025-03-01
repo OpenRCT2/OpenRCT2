@@ -417,7 +417,8 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
 
                     auto intent = Intent(WindowClass::Loadsave);
-                    intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
+                    intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+                    intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::track);
                     ContextOpenIntent(&intent);
                     break;
                 }

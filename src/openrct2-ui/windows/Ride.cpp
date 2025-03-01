@@ -5412,7 +5412,8 @@ namespace OpenRCT2::Ui::Windows
 
             auto trackName = ride->GetName();
             auto intent = Intent(WindowClass::Loadsave);
-            intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
+            intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
+            intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::track);
             intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
             intent.PutExtra(INTENT_EXTRA_PATH, trackName);
             intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(&TrackDesignCallback));
