@@ -1561,7 +1561,7 @@ namespace OpenRCT2::RCT1
             auto animObjects = GetLegacyPeepAnimationObjects();
             AppendRequiredObjects(result, ObjectType::peepAnimations, animObjects);
 
-            auto climateObjId = GetClimateObjectIdFromLegacyClimateType(RCT12::ClimateType{ _s4.Climate });
+            auto climateObjId = GetClimateObjectIdFromLegacyClimateType(_s4.Climate);
             AppendRequiredObjects(result, ObjectType::climate, std::vector({ climateObjId }));
 
             return result;
