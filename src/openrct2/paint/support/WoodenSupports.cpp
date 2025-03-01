@@ -459,24 +459,22 @@ static void PaintRepeatedWoodenSupports(
  * Draw special pieces, e.g. curved supports.
  */
 static void PaintSlopeTransitions(
-    const SlopedSupportsDescriptor& supportsDesc, ImageIndex imageIndex, ImageIndex frontImageIndex, PaintSession& session,
-    const ImageId& imageTemplate, uint16_t baseHeight)
+    PaintSession& session, const ImageIndex imageIndex, const ImageId& imageTemplate, const uint16_t baseHeight)
 {
-    if (!supportsDesc.hasFrontSprite)
-    {
-        auto imageId = imageTemplate.WithIndex(imageIndex);
-        PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight }, { 1, 1, 1 } });
-    }
-    else
-    {
-        auto imageId = imageTemplate.WithIndex(imageIndex);
-        PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 1, 1, baseHeight }, { 1, 1, 1 } });
+    PaintAddImageAsParent(
+        session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, { { 0, 0, baseHeight }, { 1, 1, 1 } });
+}
 
-        auto frontImageId = imageTemplate.WithIndex(frontImageIndex);
-        auto boundingBox = supportsDesc.BoundingBox;
-        boundingBox.offset.z += baseHeight;
-        PaintAddImageAsParent(session, frontImageId, { 0, 0, baseHeight }, boundingBox);
-    }
+static void PaintSlopeTransitionsFront(
+    PaintSession& session, const SlopedSupportsDescriptor& supportsDesc, const ImageIndex imageIndex,
+    const ImageIndex imageIndexFront, const ImageId& imageTemplate, const uint16_t baseHeight)
+{
+    PaintAddImageAsParent(
+        session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, { { 1, 1, baseHeight }, { 1, 1, 1 } });
+
+    auto boundingBox = supportsDesc.BoundingBox;
+    boundingBox.offset.z += baseHeight;
+    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndexFront), { 0, 0, baseHeight }, boundingBox);
 }
 
 static bool WoodenABPaintSlopeTransitions(
@@ -489,15 +487,17 @@ static bool WoodenABPaintSlopeTransitions(
     if (imageIds == nullptr || imageIds[EnumValue(transitionType)][direction] == 0)
         return false;
 
-    ImageIndex frontImageIndex = kImageIndexUndefined;
-    if (supportsDesc.hasFrontSprite)
+    if (!supportsDesc.hasFrontSprite)
+    {
+        PaintSlopeTransitions(session, imageIds[EnumValue(transitionType)][direction], imageTemplate, baseHeight);
+    }
+    else
     {
         const auto* frontImageIds = WoodenCurveSupportFrontImageIds[EnumValue(supportType)][EnumValue(subType)];
-        frontImageIndex = frontImageIds[EnumValue(transitionType)][direction];
+        PaintSlopeTransitionsFront(
+            session, supportsDesc, imageIds[EnumValue(transitionType)][direction],
+            frontImageIds[EnumValue(transitionType)][direction], imageTemplate, baseHeight);
     }
-
-    PaintSlopeTransitions(
-        supportsDesc, imageIds[EnumValue(transitionType)][direction], frontImageIndex, session, imageTemplate, baseHeight);
 
     return true;
 }
@@ -758,8 +758,7 @@ bool PathBoxSupportsPaintSetup(
     {
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
 
-        PaintSlopeTransitions(
-            kSlopedPathSupportsDescriptor, imageIndex, kImageIndexUndefined, session, imageTemplate, baseHeight);
+        PaintSlopeTransitions(session, imageIndex, imageTemplate, baseHeight);
         hasSupports = true;
     }
 
