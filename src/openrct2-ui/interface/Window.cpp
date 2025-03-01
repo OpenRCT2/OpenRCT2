@@ -473,39 +473,57 @@ namespace OpenRCT2
     int32_t Window::ResizeFrame()
     {
         // Frame
-        widgets[0].right = width - 1;
-        widgets[0].bottom = height - 1;
+        auto& frameWidget = widgets[0];
+        assert(frameWidget.type == WindowWidgetType::Frame);
+        frameWidget.right = width - 1;
+        frameWidget.bottom = height - 1;
 
         // Title
-        widgets[1].right = width - 2;
+        auto& titleWidget = widgets[1];
+        assert(titleWidget.type == WindowWidgetType::Caption);
+        titleWidget.right = width - 2;
 
         // Close button
+        auto& closeButton = widgets[2];
+        assert(closeButton.type == WindowWidgetType::CloseBox);
         auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
         {
-            widgets[2].left = 2;
-            widgets[2].right = 2 + closeButtonSize;
+            closeButton.left = 2;
+            closeButton.right = 2 + closeButtonSize;
         }
         else
         {
-            widgets[2].left = width - 3 - closeButtonSize;
-            widgets[2].right = width - 3;
+            closeButton.left = width - 3 - closeButtonSize;
+            closeButton.right = width - 3;
         }
 
-        auto defaultHeight = OpenRCT2::Ui::Windows::GetTitleBarHeight();
-        auto currentHeight = widgets[1].height();
-        auto heightDifference = defaultHeight - currentHeight;
-        if (heightDifference != 0)
+        auto preferredHeight = OpenRCT2::Ui::Windows::GetTitleBarHeight();
+        auto currentHeight = titleWidget.height();
+        auto heightDifference = preferredHeight - currentHeight;
+
+        if (heightDifference == 0)
+            return 0;
+
+        // Offset title and close button
+        titleWidget.bottom += heightDifference;
+        closeButton.bottom += heightDifference;
+
+        height += heightDifference;
+        min_height += heightDifference;
+        max_height += heightDifference;
+
+        // Offset body widgets
+        // NB: we're offsetting page widget as well!
+        for (WidgetIndex i = 3; i < widgets.size(); i++)
         {
-            widgets[1].bottom += heightDifference;
-            widgets[2].bottom += heightDifference;
-
-            for (size_t i = 3; i < widgets.size(); i++)
-            {
-                widgets[i].top += heightDifference;
-                widgets[i].bottom += heightDifference;
-            }
+            widgets[i].top += heightDifference;
+            widgets[i].bottom += heightDifference;
         }
+
+        // Offset viewport
+        if (viewport != nullptr)
+            viewport->pos.y += heightDifference;
 
         return heightDifference;
     }
@@ -514,9 +532,13 @@ namespace OpenRCT2
     {
         auto heightDifference = ResizeFrame();
 
-        constexpr auto pageBackgroundOffset = 3;
-        widgets[pageBackgroundOffset].right = width - 1;
-        widgets[pageBackgroundOffset].bottom = height - 1;
+        // Page/resize widget
+        auto& pageWidget = widgets[3];
+        if (pageWidget.type == WindowWidgetType::Resize)
+        {
+            pageWidget.right = width - 1;
+            pageWidget.bottom = height - 1;
+        }
 
         return heightDifference;
     }
