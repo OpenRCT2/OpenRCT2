@@ -13,7 +13,9 @@
 #include "Numerics.hpp"
 
 #include <cassert>
+#include <cstdint>
 #include <cstring>
+#include <memory>
 #include <stdexcept>
 
 namespace OpenRCT2::SawyerCoding
