@@ -202,19 +202,16 @@ namespace OpenRCT2
         auto* g1 = const_cast<G1Element*>(GfxGetG1Element(imageId));
         if (g1 != nullptr)
         {
-            // Temporarily substitute a G1 image with the data in the scenario index
+            // Temporarily substitute a G1 image with the data in the preview image
             const auto backupG1 = *g1;
             *g1 = {};
             g1->offset = const_cast<uint8_t*>(image.pixels);
             g1->width = image.width;
             g1->height = image.height;
 
-            // Draw preview image and restore original G1 image.
+            // Draw preview image and restore original G1 image
             GfxDrawSprite(dpi, imageId, screenPos);
             *g1 = backupG1;
-
-            // Draw compass
-            // GfxDrawSprite(dpi, ImageIds::height_map_compass, screenPos);
         }
     }
 
