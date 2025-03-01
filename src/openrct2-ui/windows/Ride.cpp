@@ -5378,9 +5378,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* path)
+        static void TrackDesignCallback(ModalResult result, [[maybe_unused]] const utf8* path)
         {
-            if (result == MODAL_RESULT_OK)
+            if (result == ModalResult::ok)
             {
                 TrackRepositoryScan();
             }

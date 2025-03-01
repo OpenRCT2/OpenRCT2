@@ -287,8 +287,8 @@ namespace OpenRCT2::Scripting
 
                 LoadsaveOpen(
                     loadSaveType, defaultPath,
-                    [this, plugin, callback](int32_t result, std::string_view path) {
-                        if (result == MODAL_RESULT_OK)
+                    [this, plugin, callback](ModalResult result, std::string_view path) {
+                        if (result == ModalResult::ok)
                         {
                             auto dukValue = ToDuk(_scriptEngine.GetContext(), path);
                             _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);

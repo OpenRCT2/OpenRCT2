@@ -612,9 +612,9 @@ void GameAutosave()
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 
-static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)
+static void GameLoadOrQuitNoSavePromptCallback(ModalResult result, const utf8* path)
 {
-    if (result == MODAL_RESULT_OK)
+    if (result == ModalResult::ok)
     {
         GameNotifyMapChange();
         GameUnloadScripts();

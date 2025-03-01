@@ -264,7 +264,7 @@ public:
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
                 auto* w = FileBrowser::OpenPreferred(
                     type, defaultPath,
-                    [callback](int32_t result, std::string_view path) {
+                    [callback](ModalResult result, std::string_view path) {
                         if (callback != nullptr)
                         {
                             callback(result, std::string(path).c_str());

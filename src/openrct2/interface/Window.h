@@ -225,11 +225,11 @@ enum
     LOADSAVETYPE_HEIGHTMAP = 4 << 1,
 };
 
-enum
+enum class ModalResult : int8_t
 {
-    MODAL_RESULT_FAIL = -1,
-    MODAL_RESULT_CANCEL,
-    MODAL_RESULT_OK
+    fail = -1,
+    cancel,
+    ok,
 };
 
 enum class VisibilityCache : uint8_t
@@ -282,7 +282,6 @@ namespace OpenRCT2
     extern Tool gCurrentToolId;
     extern WidgetRef gCurrentToolWidget;
 
-    using modal_callback = void (*)(int32_t result);
     using CloseCallback = void (*)();
 
     constexpr int8_t kWindowLimitMin = 4;

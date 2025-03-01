@@ -56,7 +56,7 @@ namespace OpenRCT2::Editor
 {
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::count)> _editorSelectedObjectFlags;
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
+    static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path);
     static void SetAllLandOwned();
     static void FinaliseMainView();
     static void ClearMapForEditing(bool fromSave);
@@ -131,9 +131,9 @@ namespace OpenRCT2::Editor
         ContextOpenIntent(&intent);
     }
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path)
+    static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path)
     {
-        if (result != MODAL_RESULT_OK)
+        if (result != ModalResult::ok)
         {
             return;
         }
