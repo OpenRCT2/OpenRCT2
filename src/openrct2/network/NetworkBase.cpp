@@ -37,6 +37,7 @@
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
+#include "../world/MapAnimation.h"
 #include "Network.h"
 
 #include <cassert>

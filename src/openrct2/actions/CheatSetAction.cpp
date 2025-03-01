@@ -18,6 +18,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Duck.h"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../localisation/StringIds.h"

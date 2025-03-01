@@ -24,6 +24,7 @@
 #include "../core/FixedPoint.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Speed.hpp"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Particle.h"
 #include "../entity/Yaw.hpp"

@@ -22,6 +22,7 @@
 #include "../core/Numerics.hpp"
 #include "../core/String.hpp"
 #include "../entity/Balloon.h"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"

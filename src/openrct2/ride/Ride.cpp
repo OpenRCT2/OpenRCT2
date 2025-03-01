@@ -28,6 +28,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"

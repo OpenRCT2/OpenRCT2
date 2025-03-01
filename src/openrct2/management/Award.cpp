@@ -11,6 +11,7 @@
 
 #include "../GameState.h"
 #include "../config/Config.h"
+#include "../entity/EntityList.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../profiling/Profiling.h"

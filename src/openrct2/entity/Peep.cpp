@@ -27,6 +27,7 @@
 #include "../core/String.hpp"
 #include "../drawing/LightFX.h"
 #include "../entity/Balloon.h"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
 #include "../interface/Viewport.h"

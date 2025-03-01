@@ -30,6 +30,7 @@
 #include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/entity/Balloon.h>
 #include <openrct2/entity/Duck.h>
+#include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>

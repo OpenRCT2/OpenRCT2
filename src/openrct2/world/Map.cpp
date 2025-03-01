@@ -24,6 +24,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../entity/Duck.h"
+#include "../entity/EntityList.h"
 #include "../entity/EntityTweener.h"
 #include "../entity/Fountain.h"
 #include "../entity/PatrolArea.h"

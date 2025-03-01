@@ -18,6 +18,7 @@
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../core/EnumUtils.hpp"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"

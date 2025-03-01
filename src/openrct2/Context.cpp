@@ -73,6 +73,7 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
+#include "world/MapAnimation.h"
 #include "world/Park.h"
 
 #include <chrono>

@@ -18,6 +18,7 @@
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/localisation/Formatter.h>

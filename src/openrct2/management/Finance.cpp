@@ -14,6 +14,7 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/EnumUtils.hpp"
+#include "../entity/EntityList.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../profiling/Profiling.h"

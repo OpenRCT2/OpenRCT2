@@ -15,6 +15,7 @@
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../localisation/StringIds.h"

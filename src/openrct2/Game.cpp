@@ -32,6 +32,7 @@
 #include "core/Path.hpp"
 #include "core/SawyerCoding.h"
 #include "core/String.hpp"
+#include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
