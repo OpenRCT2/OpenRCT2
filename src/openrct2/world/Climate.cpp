@@ -256,6 +256,12 @@ bool ClimateIsSnowing()
     return weather == WeatherType::Snow || weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
 }
 
+bool ClimateTransitioningToSnow()
+{
+    auto& weather = GetGameState().WeatherNext.weatherType;
+    return weather == WeatherType::Snow || weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
+}
+
 bool ClimateIsSnowingHeavily()
 {
     auto& weather = GetGameState().WeatherCurrent.weatherType;
