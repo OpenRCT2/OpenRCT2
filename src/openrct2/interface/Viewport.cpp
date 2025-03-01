@@ -1810,7 +1810,7 @@ namespace OpenRCT2
         PROFILED_FUNCTION();
 
         // if unknown viewport visibility, use the containing window to discover the status
-        if (viewport->visibility == VisibilityCache::Unknown)
+        if (viewport->visibility == VisibilityCache::unknown)
         {
             auto windowManager = Ui::GetWindowManager();
             auto owner = windowManager->GetOwner(viewport);
@@ -1824,7 +1824,7 @@ namespace OpenRCT2
             }
         }
 
-        if (viewport->visibility == VisibilityCache::Covered)
+        if (viewport->visibility == VisibilityCache::covered)
             return;
 
         auto zoom = viewport->zoom;

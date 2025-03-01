@@ -234,9 +234,9 @@ enum class ModalResult : int8_t
 
 enum class VisibilityCache : uint8_t
 {
-    Unknown,
-    Visible,
-    Covered
+    unknown,
+    visible,
+    covered
 };
 
 enum class CloseWindowModifier : uint8_t
