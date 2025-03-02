@@ -11,6 +11,7 @@
 - Fix: [#23891] Inverted Hairpin Coaster track can draw over things above it (original bug).
 - Fix: [#23892] Gentle banked Wooden Roller Coaster track glitches as trains pass (original bug).
 - Fix: [#23897] Reverse Freefall Coaster slope up to vertical track piece does not draw a vertical tunnel.
+- Fix: [#23910] Heartline Twister Coaster track can draw over things above it (original bug).
 - Fix: [#23939] Incorrect assertion when trying to load heightmap.
 - Fix: [#23941] Underflow in “Repay loan and achieve a certain park value” objective when using Japanese.
 - Fix: [#23949] Walls draw over sloped rear water edges and those edge sprites are misaligned (original bug).
