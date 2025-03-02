@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
             min_width = WW;
             min_height = WH;
 
-            WindowSetResize(*this, min_width, min_height, max_width, max_height);
+            WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
         }
 
         void OnPrepareDraw() override
