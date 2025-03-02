@@ -3806,3 +3806,18 @@ STR_6748    :Only less intense rides
 STR_6749    :Only more intense rides
 STR_6750    :Select what kind of ride intensity newly spawned guests prefer.
 STR_6751    :Queue paths cannot be used for level crossings!
+STR_6752    :Number of riverbeds:
+STR_6753    :Minimum river width:
+STR_6754    :Maximum river width:
+STR_6755    :Riverbank width:
+STR_6756    :Meander rate:
+STR_6757    :Number of riverbeds
+STR_6758    :Minimum river width
+STR_6759    :Maximum river width
+STR_6760    :Riverbank width
+STR_6761    :Meander rate
+STR_6762    :Enter number of riverbeds between {COMMA16} and {COMMA16}
+STR_6763    :Enter minimum river width between {COMMA16} and {COMMA16}
+STR_6764    :Enter maximum river width between {COMMA16} and {COMMA16}
+STR_6765    :Enter riverbank width between {COMMA16} and {COMMA16}
+STR_6766    :Enter meander rate between {COMMA16} and {COMMA16}
