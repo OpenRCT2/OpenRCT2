@@ -11,6 +11,8 @@
 
 #include "GameAction.h"
 
+struct MapRange;
+
 class WaterLowerAction final : public GameActionBase<GameCommand::LowerWater>
 {
 private:
