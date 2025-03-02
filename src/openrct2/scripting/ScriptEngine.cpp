@@ -420,7 +420,7 @@ void ScriptEngine::Initialise()
     {
         _runtime = JS_NewRuntime();
         if (!_runtime)
-            throw "QuickJS: cannot allocate JS runtime\n";
+            throw std::runtime_error("QuickJS: cannot allocate JS runtime\n");
 
     #ifndef NDEBUG
         // Dump JS engine memory leaks
@@ -430,7 +430,8 @@ void ScriptEngine::Initialise()
 
     _replContext = JS_NewContext(_runtime);
     if (!_replContext)
-        throw "QuickJS: cannot allocate REPL JS context\n";
+        throw std::runtime_error("QuickJS: cannot allocate REPL JS context\n");
+    RegisterClasses(_replContext);
     InitialiseContext(_replContext);
 
     _initialised = true;
@@ -444,7 +445,7 @@ void ScriptEngine::Initialise()
 JSRuntime* ScriptEngine::_runtime = nullptr;
 ScConsole Scripting::gScConsole;
 
-void ScriptEngine::InitialiseContext(JSContext* ctx) const
+void ScriptEngine::RegisterClasses(JSContext* ctx)
 {
     // TODO (mber) register C functions
     // ScCheats::Register(ctx);
@@ -503,7 +504,10 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     // ScMechanic::Register(ctx);
     // ScSecurity::Register(ctx);
     // ScPlugin::Register(ctx);
+}
 
+void ScriptEngine::InitialiseContext(JSContext* ctx) const
+{
     JSValue glb = JS_GetGlobalObject(ctx);
     // dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
     // dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");

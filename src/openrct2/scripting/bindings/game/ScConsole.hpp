@@ -69,20 +69,15 @@ namespace OpenRCT2::Scripting
             JS_CFUNC_DEF("executeLegacy", 0, executeLegacy),
         };
 
-        const JSClassDef* GetClassDef() override
-        {
-            return &classDef;
-        }
-
-        std::span<const JSCFunctionListEntry> GetClassFuncs() override
-        {
-            return std::span<const JSCFunctionListEntry>{ funcs };
-        }
-
     public:
         JSValue New(JSContext* ctx, InteractiveConsole& console)
         {
-            return MakeWithOpaque(ctx, &console);
+            return MakeWithOpaque(ctx, funcs, &console);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBase(ctx, classDef);
         }
     };
 } // namespace OpenRCT2::Scripting
