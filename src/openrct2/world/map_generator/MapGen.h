@@ -25,7 +25,6 @@ namespace OpenRCT2::World::MapGenerator
         // Base
         Algorithm algorithm = Algorithm::blank;
         TileCoordsXY mapSize{ 150, 150 };
-        int32_t waterLevel = 6;
         int32_t landTexture = 0;
         int32_t edgeTexture = 0;
         int32_t heightmapLow = 14;
@@ -40,13 +39,21 @@ namespace OpenRCT2::World::MapGenerator
         bool beaches = true;
 
         // Simplex Noise Parameters
-        int32_t simplex_base_freq = 175;
+        int32_t simplex_base_freq = 125;
         int32_t simplex_octaves = 6;
 
         // Height map settings
         bool smooth_height_map = true;
         uint32_t smooth_strength = 1;
         bool normalize_height = true;
+
+        // Water settings
+        int32_t waterLevel = 6;
+        uint8_t numRiverbeds = 0;
+        uint8_t minRiverWidth = 10;
+        uint8_t maxRiverWidth = 20;
+        uint8_t riverbankWidth = 10;
+        uint8_t riverMeanderRate = 15;
     };
 
     class HeightMap;

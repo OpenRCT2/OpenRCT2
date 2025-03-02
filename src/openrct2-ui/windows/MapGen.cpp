@@ -93,9 +93,30 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RANDOM_TERRAIN,
         WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
 
-        WIDX_WATER_LEVEL = TAB_BEGIN,
+        WIDX_WATER_LEVEL_LABEL = TAB_BEGIN,
+        WIDX_WATER_LEVEL,
         WIDX_WATER_LEVEL_UP,
         WIDX_WATER_LEVEL_DOWN,
+        WIDX_NUM_RIVERBEDS_LABEL,
+        WIDX_NUM_RIVERBEDS,
+        WIDX_NUM_RIVERBEDS_UP,
+        WIDX_NUM_RIVERBEDS_DOWN,
+        WIDX_MIN_RIVER_WIDTH_LABEL,
+        WIDX_MIN_RIVER_WIDTH,
+        WIDX_MIN_RIVER_WIDTH_UP,
+        WIDX_MIN_RIVER_WIDTH_DOWN,
+        WIDX_MAX_RIVER_WIDTH_LABEL,
+        WIDX_MAX_RIVER_WIDTH,
+        WIDX_MAX_RIVER_WIDTH_UP,
+        WIDX_MAX_RIVER_WIDTH_DOWN,
+        WIDX_RIVERBANK_WIDTH_LABEL,
+        WIDX_RIVERBANK_WIDTH,
+        WIDX_RIVERBANK_WIDTH_UP,
+        WIDX_RIVERBANK_WIDTH_DOWN,
+        WIDX_MEANDER_RATE_LABEL,
+        WIDX_MEANDER_RATE,
+        WIDX_MEANDER_RATE_UP,
+        WIDX_MEANDER_RATE_DOWN,
         WIDX_ADD_BEACHES,
 
         WIDX_FORESTS_PLACE_TREES = TAB_BEGIN,
@@ -154,8 +175,19 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget WaterWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_WATER),
-        MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // NB: 3 widgets
-        MakeWidget        ({ 10,  70}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES),
+        MakeWidget        ({ 10,  52}, {160, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_WATER_LEVEL_LABEL         ),
+        MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                ), // NB: 3 widgets
+        MakeWidget        ({ 10,  70}, {160, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_MAPGEN_NUM_RIVERBEDS      ),
+        MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                ), // NB: 3 widgets
+        MakeWidget        ({ 10,  88}, {160, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_MAPGEN_MINIMUM_RIVER_WIDTH),
+        MakeSpinnerWidgets({179,  88}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                ), // NB: 3 widgets
+        MakeWidget        ({ 10, 106}, {160, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_MAPGEN_MAXIMUM_RIVER_WIDTH),
+        MakeSpinnerWidgets({179, 106}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                ), // NB: 3 widgets
+        MakeWidget        ({ 10, 124}, {160, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_MAPGEN_RIVERBANK_WIDTH    ),
+        MakeSpinnerWidgets({179, 124}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                ), // NB: 3 widgets
+        MakeWidget        ({ 10, 142}, {160, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_MAPGEN_MEANDER_RATE       ),
+        MakeSpinnerWidgets({179, 142}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                ), // NB: 3 widgets
+        MakeWidget        ({ 10, 160}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES      ),
     };
 
     static constexpr Widget ForestsWidgets[] = {
@@ -211,7 +243,17 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN),
 
         (1uLL << WIDX_WATER_LEVEL_UP) |
-        (1uLL << WIDX_WATER_LEVEL_DOWN),
+        (1uLL << WIDX_WATER_LEVEL_DOWN) |
+        (1uLL << WIDX_NUM_RIVERBEDS_DOWN) |
+        (1uLL << WIDX_NUM_RIVERBEDS_UP) |
+        (1uLL << WIDX_MIN_RIVER_WIDTH_DOWN) |
+        (1uLL << WIDX_MIN_RIVER_WIDTH_UP) |
+        (1uLL << WIDX_MAX_RIVER_WIDTH_DOWN) |
+        (1uLL << WIDX_MAX_RIVER_WIDTH_UP) |
+        (1uLL << WIDX_RIVERBANK_WIDTH_DOWN) |
+        (1uLL << WIDX_RIVERBANK_WIDTH_UP) |
+        (1uLL << WIDX_MEANDER_RATE_DOWN) |
+        (1uLL << WIDX_MEANDER_RATE_UP),
 
         (1uLL << WIDX_TREE_LAND_RATIO_UP) |
         (1uLL << WIDX_TREE_LAND_RATIO_DOWN) |
@@ -1273,11 +1315,66 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_LEVEL:
                 {
                     Formatter ft;
-                    ft.Add<int16_t>(kMinimumWaterHeight);
-                    ft.Add<int16_t>(kMaximumWaterHeight);
+                    ft.Add<int16_t>(BaseZToMetres(kMinimumWaterHeight));
+                    ft.Add<int16_t>(BaseZToMetres(kMaximumWaterHeight));
                     WindowTextInputOpen(
                         this, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER,
-                        _settings.waterLevel, 6);
+                        BaseZToMetres(_settings.waterLevel), 6);
+                    break;
+                }
+
+                case WIDX_NUM_RIVERBEDS:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(kMinNumRiverbeds);
+                    ft.Add<int16_t>(kMaxNumRiverbeds);
+                    WindowTextInputOpen(
+                        this, WIDX_NUM_RIVERBEDS, STR_MAPGEN_TITLE_NUM_RIVERBEDS, STR_MAPGEN_PROMPT_NUM_RIVERBEDS, ft,
+                        STR_FORMAT_INTEGER, _settings.numRiverbeds, 6);
+                    break;
+                }
+
+                case WIDX_MIN_RIVER_WIDTH:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(kMinMinRiverWidth);
+                    ft.Add<int16_t>(kMaxMinRiverWidth);
+                    WindowTextInputOpen(
+                        this, WIDX_MIN_RIVER_WIDTH, STR_MAPGEN_TITLE_MINIMUM_RIVER_WIDTH, STR_MAPGEN_PROMPT_MINIMUM_RIVER_WIDTH,
+                        ft, STR_FORMAT_INTEGER, _settings.minRiverWidth, 6);
+                    break;
+                }
+
+                case WIDX_MAX_RIVER_WIDTH:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(kMinMaxRiverWidth);
+                    ft.Add<int16_t>(kMaxMaxRiverWidth);
+                    WindowTextInputOpen(
+                        this, WIDX_MAX_RIVER_WIDTH, STR_MAPGEN_TITLE_MAXIMUM_RIVER_WIDTH, STR_MAPGEN_PROMPT_MAXIMUM_RIVER_WIDTH,
+                        ft, STR_FORMAT_INTEGER, _settings.maxRiverWidth, 6);
+                    break;
+                }
+
+                case WIDX_RIVERBANK_WIDTH:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(kMinRiverbankWidth);
+                    ft.Add<int16_t>(kMaxRiverbankWidth);
+                    WindowTextInputOpen(
+                        this, WIDX_RIVERBANK_WIDTH, STR_MAPGEN_TITLE_RIVERBANK_WIDTH, STR_MAPGEN_PROMPT_RIVERBANK_WIDTH, ft,
+                        STR_FORMAT_INTEGER, _settings.riverbankWidth, 6);
+                    break;
+                }
+
+                case WIDX_MEANDER_RATE:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(kMinRiverMeanderRate);
+                    ft.Add<int16_t>(kMaxRiverMeanderRate);
+                    WindowTextInputOpen(
+                        this, WIDX_MEANDER_RATE, STR_MAPGEN_TITLE_MEANDER_RATE, STR_MAPGEN_PROMPT_MEANDER_RATE, ft,
+                        STR_FORMAT_INTEGER, _settings.riverMeanderRate, 6);
                     break;
                 }
 
@@ -1302,6 +1399,45 @@ namespace OpenRCT2::Ui::Windows
                     _settings.waterLevel = std::max<int32_t>(_settings.waterLevel - 2, kMinimumWaterHeight);
                     Invalidate();
                     break;
+
+                case WIDX_NUM_RIVERBEDS_UP:
+                    _settings.numRiverbeds = std::min<int8_t>(_settings.numRiverbeds + 1, kMaxNumRiverbeds);
+                    break;
+                case WIDX_NUM_RIVERBEDS_DOWN:
+                    _settings.numRiverbeds = std::max<int8_t>(kMinNumRiverbeds, _settings.numRiverbeds - 1);
+                    break;
+
+                case WIDX_MIN_RIVER_WIDTH_UP:
+                    _settings.minRiverWidth = std::min<int8_t>(_settings.minRiverWidth + 1, kMaxMinRiverWidth);
+                    _settings.maxRiverWidth = std::max<int8_t>(_settings.minRiverWidth + 1, _settings.maxRiverWidth);
+                    break;
+                case WIDX_MIN_RIVER_WIDTH_DOWN:
+                    _settings.minRiverWidth = std::max<int8_t>(kMinMinRiverWidth, _settings.minRiverWidth - 1);
+                    _settings.maxRiverWidth = std::max<int8_t>(_settings.minRiverWidth + 1, _settings.maxRiverWidth);
+                    break;
+
+                case WIDX_MAX_RIVER_WIDTH_UP:
+                    _settings.maxRiverWidth = std::min<int8_t>(_settings.maxRiverWidth + 1, kMaxMaxRiverWidth);
+                    _settings.minRiverWidth = std::min<int8_t>(_settings.maxRiverWidth - 1, _settings.minRiverWidth);
+                    break;
+                case WIDX_MAX_RIVER_WIDTH_DOWN:
+                    _settings.maxRiverWidth = std::max<int8_t>(kMinMaxRiverWidth, _settings.maxRiverWidth - 1);
+                    _settings.minRiverWidth = std::min<int8_t>(_settings.maxRiverWidth - 1, _settings.minRiverWidth);
+                    break;
+
+                case WIDX_RIVERBANK_WIDTH_UP:
+                    _settings.riverbankWidth = std::min<int8_t>(_settings.riverbankWidth + 1, kMaxRiverbankWidth);
+                    break;
+                case WIDX_RIVERBANK_WIDTH_DOWN:
+                    _settings.riverbankWidth = std::max<int8_t>(kMinRiverbankWidth, _settings.riverbankWidth - 1);
+                    break;
+
+                case WIDX_MEANDER_RATE_UP:
+                    _settings.riverMeanderRate = std::min<int8_t>(_settings.riverMeanderRate + 1, kMaxRiverMeanderRate);
+                    break;
+                case WIDX_MEANDER_RATE_DOWN:
+                    _settings.riverMeanderRate = std::max<int8_t>(kMinRiverMeanderRate, _settings.riverMeanderRate - 1);
+                    break;
             }
         }
 
@@ -1318,7 +1454,27 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL:
-                    _settings.waterLevel = value;
+                    _settings.waterLevel = std::clamp(MetresToBaseZ(value), kMinimumWaterHeight, kMaximumWaterHeight);
+                    break;
+
+                case WIDX_NUM_RIVERBEDS:
+                    _settings.numRiverbeds = std::clamp<uint8_t>(value, kMinNumRiverbeds, kMaxNumRiverbeds);
+                    break;
+
+                case WIDX_MIN_RIVER_WIDTH:
+                    _settings.minRiverWidth = std::clamp<uint8_t>(value, kMinMinRiverWidth, kMaxMinRiverWidth);
+                    break;
+
+                case WIDX_MAX_RIVER_WIDTH:
+                    _settings.maxRiverWidth = std::clamp<uint8_t>(value, kMinMaxRiverWidth, kMaxMaxRiverWidth);
+                    break;
+
+                case WIDX_RIVERBANK_WIDTH:
+                    _settings.riverbankWidth = std::clamp<uint8_t>(value, kMinRiverbankWidth, kMaxRiverbankWidth);
+                    break;
+
+                case WIDX_MEANDER_RATE:
+                    _settings.riverMeanderRate = std::clamp<uint8_t>(value, kMinRiverMeanderRate, kMaxRiverMeanderRate);
                     break;
             }
 
@@ -1327,6 +1483,34 @@ namespace OpenRCT2::Ui::Windows
 
         void WaterPrepareDraw()
         {
+            bool isSimplexNoise = _settings.algorithm == MapGenerator::Algorithm::simplexNoise;
+            bool haveRiverBeds = isSimplexNoise && _settings.numRiverbeds > 0;
+
+            SetWidgetDisabled(WIDX_NUM_RIVERBEDS_LABEL, !isSimplexNoise);
+            SetWidgetDisabled(WIDX_NUM_RIVERBEDS, !isSimplexNoise);
+            SetWidgetDisabled(WIDX_NUM_RIVERBEDS_UP, !isSimplexNoise);
+            SetWidgetDisabled(WIDX_NUM_RIVERBEDS_DOWN, !isSimplexNoise);
+
+            SetWidgetDisabled(WIDX_MIN_RIVER_WIDTH_LABEL, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_MIN_RIVER_WIDTH, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_MIN_RIVER_WIDTH_UP, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_MIN_RIVER_WIDTH_DOWN, !haveRiverBeds);
+
+            SetWidgetDisabled(WIDX_MAX_RIVER_WIDTH_LABEL, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_MAX_RIVER_WIDTH, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_MAX_RIVER_WIDTH_UP, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_MAX_RIVER_WIDTH_DOWN, !haveRiverBeds);
+
+            SetWidgetDisabled(WIDX_RIVERBANK_WIDTH_LABEL, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_RIVERBANK_WIDTH, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_RIVERBANK_WIDTH_UP, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_RIVERBANK_WIDTH_DOWN, !haveRiverBeds);
+
+            SetWidgetDisabled(WIDX_MEANDER_RATE_LABEL, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_MEANDER_RATE, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_MEANDER_RATE_UP, !haveRiverBeds);
+            SetWidgetDisabled(WIDX_MEANDER_RATE_DOWN, !haveRiverBeds);
+
             SetCheckboxValue(WIDX_ADD_BEACHES, _settings.beaches != 0);
 
             SetPressedTab();
@@ -1337,17 +1521,67 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(rt);
             DrawTabImages(rt);
 
-            const auto textColour = colours[1];
+            const auto enabledColour = colours[1];
+            const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
-                { textColour });
+            // Water level
+            {
+                auto& widget = widgets[WIDX_WATER_LEVEL];
+                auto ft = Formatter();
+                ft.Add<int32_t>(BaseZToMetres(_settings.waterLevel));
+                DrawTextBasic(
+                    rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, STR_RIDE_LENGTH_ENTRY, ft,
+                    { enabledColour });
+            }
 
-            auto ft = Formatter();
-            ft.Add<int32_t>(BaseZToMetres(_settings.waterLevel));
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
-                STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
+            auto textColour = IsWidgetDisabled(WIDX_NUM_RIVERBEDS) ? disabledColour : enabledColour;
+
+            // Number of riverbeds
+            {
+                auto& widget = widgets[WIDX_NUM_RIVERBEDS];
+                auto ft = Formatter();
+                ft.Add<int16_t>(_settings.numRiverbeds);
+                DrawTextBasic(
+                    rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, STR_COMMA16, ft, { textColour });
+            }
+
+            textColour = IsWidgetDisabled(WIDX_MIN_RIVER_WIDTH) ? disabledColour : enabledColour;
+
+            // Min river width
+            {
+                auto& widget = widgets[WIDX_MIN_RIVER_WIDTH];
+                auto ft = Formatter();
+                ft.Add<int16_t>(_settings.minRiverWidth);
+                DrawTextBasic(
+                    rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, STR_COMMA16, ft, { textColour });
+            }
+
+            // Max river width
+            {
+                auto& widget = widgets[WIDX_MAX_RIVER_WIDTH];
+                auto ft = Formatter();
+                ft.Add<int16_t>(_settings.maxRiverWidth);
+                DrawTextBasic(
+                    rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, STR_COMMA16, ft, { textColour });
+            }
+
+            // Riverbank width
+            {
+                auto& widget = widgets[WIDX_RIVERBANK_WIDTH];
+                auto ft = Formatter();
+                ft.Add<int16_t>(_settings.riverbankWidth);
+                DrawTextBasic(
+                    rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, STR_COMMA16, ft, { textColour });
+            }
+
+            // Meander rate
+            {
+                auto& widget = widgets[WIDX_MEANDER_RATE];
+                auto ft = Formatter();
+                ft.Add<int16_t>(_settings.riverMeanderRate);
+                DrawTextBasic(
+                    rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, STR_COMMA16, ft, { textColour });
+            }
         }
 
 #pragma endregion
@@ -1476,7 +1710,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Take care of unit conversion
             int32_t rawValue = value;
-            if (page != WINDOW_MAPGEN_PAGE_BASE)
+            if (page != WINDOW_MAPGEN_PAGE_BASE && page != WINDOW_MAPGEN_PAGE_WATER)
             {
                 switch (Config::Get().general.MeasurementFormat)
                 {

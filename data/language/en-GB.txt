@@ -3822,3 +3822,18 @@ STR_6774    :Time since last inspection
 STR_6775    :{COMMA16} minute
 STR_6776    :{COMMA16} minutes
 STR_6777    :more than 4 hours
+STR_6778    :Number of riverbeds:
+STR_6779    :Minimum river width:
+STR_6780    :Maximum river width:
+STR_6781    :Riverbank width:
+STR_6782    :Meander rate:
+STR_6783    :Number of riverbeds
+STR_6784    :Minimum river width
+STR_6785    :Maximum river width
+STR_6786    :Riverbank width
+STR_6787    :Meander rate
+STR_6788    :Enter number of riverbeds between {COMMA16} and {COMMA16}
+STR_6789    :Enter minimum river width between {COMMA16} and {COMMA16}
+STR_6790    :Enter maximum river width between {COMMA16} and {COMMA16}
+STR_6791    :Enter riverbank width between {COMMA16} and {COMMA16}
+STR_6792    :Enter meander rate between {COMMA16} and {COMMA16}
