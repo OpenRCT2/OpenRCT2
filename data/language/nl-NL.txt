@@ -2128,7 +2128,7 @@ STR_3099    :Kleur selecteren
 STR_3100    :Tweede kleur selecteren
 STR_3101    :Derde kleur selecteren
 STR_3102    :Gekleurd decor opnieuw verven
-STR_3103    :Kan dit niet opnieuw verversen…
+STR_3103    :Kan dit niet opnieuw verven…
 STR_3104    :Toon een lijst van attracties
 STR_3105    :Toon een lijst van winkels en kraampjes
 STR_3106    :Toon een lijst van informatiekiosken en andere faciliteiten
