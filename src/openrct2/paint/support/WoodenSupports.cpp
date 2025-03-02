@@ -459,10 +459,12 @@ static void PaintRepeatedWoodenSupports(
  * Draw special pieces, e.g. curved supports.
  */
 static void PaintSlopeTransitions(
-    PaintSession& session, const ImageIndex imageIndex, const ImageId& imageTemplate, const uint16_t baseHeight)
+    PaintSession& session, const ImageIndex imageIndex, const ImageId& imageTemplate, const uint16_t baseHeight,
+    const SlopedSupportsDescriptor& supportsDesc)
 {
-    PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, { { 0, 0, baseHeight }, { 1, 1, 8 } });
+    auto boundBox = supportsDesc.BoundingBox;
+    boundBox.offset.z += baseHeight;
+    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, boundBox);
 }
 
 static void PaintSlopeTransitionsFront(
@@ -489,7 +491,7 @@ static bool WoodenABPaintSlopeTransitions(
 
     if (!supportsDesc.hasFrontSprite)
     {
-        PaintSlopeTransitions(session, imageIds[EnumValue(transitionType)][direction], imageTemplate, baseHeight);
+        PaintSlopeTransitions(session, imageIds[EnumValue(transitionType)][direction], imageTemplate, baseHeight, supportsDesc);
     }
     else
     {
@@ -758,7 +760,7 @@ bool PathBoxSupportsPaintSetup(
     {
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
 
-        PaintSlopeTransitions(session, imageIndex, imageTemplate, baseHeight);
+        PaintSlopeTransitions(session, imageIndex, imageTemplate, baseHeight, kSlopedPathSupportsDescriptor);
         hasSupports = true;
     }
 
