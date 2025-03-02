@@ -109,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
             page = 0;
             list_information_type = 0;
 
-            WindowSetResize(*this, kWindowWidthMin, kWindowHeightMin, kWindowWidthMax, kWindowHeightMax);
+            WindowSetResize(*this, { kWindowWidthMin, kWindowHeightMin }, { kWindowWidthMax, kWindowHeightMax });
 
             no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, kWindowWidthMin, kWindowHeightMin, kWindowWidthMax, kWindowHeightMax);
+            WindowSetResize(*this, { kWindowWidthMin, kWindowHeightMin }, { kWindowWidthMax, kWindowHeightMax });
         }
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override

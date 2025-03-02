@@ -481,7 +481,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, WW, WH, 1200, 1000);
+            WindowSetResize(*this, { WW, WH }, { 1200, 1000 });
         }
 
         static constexpr StringId kSourceStringIds[] = {

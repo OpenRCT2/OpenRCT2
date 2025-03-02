@@ -204,7 +204,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, min_width, min_height, max_width, max_height);
+            WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
         }
 
         void OnUpdate() override
