@@ -176,8 +176,8 @@ namespace OpenRCT2
 
         saveVp.viewPos = *viewPos;
 
-        auto tempDrawingEngine = std::make_unique<Drawing::X8DrawingEngine>(GetContext()->GetUiContext());
-        if (!tempDrawingEngine)
+        auto* drawingEngine = GetContext()->GetDrawingEngine();
+        if (drawingEngine == nullptr)
             return std::nullopt;
 
         DrawPixelInfo dpi{
@@ -188,7 +188,7 @@ namespace OpenRCT2
             .height = image.height,
             .pitch = 0,
             .zoom_level = saveVp.zoom,
-            .DrawingEngine = tempDrawingEngine.get(),
+            .DrawingEngine = drawingEngine,
         };
 
         ViewportRender(dpi, &saveVp);
@@ -198,6 +198,10 @@ namespace OpenRCT2
 
     void drawPreviewImage(const PreviewImage& image, DrawPixelInfo& dpi, ScreenCoordsXY screenPos)
     {
+        auto* drawingEngine = GetContext()->GetDrawingEngine();
+        if (drawingEngine == nullptr)
+            return;
+
         const auto imageId = ImageId(0);
         auto* g1 = const_cast<G1Element*>(GfxGetG1Element(imageId));
         if (g1 != nullptr)
@@ -208,10 +212,12 @@ namespace OpenRCT2
             g1->offset = const_cast<uint8_t*>(image.pixels);
             g1->width = image.width;
             g1->height = image.height;
+            drawingEngine->InvalidateImage(imageId.GetIndex());
 
             // Draw preview image and restore original G1 image
             GfxDrawSprite(dpi, imageId, screenPos);
             *g1 = backupG1;
+            drawingEngine->InvalidateImage(imageId.GetIndex());
         }
     }
 
