@@ -643,13 +643,13 @@ static void PaintMiniatureRailwayTrackFlat(
         paintGrooved = true;
     }
 
-    bool isSupported = WoodenASupportsPaintSetupRotated(
+    bool hasSupports = WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
     ImageId imageId, imageIdAlt;
 
     // In the following 3 calls to PaintAddImageAsParentRotated/PaintAddImageAsChildRotated, we add 1 to the
     //  bound_box_offset_z argument to make straight tracks draw above footpaths
-    if (isSupported)
+    if (hasSupports)
     {
         imageId = session.SupportColours.WithIndex(miniature_railway_track_floor[direction]);
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
@@ -1004,11 +1004,11 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(
 {
     if (right_quarter_turn_5_supports_type[direction][trackSequence] != WoodenSupportSubType::Null)
     {
-        bool isSupported = WoodenASupportsPaintSetup(
+        bool hasSupports = WoodenASupportsPaintSetup(
             session, supportType.wooden, right_quarter_turn_5_supports_type[direction][trackSequence], height,
             session.SupportColours);
 
-        if (!isSupported || (trackSequence == 3 && direction == 2))
+        if (!hasSupports || (trackSequence == 3 && direction == 2))
         {
             TrackPaintUtilRightQuarterTurn5TilesPaint(
                 session, 2, height, direction, trackSequence, session.TrackColours,
@@ -1134,7 +1134,7 @@ static void PaintMiniatureRailwayTrackSBendLeft(
         trackSequence = 3 - trackSequence;
     }
 
-    bool isSupported = WoodenASupportsPaintSetup(
+    bool hasSupports = WoodenASupportsPaintSetup(
         session, supportType.wooden, s_bend_left_supports_type[direction][trackSequence], height, session.SupportColours);
 
     static constexpr CoordsXY offsetList[] = {
@@ -1155,7 +1155,7 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     CoordsXY offset = offsetList[trackSequence];
     CoordsXY bounds = boundsList[trackSequence];
 
-    if (!isSupported)
+    if (!hasSupports)
     {
         PaintAddImageAsParentRotated(
             session, direction, imageId, { offset.x, offset.y, height },
@@ -1245,7 +1245,7 @@ static void PaintMiniatureRailwayTrackSBendRight(
         trackSequence = 3 - trackSequence;
     }
 
-    bool isSupported = WoodenASupportsPaintSetup(
+    bool hasSupports = WoodenASupportsPaintSetup(
         session, supportType.wooden, s_bend_right_supports_type[direction][trackSequence], height, session.SupportColours);
 
     static constexpr CoordsXY offsetList[] = {
@@ -1265,7 +1265,7 @@ static void PaintMiniatureRailwayTrackSBendRight(
     auto imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]);
     CoordsXY offset = offsetList[trackSequence];
     CoordsXY bounds = boundsList[trackSequence];
-    if (!isSupported)
+    if (!hasSupports)
     {
         PaintAddImageAsParentRotated(
             session, direction, imageId, { offset.x, offset.y, height },
@@ -1375,13 +1375,13 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isSupported = false;
+    bool hasSupports = false;
     if (trackSequence != 1 && trackSequence != 2)
     {
-        isSupported = WoodenASupportsPaintSetupRotated(
+        hasSupports = WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
-    if (!isSupported)
+    if (!hasSupports)
     {
         TrackPaintUtilRightQuarterTurn3TilesPaint(
             session, 3, height, direction, trackSequence, session.TrackColours,
@@ -1557,17 +1557,12 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
           WoodenSupportSubType::NeSw },
     };
 
-    bool isSupported = false;
     bool isRightEighthToOrthog = trackElement.GetTrackType() == TrackElemType::RightEighthToOrthogonal;
-    // Right eighth to orthogonal calls this function but we do not want to have a support call for it
-    // for track sequence 4
-    if (trackSequence != 4 || !isRightEighthToOrthog)
-    {
-        isSupported = WoodenASupportsPaintSetup(
-            session, supportType.wooden, supportSubType[direction][trackSequence], height, session.SupportColours);
-    }
+    bool hasSupports = WoodenASupportsPaintSetup(
+        session, supportType.wooden, supportSubType[direction][trackSequence], height, session.SupportColours);
+
     ImageId imageId;
-    if (!isSupported)
+    if (!hasSupports)
     {
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
@@ -1589,7 +1584,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
             miniature_railway_floor_track_pieces_left_eight_to_diag[direction][trackSequence]);
         CoordsXY offset = miniature_railway_track_floor_pieces_left_eight_to_diag_offset[direction][trackSequence];
         CoordsXYZ bounds = miniature_railway_track_floor_pieces_left_eight_to_diag_bounds[direction][trackSequence];
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
 
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
@@ -1597,7 +1592,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
             imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_left_eight_to_diag[direction][index]);
             offset = miniature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
             bounds = miniature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
-            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
         }
     }
 
@@ -1723,18 +1718,12 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
           WoodenSupportSubType::NeSw },
     };
 
-    bool isSupported = false;
     bool isLeftEighthToOrthog = trackElement.GetTrackType() == TrackElemType::LeftEighthToOrthogonal;
-    // Right eighth to orthogonal calls this function but we do not want to have a support call for it
-    // for track sequence 4
-    if (trackSequence != 4 || !isLeftEighthToOrthog)
-    {
-        isSupported = WoodenASupportsPaintSetup(
-            session, supportType.wooden, supportSubType[direction][trackSequence], height, session.SupportColours);
-    }
+    bool hasSupports = WoodenASupportsPaintSetup(
+        session, supportType.wooden, supportSubType[direction][trackSequence], height, session.SupportColours);
 
     ImageId imageId;
-    if (!isSupported)
+    if (!hasSupports)
     {
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
@@ -1755,7 +1744,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
         imageId = session.SupportColours.WithIndex(kFloorPiecesRightEighthToDiag[direction][trackSequence]);
         CoordsXY offset = kFloorPiecesRightEighthToDiagOffset[direction][trackSequence];
         CoordsXYZ bounds = kFloorPiecesRightEighthToDiagBounds[direction][trackSequence];
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
 
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
@@ -1763,7 +1752,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
             imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_right_eight_to_diag[direction][index]);
             offset = miniature_railway_track_pieces_right_eight_to_diag_offset[direction][index];
             bounds = miniature_railway_track_pieces_right_eight_to_diag_bounds[direction][index];
-            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
         }
     }
 
@@ -1801,10 +1790,10 @@ static void PaintMiniatureRailwayTrackRightEighthToOrthogonal(
 }
 
 static constexpr WoodenSupportSubType kDiagSupportTypes[kNumOrthogonalDirections][4] = {
-    { WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NeSw },
-    { WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3, WoodenSupportSubType::NwSe },
-    { WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },
-    { WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NwSe },
+    { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NeSw },
+    { WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3, WoodenSupportSubType::NwSe },
+    { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },
+    { WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NwSe },
 };
 
 struct FloorDescriptor
@@ -1815,12 +1804,12 @@ struct FloorDescriptor
 };
 
 static constexpr FloorDescriptor kFloors[] = {
-    { SPR_FLOOR_PLANKS, { 32, 32 }, { 0, 0 } },
-    { SPR_FLOOR_PLANKS_90_DEG, { 32, 32 }, { 0, 0 } }, // -16,-16(1:3)
-    { SPR_FLOOR_PLANKS_N_SEGMENT, { 32, 32 }, { -16, -16 } },
-    { SPR_FLOOR_PLANKS_E_SEGMENT, { 16, 16 }, { 0, 16 } },
-    { SPR_FLOOR_PLANKS_S_SEGMENT, { 16, 16 }, { 16, 16 } },
-    { SPR_FLOOR_PLANKS_W_SEGMENT, { 16, 16 }, { 16, 0 } },
+    /* WoodenSupportSubType::NeSw */ { SPR_FLOOR_PLANKS, { 32, 32 }, { 0, 0 } },
+    /* WoodenSupportSubType::NwSe */ { SPR_FLOOR_PLANKS_90_DEG, { 32, 32 }, { 0, 0 } }, // -16,-16(1:3)
+    /* WoodenSupportSubType::Corner0 */ { SPR_FLOOR_PLANKS_N_SEGMENT, { 32, 32 }, { -16, -16 } },
+    /* WoodenSupportSubType::Corner1 */ { SPR_FLOOR_PLANKS_E_SEGMENT, { 16, 16 }, { 0, 16 } },
+    /* WoodenSupportSubType::Corner2 */ { SPR_FLOOR_PLANKS_S_SEGMENT, { 16, 16 }, { 16, 16 } },
+    /* WoodenSupportSubType::Corner3 */ { SPR_FLOOR_PLANKS_W_SEGMENT, { 16, 16 }, { 16, 0 } },
 };
 
 /** rct2: 0x008AD200 */
@@ -1828,7 +1817,7 @@ static void MiniatureRailwayTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isSupported = false;
+    bool hasSupports = false;
     auto supportSubType = kDiagSupportTypes[direction][trackSequence];
 
     uint32_t floorImage = 0;
@@ -1841,7 +1830,7 @@ static void MiniatureRailwayTrackDiagFlat(
         floorImage = kFloors[enumValue].image_id;
         floorBoundSize = kFloors[enumValue].bound_size;
         floorBoundOffset = kFloors[enumValue].bound_offset;
-        isSupported = WoodenASupportsPaintSetup(session, supportType.wooden, supportSubType, height, session.SupportColours);
+        hasSupports = WoodenASupportsPaintSetup(session, supportType.wooden, supportSubType, height, session.SupportColours);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -1852,14 +1841,14 @@ static void MiniatureRailwayTrackDiagFlat(
     uint32_t imageId = miniature_railway_track_pieces_diag_flat[direction];
     bool drawRail = kDiagSpriteMap[direction][trackSequence];
 
-    if (isSupported)
+    if (hasSupports)
     {
-        PaintAddImageAsParent(
+        PaintAddImageAsChild(
             session, session.SupportColours.WithIndex(floorImage), { 0, 0, height },
             { { floorBoundOffset, height }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
-            PaintAddImageAsChild(
+            PaintAddImageAsParent(
                 session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height }, { 32, 32, 2 } });
         }
@@ -1879,12 +1868,13 @@ static void MiniatureRailwayTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr int8_t heightDiffs[] = { +8, -8, +8, -8 };
-    int8_t heightDiff = heightDiffs[direction];
-    if (trackSequence == 3)
-    {
-        heightDiff = 8;
-    }
+    static constexpr int8_t heightDiffs[kNumOrthogonalDirections][4] = {
+        { -8, +8, +8, +8 },
+        { -8, -8, -8, +8 },
+        { -8, +8, +8, +8 },
+        { -8, -8, -8, +8 },
+    };
+    int8_t heightDiff = heightDiffs[direction][trackSequence];
 
     bool hasSupports = false;
 
@@ -1917,16 +1907,11 @@ static void MiniatureRailwayTrackDiag25DegUp(
         floorBoundOffset = { -16, -16 };
     }
 
-    static constexpr int8_t offsetsB[4][4][2] = {
-        { { 0, 0 }, { +8, +16 }, { +8, +8 }, { +8, +8 } },
-        { { 0, 0 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
-        { { 0, 0 }, { +8, +8 }, { +8, +16 }, { +8, +8 } },
-        {
-            { 0, 0 },
-            { -8, -8 },
-            { -8, -8 },
-            { +8, +8 },
-        },
+    static constexpr int8_t offsetsB[kNumOrthogonalDirections][4][2] = {
+        { { -8, -8 }, { +8, +16 }, { +8, +8 }, { +8, +8 } },
+        { { -8, -8 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
+        { { -8, -8 }, { +8, +8 }, { +8, +16 }, { +8, +8 } },
+        { { -8, -8 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
     };
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up[direction];
@@ -1934,12 +1919,12 @@ static void MiniatureRailwayTrackDiag25DegUp(
     static constexpr int8_t offsetB[] = { +8, 0, +8, +8 };
     if (hasSupports)
     {
-        PaintAddImageAsParent(
+        PaintAddImageAsChild(
             session, session.SupportColours.WithIndex(floorImage), { 0, 0, height + offsetsB[direction][trackSequence][0] },
             { { floorBoundOffset, height + offsetsB[direction][trackSequence][1] }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
-            PaintAddImageAsChild(
+            PaintAddImageAsParent(
                 session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height + offsetB[direction] }, { 32, 32, 2 } });
         }
@@ -1986,12 +1971,12 @@ static void MiniatureRailwayTrackDiagFlatTo25DegUp(
 
     if (hasSupports)
     {
-        PaintAddImageAsParent(
+        PaintAddImageAsChild(
             session, session.SupportColours.WithIndex(floorImage), { 0, 0, height },
             { { floorBoundOffset, height }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
-            PaintAddImageAsChild(
+            PaintAddImageAsParent(
                 session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height }, { 32, 32, 2 } });
         }
@@ -2011,11 +1996,11 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr int8_t supportOffsets[][4] = {
-        { 0, +8, +8, +8 },
-        { 0, -8, -8, 0 },
-        { 0, +8, +8, +8 },
-        { 0, -8, -8, +8 },
+    static constexpr int8_t supportOffsets[kNumOrthogonalDirections][4] = {
+        { -8, +8, +8, +8 },
+        { -8, -8, -8, +8 },
+        { -8, +8, +8, +8 },
+        { -8, -8, -8, +8 },
     };
 
     bool hasSupports = false;
@@ -2051,10 +2036,10 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
     }
 
     static constexpr int8_t offsetsB[4][4][2] = {
-        { { 0, 0 }, { +8, +16 }, { +8, +8 }, { +8, +8 } },
-        { { 0, 0 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
-        { { 0, 0 }, { +8, +8 }, { +8, +16 }, { +8, +8 } },
-        { { 0, 0 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
+        { { -8, -8 }, { +8, +16 }, { +8, +8 }, { +8, +8 } },
+        { { -8, -8 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
+        { { -8, -8 }, { +8, +8 }, { +8, +16 }, { +8, +8 } },
+        { { -8, -8 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
     };
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up_to_flat[direction];
@@ -2064,12 +2049,12 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
 
     if (hasSupports)
     {
-        PaintAddImageAsParent(
+        PaintAddImageAsChild(
             session, session.SupportColours.WithIndex(floorImage), { 0, 0, height + offsetsB[direction][trackSequence][0] },
             { { floorBoundOffset, height + offsetsB[direction][trackSequence][1] }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
-            PaintAddImageAsChild(
+            PaintAddImageAsParent(
                 session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
         }
@@ -2091,10 +2076,10 @@ static void MiniatureRailwayTrackDiag25DegDown(
     const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr int8_t supportOffsets[][4] = {
-        { 0, +16, +16, 0 },
-        { 0, -8, -8, 0 },
-        { 0, +16, +16, 0 },
-        { 0, -8, -8, -8 },
+        { +8, +16, +16, 0 },
+        { +8, -8, -8, 0 },
+        { +8, +16, +16, 0 },
+        { +8, -8, -8, -8 },
     };
 
     bool hasSupports = false;
@@ -2134,20 +2119,20 @@ static void MiniatureRailwayTrackDiag25DegDown(
     static constexpr int8_t railOffsets[] = { 0, +8, +8, +8 };
 
     static constexpr int8_t offsetsB[4][4][2] = {
-        { { 0, 0 }, { +8, +8 }, { +8, +8 }, { -8, -8 } },
-        { { 0, 0 }, { -8, -8 }, { -8, -8 }, { -8, 0 } },
-        { { 0, 0 }, { +8, +8 }, { +8, +16 }, { -8, -8 } },
-        { { 0, 0 }, { -8, -8 }, { -8, -8 }, { -8, -8 } },
+        { { +8, +8 }, { +8, +8 }, { +8, +8 }, { -8, -8 } },
+        { { +8, +8 }, { -8, -8 }, { -8, -8 }, { -8, 0 } },
+        { { +8, +8 }, { +8, +8 }, { +8, +16 }, { -8, -8 } },
+        { { +8, +8 }, { -8, -8 }, { -8, -8 }, { -8, -8 } },
     };
 
     if (hasSupports)
     {
-        PaintAddImageAsParent(
+        PaintAddImageAsChild(
             session, session.SupportColours.WithIndex(floorImage), { 0, 0, height + offsetsB[direction][trackSequence][0] },
             { { floorBoundOffset, height + offsetsB[direction][trackSequence][1] }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
-            PaintAddImageAsChild(
+            PaintAddImageAsParent(
                 session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
         }
@@ -2169,10 +2154,10 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
     const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr int8_t supportOffsets[][4] = {
-        { 0, +16, +16, 0 },
-        { 0, -8, -8, -8 },
-        { 0, +8, +8, 0 },
-        { 0, -8, -8, -8 },
+        { +8, +16, +16, 0 },
+        { +8, -8, -8, -8 },
+        { +8, +8, +8, 0 },
+        { +8, -8, -8, -8 },
     };
 
     bool hasSupports = false;
@@ -2207,10 +2192,10 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
     }
 
     static constexpr int8_t offsetsB[4][4][2] = {
-        { { 0, 0 }, { +8, +8 }, { +8, +8 }, { -8, -8 } },
-        { { 0, 0 }, { -8, -8 }, { -8, -8 }, { -8, 0 } },
-        { { 0, 0 }, { +8, +8 }, { +8, +16 }, { -8, -8 } },
-        { { 0, 0 }, { -8, -8 }, { -8, -8 }, { -8, -8 } },
+        { { +8, +8 }, { +8, +8 }, { +8, +8 }, { -8, -8 } },
+        { { +8, +8 }, { -8, -8 }, { -8, -8 }, { -8, 0 } },
+        { { +8, +8 }, { +8, +8 }, { +8, +16 }, { -8, -8 } },
+        { { +8, +8 }, { -8, -8 }, { -8, -8 }, { -8, -8 } },
     };
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up_to_flat[(direction + 2) % 4];
@@ -2219,12 +2204,12 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
 
     if (hasSupports)
     {
-        PaintAddImageAsParent(
+        PaintAddImageAsChild(
             session, session.SupportColours.WithIndex(floorImage), { 0, 0, height + offsetsB[direction][trackSequence][0] },
             { { floorBoundOffset, height + offsetsB[direction][trackSequence][1] }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
-            PaintAddImageAsChild(
+            PaintAddImageAsParent(
                 session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
         }
@@ -2269,12 +2254,12 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
 
     if (hasSupports)
     {
-        PaintAddImageAsParent(
+        PaintAddImageAsChild(
             session, session.SupportColours.WithIndex(floorImage), { 0, 0, height },
             { { floorBoundOffset, height }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
-            PaintAddImageAsChild(
+            PaintAddImageAsParent(
                 session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height }, { 32, 32, 2 } });
         }
