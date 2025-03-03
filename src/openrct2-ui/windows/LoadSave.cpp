@@ -346,7 +346,7 @@ namespace OpenRCT2::Ui::Windows
                 parkImporter->LoadFromStream(&fs, false, true, path.c_str());
                 _preview = parkImporter->GetParkPreview();
             }
-            catch (std::exception& e)
+            catch (const std::exception& e)
             {
                 LOG_ERROR("Could not get preview:", e.what());
                 _preview = {};
