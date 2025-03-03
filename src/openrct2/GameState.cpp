@@ -215,13 +215,13 @@ namespace OpenRCT2
         }
 
         // Always perform autosave check, even when paused
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-            && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+        if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::trackDesigner
+            && gLegacyScene != LegacyScene::trackDesignsManager)
         {
             ScenarioAutosaveCheck();
         }
 
-        if (didRunSingleFrame && GameIsNotPaused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (didRunSingleFrame && GameIsNotPaused() && gLegacyScene != LegacyScene::titleSequence)
         {
             PauseToggle();
         }
@@ -315,7 +315,7 @@ namespace OpenRCT2
         UpdateAllMiscEntities();
         Ride::UpdateAll();
 
-        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+        if (!isInEditorMode())
         {
             Park::Update(gameState, gameState.Date);
         }

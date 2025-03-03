@@ -53,7 +53,7 @@ bool TitleScene::PreviewSequence(size_t value)
     _previewingSequence = TryLoadSequence(true);
     if (_previewingSequence)
     {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (gLegacyScene != LegacyScene::titleSequence)
         {
             gPreviewingTitleSequenceInGame = true;
         }
@@ -61,7 +61,7 @@ bool TitleScene::PreviewSequence(size_t value)
     else
     {
         _currentSequence = TitleGetConfigSequence();
-        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        if (gLegacyScene == LegacyScene::titleSequence)
         {
             TryLoadSequence();
         }
@@ -98,7 +98,7 @@ void TitleScene::Load()
         PauseToggle();
     }
 
-    gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
+    gLegacyScene = LegacyScene::titleSequence;
     gScreenAge = 0;
     gCurrentLoadedPath.clear();
 

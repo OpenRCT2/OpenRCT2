@@ -254,7 +254,7 @@ namespace OpenRCT2::RideAudio
      */
     void UpdateMusicChannels()
     {
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0)
+        if (gLegacyScene == LegacyScene::scenarioEditor || gLegacyScene == LegacyScene::titleSequence)
             return;
 
         // TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
@@ -381,7 +381,7 @@ namespace OpenRCT2::RideAudio
      */
     void UpdateMusicInstance(Ride& ride, const CoordsXYZ& rideCoords, uint16_t sampleRate)
     {
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
         {
             auto rotatedCoords = Translate3DTo2DWithZ(GetCurrentRotation(), rideCoords);
             auto viewport = g_music_tracking_viewport;

@@ -84,7 +84,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
     res.Position = centre;
     res.Expenditure = ExpenditureType::LandPurchase;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
+    if (!isInEditorMode() && !GetGameState().Cheats.sandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, kStringIdNone, STR_LAND_NOT_FOR_SALE);
     }

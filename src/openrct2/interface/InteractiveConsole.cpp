@@ -1198,7 +1198,7 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
 {
     if (!argv.empty())
     {
-        bool title = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0;
+        bool title = gLegacyScene == LegacyScene::titleSequence;
         bool invalidTitle = false;
         if (argv[0] == "object_selection" && InvalidArguments(&invalidTitle, !title))
         {

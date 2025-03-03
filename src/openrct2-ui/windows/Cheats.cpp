@@ -587,7 +587,7 @@ static StringId window_cheats_page_titles[] = {
                 widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gameState.Cheats.selectedStaffSpeed)];
             }
 
-            if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+            if (isInEditorMode())
             {
                 SetWidgetDisabled(WIDX_TAB_2, true);
                 SetWidgetDisabled(WIDX_TAB_3, true);

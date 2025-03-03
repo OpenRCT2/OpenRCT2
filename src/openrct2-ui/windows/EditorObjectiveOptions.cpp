@@ -843,8 +843,8 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                     : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
+                                                                                   : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }
@@ -1092,8 +1092,8 @@ namespace OpenRCT2::Ui::Windows
         {
             SetPressedTab();
 
-            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                     : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
+                                                                                   : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }

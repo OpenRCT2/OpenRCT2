@@ -96,7 +96,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
             if (surfaceElement == nullptr)
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {

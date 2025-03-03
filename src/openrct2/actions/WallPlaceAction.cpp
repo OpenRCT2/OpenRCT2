@@ -91,7 +91,7 @@ GameActions::Result WallPlaceAction::Query() const
 
     auto& gameState = GetGameState();
     auto mapSizeMax = GetMapSizeMaxXY();
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN)
         && !gameState.Cheats.sandboxMode)
     {
         if (_loc.z == 0)

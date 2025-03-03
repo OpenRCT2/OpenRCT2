@@ -700,7 +700,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowGameBottomToolbarInvalidateNewsItem()
     {
-        if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+        if (gLegacyScene == LegacyScene::playing)
         {
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateWidgetByClass(WindowClass::BottomToolbar, WIDX_MIDDLE_OUTSET);

@@ -22,7 +22,7 @@ void GameScene::Load()
 {
     LOG_VERBOSE("GameScene::Load()");
 
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
+    gLegacyScene = LegacyScene::playing;
 
     LOG_VERBOSE("GameScene::Load() finished");
 }

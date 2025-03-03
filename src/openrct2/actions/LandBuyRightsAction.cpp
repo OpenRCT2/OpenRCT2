@@ -133,8 +133,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 return res;
             }
 
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
-                || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
+            if (gLegacyScene == LegacyScene::scenarioEditor || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
             {
                 return GameActions::Result(
                     GameActions::Status::NotOwned, kErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
@@ -153,7 +152,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 return res;
             }
 
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
+            if (gLegacyScene == LegacyScene::scenarioEditor
                 || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
             {
                 return GameActions::Result(

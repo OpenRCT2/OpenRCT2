@@ -325,12 +325,12 @@ void Sub6AB211()
         _numAvailableObjectsForType[EnumValue(objectType)]++;
     }
 
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+    if (gLegacyScene == LegacyScene::trackDesigner)
     {
         SetupTrackDesignerObjects();
     }
 
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+    if (gLegacyScene == LegacyScene::trackDesignsManager)
     {
         SetupTrackManagerObjects();
     }
@@ -338,10 +338,10 @@ void Sub6AB211()
     SetupInUseSelectionFlags();
     ResetSelectedObjectCountAndSize();
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(isInTrackDesignerOrManager()))
     {
         // To prevent it breaking in scenario mode.
-        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        if (gLegacyScene == LegacyScene::scenarioEditor)
         {
             WindowEditorObjectSelectionSelectDefaultObjects();
         }
@@ -511,7 +511,7 @@ void ResetSelectedObjectCountAndSize()
 void FinishObjectSelection()
 {
     auto& gameState = GetGameState();
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+    if (gLegacyScene == LegacyScene::trackDesigner)
     {
         SetEveryRideTypeInvented();
         SetEveryRideEntryInvented();

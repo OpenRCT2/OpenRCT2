@@ -5155,7 +5155,7 @@ void Guest::UpdateRideShopInteract()
     }
 
     // Do not play toilet flush sound on title screen as it's considered loud and annoying
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gLegacyScene != LegacyScene::titleSequence)
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::ToiletFlush, GetLocation());
     }

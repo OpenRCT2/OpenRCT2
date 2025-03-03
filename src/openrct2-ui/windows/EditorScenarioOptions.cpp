@@ -535,7 +535,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+            if (gLegacyScene == LegacyScene::playing)
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->InvalidateByClass(WindowClass::Finances);
@@ -594,8 +594,8 @@ namespace OpenRCT2::Ui::Windows
 
             SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
 
-            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                     : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
+                                                                                   : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }
@@ -844,8 +844,8 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_GUEST_PREFER_LESS_INTENSE_RIDES, gameState.Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES);
             SetWidgetPressed(WIDX_GUEST_PREFER_MORE_INTENSE_RIDES, gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES);
 
-            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                     : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
+                                                                                   : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }
@@ -1163,8 +1163,8 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.Park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
             SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
 
-            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                     : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
+                                                                                   : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }
