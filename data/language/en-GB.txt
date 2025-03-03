@@ -3794,3 +3794,10 @@ STR_6732    :Show a button in the toolbar to rotate the view anti-clockwise
 STR_6733    :See-Through
 STR_6734    :Map elements that are at or above the cutting height are rendered translucent.
 STR_6735    :Go up to parent folder
+STR_6736    :Preview
+STR_6737    :No preview available
+STR_6738    :{WINDOW_COLOUR_2}Park rating: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Date: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Num. rides: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Num. guests: {BLACK}{UINT16}
