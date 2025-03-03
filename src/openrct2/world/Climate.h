@@ -73,6 +73,7 @@ enum class FilterPaletteID : int32_t;
 bool ClimateIsRaining();
 bool ClimateIsSnowing();
 bool ClimateIsSnowingHeavily();
+bool ClimateIsPrecipitating();
 bool WeatherIsDry(WeatherType);
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state);
 uint32_t ClimateGetWeatherSpriteId(const WeatherState& state);

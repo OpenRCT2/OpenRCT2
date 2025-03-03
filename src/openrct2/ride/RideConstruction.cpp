@@ -336,7 +336,7 @@ void Ride::RemovePeeps()
         }
     }
     num_riders = 0;
-    slide_in_use = 0;
+    slide_in_use = false;
     window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
 }
 
