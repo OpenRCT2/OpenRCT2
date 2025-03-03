@@ -288,3 +288,8 @@ endif ()
 if (UNIX)
     add_definitions(-D_FILE_OFFSET_BITS=64)
 endif ()
+
+if (CMAKE_LIBRARY_ARCHITECTURE MATCHES "arm-linux-gnueabihf")
+    message(STATUS "Linking to armhf libs; adding libatomic")
+    target_link_libraries(${PROJECT_NAME} atomic)
+endif()
