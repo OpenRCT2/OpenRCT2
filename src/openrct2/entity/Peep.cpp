@@ -50,6 +50,7 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ui/WindowManager.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/ConstructionClearance.h"
@@ -1421,10 +1422,7 @@ void PeepUpdateDaysInQueue()
     {
         if (!peep->OutsideOfPark && peep->State == PeepState::Queuing)
         {
-            if (peep->DaysInQueue < 255)
-            {
-                peep->DaysInQueue += 1;
-            }
+            peep->DaysInQueue = AddClamp<uint8_t>(peep->DaysInQueue, 1);
         }
     }
 }
@@ -2049,12 +2047,12 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                 return true;
             }
 
-            gameState.TotalIncomeFromAdmissions += entranceFee;
+            gameState.TotalIncomeFromAdmissions = AddClamp(gameState.TotalIncomeFromAdmissions, entranceFee);
             guest->SpendMoney(guest->PaidToEnter, entranceFee, ExpenditureType::ParkEntranceTickets);
             guest->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
-        GetGameState().TotalAdmissions++;
+        gameState.TotalAdmissions = AddClamp<uint64_t>(gameState.TotalAdmissions, 1);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::ParkInformation, 0);
@@ -2401,7 +2399,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         auto cost = ride->price[0];
         if (cost != 0 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            ride->total_profit += cost;
+            ride->total_profit = AddClamp(ride->total_profit, cost);
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
             guest->SpendMoney(cost, ExpenditureType::ParkRideTickets);
         }

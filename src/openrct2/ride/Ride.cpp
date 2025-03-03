@@ -375,7 +375,7 @@ void RideUpdateFavouritedStat()
             auto ride = GetRide(peep->FavouriteRide);
             if (ride != nullptr)
             {
-                ride->guests_favourite++;
+                ride->guests_favourite = AddClamp(ride->guests_favourite, 1u);
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
             }
         }
@@ -1300,14 +1300,10 @@ static uint8_t _breakdownProblemProbabilities[] = {
  */
 static void RideInspectionUpdate(Ride& ride)
 {
-    if (GetGameState().CurrentTicks & 2047)
-        return;
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+    if ((GetGameState().CurrentTicks & 2047) || (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
         return;
 
-    ride.last_inspection++;
-    if (ride.last_inspection == 0)
-        ride.last_inspection--;
+    ride.last_inspection = AddClamp<uint8_t>(ride.last_inspection, 1);
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride.inspection_interval];
     // An inspection interval of 0 minutes means the ride is set to never be inspected.

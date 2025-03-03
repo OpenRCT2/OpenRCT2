@@ -76,9 +76,8 @@ bool FinanceCheckAffordability(money64 cost, uint32_t flags)
  */
 void FinancePayment(money64 amount, ExpenditureType type)
 {
-    // overflow check
     auto& gameState = GetGameState();
-    gameState.Cash = AddClamp<money64>(gameState.Cash, -amount);
+    gameState.Cash = AddClamp(gameState.Cash, -amount);
 
     gameState.ExpenditureTable[0][EnumValue(type)] -= amount;
     if (dword_988E60[EnumValue(type)] & 1)
@@ -170,7 +169,7 @@ void FinancePayRideUpkeep()
             auto upkeep = ride.upkeep_cost;
             if (upkeep != kMoney64Undefined)
             {
-                ride.total_profit -= upkeep;
+                ride.total_profit = AddClamp(ride.total_profit, -upkeep);
                 ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
                 FinancePayment(upkeep, ExpenditureType::RideRunningCosts);
             }

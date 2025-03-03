@@ -342,7 +342,7 @@ public:
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
-    void SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType type);
+    void SpendMoney(money64& peepExpendType, money64 amount, ExpenditureType type);
     void SpendMoney(money64 amount, ExpenditureType type);
     void SetHasRidden(const Ride& ride);
     bool HasRidden(const Ride& ride) const;
