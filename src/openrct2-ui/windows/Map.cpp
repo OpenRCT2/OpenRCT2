@@ -1134,7 +1134,7 @@ namespace OpenRCT2::Ui::Windows
 
         CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
         {
-            screenCoords.x = ((screenCoords.x + 8) - getPracticalMapSize()) / 2;
+            screenCoords.x = (screenCoords.x - getPracticalMapSize()) / 2;
             screenCoords.y = ((screenCoords.y + 8)) / 2;
             auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).ToCoordsXY();
 
