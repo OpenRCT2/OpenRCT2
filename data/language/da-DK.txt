@@ -1740,7 +1740,7 @@ STR_2392    :{BLACK}At opnå en månedlig indkomst fra forlystelser på mindst {
 STR_2393    :{BLACK}At have 10 forskellige typer rutschebaner i gang i parken på samme tid, hver med en minimums længde på {LENGTH}, og en spændings vurdering på mindst 7.00
 STR_2394    :{BLACK}At færdiggøre alle 5 af de delvist færdige byggede rutschebaner i denne park, design dem til at have at opnå en spændings vurdering på mindst {POP16}{POP16}{COMMA2DP32} hver
 STR_2395    :{BLACK}At tilbagebetale dit lån og opnå en park vurdering på mindst {POP16}{POP16}{CURRENCY}
-STR_2396    :{BLACK}At opnå en månedlig profit far mad, drikkevarer og merchandise salg på mindst {POP16}{POP16}{CURRENCY}
+STR_2396    :{BLACK}At opnå en månedlig profit for mad, drikkevarer og merchandise salg på mindst {POP16}{POP16}{CURRENCY}
 STR_2397    :Ingen
 STR_2398    :Antal gæster ved en given dato
 STR_2399    :Park værdi ved en given dato
