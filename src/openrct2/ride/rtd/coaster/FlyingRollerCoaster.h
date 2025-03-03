@@ -92,6 +92,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
         },
     },
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleTwisterRollerCoaster,
 };
 
 constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =

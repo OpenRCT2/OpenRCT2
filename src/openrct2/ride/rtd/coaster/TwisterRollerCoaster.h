@@ -88,5 +88,6 @@ constexpr RideTypeDescriptor TwisterRollerCoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 32768, 49648 },
         },
     },
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleTwisterRollerCoaster,
 };
 // clang-format on

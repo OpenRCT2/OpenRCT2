@@ -83,5 +83,6 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 35746, 49648 },
         },
     },
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleTwisterRollerCoaster,
 };
 // clang-format on

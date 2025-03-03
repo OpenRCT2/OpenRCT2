@@ -26,6 +26,7 @@
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../paint/track/Support.h"
+#include "../park/Legacy.h"
 #include "Ride.h"
 #include "RideAudio.h"
 #include "RideConstruction.h"
@@ -278,6 +279,8 @@ using RideUpdateFunction = void (*)(Ride& ride);
 using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const OpenRCT2::TrackElemType trackType);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+using TrackTypeMustBeMadeInvisibleFunc = bool (*)(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion);
+using SetUnreliabilityFactorFunc = void (*)(Ride& ride);
 
 using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
 enum class RideConstructionWindowContext : uint8_t
@@ -431,6 +434,7 @@ enum class RtdFlag : uint8_t
     hasOneStation,
     hasSeatRotation,
     allowReversedTrains,
+    dodgems
 };
 
 /**
@@ -448,6 +452,11 @@ enum class RtdSpecialType
     toilet,
     cashMachine,
     firstAid,
+    carousel,
+    motionSimulator,
+    enterprise,
+    spaceRings,
+    boatHire,
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -541,6 +550,14 @@ struct RideTypeDescriptor
      * vehicle. See https://github.com/OpenRCT2/OpenRCT2/discussions/23119 for more information about unified speed.
      */
     int32_t GetUnifiedBoosterSpeed(int32_t relativeSpeed) const;
+
+    TrackTypeMustBeMadeInvisibleFunc TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleDefault;
+    bool TrackTypeMustBeMadeInvisible(OpenRCT2::TrackElemType trackType) const
+    {
+        return TrackTypeMustBeMadeInvisibleEx(trackType, -1);
+    }
+    SetUnreliabilityFactorFunc SetUnreliabilityFactor = SetUnreliabilityFactorDefault;
+    uint8_t PeepLoadingWaypointSegments = 4;
 };
 
 extern const RideTypeDescriptor kRideTypeDescriptors[RIDE_TYPE_COUNT];

@@ -80,5 +80,6 @@ constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 30980, 55606 },
         },
     },
+    .SetUnreliabilityFactor = SetUnreliabilityFactorCompactInvertedCoaster,
 };
 // clang-format on

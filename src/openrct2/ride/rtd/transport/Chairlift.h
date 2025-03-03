@@ -89,5 +89,6 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = UpdateChairlift,
+    .SetUnreliabilityFactor = SetUnreliabilityFactorChairlift,
 };
 // clang-format on

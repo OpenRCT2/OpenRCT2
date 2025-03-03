@@ -91,6 +91,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
         },
     },
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleCorkscrewCoaster,
 };
 
 constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
