@@ -48,7 +48,6 @@ namespace OpenRCT2
         money64 CurrentExpenditure;
         money64 CurrentProfit;
         uint32_t GuestsInParkHistory[kGuestsInParkHistorySize];
-        ClimateType Climate;
         WeatherState WeatherCurrent;
         WeatherState WeatherNext;
         uint16_t WeatherUpdateTimer;

@@ -21,6 +21,8 @@
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"
 #include "../drawing/Drawing.h"
+#include "../object/ClimateObject.h"
+#include "../object/ObjectManager.h"
 #include "../profiling/Profiling.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -39,13 +41,6 @@ enum class ThunderStatus
     playing,
 };
 
-struct WeatherPattern
-{
-    int8_t baseTemperature;
-    int8_t randomBias;
-    WeatherType distribution[24];
-};
-
 struct WeatherTrait
 {
     int8_t temperatureDelta;
@@ -56,7 +51,6 @@ struct WeatherTrait
 };
 
 // TODO: no need for these to be declared extern, just move the definitions up
-extern const WeatherPattern* kClimatePatterns[4];
 extern const WeatherTrait kClimateWeatherTraits[EnumValue(WeatherType::Count)];
 extern const FilterPaletteID kClimateWeatherGloomColours[4];
 
@@ -93,16 +87,20 @@ int32_t ClimateCelsiusToFahrenheit(int32_t celsius)
 /**
  * Set climate and determine start weather.
  */
-void ClimateReset(ClimateType climate)
+void ClimateReset()
 {
-    auto weather = WeatherType::PartiallyCloudy;
-    int32_t month = GetDate().GetMonth();
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* climateObj = objManager.GetLoadedObject<ClimateObject>(0);
+    if (climateObj == nullptr)
+        return;
 
-    const WeatherPattern& pattern = kClimatePatterns[EnumValue(climate)][month];
+    int32_t month = GetDate().GetMonth();
+    const WeatherPattern& pattern = climateObj->getPatternForMonth(month);
+
+    auto weather = WeatherType::PartiallyCloudy;
     const WeatherTrait& trait = kClimateWeatherTraits[EnumValue(weather)];
 
     auto& gameState = GetGameState();
-    gameState.Climate = climate;
     gameState.WeatherCurrent.weatherType = weather;
     gameState.WeatherCurrent.temperature = pattern.baseTemperature + trait.temperatureDelta;
     gameState.WeatherCurrent.weatherEffect = trait.effectLevel;
@@ -208,12 +206,17 @@ void ClimateUpdate()
 
 void ClimateForceWeather(WeatherType weather)
 {
-    auto& gameState = GetGameState();
-    int32_t month = GetDate().GetMonth();
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* climateObj = objManager.GetLoadedObject<ClimateObject>(0);
+    if (climateObj == nullptr)
+        return;
 
-    const auto& pattern = kClimatePatterns[EnumValue(gameState.Climate)][month];
+    int32_t month = GetDate().GetMonth();
+    const WeatherPattern& pattern = climateObj->getPatternForMonth(month);
+
     const auto& trait = kClimateWeatherTraits[EnumValue(weather)];
 
+    auto& gameState = GetGameState();
     gameState.WeatherCurrent.weatherType = weather;
     gameState.WeatherCurrent.weatherGloom = trait.gloomLevel;
     gameState.WeatherCurrent.level = trait.level;
@@ -253,6 +256,12 @@ bool ClimateIsSnowing()
     return weather == WeatherType::Snow || weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
 }
 
+bool ClimateTransitioningToSnow()
+{
+    auto& weather = GetGameState().WeatherNext.weatherType;
+    return weather == WeatherType::Snow || weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
+}
+
 bool ClimateIsSnowingHeavily()
 {
     auto& weather = GetGameState().WeatherCurrent.weatherType;
@@ -275,14 +284,9 @@ FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state)
     return paletteId;
 }
 
-uint32_t ClimateGetWeatherSpriteId(const WeatherState& state)
+uint32_t ClimateGetWeatherSpriteId(const WeatherType weatherType)
 {
-    uint32_t spriteId = SPR_WEATHER_SUN;
-    if (EnumValue(state.weatherType) < std::size(kClimateWeatherTraits))
-    {
-        spriteId = kClimateWeatherTraits[EnumValue(state.weatherType)].spriteId;
-    }
-    return spriteId;
+    return kClimateWeatherTraits[EnumValue(weatherType)].spriteId;
 }
 
 static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWeatherLevel)
@@ -303,14 +307,20 @@ static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWea
  */
 static void ClimateDetermineFutureWeather(uint32_t randomValue)
 {
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* climateObj = objManager.GetLoadedObject<ClimateObject>(0);
+    if (climateObj == nullptr)
+        return;
+
     int32_t month = GetDate().GetMonth();
-    auto& gameState = GetGameState();
+    const WeatherPattern& pattern = climateObj->getPatternForMonth(month);
 
     // Generate a random index with values 0 up to randomBias-1
     // and choose weather from the distribution table accordingly
-    const auto& pattern = kClimatePatterns[EnumValue(gameState.Climate)][month];
     const auto randomIndex = ((randomValue % 256) * pattern.randomBias) / 256;
     const auto nextWeather = pattern.distribution[randomIndex];
+
+    auto& gameState = GetGameState();
     gameState.WeatherNext.weatherType = nextWeather;
 
     const auto& nextWeatherTrait = kClimateWeatherTraits[EnumValue(nextWeather)];
@@ -481,60 +491,5 @@ const WeatherTrait kClimateWeatherTraits[EnumValue(WeatherType::Count)] = {
     { -20, WeatherEffectType::Blizzard, 2, WeatherLevel::Heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
 };
 // clang-format on
-
-constexpr auto S = WeatherType::Sunny;
-constexpr auto P = WeatherType::PartiallyCloudy;
-constexpr auto C = WeatherType::Cloudy;
-constexpr auto R = WeatherType::Rain;
-constexpr auto H = WeatherType::HeavyRain;
-constexpr auto T = WeatherType::Thunder;
-
-static constexpr WeatherPattern kClimatePatternsCoolAndWet[] = {
-    { 8, 18, { S, P, P, P, P, P, C, C, C, C, C, C, C, R, R, R, H, H, S, S, S, S, S } },
-    { 10, 21, { P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, R, R, H, H, H, T, S, S } },
-    { 14, 17, { S, S, S, P, P, P, P, P, P, C, C, C, C, R, R, R, H, S, S, S, S, S, S } },
-    { 17, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, R, S, S, S, S, S, S } },
-    { 19, 23, { S, S, S, S, S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, R, H } },
-    { 20, 23, { S, S, S, S, S, S, P, P, P, P, P, P, P, P, C, C, C, C, R, H, H, H, T } },
-    { 16, 19, { S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, R, H, H, T, S, S, S, S } },
-    { 13, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
-};
-static constexpr WeatherPattern kClimatePatternsWarm[] = {
-    { 12, 21, { S, S, S, S, S, P, P, P, P, P, P, P, P, C, C, C, C, C, C, C, H, S, S } },
-    { 13, 22, { S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, T, S } },
-    { 16, 17, { S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, R, S, S, S, S, S, S } },
-    { 19, 18, { S, S, S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, S, S, S, S, S } },
-    { 21, 22, { S, S, S, S, S, S, S, S, S, S, P, P, P, P, P, P, P, P, P, C, C, C, S } },
-    { 22, 17, { S, S, S, S, S, S, S, S, S, P, P, P, P, P, C, C, T, S, S, S, S, S, S } },
-    { 19, 17, { S, S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, S, S, S, S, S, S } },
-    { 16, 17, { S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, H, S, S, S, S, S, S } },
-};
-static constexpr WeatherPattern kClimatePatternsHotAndDry[] = {
-    { 12, 15, { S, S, S, S, P, P, P, P, P, P, P, P, C, C, R, S, S, S, S, S, S, S, S } },
-    { 14, 12, { S, S, S, S, S, P, P, P, P, P, C, C, S, S, S, S, S, S, S, S, S, S, S } },
-    { 16, 11, { S, S, S, S, S, S, P, P, P, P, C, S, S, S, S, S, S, S, S, S, S, S, S } },
-    { 19, 9, { S, S, S, S, S, S, P, P, P, S, S, S, S, S, S, S, S, S, S, S, S, S, S } },
-    { 21, 13, { S, S, S, S, S, S, S, S, S, S, P, P, P, S, S, S, S, S, S, S, S, S, S } },
-    { 22, 11, { S, S, S, S, S, S, S, S, S, P, P, S, S, S, S, S, S, S, S, S, S, S, S } },
-    { 21, 12, { S, S, S, S, S, S, S, P, P, P, C, T, S, S, S, S, S, S, S, S, S, S, S } },
-    { 16, 13, { S, S, S, S, S, S, S, S, P, P, P, C, R, S, S, S, S, S, S, S, S, S, S } },
-};
-static constexpr WeatherPattern kClimatePatternsCold[] = {
-    { 4, 18, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, R, H, S, S, S, S, S } },
-    { 5, 21, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, H, T, S, S } },
-    { 7, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, H, S, S, S, S, S, S } },
-    { 9, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, R, S, S, S, S, S, S } },
-    { 10, 23, { S, S, S, S, S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, R, H } },
-    { 11, 23, { S, S, S, S, S, S, P, P, P, P, P, P, P, P, P, P, C, C, C, C, R, H, T } },
-    { 9, 19, { S, S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, H, T, S, S, S, S } },
-    { 6, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
-};
-
-const WeatherPattern* kClimatePatterns[] = {
-    kClimatePatternsCoolAndWet,
-    kClimatePatternsWarm,
-    kClimatePatternsHotAndDry,
-    kClimatePatternsCold,
-};
 
 #pragma endregion

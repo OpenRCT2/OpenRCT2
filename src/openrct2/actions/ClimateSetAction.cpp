@@ -49,7 +49,7 @@ GameActions::Result ClimateSetAction::Query() const
 
 GameActions::Result ClimateSetAction::Execute() const
 {
-    ClimateReset(_climate);
+    ClimateReset();
 
     GfxInvalidateScreen();
 
