@@ -171,16 +171,15 @@ static void PaintGoKartsTrack25DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
-    PaintStruct* ps;
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up[direction][1]);
@@ -192,8 +191,6 @@ static void PaintGoKartsTrack25DegUp(
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
-
-    session.WoodenSupportsPrependTo = ps;
 
     DrawSupportForSequenceA<TrackElemType::Up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -224,16 +221,15 @@ static void PaintGoKartsTrackFlatTo25DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
-    PaintStruct* ps;
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][1]);
@@ -245,8 +241,6 @@ static void PaintGoKartsTrackFlatTo25DegUp(
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
-
-    session.WoodenSupportsPrependTo = ps;
 
     DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -277,16 +271,15 @@ static void PaintGoKartsTrack25DegUpToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
-    PaintStruct* ps;
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][1]);
@@ -298,8 +291,6 @@ static void PaintGoKartsTrack25DegUpToFlat(
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
-
-    session.WoodenSupportsPrependTo = ps;
 
     DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
