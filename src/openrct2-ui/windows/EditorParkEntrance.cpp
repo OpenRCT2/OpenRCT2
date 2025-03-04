@@ -246,10 +246,9 @@ namespace OpenRCT2::Ui::Windows
             InitParkEntranceItems();
 
             list_information_type = 0;
-            min_width = kWindowWidth;
-            min_height = kWindowHeight;
-            max_width = kWindowWidth;
-            max_height = static_cast<int16_t>(43 + kImageSize * GetNumRows());
+
+            WindowSetResize(
+                *this, { kWindowWidth, kWindowHeight }, { kWindowWidth, static_cast<int16_t>(43 + kImageSize * GetNumRows()) });
 
             pressed_widgets |= 1LL << WIDX_TAB;
 

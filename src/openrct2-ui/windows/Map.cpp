@@ -239,9 +239,8 @@ namespace OpenRCT2::Ui::Windows
                 | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
 
             flags |= WF_RESIZABLE;
-            min_width = WW;
-            min_height = WH;
 
+            WindowSetResize(*this, { WW, WH }, { WW, WH });
             SetInitialWindowDimensions();
             ResetMaxWindowDimensions();
             ResizeMiniMap();

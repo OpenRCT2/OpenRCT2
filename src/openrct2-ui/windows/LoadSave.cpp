@@ -354,11 +354,7 @@ namespace OpenRCT2::Ui::Windows
             // Reset window dimensions
             InitScrollWidgets();
             ComputeMaxDateWidth();
-
-            min_width = kWindowSizeMin.width;
-            min_height = kWindowSizeMin.height;
-            max_width = kWindowSizeMax.width;
-            max_height = kWindowSizeMax.height;
+            WindowSetResize(*this, kWindowSizeMin, kWindowSizeMax);
         }
 
         void OnClose() override

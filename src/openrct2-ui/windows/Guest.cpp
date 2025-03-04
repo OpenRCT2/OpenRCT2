@@ -195,10 +195,9 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             _marqueePosition = 0;
             picked_peep_frame = 0;
-            min_width = width;
-            min_height = 157;
-            max_width = 500;
-            max_height = 450;
+
+            WindowSetResize(*this, { WW, WH }, { 500, 450 });
+
             selected_list_item = -1;
         }
 
