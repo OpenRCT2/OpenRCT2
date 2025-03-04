@@ -141,7 +141,7 @@ extern uint32_t gCurrentRealTimeTicks;
 
 extern uint16_t gCurrentDeltaTime;
 extern uint8_t gGamePaused;
-extern int32_t gGameSpeed;
+extern uint8_t gGameSpeed;
 extern bool gDoSingleUpdate;
 extern float gDayNightCycle;
 extern bool gInUpdateCode;

@@ -80,7 +80,7 @@ using namespace OpenRCT2;
 
 uint16_t gCurrentDeltaTime;
 uint8_t gGamePaused = 0;
-int32_t gGameSpeed = 1;
+uint8_t gGameSpeed = 1;
 bool gDoSingleUpdate = false;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
