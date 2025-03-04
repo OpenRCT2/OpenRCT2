@@ -129,6 +129,9 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t newPageIndex)
         {
+            if (page == newPageIndex && !widgets.empty())
+                return;
+
             page = newPageIndex;
             frame_no = 0;
             RemoveViewport();
