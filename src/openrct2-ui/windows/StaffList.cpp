@@ -122,12 +122,9 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_staffListWidgets);
             WindowInitScrollWidgets(*this);
+            WindowSetResize(*this, { WW, WH }, { MAX_WW, MAX_WH });
 
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
-            min_width = WW;
-            min_height = WH;
-            max_width = MAX_WW;
-            max_height = MAX_WH;
 
             RefreshList();
         }
@@ -170,18 +167,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            min_width = WW;
-            min_height = WH;
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
             ResizeFrameWithPage();
         }
 

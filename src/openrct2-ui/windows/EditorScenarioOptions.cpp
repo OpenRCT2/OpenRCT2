@@ -404,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
 
         void FinancialResize()
         {
-            WindowSetResize(*this, 280, 149, 280, 149);
+            WindowSetResize(*this, { 280, 149 }, { 280, 149 });
         }
 
         void ShowClimateDropdown()
@@ -700,7 +700,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GuestsResize()
         {
-            WindowSetResize(*this, 380, 149, 380, 149);
+            WindowSetResize(*this, { 380, 149 }, { 380, 149 });
         }
 
         void GuestsMouseDown(WidgetIndex widgetIndex)
@@ -972,7 +972,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ParkResize()
         {
-            WindowSetResize(*this, 400, 200, 400, 200);
+            WindowSetResize(*this, { 400, 200 }, { 400, 200 });
         }
 
         void ParkMouseDown(WidgetIndex widgetIndex)

@@ -1002,16 +1002,18 @@ namespace OpenRCT2::Ui::Windows
         });
     }
 
-    void WindowSetResize(WindowBase& w, int16_t minWidth, int16_t minHeight, int16_t maxWidth, int16_t maxHeight)
+    bool WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize)
     {
-        w.min_width = minWidth;
-        w.min_height = minHeight;
-        w.max_width = maxWidth;
-        w.max_height = maxHeight;
+        w.min_width = minSize.width;
+        w.min_height = minSize.height;
+        w.max_width = maxSize.width;
+        w.max_height = maxSize.height;
 
         // Clamp width and height to minimum and maximum
-        int16_t width = std::clamp<int16_t>(w.width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
-        int16_t height = std::clamp<int16_t>(w.height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
+        int16_t width = std::clamp<int16_t>(
+            w.width, std::min(minSize.width, maxSize.width), std::max(minSize.width, maxSize.width));
+        int16_t height = std::clamp<int16_t>(
+            w.height, std::min(minSize.height, maxSize.height), std::max(minSize.height, maxSize.height));
 
         // Resize window if size has changed
         if (w.width != width || w.height != height)
@@ -1020,7 +1022,10 @@ namespace OpenRCT2::Ui::Windows
             w.width = width;
             w.height = height;
             w.Invalidate();
+            return true;
         }
+
+        return false;
     }
 
     bool WindowCanResize(const WindowBase& w)

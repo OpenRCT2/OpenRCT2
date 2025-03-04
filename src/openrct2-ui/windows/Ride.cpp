@@ -754,10 +754,8 @@ namespace OpenRCT2::Ui::Windows
             list_information_type = 0;
             picked_peep_frame = 0;
             DisableTabs();
-            min_width = kMinimumWindowWidth;
-            min_height = 180;
-            max_width = 500;
-            max_height = 450;
+
+            WindowSetResize(*this, { kMinimumWindowWidth, 180 }, { 500, 450 });
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -1710,7 +1708,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, kMinimumWindowWidth, minHeight, 500, 450);
+            WindowSetResize(*this, { kMinimumWindowWidth, minHeight }, { 500, 450 });
             // Unlike with other windows, the focus needs to be recentred so it’s best to just reset it.
             focus = std::nullopt;
             InitViewport();
@@ -2658,7 +2656,7 @@ namespace OpenRCT2::Ui::Windows
         void VehicleResize()
         {
             auto bottom = widgets[WIDX_VEHICLE_TRAINS].bottom + 6;
-            WindowSetResize(*this, kMinimumWindowWidth, bottom, kMinimumWindowWidth, bottom);
+            WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
         void VehicleOnMouseDown(WidgetIndex widgetIndex)
@@ -3203,7 +3201,7 @@ namespace OpenRCT2::Ui::Windows
         void OperatingResize()
         {
             auto bottom = widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].bottom + 6;
-            WindowSetResize(*this, kMinimumWindowWidth, bottom, kMinimumWindowWidth, bottom);
+            WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
         void OperatingOnMouseDown(WidgetIndex widgetIndex)
@@ -3774,7 +3772,7 @@ namespace OpenRCT2::Ui::Windows
         void MaintenanceResize()
         {
             auto bottom = widgets[WIDX_LOCATE_MECHANIC].bottom + 6;
-            WindowSetResize(*this, kMinimumWindowWidth, bottom, kMinimumWindowWidth, bottom);
+            WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
         void MaintenanceOnMouseDown(WidgetIndex widgetIndex)
@@ -4299,7 +4297,7 @@ namespace OpenRCT2::Ui::Windows
         void ColourResize()
         {
             auto bottom = widgets[WIDX_VEHICLE_PREVIEW].bottom + 6;
-            WindowSetResize(*this, kMinimumWindowWidth, bottom, kMinimumWindowWidth, bottom);
+            WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
         void ColourOnMouseDown(WidgetIndex widgetIndex)
@@ -5022,7 +5020,7 @@ namespace OpenRCT2::Ui::Windows
             auto standardHeight = widgets[WIDX_MUSIC_DROPDOWN].bottom + 6;
             auto minHeight = isMusicActivated ? standardHeight + 133 : standardHeight;
             auto maxHeight = isMusicActivated ? standardHeight + 369 : standardHeight;
-            WindowSetResize(*this, kMinimumWindowWidth, minHeight, 500, maxHeight);
+            WindowSetResize(*this, { kMinimumWindowWidth, minHeight }, { 500, maxHeight });
         }
 
         static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
@@ -5463,7 +5461,7 @@ namespace OpenRCT2::Ui::Windows
 
         void MeasurementsResize()
         {
-            WindowSetResize(*this, kMinimumWindowWidth, 234, kMinimumWindowWidth, 234);
+            WindowSetResize(*this, { kMinimumWindowWidth, 234 }, { kMinimumWindowWidth, 234 });
         }
 
         void MeasurementsOnMouseDown(WidgetIndex widgetIndex)
@@ -5899,7 +5897,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsResize()
         {
-            WindowSetResize(*this, kMinimumWindowWidth, 182, std::numeric_limits<int16_t>::max(), 450);
+            WindowSetResize(*this, { kMinimumWindowWidth, 182 }, { std::numeric_limits<int16_t>::max(), 450 });
         }
 
         void GraphsOnMouseDown(WidgetIndex widgetIndex)
@@ -6452,7 +6450,7 @@ namespace OpenRCT2::Ui::Windows
         void IncomeResize()
         {
             auto newHeight = 194;
-            WindowSetResize(*this, kMinimumWindowWidth, newHeight, kMinimumWindowWidth, newHeight);
+            WindowSetResize(*this, { kMinimumWindowWidth, newHeight }, { kMinimumWindowWidth, newHeight });
         }
 
         void IncomeOnMouseDown(WidgetIndex widgetIndex)
@@ -6768,7 +6766,7 @@ namespace OpenRCT2::Ui::Windows
         void CustomerResize()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, kMinimumWindowWidth, 163, kMinimumWindowWidth, 163);
+            WindowSetResize(*this, { kMinimumWindowWidth, 163 }, { kMinimumWindowWidth, 163 });
         }
 
         void CustomerUpdate()

@@ -449,7 +449,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeEntrance()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
+            WindowSetResize(*this, { 230, 174 + 9 }, { 230 * 3, (274 + 9) * 3 });
             InitViewport();
         }
 
@@ -677,7 +677,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeRating()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
+            WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
         }
 
         void OnUpdateRating()
@@ -745,7 +745,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeGuests()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
+            WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
         }
 
         void OnUpdateGuests()
@@ -824,7 +824,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Price page
         void OnResizePrice()
         {
-            WindowSetResize(*this, 230, 124, 230, 124);
+            WindowSetResize(*this, { 230, 124 }, { 230, 124 });
         }
 
         void OnMouseDownPrice(WidgetIndex widgetIndex)
@@ -922,7 +922,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Stats page
         void OnResizeStats()
         {
-            WindowSetResize(*this, 230, 119, 230, 119);
+            WindowSetResize(*this, { 230, 119 }, { 230, 119 });
         }
 
         void OnUpdateStats()
@@ -1025,10 +1025,10 @@ namespace OpenRCT2::Ui::Windows
         {
 #ifndef NO_TTF
             if (gCurrentTTFFontSet != nullptr)
-                WindowSetResize(*this, 230, 270, 230, 270);
+                WindowSetResize(*this, { 230, 270 }, { 230, 270 });
             else
 #endif
-                WindowSetResize(*this, 230, 226, 230, 226);
+                WindowSetResize(*this, { 230, 226 }, { 230, 226 });
         }
 
         void OnUpdateObjective()
@@ -1131,7 +1131,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Awards page
         void OnResizeAwards()
         {
-            WindowSetResize(*this, 230, 182, 230, 182);
+            WindowSetResize(*this, { 230, 182 }, { 230, 182 });
         }
 
         void OnUpdateAwards()
