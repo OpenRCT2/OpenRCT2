@@ -1050,7 +1050,8 @@ namespace OpenRCT2::Ui::Windows
             mapOffset.y *= getPracticalMapSize();
 
             auto leftTop = widgetOffset + mapOffset
-                + ScreenCoordsXY{ (mainViewport->viewPos.x / kCoordsXYStep), (mainViewport->viewPos.y / kCoordsXYHalfTile + 8) };
+                + ScreenCoordsXY{ (mainViewport->viewPos.x / kCoordsXYStep),
+                                  (mainViewport->viewPos.y / kCoordsXYHalfTile + 8) };
             auto rightBottom = leftTop
                 + ScreenCoordsXY{ mainViewport->ViewWidth() / kCoordsXYStep, mainViewport->ViewHeight() / kCoordsXYHalfTile };
             auto rightTop = ScreenCoordsXY{ rightBottom.x, leftTop.y };
