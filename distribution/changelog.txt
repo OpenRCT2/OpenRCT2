@@ -90,6 +90,7 @@
 - Fix: [#23135] Map generator tree placement has noticable patterns.
 - Fix: [#23286] Currency formatted incorrectly in the in game console.
 - Fix: [#23348] Console set commands don't print output properly.
+- Fix: [#23359] Scripting: Add car.moveToTrack, an easier API than setting car.trackLocation directly.
 - Fix: [#23376] Peeps with balloons, hats and umbrellas may leave artifacts on screen.
 - Fix: [#23496] Newly spawned vehicles are invisible when spawned while the game is paused.
 - Fix: [#23509] Map generator window reverts to flatland after selecting a heightmap image.
