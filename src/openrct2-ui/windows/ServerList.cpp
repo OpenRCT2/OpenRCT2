@@ -98,14 +98,11 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_serverListWidgets);
             widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
             InitScrollWidgets();
+            WindowSetResize(*this, { 320, 90 }, { 320, 90 });
+
             no_list_items = 0;
             selected_list_item = -1;
             frame_no = 0;
-            min_width = 320;
-            min_height = 90;
-            max_width = min_width;
-            max_height = min_height;
-
             page = 0;
             list_information_type = 0;
 

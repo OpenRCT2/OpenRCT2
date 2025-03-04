@@ -73,13 +73,11 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_DESCRIPTION_INPUT].string = _description;
             widgets[WIDX_GREETING_INPUT].string = _greeting;
             widgets[WIDX_PASSWORD_INPUT].string = _password;
-            InitScrollWidgets();
-            frame_no = 0;
-            min_width = width;
-            min_height = height;
-            max_width = min_width;
-            max_height = min_height;
 
+            InitScrollWidgets();
+            WindowSetResize(*this, { width, height }, { width, height });
+
+            frame_no = 0;
             page = 0;
             list_information_type = 0;
 

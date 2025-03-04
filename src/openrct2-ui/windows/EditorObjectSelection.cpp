@@ -279,10 +279,8 @@ namespace OpenRCT2::Ui::Windows
 
             selected_tab = 0;
             selected_list_item = -1;
-            min_width = WW;
-            min_height = WH;
-            max_width = 1200;
-            max_height = 1000;
+
+            WindowSetResize(*this, { WW, WH }, { 1200, 1000 });
 
             _listSortType = RIDE_SORT_TYPE;
             _listSortDescending = false;

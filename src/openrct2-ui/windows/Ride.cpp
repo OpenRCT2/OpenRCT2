@@ -754,10 +754,8 @@ namespace OpenRCT2::Ui::Windows
             list_information_type = 0;
             picked_peep_frame = 0;
             DisableTabs();
-            min_width = kMinimumWindowWidth;
-            min_height = 180;
-            max_width = 500;
-            max_height = 450;
+
+            WindowSetResize(*this, { kMinimumWindowWidth, 180 }, { 500, 450 });
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
