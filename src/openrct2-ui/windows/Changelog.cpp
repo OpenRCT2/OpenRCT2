@@ -122,20 +122,25 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnOpen() override
-        {
-            SetWidgets(_windowChangelogWidgets);
-
-            WindowInitScrollWidgets(*this);
-            WindowSetResize(*this, { MIN_WW, MIN_WH }, { MIN_WW, MIN_WH });
-        }
-
-        void OnResize() override
+        void SetResizeDimensions()
         {
             int32_t screenWidth = ContextGetWidth();
             int32_t screenHeight = ContextGetHeight();
 
             WindowSetResize(*this, { MIN_WW, MIN_WH }, { (screenWidth * 4) / 5, (screenHeight * 4) / 5 });
+        }
+
+        void OnOpen() override
+        {
+            SetWidgets(_windowChangelogWidgets);
+
+            WindowInitScrollWidgets(*this);
+            SetResizeDimensions();
+        }
+
+        void OnResize() override
+        {
+            SetResizeDimensions();
 
             auto download_button_width = widgets[WIDX_OPEN_URL].width();
             widgets[WIDX_OPEN_URL].left = (width - download_button_width) / 2;
