@@ -203,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             pressed_widgets = 0;
             SetWidgets(_windowAboutPageWidgets[p]);
-            WindowSetResize(*this, { WW, WH }, { WW, WH });
+            WindowSetResize(*this, WW, WH, WW, WH);
 
             switch (p)
             {
