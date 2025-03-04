@@ -177,13 +177,22 @@ namespace OpenRCT2::Ui::Windows
                     dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
             }
 
+            int32_t newHeight = 0;
             if (page == WINDOW_ABOUT_PAGE_OPENRCT2)
             {
-                DrawOpenRCT2Info(dpi);
+                newHeight = DrawOpenRCT2Info(dpi) + kPadding + 1;
             }
             else if (page == WINDOW_ABOUT_PAGE_RCT2)
             {
-                DrawRCT2Info(dpi);
+                newHeight = DrawRCT2Info(dpi) + kPadding + 1;
+            }
+
+            if (newHeight != height)
+            {
+                Invalidate();
+                widgets[WIDX_PAGE_BACKGROUND].bottom = newHeight - 1;
+                widgets[WIDX_BACKGROUND].bottom = newHeight;
+                height = newHeight;
             }
         }
 
@@ -194,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             pressed_widgets = 0;
             SetWidgets(_windowAboutPageWidgets[p]);
-            WindowSetResize(*this, { 400, 450 }, { 400, 450 });
+            WindowSetResize(*this, { WW, WH }, { WW, WH });
 
             switch (p)
             {
@@ -210,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        void DrawOpenRCT2Info(DrawPixelInfo& dpi)
+        int32_t DrawOpenRCT2Info(DrawPixelInfo& dpi)
         {
             // Draw logo on placeholder widget
             const auto& logoWidget = widgets[WIDX_OPENRCT2_LOGO];
@@ -239,9 +248,11 @@ namespace OpenRCT2::Ui::Windows
             auto textWidth = WW - (kPadding * 2);
             for (auto stringId : _OpenRCT2InfoStrings)
                 textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, stringId, {}, tp) + 5;
+
+            return textCoords.y - windowPos.y;
         }
 
-        void DrawRCT2Info(DrawPixelInfo& dpi)
+        int32_t DrawRCT2Info(DrawPixelInfo& dpi)
         {
             auto& backgroundWidget = widgets[WIDX_PAGE_BACKGROUND];
             auto textCoords = windowPos + ScreenCoordsXY{ backgroundWidget.midX(), backgroundWidget.top + kPadding };
@@ -265,6 +276,8 @@ namespace OpenRCT2::Ui::Windows
             // Draw images
             auto imageCoords = windowPos + ScreenCoordsXY{ 92, backgroundWidget.top + 5 + 24 };
             GfxDrawSprite(dpi, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), imageCoords);
+
+            return textCoords.y - windowPos.y;
         }
 
         void OnPrepareDraw() override
