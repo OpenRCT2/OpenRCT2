@@ -82,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 245;
 
     static constexpr uint16_t kReservedHSpace = 4;
-    static constexpr uint16_t kReservedTopSpace = 46;
+    static constexpr uint16_t kReservedTopSpace = 34; // excludes title bar
     static constexpr uint16_t kEditorReservedHSpace = 26;
     static constexpr uint16_t kEditorReservedVSpace = 18;
     static constexpr uint16_t kRidesTabReservedVSpace = 4 * kListRowHeight + 4;
@@ -239,9 +239,8 @@ namespace OpenRCT2::Ui::Windows
                 | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
 
             flags |= WF_RESIZABLE;
-            min_width = WW;
-            min_height = WH;
 
+            WindowSetResize(*this, { WW, WH }, { WW, WH });
             SetInitialWindowDimensions();
             ResetMaxWindowDimensions();
             ResizeMiniMap();
@@ -1195,7 +1194,7 @@ namespace OpenRCT2::Ui::Windows
             // The initial mini map size should be able to show a reasonably sized map
             auto initSize = std::clamp(getPracticalMapSize(), 100, 254) * 2;
             width = initSize + GetReservedRightSpace();
-            height = initSize + kReservedTopSpace + GetReservedBottomSpace();
+            height = initSize + GetTitleBarHeight() + kReservedTopSpace + GetReservedBottomSpace();
 
             auto scrollbarSize = getPracticalMapSize() > 254 ? kScrollBarWidth : 2;
             width += scrollbarSize;
@@ -1212,7 +1211,8 @@ namespace OpenRCT2::Ui::Windows
         {
             max_width = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), WW, ContextGetWidth());
             max_height = std::clamp(
-                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
+                getMiniMapWidth() + GetTitleBarHeight() + kReservedTopSpace + GetReservedBottomSpace(), WH,
+                ContextGetHeight() - 68);
 
             auto scrollbarSize = getMiniMapWidth() + GetReservedRightSpace() > ContextGetWidth() ? kScrollBarWidth : 2;
             max_width += scrollbarSize;

@@ -99,10 +99,9 @@ namespace OpenRCT2::Ui::Windows
             page = 0;
             frame_no = 0;
             list_information_type = 0;
-            min_width = 210;
-            min_height = 134;
-            max_width = 500;
-            max_height = 450;
+
+            WindowSetResize(*this, { 210, 134 }, { 500, 450 });
+
             hold_down_widgets = 0;
             pressed_widgets = 0;
             SetPage(WINDOW_PLAYER_PAGE_OVERVIEW);

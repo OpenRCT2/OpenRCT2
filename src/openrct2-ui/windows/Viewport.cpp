@@ -98,10 +98,7 @@ namespace OpenRCT2::Ui::Windows
 
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
 
-            min_width = WW;
-            min_height = WH;
-            max_width = WW;
-            max_height = WH;
+            WindowSetResize(*this, { WW, WH }, { WW, WH });
         }
 
         void OnUpdate() override

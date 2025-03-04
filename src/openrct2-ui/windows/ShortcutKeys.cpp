@@ -190,10 +190,7 @@ namespace OpenRCT2::Ui::Windows
             InitialiseWidgets();
             InitialiseList();
 
-            min_width = WW;
-            min_height = WH;
-            max_width = WW_SC_MAX;
-            max_height = WH_SC_MAX;
+            WindowSetResize(*this, { WW, WH }, { WW_SC_MAX, WH_SC_MAX });
         }
 
         void OnClose() override
