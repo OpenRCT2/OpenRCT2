@@ -1056,8 +1056,8 @@ namespace OpenRCT2::Ui::Windows
 
         if (Config::Get().interface.EnlargedUi)
         {
-            w.min_height += kTitleHeightDouble - kTitleHeightNormal;
-            w.max_height += kTitleHeightDouble - kTitleHeightNormal;
+            w.min_height += kTitleHeightLarge - kTitleHeightNormal;
+            w.max_height += kTitleHeightLarge - kTitleHeightNormal;
         }
 
         // Clamp width and height to minimum and maximum
@@ -1189,7 +1189,7 @@ namespace OpenRCT2::Ui::Windows
 
     int16_t GetTitleBarHeight()
     {
-        return Config::Get().interface.EnlargedUi ? kTitleHeightDouble : kTitleHeightNormal;
+        return Config::Get().interface.EnlargedUi ? kTitleHeightLarge : kTitleHeightNormal;
     }
 
 } // namespace OpenRCT2::Ui::Windows
