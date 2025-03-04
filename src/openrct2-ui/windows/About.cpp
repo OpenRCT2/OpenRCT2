@@ -170,6 +170,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             pressed_widgets = 0;
             SetWidgets(_windowAboutPageWidgets[p]);
+            WindowSetResize(*this, { 400, 450 }, { 400, 450 });
 
             switch (p)
             {
@@ -191,20 +192,19 @@ namespace OpenRCT2::Ui::Windows
         void DrawOpenRCT2Info(DrawPixelInfo& dpi)
         {
             // Draw logo on placeholder widget
-            ScreenCoordsXY logoCoords = windowPos
-                + ScreenCoordsXY(widgets[WIDX_OPENRCT2_LOGO].left, widgets[WIDX_OPENRCT2_LOGO].top);
+            const auto& logoWidget = widgets[WIDX_OPENRCT2_LOGO];
+            auto logoCoords = windowPos + ScreenCoordsXY(logoWidget.left, logoWidget.top);
             GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), logoCoords);
 
             u8string versionInfo = gVersionInfoFull;
             auto ft = Formatter();
             ft.Add<const char*>(versionInfo.c_str());
 
-            auto const& versionPlaceholder = widgets[WIDX_VERSION];
-            auto versionPlaceHolderWidth = versionPlaceholder.right - versionPlaceholder.left;
-            auto centreX = versionPlaceholder.left + versionPlaceHolderWidth / 2;
-            auto centreY = (versionPlaceholder.top + versionPlaceholder.bottom - FontGetLineHeight(FontStyle::Medium)) / 2;
+            const auto& versionWidget = widgets[WIDX_VERSION];
+            auto centreX = versionWidget.midX();
+            auto centreY = versionWidget.midY() - FontGetLineHeight(FontStyle::Medium) / 2;
             auto centrePos = windowPos + ScreenCoordsXY(centreX, centreY);
-            DrawTextWrapped(dpi, centrePos, versionPlaceHolderWidth, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+            DrawTextWrapped(dpi, centrePos, versionWidget.width(), STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
 
             // Shows the update available button
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
@@ -218,18 +218,16 @@ namespace OpenRCT2::Ui::Windows
             auto textCoords = windowPos + ScreenCoordsXY((width / 2) - 1, 240);
             auto textWidth = WW - 20;
 
-            textCoords += ScreenCoordsXY(
-                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_DESCRIPTION_2, ft2, tp) + 5); // More info
-            textCoords += ScreenCoordsXY(
-                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_DESCRIPTION_3, ft2, tp) + 5); // Copyright
-            textCoords += ScreenCoordsXY(
-                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_TITLE, ft2, tp) + 5); // Title Theme
-            textCoords += ScreenCoordsXY(
-                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_FAIRGROUND_ORGAN, ft2, tp) + 5); // Fairground organ
-            textCoords += ScreenCoordsXY(
-                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_1, ft2, tp) + 7); // Special Thanks
-            textCoords += ScreenCoordsXY(
-                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_2, ft2, tp)); // Company names
+            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_DESCRIPTION_2, ft2, tp)
+                + 5; // More info
+            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_DESCRIPTION_3, ft2, tp)
+                + 5;                                                                                            // Copyright
+            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_TITLE, ft2, tp) + 5; // Title Theme
+            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_FAIRGROUND_ORGAN, ft2, tp)
+                + 5; // Fairground organ
+            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_1, ft2, tp)
+                + 7;                                                                                          // Special Thanks
+            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_2, ft2, tp); // Company names
         }
 
         /**
@@ -268,7 +266,7 @@ namespace OpenRCT2::Ui::Windows
             // Licence
         }
 
-        void OnResize() override
+        void OnPrepareDraw() override
         {
             ResizeFrameWithPage();
         }
