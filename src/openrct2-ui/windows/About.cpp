@@ -28,6 +28,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId WINDOW_TITLE = STR_ABOUT;
     static constexpr int32_t TABHEIGHT = 50;
 
+    static constexpr auto kPadding = 10;
+
     enum
     {
         WINDOW_ABOUT_PAGE_OPENRCT2,
@@ -83,6 +85,31 @@ namespace OpenRCT2::Ui::Windows
     static constexpr std::span<const Widget> _windowAboutPageWidgets[] = {
         _windowAboutOpenRCT2Widgets,
         _windowAboutRCT2Widgets,
+    };
+
+    // clang-format off
+    static const StringId _OpenRCT2InfoStrings[] = {
+        STR_ABOUT_OPENRCT2_DESCRIPTION_2,
+        STR_ABOUT_OPENRCT2_DESCRIPTION_3,
+        STR_ABOUT_OPENRCT2_TITLE,
+        STR_ABOUT_FAIRGROUND_ORGAN,
+        STR_ABOUT_SPECIAL_THANKS_1,
+        STR_ABOUT_SPECIAL_THANKS_2,
+    };
+    // clang-format on
+
+    static const StringId _RCT2InfoStrings[] = {
+        STR_COPYRIGHT_CS,
+        STR_DESIGNED_AND_PROGRAMMED_BY_CS,
+        STR_GRAPHICS_BY_SF,
+        STR_SOUND_AND_MUSIC_BY_AB,
+        STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE,
+        STR_REPRESENTATION_BY_JL,
+        kStringIdEmpty,
+        STR_THANKS_TO,
+        STR_THANKS_TO_PEOPLE,
+        kStringIdEmpty,
+        STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC,
     };
 
     class AboutWindow final : public Window
@@ -161,9 +188,6 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        /**
-         * @brief Set which tab to show
-         */
         void SetPage(int32_t p)
         {
             page = p;
@@ -186,9 +210,6 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        /**
-         * @brief Draw OpenRCT2 info on open tab
-         */
         void DrawOpenRCT2Info(DrawPixelInfo& dpi)
         {
             // Draw logo on placeholder widget
@@ -213,57 +234,37 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw the rest of the text
-            Formatter ft2{};
             TextPaint tp{ colours[1], TextAlignment::CENTRE };
             auto textCoords = windowPos + ScreenCoordsXY((width / 2) - 1, 240);
-            auto textWidth = WW - 20;
-
-            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_DESCRIPTION_2, ft2, tp)
-                + 5; // More info
-            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_DESCRIPTION_3, ft2, tp)
-                + 5;                                                                                            // Copyright
-            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_TITLE, ft2, tp) + 5; // Title Theme
-            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_FAIRGROUND_ORGAN, ft2, tp)
-                + 5; // Fairground organ
-            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_1, ft2, tp)
-                + 7;                                                                                          // Special Thanks
-            textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_2, ft2, tp); // Company names
+            auto textWidth = WW - (kPadding * 2);
+            for (auto stringId : _OpenRCT2InfoStrings)
+                textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, stringId, {}, tp) + 5;
         }
 
-        /**
-         * @brief Draw RCT2 info on open tab
-         */
         void DrawRCT2Info(DrawPixelInfo& dpi)
         {
-            int32_t yPage = windowPos.y + widgets[WIDX_PAGE_BACKGROUND].top + 5;
+            auto& backgroundWidget = widgets[WIDX_PAGE_BACKGROUND];
+            auto textCoords = windowPos + ScreenCoordsXY{ backgroundWidget.midX(), backgroundWidget.top + kPadding };
+            auto textWidth = WW - 20;
+            TextPaint tp{ colours[1], TextAlignment::CENTRE };
 
-            auto screenCoords = ScreenCoordsXY{ windowPos.x + 200, yPage + 5 };
+            // Draw credits
+            for (auto stringId : _RCT2InfoStrings)
+            {
+                if (stringId == kStringIdEmpty)
+                {
+                    textCoords.y += 16;
+                    continue;
+                }
 
-            int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+                textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, stringId, {}, tp);
+                if (stringId == STR_COPYRIGHT_CS)
+                    textCoords.y += 74;
+            }
 
-            // Credits
-            DrawTextBasic(dpi, screenCoords, STR_COPYRIGHT_CS, {}, { TextAlignment::CENTRE });
-            screenCoords.y += lineHeight + 74;
-            DrawTextBasic(dpi, screenCoords, STR_DESIGNED_AND_PROGRAMMED_BY_CS, {}, { TextAlignment::CENTRE });
-            screenCoords.y += lineHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GRAPHICS_BY_SF, {}, { TextAlignment::CENTRE });
-            screenCoords.y += lineHeight;
-            DrawTextBasic(dpi, screenCoords, STR_SOUND_AND_MUSIC_BY_AB, {}, { TextAlignment::CENTRE });
-            screenCoords.y += lineHeight;
-            DrawTextBasic(dpi, screenCoords, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, {}, { TextAlignment::CENTRE });
-            screenCoords.y += lineHeight + 3;
-            DrawTextBasic(dpi, screenCoords, STR_REPRESENTATION_BY_JL, {}, { TextAlignment::CENTRE });
-            screenCoords.y += 2 * lineHeight + 5;
-            DrawTextBasic(dpi, screenCoords, STR_THANKS_TO, {}, { TextAlignment::CENTRE });
-            screenCoords.y += lineHeight;
-            DrawTextBasic(dpi, screenCoords, STR_THANKS_TO_PEOPLE, {}, { TextAlignment::CENTRE });
-            screenCoords.y += 2 * lineHeight + 5;
-            DrawTextBasic(dpi, screenCoords, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, {}, { TextAlignment::CENTRE });
-
-            // Images
-            GfxDrawSprite(dpi, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), { windowPos.x + 92, yPage + 24 });
-
-            // Licence
+            // Draw images
+            auto imageCoords = windowPos + ScreenCoordsXY{ 92, backgroundWidget.top + 5 + 24 };
+            GfxDrawSprite(dpi, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), imageCoords);
         }
 
         void OnPrepareDraw() override
