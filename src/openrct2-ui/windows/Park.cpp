@@ -514,7 +514,6 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDrawEntrance()
         {
             const auto& gameState = getGameState();
-            SetWidgets(_pagedWidgets[page]);
             InitScrollWidgets();
 
             SetPressedTab();
