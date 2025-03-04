@@ -203,6 +203,10 @@ namespace OpenRCT2::Ui::Windows
 
     void MultiplayerWindow::SetPage(int32_t page_number)
     {
+        // Skip setting page if we're already on this page, unless we're initialising the window
+        if (page == page_number && !widgets.empty())
+            return;
+
         _windowInformationSize.reset();
 
         page = page_number;

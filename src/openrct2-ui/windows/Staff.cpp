@@ -1060,6 +1060,10 @@ namespace OpenRCT2::Ui::Windows
                     listen = 1;
             }
 
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (pageNum == page && !widgets.empty())
+                return;
+
             page = pageNum;
             frame_no = 0;
             pressed_widgets = 0;

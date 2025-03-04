@@ -1764,6 +1764,10 @@ static uint64_t PageDisabledWidgets[] = {
     private:
         void SetPage(const TileInspectorPage p)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (tileInspectorPage == p && !widgets.empty())
+                return;
+
             Invalidate();
             // subtract current page height, then add new page height
             if (tileInspectorPage != TileInspectorPage::Default)
