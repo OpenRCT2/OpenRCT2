@@ -1002,7 +1002,7 @@ namespace OpenRCT2::Ui::Windows
         });
     }
 
-    void WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize)
+    bool WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize)
     {
         w.min_width = minSize.width;
         w.min_height = minSize.height;
@@ -1022,7 +1022,10 @@ namespace OpenRCT2::Ui::Windows
             w.width = width;
             w.height = height;
             w.Invalidate();
+            return true;
         }
+
+        return false;
     }
 
     bool WindowCanResize(const WindowBase& w)
