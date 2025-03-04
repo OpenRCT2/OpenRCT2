@@ -513,10 +513,7 @@ static uint64_t PageDisabledWidgets[] = {
     public:
         void OnOpen() override
         {
-            min_width = MIN_WW;
-            min_height = MIN_WH;
-            max_width = MAX_WW;
-            max_height = MAX_WH;
+            WindowSetResize(*this, { MIN_WW, MIN_WH }, { MAX_WW, MAX_WH });
 
             windowTileInspectorSelectedIndex = -1;
             SetPage(TileInspectorPage::Default);
@@ -1767,6 +1764,10 @@ static uint64_t PageDisabledWidgets[] = {
     private:
         void SetPage(const TileInspectorPage p)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (tileInspectorPage == p && !widgets.empty())
+                return;
+
             Invalidate();
             // subtract current page height, then add new page height
             if (tileInspectorPage != TileInspectorPage::Default)

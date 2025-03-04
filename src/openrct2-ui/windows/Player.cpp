@@ -99,10 +99,9 @@ namespace OpenRCT2::Ui::Windows
             page = 0;
             frame_no = 0;
             list_information_type = 0;
-            min_width = 210;
-            min_height = 134;
-            max_width = 500;
-            max_height = 450;
+
+            WindowSetResize(*this, { 210, 134 }, { 500, 450 });
+
             hold_down_widgets = 0;
             pressed_widgets = 0;
             SetPage(WINDOW_PLAYER_PAGE_OVERVIEW);
@@ -210,6 +209,10 @@ namespace OpenRCT2::Ui::Windows
     private:
         void SetPage(int32_t newPage)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
+
             int32_t originalPage = page;
 
             page = newPage;
@@ -338,7 +341,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResizeOverview()
         {
-            WindowSetResize(*this, 240, 170, 500, 300);
+            WindowSetResize(*this, { 240, 170 }, { 500, 300 });
         }
 
         void OnUpdateOverview()
@@ -569,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResizeStatistics()
         {
-            WindowSetResize(*this, 210, 80, 210, 80);
+            WindowSetResize(*this, { 210, 80 }, { 210, 80 });
         }
 
         void OnUpdateStatistics()

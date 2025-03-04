@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t newHeight = CalculateWindowHeight(_buffer.data());
             if (newHeight != height)
             {
-                WindowSetResize(*this, WW, newHeight, WW, newHeight);
+                WindowSetResize(*this, { WW, newHeight }, { WW, newHeight });
             }
 
             widgets[WIDX_OKAY].top = newHeight - 22;

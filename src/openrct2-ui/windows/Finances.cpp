@@ -481,6 +481,10 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t p)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == p && !widgets.empty())
+                return;
+
             page = p;
             frame_no = 0;
 
@@ -508,8 +512,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 flags |= WF_RESIZABLE;
                 WindowSetResize(
-                    *this, WW_OTHER_TABS, kHeightOtherTabs, std::numeric_limits<int16_t>::max(),
-                    std::numeric_limits<int16_t>::max());
+                    *this, { WW_OTHER_TABS, kHeightOtherTabs },
+                    { std::numeric_limits<int16_t>::max(), std::numeric_limits<int16_t>::max() });
             }
             else
             {

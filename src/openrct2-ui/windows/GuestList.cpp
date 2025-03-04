@@ -169,10 +169,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::Empty;
             widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
-            min_width = 350;
-            min_height = 330;
-            max_width = 500;
-            max_height = 450;
+
+            WindowSetResize(*this, { 350, 330 }, { 500, 450 });
+
             RefreshList();
         }
 
@@ -246,22 +245,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             RefreshList();
-        }
-
-        void OnResize() override
-        {
-            min_width = 350;
-            min_height = 330;
-            if (width < min_width)
-            {
-                Invalidate();
-                width = min_width;
-            }
-            if (height < min_height)
-            {
-                Invalidate();
-                height = min_height;
-            }
         }
 
         void OnUpdate() override

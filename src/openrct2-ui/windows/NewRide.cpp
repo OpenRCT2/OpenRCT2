@@ -539,6 +539,10 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(NewRideTabId tab)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (_currentTab == tab && !widgets.empty())
+                return;
+
             _currentTab = tab;
             frame_no = 0;
             _newRideVars.HighlightedRide = { kRideTypeNull, kObjectEntryIndexNull };

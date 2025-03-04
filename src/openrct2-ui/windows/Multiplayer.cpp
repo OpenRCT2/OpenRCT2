@@ -203,6 +203,10 @@ namespace OpenRCT2::Ui::Windows
 
     void MultiplayerWindow::SetPage(int32_t page_number)
     {
+        // Skip setting page if we're already on this page, unless we're initialising the window
+        if (page == page_number && !widgets.empty())
+            return;
+
         _windowInformationSize.reset();
 
         page = page_number;
@@ -342,12 +346,12 @@ namespace OpenRCT2::Ui::Windows
             case WINDOW_MULTIPLAYER_PAGE_INFORMATION:
             {
                 auto size = _windowInformationSize ? _windowInformationSize.value() : InformationGetSize();
-                WindowSetResize(*this, size.x, size.y, size.x, size.y);
+                WindowSetResize(*this, { size.x, size.y }, { size.x, size.y });
                 break;
             }
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             {
-                WindowSetResize(*this, 420, 124, 500, 450);
+                WindowSetResize(*this, { 420, 124 }, { 500, 450 });
 
                 no_list_items = (IsServerPlayerInvisible() ? NetworkGetNumVisiblePlayers() : NetworkGetNumPlayers());
 
@@ -359,7 +363,7 @@ namespace OpenRCT2::Ui::Windows
             }
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
-                WindowSetResize(*this, 320, 200, 320, 500);
+                WindowSetResize(*this, { 320, 200 }, { 320, 500 });
 
                 no_list_items = NetworkGetNumActions();
 
@@ -369,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
             }
             case WINDOW_MULTIPLAYER_PAGE_OPTIONS:
             {
-                WindowSetResize(*this, 300, 100, 300, 100);
+                WindowSetResize(*this, { 300, 100 }, { 300, 100 });
                 break;
             }
         }

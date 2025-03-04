@@ -87,12 +87,9 @@ namespace OpenRCT2::Ui::Windows
             Audio::StopSFX();
             SetWidgets(kProgressWindowWidgets);
             WindowInitScrollWidgets(*this);
+            WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, kWindowHeight });
 
             frame_no = 0;
-            min_width = kWindowWidth;
-            min_height = kWindowHeight;
-            max_width = min_width;
-            max_height = min_height;
 
             ApplyStyle();
         }

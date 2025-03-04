@@ -68,7 +68,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = kStringIdNone;
     constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
-    constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;
+    constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195 - kTitleHeightNormal;
     constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
     constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
     constexpr int32_t InitTabPosX = 3;
@@ -637,6 +637,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
+            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT + GetTitleBarHeight();
+
             // Set the window title
             StringId titleStringId = STR_MISCELLANEOUS;
             const auto tabIndex = _activeTabIndex;
@@ -1370,7 +1372,6 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(WindowSceneryBaseWidgets);
 
             // Add tabs
-            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
             int32_t xInit = InitTabPosX;
             int32_t tabsInThisRow = 0;
 

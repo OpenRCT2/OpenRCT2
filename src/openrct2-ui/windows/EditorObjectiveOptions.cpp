@@ -303,6 +303,10 @@ namespace OpenRCT2::Ui::Windows
          */
         void SetPage(int32_t newPage)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
+
             page = newPage;
             frame_no = 0;
             _rideableRides.clear();
@@ -676,7 +680,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnResizeMain()
         {
-            WindowSetResize(*this, 450, 229, 450, 229);
+            WindowSetResize(*this, { 450, 229 }, { 450, 229 });
         }
 
         /**
@@ -1005,7 +1009,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnResizeRides()
         {
-            WindowSetResize(*this, 380, 224, 380, 224);
+            WindowSetResize(*this, { 380, 224 }, { 380, 224 });
         }
 
         /**

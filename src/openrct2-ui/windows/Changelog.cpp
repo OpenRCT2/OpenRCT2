@@ -127,10 +127,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_windowChangelogWidgets);
 
             WindowInitScrollWidgets(*this);
-            min_width = MIN_WW;
-            min_height = MIN_WH;
-            max_width = MIN_WW;
-            max_height = MIN_WH;
+            WindowSetResize(*this, { MIN_WW, MIN_WH }, { MIN_WW, MIN_WH });
         }
 
         void OnResize() override
@@ -138,26 +135,11 @@ namespace OpenRCT2::Ui::Windows
             int32_t screenWidth = ContextGetWidth();
             int32_t screenHeight = ContextGetHeight();
 
-            max_width = (screenWidth * 4) / 5;
-            max_height = (screenHeight * 4) / 5;
-
-            min_width = MIN_WW;
-            min_height = MIN_WH;
+            WindowSetResize(*this, { MIN_WW, MIN_WH }, { (screenWidth * 4) / 5, (screenHeight * 4) / 5 });
 
             auto download_button_width = widgets[WIDX_OPEN_URL].width();
             widgets[WIDX_OPEN_URL].left = (width - download_button_width) / 2;
             widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + download_button_width;
-
-            if (width < min_width)
-            {
-                Invalidate();
-                width = min_width;
-            }
-            if (height < min_height)
-            {
-                Invalidate();
-                height = min_height;
-            }
         }
 
         void OnPrepareDraw() override
