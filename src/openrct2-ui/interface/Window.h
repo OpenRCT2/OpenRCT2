@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
     void WindowRelocateWindows(int32_t width, int32_t height);
 
-    void WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize);
+    bool WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize);
     bool WindowCanResize(const WindowBase& w);
 
     void InvalidateAllWindowsAfterInput();
