@@ -10,6 +10,7 @@
 #pragma once
 
 #include <openrct2/Diagnostic.h>
+#include <openrct2/core/Guard.hpp>
 
 #ifdef OPENGL_NO_LINK
 
@@ -106,6 +107,7 @@ using PFNGLTEXIMAGE3DPROC = void(APIENTRYP)(
     GLenum type, const GLvoid* data);
 using PFNGLGETINTERGERVPROC = void(APIENTRYP)(GLenum pname, GLint* data);
 using PFNGLGETTEXIMAGEPROC = void(APIENTRYP)(GLenum target, GLint level, GLenum format, GLenum type, GLvoid* img);
+using PFNGLOBJECTLABEL = void(APIENTRYP)(GLenum identifier, GLuint name, GLsizei length, const GLchar* label);
 
     #define OPENGL_PROC(TYPE, PROC) extern TYPE PROC;
     #include "OpenGLAPIProc.h"
@@ -120,9 +122,27 @@ namespace OpenRCT2::Ui
         GLenum error = glGetError();
         while (error != GL_NO_ERROR)
         {
-            LOG_ERROR("OpenGL Error 0x%04X", error);
+            Guard::Assert(false, "OpenGL Error 0x%04X", error);
             error = glGetError();
         }
+    }
+
+    template<
+        typename TFn, typename... TArgs,
+        typename = std::enable_if_t<!std::is_same_v<std::invoke_result_t<TFn, TArgs...>, void>>>
+    auto glCall(TFn&& fn, TArgs&&... args) -> std::invoke_result_t<TFn, TArgs...>
+    {
+        auto result = std::forward<TFn>(fn)(std::forward<TArgs>(args)...);
+        CheckGLError();
+        return result;
+    }
+
+    template<
+        typename TFn, typename... TArgs, typename = std::enable_if_t<std::is_same_v<std::invoke_result_t<TFn, TArgs...>, void>>>
+    void glCall(TFn&& fn, TArgs&&... args)
+    {
+        std::forward<TFn>(fn)(std::forward<TArgs>(args)...);
+        CheckGLError();
     }
 
     namespace OpenGLAPI

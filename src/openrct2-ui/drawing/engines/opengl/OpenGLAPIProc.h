@@ -83,6 +83,7 @@ extern "C" void glGenVertexArrays(GLsizei n, GLuint* arrays);
 OPENGL_PROC(PFNGLLINKPROGRAMPROC, glLinkProgram)
 OPENGL_PROC(PFNGLSHADERSOURCEPROC, glShaderSource)
 OPENGL_PROC(PFNGLUNIFORM1IPROC, glUniform1i)
+OPENGL_PROC(PFNGLUNIFORM1FPROC, glUniform1f)
 OPENGL_PROC(PFNGLUNIFORM1IVPROC, glUniform1iv)
 OPENGL_PROC(PFNGLUNIFORM1UIPROC, glUniform1ui);
 OPENGL_PROC(PFNGLUNIFORM1UIVPROC, glUniform1uiv);
@@ -102,3 +103,6 @@ extern "C" void glDrawArraysInstanced(GLenum mode, GLint first, GLsizei count, G
 extern "C" void glVertexAttribDivisor(GLuint index, GLuint divisor);
 #endif
 OPENGL_PROC(PFNGLBLENDFUNCSEPARATEPROC, glBlendFuncSeparate)
+
+// 4.3+
+OPENGL_PROC(PFNGLOBJECTLABEL, glObjectLabel)
