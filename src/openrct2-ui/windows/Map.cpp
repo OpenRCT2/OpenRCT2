@@ -1050,7 +1050,7 @@ namespace OpenRCT2::Ui::Windows
             mapOffset.y *= getPracticalMapSize();
 
             auto leftTop = widgetOffset + mapOffset
-                + ScreenCoordsXY{ (mainViewport->viewPos.x / kCoordsXYStep), (mainViewport->viewPos.y / kCoordsXYHalfTile) };
+                + ScreenCoordsXY{ (mainViewport->viewPos.x / kCoordsXYStep), (mainViewport->viewPos.y / kCoordsXYHalfTile + 8) };
             auto rightBottom = leftTop
                 + ScreenCoordsXY{ mainViewport->ViewWidth() / kCoordsXYStep, mainViewport->ViewHeight() / kCoordsXYHalfTile };
             auto rightTop = ScreenCoordsXY{ rightBottom.x, leftTop.y };
@@ -1134,8 +1134,8 @@ namespace OpenRCT2::Ui::Windows
 
         CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
         {
-            screenCoords.x = (screenCoords.x - getPracticalMapSize()) / 2;
-            screenCoords.y = ((screenCoords.y + 8)) / 2;
+            screenCoords.x = ((screenCoords.x) - getPracticalMapSize()) / 2;
+            screenCoords.y = (screenCoords.y) / 2;
             auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).ToCoordsXY();
 
             switch (GetCurrentRotation())
