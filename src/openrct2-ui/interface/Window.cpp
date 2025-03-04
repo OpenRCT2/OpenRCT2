@@ -1054,6 +1054,12 @@ namespace OpenRCT2::Ui::Windows
         w.max_width = maxSize.width;
         w.max_height = maxSize.height;
 
+        if (Config::Get().interface.EnlargedUi)
+        {
+            w.min_height += kTitleHeightDouble - kTitleHeightNormal;
+            w.max_height += kTitleHeightDouble - kTitleHeightNormal;
+        }
+
         // Clamp width and height to minimum and maximum
         int16_t width = std::clamp<int16_t>(
             w.width, std::min(minSize.width, maxSize.width), std::max(minSize.width, maxSize.width));
