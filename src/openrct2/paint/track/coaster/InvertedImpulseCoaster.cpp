@@ -50,7 +50,8 @@ static void InvertedImpulseRCTrackFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -121,19 +122,21 @@ static void InvertedImpulseRCTrack25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 62, false, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 62, false,
+                    session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 62, false,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 62, false, session.SupportColours);
                 break;
         }
     }
@@ -223,19 +226,19 @@ static void InvertedImpulseRCTrackFlatTo25DegUp(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 54, false, session.SupportColours);
             break;
         case 1:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 54, false, session.SupportColours);
             break;
         case 2:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 54, false, session.SupportColours);
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 54, false, session.SupportColours);
             break;
     }
 
@@ -376,19 +379,19 @@ static void InvertedImpulseRCTrack25DegUpToFlat(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 52, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 52, false, session.SupportColours);
             break;
         case 1:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 52, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 52, false, session.SupportColours);
             break;
         case 2:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 52, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 52, false, session.SupportColours);
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 52, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 52, false, session.SupportColours);
             break;
     }
 

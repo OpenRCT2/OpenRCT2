@@ -93,7 +93,7 @@ static void CorkscrewRCTrackFlat(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
         }
     }
     else
@@ -116,7 +116,7 @@ static void CorkscrewRCTrackFlat(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
         }
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -156,7 +156,7 @@ static void CorkscrewRCTrackStation(
     else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -196,7 +196,7 @@ static void CorkscrewRCTrack25DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
         }
     }
     else
@@ -227,7 +227,7 @@ static void CorkscrewRCTrack25DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
@@ -275,7 +275,7 @@ static void CorkscrewRCTrack60DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 32, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 32, height, true, session.SupportColours);
         }
     }
     else
@@ -306,7 +306,7 @@ static void CorkscrewRCTrack60DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 32, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 32, height, true, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
@@ -354,7 +354,7 @@ static void CorkscrewRCTrackFlatTo25DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, true, session.SupportColours);
         }
     }
     else
@@ -385,7 +385,7 @@ static void CorkscrewRCTrackFlatTo25DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, true, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
@@ -439,7 +439,7 @@ static void CorkscrewRCTrack25DegUpTo60DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, true, session.SupportColours);
         }
     }
     else
@@ -476,7 +476,7 @@ static void CorkscrewRCTrack25DegUpTo60DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, true, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
@@ -530,7 +530,7 @@ static void CorkscrewRCTrack60DegUpTo25DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 20, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 20, height, true, session.SupportColours);
         }
     }
     else
@@ -567,7 +567,7 @@ static void CorkscrewRCTrack60DegUpTo25DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 20, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 20, height, true, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
@@ -615,7 +615,7 @@ static void CorkscrewRCTrack25DegUpToFlat(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
         }
     }
     else
@@ -646,7 +646,7 @@ static void CorkscrewRCTrack25DegUpToFlat(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
@@ -741,7 +741,7 @@ static void CorkscrewRCTrackLeftQuarterTurn5(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -885,7 +885,7 @@ static void CorkscrewRCTrackLeftQuarterTurn5(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -952,7 +952,7 @@ static void CorkscrewRCTrackFlatToLeftBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -996,7 +996,7 @@ static void CorkscrewRCTrackFlatToRightBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -1040,7 +1040,7 @@ static void CorkscrewRCTrackLeftBankToFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -1084,7 +1084,7 @@ static void CorkscrewRCTrackRightBankToFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -1126,7 +1126,7 @@ static void CorkscrewRCTrackBankedLeftQuarterTurn5(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1273,7 +1273,7 @@ static void CorkscrewRCTrackBankedLeftQuarterTurn5(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -1341,7 +1341,7 @@ static void CorkscrewRCTrackLeftBankTo25DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -1392,7 +1392,7 @@ static void CorkscrewRCTrackRightBankTo25DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -1443,7 +1443,7 @@ static void CorkscrewRCTrack25DegUpToLeftBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -1494,7 +1494,7 @@ static void CorkscrewRCTrack25DegUpToRightBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -1571,7 +1571,7 @@ static void CorkscrewRCTrackLeftBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -1618,7 +1618,7 @@ static void CorkscrewRCTrackLeftQuarterTurn525DegUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1757,7 +1757,7 @@ static void CorkscrewRCTrackLeftQuarterTurn525DegUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -1810,7 +1810,7 @@ static void CorkscrewRCTrackRightQuarterTurn525DegUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1949,7 +1949,7 @@ static void CorkscrewRCTrackRightQuarterTurn525DegUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -2314,25 +2314,25 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16562), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16570), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16569), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16577), { 0, 6, height }, { 32, 20, 7 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -2356,25 +2356,25 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16563), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16571), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16568), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16576), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2524,25 +2524,25 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16568), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16576), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16563), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16571), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2562,25 +2562,25 @@ static void CorkscrewRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16569), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16577), { 0, 6, height }, { 32, 20, 7 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16562), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16570), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -2633,7 +2633,7 @@ static void CorkscrewRCTrackRightVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -2647,25 +2647,25 @@ static void CorkscrewRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16592), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16584), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16587), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16579), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -2779,25 +2779,25 @@ static void CorkscrewRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16587), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16579), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16592), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16584), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -2823,7 +2823,7 @@ static void CorkscrewRCTrackRightVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -2872,7 +2872,7 @@ static void CorkscrewRCTrackLeftQuarterTurn3(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -2945,7 +2945,7 @@ static void CorkscrewRCTrackLeftQuarterTurn3(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -3010,7 +3010,7 @@ static void CorkscrewRCTrackLeftQuarterTurn3Bank(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -3086,7 +3086,7 @@ static void CorkscrewRCTrackLeftQuarterTurn3Bank(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -3144,7 +3144,7 @@ static void CorkscrewRCTrackLeftQuarterTurn325DegUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -3184,7 +3184,7 @@ static void CorkscrewRCTrackLeftQuarterTurn325DegUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -3233,7 +3233,7 @@ static void CorkscrewRCTrackRightQuarterTurn325DegUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -3259,25 +3259,25 @@ static void CorkscrewRCTrackRightQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16531), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16533), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16535), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16537), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -3348,7 +3348,7 @@ static void CorkscrewRCTrackHalfLoopUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -3365,27 +3365,27 @@ static void CorkscrewRCTrackHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(16595), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16603), { 0, 14, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16600), { 0, 6, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16608), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -3563,7 +3563,7 @@ static void CorkscrewRCTrackLeftCorkscrewUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, false, session.SupportColours);
 
             switch (direction)
             {
@@ -3611,7 +3611,7 @@ static void CorkscrewRCTrackRightCorkscrewUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -3687,7 +3687,7 @@ static void CorkscrewRCTrackRightCorkscrewUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, false, session.SupportColours);
 
             switch (direction)
             {
@@ -3754,7 +3754,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -3832,7 +3832,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -3880,7 +3880,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, true, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -3964,7 +3964,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
@@ -4017,7 +4017,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -4096,7 +4096,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -4144,7 +4144,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, true, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -4227,7 +4227,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
@@ -4310,7 +4310,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -4459,7 +4459,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, true, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -4507,7 +4507,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, true, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -4661,7 +4661,7 @@ static void CorkscrewRCTrackLeftHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
@@ -4714,7 +4714,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -4863,7 +4863,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, true, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -4911,7 +4911,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, true, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -5065,7 +5065,7 @@ static void CorkscrewRCTrackRightHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
@@ -5246,7 +5246,7 @@ static void CorkscrewRCTrackBrakes(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5320,7 +5320,7 @@ static void CorkscrewRCTrackFlatTo60DegUpLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
             }
             if (direction == 0 || direction == 3)
             {
@@ -5357,7 +5357,7 @@ static void CorkscrewRCTrackFlatTo60DegUpLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5390,7 +5390,7 @@ static void CorkscrewRCTrackFlatTo60DegUpLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, true, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5423,7 +5423,7 @@ static void CorkscrewRCTrackFlatTo60DegUpLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 18, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::Centre, 18, height, true, session.SupportColours);
             }
             switch (direction)
             {
@@ -5475,7 +5475,7 @@ static void CorkscrewRCTrack60DegUpToFlatLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
             }
             if (direction == 0 || direction == 3)
             {
@@ -5512,7 +5512,7 @@ static void CorkscrewRCTrack60DegUpToFlatLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5545,7 +5545,7 @@ static void CorkscrewRCTrack60DegUpToFlatLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::Centre, 13, height, true, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5578,7 +5578,7 @@ static void CorkscrewRCTrack60DegUpToFlatLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, true, session.SupportColours);
             }
             switch (direction)
             {
@@ -5646,7 +5646,7 @@ static void CorkscrewRCTrackLeftEighthToDiag(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -5740,28 +5740,28 @@ static void CorkscrewRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(16743), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16747), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16751), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16755), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5809,7 +5809,7 @@ static void CorkscrewRCTrackRightEighthToDiag(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -5904,28 +5904,28 @@ static void CorkscrewRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(16727), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16731), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16735), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16739), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5991,7 +5991,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiag(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6085,28 +6085,28 @@ static void CorkscrewRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(16775), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16779), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16783), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16787), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6154,7 +6154,7 @@ static void CorkscrewRCTrackRightEighthBankToDiag(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6249,28 +6249,28 @@ static void CorkscrewRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(16759), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16763), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16767), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16771), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6329,7 +6329,7 @@ static void CorkscrewRCTrackDiagBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
+            session, supportType.metal, kDiagSupportPlacement[direction], 0, height, false, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -6348,7 +6348,7 @@ static void CorkscrewRCTrackDiagBlockBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
+            session, supportType.metal, kDiagSupportPlacement[direction], 0, height, false, session.SupportColours);
     }
 
     int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
@@ -6464,22 +6464,25 @@ static void CorkscrewRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16709), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -6489,22 +6492,25 @@ static void CorkscrewRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16647), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -6627,22 +6633,26 @@ static void CorkscrewRCTrackDiag60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16721), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 36, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 36, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 32, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 32, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -6652,22 +6662,26 @@ static void CorkscrewRCTrackDiag60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16659), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 36, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 36, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 32, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 32, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -6790,22 +6804,25 @@ static void CorkscrewRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16701), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -6815,22 +6832,25 @@ static void CorkscrewRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16639), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -6953,22 +6973,26 @@ static void CorkscrewRCTrackDiag25DegUpTo60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16713), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -6978,22 +7002,26 @@ static void CorkscrewRCTrackDiag25DegUpTo60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16651), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7116,22 +7144,26 @@ static void CorkscrewRCTrackDiag60DegUpTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16717), { -16, -16, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 21, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 21, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 21, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 21, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7141,22 +7173,26 @@ static void CorkscrewRCTrackDiag60DegUpTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16655), { -16, -16, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 21, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 21, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 21, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 21, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7279,22 +7315,25 @@ static void CorkscrewRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16705), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7304,22 +7343,25 @@ static void CorkscrewRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16643), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7442,22 +7484,25 @@ static void CorkscrewRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16711), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7467,22 +7512,25 @@ static void CorkscrewRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16649), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7605,22 +7653,26 @@ static void CorkscrewRCTrackDiag60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16723), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 28, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 28, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 24, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 24, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7630,22 +7682,26 @@ static void CorkscrewRCTrackDiag60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16661), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 28, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 28, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 24, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 24, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7765,22 +7821,25 @@ static void CorkscrewRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16707), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7790,22 +7849,25 @@ static void CorkscrewRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16645), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7929,22 +7991,26 @@ static void CorkscrewRCTrackDiag25DegDownTo60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16719), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 17, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 17, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 17, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 17, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -7954,22 +8020,26 @@ static void CorkscrewRCTrackDiag25DegDownTo60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16657), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 17, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 17, height, false,
+                            session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 17, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 17, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -8092,22 +8162,25 @@ static void CorkscrewRCTrackDiag60DegDownTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16715), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -8117,22 +8190,25 @@ static void CorkscrewRCTrackDiag60DegDownTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16653), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -8255,22 +8331,25 @@ static void CorkscrewRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16703), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -8280,22 +8359,25 @@ static void CorkscrewRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(16641), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false,
+                            session.SupportColours);
                         break;
                 }
             }
@@ -8377,22 +8459,22 @@ static void CorkscrewRCTrackDiagFlatToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16667), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8473,22 +8555,22 @@ static void CorkscrewRCTrackDiagFlatToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16672), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8569,22 +8651,22 @@ static void CorkscrewRCTrackDiagLeftBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16674), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8665,22 +8747,22 @@ static void CorkscrewRCTrackDiagRightBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16669), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8761,22 +8843,22 @@ static void CorkscrewRCTrackDiagLeftBankTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16687), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8857,22 +8939,22 @@ static void CorkscrewRCTrackDiagRightBankTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16692), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8953,22 +9035,22 @@ static void CorkscrewRCTrackDiag25DegUpToLeftBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16677), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9049,22 +9131,22 @@ static void CorkscrewRCTrackDiag25DegUpToRightBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16682), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9142,22 +9224,22 @@ static void CorkscrewRCTrackDiagLeftBankTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16684), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9236,22 +9318,22 @@ static void CorkscrewRCTrackDiagRightBankTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16679), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9333,22 +9415,22 @@ static void CorkscrewRCTrackDiag25DegDownToLeftBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16694), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9429,22 +9511,22 @@ static void CorkscrewRCTrackDiag25DegDownToRightBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16689), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9522,22 +9604,22 @@ static void CorkscrewRCTrackDiagLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16663), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9615,22 +9697,22 @@ static void CorkscrewRCTrackDiagRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16665), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9654,7 +9736,7 @@ static void CorkscrewRCTrackBlockBrakes(
         session, direction, session.TrackColours.WithIndex(kCorkscrewRcBlockBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });
     MetalASupportsPaintSetupRotated(
-        session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+        session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -9688,7 +9770,7 @@ static void CorkscrewRCTrackBooster(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -9722,7 +9804,7 @@ static void CorkscrewRCTrackLeftTwistDownToUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -9796,7 +9878,7 @@ static void CorkscrewRCTrackLeftTwistDownToUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
 
             switch (direction)
             {
@@ -9839,7 +9921,7 @@ static void CorkscrewRCTrackRightTwistDownToUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -9913,7 +9995,7 @@ static void CorkscrewRCTrackRightTwistDownToUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
 
             switch (direction)
             {
@@ -9964,7 +10046,7 @@ static void CorkscrewRCTrackLeftTwistUpToDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -10023,7 +10105,7 @@ static void CorkscrewRCTrackLeftTwistUpToDown(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -10081,7 +10163,7 @@ static void CorkscrewRCTrackRightTwistUpToDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -10140,7 +10222,7 @@ static void CorkscrewRCTrackRightTwistUpToDown(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -10191,7 +10273,7 @@ static void LayDownRCTrackLeftFlyerTwistUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -10268,7 +10350,7 @@ static void LayDownRCTrackLeftFlyerTwistUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 33, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 33, false, session.SupportColours);
 
             switch (direction)
             {
@@ -10312,7 +10394,7 @@ static void LayDownRCTrackRightFlyerTwistUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -10387,7 +10469,7 @@ static void LayDownRCTrackRightFlyerTwistUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 33, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 33, false, session.SupportColours);
 
             switch (direction)
             {
@@ -10431,7 +10513,7 @@ static void LayDownRCTrackFlyerHalfLoopUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -10448,27 +10530,27 @@ static void LayDownRCTrackFlyerHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(16595), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16603), { 0, 14, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16600), { 0, 6, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16608), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -10581,7 +10663,7 @@ static void LayDownRCTrackLeftFlyerCorkscrewUp(
                     0xFFFF, 0);
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction != 2)
             {
                 PaintUtilSetSegmentSupportHeight(
@@ -10661,7 +10743,7 @@ static void LayDownRCTrackLeftFlyerCorkscrewUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, false, session.SupportColours);
 
             switch (direction)
             {
@@ -10709,7 +10791,7 @@ static void LayDownRCTrackRightFlyerCorkscrewUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -10785,7 +10867,7 @@ static void LayDownRCTrackRightFlyerCorkscrewUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, false, session.SupportColours);
 
             switch (direction)
             {
@@ -10820,7 +10902,8 @@ static void CorkscrewRCTrackFlatTo60DegUp(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_SMALL_FLAT_TO_STEEP + 0),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -10830,7 +10913,7 @@ static void CorkscrewRCTrackFlatTo60DegUp(
                 session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_SMALL_FLAT_TO_STEEP + 1),
                 { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 4, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 4, false, session.SupportColours);
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -10840,13 +10923,14 @@ static void CorkscrewRCTrackFlatTo60DegUp(
                 session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_SMALL_FLAT_TO_STEEP + 3),
                 { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 4, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 4, false, session.SupportColours);
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_SMALL_FLAT_TO_STEEP + 5),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
             break;
     }
     if (direction == 0 || direction == 3)
@@ -10894,7 +10978,7 @@ static void CorkscrewRCTrack60DegUpToFlat(
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
             break;
     }
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -10984,22 +11068,22 @@ static void CorkscrewRCTrackDiagFlatTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 7, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_SMALL_FLAT_TO_STEEP + 13),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 7, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11076,22 +11160,22 @@ static void CorkscrewRCTrackDiag60DegUpToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 20, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_SMALL_FLAT_TO_STEEP + 17),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 20, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 20, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 20, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11168,22 +11252,22 @@ static void CorkscrewRCTrackDiagFlatTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_SMALL_FLAT_TO_STEEP + 19),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11260,22 +11344,22 @@ static void CorkscrewRCTrackDiag60DegDownToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_SMALL_FLAT_TO_STEEP + 15),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 5, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11610,7 +11694,8 @@ static void CorkscrewRCTrack25DegUpToLeftBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -11656,7 +11741,8 @@ static void CorkscrewRCTrack25DegUpToRightBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -11702,7 +11788,8 @@ static void CorkscrewRCTrackLeftBanked25DegUpTo25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -11748,7 +11835,8 @@ static void CorkscrewRCTrackRightBanked25DegUpTo25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -11823,7 +11911,8 @@ static void CorkscrewRCTrackLeftBankedFlatToLeftBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -11866,7 +11955,8 @@ static void CorkscrewRCTrackRightBankedFlatToRightBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -11909,7 +11999,8 @@ static void CorkscrewRCTrackLeftBanked25DegUpToLeftBankedFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -11952,7 +12043,8 @@ static void CorkscrewRCTrackRightBanked25DegUpToRightBankedFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -12027,7 +12119,8 @@ static void CorkscrewRCTrack25DegUpLeftBanked(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -12070,7 +12163,8 @@ static void CorkscrewRCTrack25DegUpRightBanked(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -12130,7 +12224,8 @@ static void CorkscrewRCTrackFlatToLeftBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -12176,7 +12271,8 @@ static void CorkscrewRCTrackFlatToRightBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -12222,7 +12318,8 @@ static void CorkscrewRCTrackLeftBanked25DegUpToFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -12268,7 +12365,8 @@ static void CorkscrewRCTrackRightBanked25DegUpToFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -12348,7 +12446,8 @@ static void CorkscrewRCTrackLeftBankedQuarterTurn3Tile25DegUp(
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -12404,7 +12503,8 @@ static void CorkscrewRCTrackLeftBankedQuarterTurn3Tile25DegUp(
                         { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -12459,7 +12559,8 @@ static void CorkscrewRCTrackRightBankedQuarterTurn3Tile25DegUp(
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -12496,7 +12597,7 @@ static void CorkscrewRCTrackRightBankedQuarterTurn3Tile25DegUp(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_SMALL_CURVE_BANKED + 9)),
                         { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -12504,7 +12605,7 @@ static void CorkscrewRCTrackRightBankedQuarterTurn3Tile25DegUp(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_SMALL_CURVE_BANKED + 11)),
                         { 6, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -12512,7 +12613,7 @@ static void CorkscrewRCTrackRightBankedQuarterTurn3Tile25DegUp(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_SMALL_CURVE_BANKED + 13)),
                         { 6, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -12520,7 +12621,7 @@ static void CorkscrewRCTrackRightBankedQuarterTurn3Tile25DegUp(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_SMALL_CURVE_BANKED + 15)),
                         { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -12595,7 +12696,8 @@ static void CorkscrewRCTrackLeftBankedQuarterTurn525DegUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -12754,7 +12856,8 @@ static void CorkscrewRCTrackLeftBankedQuarterTurn525DegUp(
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -12809,7 +12912,8 @@ static void CorkscrewRCTrackRightBankedQuarterTurn525DegUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -12968,7 +13072,8 @@ static void CorkscrewRCTrackRightBankedQuarterTurn525DegUp(
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -13037,7 +13142,8 @@ static void CorkscrewRCTrackLeftEighthToDiagUp25(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -13131,28 +13237,28 @@ static void CorkscrewRCTrackLeftEighthToDiagUp25(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 3)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 12, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 7)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 11)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 3, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 15)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 3, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13198,7 +13304,8 @@ static void CorkscrewRCTrackRightEighthToDiagUp25(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -13293,28 +13400,28 @@ static void CorkscrewRCTrackRightEighthToDiagUp25(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 19)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 3, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 23)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 3, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 27)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 31)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13344,28 +13451,28 @@ static void CorkscrewRCTrackLeftEighthToOrthogonalUp25(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 32)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 7, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 36)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 40)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 44)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13479,7 +13586,8 @@ static void CorkscrewRCTrackLeftEighthToOrthogonalUp25(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 5, height, true, session.SupportColours);
 
             if (direction == 1 || direction == 2)
             {
@@ -13507,28 +13615,28 @@ static void CorkscrewRCTrackRightEighthToOrthogonalUp25(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 48)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 52)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 56)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 7, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE + 60)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13643,7 +13751,8 @@ static void CorkscrewRCTrackRightEighthToOrthogonalUp25(
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 5, height, true, session.SupportColours);
             if (direction == 0 || direction == 1)
             {
                 PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
@@ -13764,7 +13873,7 @@ static void CorkscrewRCTrackDiagUp25ToLeftBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13772,15 +13881,15 @@ static void CorkscrewRCTrackDiagUp25ToLeftBankedUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 2)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 10, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13864,7 +13973,7 @@ static void CorkscrewRCTrackDiagUp25ToRightBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13872,15 +13981,15 @@ static void CorkscrewRCTrackDiagUp25ToRightBankedUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 6)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 10, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13964,7 +14073,7 @@ static void CorkscrewRCTrackDiagLeftBankedUp25ToUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13972,15 +14081,15 @@ static void CorkscrewRCTrackDiagLeftBankedUp25ToUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 12)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 9, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 9, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14064,7 +14173,7 @@ static void CorkscrewRCTrackDiagRightBankedUp25ToUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14072,15 +14181,15 @@ static void CorkscrewRCTrackDiagRightBankedUp25ToUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 16)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 9, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 9, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14192,7 +14301,7 @@ static void CorkscrewRCTrackDiagLeftBankedFlatToLeftBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14200,15 +14309,15 @@ static void CorkscrewRCTrackDiagLeftBankedFlatToLeftBankedUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 21)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14288,7 +14397,7 @@ static void CorkscrewRCTrackDiagRightBankedFlatToRightBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14296,15 +14405,15 @@ static void CorkscrewRCTrackDiagRightBankedFlatToRightBankedUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 25)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14384,7 +14493,7 @@ static void CorkscrewRCTrackDiagLeftBankedUp25ToLeftBankedFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14392,15 +14501,15 @@ static void CorkscrewRCTrackDiagLeftBankedUp25ToLeftBankedFlat(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 29)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14480,7 +14589,7 @@ static void CorkscrewRCTrackDiagRightBankedUp25ToRightBankedFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14488,15 +14597,15 @@ static void CorkscrewRCTrackDiagRightBankedUp25ToRightBankedFlat(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 33)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14608,7 +14717,7 @@ static void CorkscrewRCTrackDiagUp25LeftBanked(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14616,15 +14725,15 @@ static void CorkscrewRCTrackDiagUp25LeftBanked(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 37)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 11, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 11, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 11, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14704,7 +14813,7 @@ static void CorkscrewRCTrackDiagUp25RightBanked(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 11, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14712,15 +14821,15 @@ static void CorkscrewRCTrackDiagUp25RightBanked(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 41)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 11, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 11, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14820,7 +14929,7 @@ static void CorkscrewRCTrackDiagFlatToLeftBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14828,15 +14937,15 @@ static void CorkscrewRCTrackDiagFlatToLeftBankedUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 46)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14920,7 +15029,7 @@ static void CorkscrewRCTrackDiagFlatToRightBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -14928,15 +15037,15 @@ static void CorkscrewRCTrackDiagFlatToRightBankedUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 50)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15020,7 +15129,7 @@ static void CorkscrewRCTrackDiagLeftBankedUp25ToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15028,15 +15137,15 @@ static void CorkscrewRCTrackDiagLeftBankedUp25ToFlat(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 56)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15120,7 +15229,7 @@ static void CorkscrewRCTrackDiagRightBankedUp25ToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15128,15 +15237,15 @@ static void CorkscrewRCTrackDiagRightBankedUp25ToFlat(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 60)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, false, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, false, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15197,7 +15306,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 64)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 9, height - 4, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height - 4, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15205,7 +15314,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 68)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -15213,7 +15322,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 72)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -15221,7 +15330,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 76)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, true, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -15326,7 +15435,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 67)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15334,7 +15443,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 71)),
                         { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -15342,7 +15451,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 75)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -15350,7 +15459,7 @@ static void CorkscrewRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 79)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15381,7 +15490,7 @@ static void CorkscrewRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 80)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15389,7 +15498,7 @@ static void CorkscrewRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 84)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -15397,7 +15506,7 @@ static void CorkscrewRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 88)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -15405,7 +15514,7 @@ static void CorkscrewRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 92)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 9, height - 4, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height - 4, true, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -15511,7 +15620,7 @@ static void CorkscrewRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 83)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15519,7 +15628,7 @@ static void CorkscrewRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 87)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -15527,7 +15636,7 @@ static void CorkscrewRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 91)),
                         { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -15535,7 +15644,7 @@ static void CorkscrewRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 95)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15566,7 +15675,7 @@ static void CorkscrewRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 96)),
                         { 0, 0, height }, { { 0, 0, height + 40 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 7, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15574,7 +15683,7 @@ static void CorkscrewRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 100)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -15582,7 +15691,7 @@ static void CorkscrewRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 104)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -15590,7 +15699,7 @@ static void CorkscrewRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15697,7 +15806,7 @@ static void CorkscrewRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 99)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15705,7 +15814,7 @@ static void CorkscrewRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 103)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -15713,7 +15822,7 @@ static void CorkscrewRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 107)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -15721,7 +15830,7 @@ static void CorkscrewRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 111)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, true, session.SupportColours);
                     break;
             }
             if (direction == 1 || direction == 2)
@@ -15750,7 +15859,7 @@ static void CorkscrewRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 112)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15758,7 +15867,7 @@ static void CorkscrewRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 116)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -15766,7 +15875,7 @@ static void CorkscrewRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
                         { 0, 0, height }, { { 0, 0, height + 40 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 7, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -15774,7 +15883,7 @@ static void CorkscrewRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 3, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15882,7 +15991,7 @@ static void CorkscrewRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 115)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -15890,7 +15999,7 @@ static void CorkscrewRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 119)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 32 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -15898,7 +16007,7 @@ static void CorkscrewRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 123)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 32 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -15906,7 +16015,7 @@ static void CorkscrewRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 127)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, true, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 1)
@@ -15994,7 +16103,8 @@ static void CorkscrewRCTrackLeftBankToLeftQuarterTurn325DegUp(
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -16029,7 +16139,7 @@ static void CorkscrewRCTrackLeftBankToLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 1),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 2, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 2, height - 6, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -16039,21 +16149,21 @@ static void CorkscrewRCTrackLeftBankToLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 20),
                         { 6, 0, height }, { { 0, 6, height + 32 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 6),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 8),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 5, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height - 6, true, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -16109,7 +16219,8 @@ static void CorkscrewRCTrackRightBankToRightQuarterTurn325DegUp(
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -16144,14 +16255,14 @@ static void CorkscrewRCTrackRightBankToRightQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 10),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height - 6, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 12),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height - 6, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -16161,14 +16272,14 @@ static void CorkscrewRCTrackRightBankToRightQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 21),
                         { 6, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 17),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height - 6, true, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -16205,7 +16316,7 @@ static void CorkscrewRCTrackLeftQuarterTurn325DegDownToLeftBank(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 12),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -16215,21 +16326,21 @@ static void CorkscrewRCTrackLeftQuarterTurn325DegDownToLeftBank(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 21),
                         { 0, 6, height }, { { 0, 6, height + 32 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 17),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height - 6, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 10),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 6, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height - 6, true, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -16285,7 +16396,8 @@ static void CorkscrewRCTrackLeftQuarterTurn325DegDownToLeftBank(
                         { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -16320,14 +16432,14 @@ static void CorkscrewRCTrackRightQuarterTurn325DegDownToRightBank(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 8),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 5, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height - 6, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 1),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height - 6, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -16337,14 +16449,14 @@ static void CorkscrewRCTrackRightQuarterTurn325DegDownToRightBank(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 20),
                         { 0, 6, height }, { { 0, 6, height + 32 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_TURN_BANK_TRANSITION + 6),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height - 6, true, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -16400,7 +16512,8 @@ static void CorkscrewRCTrackRightQuarterTurn325DegDownToRightBank(
                         { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -16452,7 +16565,8 @@ static void CorkscrewRCTrackLeftLargeCorkscrewUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 2, height, true, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -16476,28 +16590,30 @@ static void CorkscrewRCTrackLeftLargeCorkscrewUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 1),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 34, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 34, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 6),
                         { 0, 0, height }, { { 2, 2, height + 40 }, { 28, 28, 1 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 22, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 22, height, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 11),
                         { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 24, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 24, height, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 16),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 17, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 17, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -16556,21 +16672,24 @@ static void CorkscrewRCTrackLeftLargeCorkscrewUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 3),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 8),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 13),
                         { 0, 0, height }, { { 0, 0, height + 50 }, { 26, 32, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -16580,7 +16699,8 @@ static void CorkscrewRCTrackLeftLargeCorkscrewUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 40),
                         { 0, 0, height }, { { 0, 0, height + 64 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -16664,7 +16784,8 @@ static void CorkscrewRCTrackRightLargeCorkscrewUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 2, height, true, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -16688,28 +16809,30 @@ static void CorkscrewRCTrackRightLargeCorkscrewUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 21),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 16, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 26),
                         { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 24, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 24, height, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 31),
                         { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 22, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 22, height, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 36),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 34, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 34, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -16772,28 +16895,32 @@ static void CorkscrewRCTrackRightLargeCorkscrewUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 41),
                         { 0, 0, height }, { { 0, 0, height + 64 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 28),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 58, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 58, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 33),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_CORKSCREW + 38),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -17015,7 +17142,8 @@ static void CorkscrewRCTrackLeftMediumHalfLoopUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -17071,28 +17199,30 @@ static void CorkscrewRCTrackLeftMediumHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 2),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 14, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 7),
                         { 0, 0, height }, { { 29, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 16, height, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 12),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 18, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 18, height, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 17),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 14, height, false,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17219,7 +17349,8 @@ static void CorkscrewRCTrackRightMediumHalfLoopUp(
                     break;
             }
 
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -17275,28 +17406,30 @@ static void CorkscrewRCTrackRightMediumHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 22),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 14, height, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 27),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 18, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 18, height, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 32),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 16, height, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 37),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 14, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17433,7 +17566,8 @@ static void CorkscrewRCTrackLeftLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -17450,7 +17584,7 @@ static void CorkscrewRCTrackLeftLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 1),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -17460,21 +17594,21 @@ static void CorkscrewRCTrackLeftLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 57),
                         { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 15),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 22),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 1, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17529,28 +17663,30 @@ static void CorkscrewRCTrackLeftLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 3),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 28, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 28, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 10),
                         { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 26, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 26, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 17),
                         { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 26, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 26, height, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 24),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 22, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 22, height, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17704,7 +17840,8 @@ static void CorkscrewRCTrackRightLargeHalfLoopUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -17721,14 +17858,14 @@ static void CorkscrewRCTrackRightLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 29),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 1, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 36),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -17738,14 +17875,14 @@ static void CorkscrewRCTrackRightLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 61),
                         { 0, 0, height }, { { 0, 6, height + 64 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 50),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 13, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17800,28 +17937,30 @@ static void CorkscrewRCTrackRightLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 31),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 22, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 22, height, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 38),
                         { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 28, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 28, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 45),
                         { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 28, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 28, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_HALF_LOOP + 52),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 28, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 28, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17975,7 +18114,8 @@ static void CorkscrewRCTrackLeftBarrelRollUpToDown(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_BARREL_ROLL + 1),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height + 1, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -17985,7 +18125,8 @@ static void CorkscrewRCTrackLeftBarrelRollUpToDown(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_BARREL_ROLL + 7),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height + 1, true,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -17995,7 +18136,7 @@ static void CorkscrewRCTrackLeftBarrelRollUpToDown(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_BARREL_ROLL + 13),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 1, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 1, height + 1, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -18005,7 +18146,7 @@ static void CorkscrewRCTrackLeftBarrelRollUpToDown(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_BARREL_ROLL + 19),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 1, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 1, height, true, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -18143,7 +18284,7 @@ static void CorkscrewRCTrackRightBarrelRollUpToDown(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_BARREL_ROLL + 25),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 1, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 1, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -18153,7 +18294,8 @@ static void CorkscrewRCTrackRightBarrelRollUpToDown(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_BARREL_ROLL + 31),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 1, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 1, height + 1, true,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -18163,7 +18305,8 @@ static void CorkscrewRCTrackRightBarrelRollUpToDown(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_BARREL_ROLL + 37),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height + 1, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -18173,7 +18316,7 @@ static void CorkscrewRCTrackRightBarrelRollUpToDown(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_BARREL_ROLL + 43),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height + 1, true, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -18327,7 +18470,7 @@ static void CorkscrewRCTrackLeftZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 1),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -18337,21 +18480,21 @@ static void CorkscrewRCTrackLeftZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 7),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 12),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 16),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, true, session.SupportColours);
                     break;
             }
 
@@ -18413,14 +18556,14 @@ static void CorkscrewRCTrackLeftZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 5),
                         { 0, 0, height }, { { 0, 6, height + 22 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 30, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 30, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 11),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -18430,7 +18573,7 @@ static void CorkscrewRCTrackLeftZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 15),
                         { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -18440,7 +18583,7 @@ static void CorkscrewRCTrackLeftZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 19),
                         { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, false, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -18471,14 +18614,14 @@ static void CorkscrewRCTrackRightZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 20),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 24),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -18488,7 +18631,7 @@ static void CorkscrewRCTrackRightZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 29),
                         { 0, 0, height }, { { 0, 31, height + 40 }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -18498,7 +18641,7 @@ static void CorkscrewRCTrackRightZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 35),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -18562,7 +18705,7 @@ static void CorkscrewRCTrackRightZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 23),
                         { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -18572,21 +18715,21 @@ static void CorkscrewRCTrackRightZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 27),
                         { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 33),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_ZERO_G_ROLL + 39),
                         { 0, 0, height }, { { 0, 6, height + 22 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 30, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 30, false, session.SupportColours);
                     break;
             }
             switch (direction)
@@ -18650,7 +18793,8 @@ static void CorkscrewRCTrackLeftLargeZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 24, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 24, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -18752,14 +18896,16 @@ static void CorkscrewRCTrackLeftLargeZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_ZERO_G_ROLL + 6),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 28, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 28, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_ZERO_G_ROLL + 14),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 28, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 28, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -18769,7 +18915,8 @@ static void CorkscrewRCTrackLeftLargeZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_ZERO_G_ROLL + 22),
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 28 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 30, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 30, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -18779,7 +18926,8 @@ static void CorkscrewRCTrackLeftLargeZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_ZERO_G_ROLL + 28),
                         { 0, 0, height }, { { 0, 29, height }, { 32, 1, 40 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 32, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 32, false,
+                        session.SupportColours);
                     break;
             }
             switch (direction)
@@ -18829,7 +18977,8 @@ static void CorkscrewRCTrackRightLargeZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 23, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 23, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -18935,7 +19084,8 @@ static void CorkscrewRCTrackRightLargeZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_ZERO_G_ROLL + 34),
                         { 0, 0, height }, { { 0, 29, height }, { 32, 1, 40 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 34, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 34, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -18945,21 +19095,24 @@ static void CorkscrewRCTrackRightLargeZeroGRollUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_ZERO_G_ROLL + 42),
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 28 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 30, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 30, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_ZERO_G_ROLL + 50),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 28, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 28, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_LARGE_ZERO_G_ROLL + 57),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 28, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 28, false,
+                        session.SupportColours);
                     break;
             }
             switch (direction)
@@ -19055,18 +19208,20 @@ static void CorkscrewRCTrackDiagFlatTo60DegUpLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 0, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 3)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 0, false, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 0, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -19074,7 +19229,8 @@ static void CorkscrewRCTrackDiagFlatTo60DegUpLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 10)),
                         { -16, -16, height }, { { -20, -20, height + 8 }, { 24, 24, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 0, false,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19127,18 +19283,20 @@ static void CorkscrewRCTrackDiagFlatTo60DegUpLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 13, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 13, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 4)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 13, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 13, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 13, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 13, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -19146,7 +19304,8 @@ static void CorkscrewRCTrackDiagFlatTo60DegUpLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 11)),
                         { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 13, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 13, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19199,22 +19358,25 @@ static void CorkscrewRCTrackDiagFlatTo60DegUpLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 5)),
                         { -16, -16, height }, { { -16, -16, height + 80 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 21, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 21, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 21, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 21, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19294,7 +19456,8 @@ static void CorkscrewRCTrackDiag60DegUpToFlatLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 30, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 30, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -19302,11 +19465,12 @@ static void CorkscrewRCTrackDiag60DegUpToFlatLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 15)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 30, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 30, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 30, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 30, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -19314,7 +19478,8 @@ static void CorkscrewRCTrackDiag60DegUpToFlatLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 22)),
                         { -16, -16, height }, { { -8, -8, height + 56 }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 30, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 30, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19369,7 +19534,8 @@ static void CorkscrewRCTrackDiag60DegUpToFlatLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 12, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 12, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -19377,11 +19543,12 @@ static void CorkscrewRCTrackDiag60DegUpToFlatLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 16)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 12, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 12, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 12, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 12, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -19389,7 +19556,8 @@ static void CorkscrewRCTrackDiag60DegUpToFlatLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 23)),
                         { -16, -16, height }, { { -16, -16, height + 24 }, { 24, 24, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 12, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 12, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19444,7 +19612,7 @@ static void CorkscrewRCTrackDiag60DegUpToFlatLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height + 0, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -19452,15 +19620,17 @@ static void CorkscrewRCTrackDiag60DegUpToFlatLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 17)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 5, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 5, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19540,7 +19710,8 @@ static void CorkscrewRCTrackDiagFlatTo60DegDownLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 26, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 26, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -19548,11 +19719,12 @@ static void CorkscrewRCTrackDiagFlatTo60DegDownLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 23)),
                         { -16, -16, height }, { { -16, -16, height + 24 }, { 24, 24, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 26, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 26, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 26, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 26, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -19560,7 +19732,8 @@ static void CorkscrewRCTrackDiagFlatTo60DegDownLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 16)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 26, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 26, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19615,7 +19788,8 @@ static void CorkscrewRCTrackDiagFlatTo60DegDownLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 60, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 60, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -19623,11 +19797,12 @@ static void CorkscrewRCTrackDiagFlatTo60DegDownLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 22)),
                         { -16, -16, height }, { { -8, -8, height + 56 }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 60, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 60, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 60, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 60, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -19635,7 +19810,8 @@ static void CorkscrewRCTrackDiagFlatTo60DegDownLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 15)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 60, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 60, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19690,7 +19866,8 @@ static void CorkscrewRCTrackDiagFlatTo60DegDownLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -19698,15 +19875,17 @@ static void CorkscrewRCTrackDiagFlatTo60DegDownLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 21)),
                         { -16, -16, height }, { { -8, -8, height + 0 }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 16, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 16, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 16, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 16, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19783,7 +19962,8 @@ static void CorkscrewRCTrackDiag60DegDownToFlatLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 40, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 40, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -19791,18 +19971,20 @@ static void CorkscrewRCTrackDiag60DegDownToFlatLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 11)),
                         { -16, -16, height }, { { -16, -16, height + 32 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 40, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 40, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 40, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 40, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 4)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 40, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 40, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19855,7 +20037,8 @@ static void CorkscrewRCTrackDiag60DegDownToFlatLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 14, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 14, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -19863,18 +20046,20 @@ static void CorkscrewRCTrackDiag60DegDownToFlatLongBase(
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 10)),
                         { -16, -16, height }, { { -8, -8, height + 8 }, { 24, 24, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 14, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 14, height + 0, true, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 14, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 14, height + 0, true,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 3)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 14, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 14, height + 0, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -19927,22 +20112,25 @@ static void CorkscrewRCTrackDiag60DegDownToFlatLongBase(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 0, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_FLAT_TO_STEEP_DIAGONAL + 9)),
                         { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 0, false, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 0, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 0, false,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -20027,28 +20215,31 @@ static void CorkscrewRCTrackLeftEighthDiveLoopUpToOrthogonal(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 1)),
                         { -16, -16, height }, { { 0, 31, height + 0 }, { 32, 1, 64 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 6, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 5)),
                         { -16, -16, height }, { { 0, 31, height + 0 }, { 32, 1, 64 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 6, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 9)),
                         { -16, -16, height }, { { 2, 2, height + 6 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 6, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 13)),
                         { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 6, false,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -20111,28 +20302,32 @@ static void CorkscrewRCTrackLeftEighthDiveLoopUpToOrthogonal(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 3)),
                         { -16, -16, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 7)),
                         { -16, -16, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 11)),
                         { -16, -16, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 15)),
                         { -16, -16, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 37, false,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -20211,28 +20406,31 @@ static void CorkscrewRCTrackRightEighthDiveLoopUpToOrthogonal(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 17)),
                         { -16, -16, height }, { { 2, 2, height + 6 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 6, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 21)),
                         { -16, -16, height }, { { 31, 0, height + 0 }, { 1, 32, 64 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 6, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 25)),
                         { -16, -16, height }, { { 31, 0, height + 0 }, { 1, 32, 64 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 6, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 29)),
                         { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 6, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 6, false,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -20295,28 +20493,32 @@ static void CorkscrewRCTrackRightEighthDiveLoopUpToOrthogonal(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 19)),
                         { -16, -16, height }, { { 6, 0, height + 28 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 23)),
                         { -16, -16, height }, { { 6, 0, height + 28 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 27)),
                         { -16, -16, height }, { { 6, 0, height + 28 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 31)),
                         { -16, -16, height }, { { 6, 0, height + 28 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 37, false,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 56);

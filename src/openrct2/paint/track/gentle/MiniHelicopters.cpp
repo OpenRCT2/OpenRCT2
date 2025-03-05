@@ -50,7 +50,7 @@ static void PaintMiniHelicoptersTrackStation(
     else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, false, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -80,7 +80,7 @@ static void PaintMiniHelicoptersTrackFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, true, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -124,7 +124,8 @@ static void PaintMiniHelicoptersTrackFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -4, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -168,7 +169,8 @@ static void PaintMiniHelicoptersTrack25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -9, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -212,7 +214,8 @@ static void PaintMiniHelicoptersTrack25DegUpToFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -7, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -262,7 +265,8 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height, true, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -279,7 +283,8 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
                 0xFFFF, 0);
             break;
         case 3:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height, true, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(

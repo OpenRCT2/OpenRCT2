@@ -194,7 +194,8 @@ static void DinghySlideTrackCoveredFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -226,7 +227,8 @@ static void DinghySlideTrackCovered25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -265,7 +267,8 @@ static void DinghySlideTrackCovered60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 32, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 32, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -304,7 +307,8 @@ static void DinghySlideTrackCoveredFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 3, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -343,7 +347,8 @@ static void DinghySlideTrackCovered25DegUpTo60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 12, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -382,7 +387,8 @@ static void DinghySlideTrackCovered60DegUpTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -421,7 +427,8 @@ static void DinghySlideTrackCovered25DegUpToFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -549,7 +556,8 @@ static void DinghySlideTrackCoveredRightQuarterTurn5(
     {
         case 0:
         case 6:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
             break;
     }
 
@@ -909,7 +917,8 @@ static void DinghySlideTrackCoveredRightQuarterTurn3(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
             break;
     }
 

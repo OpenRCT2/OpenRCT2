@@ -100,7 +100,7 @@ static void LayDownRCTrackFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -200,19 +200,21 @@ static void LayDownRCTrack25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 51, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 51, false, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 51, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 51, false,
+                    session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 51, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 51, false,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 51, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 51, false, session.SupportColours);
                 break;
         }
     }
@@ -333,19 +335,21 @@ static void LayDownRCTrackFlatTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 43, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 43, false, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 43, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 43, false,
+                    session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 43, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 43, false,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 43, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 43, false, session.SupportColours);
                 break;
         }
     }
@@ -449,19 +453,21 @@ static void LayDownRCTrack60DegUpTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 65, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 65, false, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 65, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 65, false,
+                    session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 65, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 65, false,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 65, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 65, false, session.SupportColours);
                 break;
         }
     }
@@ -542,19 +548,21 @@ static void LayDownRCTrack25DegUpToFlat(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, false, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, false, session.SupportColours);
                 break;
         }
     }
@@ -659,7 +667,8 @@ static void LayDownRCTrackLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -807,7 +816,8 @@ static void LayDownRCTrackLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             switch (direction)
             {
@@ -872,7 +882,7 @@ static void LayDownRCTrackFlatToLeftBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -919,7 +929,7 @@ static void LayDownRCTrackFlatToRightBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -966,7 +976,7 @@ static void LayDownRCTrackLeftBankToFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1013,7 +1023,7 @@ static void LayDownRCTrackRightBankToFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1061,7 +1071,8 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1204,7 +1215,8 @@ static void LayDownRCTrackBankedLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             switch (direction)
             {
@@ -1272,19 +1284,21 @@ static void LayDownRCTrackLeftBankTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, false, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, false, session.SupportColours);
                 break;
         }
     }
@@ -1343,19 +1357,21 @@ static void LayDownRCTrackRightBankTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, false, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, false, session.SupportColours);
                 break;
         }
     }
@@ -1414,19 +1430,21 @@ static void LayDownRCTrack25DegUpToLeftBank(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, false, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, false, session.SupportColours);
                 break;
         }
     }
@@ -1485,19 +1503,21 @@ static void LayDownRCTrack25DegUpToRightBank(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 41, false, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 41, false,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 41, false, session.SupportColours);
                 break;
         }
     }
@@ -1585,7 +1605,7 @@ static void LayDownRCTrackLeftBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1637,7 +1657,7 @@ static void LayDownRCTrackLeftQuarterTurn525DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 43, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 43, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1769,7 +1789,7 @@ static void LayDownRCTrackLeftQuarterTurn525DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 43, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 43, false, session.SupportColours);
 
             switch (direction)
             {
@@ -1822,7 +1842,7 @@ static void LayDownRCTrackRightQuarterTurn525DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 43, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 43, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1954,7 +1974,7 @@ static void LayDownRCTrackRightQuarterTurn525DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 43, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 43, false, session.SupportColours);
 
             switch (direction)
             {
@@ -2364,7 +2384,8 @@ static void LayDownRCTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2441,7 +2462,8 @@ static void LayDownRCTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             switch (direction)
             {
@@ -2507,7 +2529,8 @@ static void LayDownRCTrackLeftQuarterTurn3Bank(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2584,7 +2607,8 @@ static void LayDownRCTrackLeftQuarterTurn3Bank(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             switch (direction)
             {
@@ -2646,7 +2670,7 @@ static void LayDownRCTrackLeftQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 41, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 41, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2690,7 +2714,7 @@ static void LayDownRCTrackLeftQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 41, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 41, false, session.SupportColours);
 
             switch (direction)
             {
@@ -2743,7 +2767,7 @@ static void LayDownRCTrackRightQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 41, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 41, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2787,7 +2811,7 @@ static void LayDownRCTrackRightQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 41, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 41, false, session.SupportColours);
 
             switch (direction)
             {
@@ -2958,7 +2982,7 @@ static void LayDownRCTrackBrakes(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -3033,7 +3057,8 @@ static void LayDownRCTrackLeftEighthToDiag(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3155,22 +3180,22 @@ static void LayDownRCTrackLeftEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -3215,7 +3240,8 @@ static void LayDownRCTrackRightEighthToDiag(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3338,22 +3364,22 @@ static void LayDownRCTrackRightEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -3421,7 +3447,8 @@ static void LayDownRCTrackLeftEighthBankToDiag(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3543,22 +3570,22 @@ static void LayDownRCTrackLeftEighthBankToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -3607,7 +3634,8 @@ static void LayDownRCTrackRightEighthBankToDiag(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3730,22 +3758,22 @@ static void LayDownRCTrackRightEighthBankToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -3794,7 +3822,7 @@ static void LayDownRCTrackDiagFlat(
 
     if (trackSequence == 3)
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight, true,
             session.SupportColours);
 
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -3815,7 +3843,8 @@ static void LayDownRCTrackDiagBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, kDiagSupportPlacement[direction], 0, height + kSupportHeight, true,
+            session.SupportColours);
     }
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -3835,7 +3864,8 @@ static void LayDownRCTrackDiagBlockBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, kDiagSupportPlacement[direction], 0, height + kSupportHeight, true,
+            session.SupportColours);
     }
     PaintUtilSetGeneralSupportHeight(session, height + kSupportHeight);
 }
@@ -3975,19 +4005,23 @@ static void LayDownRCTrackDiag25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -4075,22 +4109,22 @@ static void LayDownRCTrackDiag60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 36, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 36, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 32, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 32, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
             }
@@ -4235,19 +4269,23 @@ static void LayDownRCTrackDiagFlatTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -4335,22 +4373,22 @@ static void LayDownRCTrackDiag25DegUpTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 16, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 16, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 16, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 16, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
             }
@@ -4439,22 +4477,22 @@ static void LayDownRCTrackDiag60DegUpTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 21, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 21, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 21, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 21, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
             }
@@ -4599,19 +4637,23 @@ static void LayDownRCTrackDiag25DegUpToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -4699,19 +4741,23 @@ static void LayDownRCTrackDiag25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -4799,22 +4845,22 @@ static void LayDownRCTrackDiag60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 28, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 28, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 24, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 24, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
             }
@@ -4900,19 +4946,23 @@ static void LayDownRCTrackDiagFlatTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
             }
             break;
@@ -5000,22 +5050,22 @@ static void LayDownRCTrackDiag25DegDownTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 17, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 17, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 17, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 17, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
             }
@@ -5104,22 +5154,22 @@ static void LayDownRCTrackDiag60DegDownTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height + kSupportHeight, false,
                         session.SupportColours);
                     break;
             }
@@ -5208,19 +5258,23 @@ static void LayDownRCTrackDiag25DegDownToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -5310,22 +5364,22 @@ static void LayDownRCTrackDiagFlatToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -5416,22 +5470,22 @@ static void LayDownRCTrackDiagFlatToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -5522,22 +5576,22 @@ static void LayDownRCTrackDiagLeftBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -5628,22 +5682,22 @@ static void LayDownRCTrackDiagRightBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -5732,19 +5786,23 @@ static void LayDownRCTrackDiagLeftBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -5832,19 +5890,23 @@ static void LayDownRCTrackDiagRightBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -5932,19 +5994,23 @@ static void LayDownRCTrackDiag25DegUpToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -6032,19 +6098,23 @@ static void LayDownRCTrackDiag25DegUpToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -6129,19 +6199,23 @@ static void LayDownRCTrackDiagLeftBankTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
             }
             break;
@@ -6226,19 +6300,23 @@ static void LayDownRCTrackDiagRightBankTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 39, false,
+                        session.SupportColours);
                     break;
             }
             break;
@@ -6326,19 +6404,23 @@ static void LayDownRCTrackDiag25DegDownToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -6426,19 +6508,23 @@ static void LayDownRCTrackDiag25DegDownToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 37, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -6528,22 +6614,22 @@ static void LayDownRCTrackDiagLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -6634,22 +6720,22 @@ static void LayDownRCTrackDiagRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight, true,
                         session.SupportColours);
                     break;
             }
@@ -6697,7 +6783,8 @@ static void LayDownRCTrackLeftFlyerTwistDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -6756,7 +6843,8 @@ static void LayDownRCTrackLeftFlyerTwistDown(
                         session, direction, session.TrackColours.WithIndex(26978), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -6816,7 +6904,8 @@ static void LayDownRCTrackRightFlyerTwistDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -6874,7 +6963,8 @@ static void LayDownRCTrackRightFlyerTwistDown(
                         session, direction, session.TrackColours.WithIndex(26990), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -6972,27 +7062,27 @@ static void LayDownRCTrackFlyerHalfLoopDown(
                         session, direction, session.TrackColours.WithIndex(16595), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16603), { 0, 14, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16600), { 0, 6, height },
                         { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16608), { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -7018,7 +7108,8 @@ static void LayDownRCTrackFlyerHalfLoopDown(
                         session, direction, session.TrackColours.WithIndex(16609), { 0, 6, height }, { 32, 20, 7 });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -7071,7 +7162,7 @@ static void LayDownRCTrackLeftFlyerCorkscrewDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -7130,7 +7221,8 @@ static void LayDownRCTrackLeftFlyerCorkscrewDown(
                         { { 6, 0, height + 4 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 2:
@@ -7188,7 +7280,7 @@ static void LayDownRCTrackBlockBrakes(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -7235,7 +7327,7 @@ static void LayDownRCTrackLeftQuarterBankedHelixLargeUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -7383,7 +7475,7 @@ static void LayDownRCTrackLeftQuarterBankedHelixLargeUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 51, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 51, false, session.SupportColours);
 
             switch (direction)
             {
@@ -7439,7 +7531,7 @@ static void LayDownRCTrackRightQuarterBankedHelixLargeUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -7587,7 +7679,7 @@ static void LayDownRCTrackRightQuarterBankedHelixLargeUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 51, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 51, false, session.SupportColours);
 
             switch (direction)
             {
@@ -7643,7 +7735,7 @@ static void LayDownRCTrackLeftQuarterBankedHelixLargeDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 51, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 51, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -7791,7 +7883,7 @@ static void LayDownRCTrackLeftQuarterBankedHelixLargeDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, false, session.SupportColours);
 
             switch (direction)
             {
@@ -7847,7 +7939,7 @@ static void LayDownRCTrackRightQuarterBankedHelixLargeDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 51, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 51, false, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -7995,7 +8087,7 @@ static void LayDownRCTrackRightQuarterBankedHelixLargeDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 39, false, session.SupportColours);
 
             switch (direction)
             {
@@ -8048,19 +8140,23 @@ static void LayDownRCTrackHalfLoopInvertedUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 56, false,
+                        session.SupportColours);
                     break;
             }
 
