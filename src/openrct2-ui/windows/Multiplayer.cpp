@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
     class MultiplayerWindow final : public Window
     {
     private:
-        std::optional<ScreenCoordsXY> _windowInformationSize;
+        std::optional<ScreenSize> _windowInformationSize;
         uint8_t _selectedGroup{ 0 };
 
     private:
@@ -159,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
         void GroupsScrollPaint(int32_t scrollIndex, DrawPixelInfo& dpi) const;
 
         void ShowGroupDropdown(WidgetIndex widgetIndex);
-        ScreenCoordsXY InformationGetSize();
+        ScreenSize InformationGetSize();
 
     public:
         void OnOpen() override;
@@ -289,7 +289,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    ScreenCoordsXY MultiplayerWindow::InformationGetSize()
+    ScreenSize MultiplayerWindow::InformationGetSize()
     {
         assert(!_windowInformationSize.has_value());
 
@@ -342,7 +342,7 @@ namespace OpenRCT2::Ui::Windows
             case WINDOW_MULTIPLAYER_PAGE_INFORMATION:
             {
                 auto size = _windowInformationSize ? _windowInformationSize.value() : InformationGetSize();
-                WindowSetResize(*this, { size.x, size.y }, { size.x, size.y });
+                WindowSetResize(*this, size, size);
                 break;
             }
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
