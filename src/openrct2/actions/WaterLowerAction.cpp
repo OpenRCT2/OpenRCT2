@@ -13,7 +13,6 @@
 #include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../ride/RideConstruction.h"
-#include "../world/Location.hpp"
 #include "../world/tile_element/SurfaceElement.h"
 #include "WaterSetHeightAction.h"
 
