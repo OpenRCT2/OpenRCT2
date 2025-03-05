@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kScrollWidth = (kImageSize * kNumColumns) + kScrollBarWidth + 4;
     static constexpr int32_t kScrollHeight = (kImageSize * kNumRows);
     static constexpr int32_t kWindowWidth = kScrollWidth + 28;
-    static constexpr int32_t kWindowHeight = kScrollHeight + 50;
+    static constexpr int32_t kWindowHeight = kScrollHeight + 51;
 
     struct EntranceSelection
     {
@@ -247,8 +247,8 @@ namespace OpenRCT2::Ui::Windows
 
             list_information_type = 0;
 
-            WindowSetResize(
-                *this, { kWindowWidth, kWindowHeight }, { kWindowWidth, static_cast<int16_t>(43 + kImageSize * GetNumRows()) });
+            int16_t maxHeight = kWindowHeight + kImageSize * (GetNumRows() - 1);
+            WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, maxHeight });
 
             pressed_widgets |= 1LL << WIDX_TAB;
 
