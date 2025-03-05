@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui::Windows
 
             list_information_type = 0;
 
-            int16_t maxHeight = kWindowHeight + kImageSize * (GetNumRows() - 1);
+            auto maxHeight = static_cast<int16_t>(kWindowHeight + kImageSize * (GetNumRows() - 1));
             WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, maxHeight });
 
             pressed_widgets |= 1LL << WIDX_TAB;
