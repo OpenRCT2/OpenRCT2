@@ -22,7 +22,7 @@ enum class StartupAction
     Edit
 };
 
-enum class LegacyScene
+enum class LegacyScene : uint8_t
 {
     // Although this is labeled a flag it actually means when
     // zero the screen is in playing mode.
