@@ -759,7 +759,7 @@ void MapUpdatePathWideFlags()
 {
     PROFILED_FUNCTION();
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
     {
         return;
     }
@@ -827,7 +827,7 @@ bool MapIsEdge(const CoordsXY& coords)
 
 bool MapCanBuildAt(const CoordsXYZ& loc)
 {
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    if (gLegacyScene == LegacyScene::scenarioEditor)
         return true;
     if (GetGameState().Cheats.sandboxMode)
         return true;
@@ -965,7 +965,7 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
 
             if (surfaceElement != nullptr && min_height > surfaceElement->BaseHeight)
             {
-                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {
@@ -994,7 +994,7 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
             {
-                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {
@@ -1260,8 +1260,7 @@ void MapUpdateTiles()
 {
     PROFILED_FUNCTION();
 
-    int32_t ignoreScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
-    if (gScreenFlags & ignoreScreenFlags)
+    if (isInEditorMode())
         return;
 
     auto& gameState = GetGameState();

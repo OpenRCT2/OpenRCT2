@@ -74,7 +74,7 @@ namespace OpenRCT2::Ui::Windows
 
     static bool isEditorOrSandbox()
     {
-        return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode;
+        return gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode;
     }
 
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
@@ -1100,7 +1100,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PEOPLE_STARTING_POSITION].type = WindowWidgetType::FlatBtn;
 
             // Only show this in the scenario editor, even when in sandbox mode.
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            if (gLegacyScene == LegacyScene::scenarioEditor)
                 widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::FlatBtn;
 
             widgets[WIDX_MAP_SIZE_SPINNER_Y].type = WindowWidgetType::Spinner;

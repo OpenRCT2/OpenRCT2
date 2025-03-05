@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui::Windows
             ResearchRemoveFlags();
 
             // When used in-game (as a cheat)
-            if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+            if (!isInEditorMode())
             {
                 gSilentResearch = true;
                 ResearchResetCurrentItem();
@@ -447,7 +447,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets |= 1uLL << WIDX_PREVIEW;
             pressed_widgets |= 1uLL << WIDX_TAB_1;
 
-            widgets[WIDX_CLOSE].type = gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WindowWidgetType::Empty
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
 
             ResizeFrameWithPage();

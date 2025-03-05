@@ -78,7 +78,7 @@ GameActions::Result FootpathLayoutPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode) && !MapIsLocationOwned(_loc))
+    if (!(gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);

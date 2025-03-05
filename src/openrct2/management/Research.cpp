@@ -313,10 +313,9 @@ void ResearchUpdate()
 {
     PROFILED_FUNCTION();
 
-    int32_t editorScreenFlags, researchLevel, currentResearchProgress;
+    int32_t researchLevel, currentResearchProgress;
 
-    editorScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
-    if (gScreenFlags & editorScreenFlags)
+    if (isInEditorMode())
     {
         return;
     }
@@ -634,7 +633,7 @@ bool SceneryGroupIsInvented(int32_t sgIndex)
     }
 
     // All scenery is temporarily invented when in the scenario editor
-    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    if (isInEditorMode())
     {
         return true;
     }

@@ -46,7 +46,7 @@ protected:
         GameLoadInit();
 
         // Changed in some tests. Store to restore its value
-        _gScreenFlags = gScreenFlags;
+        _gLegacyScene = gLegacyScene;
         SUCCEED();
     }
 
@@ -55,16 +55,16 @@ protected:
         if (_context)
             _context.reset();
 
-        gScreenFlags = _gScreenFlags;
+        gLegacyScene = _gLegacyScene;
     }
 
 private:
     static std::shared_ptr<IContext> _context;
-    static uint8_t _gScreenFlags;
+    static LegacyScene _gLegacyScene;
 };
 
 std::shared_ptr<IContext> TileElementsViewTests::_context;
-uint8_t TileElementsViewTests::_gScreenFlags;
+LegacyScene TileElementsViewTests::_gLegacyScene;
 
 template<typename T>
 std::vector<T*> BuildListManual(const CoordsXY& pos)

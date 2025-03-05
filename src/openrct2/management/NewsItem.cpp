@@ -129,7 +129,7 @@ static void TickCurrent()
 {
     int32_t ticks = GetGameState().NewsItems.IncrementTicks();
     // Only play news item sound when in normal playing mode
-    if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
+    if (ticks == 1 && (gLegacyScene == LegacyScene::playing))
     {
         // Play sound
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, ContextGetWidth() / 2);

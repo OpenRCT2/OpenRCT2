@@ -691,7 +691,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
                 }
 
-                if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode)
                 {
                     widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
                     if (IsSceneryItemRestricted(tabSelectedScenery))

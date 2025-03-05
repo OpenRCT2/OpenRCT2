@@ -315,7 +315,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
             int32_t i = 0;
-            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+            if (gLegacyScene != LegacyScene::titleSequence)
             {
                 bool found = false;
                 while (!found)
@@ -724,7 +724,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowResizeGui(int32_t width, int32_t height)
     {
         WindowResizeGuiScenarioEditor(width, height);
-        if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+        if (isInEditorMode())
             return;
 
         auto* windowMgr = Ui::GetWindowManager();

@@ -294,7 +294,7 @@ namespace OpenRCT2::Audio
 
     void PlayTitleMusic()
     {
-        if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || IntroIsPlaying())
+        if (gGameSoundsOff || gLegacyScene != LegacyScene::titleSequence || IntroIsPlaying())
         {
             StopTitleMusic();
             return;

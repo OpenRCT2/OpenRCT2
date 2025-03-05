@@ -574,7 +574,7 @@ void GameAutosave()
     auto subDirectory = DIRID::SAVE;
     const char* fileExtension = ".park";
     uint32_t saveFlags = 0x80000000;
-    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    if (isInEditorMode())
     {
         subDirectory = DIRID::LANDSCAPE;
         fileExtension = ".park";
@@ -591,7 +591,7 @@ void GameAutosave()
         currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
     int32_t autosavesToKeep = Config::Get().general.AutosaveAmount;
-    LimitAutosaveCount(autosavesToKeep - 1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
+    LimitAutosaveCount(autosavesToKeep - 1, isInEditorMode());
 
     auto env = GetContext()->GetPlatformEnvironment();
     auto autosaveDir = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, subDirectory), u8"autosave");
@@ -656,7 +656,7 @@ void GameLoadOrQuitNoSavePrompt()
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            if (gLegacyScene == LegacyScene::scenarioEditor)
             {
                 LoadLandscape();
             }

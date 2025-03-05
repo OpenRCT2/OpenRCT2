@@ -309,7 +309,7 @@ namespace OpenRCT2::Ui::Windows
             if (_loadedObject != nullptr)
                 _loadedObject->Unload();
 
-            if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+            if (isInEditorMode())
             {
                 ResearchPopulateListRandom();
             }
@@ -364,14 +364,14 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !EditorObjectSelectionWindowCheck())
+                    if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !EditorObjectSelectionWindowCheck())
                         return;
 
-                    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+                    if (isInEditorMode())
                     {
                         FinishObjectSelection();
                     }
-                    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                    if (gLegacyScene == LegacyScene::trackDesignsManager)
                     {
                         GameNotifyMapChange();
                         GameUnloadScripts();
@@ -501,8 +501,9 @@ namespace OpenRCT2::Ui::Windows
                         gDropdownItems[ddIdx].Format = STR_TOGGLE_OPTION;
                     }
 
-                    // Track manager cannot select multiple, so only show selection filters if not in track manager
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+                    // Track designs manager cannot select multiple, so only show selection filters if not in track designs
+                    // manager
+                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
                         numSelectionItems = 3;
                         gDropdownItems[DDIX_FILTER_SEPARATOR].Format = 0;
@@ -526,7 +527,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
                         Dropdown::SetChecked(DDIX_FILTER_SELECTED, IsFilterActive(FILTER_SELECTED));
                         Dropdown::SetChecked(DDIX_FILTER_NONSELECTED, IsFilterActive(FILTER_NONSELECTED));
@@ -603,7 +604,7 @@ namespace OpenRCT2::Ui::Windows
             const CursorState* state = ContextGetCursorState();
             Audio::Play(Audio::SoundId::Click1, 0, state->position.x);
 
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(
                     0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem);
@@ -722,7 +723,7 @@ namespace OpenRCT2::Ui::Windows
                 if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
                 {
                     // Draw checkbox
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
+                    if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
                         GfxFillRectInset(
                             dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
@@ -736,7 +737,8 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Draw checkmark
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & ObjectSelectionFlags::Selected))
+                    if (!(gLegacyScene == LegacyScene::trackDesignsManager)
+                        && (*listItem.flags & ObjectSelectionFlags::Selected))
                     {
                         screenCoords.x = 2;
                         auto darkness = highlighted ? TextDarkness::ExtraDark : TextDarkness::Dark;
@@ -747,7 +749,7 @@ namespace OpenRCT2::Ui::Windows
                         DrawText(dpi, screenCoords, { colour2, FontStyle::Medium, darkness }, kCheckMarkString);
                     }
 
-                    screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+                    screenCoords.x = gLegacyScene == LegacyScene::trackDesignsManager ? 0 : 15;
 
                     utf8 itemBuffer[512]{};
                     auto bufferWithColour = strcpy(itemBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
@@ -778,7 +780,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // Draw text
                     String::safeUtf8Copy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
-                    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                    if (gLegacyScene == LegacyScene::trackDesignsManager)
                     {
                         while (*buffer != 0 && *buffer != 9)
                             buffer++;
@@ -846,12 +848,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Set window title and buttons
             auto& titleWidget = widgets[WIDX_TITLE];
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 titleWidget.text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
                 installTrackWidget.type = WindowWidgetType::Button;
             }
-            else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+            else if (gLegacyScene == LegacyScene::trackDesigner)
             {
                 titleWidget.text = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
                 installTrackWidget.type = WindowWidgetType::Empty;
@@ -912,7 +914,7 @@ namespace OpenRCT2::Ui::Windows
             else
                 widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::Empty;
 
-            if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
+            if (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::trackDesigner)
             {
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
@@ -1045,7 +1047,7 @@ namespace OpenRCT2::Ui::Windows
                 ColourMapA[colours[1].colour].darkest);
 
             // Draw number of selected items
-            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
             {
                 auto screenPos = windowPos + ScreenCoordsXY{ 3, height - 13 };
 
@@ -1397,7 +1399,7 @@ namespace OpenRCT2::Ui::Windows
         bool FilterSelected(uint8_t objectFlag)
         {
             // Track Manager has no concept of selection filtering, so always return true
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 return true;
             }
@@ -1664,7 +1666,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         LOG_ERROR("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
                     }
-                    else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+                    else if (!isInEditorMode())
                     {
                         // Defaults selected items to researched (if in-game)
                         auto objectType = loadedObject->GetObjectType();

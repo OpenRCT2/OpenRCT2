@@ -425,16 +425,16 @@ namespace OpenRCT2::Ui::Windows
 
                     // New game is only available in the normal game. Skip one position to avoid incorrect mappings in the menus
                     // of the other modes.
-                    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR))
+                    if (gLegacyScene == LegacyScene::scenarioEditor)
                         selectedIndex += 1;
 
                     // Quicksave is only available in the normal game. Skip one position to avoid incorrect mappings in the
                     // menus of the other modes.
-                    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR) && selectedIndex > DDIDX_LOAD_GAME)
+                    if (gLegacyScene == LegacyScene::scenarioEditor && selectedIndex > DDIDX_LOAD_GAME)
                         selectedIndex += 1;
 
                     // Track designer and track designs manager start with Screenshot, not Load/save
-                    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+                    if (isInTrackDesignerOrManager())
                         selectedIndex += DDIDX_SCREENSHOT;
 
                     // The "Update available" menu item is only available when there is one
@@ -461,7 +461,7 @@ namespace OpenRCT2::Ui::Windows
                             SaveGame();
                             break;
                         case DDIDX_SAVE_GAME_AS:
-                            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                            if (gLegacyScene == LegacyScene::scenarioEditor)
                             {
                                 auto intent = Intent(WindowClass::Loadsave);
                                 intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
@@ -644,7 +644,7 @@ namespace OpenRCT2::Ui::Windows
             if (!Config::Get().interface.ToolbarShowRotateAnticlockwise)
                 widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type = WindowWidgetType::Empty;
 
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR || gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gLegacyScene == LegacyScene::scenarioEditor || gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
             }
@@ -655,7 +655,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ApplyEditorMode()
         {
-            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) == 0)
+            if (isInEditorMode() == 0)
             {
                 return;
             }
@@ -1184,7 +1184,7 @@ namespace OpenRCT2::Ui::Windows
         auto i = 0;
         gDropdownItems[i++].Format = STR_SHORTCUT_SHOW_MAP;
         gDropdownItems[i++].Format = STR_EXTRA_VIEWPORT;
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && GetGameState().EditorStep == EditorStep::LandscapeEditor)
+        if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep == EditorStep::LandscapeEditor)
         {
             gDropdownItems[i++].Format = STR_MAPGEN_MENU_ITEM;
         }
@@ -1216,7 +1216,7 @@ namespace OpenRCT2::Ui::Windows
     void TopToolbar::MapMenuDropdown(int16_t dropdownIndex)
     {
         int32_t customStartIndex = 3;
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && GetGameState().EditorStep == EditorStep::LandscapeEditor)
+        if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep == EditorStep::LandscapeEditor)
         {
             customStartIndex++;
         }
@@ -1326,7 +1326,7 @@ namespace OpenRCT2::Ui::Windows
     void TopToolbar::InitFileMenu(Widget& widget)
     {
         int32_t numItems = 0;
-        if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        if (isInTrackDesignerOrManager())
         {
             gDropdownItems[numItems++].Format = STR_SCREENSHOT;
             gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
@@ -1340,14 +1340,14 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[numItems++].Format = STR_OPTIONS;
             gDropdownItems[numItems++].Format = kStringIdEmpty;
 
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+            if (gLegacyScene == LegacyScene::trackDesigner)
                 gDropdownItems[numItems++].Format = STR_QUIT_ROLLERCOASTER_DESIGNER;
             else
                 gDropdownItems[numItems++].Format = STR_QUIT_TRACK_DESIGNS_MANAGER;
 
             gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
         }
-        else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        else if (gLegacyScene == LegacyScene::scenarioEditor)
         {
             gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
             gDropdownItems[numItems++].Format = kStringIdEmpty;
@@ -1427,7 +1427,7 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::SetDisabled(DDIDX_OBJECTIVE_OPTIONS, true);
         }
 
-        if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+        if (isInEditorMode())
         {
             Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
             Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
