@@ -52,6 +52,7 @@
 #include "../object/ScenarioTextObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../park/Legacy.h"
+#include "../park/ParkPreview.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
@@ -242,7 +243,7 @@ namespace OpenRCT2::RCT2
             stream.Read(&_s6.EntityListsHead, postEntitiesSize);
         }
 
-        bool GetDetails(ScenarioIndexEntry* dst) override
+        bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
         {
             *dst = {};
 
@@ -312,6 +313,11 @@ namespace OpenRCT2::RCT2
             }
 
             return true;
+        }
+
+        ParkPreview GetParkPreview() override
+        {
+            return {};
         }
 
         void Import(GameState_t& gameState) override

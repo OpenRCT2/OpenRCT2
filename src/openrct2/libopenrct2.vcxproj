@@ -391,6 +391,7 @@
     <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="park\Legacy.h" />
     <ClInclude Include="park\ParkFile.h" />
+    <ClInclude Include="park\ParkPreview.h" />
     <ClInclude Include="peep\Guest.h" />
     <ClInclude Include="peep\GuestPathfinding.h" />
     <ClInclude Include="peep\PeepAnimations.h" />
@@ -1014,6 +1015,7 @@
     <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="park\Legacy.cpp" />
     <ClCompile Include="park\ParkFile.cpp" />
+    <ClCompile Include="park\ParkPreview.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />
     <ClCompile Include="peep\PeepAnimations.cpp" />
     <ClCompile Include="peep\PeepThoughts.cpp" />
