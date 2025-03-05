@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kScrollWidth = (kImageSize * kNumColumns) + kScrollBarWidth + 4;
     static constexpr int32_t kScrollHeight = (kImageSize * kNumRows);
     static constexpr int32_t kWindowWidth = kScrollWidth + 28;
-    static constexpr int32_t kWindowHeight = kScrollHeight + 50;
+    static constexpr int32_t kWindowHeight = kScrollHeight + 51;
 
     struct EntranceSelection
     {
@@ -246,10 +246,9 @@ namespace OpenRCT2::Ui::Windows
             InitParkEntranceItems();
 
             list_information_type = 0;
-            min_width = kWindowWidth;
-            min_height = kWindowHeight;
-            max_width = kWindowWidth;
-            max_height = static_cast<int16_t>(43 + kImageSize * GetNumRows());
+
+            auto maxHeight = static_cast<int16_t>(kWindowHeight + kImageSize * (GetNumRows() - 1));
+            WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, maxHeight });
 
             pressed_widgets |= 1LL << WIDX_TAB;
 

@@ -176,13 +176,12 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_rideListWidgets);
             WindowInitScrollWidgets(*this);
+            WindowSetResize(*this, { 340, 240 }, { 400, 700 });
+
             page = PAGE_RIDES;
             selected_list_item = -1;
             frame_no = 0;
-            min_width = 340;
-            min_height = 240;
-            max_width = 400;
-            max_height = 700;
+
             RefreshList();
 
             list_information_type = 0;

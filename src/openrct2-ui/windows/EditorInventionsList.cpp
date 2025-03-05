@@ -155,10 +155,7 @@ namespace OpenRCT2::Ui::Windows
             selected_tab = 0;
             _selectedResearchItem = nullptr;
 
-            min_width = WW;
-            min_height = WH;
-            max_width = WW * 2;
-            max_height = WH * 2;
+            WindowSetResize(*this, { WW, WH }, { WW * 2, WH * 2 });
         }
 
         void OnClose() override

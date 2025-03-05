@@ -103,7 +103,7 @@ namespace OpenRCT2::Scripting
                 }
                 else
                 {
-                    WindowSetResize(*w, value, w->min_height, value, w->max_height);
+                    WindowSetResize(*w, { value, w->min_height }, { value, w->max_height });
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace OpenRCT2::Scripting
                 }
                 else
                 {
-                    WindowSetResize(*w, w->min_width, value, w->max_width, value);
+                    WindowSetResize(*w, { w->min_width, value }, { w->max_width, value });
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WindowSetResize(*w, value, w->min_height, w->max_width, w->max_height);
+                WindowSetResize(*w, { value, w->min_height }, { w->max_width, w->max_height });
             }
         }
         int32_t maxWidth_get() const
@@ -162,7 +162,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WindowSetResize(*w, w->min_width, w->min_height, value, w->max_height);
+                WindowSetResize(*w, { w->min_width, w->min_height }, { value, w->max_height });
             }
         }
         int32_t minHeight_get() const
@@ -179,7 +179,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WindowSetResize(*w, w->min_width, value, w->max_width, w->max_height);
+                WindowSetResize(*w, { w->min_width, value }, { w->max_width, w->max_height });
             }
         }
         int32_t maxHeight_get() const
@@ -196,7 +196,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WindowSetResize(*w, w->min_width, w->min_height, w->max_width, value);
+                WindowSetResize(*w, { w->min_width, w->min_height }, { w->max_width, value });
             }
         }
         bool isSticky_get() const

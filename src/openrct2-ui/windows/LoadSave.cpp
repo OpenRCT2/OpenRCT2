@@ -354,11 +354,7 @@ namespace OpenRCT2::Ui::Windows
             // Reset window dimensions
             InitScrollWidgets();
             ComputeMaxDateWidth();
-
-            min_width = kWindowSizeMin.width;
-            min_height = kWindowSizeMin.height;
-            max_width = kWindowSizeMax.width;
-            max_height = kWindowSizeMax.height;
+            WindowSetResize(*this, kWindowSizeMin, kWindowSizeMax);
         }
 
         void OnClose() override
@@ -380,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, kWindowSizeMin.width, kWindowSizeMin.height, kWindowSizeMax.width, kWindowSizeMax.height);
+            WindowSetResize(*this, kWindowSizeMin, kWindowSizeMax);
 
             auto& config = Config::Get().general;
             config.FileBrowserWidth = width;

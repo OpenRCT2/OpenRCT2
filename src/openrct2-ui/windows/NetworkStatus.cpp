@@ -39,13 +39,9 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(window_network_status_widgets);
             WindowInitScrollWidgets(*this);
+            WindowSetResize(*this, { 320, 90 }, { 320, 90 });
 
             frame_no = 0;
-            min_width = 320;
-            min_height = 90;
-            max_width = min_width;
-            max_height = min_height;
-
             page = 0;
             list_information_type = 0;
         }

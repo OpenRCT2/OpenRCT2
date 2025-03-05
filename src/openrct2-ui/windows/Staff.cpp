@@ -605,31 +605,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OverviewResize()
         {
-            min_width = WW;
-            max_width = 500;
-            min_height = WH;
-            max_height = 450;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { WW, WH }, { 500, 450 });
 
             if (viewport != nullptr)
             {
@@ -934,31 +910,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OptionsResize()
         {
-            min_width = 190;
-            max_width = 190;
-            min_height = 126;
-            max_height = 126;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { 190, 126 }, { 190, 126 });
         }
 
         void OptionsUpdate()
@@ -1037,31 +989,7 @@ namespace OpenRCT2::Ui::Windows
 
         void StatsResize()
         {
-            min_width = 190;
-            max_width = 190;
-            min_height = 126;
-            max_height = 126;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { 190, 126 }, { 190, 126 });
         }
 
         void StatsUpdate()
