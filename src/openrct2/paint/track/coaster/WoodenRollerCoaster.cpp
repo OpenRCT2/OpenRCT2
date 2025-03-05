@@ -4445,7 +4445,7 @@ static void WoodenRCTrackLeftVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -4467,25 +4467,25 @@ static void WoodenRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23454), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23462), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23459), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23467), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4647,25 +4647,25 @@ static void WoodenRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23459), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23467), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23454), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23462), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4699,7 +4699,7 @@ static void WoodenRCTrackLeftVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -4750,7 +4750,7 @@ static void WoodenRCTrackRightVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -4764,25 +4764,25 @@ static void WoodenRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23483), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23475), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23478), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23470), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -4904,25 +4904,25 @@ static void WoodenRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23478), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23470), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23483), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23475), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -4948,7 +4948,7 @@ static void WoodenRCTrackRightVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, true, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -12310,7 +12310,7 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
             }
 
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -12366,21 +12366,23 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 2),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 14, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 14, height, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 7),
                         { 0, 0, height }, { { 29, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 16, height, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 12),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 18, height,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 18, height, false,
                         session.SupportColours);
                     break;
                 case 3:
@@ -12388,7 +12390,7 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 17),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 14, height,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 14, height, false,
                         session.SupportColours);
                     break;
             }
@@ -12521,7 +12523,7 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
             }
 
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 7, height, true, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -12577,7 +12579,7 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 22),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 14, height,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 14, height, false,
                         session.SupportColours);
                     break;
                 case 1:
@@ -12585,7 +12587,7 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 27),
                         { 0, 0, height }, { { 30, 16, height }, { 0, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 18, height,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 18, height, false,
                         session.SupportColours);
                     break;
                 case 2:
@@ -12593,14 +12595,16 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 32),
                         { 0, 0, height }, { { 29, 0, height }, { 0, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 16, height, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 37),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 14, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 14, height, false,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12743,7 +12747,7 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 5, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -12760,14 +12764,14 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 1)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 12, height, true, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 8)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 9 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -12777,14 +12781,14 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 58)),
                         { 0, 0, height }, { { 0, 6, height + 64 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 22)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12836,14 +12840,15 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 3)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 22, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 22, height, true,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 10)),
                         { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 14, height + 8,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 14, height + 8, true,
                         session.SupportColours);
                     break;
                 case 2:
@@ -12851,7 +12856,7 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 17)),
                         { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 0, height + 21,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 0, height + 21, false,
                         session.SupportColours);
                     break;
                 case 3:
@@ -12859,7 +12864,7 @@ static void WoodenRCTrackLeftLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 24)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 22, height,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 22, height, true,
                         session.SupportColours);
                     break;
             }
@@ -13020,7 +13025,7 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 5, height, true, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -13037,7 +13042,7 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 29)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13047,21 +13052,21 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 61)),
                         { 0, 0, height }, { { 0, 6, height + 64 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 43)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 9 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 6, height, true, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 50)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 12, height, true, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13113,7 +13118,7 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 31)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 22, height,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 22, height, true,
                         session.SupportColours);
                     break;
                 case 1:
@@ -13121,7 +13126,7 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 38)),
                         { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 0, height + 21,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 0, height + 21, false,
                         session.SupportColours);
                     break;
                 case 2:
@@ -13129,7 +13134,7 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 45)),
                         { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 14, height + 8,
+                        session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 14, height + 8, true,
                         session.SupportColours);
                     break;
                 case 3:
@@ -13137,7 +13142,8 @@ static void WoodenRCTrackRightLargeHalfLoopUp(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_WOODEN_RC_LARGE_HALF_LOOP + 52)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 22, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 22, height, true,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(

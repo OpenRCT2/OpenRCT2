@@ -164,7 +164,7 @@ static void classicStandUpRCTrackFlatToLeftBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -189,7 +189,7 @@ static void classicStandUpRCTrackFlatToRightBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -232,7 +232,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 session, direction, session.TrackColours.WithIndex(map[direction]), { 0, 6, height }, { 32, 20, 3 });
 
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -372,7 +372,7 @@ static void classicStandUpRCTrackBankedRightQuarterTurn5(
                 session, direction, session.TrackColours.WithIndex(map[direction]), { 6, 0, height }, { 20, 32, 3 });
 
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 1 || direction == 0)
             {
                 PaintUtilPushTunnelRotated(session, direction ^ 1, height, kTunnelGroup, TunnelSubType::Flat);
@@ -419,7 +419,7 @@ static void classicStandUpRCTrackLeftBankTo25DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -451,7 +451,7 @@ static void classicStandUpRCTrackRightBankTo25DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -483,7 +483,7 @@ static void classicStandUpRCTrack25DegUpToLeftBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -515,7 +515,7 @@ static void classicStandUpRCTrack25DegUpToRightBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, true, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -579,7 +579,7 @@ static void classicStandUpRCTrackLeftBank(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -621,7 +621,7 @@ static void classicStandUpRCTrackLeftEighthBankToDiag(
                 { { 0, 6, height }, { 32, 20, 3 } });
 
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -734,7 +734,8 @@ static void classicStandUpRCTrackLeftEighthBankToDiag(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 0, height, false,
+                session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -775,7 +776,7 @@ static void classicStandUpRCTrackRightEighthBankToDiag(
                 { { 0, 6, height }, { 32, 20, 3 } });
 
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -888,7 +889,7 @@ static void classicStandUpRCTrackRightEighthBankToDiag(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, false, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -945,7 +946,7 @@ static void classicStandUpRCTrackRightBankedQuarterTurn3(
                 session, direction, session.TrackColours.WithIndex(imageId), { 0, 6, height }, { 32, 20, 3 });
 
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -1000,7 +1001,7 @@ static void classicStandUpRCTrackRightBankedQuarterTurn3(
                 session, direction, session.TrackColours.WithIndex(imageId), { 6, 0, height }, { 20, 32, 3 });
 
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, false, session.SupportColours);
             if (direction == 0 || direction == 1)
             {
                 PaintUtilPushTunnelRotated(session, direction ^ 1, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1077,7 +1078,7 @@ static inline void classicStandUpRCTrackDiagFlatWithBank(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, false, session.SupportColours);
 
             break;
     }
@@ -1211,7 +1212,7 @@ static void classicStandUpRCTrackDiagFlatTo25DegUpBanked(
                     break;
             }
             MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, false, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1334,7 +1335,7 @@ static void classicStandUpRCTrackDiag25DegUpToFlatBanked(
                     break;
             }
             MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 8, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 8, height, false, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
