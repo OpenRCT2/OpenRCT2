@@ -376,8 +376,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(
-                *this, { kWindowSizeMin.width, kWindowSizeMin.height }, { kWindowSizeMax.width, kWindowSizeMax.height });
+            WindowSetResize(*this, kWindowSizeMin, kWindowSizeMax);
 
             auto& config = Config::Get().general;
             config.FileBrowserWidth = width;
