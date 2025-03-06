@@ -263,7 +263,8 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
             auto intent = Intent(WindowClass::Loadsave);
-            intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
+            intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
+            intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::scenario);
             intent.PutExtra(INTENT_EXTRA_PATH, gameState.ScenarioName);
             ContextOpenIntent(&intent);
         }

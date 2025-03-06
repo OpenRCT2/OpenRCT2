@@ -167,7 +167,8 @@ bool GameIsNotPaused()
 static void LoadLandscape()
 {
     auto intent = Intent(WindowClass::Loadsave);
-    intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
+    intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+    intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
     ContextOpenIntent(&intent);
 }
 
@@ -498,7 +499,8 @@ std::unique_ptr<Intent> CreateSaveGameAsIntent()
     auto name = Path::GetFileNameWithoutExtension(gScenarioSavePath);
 
     auto intent = std::make_unique<Intent>(WindowClass::Loadsave);
-    intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
+    intent->PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
+    intent->PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
     intent->PutExtra(INTENT_EXTRA_PATH, name);
 
     return intent;
@@ -663,7 +665,8 @@ void GameLoadOrQuitNoSavePrompt()
             else
             {
                 auto intent = Intent(WindowClass::Loadsave);
-                intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+                intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+                intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
                 intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(GameLoadOrQuitNoSavePromptCallback));
                 ContextOpenIntent(&intent);
             }

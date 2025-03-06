@@ -212,17 +212,19 @@ enum BTM_TOOLBAR_DIRTY_FLAGS
     BTM_TB_DIRTY_FLAG_PARK_RATING = (1 << 4)
 };
 
-// 000N_TTTL
-enum
+enum class LoadSaveAction : uint8_t
 {
-    LOADSAVETYPE_LOAD = 0 << 0,
-    LOADSAVETYPE_SAVE = 1 << 0,
+    load,
+    save,
+};
 
-    LOADSAVETYPE_GAME = 0 << 1,
-    LOADSAVETYPE_LANDSCAPE = 1 << 1,
-    LOADSAVETYPE_SCENARIO = 2 << 1,
-    LOADSAVETYPE_TRACK = 3 << 1,
-    LOADSAVETYPE_HEIGHTMAP = 4 << 1,
+enum class LoadSaveType : uint8_t
+{
+    park,
+    landscape,
+    scenario,
+    track,
+    heightmap,
 };
 
 enum class ModalResult : int8_t

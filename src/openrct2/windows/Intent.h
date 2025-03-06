@@ -89,12 +89,24 @@ namespace OpenRCT2
         uint32_t GetUIntExtra(uint32_t key) const;
         int32_t GetSIntExtra(uint32_t key) const;
         CloseCallback GetCloseCallbackExtra(uint32_t key) const;
+        template<typename TEnumType>
+        TEnumType GetEnumExtra(uint32_t key)
+        {
+            static_assert(std::is_enum_v<TEnumType>);
+            return static_cast<TEnumType>(GetUIntExtra(key));
+        }
 
         Intent* PutExtra(uint32_t key, uint32_t value);
         Intent* PutExtra(uint32_t key, void* value);
         Intent* PutExtra(uint32_t key, int32_t value);
         Intent* PutExtra(uint32_t key, std::string value);
         Intent* PutExtra(uint32_t key, CloseCallback value);
+        template<typename TEnumType>
+        Intent* PutEnumExtra(uint32_t key, TEnumType value)
+        {
+            static_assert(std::is_enum_v<TEnumType>);
+            return PutExtra(key, EnumValue(value));
+        }
 
         template<typename T, T TNull, typename TTag>
         Intent* PutExtra(uint32_t key, const TIdentifier<T, TNull, TTag>& value)
@@ -110,6 +122,7 @@ namespace OpenRCT2
         INTENT_EXTRA_RIDE_ID,
         INTENT_EXTRA_PATH,
         INTENT_EXTRA_PEEP,
+        INTENT_EXTRA_LOADSAVE_ACTION,
         INTENT_EXTRA_LOADSAVE_TYPE,
         INTENT_EXTRA_CALLBACK,
         INTENT_EXTRA_TRACK_DESIGN,

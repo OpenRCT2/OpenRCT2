@@ -929,7 +929,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_HEIGHTMAP_BROWSE:
                 {
                     auto intent = Intent(WindowClass::Loadsave);
-                    intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
+                    intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+                    intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::heightmap);
                     intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(HeightmapLoadsaveCallback));
                     ContextOpenIntent(&intent);
                     return;
