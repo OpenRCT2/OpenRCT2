@@ -58,11 +58,11 @@ namespace OpenRCT2::Scripting
         {
             switch (ride->GetClassification())
             {
-                case RideClassification::Ride:
+                case RideClassification::ride:
                     return "ride";
-                case RideClassification::ShopOrStall:
+                case RideClassification::shopOrStall:
                     return "stall";
-                case RideClassification::KioskOrFacility:
+                case RideClassification::kioskOrFacility:
                     return "facility";
             }
         }
@@ -91,15 +91,15 @@ namespace OpenRCT2::Scripting
         {
             switch (ride->status)
             {
-                case RideStatus::Closed:
+                case RideStatus::closed:
                     return "closed";
-                case RideStatus::Open:
+                case RideStatus::open:
                     return "open";
-                case RideStatus::Testing:
+                case RideStatus::testing:
                     return "testing";
-                case RideStatus::Simulating:
+                case RideStatus::simulating:
                     return "simulating";
-                case RideStatus::Count: // Meaningless but necessary to satisfy -Wswitch
+                case RideStatus::count: // Meaningless but necessary to satisfy -Wswitch
                     return "count";
             }
         }
@@ -460,7 +460,7 @@ namespace OpenRCT2::Scripting
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto ride = GetRide();
-        if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
+        if (ride != nullptr && ride->value != kRideValueUndefined)
         {
             return ToDuk<int32_t>(ctx, ride->value);
         }
@@ -479,7 +479,7 @@ namespace OpenRCT2::Scripting
             }
             else
             {
-                ride->value = RIDE_VALUE_UNDEFINED;
+                ride->value = kRideValueUndefined;
             }
         }
     }

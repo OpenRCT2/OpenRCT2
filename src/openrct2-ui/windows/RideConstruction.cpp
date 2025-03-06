@@ -305,14 +305,14 @@ namespace OpenRCT2::Ui::Windows
             if (RideTryGetOriginElement(*currentRide, nullptr))
             {
                 // Auto open shops if required.
-                if (currentRide->mode == RideMode::ShopStall && Config::Get().general.AutoOpenShops)
+                if (currentRide->mode == RideMode::shopStall && Config::Get().general.AutoOpenShops)
                 {
                     // HACK: Until we find a good a way to defer the game command for opening the shop, stop this
                     //       from getting stuck in an infinite loop as opening the currentRide will try to close this window
                     if (!_autoOpeningShop)
                     {
                         _autoOpeningShop = true;
-                        auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::Open);
+                        auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::open);
                         GameActions::Execute(&gameAction);
                         _autoOpeningShop = false;
                     }
@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+                auto gameAction = RideDemolishAction(currentRide->id, RideModifyType::demolish);
                 gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
                 GameActions::Execute(&gameAction);
             }
@@ -962,7 +962,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Close construction window if currentRide is not closed,
             // editing currentRide while open will cause many issues until properly handled
-            if (currentRide->status != RideStatus::Closed && currentRide->status != RideStatus::Simulating)
+            if (currentRide->status != RideStatus::closed && currentRide->status != RideStatus::simulating)
             {
                 Close();
                 return;
@@ -1040,8 +1040,8 @@ namespace OpenRCT2::Ui::Windows
                     auto currentRide = GetRide(_currentRideIndex);
                     if (currentRide != nullptr)
                     {
-                        auto status = currentRide->status == RideStatus::Simulating ? RideStatus::Closed
-                                                                                    : RideStatus::Simulating;
+                        auto status = currentRide->status == RideStatus::simulating ? RideStatus::closed
+                                                                                    : RideStatus::simulating;
                         auto gameAction = RideSetStatusAction(currentRide->id, status);
                         GameActions::Execute(&gameAction);
                     }
@@ -1547,7 +1547,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& rtd = currentRide->GetRideTypeDescriptor();
                 const auto& ted = GetTrackElementDescriptor(_currentlySelectedTrack.trackType);
                 stringId = ted.description;
-                if (stringId == STR_RAPIDS && rtd.Category != RIDE_CATEGORY_WATER)
+                if (stringId == STR_RAPIDS && rtd.Category != RideCategory::water)
                 {
                     stringId = STR_LOG_BUMPS;
                 }
@@ -1574,10 +1574,10 @@ namespace OpenRCT2::Ui::Windows
             // Simulate button
             auto& simulateWidget = widgets[WIDX_SIMULATE];
             simulateWidget.type = WindowWidgetType::Empty;
-            if (currentRide->SupportsStatus(RideStatus::Simulating))
+            if (currentRide->SupportsStatus(RideStatus::simulating))
             {
                 simulateWidget.type = WindowWidgetType::FlatBtn;
-                if (currentRide->status == RideStatus::Simulating)
+                if (currentRide->status == RideStatus::simulating)
                 {
                     pressed_widgets |= (1uLL << WIDX_SIMULATE);
                 }
@@ -2549,7 +2549,7 @@ namespace OpenRCT2::Ui::Windows
                     if (currentRide != nullptr)
                     {
                         const auto& rtd = currentRide->GetRideTypeDescriptor();
-                        if (rtd.Category != RIDE_CATEGORY_WATER)
+                        if (rtd.Category != RideCategory::water)
                             trackPieceStringId = STR_LOG_BUMPS;
                     }
                 }

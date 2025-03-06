@@ -1955,11 +1955,11 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
     // Indicates whether a peep is physically at the ride, or is just thinking about going on the ride.
     bool peepAtRide = !thinking;
 
-    if (ride.status == RideStatus::Open && !(ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (ride.status == RideStatus::open && !(ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
         assert(ride.type < std::size(kRideTypeDescriptors));
-        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == RIDE_VALUE_UNDEFINED
+        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == kRideValueUndefined
             || RideGetPrice(ride) != 0)
         {
             if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -2020,7 +2020,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
         // Assuming the queue conditions are met, peeps will always go on free transport rides.
         // Ride ratings, recent crashes and weather will all be ignored.
         auto ridePrice = RideGetPrice(ride);
-        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == RIDE_VALUE_UNDEFINED
+        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == kRideValueUndefined
             || ridePrice != 0)
         {
             if (PreviousRide == ride.id)
@@ -2181,7 +2181,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             money64 value = ride.value;
 
             // If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
-            if (value != RIDE_VALUE_UNDEFINED && !PeepHasVoucherForFreeRide(this, ride)
+            if (value != kRideValueUndefined && !PeepHasVoucherForFreeRide(this, ride)
                 && !(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
@@ -2500,7 +2500,7 @@ static void PeepChooseSeatFromCar(Peep* peep, const Ride& ride, Vehicle* vehicle
     }
     uint8_t chosen_seat = vehicle->next_free_seat;
 
-    if (ride.mode == RideMode::ForwardRotation || ride.mode == RideMode::BackwardRotation)
+    if (ride.mode == RideMode::forwardRotation || ride.mode == RideMode::backwardRotation)
     {
         chosen_seat = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
         if (vehicle->next_free_seat & 1)
@@ -2564,7 +2564,7 @@ static bool FindVehicleToEnter(
 {
     uint8_t chosen_train = RideStation::kNoTrain;
 
-    if (ride.mode == RideMode::Dodgems || ride.mode == RideMode::Race)
+    if (ride.mode == RideMode::dodgems || ride.mode == RideMode::race)
     {
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
             return false;
@@ -2615,7 +2615,7 @@ static bool FindVehicleToEnter(
         if (num_seats == vehicle->next_free_seat)
             continue;
 
-        if (ride.mode == RideMode::ForwardRotation || ride.mode == RideMode::BackwardRotation)
+        if (ride.mode == RideMode::forwardRotation || ride.mode == RideMode::backwardRotation)
         {
             uint8_t position = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
             if (!vehicle->peep[position].IsNull())
@@ -2665,7 +2665,7 @@ static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money64 
     }
 
     auto value = ride.value;
-    if (value != RIDE_VALUE_UNDEFINED)
+    if (value != kRideValueUndefined)
     {
         if (((value * 2) < ridePrice) && !(GetGameState().Cheats.ignorePrice))
         {
@@ -2743,7 +2743,7 @@ static int16_t PeepCalculateRideValueSatisfaction(Guest* peep, const Ride& ride)
         return -30;
     }
 
-    if (ride.value == RIDE_VALUE_UNDEFINED)
+    if (ride.value == kRideValueUndefined)
     {
         return -30;
     }
@@ -3001,7 +3001,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
                         if (ride == nullptr)
                             break;
 
-                        bool isPlayingMusic = ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RideStatus::Closed
+                        bool isPlayingMusic = ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RideStatus::closed
                             && !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED));
                         if (!isPlayingMusic)
                             break;
@@ -3367,7 +3367,7 @@ void Guest::UpdateBuying()
         return;
 
     auto ride = GetRide(CurrentRide);
-    if (ride == nullptr || ride->status != RideStatus::Open)
+    if (ride == nullptr || ride->status != RideStatus::open)
     {
         SetState(PeepState::Falling);
         return;
@@ -3521,7 +3521,7 @@ void Guest::UpdateRideAtEntrance()
             return;
     }
 
-    if (ride->status != RideStatus::Open || ride->vehicle_change_timeout != 0)
+    if (ride->status != RideStatus::open || ride->vehicle_change_timeout != 0)
     {
         PeepUpdateRideAtEntranceTryLeave(this);
         return;
@@ -3975,7 +3975,7 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
     {
-        if (ride->status != RideStatus::Open || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
+        if (ride->status != RideStatus::open || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
         {
             PeepUpdateRideNoFreeVehicleRejoinQueue(this, *ride);
             return;
@@ -4031,7 +4031,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
+    if (ride->mode == RideMode::forwardRotation || ride->mode == RideMode::backwardRotation)
     {
         if (CurrentSeat & 1 || !(vehicle->next_free_seat & 1))
         {
@@ -4054,12 +4054,12 @@ void Guest::UpdateRideFreeVehicleCheck()
     {
         return;
     }
-    if (ride->status == RideStatus::Open && ++RejoinQueueTimeout != 0 && !currentTrain->HasFlag(VehicleFlags::ReadyToDepart))
+    if (ride->status == RideStatus::open && ++RejoinQueueTimeout != 0 && !currentTrain->HasFlag(VehicleFlags::ReadyToDepart))
     {
         return;
     }
 
-    if (ride->mode != RideMode::ForwardRotation && ride->mode != RideMode::BackwardRotation)
+    if (ride->mode != RideMode::forwardRotation && ride->mode != RideMode::backwardRotation)
     {
         if (vehicle->next_free_seat - 1 != CurrentSeat)
             return;
@@ -4095,7 +4095,7 @@ void Guest::UpdateRideEnterVehicle()
                 return;
             }
 
-            if (ride->mode != RideMode::ForwardRotation && ride->mode != RideMode::BackwardRotation)
+            if (ride->mode != RideMode::forwardRotation && ride->mode != RideMode::backwardRotation)
             {
                 if (CurrentSeat != vehicle->num_peeps)
                     return;
@@ -4160,7 +4160,7 @@ void Guest::UpdateRideLeaveVehicle()
     }
 
     // Check if ride is NOT Ferris Wheel.
-    if (ride->mode != RideMode::ForwardRotation && ride->mode != RideMode::BackwardRotation)
+    if (ride->mode != RideMode::forwardRotation && ride->mode != RideMode::backwardRotation)
     {
         if (vehicle->num_peeps - 1 != CurrentSeat)
             return;
@@ -4695,11 +4695,11 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (waypoint == 2)
     {
         bool lastRide = false;
-        if (ride->status != RideStatus::Open)
+        if (ride->status != RideStatus::open)
             lastRide = true;
         else if (CurrentCar++ != 0)
         {
-            if (ride->mode == RideMode::SingleRidePerAdmission)
+            if (ride->mode == RideMode::singleRidePerAdmission)
                 lastRide = true;
             if (static_cast<uint8_t>(CurrentCar - 1) > (ScenarioRand() & 0xF))
                 lastRide = true;
@@ -5620,7 +5620,7 @@ void Guest::UpdateQueuing()
         return;
     }
     auto ride = GetRide(CurrentRide);
-    if (ride == nullptr || ride->status != RideStatus::Open)
+    if (ride == nullptr || ride->status != RideStatus::open)
     {
         RemoveFromQueue();
         SetState(PeepState::One);
@@ -6364,7 +6364,7 @@ bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElem
     if (ride->ratings.isNull())
     {
         *rideSeatToView = 1;
-        if (ride->status != RideStatus::Open)
+        if (ride->status != RideStatus::open)
         {
             if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * kCoordsZStep))
             {
@@ -6377,7 +6377,7 @@ bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElem
     else
     {
         *rideSeatToView = 0;
-        if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (ride->status == RideStatus::open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * kCoordsZStep))
             {

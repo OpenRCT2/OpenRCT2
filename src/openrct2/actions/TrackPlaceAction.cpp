@@ -708,14 +708,14 @@ GameActions::Result TrackPlaceAction::Execute() const
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
                 // change the current mode to its circuit blocked equivalent
-                RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
-                if (ride->mode == RideMode::PoweredLaunch)
+                RideMode newMode = RideMode::continuousCircuitBlockSectioned;
+                if (ride->mode == RideMode::poweredLaunch)
                 {
-                    if (rtd.SupportsRideMode(RideMode::PoweredLaunchBlockSectioned)
+                    if (rtd.SupportsRideMode(RideMode::poweredLaunchBlockSectioned)
                         || GetGameState().Cheats.showAllOperatingModes)
-                        newMode = RideMode::PoweredLaunchBlockSectioned;
+                        newMode = RideMode::poweredLaunchBlockSectioned;
                     else
-                        newMode = RideMode::PoweredLaunch;
+                        newMode = RideMode::poweredLaunch;
                 }
 
                 auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));

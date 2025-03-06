@@ -1222,17 +1222,17 @@ namespace OpenRCT2::Ui::Windows
                     int32_t spriteIndex = 0;
                     switch (ride->GetClassification())
                     {
-                        case RideClassification::Ride:
+                        case RideClassification::ride:
                             spriteIndex = SPR_TAB_RIDE_0;
                             if (page == WINDOW_RIDE_PAGE_MAIN)
                                 spriteIndex += (frame_no / 4) % 16;
                             break;
-                        case RideClassification::ShopOrStall:
+                        case RideClassification::shopOrStall:
                             spriteIndex = SPR_TAB_SHOPS_AND_STALLS_0;
                             if (page == WINDOW_RIDE_PAGE_MAIN)
                                 spriteIndex += (frame_no / 4) % 16;
                             break;
-                        case RideClassification::KioskOrFacility:
+                        case RideClassification::kioskOrFacility:
                             spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
                             if (page == WINDOW_RIDE_PAGE_MAIN)
                                 spriteIndex += (frame_no / 4) % 8;
@@ -1660,16 +1660,16 @@ namespace OpenRCT2::Ui::Windows
                         {
                             default:
                             case WIDX_CLOSE_LIGHT:
-                                status = RideStatus::Closed;
+                                status = RideStatus::closed;
                                 break;
                             case WIDX_SIMULATE_LIGHT:
-                                status = RideStatus::Simulating;
+                                status = RideStatus::simulating;
                                 break;
                             case WIDX_TEST_LIGHT:
-                                status = RideStatus::Testing;
+                                status = RideStatus::testing;
                                 break;
                             case WIDX_OPEN_LIGHT:
-                                status = RideStatus::Open;
+                                status = RideStatus::open;
                                 break;
                         }
                         auto gameAction = RideSetStatusAction(ride->id, status);
@@ -1691,12 +1691,12 @@ namespace OpenRCT2::Ui::Windows
                 if (ride != nullptr)
                 {
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
-                    if (ride->SupportsStatus(RideStatus::Simulating))
+                    if (ride->SupportsStatus(RideStatus::simulating))
                     {
                         minHeight += 14;
                     }
 #endif
-                    if (ride->SupportsStatus(RideStatus::Testing))
+                    if (ride->SupportsStatus(RideStatus::testing))
                     {
                         minHeight += 14;
                     }
@@ -1797,23 +1797,23 @@ namespace OpenRCT2::Ui::Windows
             switch (ride.status)
             {
                 default:
-                case RideStatus::Closed:
+                case RideStatus::closed:
                     if ((ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
                         || (ride.lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE))
                     {
-                        return RideStatus::Closed;
+                        return RideStatus::closed;
                     }
-                    if (ride.SupportsStatus(RideStatus::Testing) && !(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+                    if (ride.SupportsStatus(RideStatus::testing) && !(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                     {
-                        return RideStatus::Testing;
+                        return RideStatus::testing;
                     }
-                    return RideStatus::Open;
-                case RideStatus::Simulating:
-                    return RideStatus::Testing;
-                case RideStatus::Testing:
-                    return (ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED) ? RideStatus::Open : RideStatus::Closed;
-                case RideStatus::Open:
-                    return RideStatus::Closed;
+                    return RideStatus::open;
+                case RideStatus::simulating:
+                    return RideStatus::testing;
+                case RideStatus::testing:
+                    return (ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED) ? RideStatus::open : RideStatus::closed;
+                case RideStatus::open:
+                    return RideStatus::closed;
             }
         }
 
@@ -1856,12 +1856,12 @@ namespace OpenRCT2::Ui::Windows
 
             info.CurrentStatus = info.Ride->status;
             info.DefaultStatus = GetNextDefaultStatus(*info.Ride);
-            SetDropdown(info, RideStatus::Closed, STR_CLOSE_RIDE);
+            SetDropdown(info, RideStatus::closed, STR_CLOSE_RIDE);
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
-            SetDropdown(info, RideStatus::Simulating, STR_SIMULATE_RIDE);
+            SetDropdown(info, RideStatus::simulating, STR_SIMULATE_RIDE);
 #endif
-            SetDropdown(info, RideStatus::Testing, STR_TEST_RIDE);
-            SetDropdown(info, RideStatus::Open, STR_OPEN_RIDE);
+            SetDropdown(info, RideStatus::testing, STR_TEST_RIDE);
+            SetDropdown(info, RideStatus::open, STR_OPEN_RIDE);
             WindowDropdownShowText(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, info.NumItems);
             Dropdown::SetChecked(info.CheckedIndex, true);
@@ -2198,7 +2198,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
-                        auto status = RideStatus::Closed;
+                        auto status = RideStatus::closed;
                         if (dropdownIndex < 0)
                         {
                             dropdownIndex = gDropdownHighlightedIndex;
@@ -2208,16 +2208,16 @@ namespace OpenRCT2::Ui::Windows
                             switch (gDropdownItems[dropdownIndex].Args)
                             {
                                 case STR_CLOSE_RIDE:
-                                    status = RideStatus::Closed;
+                                    status = RideStatus::closed;
                                     break;
                                 case STR_SIMULATE_RIDE:
-                                    status = RideStatus::Simulating;
+                                    status = RideStatus::simulating;
                                     break;
                                 case STR_TEST_RIDE:
-                                    status = RideStatus::Testing;
+                                    status = RideStatus::testing;
                                     break;
                                 case STR_OPEN_RIDE:
-                                    status = RideStatus::Open;
+                                    status = RideStatus::open;
                                     break;
                             }
                         }
@@ -2341,25 +2341,25 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_OPEN].image = ImageId(spriteIds[EnumValue(ride->status)]);
 
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
-            widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
+            widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::closed) * 2
                 + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
-            widgets[WIDX_SIMULATE_LIGHT].image = SPR_G2_RCT1_SIMULATE_BUTTON_0 + (ride->status == RideStatus::Simulating) * 2
+            widgets[WIDX_SIMULATE_LIGHT].image = SPR_G2_RCT1_SIMULATE_BUTTON_0 + (ride->status == RideStatus::simulating) * 2
                 + WidgetIsPressed(*w, WIDX_SIMULATE_LIGHT);
-            widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RideStatus::Testing) * 2
+            widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RideStatus::testing) * 2
                 + WidgetIsPressed(*this, WIDX_TEST_LIGHT);
 #else
-            const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
+            const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::closed) * 2
                 + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
             widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
 
-            auto baseSprite = ride->status == RideStatus::Simulating ? SPR_G2_RCT1_SIMULATE_BUTTON_0
+            auto baseSprite = ride->status == RideStatus::simulating ? SPR_G2_RCT1_SIMULATE_BUTTON_0
                                                                      : SPR_G2_RCT1_TEST_BUTTON_0;
             const auto testLightImage = baseSprite
-                + (ride->status == RideStatus::Testing || ride->status == RideStatus::Simulating) * 2
+                + (ride->status == RideStatus::testing || ride->status == RideStatus::simulating) * 2
                 + WidgetIsPressed(*this, WIDX_TEST_LIGHT);
             widgets[WIDX_TEST_LIGHT].image = ImageId(testLightImage);
 #endif
-            const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RideStatus::Open) * 2
+            const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RideStatus::open) * 2
                 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
@@ -2403,10 +2403,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
                 widgets[WIDX_SIMULATE_LIGHT].type = WindowWidgetType::Empty;
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
-                if (ride->SupportsStatus(RideStatus::Simulating))
+                if (ride->SupportsStatus(RideStatus::simulating))
                     widgets[WIDX_SIMULATE_LIGHT].type = WindowWidgetType::ImgBtn;
 #endif
-                widgets[WIDX_TEST_LIGHT].type = ride->SupportsStatus(RideStatus::Testing) ? WindowWidgetType::ImgBtn
+                widgets[WIDX_TEST_LIGHT].type = ride->SupportsStatus(RideStatus::testing) ? WindowWidgetType::ImgBtn
                                                                                           : WindowWidgetType::Empty;
                 widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
 
@@ -2531,7 +2531,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& station = ride->GetStation(*stationIndex);
             StringId stringId = kStringIdEmpty;
             // Entrance / exit
-            if (ride->status == RideStatus::Closed)
+            if (ride->status == RideStatus::closed)
             {
                 if (station.Entrance.IsNull())
                     stringId = STR_NO_ENTRANCE;
@@ -3069,7 +3069,7 @@ namespace OpenRCT2::Ui::Windows
                 maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
 
-            uint8_t increment = ride->mode == RideMode::Dodgems ? 10 : 1;
+            uint8_t increment = ride->mode == RideMode::dodgems ? 10 : 1;
 
             SetOperatingSetting(
                 rideId, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option + increment, minValue, maxValue));
@@ -3090,7 +3090,7 @@ namespace OpenRCT2::Ui::Windows
                 maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
 
-            uint8_t decrement = ride->mode == RideMode::Dodgems ? 10 : 1;
+            uint8_t decrement = ride->mode == RideMode::dodgems ? 10 : 1;
 
             SetOperatingSetting(
                 rideId, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option - decrement, minValue, maxValue));
@@ -3110,7 +3110,7 @@ namespace OpenRCT2::Ui::Windows
             // Create dropdown list
             auto numAvailableModes = 0;
             auto checkedIndex = -1;
-            for (auto i = 0; i < static_cast<uint8_t>(RideMode::Count); i++)
+            for (auto i = 0; i < static_cast<uint8_t>(RideMode::count); i++)
             {
                 if (availableModes & (1uLL << i))
                 {
@@ -3325,12 +3325,12 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (ride.mode)
             {
-                case RideMode::PoweredLaunchPasstrough:
-                case RideMode::PoweredLaunch:
-                case RideMode::UpwardLaunch:
-                case RideMode::PoweredLaunchBlockSectioned:
-                case RideMode::StationToStation:
-                case RideMode::Dodgems:
+                case RideMode::poweredLaunchPasstrough:
+                case RideMode::poweredLaunch:
+                case RideMode::upwardLaunch:
+                case RideMode::poweredLaunchBlockSectioned:
+                case RideMode::stationToStation:
+                case RideMode::dodgems:
                     return;
                 default:
                     break;
@@ -3367,10 +3367,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_MODE_DROPDOWN:
                 {
-                    RideMode rideMode = RideMode::NullMode;
+                    RideMode rideMode = RideMode::nullMode;
                     auto availableModes = ride->GetAvailableModes();
                     auto modeInDropdownIndex = -1;
-                    for (RideMode rideModeIndex = RideMode::Normal; rideModeIndex < RideMode::Count; rideModeIndex++)
+                    for (RideMode rideModeIndex = RideMode::normal; rideModeIndex < RideMode::count; rideModeIndex++)
                     {
                         if (availableModes & EnumToFlag(rideModeIndex))
                         {
@@ -3382,7 +3382,7 @@ namespace OpenRCT2::Ui::Windows
                             }
                         }
                     }
-                    if (rideMode != RideMode::NullMode)
+                    if (rideMode != RideMode::nullMode)
                         SetOperatingSetting(rideId, RideSetSetting::Mode, static_cast<uint8_t>(rideMode));
                     break;
                 }
@@ -3609,10 +3609,10 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<uint16_t>(static_cast<uint16_t>(ride->operation_option) * multiplier);
             switch (ride->mode)
             {
-                case RideMode::PoweredLaunchPasstrough:
-                case RideMode::PoweredLaunch:
-                case RideMode::UpwardLaunch:
-                case RideMode::PoweredLaunchBlockSectioned:
+                case RideMode::poweredLaunchPasstrough:
+                case RideMode::poweredLaunch:
+                case RideMode::upwardLaunch:
+                case RideMode::poweredLaunchBlockSectioned:
                     ft.Rewind();
                     ft.Increment(18);
                     ft.Add<uint16_t>((ride->launch_speed * 9) / 4);
@@ -3620,7 +3620,7 @@ namespace OpenRCT2::Ui::Windows
                     caption = STR_LAUNCH_SPEED;
                     tooltip = STR_LAUNCH_SPEED_TIP;
                     break;
-                case RideMode::StationToStation:
+                case RideMode::stationToStation:
                     ft.Rewind();
                     ft.Increment(18);
                     ft.Add<uint16_t>((ride->speed * 9) / 4);
@@ -3628,7 +3628,7 @@ namespace OpenRCT2::Ui::Windows
                     caption = STR_SPEED;
                     tooltip = STR_SPEED_TIP;
                     break;
-                case RideMode::Race:
+                case RideMode::race:
                     ft.Rewind();
                     ft.Increment(18);
                     ft.Add<uint16_t>(ride->NumLaps);
@@ -3636,19 +3636,19 @@ namespace OpenRCT2::Ui::Windows
                     caption = STR_NUMBER_OF_LAPS;
                     tooltip = STR_NUMBER_OF_LAPS_TIP;
                     break;
-                case RideMode::Dodgems:
+                case RideMode::dodgems:
                     format = STR_RIDE_MODE_TIME_LIMIT_VALUE;
                     caption = STR_TIME_LIMIT;
                     tooltip = STR_TIME_LIMIT_TIP;
                     break;
-                case RideMode::Swing:
+                case RideMode::swing:
                     format = STR_RIDE_MODE_NUMBER_OF_SWINGS_VALUE;
                     caption = STR_NUMBER_OF_SWINGS;
                     tooltip = STR_NUMBER_OF_SWINGS_TIP;
                     break;
-                case RideMode::Rotation:
-                case RideMode::ForwardRotation:
-                case RideMode::BackwardRotation:
+                case RideMode::rotation:
+                case RideMode::forwardRotation:
+                case RideMode::backwardRotation:
                     format = STR_NUMBER_OF_ROTATIONS_VALUE;
                     caption = STR_NUMBER_OF_ROTATIONS;
                     tooltip = STR_NUMBER_OF_ROTATIONS_TIP;
@@ -3707,7 +3707,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(ride->num_block_brakes + ride->num_stations);
-                auto underWidget = ride->mode == RideMode::PoweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
+                auto underWidget = ride->mode == RideMode::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
                 DrawTextBasic(
                     dpi, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
                     { COLOUR_BLACK });
@@ -3941,7 +3941,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ContextShowError(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_ALREADY_BROKEN, {});
                     }
-                    else if (ride->status == RideStatus::Closed)
+                    else if (ride->status == RideStatus::closed)
                     {
                         ContextShowError(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_IS_CLOSED, {});
                     }

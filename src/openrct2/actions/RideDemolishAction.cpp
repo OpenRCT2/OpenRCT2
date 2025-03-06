@@ -30,7 +30,7 @@
 
 using namespace OpenRCT2;
 
-RideDemolishAction::RideDemolishAction(RideId rideIndex, uint8_t modifyType)
+RideDemolishAction::RideDemolishAction(RideId rideIndex, RideModifyType modifyType)
     : _rideIndex(rideIndex)
     , _modifyType(modifyType)
 {
@@ -64,7 +64,7 @@ GameActions::Result RideDemolishAction::Query() const
     }
 
     if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-         && _modifyType == RIDE_MODIFY_DEMOLISH)
+         && _modifyType == RideModifyType::demolish)
         && !GetGameState().Cheats.makeAllDestructible)
     {
         return GameActions::Result(
@@ -74,9 +74,9 @@ GameActions::Result RideDemolishAction::Query() const
 
     GameActions::Result result = GameActions::Result();
 
-    if (_modifyType == RIDE_MODIFY_RENEW)
+    if (_modifyType == RideModifyType::renew)
     {
-        if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
+        if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
         }
@@ -110,9 +110,9 @@ GameActions::Result RideDemolishAction::Execute() const
 
     switch (_modifyType)
     {
-        case RIDE_MODIFY_DEMOLISH:
+        case RideModifyType::demolish:
             return DemolishRide(*ride);
-        case RIDE_MODIFY_RENEW:
+        case RideModifyType::renew:
             return RefurbishRide(*ride);
         default:
             LOG_ERROR("Unknown ride demolish type %d", _modifyType);

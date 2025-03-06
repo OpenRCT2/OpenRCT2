@@ -539,7 +539,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
         if (rideEntry != nullptr)
         {
             // If there are more than 5 roller coasters, only mark the first five.
-            if (isFiveCoasterObjective && (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+            if (isFiveCoasterObjective && (RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster) && rcs < 5))
             {
                 ride.lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
                 rcs++;
@@ -658,13 +658,13 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
     BitSet<kMaxRideObjects> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= MakeRideRating(6, 00)
+        if (ride.status == RideStatus::open && ride.ratings.excitement >= MakeRideRating(6, 00)
             && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
             {
-                if (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                if (RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster) && !type_already_counted[ride.subtype])
                 {
                     type_already_counted[ride.subtype] = true;
                     rcs++;
@@ -760,13 +760,13 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= MakeRideRating(7, 00)
+        if (ride.status == RideStatus::open && ride.ratings.excitement >= MakeRideRating(7, 00)
             && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
             {
-                if (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                if (RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster) && !type_already_counted[ride.subtype])
                 {
                     if (ToHumanReadableRideLength(ride.GetTotalLength()) >= MinimumLength)
                     {
@@ -792,13 +792,13 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status != RideStatus::Closed && ride.ratings.excitement >= MinimumExcitement)
+        if (ride.status != RideStatus::closed && ride.ratings.excitement >= MinimumExcitement)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
             {
                 if ((ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                    && RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+                    && RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster))
                 {
                     rcs++;
                 }

@@ -102,9 +102,9 @@ struct RideMeasurement
 
 enum class RideClassification
 {
-    Ride,
-    ShopOrStall,
-    KioskOrFacility
+    ride,
+    shopOrStall,
+    kioskOrFacility
 };
 
 namespace OpenRCT2::ShelteredSectionsBits
@@ -628,69 +628,69 @@ enum
 
 enum class RideStatus : uint8_t
 {
-    Closed,
-    Open,
-    Testing,
-    Simulating,
-    Count,
+    closed,
+    open,
+    testing,
+    simulating,
+    count,
 };
 
 enum class RideMode : uint8_t
 {
-    Normal,
-    ContinuousCircuit,
-    ReverseInclineLaunchedShuttle,
-    PoweredLaunchPasstrough, // RCT2 style, pass through station
-    Shuttle,
-    BoatHire,
-    UpwardLaunch,
-    RotatingLift,
-    StationToStation,
-    SingleRidePerAdmission,
-    UnlimitedRidesPerAdmission = 10,
-    Maze,
-    Race,
-    Dodgems,
-    Swing,
-    ShopStall,
-    Rotation,
-    ForwardRotation,
-    BackwardRotation,
-    FilmAvengingAviators,
-    MouseTails3DFilm = 20,
-    SpaceRings,
-    Beginners,
-    LimPoweredLaunch,
-    FilmThrillRiders,
-    StormChasers3DFilm,
-    SpaceRaiders3DFilm,
-    Intense,
-    Berserk,
-    HauntedHouse,
-    Circus = 30,
-    DownwardLaunch,
-    CrookedHouse,
-    FreefallDrop,
-    ContinuousCircuitBlockSectioned,
-    PoweredLaunch, // RCT1 style, don't pass through station
-    PoweredLaunchBlockSectioned,
+    normal,
+    continuousCircuit,
+    reverseInclineLaunchedShuttle,
+    poweredLaunchPasstrough, // RCT2 style, pass through station
+    shuttle,
+    boatHire,
+    upwardLaunch,
+    rotatingLift,
+    stationToStation,
+    singleRidePerAdmission,
+    unlimitedRidesPerAdmission = 10,
+    maze,
+    race,
+    dodgems,
+    swing,
+    shopStall,
+    rotation,
+    forwardRotation,
+    backwardRotation,
+    filmAvengingAviators,
+    mouseTails3DFilm = 20,
+    spaceRings,
+    beginners,
+    limPoweredLaunch,
+    filmThrillRiders,
+    stormChasers3DFilm,
+    spaceRaiders3DFilm,
+    intense,
+    berserk,
+    hauntedHouse,
+    circus = 30,
+    downwardLaunch,
+    crookedHouse,
+    freefallDrop,
+    continuousCircuitBlockSectioned,
+    poweredLaunch, // RCT1 style, don't pass through station
+    poweredLaunchBlockSectioned,
 
-    Count,
-    NullMode = 255,
+    count,
+    nullMode = 255,
 };
 
 RideMode& operator++(RideMode& d, int);
 
-enum
+enum class RideCategory : uint8_t
 {
-    RIDE_CATEGORY_TRANSPORT,
-    RIDE_CATEGORY_GENTLE,
-    RIDE_CATEGORY_ROLLERCOASTER,
-    RIDE_CATEGORY_THRILL,
-    RIDE_CATEGORY_WATER,
-    RIDE_CATEGORY_SHOP,
+    transport,
+    gentle,
+    rollerCoaster,
+    thrill,
+    water,
+    shop,
 
-    RIDE_CATEGORY_NONE = 255,
+    none = 255,
 };
 
 enum
@@ -823,28 +823,6 @@ enum
 
 enum
 {
-    RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS,
-    RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN,
-    RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY
-};
-
-enum
-{
-    RIDE_SETTING_MODE,
-    RIDE_SETTING_DEPARTURE,
-    RIDE_SETTING_MIN_WAITING_TIME,
-    RIDE_SETTING_MAX_WAITING_TIME,
-    RIDE_SETTING_OPERATION_OPTION,
-    RIDE_SETTING_INSPECTION_INTERVAL,
-    RIDE_SETTING_MUSIC,
-    RIDE_SETTING_MUSIC_TYPE,
-    RIDE_SETTING_LIFT_HILL_SPEED,
-    RIDE_SETTING_NUM_CIRCUITS,
-    RIDE_SETTING_RIDE_TYPE,
-};
-
-enum
-{
     MAZE_WALL_TYPE_BRICK,
     MAZE_WALL_TYPE_HEDGE,
     MAZE_WALL_TYPE_ICE,
@@ -858,12 +836,6 @@ enum
     TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT = 1 << 2,
     TRACK_SELECTION_FLAG_RECHECK = 1 << 3,
     TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED = 1 << 4,
-};
-
-enum
-{
-    RIDE_MODIFY_DEMOLISH,
-    RIDE_MODIFY_RENEW,
 };
 
 enum
@@ -885,7 +857,7 @@ enum
 };
 
 constexpr uint8_t kMaxRideMeasurements = 8;
-constexpr money64 RIDE_VALUE_UNDEFINED = kMoney64Undefined;
+constexpr money64 kRideValueUndefined = kMoney64Undefined;
 constexpr uint16_t kRideInitialReliability = ((100 << 8) | 0xFF); // Upper byte is percentage, lower byte is "decimal".
 
 constexpr uint8_t kStationDepartFlag = (1 << 7);
@@ -990,7 +962,7 @@ bool RideHasRatings(const Ride& ride);
 
 int32_t GetUnifiedBoosterSpeed(ride_type_t rideType, int32_t relativeSpeed);
 void FixInvalidVehicleSpriteSizes();
-bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category);
+bool RideEntryHasCategory(const RideObjectEntry& rideEntry, RideCategory category);
 
 ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSubType);
 

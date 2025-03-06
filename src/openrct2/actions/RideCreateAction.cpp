@@ -155,14 +155,14 @@ GameActions::Result RideCreateAction::Execute() const
     station.Exit.SetNull();
     std::ranges::fill(ride->GetStations(), station);
 
-    ride->status = RideStatus::Closed;
+    ride->status = RideStatus::closed;
     ride->NumTrains = 1;
 
     auto& gameState = GetGameState();
     if (gameState.Cheats.disableTrainLengthLimit)
     {
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
-        if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
+        if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
         {
             ride->ProposedNumTrains = 12;
         }
@@ -269,7 +269,7 @@ GameActions::Result RideCreateAction::Execute() const
         }
     }
 
-    ride->value = RIDE_VALUE_UNDEFINED;
+    ride->value = kRideValueUndefined;
     ride->satisfaction = 255;
     ride->popularity = 255;
     ride->build_date = GetDate().GetMonthsElapsed();

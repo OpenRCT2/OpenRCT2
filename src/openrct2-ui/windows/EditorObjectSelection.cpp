@@ -1522,7 +1522,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     }
                 }
-                return (_filterFlags & (1 << (GetRideTypeDescriptor(rideType).Category + _numSourceGameItems))) != 0;
+                return (_filterFlags & (1 << (EnumValue(GetRideTypeDescriptor(rideType).Category) + _numSourceGameItems))) != 0;
             }
             return true;
         }

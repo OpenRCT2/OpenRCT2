@@ -75,7 +75,7 @@ namespace OpenRCT2::Park
     static money64 calculateRideValue(const Ride& ride)
     {
         money64 result = 0;
-        if (ride.value != RIDE_VALUE_UNDEFINED)
+        if (ride.value != kRideValueUndefined)
         {
             const auto& rtd = ride.GetRideTypeDescriptor();
             result = (ride.value * 10) * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
@@ -89,7 +89,7 @@ namespace OpenRCT2::Park
         bool ridePricesUnlocked = RidePricesUnlocked() && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY);
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Open)
+            if (ride.status != RideStatus::open)
                 continue;
             if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
@@ -97,7 +97,7 @@ namespace OpenRCT2::Park
                 continue;
 
             // Add ride value
-            if (ride.value != RIDE_VALUE_UNDEFINED)
+            if (ride.value != kRideValueUndefined)
             {
                 money64 rideValue = ride.value;
                 if (ridePricesUnlocked)
@@ -122,7 +122,7 @@ namespace OpenRCT2::Park
 
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Open)
+            if (ride.status != RideStatus::open)
                 continue;
             if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;

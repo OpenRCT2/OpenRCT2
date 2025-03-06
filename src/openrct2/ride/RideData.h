@@ -464,7 +464,7 @@ constexpr uint64_t kRtdFlagsCommonCoasterNonAlt = EnumsToFlags(
 
 struct RideTypeDescriptor
 {
-    uint8_t Category{};
+    RideCategory Category{};
     /** rct2: 0x0097CC68 */
     OpenRCT2::TrackElemType StartTrackPiece{};
     TrackDrawerDescriptor TrackPaintFunctions{};
@@ -514,7 +514,7 @@ struct RideTypeDescriptor
     TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
 
     RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
-    RideClassification Classification = RideClassification::Ride;
+    RideClassification Classification = RideClassification::ride;
 
     PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
     SpecialElementRatingAdjustmentFunc SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default;
@@ -586,32 +586,32 @@ constexpr const RideComponentName& GetRideComponentName(const RideComponentType 
 }
 
 constexpr uint64_t kAllRideModesAvailable = EnumsToFlags(
-    RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle,
-    RideMode::PoweredLaunchPasstrough, RideMode::Shuttle, RideMode::Normal, RideMode::BoatHire, RideMode::UpwardLaunch,
-    RideMode::RotatingLift, RideMode::StationToStation, RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission,
-    RideMode::Maze, RideMode::Race, RideMode::Dodgems, RideMode::Swing, RideMode::ShopStall, RideMode::Rotation,
-    RideMode::ForwardRotation, RideMode::BackwardRotation, RideMode::FilmAvengingAviators, RideMode::MouseTails3DFilm,
-    RideMode::SpaceRings, RideMode::Beginners, RideMode::LimPoweredLaunch, RideMode::FilmThrillRiders,
-    RideMode::StormChasers3DFilm, RideMode::SpaceRaiders3DFilm, RideMode::Intense, RideMode::Berserk, RideMode::HauntedHouse,
-    RideMode::Circus, RideMode::DownwardLaunch, RideMode::CrookedHouse, RideMode::FreefallDrop, RideMode::PoweredLaunch,
-    RideMode::PoweredLaunchBlockSectioned);
+    RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle,
+    RideMode::poweredLaunchPasstrough, RideMode::shuttle, RideMode::normal, RideMode::boatHire, RideMode::upwardLaunch,
+    RideMode::rotatingLift, RideMode::stationToStation, RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission,
+    RideMode::maze, RideMode::race, RideMode::dodgems, RideMode::swing, RideMode::shopStall, RideMode::rotation,
+    RideMode::forwardRotation, RideMode::backwardRotation, RideMode::filmAvengingAviators, RideMode::mouseTails3DFilm,
+    RideMode::spaceRings, RideMode::beginners, RideMode::limPoweredLaunch, RideMode::filmThrillRiders,
+    RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm, RideMode::intense, RideMode::berserk, RideMode::hauntedHouse,
+    RideMode::circus, RideMode::downwardLaunch, RideMode::crookedHouse, RideMode::freefallDrop, RideMode::poweredLaunch,
+    RideMode::poweredLaunchBlockSectioned);
 
 extern const CarEntry kCableLiftVehicle;
 
 extern const uint16_t kRideFilmLength[3];
 
-extern const StringId kRideModeNames[EnumValue(RideMode::Count)];
+extern const StringId kRideModeNames[EnumValue(RideMode::count)];
 
 // clang-format off
 constexpr RideTypeDescriptor kDummyRTD =
 {
-    .Category = RIDE_CATEGORY_NONE,
+    .Category = RideCategory::none,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = {},
     .InvertedTrackPaintFunctions = {},
     .Flags = 0,
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = {},
     .TrackSpeedSettings = {},
     .BoosterSettings = {},
@@ -649,7 +649,7 @@ constexpr RideTypeDescriptor kDummyRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
 };
 // clang-format on

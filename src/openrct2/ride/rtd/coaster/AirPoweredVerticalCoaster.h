@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::airPoweredVerticalCoaster,
@@ -27,8 +27,8 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | EnumsToFlags(RtdFlag::checkGForces),
-    .RideModes = EnumsToFlags(RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch),
-    .DefaultMode = RideMode::PoweredLaunchPasstrough,
+    .RideModes = EnumsToFlags(RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch),
+    .DefaultMode = RideMode::poweredLaunchPasstrough,
     .OperatingSettings = { 30, 50 },
     .TrackSpeedSettings = { 60, 60 },
     .BoosterSettings = { 40, 40, 13 },

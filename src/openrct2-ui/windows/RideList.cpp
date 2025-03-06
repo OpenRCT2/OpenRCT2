@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
             const auto selectedRideId = _rideList[index].Id;
             if (_quickDemolishMode && NetworkGetMode() != NETWORK_MODE_CLIENT)
             {
-                auto gameAction = RideDemolishAction(selectedRideId, RIDE_MODIFY_DEMOLISH);
+                auto gameAction = RideDemolishAction(selectedRideId, RideModifyType::demolish);
                 GameActions::Execute(&gameAction);
                 RefreshList();
             }
@@ -491,10 +491,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto c = static_cast<RideClassification>(page);
                     allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& rideRef) {
-                        return rideRef.GetClassification() == c && rideRef.status == RideStatus::Open;
+                        return rideRef.GetClassification() == c && rideRef.status == RideStatus::open;
                     });
                     allOpen = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& rideRef) {
-                        return rideRef.GetClassification() == c && rideRef.status != RideStatus::Open;
+                        return rideRef.GetClassification() == c && rideRef.status != RideStatus::open;
                     });
                 }
 
@@ -823,7 +823,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto& rideRef : GetRideManager())
             {
                 if (rideRef.GetClassification() != static_cast<RideClassification>(page)
-                    || (rideRef.status == RideStatus::Closed && !RideHasAnyTrackElements(rideRef)))
+                    || (rideRef.status == RideStatus::closed && !RideHasAnyTrackElements(rideRef)))
                 {
                     continue;
                 }
@@ -948,10 +948,10 @@ namespace OpenRCT2::Ui::Windows
         {
             for (auto& rideRef : GetRideManager())
             {
-                if (rideRef.status != RideStatus::Closed
+                if (rideRef.status != RideStatus::closed
                     && rideRef.GetClassification() == static_cast<RideClassification>(page))
                 {
-                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::Closed);
+                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::closed);
                     GameActions::Execute(&gameAction);
                 }
             }
@@ -962,9 +962,9 @@ namespace OpenRCT2::Ui::Windows
         {
             for (auto& rideRef : GetRideManager())
             {
-                if (rideRef.status != RideStatus::Open && rideRef.GetClassification() == static_cast<RideClassification>(page))
+                if (rideRef.status != RideStatus::open && rideRef.GetClassification() == static_cast<RideClassification>(page))
                 {
-                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::Open);
+                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::open);
                     GameActions::Execute(&gameAction);
                 }
             }

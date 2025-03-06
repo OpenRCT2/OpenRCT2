@@ -16,7 +16,7 @@
 // clang-format off
 constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::singleRailRollerCoaster,
@@ -28,8 +28,8 @@ constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt|
                  EnumsToFlags(RtdFlag::hasTrackColourSupports, RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,
                               RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .BoosterSettings = { 15, 52 },
     .LegacyBoosterSettings = { 15, 52 },
     .Naming = { STR_RIDE_NAME_SINGLE_RAIL_ROLLER_COASTER, STR_RIDE_DESCRIPTION_SINGLE_RAIL_ROLLER_COASTER },

@@ -22,6 +22,7 @@ namespace OpenRCT2
 } // namespace OpenRCT2
 
 class Object;
+enum class RideCategory : uint8_t;
 
 namespace OpenRCT2::Localisation
 {
@@ -52,7 +53,7 @@ struct ObjectRepositoryItem
     struct
     {
         uint8_t RideFlags;
-        uint8_t RideCategory[OpenRCT2::RCT2::ObjectLimits::kMaxCategoriesPerRide];
+        RideCategory rideCategory[OpenRCT2::RCT2::ObjectLimits::kMaxCategoriesPerRide];
         ride_type_t RideType[OpenRCT2::RCT2::ObjectLimits::kMaxRideTypesPerRideEntry];
     } RideInfo;
     struct

@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor DodgemsRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::dodgems,
@@ -31,8 +31,8 @@ constexpr RideTypeDescriptor DodgemsRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::hasMusicByDefault,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::Dodgems),
-    .DefaultMode = RideMode::Dodgems,
+    .RideModes = EnumsToFlags(RideMode::dodgems),
+    .DefaultMode = RideMode::dodgems,
     .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_DODGEMS, STR_RIDE_DESCRIPTION_DODGEMS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },

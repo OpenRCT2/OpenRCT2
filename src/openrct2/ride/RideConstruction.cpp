@@ -106,7 +106,7 @@ static int32_t ride_check_if_construction_allowed(Ride& ride)
         return 0;
     }
 
-    if (ride.status != RideStatus::Closed && ride.status != RideStatus::Simulating)
+    if (ride.status != RideStatus::closed && ride.status != RideStatus::simulating)
     {
         ride.FormatNameTo(ft);
         ContextShowError(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST, ft);
@@ -976,9 +976,9 @@ bool RideModify(const CoordsXYE& input)
     }
 
     // Stop the ride again to clear all vehicles and peeps (compatible with network games)
-    if (ride->status != RideStatus::Simulating)
+    if (ride->status != RideStatus::simulating)
     {
-        auto gameAction = RideSetStatusAction(ride->id, RideStatus::Closed);
+        auto gameAction = RideSetStatusAction(ride->id, RideStatus::closed);
         GameActions::Execute(&gameAction);
     }
 

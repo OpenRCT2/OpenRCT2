@@ -19,7 +19,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MazeRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::Maze,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::maze,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor MazeRTD =
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourSupports, RtdFlag::hasSinglePieceStation, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::noWallsAroundTrack, RtdFlag::describeAsInside, RtdFlag::hasTrack, RtdFlag::hasEntranceAndExit,
                      RtdFlag::guestsCanUseUmbrella),
-    .RideModes = EnumsToFlags(RideMode::Maze),
-    .DefaultMode = RideMode::Maze,
+    .RideModes = EnumsToFlags(RideMode::maze),
+    .DefaultMode = RideMode::maze,
     .OperatingSettings = { 1, 64 },
     .Naming = { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
@@ -69,7 +69,7 @@ constexpr RideTypeDescriptor MazeRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Maze,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceMaze,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,

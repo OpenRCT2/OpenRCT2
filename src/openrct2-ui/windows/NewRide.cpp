@@ -659,7 +659,7 @@ namespace OpenRCT2::Ui::Windows
                 if (rideType == kRideTypeNull)
                     continue;
 
-                if (GetRideTypeDescriptor(rideType).Category != currentCategory)
+                if (EnumValue(GetRideTypeDescriptor(rideType).Category) != currentCategory)
                     continue;
 
                 nextListItem = IterateOverRideType(rideType, nextListItem, listEnd);
@@ -1113,6 +1113,6 @@ namespace OpenRCT2::Ui::Windows
             return;
 
         auto rideTypeIndex = rideEntry->GetFirstNonNullRideType();
-        w->SetPage(GetRideTypeDescriptor(rideTypeIndex).Category);
+        w->SetPage(EnumValue(GetRideTypeDescriptor(rideTypeIndex).Category));
     }
 } // namespace OpenRCT2::Ui::Windows

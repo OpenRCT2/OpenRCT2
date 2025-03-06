@@ -135,7 +135,7 @@ namespace OpenRCT2::RCT1
             td->operation.rideMode = static_cast<RideMode>(td4Base.Mode);
             if (td4Base.Mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
             {
-                td->operation.rideMode = RideMode::PoweredLaunch;
+                td->operation.rideMode = RideMode::poweredLaunch;
             }
 
             std::string_view vehicleObject;

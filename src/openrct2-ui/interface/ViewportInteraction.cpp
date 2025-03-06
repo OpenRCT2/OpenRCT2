@@ -300,7 +300,7 @@ namespace OpenRCT2::Ui
                     return info;
                 }
                 ride = GetRide(vehicle->ride);
-                if (ride != nullptr && ride->status == RideStatus::Closed)
+                if (ride != nullptr && ride->status == RideStatus::closed)
                 {
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -329,7 +329,7 @@ namespace OpenRCT2::Ui
                     return info;
                 }
 
-                if (ride->status != RideStatus::Closed)
+                if (ride->status != RideStatus::closed)
                     return info;
 
                 auto ft = Formatter();

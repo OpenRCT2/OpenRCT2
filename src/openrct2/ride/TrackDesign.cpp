@@ -1530,7 +1530,7 @@ static GameActions::Result TrackDesignPlaceMaze(
 
     if (tds.placeOperation == TrackPlaceOperation::removeGhost)
     {
-        auto gameAction = RideDemolishAction(ride.id, RIDE_MODIFY_DEMOLISH);
+        auto gameAction = RideDemolishAction(ride.id, RideModifyType::demolish);
         gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         GameActions::Execute(&gameAction);
     }

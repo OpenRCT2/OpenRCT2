@@ -111,7 +111,7 @@ GameActions::Result TrackDesignAction::Query() const
         queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     }
 
-    auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+    auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
     gameAction.SetFlags(GetFlags());
 
     GameActions::ExecuteNested(&gameAction);
@@ -184,7 +184,7 @@ GameActions::Result TrackDesignAction::Execute() const
 
     if (queryRes.Error != GameActions::Status::Ok)
     {
-        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
         gameAction.SetFlags(GetFlags());
         GameActions::ExecuteNested(&gameAction);
 
@@ -202,7 +202,7 @@ GameActions::Result TrackDesignAction::Execute() const
     auto execRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     if (execRes.Error != GameActions::Status::Ok)
     {
-        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
         gameAction.SetFlags(GetFlags());
         GameActions::ExecuteNested(&gameAction);
 
