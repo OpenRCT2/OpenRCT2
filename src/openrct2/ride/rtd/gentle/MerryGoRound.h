@@ -62,5 +62,6 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
             { RatingsModifierType::BonusScenery,          0,                19521, 0, 0 },
         },
     },
+    .specialType = RtdSpecialType::carousel,
 };
 // clang-format on

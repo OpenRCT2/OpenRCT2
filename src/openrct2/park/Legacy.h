@@ -54,4 +54,12 @@ void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState);
  * @param parkFileVersion The current park file version. Pass -1 when converting S4 or S6.
  * @return
  */
-bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisibleDefault(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisibleLogFlume(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisibleGigaCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisibleWoodenRollerCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisibleMineTrainCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisibleCorkscrewCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisibleTwisterRollerCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisibleBoatHire(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisibleStandupRollerCoaster(OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);

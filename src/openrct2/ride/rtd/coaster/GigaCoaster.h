@@ -86,5 +86,6 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                36864, 30384, 49648 },
         },
     },
+    .TrackTypeMustBeMadeInvisibleEx = TrackTypeMustBeMadeInvisibleGigaCoaster,
 };
 // clang-format on

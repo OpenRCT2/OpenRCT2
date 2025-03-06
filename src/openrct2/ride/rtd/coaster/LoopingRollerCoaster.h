@@ -88,5 +88,6 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 49648 },
         },
     },
+    .SetUnreliabilityFactor = SetUnreliabilityFactorLoopingRollerCoaster,
 };
 // clang-format on
