@@ -5073,7 +5073,7 @@ void Ride::UpdateMaxVehicles()
     int32_t maxNumTrains;
 
     const auto& rtd = GetRideTypeDescriptor();
-    if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
+    if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
     {
         num_cars_per_train = std::max(rideEntry->min_cars_in_train, num_cars_per_train);
         MinCarsPerTrain = rideEntry->min_cars_in_train;
