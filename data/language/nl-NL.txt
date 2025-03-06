@@ -445,9 +445,9 @@ STR_1050    :Kan dit niet laden…{NEWLINE}Bestand bevat ongeldige gegevens!
 STR_1051    :Onzichtbare ondersteuningen
 STR_1052    :Onzichtbare mensen
 STR_1053    :Attracties in park
-STR_1054    :Attractienaam
-STR_1055    :Persoonsnaam
-STR_1056    :Werknemersnaam
+STR_1054    :Attractienaam wijzigen
+STR_1055    :Naam wijzigen
+STR_1056    :Naam wijzigen
 STR_1057    :Attractienaam
 STR_1058    :Voer een nieuwe naam in voor deze attractie:
 STR_1059    :Kan deze attractie geen andere naam geven…
