@@ -155,7 +155,7 @@ GameActions::Result RideCreateAction::Execute() const
     station.Exit.SetNull();
     std::ranges::fill(ride->GetStations(), station);
 
-    ride->status = RideStatus::Closed;
+    ride->status = RideStatus::closed;
     ride->NumTrains = 1;
 
     auto& gameState = GetGameState();

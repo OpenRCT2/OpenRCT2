@@ -64,7 +64,7 @@ GameActions::Result RideSetSettingAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
             }
 
-            if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
+            if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
             {
                 return GameActions::Result(
                     GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);

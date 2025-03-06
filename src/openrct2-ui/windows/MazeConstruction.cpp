@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdate() override
         {
             auto currentRide = GetRide(_currentRideIndex);
-            if (currentRide == nullptr || currentRide->status != RideStatus::Closed)
+            if (currentRide == nullptr || currentRide->status != RideStatus::closed)
             {
                 Close();
                 return;

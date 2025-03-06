@@ -2040,7 +2040,7 @@ namespace OpenRCT2::PathFinding
         // Peep is heading for a ride.
         RideId rideIndex = peep.GuestHeadingToRideId;
         auto ride = GetRide(rideIndex);
-        if (ride == nullptr || ride->status != RideStatus::Open)
+        if (ride == nullptr || ride->status != RideStatus::open)
         {
             LogPathfinding(&peep, "Completed CalculateNextDestination - peep is heading to closed ride == aimless.");
 

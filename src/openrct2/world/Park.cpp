@@ -89,7 +89,7 @@ namespace OpenRCT2::Park
         bool ridePricesUnlocked = RidePricesUnlocked() && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY);
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Open)
+            if (ride.status != RideStatus::open)
                 continue;
             if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
@@ -122,7 +122,7 @@ namespace OpenRCT2::Park
 
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Open)
+            if (ride.status != RideStatus::open)
                 continue;
             if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;

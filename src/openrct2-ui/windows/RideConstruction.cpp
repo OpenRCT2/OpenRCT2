@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!_autoOpeningShop)
                     {
                         _autoOpeningShop = true;
-                        auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::Open);
+                        auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::open);
                         GameActions::Execute(&gameAction);
                         _autoOpeningShop = false;
                     }
@@ -962,7 +962,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Close construction window if currentRide is not closed,
             // editing currentRide while open will cause many issues until properly handled
-            if (currentRide->status != RideStatus::Closed && currentRide->status != RideStatus::Simulating)
+            if (currentRide->status != RideStatus::closed && currentRide->status != RideStatus::simulating)
             {
                 Close();
                 return;
@@ -1040,8 +1040,8 @@ namespace OpenRCT2::Ui::Windows
                     auto currentRide = GetRide(_currentRideIndex);
                     if (currentRide != nullptr)
                     {
-                        auto status = currentRide->status == RideStatus::Simulating ? RideStatus::Closed
-                                                                                    : RideStatus::Simulating;
+                        auto status = currentRide->status == RideStatus::simulating ? RideStatus::closed
+                                                                                    : RideStatus::simulating;
                         auto gameAction = RideSetStatusAction(currentRide->id, status);
                         GameActions::Execute(&gameAction);
                     }
@@ -1574,10 +1574,10 @@ namespace OpenRCT2::Ui::Windows
             // Simulate button
             auto& simulateWidget = widgets[WIDX_SIMULATE];
             simulateWidget.type = WindowWidgetType::Empty;
-            if (currentRide->SupportsStatus(RideStatus::Simulating))
+            if (currentRide->SupportsStatus(RideStatus::simulating))
             {
                 simulateWidget.type = WindowWidgetType::FlatBtn;
-                if (currentRide->status == RideStatus::Simulating)
+                if (currentRide->status == RideStatus::simulating)
                 {
                     pressed_widgets |= (1uLL << WIDX_SIMULATE);
                 }

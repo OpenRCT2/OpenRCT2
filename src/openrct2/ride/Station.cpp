@@ -64,7 +64,7 @@ static void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex)
     TileElement* tileElement = RideGetStationStartTrackElement(ride, stationIndex);
     auto& station = ride.GetStation(stationIndex);
 
-    if ((ride.status == RideStatus::Closed && ride.num_riders == 0)
+    if ((ride.status == RideStatus::closed && ride.num_riders == 0)
         || (tileElement != nullptr && tileElement->AsTrack()->IsBrakeClosed()))
     {
         station.Depart &= ~kStationDepartFlag;
@@ -96,7 +96,7 @@ static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex)
 
     // Change of station depart flag should really call invalidate_station_start
     // but since dodgems do not have station lights there is no point.
-    if (ride.status == RideStatus::Closed || (ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
+    if (ride.status == RideStatus::closed || (ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
     {
         station.Depart &= ~kStationDepartFlag;
         return;
@@ -157,7 +157,7 @@ static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
     int32_t time = station.Depart & kStationDepartMask;
     const auto currentTicks = GetGameState().CurrentTicks;
     if ((ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
-        || (ride.status == RideStatus::Closed && ride.num_riders == 0))
+        || (ride.status == RideStatus::closed && ride.num_riders == 0))
     {
         if (time != 0 && time != 127 && !(currentTicks & 7))
             time--;
@@ -190,7 +190,7 @@ static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
 static void RideUpdateStationRace(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.GetStation(stationIndex);
-    if (ride.status == RideStatus::Closed || (ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
+    if (ride.status == RideStatus::closed || (ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
     {
         if (station.Depart & kStationDepartFlag)
         {

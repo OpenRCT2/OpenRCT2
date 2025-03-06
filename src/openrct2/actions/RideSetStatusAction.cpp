@@ -66,7 +66,7 @@ GameActions::Result RideSetStatusAction::Query() const
         return res;
     }
 
-    if (_status >= RideStatus::Count)
+    if (_status >= RideStatus::count)
     {
         LOG_ERROR("Invalid ride status %u for ride %u", EnumValue(_status), _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
@@ -81,7 +81,7 @@ GameActions::Result RideSetStatusAction::Query() const
     ride->FormatNameTo(ft);
     if (_status != ride->status)
     {
-        if (_status == RideStatus::Simulating && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (_status == RideStatus::simulating && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             // Simulating will force clear the track, so make sure player can't cheat around a break down
             res.Error = GameActions::Status::Disallowed;
@@ -92,13 +92,13 @@ GameActions::Result RideSetStatusAction::Query() const
         ResultWithMessage modeSwitchResult = { true };
         switch (_status)
         {
-            case RideStatus::Open:
+            case RideStatus::open:
                 modeSwitchResult = ride->Open(false);
                 break;
-            case RideStatus::Testing:
+            case RideStatus::testing:
                 modeSwitchResult = ride->Test(false);
                 break;
-            case RideStatus::Simulating:
+            case RideStatus::simulating:
                 modeSwitchResult = ride->Simulate(false);
                 break;
             default:
@@ -145,8 +145,8 @@ GameActions::Result RideSetStatusAction::Execute() const
 
     switch (_status)
     {
-        case RideStatus::Closed:
-            if (ride->status == _status || ride->status == RideStatus::Simulating)
+        case RideStatus::closed:
+            if (ride->status == _status || ride->status == RideStatus::simulating)
             {
                 if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
                 {
@@ -156,13 +156,13 @@ GameActions::Result RideSetStatusAction::Execute() const
                 }
             }
 
-            ride->status = RideStatus::Closed;
+            ride->status = RideStatus::closed;
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
             ride->race_winner = EntityId::GetNull();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
             windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
-        case RideStatus::Simulating:
+        case RideStatus::simulating:
         {
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
             RideClearForConstruction(*ride);
@@ -186,15 +186,15 @@ GameActions::Result RideSetStatusAction::Execute() const
             windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         }
-        case RideStatus::Testing:
-        case RideStatus::Open:
+        case RideStatus::testing:
+        case RideStatus::open:
         {
             if (ride->status == _status)
             {
                 return res;
             }
 
-            if (ride->status == RideStatus::Simulating)
+            if (ride->status == RideStatus::simulating)
             {
                 RideClearForConstruction(*ride);
                 ride->RemovePeeps();
@@ -208,7 +208,7 @@ GameActions::Result RideSetStatusAction::Execute() const
                 windowMgr->Close(*constructionWindow);
             }
 
-            if (_status == RideStatus::Testing)
+            if (_status == RideStatus::testing)
             {
                 const auto modeSwitchResult = ride->Test(true);
                 if (!modeSwitchResult.Successful)

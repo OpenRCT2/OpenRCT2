@@ -813,7 +813,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
     {
         ft.Add<StringId>(STR_BROKEN_DOWN);
     }
-    else if (status == RideStatus::Closed)
+    else if (status == RideStatus::closed)
     {
         if (!GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         {
@@ -832,11 +832,11 @@ void Ride::FormatStatusTo(Formatter& ft) const
             ft.Add<StringId>(STR_CLOSED);
         }
     }
-    else if (status == RideStatus::Simulating)
+    else if (status == RideStatus::simulating)
     {
         ft.Add<StringId>(STR_SIMULATING);
     }
-    else if (status == RideStatus::Testing)
+    else if (status == RideStatus::testing)
     {
         ft.Add<StringId>(STR_TEST_RUN);
     }
@@ -906,14 +906,14 @@ bool Ride::SupportsStatus(RideStatus s) const
 
     switch (s)
     {
-        case RideStatus::Closed:
-        case RideStatus::Open:
+        case RideStatus::closed:
+        case RideStatus::open:
             return true;
-        case RideStatus::Simulating:
+        case RideStatus::simulating:
             return (!rtd.HasFlag(RtdFlag::noTestMode) && rtd.HasFlag(RtdFlag::hasTrack));
-        case RideStatus::Testing:
+        case RideStatus::testing:
             return !rtd.HasFlag(RtdFlag::noTestMode);
-        case RideStatus::Count: // Meaningless but necessary to satisfy -Wswitch
+        case RideStatus::count: // Meaningless but necessary to satisfy -Wswitch
             return false;
     }
     // Unreachable
@@ -1124,18 +1124,18 @@ void Ride::Update()
     RideInspectionUpdate(*this);
 
     // If ride is simulating but crashed, reset the vehicles
-    if (status == RideStatus::Simulating && (lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+    if (status == RideStatus::simulating && (lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         if (mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::Closed);
+            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
         else
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::Simulating);
+            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::simulating);
             GameActions::ExecuteNested(&gameAction);
         }
     }
@@ -1398,7 +1398,7 @@ static void RideBreakdownUpdate(Ride& ride)
 
     if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
-    if (ride.status == RideStatus::Closed || ride.status == RideStatus::Simulating)
+    if (ride.status == RideStatus::closed || ride.status == RideStatus::simulating)
         return;
 
     if (!ride.CanBreakDown())
@@ -1933,7 +1933,7 @@ void CircusMusicUpdate(Ride& ride)
  */
 void DefaultMusicUpdate(Ride& ride)
 {
-    if (ride.status != RideStatus::Open || !(ride.lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
+    if (ride.status != RideStatus::open || !(ride.lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
     {
         ride.music_tune_id = kTuneIDNull;
         return;
@@ -2070,7 +2070,7 @@ void RideMeasurementsUpdate()
     for (auto& ride : GetRideManager())
     {
         auto measurement = ride.measurement.get();
-        if (measurement != nullptr && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) && ride.status != RideStatus::Simulating)
+        if (measurement != nullptr && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) && ride.status != RideStatus::simulating)
         {
             if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
             {
@@ -2264,7 +2264,7 @@ void RideCheckAllReachable()
         if (ride.connected_message_throttle != 0)
             ride.connected_message_throttle--;
 
-        if (ride.status != RideStatus::Open || ride.connected_message_throttle != 0)
+        if (ride.status != RideStatus::open || ride.connected_message_throttle != 0)
             continue;
 
         if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))

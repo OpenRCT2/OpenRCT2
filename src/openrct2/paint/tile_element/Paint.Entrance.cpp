@@ -57,7 +57,7 @@ static void PaintRideEntranceExitScrollingText(
 
     auto ft = Formatter();
     ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
-    if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (ride->status == RideStatus::open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         ride->FormatNameTo(ft);
     }

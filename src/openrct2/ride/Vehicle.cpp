@@ -1469,7 +1469,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     if (curRide == nullptr)
         return;
 
-    if (curRide->status == RideStatus::Open && !(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (curRide->status == RideStatus::open && !(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
         && !HasFlag(VehicleFlags::ReadyToDepart))
     {
         return;
@@ -1479,7 +1479,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     {
         // Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a
         // Boat Hire with passengers on it.
-        if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
+        if (curRide->status != RideStatus::closed || (curRide->num_riders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
         {
             curRide->GetStation(current_station).TrainAtStation = RideStation::kNoTrain;
             sub_state = 2;
@@ -1594,7 +1594,7 @@ void Vehicle::UpdateWaitingForPassengers()
 
         num_seats_on_train &= 0x7F;
 
-        if (curRide->SupportsStatus(RideStatus::Testing))
+        if (curRide->SupportsStatus(RideStatus::testing))
         {
             if (time_waiting < 20)
             {
@@ -1775,7 +1775,7 @@ void Vehicle::UpdateWaitingToDepart()
     }
 
     bool skipCheck = false;
-    if (shouldBreak || curRide->status != RideStatus::Open)
+    if (shouldBreak || curRide->status != RideStatus::open)
     {
         if (curRide->mode == RideMode::ForwardRotation || curRide->mode == RideMode::BackwardRotation)
         {
@@ -2155,7 +2155,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
 
         if (!(sv_ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            if (sv_ride->status != RideStatus::Closed)
+            if (sv_ride->status != RideStatus::closed)
             {
                 if (sv_ride->IsBlockSectioned())
                 {
@@ -2828,7 +2828,7 @@ void Vehicle::UpdateCollisionSetup()
     if (curRide == nullptr)
         return;
 
-    if (curRide->status == RideStatus::Simulating)
+    if (curRide->status == RideStatus::simulating)
     {
         SimulateCrash();
         return;
@@ -2847,10 +2847,10 @@ void Vehicle::UpdateCollisionSetup()
 
         curRide->Crash(trainIndex.value());
 
-        if (curRide->status != RideStatus::Closed)
+        if (curRide->status != RideStatus::closed)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::Closed);
+            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
     }
@@ -2922,7 +2922,7 @@ static constexpr CoordsXY stru_9A3AC4[] = {
 void Vehicle::UpdateCrashSetup()
 {
     auto curRide = GetRide();
-    if (curRide != nullptr && curRide->status == RideStatus::Simulating)
+    if (curRide != nullptr && curRide->status == RideStatus::simulating)
     {
         SimulateCrash();
         return;
@@ -4065,7 +4065,7 @@ void Vehicle::UpdateSwinging()
 
     current_time = -1;
     NumSwings++;
-    if (curRide->status != RideStatus::Closed)
+    if (curRide->status != RideStatus::closed)
     {
         // It takes 3 swings to get into full swing
         // ride->rotations already takes this into account
@@ -4156,7 +4156,7 @@ void Vehicle::UpdateFerrisWheelRotating()
     if (subState == Pitch)
     {
         bool shouldStop = true;
-        if (curRide->status != RideStatus::Closed)
+        if (curRide->status != RideStatus::closed)
         {
             if (NumRotations < curRide->rotations)
                 shouldStop = false;
@@ -4287,7 +4287,7 @@ void Vehicle::UpdateRotating()
     if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE)
     {
         bool shouldStop = true;
-        if (curRide->status != RideStatus::Closed)
+        if (curRide->status != RideStatus::closed)
         {
             sprite = NumRotations + 1;
             if (curRide->type == RIDE_TYPE_ENTERPRISE)
@@ -4613,7 +4613,7 @@ void Vehicle::CrashOnLand()
     if (curRide == nullptr)
         return;
 
-    if (curRide->status == RideStatus::Simulating)
+    if (curRide->status == RideStatus::simulating)
     {
         SimulateCrash();
         return;
@@ -4635,10 +4635,10 @@ void Vehicle::CrashOnLand()
 
         curRide->Crash(trainIndex.value());
 
-        if (curRide->status != RideStatus::Closed)
+        if (curRide->status != RideStatus::closed)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::Closed);
+            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
     }
@@ -4681,7 +4681,7 @@ void Vehicle::CrashOnWater()
     if (curRide == nullptr)
         return;
 
-    if (curRide->status == RideStatus::Simulating)
+    if (curRide->status == RideStatus::simulating)
     {
         SimulateCrash();
         return;
@@ -4703,10 +4703,10 @@ void Vehicle::CrashOnWater()
 
         curRide->Crash(trainIndex.value());
 
-        if (curRide->status != RideStatus::Closed)
+        if (curRide->status != RideStatus::closed)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::Closed);
+            auto gameAction = RideSetStatusAction(curRide->id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
     }
@@ -8905,7 +8905,7 @@ void Vehicle::SetState(Vehicle::Status vehicleStatus, uint8_t subState)
 bool Vehicle::IsGhost() const
 {
     auto r = GetRide();
-    return r != nullptr && r->status == RideStatus::Simulating;
+    return r != nullptr && r->status == RideStatus::simulating;
 }
 
 void Vehicle::EnableCollisionsForTrain()

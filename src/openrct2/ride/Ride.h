@@ -628,11 +628,11 @@ enum
 
 enum class RideStatus : uint8_t
 {
-    Closed,
-    Open,
-    Testing,
-    Simulating,
-    Count,
+    closed,
+    open,
+    testing,
+    simulating,
+    count,
 };
 
 enum class RideMode : uint8_t

@@ -2371,7 +2371,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
 
     guest->TimeLost = 0;
 
-    if (ride->status != RideStatus::Open)
+    if (ride->status != RideStatus::open)
     {
         PeepReturnToCentreOfTile(guest);
         return true;

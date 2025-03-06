@@ -173,7 +173,7 @@ void RideRatingResetUpdateStates()
 void RideRatingsUpdateRide(const Ride& ride)
 {
     RideRatingUpdateState state;
-    if (ride.status != RideStatus::Closed)
+    if (ride.status != RideStatus::closed)
     {
         state.CurrentRide = ride.id;
         state.State = RIDE_RATINGS_STATE_INITIALISE;
@@ -244,7 +244,7 @@ static bool RideRatingIsUpdatingRide(RideId id)
 static bool ShouldSkipRatingCalculation(const Ride& ride)
 {
     // Skip rides that are closed.
-    if (ride.status == RideStatus::Closed)
+    if (ride.status == RideStatus::closed)
     {
         return true;
     }
@@ -348,7 +348,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
 {
     const RideId rideIndex = state.CurrentRide;
     auto ride = GetRide(rideIndex);
-    if (ride == nullptr || ride->status == RideStatus::Closed || ride->type >= RIDE_TYPE_COUNT)
+    if (ride == nullptr || ride->status == RideStatus::closed || ride->type >= RIDE_TYPE_COUNT)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -424,7 +424,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
 static void ride_ratings_update_state_3(RideRatingUpdateState& state)
 {
     auto ride = GetRide(state.CurrentRide);
-    if (ride == nullptr || ride->status == RideStatus::Closed)
+    if (ride == nullptr || ride->status == RideStatus::closed)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -456,7 +456,7 @@ static void ride_ratings_update_state_4(RideRatingUpdateState& state)
 static void ride_ratings_update_state_5(RideRatingUpdateState& state)
 {
     auto ride = GetRide(state.CurrentRide);
-    if (ride == nullptr || ride->status == RideStatus::Closed)
+    if (ride == nullptr || ride->status == RideStatus::closed)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -521,7 +521,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
 static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
 {
     auto ride = GetRide(state.CurrentRide);
-    if (ride == nullptr || ride->status == RideStatus::Closed)
+    if (ride == nullptr || ride->status == RideStatus::closed)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -1182,7 +1182,7 @@ static void RideRatingsCalculateValue(Ride& ride)
     const auto& rideManager = GetRideManager();
     auto rideType = ride.type;
     auto otherRidesOfSameType = std::count_if(rideManager.begin(), rideManager.end(), [rideType](const Ride& r) {
-        return r.status == RideStatus::Open && r.type == rideType;
+        return r.status == RideStatus::open && r.type == rideType;
     });
     if (otherRidesOfSameType > 1)
         value -= value / 4;

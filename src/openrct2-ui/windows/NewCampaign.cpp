@@ -144,7 +144,7 @@ namespace OpenRCT2::Ui::Windows
             RideList.clear();
             for (const auto& curRide : GetRideManager())
             {
-                if (curRide.status == RideStatus::Open)
+                if (curRide.status == RideStatus::open)
                 {
                     const auto& rtd = curRide.GetRideTypeDescriptor();
                     if (rtd.HasFlag(RtdFlag::isShopOrFacility))

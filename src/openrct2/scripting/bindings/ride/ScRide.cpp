@@ -91,15 +91,15 @@ namespace OpenRCT2::Scripting
         {
             switch (ride->status)
             {
-                case RideStatus::Closed:
+                case RideStatus::closed:
                     return "closed";
-                case RideStatus::Open:
+                case RideStatus::open:
                     return "open";
-                case RideStatus::Testing:
+                case RideStatus::testing:
                     return "testing";
-                case RideStatus::Simulating:
+                case RideStatus::simulating:
                     return "simulating";
-                case RideStatus::Count: // Meaningless but necessary to satisfy -Wswitch
+                case RideStatus::count: // Meaningless but necessary to satisfy -Wswitch
                     return "count";
             }
         }

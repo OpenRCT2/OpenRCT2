@@ -75,7 +75,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
+    if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST, kStringIdNone);
     }
