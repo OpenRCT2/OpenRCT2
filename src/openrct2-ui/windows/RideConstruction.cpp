@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+                auto gameAction = RideDemolishAction(currentRide->id, RideModifyType::demolish);
                 gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
                 GameActions::Execute(&gameAction);
             }

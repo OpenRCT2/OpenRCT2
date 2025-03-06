@@ -862,12 +862,6 @@ enum
 
 enum
 {
-    RIDE_MODIFY_DEMOLISH,
-    RIDE_MODIFY_RENEW,
-};
-
-enum
-{
     RIDE_ISSUE_NONE = 0,
     RIDE_ISSUE_GUESTS_STUCK = (1 << 0),
 };

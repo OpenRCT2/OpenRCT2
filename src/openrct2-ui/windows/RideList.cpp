@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
             const auto selectedRideId = _rideList[index].Id;
             if (_quickDemolishMode && NetworkGetMode() != NETWORK_MODE_CLIENT)
             {
-                auto gameAction = RideDemolishAction(selectedRideId, RIDE_MODIFY_DEMOLISH);
+                auto gameAction = RideDemolishAction(selectedRideId, RideModifyType::demolish);
                 GameActions::Execute(&gameAction);
                 RefreshList();
             }
