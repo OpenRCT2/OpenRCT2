@@ -879,7 +879,7 @@ enum
 };
 
 constexpr uint8_t kMaxRideMeasurements = 8;
-constexpr money64 RIDE_VALUE_UNDEFINED = kMoney64Undefined;
+constexpr money64 kRideValueUndefined = kMoney64Undefined;
 constexpr uint16_t kRideInitialReliability = ((100 << 8) | 0xFF); // Upper byte is percentage, lower byte is "decimal".
 
 constexpr uint8_t kStationDepartFlag = (1 << 7);

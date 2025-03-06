@@ -1959,7 +1959,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
         assert(ride.type < std::size(kRideTypeDescriptors));
-        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == RIDE_VALUE_UNDEFINED
+        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == kRideValueUndefined
             || RideGetPrice(ride) != 0)
         {
             if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -2020,7 +2020,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
         // Assuming the queue conditions are met, peeps will always go on free transport rides.
         // Ride ratings, recent crashes and weather will all be ignored.
         auto ridePrice = RideGetPrice(ride);
-        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == RIDE_VALUE_UNDEFINED
+        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == kRideValueUndefined
             || ridePrice != 0)
         {
             if (PreviousRide == ride.id)
@@ -2181,7 +2181,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             money64 value = ride.value;
 
             // If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
-            if (value != RIDE_VALUE_UNDEFINED && !PeepHasVoucherForFreeRide(this, ride)
+            if (value != kRideValueUndefined && !PeepHasVoucherForFreeRide(this, ride)
                 && !(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
@@ -2665,7 +2665,7 @@ static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money64 
     }
 
     auto value = ride.value;
-    if (value != RIDE_VALUE_UNDEFINED)
+    if (value != kRideValueUndefined)
     {
         if (((value * 2) < ridePrice) && !(GetGameState().Cheats.ignorePrice))
         {
@@ -2743,7 +2743,7 @@ static int16_t PeepCalculateRideValueSatisfaction(Guest* peep, const Ride& ride)
         return -30;
     }
 
-    if (ride.value == RIDE_VALUE_UNDEFINED)
+    if (ride.value == kRideValueUndefined)
     {
         return -30;
     }

@@ -1587,7 +1587,7 @@ namespace OpenRCT2
                         cs.ReadWrite(tempRideValue);
                         if (tempRideValue == 0xFFFFu)
                         {
-                            ride.value = RIDE_VALUE_UNDEFINED;
+                            ride.value = kRideValueUndefined;
                         }
                         else
                         {
@@ -1600,7 +1600,7 @@ namespace OpenRCT2
                         cs.ReadWrite(tempRideValue);
                         if (tempRideValue == 0xFFFFu)
                         {
-                            ride.value = RIDE_VALUE_UNDEFINED;
+                            ride.value = kRideValueUndefined;
                         }
                         else
                         {

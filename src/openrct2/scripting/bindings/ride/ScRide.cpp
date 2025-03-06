@@ -460,7 +460,7 @@ namespace OpenRCT2::Scripting
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto ride = GetRide();
-        if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
+        if (ride != nullptr && ride->value != kRideValueUndefined)
         {
             return ToDuk<int32_t>(ctx, ride->value);
         }
@@ -479,7 +479,7 @@ namespace OpenRCT2::Scripting
             }
             else
             {
-                ride->value = RIDE_VALUE_UNDEFINED;
+                ride->value = kRideValueUndefined;
             }
         }
     }

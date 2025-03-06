@@ -269,7 +269,7 @@ GameActions::Result RideCreateAction::Execute() const
         }
     }
 
-    ride->value = RIDE_VALUE_UNDEFINED;
+    ride->value = kRideValueUndefined;
     ride->satisfaction = 255;
     ride->popularity = 255;
     ride->build_date = GetDate().GetMonthsElapsed();
