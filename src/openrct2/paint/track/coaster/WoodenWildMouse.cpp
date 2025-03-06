@@ -250,8 +250,7 @@ static void WoodenWildMouseTrack60DegUp(
     }
     else
     {
-        session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-            session, direction, imageId, { 0, 6, height }, { { 28, 4, height - 16 }, { 2, 24, 93 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 4, 27, height }, { 24, 1, 88 } });
     }
 
     DrawSupportForSequenceA<TrackElemType::Up60>(
@@ -340,10 +339,9 @@ static void WoodenWildMouseTrack25DegUpTo60DegUp(
     else
     {
         imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
-        session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-            session, direction, imageId, { 0, 6, height }, { { 28, 4, height + 2 }, { 2, 24, 43 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 4, 27, height }, { 24, 1, 56 } });
         imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][1]);
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 4, height }, { 32, 2, 43 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 4, 5, height }, { 24, 1, 56 } });
     }
 
     DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
@@ -391,10 +389,9 @@ static void WoodenWildMouseTrack60DegTo25DegUp(
     else
     {
         imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
-        session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-            session, direction, imageId, { 0, 6, height }, { { 28, 4, height + 2 }, { 2, 24, 43 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 4, 27, height }, { 24, 1, 56 } });
         imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][1]);
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 4, height }, { 32, 2, 43 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 4, 5, height }, { 24, 1, 56 } });
     }
 
     DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
@@ -633,9 +630,9 @@ static void WoodenWildMouseTrackFlatTo60DegUp(
     else
     {
         imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 28, 4, height + 2 }, { 2, 24, 43 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 4, 27, height }, { 24, 1, 48 } });
         imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][1]);
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 4, height }, { 32, 2, 43 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 4, 5, height }, { 24, 1, 48 } });
     }
 
     DrawSupportForSequenceA<TrackElemType::FlatToUp60>(
@@ -684,9 +681,9 @@ static void WoodenWildMouseTrack60DegUpToFlat(
     else
     {
         imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 28, 4, height + 2 }, { 2, 24, 43 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 4, 27, height }, { 24, 1, 48 } });
         imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][1]);
-        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 4, height }, { 32, 2, 43 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 4, 5, height }, { 24, 1, 48 } });
     }
 
     DrawSupportForSequenceA<TrackElemType::Up60ToFlat>(
