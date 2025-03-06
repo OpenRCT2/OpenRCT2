@@ -102,9 +102,9 @@ struct RideMeasurement
 
 enum class RideClassification
 {
-    Ride,
-    ShopOrStall,
-    KioskOrFacility
+    ride,
+    shopOrStall,
+    kioskOrFacility
 };
 
 namespace OpenRCT2::ShelteredSectionsBits

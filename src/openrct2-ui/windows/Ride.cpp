@@ -1222,17 +1222,17 @@ namespace OpenRCT2::Ui::Windows
                     int32_t spriteIndex = 0;
                     switch (ride->GetClassification())
                     {
-                        case RideClassification::Ride:
+                        case RideClassification::ride:
                             spriteIndex = SPR_TAB_RIDE_0;
                             if (page == WINDOW_RIDE_PAGE_MAIN)
                                 spriteIndex += (frame_no / 4) % 16;
                             break;
-                        case RideClassification::ShopOrStall:
+                        case RideClassification::shopOrStall:
                             spriteIndex = SPR_TAB_SHOPS_AND_STALLS_0;
                             if (page == WINDOW_RIDE_PAGE_MAIN)
                                 spriteIndex += (frame_no / 4) % 16;
                             break;
-                        case RideClassification::KioskOrFacility:
+                        case RideClassification::kioskOrFacility:
                             spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
                             if (page == WINDOW_RIDE_PAGE_MAIN)
                                 spriteIndex += (frame_no / 4) % 8;

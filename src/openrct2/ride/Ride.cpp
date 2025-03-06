@@ -5341,7 +5341,7 @@ RideClassification Ride::GetClassification() const
 
 bool Ride::IsRide() const
 {
-    return GetClassification() == RideClassification::Ride;
+    return GetClassification() == RideClassification::ride;
 }
 
 money64 RideGetPrice(const Ride& ride)

@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor CashMachineRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::KioskOrFacility,
+    .Classification = RideClassification::kioskOrFacility,
     .specialType = RtdSpecialType::cashMachine,
 };
 // clang-format on

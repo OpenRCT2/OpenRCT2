@@ -58,11 +58,11 @@ namespace OpenRCT2::Scripting
         {
             switch (ride->GetClassification())
             {
-                case RideClassification::Ride:
+                case RideClassification::ride:
                     return "ride";
-                case RideClassification::ShopOrStall:
+                case RideClassification::shopOrStall:
                     return "stall";
-                case RideClassification::KioskOrFacility:
+                case RideClassification::kioskOrFacility:
                     return "facility";
             }
         }
