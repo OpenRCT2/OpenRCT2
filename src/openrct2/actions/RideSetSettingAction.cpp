@@ -294,17 +294,17 @@ StringId RideSetSettingAction::GetOperationErrorMessage(const Ride& ride) const
 {
     switch (ride.mode)
     {
-        case RideMode::StationToStation:
+        case RideMode::stationToStation:
             return STR_CANT_CHANGE_SPEED;
-        case RideMode::Race:
+        case RideMode::race:
             return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-        case RideMode::Dodgems:
+        case RideMode::dodgems:
             return STR_CANT_CHANGE_TIME_LIMIT;
-        case RideMode::Swing:
+        case RideMode::swing:
             return STR_CANT_CHANGE_NUMBER_OF_SWINGS;
-        case RideMode::Rotation:
-        case RideMode::ForwardRotation:
-        case RideMode::BackwardRotation:
+        case RideMode::rotation:
+        case RideMode::forwardRotation:
+        case RideMode::backwardRotation:
             return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
         default:
             if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))

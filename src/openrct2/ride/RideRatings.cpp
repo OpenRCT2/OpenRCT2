@@ -1239,19 +1239,19 @@ static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride)
     // flume/rapids, 10 for roller coaster, 28 for giga coaster
     upkeep += ride.GetRideTypeDescriptor().UpkeepCosts.CostPerStation * ride.num_stations;
 
-    if (ride.mode == RideMode::ReverseInclineLaunchedShuttle)
+    if (ride.mode == RideMode::reverseInclineLaunchedShuttle)
     {
         upkeep += 30;
     }
-    else if (ride.mode == RideMode::PoweredLaunchPasstrough)
+    else if (ride.mode == RideMode::poweredLaunchPasstrough)
     {
         upkeep += 160;
     }
-    else if (ride.mode == RideMode::LimPoweredLaunch)
+    else if (ride.mode == RideMode::limPoweredLaunch)
     {
         upkeep += 320;
     }
-    else if (ride.mode == RideMode::PoweredLaunch || ride.mode == RideMode::PoweredLaunchBlockSectioned)
+    else if (ride.mode == RideMode::poweredLaunch || ride.mode == RideMode::poweredLaunchBlockSectioned)
     {
         upkeep += 220;
     }
@@ -1352,7 +1352,7 @@ static void RideRatingsApplyIntensityPenalty(RatingTuple& ratings)
 static void SetUnreliabilityFactor(Ride& ride)
 {
     // Special unreliability for a few ride types
-    if (ride.type == RIDE_TYPE_COMPACT_INVERTED_COASTER && ride.mode == RideMode::ReverseInclineLaunchedShuttle)
+    if (ride.type == RIDE_TYPE_COMPACT_INVERTED_COASTER && ride.mode == RideMode::reverseInclineLaunchedShuttle)
     {
         ride.unreliability_factor += 10;
     }
@@ -1934,7 +1934,7 @@ static void RideRatingsApplyBonusReversedTrains(RatingTuple& ratings, const Ride
 
 static void RideRatingsApplyBonusGoKartRace(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    if (ride.mode == RideMode::Race && ride.NumTrains >= modifier.threshold)
+    if (ride.mode == RideMode::race && ride.NumTrains >= modifier.threshold)
     {
         RideRatingsAdd(ratings, modifier.excitement, modifier.intensity, modifier.nausea);
 
@@ -1974,7 +1974,7 @@ static void RideRatingsApplyBonusBoatHireNoCircuit(RatingTuple& ratings, const R
 
 static void RideRatingsApplyBonusSlideUnlimitedRides(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    if (ride.mode == RideMode::UnlimitedRidesPerAdmission)
+    if (ride.mode == RideMode::unlimitedRidesPerAdmission)
     {
         RideRatingsAdd(ratings, modifier.excitement, modifier.intensity, modifier.nausea);
     }
@@ -1983,7 +1983,7 @@ static void RideRatingsApplyBonusSlideUnlimitedRides(RatingTuple& ratings, const
 static void RideRatingsApplyBonusMotionSimulatorMode(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Hardcoded until ride mode refactor
-    if (ride.mode == RideMode::FilmThrillRiders)
+    if (ride.mode == RideMode::filmThrillRiders)
     {
         RideRatingsSet(ratings, MakeRideRating(3, 25), MakeRideRating(4, 10), MakeRideRating(3, 30));
     }
@@ -1999,13 +1999,13 @@ static void RideRatingsApplyBonus3DCinemaMode(RatingTuple& ratings, const Ride& 
     switch (ride.mode)
     {
         default:
-        case RideMode::MouseTails3DFilm:
+        case RideMode::mouseTails3DFilm:
             RideRatingsSet(ratings, MakeRideRating(3, 50), MakeRideRating(2, 40), MakeRideRating(1, 40));
             break;
-        case RideMode::StormChasers3DFilm:
+        case RideMode::stormChasers3DFilm:
             RideRatingsSet(ratings, MakeRideRating(4, 00), MakeRideRating(2, 65), MakeRideRating(1, 55));
             break;
-        case RideMode::SpaceRaiders3DFilm:
+        case RideMode::spaceRaiders3DFilm:
             RideRatingsSet(ratings, MakeRideRating(4, 20), MakeRideRating(2, 60), MakeRideRating(1, 48));
             break;
     }
@@ -2017,13 +2017,13 @@ static void RideRatingsApplyBonusTopSpinMode(RatingTuple& ratings, const Ride& r
     switch (ride.mode)
     {
         default:
-        case RideMode::Beginners:
+        case RideMode::beginners:
             RideRatingsSet(ratings, MakeRideRating(2, 00), MakeRideRating(4, 80), MakeRideRating(5, 74));
             break;
-        case RideMode::Intense:
+        case RideMode::intense:
             RideRatingsSet(ratings, MakeRideRating(3, 00), MakeRideRating(5, 75), MakeRideRating(6, 64));
             break;
-        case RideMode::Berserk:
+        case RideMode::berserk:
             RideRatingsSet(ratings, MakeRideRating(3, 20), MakeRideRating(6, 80), MakeRideRating(7, 94));
             break;
     }
@@ -2055,7 +2055,7 @@ static void RideRatingsApplyBonusNumTrains(RatingTuple& ratings, const Ride& rid
 
 static void RideRatingsApplyBonusDownwardLaunch(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    if (ride.mode == RideMode::DownwardLaunch)
+    if (ride.mode == RideMode::downwardLaunch)
     {
         RideRatingsAdd(ratings, modifier.excitement, modifier.intensity, modifier.nausea);
     }
@@ -2078,7 +2078,7 @@ static void RideRatingsApplyBonusLaunchedFreefallSpecial(
     RideRatingsApplyBonusOperationOptionFreefall(ratings, ride, modifier);
 #else
     // Only apply "launch speed" effects when the setting can be modified
-    if (ride.mode == RideMode::UpwardLaunch)
+    if (ride.mode == RideMode::upwardLaunch)
     {
         RideRatingsApplyBonusOperationOptionFreefall(ratings, ride, modifier);
     }

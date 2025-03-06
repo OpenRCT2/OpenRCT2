@@ -1360,10 +1360,10 @@ void Vehicle::UpdateMovingToEndOfStation()
 
     switch (curRide->mode)
     {
-        case RideMode::UpwardLaunch:
-        case RideMode::RotatingLift:
-        case RideMode::DownwardLaunch:
-        case RideMode::FreefallDrop:
+        case RideMode::upwardLaunch:
+        case RideMode::rotatingLift:
+        case RideMode::downwardLaunch:
+        case RideMode::freefallDrop:
             if (velocity >= -131940)
             {
                 acceleration = -3298;
@@ -1377,23 +1377,23 @@ void Vehicle::UpdateMovingToEndOfStation()
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 break;
             [[fallthrough]];
-        case RideMode::Dodgems:
-        case RideMode::Swing:
-        case RideMode::Rotation:
-        case RideMode::ForwardRotation:
-        case RideMode::BackwardRotation:
-        case RideMode::FilmAvengingAviators:
-        case RideMode::FilmThrillRiders:
-        case RideMode::Beginners:
-        case RideMode::Intense:
-        case RideMode::Berserk:
-        case RideMode::MouseTails3DFilm:
-        case RideMode::StormChasers3DFilm:
-        case RideMode::SpaceRaiders3DFilm:
-        case RideMode::SpaceRings:
-        case RideMode::HauntedHouse:
-        case RideMode::CrookedHouse:
-        case RideMode::Circus:
+        case RideMode::dodgems:
+        case RideMode::swing:
+        case RideMode::rotation:
+        case RideMode::forwardRotation:
+        case RideMode::backwardRotation:
+        case RideMode::filmAvengingAviators:
+        case RideMode::filmThrillRiders:
+        case RideMode::beginners:
+        case RideMode::intense:
+        case RideMode::berserk:
+        case RideMode::mouseTails3DFilm:
+        case RideMode::stormChasers3DFilm:
+        case RideMode::spaceRaiders3DFilm:
+        case RideMode::spaceRings:
+        case RideMode::hauntedHouse:
+        case RideMode::crookedHouse:
+        case RideMode::circus:
             current_station = StationIndex::FromUnderlying(0);
             velocity = 0;
             acceleration = 0;
@@ -1430,7 +1430,7 @@ void Vehicle::UpdateMovingToEndOfStation()
                 acceleration = 0;
                 sub_state++;
 
-                if (curRide->mode == RideMode::Race && sub_state >= 40)
+                if (curRide->mode == RideMode::race && sub_state >= 40)
                 {
                     SetState(Vehicle::Status::WaitingForPassengers);
                     break;
@@ -1487,7 +1487,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         }
     }
 
-    if (curRide->mode == RideMode::ForwardRotation || curRide->mode == RideMode::BackwardRotation)
+    if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
     {
         uint8_t seat = ((-Pitch) / 8) & 0xF;
         if (!peep[seat].IsNull())
@@ -1777,7 +1777,7 @@ void Vehicle::UpdateWaitingToDepart()
     bool skipCheck = false;
     if (shouldBreak || curRide->status != RideStatus::open)
     {
-        if (curRide->mode == RideMode::ForwardRotation || curRide->mode == RideMode::BackwardRotation)
+        if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
         {
             uint8_t seat = ((-Pitch) >> 3) & 0xF;
             if (peep[seat * 2].IsNull())
@@ -1854,48 +1854,48 @@ void Vehicle::UpdateWaitingToDepart()
 
     switch (curRide->mode)
     {
-        case RideMode::Dodgems:
+        case RideMode::dodgems:
             // Dodgems mode uses sub_state and TimeActive to tell how long
             // the vehicle has been ridden.
             SetState(Vehicle::Status::TravellingDodgems);
             TimeActive = 0;
             UpdateDodgemsMode();
             break;
-        case RideMode::Swing:
+        case RideMode::swing:
             SetState(Vehicle::Status::Swinging);
             NumSwings = 0;
             current_time = -1;
             UpdateSwinging();
             break;
-        case RideMode::Rotation:
+        case RideMode::rotation:
             SetState(Vehicle::Status::Rotating);
             NumRotations = 0;
             current_time = -1;
             UpdateRotating();
             break;
-        case RideMode::FilmAvengingAviators:
+        case RideMode::filmAvengingAviators:
             SetState(Vehicle::Status::SimulatorOperating);
             current_time = -1;
             UpdateSimulatorOperating();
             break;
-        case RideMode::FilmThrillRiders:
+        case RideMode::filmThrillRiders:
             SetState(Vehicle::Status::SimulatorOperating, 1);
             current_time = -1;
             UpdateSimulatorOperating();
             break;
-        case RideMode::Beginners:
-        case RideMode::Intense:
-        case RideMode::Berserk:
+        case RideMode::beginners:
+        case RideMode::intense:
+        case RideMode::berserk:
             SetState(Vehicle::Status::TopSpinOperating, sub_state);
             switch (curRide->mode)
             {
-                case RideMode::Beginners:
+                case RideMode::beginners:
                     sub_state = 0;
                     break;
-                case RideMode::Intense:
+                case RideMode::intense:
                     sub_state = 1;
                     break;
-                case RideMode::Berserk:
+                case RideMode::berserk:
                     sub_state = 2;
                     break;
                 default:
@@ -1909,27 +1909,27 @@ void Vehicle::UpdateWaitingToDepart()
             bank_rotation = 0;
             UpdateTopSpinOperating();
             break;
-        case RideMode::ForwardRotation:
-        case RideMode::BackwardRotation:
+        case RideMode::forwardRotation:
+        case RideMode::backwardRotation:
             SetState(Vehicle::Status::FerrisWheelRotating, Pitch);
             NumRotations = 0;
             ferris_wheel_var_0 = 8;
             ferris_wheel_var_1 = 8;
             UpdateFerrisWheelRotating();
             break;
-        case RideMode::MouseTails3DFilm:
-        case RideMode::StormChasers3DFilm:
-        case RideMode::SpaceRaiders3DFilm:
+        case RideMode::mouseTails3DFilm:
+        case RideMode::stormChasers3DFilm:
+        case RideMode::spaceRaiders3DFilm:
             SetState(Vehicle::Status::ShowingFilm, sub_state);
             switch (curRide->mode)
             {
-                case RideMode::MouseTails3DFilm:
+                case RideMode::mouseTails3DFilm:
                     sub_state = 0;
                     break;
-                case RideMode::StormChasers3DFilm:
+                case RideMode::stormChasers3DFilm:
                     sub_state = 1;
                     break;
-                case RideMode::SpaceRaiders3DFilm:
+                case RideMode::spaceRaiders3DFilm:
                     sub_state = 2;
                     break;
                 default:
@@ -1941,24 +1941,24 @@ void Vehicle::UpdateWaitingToDepart()
             current_time = -1;
             UpdateShowingFilm();
             break;
-        case RideMode::Circus:
+        case RideMode::circus:
             SetState(Vehicle::Status::DoingCircusShow);
             current_time = -1;
             UpdateDoingCircusShow();
             break;
-        case RideMode::SpaceRings:
+        case RideMode::spaceRings:
             SetState(Vehicle::Status::SpaceRingsOperating);
             Pitch = 0;
             current_time = -1;
             UpdateSpaceRingsOperating();
             break;
-        case RideMode::HauntedHouse:
+        case RideMode::hauntedHouse:
             SetState(Vehicle::Status::HauntedHouseOperating);
             Pitch = 0;
             current_time = -1;
             UpdateHauntedHouseOperating();
             break;
-        case RideMode::CrookedHouse:
+        case RideMode::crookedHouse:
             SetState(Vehicle::Status::CrookedHouseOperating);
             Pitch = 0;
             current_time = -1;
@@ -2520,7 +2520,7 @@ void Vehicle::UpdateDeparting()
             OpenRCT2::Audio::Play3D(soundId, GetLocation());
         }
 
-        if (curRide->mode == RideMode::UpwardLaunch || (curRide->mode == RideMode::DownwardLaunch && NumLaunches > 1))
+        if (curRide->mode == RideMode::upwardLaunch || (curRide->mode == RideMode::downwardLaunch && NumLaunches > 1))
         {
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
         }
@@ -2550,21 +2550,21 @@ void Vehicle::UpdateDeparting()
     const auto& rtd = curRide->GetRideTypeDescriptor();
     switch (curRide->mode)
     {
-        case RideMode::ReverseInclineLaunchedShuttle:
+        case RideMode::reverseInclineLaunchedShuttle:
             if (velocity >= -131940)
                 acceleration = -3298;
             break;
-        case RideMode::PoweredLaunchPasstrough:
-        case RideMode::PoweredLaunch:
-        case RideMode::PoweredLaunchBlockSectioned:
-        case RideMode::LimPoweredLaunch:
-        case RideMode::UpwardLaunch:
+        case RideMode::poweredLaunchPasstrough:
+        case RideMode::poweredLaunch:
+        case RideMode::poweredLaunchBlockSectioned:
+        case RideMode::limPoweredLaunch:
+        case RideMode::upwardLaunch:
             if ((curRide->launch_speed << 16) > velocity)
             {
                 acceleration = curRide->launch_speed << rtd.BoosterSettings.AccelerationFactor;
             }
             break;
-        case RideMode::DownwardLaunch:
+        case RideMode::downwardLaunch:
             if (NumLaunches >= 1)
             {
                 if ((14 << 16) > velocity)
@@ -2572,11 +2572,11 @@ void Vehicle::UpdateDeparting()
                 break;
             }
             [[fallthrough]];
-        case RideMode::ContinuousCircuit:
-        case RideMode::ContinuousCircuitBlockSectioned:
-        case RideMode::RotatingLift:
-        case RideMode::FreefallDrop:
-        case RideMode::BoatHire:
+        case RideMode::continuousCircuit:
+        case RideMode::continuousCircuitBlockSectioned:
+        case RideMode::rotatingLift:
+        case RideMode::freefallDrop:
+        case RideMode::boatHire:
             if (carEntry.flags & CAR_ENTRY_FLAG_POWERED)
                 break;
 
@@ -2594,7 +2594,7 @@ void Vehicle::UpdateDeparting()
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_8)
     {
-        if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle)
+        if (curRide->mode == RideMode::reverseInclineLaunchedShuttle)
         {
             velocity = -velocity;
             FinishDeparting();
@@ -2604,18 +2604,18 @@ void Vehicle::UpdateDeparting()
 
     if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
     {
-        if (curRide->mode == RideMode::BoatHire)
+        if (curRide->mode == RideMode::boatHire)
         {
             UpdateDepartingBoatHire();
             return;
         }
-        if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle)
+        if (curRide->mode == RideMode::reverseInclineLaunchedShuttle)
         {
             velocity = -velocity;
             FinishDeparting();
             return;
         }
-        if (curRide->mode == RideMode::Shuttle)
+        if (curRide->mode == RideMode::shuttle)
         {
             Flags ^= VehicleFlags::PoweredCarInReverse;
             velocity = 0;
@@ -2628,7 +2628,7 @@ void Vehicle::UpdateDeparting()
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL)
     {
         sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        if (curRide->mode != RideMode::ReverseInclineLaunchedShuttle)
+        if (curRide->mode != RideMode::reverseInclineLaunchedShuttle)
         {
             int32_t curSpeed = curRide->lift_hill_speed * 31079;
             if (velocity <= curSpeed)
@@ -2666,14 +2666,14 @@ void Vehicle::UpdateDeparting()
         }
     }
 
-    if (curRide->mode == RideMode::FreefallDrop)
+    if (curRide->mode == RideMode::freefallDrop)
     {
         animation_frame++;
     }
     else
     {
         bool shouldLaunch = true;
-        if (curRide->mode == RideMode::DownwardLaunch)
+        if (curRide->mode == RideMode::downwardLaunch)
         {
             if (NumLaunches < 1)
                 shouldLaunch = false;
@@ -2689,8 +2689,8 @@ void Vehicle::UpdateDeparting()
 
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 return;
-            if (curRide->mode == RideMode::BoatHire || curRide->mode == RideMode::RotatingLift
-                || curRide->mode == RideMode::Shuttle)
+            if (curRide->mode == RideMode::boatHire || curRide->mode == RideMode::rotatingLift
+                || curRide->mode == RideMode::shuttle)
                 return;
 
             UpdateCrashSetup();
@@ -2700,7 +2700,7 @@ void Vehicle::UpdateDeparting()
 
     if (!CurrentTowerElementIsTop())
     {
-        if (curRide->mode == RideMode::FreefallDrop)
+        if (curRide->mode == RideMode::freefallDrop)
             Invalidate();
         return;
     }
@@ -2723,7 +2723,7 @@ void Vehicle::FinishDeparting()
     if (curRide == nullptr)
         return;
 
-    if (curRide->mode == RideMode::DownwardLaunch)
+    if (curRide->mode == RideMode::downwardLaunch)
     {
         if (NumLaunches >= 1 && (14 << 16) > velocity)
             return;
@@ -2731,7 +2731,7 @@ void Vehicle::FinishDeparting()
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
     }
 
-    if (curRide->mode == RideMode::UpwardLaunch)
+    if (curRide->mode == RideMode::upwardLaunch)
     {
         if ((curRide->launch_speed << 16) > velocity)
             return;
@@ -2739,7 +2739,7 @@ void Vehicle::FinishDeparting()
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
     }
 
-    if (curRide->mode != RideMode::Race && !curRide->IsBlockSectioned())
+    if (curRide->mode != RideMode::race && !curRide->IsBlockSectioned())
     {
         auto& currentStation = curRide->GetStation(current_station);
         currentStation.Depart &= kStationDepartFlag;
@@ -2998,7 +2998,7 @@ void Vehicle::UpdateTravelling()
     CheckIfMissing();
 
     auto curRide = GetRide();
-    if (curRide == nullptr || (_vehicleBreakdown == 0 && curRide->mode == RideMode::RotatingLift))
+    if (curRide == nullptr || (_vehicleBreakdown == 0 && curRide->mode == RideMode::rotatingLift))
         return;
 
     if (sub_state == 2)
@@ -3010,7 +3010,7 @@ void Vehicle::UpdateTravelling()
             sub_state = 0;
     }
 
-    if (curRide->mode == RideMode::FreefallDrop && animation_frame != 0)
+    if (curRide->mode == RideMode::freefallDrop && animation_frame != 0)
     {
         animation_frame++;
         velocity = 0;
@@ -3023,7 +3023,7 @@ void Vehicle::UpdateTravelling()
 
     bool skipCheck = false;
     if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_8 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_9)
-        && curRide->mode == RideMode::ReverseInclineLaunchedShuttle && sub_state == 0)
+        && curRide->mode == RideMode::reverseInclineLaunchedShuttle && sub_state == 0)
     {
         sub_state = 1;
         velocity = 0;
@@ -3046,7 +3046,7 @@ void Vehicle::UpdateTravelling()
 
         if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
         {
-            if (curRide->mode == RideMode::RotatingLift)
+            if (curRide->mode == RideMode::rotatingLift)
             {
                 if (sub_state <= 1)
                 {
@@ -3055,12 +3055,12 @@ void Vehicle::UpdateTravelling()
                     return;
                 }
             }
-            else if (curRide->mode == RideMode::BoatHire)
+            else if (curRide->mode == RideMode::boatHire)
             {
                 UpdateTravellingBoatHireSetup();
                 return;
             }
-            if (curRide->mode == RideMode::Shuttle)
+            if (curRide->mode == RideMode::shuttle)
             {
                 Flags ^= VehicleFlags::PoweredCarInReverse;
                 velocity = 0;
@@ -3078,7 +3078,7 @@ void Vehicle::UpdateTravelling()
         }
     }
 
-    if (curRide->mode == RideMode::RotatingLift && sub_state <= 1)
+    if (curRide->mode == RideMode::rotatingLift && sub_state <= 1)
     {
         if (sub_state == 0)
         {
@@ -3104,7 +3104,7 @@ void Vehicle::UpdateTravelling()
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL)
     {
-        if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle)
+        if (curRide->mode == RideMode::reverseInclineLaunchedShuttle)
         {
             if (sub_state == 0)
             {
@@ -3151,13 +3151,13 @@ void Vehicle::UpdateTravelling()
     if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
         return;
 
-    if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle && velocity >= 0
+    if (curRide->mode == RideMode::reverseInclineLaunchedShuttle && velocity >= 0
         && !HasFlag(VehicleFlags::ReverseInclineCompletedLap))
     {
         return;
     }
 
-    if (curRide->mode == RideMode::PoweredLaunchPasstrough && velocity < 0)
+    if (curRide->mode == RideMode::poweredLaunchPasstrough && velocity < 0)
         return;
 
     SetState(Vehicle::Status::Arriving);
@@ -3171,7 +3171,7 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
 {
     if (sub_state == 0)
     {
-        if (curRide.mode == RideMode::Race && curRide.lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+        if (curRide.mode == RideMode::race && curRide.lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         {
             return;
         }
@@ -3238,8 +3238,8 @@ void Vehicle::UpdateArrivingPassThroughStation(const Ride& curRide, const CarEnt
             return;
         }
 
-        if (GetRideTypeDescriptor(curRide.type).HasFlag(RtdFlag::allowMultipleCircuits) && curRide.mode != RideMode::Shuttle
-            && curRide.mode != RideMode::PoweredLaunch)
+        if (GetRideTypeDescriptor(curRide.type).HasFlag(RtdFlag::allowMultipleCircuits) && curRide.mode != RideMode::shuttle
+            && curRide.mode != RideMode::poweredLaunch)
         {
             SetFlag(VehicleFlags::ReverseInclineCompletedLap);
         }
@@ -3266,22 +3266,22 @@ void Vehicle::UpdateArriving()
 
     switch (curRide->mode)
     {
-        case RideMode::Swing:
-        case RideMode::Rotation:
-        case RideMode::ForwardRotation:
-        case RideMode::BackwardRotation:
-        case RideMode::FilmAvengingAviators:
-        case RideMode::FilmThrillRiders:
-        case RideMode::Beginners:
-        case RideMode::Intense:
-        case RideMode::Berserk:
-        case RideMode::MouseTails3DFilm:
-        case RideMode::StormChasers3DFilm:
-        case RideMode::SpaceRaiders3DFilm:
-        case RideMode::Circus:
-        case RideMode::SpaceRings:
-        case RideMode::HauntedHouse:
-        case RideMode::CrookedHouse:
+        case RideMode::swing:
+        case RideMode::rotation:
+        case RideMode::forwardRotation:
+        case RideMode::backwardRotation:
+        case RideMode::filmAvengingAviators:
+        case RideMode::filmThrillRiders:
+        case RideMode::beginners:
+        case RideMode::intense:
+        case RideMode::berserk:
+        case RideMode::mouseTails3DFilm:
+        case RideMode::stormChasers3DFilm:
+        case RideMode::spaceRaiders3DFilm:
+        case RideMode::circus:
+        case RideMode::spaceRings:
+        case RideMode::hauntedHouse:
+        case RideMode::crookedHouse:
             ClearFlag(VehicleFlags::ReverseInclineCompletedLap);
             velocity = 0;
             acceleration = 0;
@@ -3366,7 +3366,7 @@ void Vehicle::UpdateArriving()
         return;
     }
 
-    if ((curRide->mode == RideMode::UpwardLaunch || curRide->mode == RideMode::DownwardLaunch) && NumLaunches < 2)
+    if ((curRide->mode == RideMode::upwardLaunch || curRide->mode == RideMode::downwardLaunch) && NumLaunches < 2)
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
         velocity = 0;
@@ -3375,7 +3375,7 @@ void Vehicle::UpdateArriving()
         return;
     }
 
-    if (curRide->mode == RideMode::Race && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    if (curRide->mode == RideMode::race && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
     {
         SetState(Vehicle::Status::Departing, 1);
         return;
@@ -3407,7 +3407,7 @@ void Vehicle::UpdateUnloadingPassengers()
 
     const auto& currentStation = curRide->GetStation(current_station);
 
-    if (curRide->mode == RideMode::ForwardRotation || curRide->mode == RideMode::BackwardRotation)
+    if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
     {
         uint8_t seat = ((-Pitch) >> 3) & 0xF;
         if (restraints_position == 255 && !peep[seat * 2].IsNull())
@@ -4133,7 +4133,7 @@ void Vehicle::UpdateFerrisWheelRotating()
     }
 
     uint8_t rotation = Pitch;
-    if (curRide->mode == RideMode::ForwardRotation)
+    if (curRide->mode == RideMode::forwardRotation)
         rotation++;
     else
         rotation--;
@@ -4147,7 +4147,7 @@ void Vehicle::UpdateFerrisWheelRotating()
     Invalidate();
 
     uint8_t subState = sub_state;
-    if (curRide->mode == RideMode::ForwardRotation)
+    if (curRide->mode == RideMode::forwardRotation)
         subState++;
     else
         subState--;
@@ -4174,7 +4174,7 @@ void Vehicle::UpdateFerrisWheelRotating()
         return;
 
     subState = sub_state;
-    if (curRide->mode == RideMode::ForwardRotation)
+    if (curRide->mode == RideMode::forwardRotation)
         subState += 8;
     else
         subState -= 8;
@@ -8730,7 +8730,7 @@ void Vehicle::UpdateCrossings() const
 
     // In shuttle mode, only the train head is considered to be travelling backwards
     // To prevent path getting blocked incorrectly, only update crossings when this is the train head
-    if (curRide->mode == RideMode::Shuttle && TrainHead() != this)
+    if (curRide->mode == RideMode::shuttle && TrainHead() != this)
     {
         return;
     }

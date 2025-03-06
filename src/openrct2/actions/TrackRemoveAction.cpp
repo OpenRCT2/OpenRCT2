@@ -468,10 +468,10 @@ GameActions::Result TrackRemoveAction::Execute() const
                 if (ride->num_block_brakes == 0)
                 {
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                    RideMode newMode = RideMode::ContinuousCircuit;
-                    if (ride->mode == RideMode::PoweredLaunchBlockSectioned)
+                    RideMode newMode = RideMode::continuousCircuit;
+                    if (ride->mode == RideMode::poweredLaunchBlockSectioned)
                     {
-                        newMode = RideMode::PoweredLaunch;
+                        newMode = RideMode::poweredLaunch;
                     }
 
                     auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));

@@ -28,8 +28,8 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt
         | EnumsToFlags(RtdFlag::allowReversedTrains, RtdFlag::hasLsmBehaviourOnFlat),
-    .RideModes = EnumsToFlags(RideMode::LimPoweredLaunch),
-    .DefaultMode = RideMode::LimPoweredLaunch,
+    .RideModes = EnumsToFlags(RideMode::limPoweredLaunch),
+    .DefaultMode = RideMode::limPoweredLaunch,
     .OperatingSettings = { 7, 30 },
     .TrackSpeedSettings = { 60, 60 },
     .BoosterSettings = { 40, 40 },

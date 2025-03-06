@@ -2500,7 +2500,7 @@ static void PeepChooseSeatFromCar(Peep* peep, const Ride& ride, Vehicle* vehicle
     }
     uint8_t chosen_seat = vehicle->next_free_seat;
 
-    if (ride.mode == RideMode::ForwardRotation || ride.mode == RideMode::BackwardRotation)
+    if (ride.mode == RideMode::forwardRotation || ride.mode == RideMode::backwardRotation)
     {
         chosen_seat = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
         if (vehicle->next_free_seat & 1)
@@ -2564,7 +2564,7 @@ static bool FindVehicleToEnter(
 {
     uint8_t chosen_train = RideStation::kNoTrain;
 
-    if (ride.mode == RideMode::Dodgems || ride.mode == RideMode::Race)
+    if (ride.mode == RideMode::dodgems || ride.mode == RideMode::race)
     {
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
             return false;
@@ -2615,7 +2615,7 @@ static bool FindVehicleToEnter(
         if (num_seats == vehicle->next_free_seat)
             continue;
 
-        if (ride.mode == RideMode::ForwardRotation || ride.mode == RideMode::BackwardRotation)
+        if (ride.mode == RideMode::forwardRotation || ride.mode == RideMode::backwardRotation)
         {
             uint8_t position = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
             if (!vehicle->peep[position].IsNull())
@@ -4031,7 +4031,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
+    if (ride->mode == RideMode::forwardRotation || ride->mode == RideMode::backwardRotation)
     {
         if (CurrentSeat & 1 || !(vehicle->next_free_seat & 1))
         {
@@ -4059,7 +4059,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    if (ride->mode != RideMode::ForwardRotation && ride->mode != RideMode::BackwardRotation)
+    if (ride->mode != RideMode::forwardRotation && ride->mode != RideMode::backwardRotation)
     {
         if (vehicle->next_free_seat - 1 != CurrentSeat)
             return;
@@ -4095,7 +4095,7 @@ void Guest::UpdateRideEnterVehicle()
                 return;
             }
 
-            if (ride->mode != RideMode::ForwardRotation && ride->mode != RideMode::BackwardRotation)
+            if (ride->mode != RideMode::forwardRotation && ride->mode != RideMode::backwardRotation)
             {
                 if (CurrentSeat != vehicle->num_peeps)
                     return;
@@ -4160,7 +4160,7 @@ void Guest::UpdateRideLeaveVehicle()
     }
 
     // Check if ride is NOT Ferris Wheel.
-    if (ride->mode != RideMode::ForwardRotation && ride->mode != RideMode::BackwardRotation)
+    if (ride->mode != RideMode::forwardRotation && ride->mode != RideMode::backwardRotation)
     {
         if (vehicle->num_peeps - 1 != CurrentSeat)
             return;
@@ -4699,7 +4699,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             lastRide = true;
         else if (CurrentCar++ != 0)
         {
-            if (ride->mode == RideMode::SingleRidePerAdmission)
+            if (ride->mode == RideMode::singleRidePerAdmission)
                 lastRide = true;
             if (static_cast<uint8_t>(CurrentCar - 1) > (ScenarioRand() & 0xF))
                 lastRide = true;

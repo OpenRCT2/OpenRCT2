@@ -1937,7 +1937,7 @@ namespace OpenRCT2::RCT2
         dst->colours.Tertiary = src->ColoursExtended;
         dst->track_progress = src->TrackProgress;
         dst->TrackLocation = { src->TrackX, src->TrackY, src->TrackZ };
-        if (src->BoatLocation.IsNull() || static_cast<RideMode>(ride.Mode) != RideMode::BoatHire
+        if (src->BoatLocation.IsNull() || static_cast<RideMode>(ride.Mode) != RideMode::boatHire
             || src->Status != static_cast<uint8_t>(::Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.SetNull();

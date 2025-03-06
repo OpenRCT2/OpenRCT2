@@ -90,7 +90,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 RideMode& operator++(RideMode& d, int)
 {
-    return d = (d == RideMode::Count) ? RideMode::Normal : static_cast<RideMode>(static_cast<uint8_t>(d) + 1);
+    return d = (d == RideMode::count) ? RideMode::normal : static_cast<RideMode>(static_cast<uint8_t>(d) + 1);
 }
 
 static constexpr int32_t RideInspectionInterval[] = {
@@ -840,7 +840,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
     {
         ft.Add<StringId>(STR_TEST_RUN);
     }
-    else if (mode == RideMode::Race && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && !race_winner.IsNull())
+    else if (mode == RideMode::race && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && !race_winner.IsNull())
     {
         auto peep = GetEntity<Guest>(race_winner);
         if (peep != nullptr)
@@ -887,8 +887,8 @@ bool Ride::CanHaveMultipleCircuits() const
         return false;
 
     // Only allow circuit or launch modes
-    if (mode != RideMode::ContinuousCircuit && mode != RideMode::ReverseInclineLaunchedShuttle
-        && mode != RideMode::PoweredLaunchPasstrough)
+    if (mode != RideMode::continuousCircuit && mode != RideMode::reverseInclineLaunchedShuttle
+        && mode != RideMode::poweredLaunchPasstrough)
     {
         return false;
     }
@@ -1126,7 +1126,7 @@ void Ride::Update()
     // If ride is simulating but crashed, reset the vehicles
     if (status == RideStatus::simulating && (lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
-        if (mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned)
+        if (mode == RideMode::continuousCircuitBlockSectioned || mode == RideMode::poweredLaunchBlockSectioned)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
             RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::closed);
@@ -2558,14 +2558,14 @@ static ResultWithMessage RideModeCheckValidStationNumbers(const Ride& ride)
 
     switch (ride.mode)
     {
-        case RideMode::ReverseInclineLaunchedShuttle:
-        case RideMode::PoweredLaunchPasstrough:
-        case RideMode::PoweredLaunch:
-        case RideMode::LimPoweredLaunch:
+        case RideMode::reverseInclineLaunchedShuttle:
+        case RideMode::poweredLaunchPasstrough:
+        case RideMode::poweredLaunch:
+        case RideMode::limPoweredLaunch:
             if (numStations <= 1)
                 return { true };
             return { false, STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE };
-        case RideMode::Shuttle:
+        case RideMode::shuttle:
             if (numStations >= 2)
                 return { true };
             return { false, STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE };
@@ -3602,7 +3602,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     int32_t direction = trackElement->GetDirection();
 
     //
-    if (mode == RideMode::StationToStation)
+    if (mode == RideMode::stationToStation)
     {
         vehiclePos -= CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
 
@@ -3852,7 +3852,7 @@ static ResultWithMessage RideCreateCableLift(RideId rideIndex, bool isApplying)
     if (ride == nullptr)
         return { false };
 
-    if (ride->mode != RideMode::ContinuousCircuitBlockSectioned && ride->mode != RideMode::ContinuousCircuit)
+    if (ride->mode != RideMode::continuousCircuitBlockSectioned && ride->mode != RideMode::continuousCircuit)
     {
         return { false, STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE };
     }
@@ -4603,13 +4603,13 @@ uint8_t RideGetHelixSections(const Ride& ride)
 
 bool Ride::IsPoweredLaunched() const
 {
-    return mode == RideMode::PoweredLaunchPasstrough || mode == RideMode::PoweredLaunch
-        || mode == RideMode::PoweredLaunchBlockSectioned;
+    return mode == RideMode::poweredLaunchPasstrough || mode == RideMode::poweredLaunch
+        || mode == RideMode::poweredLaunchBlockSectioned;
 }
 
 bool Ride::IsBlockSectioned() const
 {
-    return mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned;
+    return mode == RideMode::continuousCircuitBlockSectioned || mode == RideMode::poweredLaunchBlockSectioned;
 }
 
 bool RideHasAnyTrackElements(const Ride& ride)
@@ -5115,15 +5115,15 @@ void Ride::UpdateMaxVehicles()
 
         switch (mode)
         {
-            case RideMode::ContinuousCircuitBlockSectioned:
-            case RideMode::PoweredLaunchBlockSectioned:
+            case RideMode::continuousCircuitBlockSectioned:
+            case RideMode::poweredLaunchBlockSectioned:
                 maxNumTrains = std::clamp<int32_t>(num_stations + num_block_brakes - 1, 1, OpenRCT2::Limits::kMaxTrainsPerRide);
                 break;
-            case RideMode::ReverseInclineLaunchedShuttle:
-            case RideMode::PoweredLaunchPasstrough:
-            case RideMode::Shuttle:
-            case RideMode::LimPoweredLaunch:
-            case RideMode::PoweredLaunch:
+            case RideMode::reverseInclineLaunchedShuttle:
+            case RideMode::poweredLaunchPasstrough:
+            case RideMode::shuttle:
+            case RideMode::limPoweredLaunch:
+            case RideMode::poweredLaunch:
                 maxNumTrains = 1;
                 break;
             default:
@@ -5146,7 +5146,7 @@ void Ride::UpdateMaxVehicles()
                     totalLength += trainLength;
                 } while (totalLength <= stationLength);
 
-                if ((mode != RideMode::StationToStation && mode != RideMode::ContinuousCircuit)
+                if ((mode != RideMode::stationToStation && mode != RideMode::continuousCircuit)
                     || !(rtd.HasFlag(RtdFlag::allowMoreVehiclesThanStationFits)))
                 {
                     maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::kMaxTrainsPerRide));
@@ -5916,7 +5916,7 @@ ResultWithMessage Ride::ChangeStatusGetStartElement(StationIndex stationIndex, C
 ResultWithMessage Ride::ChangeStatusCheckCompleteCircuit(const CoordsXYE& trackElement)
 {
     CoordsXYE problematicTrackElement = {};
-    if (mode == RideMode::Race || mode == RideMode::ContinuousCircuit || IsBlockSectioned())
+    if (mode == RideMode::race || mode == RideMode::continuousCircuit || IsBlockSectioned())
     {
         if (FindTrackGap(trackElement, &problematicTrackElement))
         {
@@ -5967,7 +5967,7 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
         }
     }
 
-    if (mode == RideMode::StationToStation)
+    if (mode == RideMode::stationToStation)
     {
         if (!FindTrackGap(trackElement, &problematicTrackElement))
         {
