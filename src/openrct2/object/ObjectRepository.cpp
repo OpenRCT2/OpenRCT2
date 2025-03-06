@@ -149,7 +149,10 @@ protected:
         {
             case ObjectType::ride:
                 ds << item.RideInfo.RideFlags;
-                ds << item.RideInfo.RideCategory;
+                for (size_t i = 0; i < std::size(item.RideInfo.rideCategory); i++)
+                {
+                    ds << item.RideInfo.rideCategory[i];
+                }
                 ds << item.RideInfo.RideType;
                 break;
             case ObjectType::sceneryGroup:

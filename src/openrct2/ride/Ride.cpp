@@ -5505,7 +5505,7 @@ void FixInvalidVehicleSpriteSizes()
     }
 }
 
-bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category)
+bool RideEntryHasCategory(const RideObjectEntry& rideEntry, RideCategory category)
 {
     auto rideType = rideEntry.GetFirstNonNullRideType();
     return GetRideTypeDescriptor(rideType).Category == category;

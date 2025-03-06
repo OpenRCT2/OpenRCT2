@@ -1547,7 +1547,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& rtd = currentRide->GetRideTypeDescriptor();
                 const auto& ted = GetTrackElementDescriptor(_currentlySelectedTrack.trackType);
                 stringId = ted.description;
-                if (stringId == STR_RAPIDS && rtd.Category != RIDE_CATEGORY_WATER)
+                if (stringId == STR_RAPIDS && rtd.Category != RideCategory::water)
                 {
                     stringId = STR_LOG_BUMPS;
                 }
@@ -2549,7 +2549,7 @@ namespace OpenRCT2::Ui::Windows
                     if (currentRide != nullptr)
                     {
                         const auto& rtd = currentRide->GetRideTypeDescriptor();
-                        if (rtd.Category != RIDE_CATEGORY_WATER)
+                        if (rtd.Category != RideCategory::water)
                             trackPieceStringId = STR_LOG_BUMPS;
                     }
                 }

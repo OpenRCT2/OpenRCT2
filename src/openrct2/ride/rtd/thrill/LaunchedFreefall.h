@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor LaunchedFreefallRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::launchedFreefall,

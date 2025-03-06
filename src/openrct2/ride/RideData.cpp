@@ -375,19 +375,19 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
 {
     switch (Category)
     {
-        case RIDE_CATEGORY_TRANSPORT:
+        case RideCategory::transport:
             return ResearchCategory::Transport;
-        case RIDE_CATEGORY_GENTLE:
+        case RideCategory::gentle:
             return ResearchCategory::Gentle;
-        case RIDE_CATEGORY_ROLLERCOASTER:
+        case RideCategory::rollerCoaster:
             return ResearchCategory::Rollercoaster;
-        case RIDE_CATEGORY_THRILL:
+        case RideCategory::thrill:
             return ResearchCategory::Thrill;
-        case RIDE_CATEGORY_WATER:
+        case RideCategory::water:
             return ResearchCategory::Water;
-        case RIDE_CATEGORY_SHOP:
+        case RideCategory::shop:
             return ResearchCategory::Shop;
-        case RIDE_CATEGORY_NONE:
+        case RideCategory::none:
             break;
     }
     LOG_ERROR("Cannot get Research Category of invalid RideCategory");

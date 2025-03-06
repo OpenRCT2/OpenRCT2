@@ -16,7 +16,7 @@
 // clang-format off
 constexpr RideTypeDescriptor EnterpriseRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::enterprise,

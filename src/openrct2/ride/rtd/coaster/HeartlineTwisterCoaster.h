@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::heartlineTwisterCoaster,

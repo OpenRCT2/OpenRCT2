@@ -16,7 +16,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MotionSimulatorRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::motionSimulator,

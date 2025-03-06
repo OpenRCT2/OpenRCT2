@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::multiDimensionRollerCoaster,
@@ -95,7 +95,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
 {
-    .Category = RIDE_CATEGORY_NONE,
+    .Category = RideCategory::none,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .trackStyle = TrackStyle::null,

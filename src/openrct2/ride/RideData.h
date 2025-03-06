@@ -464,7 +464,7 @@ constexpr uint64_t kRtdFlagsCommonCoasterNonAlt = EnumsToFlags(
 
 struct RideTypeDescriptor
 {
-    uint8_t Category{};
+    RideCategory Category{};
     /** rct2: 0x0097CC68 */
     OpenRCT2::TrackElemType StartTrackPiece{};
     TrackDrawerDescriptor TrackPaintFunctions{};
@@ -605,7 +605,7 @@ extern const StringId kRideModeNames[EnumValue(RideMode::count)];
 // clang-format off
 constexpr RideTypeDescriptor kDummyRTD =
 {
-    .Category = RIDE_CATEGORY_NONE,
+    .Category = RideCategory::none,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = {},
     .InvertedTrackPaintFunctions = {},

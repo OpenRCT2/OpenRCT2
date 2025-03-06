@@ -18,7 +18,7 @@
 // Non-inverted variant
 constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::flyingRollerCoaster,
@@ -96,7 +96,7 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
 
 constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
 {
-    .Category = RIDE_CATEGORY_NONE,
+    .Category = RideCategory::none,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .trackStyle = TrackStyle::null,

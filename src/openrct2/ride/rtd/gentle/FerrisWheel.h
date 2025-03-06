@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor FerrisWheelRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4C,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::ferrisWheel,

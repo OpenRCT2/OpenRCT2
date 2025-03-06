@@ -19,7 +19,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MazeRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::Maze,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::maze,

@@ -681,16 +681,16 @@ enum class RideMode : uint8_t
 
 RideMode& operator++(RideMode& d, int);
 
-enum
+enum class RideCategory : uint8_t
 {
-    RIDE_CATEGORY_TRANSPORT,
-    RIDE_CATEGORY_GENTLE,
-    RIDE_CATEGORY_ROLLERCOASTER,
-    RIDE_CATEGORY_THRILL,
-    RIDE_CATEGORY_WATER,
-    RIDE_CATEGORY_SHOP,
+    transport,
+    gentle,
+    rollerCoaster,
+    thrill,
+    water,
+    shop,
 
-    RIDE_CATEGORY_NONE = 255,
+    none = 255,
 };
 
 enum
@@ -990,7 +990,7 @@ bool RideHasRatings(const Ride& ride);
 
 int32_t GetUnifiedBoosterSpeed(ride_type_t rideType, int32_t relativeSpeed);
 void FixInvalidVehicleSpriteSizes();
-bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category);
+bool RideEntryHasCategory(const RideObjectEntry& rideEntry, RideCategory category);
 
 ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSubType);
 

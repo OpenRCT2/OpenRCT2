@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MagicCarpetRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::magicCarpet,

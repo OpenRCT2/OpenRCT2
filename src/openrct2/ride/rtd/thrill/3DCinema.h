@@ -17,7 +17,7 @@
 // C++ does not allow names to start with a number, hence the absence of the '3D' prefix.
 constexpr RideTypeDescriptor CinemaRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::_3DCinema,

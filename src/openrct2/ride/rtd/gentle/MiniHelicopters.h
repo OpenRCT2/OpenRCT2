@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MiniHelicoptersRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniHelicopters,

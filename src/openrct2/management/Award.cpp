@@ -153,7 +153,7 @@ static bool AwardIsDeservedBestRollercoasters([[maybe_unused]] int32_t activeAwa
             continue;
         }
 
-        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+        if (!RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster))
         {
             continue;
         }
@@ -444,7 +444,7 @@ static bool AwardIsDeservedBestWaterRides([[maybe_unused]] int32_t activeAwardTy
             continue;
         }
 
-        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_WATER))
+        if (!RideEntryHasCategory(*rideEntry, RideCategory::water))
         {
             continue;
         }
@@ -551,7 +551,7 @@ static bool AwardIsDeservedBestGentleRides([[maybe_unused]] int32_t activeAwardT
             continue;
         }
 
-        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_GENTLE))
+        if (!RideEntryHasCategory(*rideEntry, RideCategory::gentle))
         {
             continue;
         }
