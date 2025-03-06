@@ -1505,9 +1505,8 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     bool hasVoucher = false;
 
-    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
     const bool isUmbrella = shopItem == ShopItem::Umbrella;
-    const bool isRainingAndUmbrella = isPrecipitating && isUmbrella;
+    const bool isRainingAndUmbrella = ClimateIsPrecipitating() && isUmbrella;
 
     if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) && (VoucherShopItem == shopItem))
     {
@@ -1536,7 +1535,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     if ((shopItem == ShopItem::Balloon || shopItem == ShopItem::IceCream || shopItem == ShopItem::Candyfloss
          || shopItem == ShopItem::Sunglasses)
-        && isPrecipitating)
+        && ClimateIsPrecipitating())
     {
         return false;
     }
@@ -2081,8 +2080,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 }
                 else
                 {
-                    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
-                    if (isPrecipitating && !ShouldRideWhileRaining(ride))
+                    if (ClimateIsPrecipitating() && !ShouldRideWhileRaining(ride))
                     {
                         if (peepAtRide)
                         {
@@ -2098,7 +2096,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     }
                     // If it is raining and the ride provides shelter skip the
                     // ride intensity check and get me on a sheltered ride!
-                    if (!isPrecipitating || !ShouldRideWhileRaining(ride))
+                    if (!ClimateIsPrecipitating() || !ShouldRideWhileRaining(ride))
                     {
                         if (!GetGameState().Cheats.ignoreRideIntensity)
                         {
@@ -3553,14 +3551,14 @@ static constexpr CoordsXY kMazeEntranceStart[] = {
     { 24, 8 },
 };
 
-void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc)
+void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entranceLoc)
 {
-    peep->MazeLastEdge = entrance_loc.direction + 1;
+    peep->MazeLastEdge = entranceLoc.direction + 1;
 
-    entrance_loc.x += CoordsDirectionDelta[entrance_loc.direction].x;
-    entrance_loc.y += CoordsDirectionDelta[entrance_loc.direction].y;
+    entranceLoc.x += CoordsDirectionDelta[entranceLoc.direction].x;
+    entranceLoc.y += CoordsDirectionDelta[entranceLoc.direction].y;
 
-    uint8_t direction = entrance_loc.direction * 4 + 11;
+    uint8_t direction = entranceLoc.direction * 4 + 11;
     if (ScenarioRand() & 0x40)
     {
         direction += 4;
@@ -3572,29 +3570,29 @@ void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entran
     peep->Var37 = direction;
     peep->MazeLastEdge &= 3;
 
-    entrance_loc.x += kMazeEntranceStart[direction / 4].x;
-    entrance_loc.y += kMazeEntranceStart[direction / 4].y;
+    entranceLoc.x += kMazeEntranceStart[direction / 4].x;
+    entranceLoc.y += kMazeEntranceStart[direction / 4].y;
 
-    peep->SetDestination(entrance_loc, 3);
+    peep->SetDestination(entranceLoc, 3);
 
     ride.cur_num_customers++;
     peep->OnEnterRide(ride);
     peep->RideSubState = PeepRideSubState::MazePathfinding;
 }
 
-void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc)
+void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entranceLoc)
 {
-    entrance_loc = { ride.GetStation(peep->CurrentRideStation).GetStart(), entrance_loc.direction };
+    entranceLoc = { ride.GetStation(peep->CurrentRideStation).GetStart(), entranceLoc.direction };
 
-    TileElement* tile_element = RideGetStationStartTrackElement(ride, peep->CurrentRideStation);
+    TileElement* tileElement = RideGetStationStartTrackElement(ride, peep->CurrentRideStation);
 
-    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+    uint8_t trackDirection = (tileElement == nullptr ? 0 : tileElement->GetDirection());
 
-    peep->Var37 = (entrance_loc.direction << 2) | (direction_track << 4);
+    peep->Var37 = (entranceLoc.direction << 2) | (trackDirection << 4);
 
-    entrance_loc += kSpiralSlideWalkingPath[peep->Var37];
+    entranceLoc += kSpiralSlideWalkingPath[peep->Var37];
 
-    peep->SetDestination(entrance_loc);
+    peep->SetDestination(entranceLoc);
     peep->CurrentCar = 0;
 
     ride.cur_num_customers++;
@@ -3602,7 +3600,7 @@ void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD&
     peep->RideSubState = PeepRideSubState::ApproachSpiralSlide;
 }
 
-void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc)
+void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entranceLoc)
 {
     const auto currentTicks = GetGameState().CurrentTicks;
 
@@ -3622,7 +3620,7 @@ void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& ent
     }
 }
 
-uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const
+uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t trackDirection) const
 {
     // The seatlocation can be split into segments around the ride base
     // to decide the segment first split off the segmentable seat location
@@ -3632,17 +3630,17 @@ uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehic
 
     // Enterprise has more segments (8) compared to the normal (4)
     if (ride.type != RIDE_TYPE_ENTERPRISE)
-        track_direction *= 2;
+        trackDirection *= 2;
 
     // Type 1 loading doesn't do segments and all peeps go to the same
     // location on the ride
     if (vehicle_type->peep_loading_waypoint_segments == 0)
     {
-        track_direction /= 2;
+        trackDirection /= 2;
         seatLocationSegment = 0;
         seatLocationFixed = 0;
     }
-    seatLocationSegment += track_direction;
+    seatLocationSegment += trackDirection;
     seatLocationSegment &= 0x7;
     return seatLocationSegment + seatLocationFixed;
 }
@@ -3654,11 +3652,11 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     {
         return;
     }
-    uint8_t direction_entrance = station.Entrance.direction;
+    uint8_t directionEntrance = station.Entrance.direction;
 
-    TileElement* tile_element = RideGetStationStartTrackElement(ride, CurrentRideStation);
+    TileElement* tileElement = RideGetStationStartTrackElement(ride, CurrentRideStation);
 
-    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+    uint8_t trackDirection = (tileElement == nullptr ? 0 : tileElement->GetDirection());
 
     auto vehicle = GetEntity<Vehicle>(ride.vehicles[CurrentTrain]);
     if (vehicle == nullptr)
@@ -3669,7 +3667,7 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     const auto* rideEntry = vehicle->GetRideEntry();
     const auto* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
 
-    Var37 = (direction_entrance | GetWaypointedSeatLocation(ride, carEntry, direction_track) * 4) * 4;
+    Var37 = (directionEntrance | GetWaypointedSeatLocation(ride, carEntry, trackDirection) * 4) * 4;
 
     const auto& rtd = ride.GetRideTypeDescriptor();
     CoordsXY waypoint = rtd.GetGuestWaypointLocation(*vehicle, ride, CurrentRideStation);
@@ -4692,49 +4690,59 @@ void Guest::UpdateRideApproachSpiralSlide()
     }
 
     [[maybe_unused]] const auto& rtd = ride->GetRideTypeDescriptor();
+    bool lastRide = false;
     if (waypoint == 2)
     {
-        bool lastRide = false;
-        if (ride->status != RideStatus::Open)
+        // Make guest leave if the number of people currently in the ride is bigger than the maximum allowed
+        if (ride->status == RideStatus::Closed || (ride->num_riders > ride->operation_option))
             lastRide = true;
-        else if (CurrentCar++ != 0)
+        else
         {
-            if (ride->mode == RideMode::SingleRidePerAdmission)
-                lastRide = true;
-            if (static_cast<uint8_t>(CurrentCar - 1) > (ScenarioRand() & 0xF))
-                lastRide = true;
-        }
-
-        if (lastRide)
-        {
-            auto exit = ride->GetStation(CurrentRideStation).Exit;
-            waypoint = 1;
-            auto directionTemp = exit.direction;
-            if (exit.direction == INVALID_DIRECTION)
+            if (CurrentCar != 0)
             {
-                directionTemp = 0;
+                if (ride->mode == RideMode::SingleRidePerAdmission || static_cast<uint8_t>(CurrentCar) > (ScenarioRand() & 0xF))
+                    lastRide = true;
+                else if (ClimateIsPrecipitating())
+                    lastRide = true;
+                // If the time the guest has been on the ride is too much, don't slide again
+                else if (auto* guest = GetEntity<Guest>(ride->slide_peep); guest != nullptr && guest->GuestTimeOnRide > 15)
+                    lastRide = true;
             }
-            Var37 = (directionTemp * 4) | (Var37 & 0x30) | waypoint;
-            CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
-
-            assert(rtd.specialType == RtdSpecialType::spiralSlide);
-            targetLoc += kSpiralSlideWalkingPath[Var37];
-
-            SetDestination(targetLoc);
-            RideSubState = PeepRideSubState::LeaveSpiralSlide;
-            return;
+            // CurrentCar stores the number of times the peep has slid down the spiral slide
+            CurrentCar++;
         }
     }
-    waypoint++;
-    // Actually increment the real peep waypoint
-    Var37++;
+    if (lastRide)
+    {
+        auto exit = ride->GetStation(CurrentRideStation).Exit;
+        waypoint = 1;
+        auto directionTemp = exit.direction;
+        if (exit.direction == INVALID_DIRECTION)
+        {
+            directionTemp = 0;
+        }
+        Var37 = (directionTemp * 4) | (Var37 & 0x30) | waypoint;
+        CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-    CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
+        assert(rtd.specialType == RtdSpecialType::spiralSlide);
+        targetLoc += kSpiralSlideWalkingPath[Var37];
 
-    assert(rtd.specialType == RtdSpecialType::spiralSlide);
-    targetLoc += kSpiralSlideWalkingPath[Var37];
+        SetDestination(targetLoc);
+        RideSubState = PeepRideSubState::LeaveSpiralSlide;
+    }
+    else
+    {
+        waypoint++;
+        // Actually increment the real peep waypoint
+        Var37++;
 
-    SetDestination(targetLoc);
+        CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
+
+        assert(rtd.specialType == RtdSpecialType::spiralSlide);
+        targetLoc += kSpiralSlideWalkingPath[Var37];
+
+        SetDestination(targetLoc);
+    }
 }
 
 /** rct2: 0x00981F0C, 0x00981F0E */
@@ -4773,6 +4781,7 @@ void Guest::UpdateRideOnSpiralSlide()
     {
         switch (destination.x)
         {
+            // Guest is going up the tower
             case 0:
                 destination.y++;
                 if (destination.y >= 30)
@@ -4780,11 +4789,13 @@ void Guest::UpdateRideOnSpiralSlide()
 
                 SetDestination(destination);
                 return;
+            // Guest is waiting to slide down
             case 1:
-                if (ride->slide_in_use != 0)
+                // Do not allow guest to slide down if the ride is broken
+                if (ride->slide_in_use || ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                     return;
 
-                ride->slide_in_use++;
+                ride->slide_in_use = true;
                 ride->slide_peep = Id;
                 ride->slide_peep_t_shirt_colour = TshirtColour;
                 ride->spiral_slide_progress = 0;
@@ -4792,8 +4803,10 @@ void Guest::UpdateRideOnSpiralSlide()
 
                 SetDestination(destination);
                 return;
+            // Guest is sliding down
             case 2:
                 return;
+            // Guest has finished sliding down
             case 3:
             {
                 auto newLocation = ride->GetStation(CurrentRideStation).Start;
@@ -6861,8 +6874,7 @@ void Guest::UpdateAnimationGroup()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
-    if (isPrecipitating && (HasItem(ShopItem::Umbrella)) && x != kLocationNull)
+    if (ClimateIsPrecipitating() && (HasItem(ShopItem::Umbrella)) && x != kLocationNull)
     {
         CoordsXY loc = { x, y };
         if (MapIsLocationValid(loc.ToTileStart()))

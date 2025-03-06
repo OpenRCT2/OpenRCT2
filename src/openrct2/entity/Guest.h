@@ -393,7 +393,7 @@ private:
     void UpdateRideAtEntrance();
     void UpdateRideAdvanceThroughEntrance();
     void UpdateRideLeaveEntranceWaypoints(const Ride& ride);
-    uint8_t GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const;
+    uint8_t GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t trackDirection) const;
     void UpdateRideFreeVehicleCheck();
     void UpdateRideFreeVehicleEnterRide(Ride& ride);
     void UpdateRideApproachVehicle();
@@ -466,9 +466,9 @@ void IncrementGuestsHeadingForPark();
 void DecrementGuestsInPark();
 void DecrementGuestsHeadingForPark();
 
-void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
+void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entranceLoc);
+void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entranceLoc);
+void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entranceLoc);
 
 CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
 CoordsXY GetGuestWaypointLocationEnterprise(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);

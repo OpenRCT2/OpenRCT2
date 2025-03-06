@@ -38,7 +38,7 @@ static void PaintRiders(
     if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         return;
 
-    for (int32_t peep = 0; peep <= 14; peep += 2)
+    for (uint8_t peep = 0; peep <= 14; peep += 2)
     {
         if (vehicle.num_peeps <= peep)
             break;
