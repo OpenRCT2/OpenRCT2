@@ -49,7 +49,17 @@ struct WeatherPattern
     WeatherType distribution[kWeatherDistSize];
 };
 
-using Climate = std::array<WeatherPattern, kNumClimateMonths>;
+struct TemperatureThresholds
+{
+    int8_t cold;
+    int8_t warm;
+};
+
+struct Climate
+{
+    std::array<WeatherPattern, kNumClimateMonths> patterns;
+    TemperatureThresholds itemThresholds;
+};
 
 enum class WeatherEffectType : uint8_t
 {

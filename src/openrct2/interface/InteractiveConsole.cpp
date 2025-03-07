@@ -64,7 +64,6 @@
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/Climate.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "Viewport.h"

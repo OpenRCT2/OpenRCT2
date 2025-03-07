@@ -82,11 +82,20 @@ void ClimateObject::ReadJson(IReadObjectContext* context, json_t& root)
     _climate = convertRawClimate(rawClimate);
 
     _scriptName = Json::GetString(root["scriptName"], std::string(GetIdentifier()));
+
+    Guard::Assert(root["properties"].is_object(), "ClimateObject::ReadJson expects properties key to be an object");
+    _climate.itemThresholds.cold = Json::GetNumber(root["properties"]["coldItemTempThreshold"], 11);
+    _climate.itemThresholds.warm = Json::GetNumber(root["properties"]["warmItemTempThreshold"], 21);
+}
+
+const TemperatureThresholds& ClimateObject::getItemThresholds() const
+{
+    return _climate.itemThresholds;
 }
 
 const WeatherPattern& ClimateObject::getPatternForMonth(uint8_t month) const
 {
-    return _climate[month];
+    return _climate.patterns[month];
 }
 
 std::string ClimateObject::getScriptName() const
@@ -124,7 +133,7 @@ static Climate convertRawClimate(const RawClimate& rawClimate)
     for (auto m = 0; m < kNumClimateMonths; m++)
     {
         auto& srcMonth = rawClimate[m];
-        auto& dstMonth = climate[m];
+        auto& dstMonth = climate.patterns[m];
 
         dstMonth.baseTemperature = srcMonth.baseTemperature;
         dstMonth.randomBias = srcMonth.randomBias;

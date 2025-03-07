@@ -33,6 +33,7 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/Network.h"
+#include "../object/ClimateObject.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/MusicObject.h"
 #include "../object/ObjectManager.h"
@@ -1486,6 +1487,24 @@ void Guest::CheckCantFindExit()
         GuestIsLostCountdown = 90;
 }
 
+static money64 getItemValue(const ShopItemDescriptor& shopItemDescriptor)
+{
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* climateObj = objManager.GetLoadedObject<ClimateObject>(0);
+    if (climateObj == nullptr)
+        return shopItemDescriptor.BaseValue;
+
+    const auto& thresholds = climateObj->getItemThresholds();
+    const auto& gameState = GetGameState();
+
+    if (gameState.WeatherCurrent.temperature >= thresholds.warm)
+        return shopItemDescriptor.HotValue;
+    else if (gameState.WeatherCurrent.temperature <= thresholds.cold)
+        return shopItemDescriptor.ColdValue;
+    else
+        return shopItemDescriptor.BaseValue;
+}
+
 /** Main logic to decide whether a peep should buy an item in question
  *
  * Also handles the purchase as well, so once it returns, the peep will have the
@@ -1501,14 +1520,11 @@ void Guest::CheckCantFindExit()
  */
 bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 {
-    money64 itemValue;
-
-    bool hasVoucher = false;
-
     const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
     const bool isUmbrella = shopItem == ShopItem::Umbrella;
     const bool isRainingAndUmbrella = isPrecipitating && isUmbrella;
 
+    bool hasVoucher = false;
     if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) && (VoucherShopItem == shopItem))
     {
         hasVoucher = true;
@@ -1581,13 +1597,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             }
         }
 
-        if (gameState.WeatherCurrent.temperature >= 21)
-            itemValue = shopItemDescriptor.HotValue;
-        else if (gameState.WeatherCurrent.temperature <= 11)
-            itemValue = shopItemDescriptor.ColdValue;
-        else
-            itemValue = shopItemDescriptor.BaseValue;
-
+        money64 itemValue = getItemValue(shopItemDescriptor);
         if (itemValue < price)
         {
             itemValue -= price;
@@ -1629,12 +1639,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         }
 
         // reset itemValue for satisfaction calculation
-        if (gameState.WeatherCurrent.temperature >= 21)
-            itemValue = shopItemDescriptor.HotValue;
-        else if (gameState.WeatherCurrent.temperature <= 11)
-            itemValue = shopItemDescriptor.ColdValue;
-        else
-            itemValue = shopItemDescriptor.BaseValue;
+        itemValue = getItemValue(shopItemDescriptor);
         itemValue -= price;
         uint8_t satisfaction = 0;
         if (itemValue > -8)
