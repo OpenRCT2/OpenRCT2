@@ -195,7 +195,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     uint8_t direction = trackElement.element->GetDirection();
     _saveDirection = direction;
     auto newCoords = GetTrackElementOriginAndApplyChanges(
-        { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+        { trackElement, z, direction }, trackType, 0, &trackElement.element, {});
 
     if (!newCoords.has_value())
     {
@@ -257,7 +257,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         direction = trackElement.element->GetDirection();
         trackType = trackElement.element->AsTrack()->GetTrackType();
         newCoords = GetTrackElementOriginAndApplyChanges(
-            { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+            { trackElement, z, direction }, trackType, 0, &trackElement.element, {});
 
         if (!newCoords.has_value())
         {

@@ -399,7 +399,7 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t x, y, z, actionFlags = 0, mode;
 
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             RideConstructionInvalidateCurrentTrack();

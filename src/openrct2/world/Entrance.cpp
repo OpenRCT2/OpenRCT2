@@ -88,7 +88,7 @@ void ParkEntranceReset()
 
 void RideEntranceExitPlaceProvisionalGhost()
 {
-    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
+    if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
         RideEntranceExitPlaceGhost(
             _currentRideIndex, gRideEntranceExitGhostPosition, gRideEntranceExitGhostPosition.direction,
@@ -98,7 +98,7 @@ void RideEntranceExitPlaceProvisionalGhost()
 
 void RideEntranceExitRemoveGhost()
 {
-    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
+    if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
             gRideEntranceExitGhostPosition, _currentRideIndex, gRideEntranceExitGhostStationIndex,
@@ -121,7 +121,7 @@ money64 RideEntranceExitPlaceGhost(
 
     if (result != kMoney64Undefined)
     {
-        _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
+        _currentTrackSelectionFlags.set(TrackSelectionFlag::entranceOrExit);
         gRideEntranceExitGhostPosition.x = entranceExitCoords.x;
         gRideEntranceExitGhostPosition.y = entranceExitCoords.y;
         gRideEntranceExitGhostPosition.direction = direction;

@@ -147,7 +147,7 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
     }
 
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     return res;
 }
