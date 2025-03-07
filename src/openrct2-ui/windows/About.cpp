@@ -284,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
             return textCoords.y - windowPos.y;
         }
 
-        void OnPrepareDraw() override
+        void OnResize() override
         {
             ResizeFrameWithPage();
         }

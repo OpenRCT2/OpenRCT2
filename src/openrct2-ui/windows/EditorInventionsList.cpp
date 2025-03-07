@@ -207,6 +207,8 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 height = min_height;
             }
+
+            ResizeFrameWithPage();
         }
 
         void OnUpdate() override
@@ -449,8 +451,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
-
-            ResizeFrameWithPage();
 
             int16_t scrollListHeight = (height - 88) / 2;
 

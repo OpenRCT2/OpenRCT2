@@ -375,6 +375,8 @@ namespace OpenRCT2::Ui::Windows
                 break;
             }
         }
+
+        ResizeFrameWithPage();
     }
 
     void MultiplayerWindow::OnUpdate()
@@ -395,7 +397,6 @@ namespace OpenRCT2::Ui::Windows
     {
         ResetPressedWidgets();
         SetWidgetPressed(WIDX_TAB1 + page, true);
-        ResizeFrameWithPage();
         switch (page)
         {
             case WINDOW_MULTIPLAYER_PAGE_INFORMATION:

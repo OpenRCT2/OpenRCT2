@@ -451,6 +451,7 @@ namespace OpenRCT2::Ui::Windows
             flags |= WF_RESIZABLE;
             WindowSetResize(*this, { 230, 174 + 9 }, { 230 * 3, (274 + 9) * 3 });
             InitViewport();
+            ResizeFrameWithPage();
         }
 
         void OnMouseDownEntrance(WidgetIndex widgetIndex)
@@ -547,7 +548,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
 
             // Anchor entrance page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
@@ -677,6 +677,7 @@ namespace OpenRCT2::Ui::Windows
         {
             flags |= WF_RESIZABLE;
             WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
+            ResizeFrameWithPage();
         }
 
         void OnUpdateRating()
@@ -695,7 +696,6 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
 
             _ratingProps.min = 0;
             _ratingProps.max = 1000;
@@ -745,6 +745,7 @@ namespace OpenRCT2::Ui::Windows
         {
             flags |= WF_RESIZABLE;
             WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
+            ResizeFrameWithPage();
         }
 
         void OnUpdateGuests()
@@ -764,7 +765,6 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
 
             const auto& gameState = getGameState();
             _guestProps.series = gameState.guestsInParkHistory;
@@ -824,6 +824,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizePrice()
         {
             WindowSetResize(*this, { 230, 124 }, { 230, 124 });
+            ResizeFrameWithPage();
         }
 
         void OnMouseDownPrice(WidgetIndex widgetIndex)
@@ -891,7 +892,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawPrice(DrawPixelInfo& dpi)
@@ -922,6 +922,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeStats()
         {
             WindowSetResize(*this, { 230, 119 }, { 230, 119 });
+            ResizeFrameWithPage();
         }
 
         void OnUpdateStats()
@@ -952,7 +953,6 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawStats(DrawPixelInfo& dpi)
@@ -1028,6 +1028,8 @@ namespace OpenRCT2::Ui::Windows
             else
 #endif
                 WindowSetResize(*this, { 230, 226 }, { 230, 226 });
+
+            ResizeFrameWithPage();
         }
 
         void OnUpdateObjective()
@@ -1079,7 +1081,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawObjective(DrawPixelInfo& dpi)
@@ -1131,6 +1132,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeAwards()
         {
             WindowSetResize(*this, { 230, 182 }, { 230, 182 });
+            ResizeFrameWithPage();
         }
 
         void OnUpdateAwards()
@@ -1145,7 +1147,6 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawAwards(DrawPixelInfo& dpi)
@@ -1205,11 +1206,6 @@ namespace OpenRCT2::Ui::Windows
             OnUpdate();
             if (listen && viewport != nullptr)
                 viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-        }
-
-        void AnchorBorderWidgets()
-        {
-            ResizeFrameWithPage();
         }
 
         void SetPressedTab()

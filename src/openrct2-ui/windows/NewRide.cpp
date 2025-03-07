@@ -390,6 +390,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void OnResize() override
+        {
+            ResizeFrameWithPage();
+        }
+
         void OnPrepareDraw() override
         {
             SetPressedTab();
@@ -867,7 +872,7 @@ namespace OpenRCT2::Ui::Windows
                 // Resize widgets to new window size
                 width = newWidth;
                 height = newHeight;
-                ResizeFrameWithPage();
+                OnResize();
                 widgets[WIDX_GROUP_BY_TRACK_TYPE].left = newWidth - 8 - GroupByTrackTypeWidth;
                 widgets[WIDX_GROUP_BY_TRACK_TYPE].right = newWidth - 8;
 

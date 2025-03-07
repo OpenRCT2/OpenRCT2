@@ -207,6 +207,8 @@ namespace OpenRCT2::Ui::Windows
                 height = min_height;
             }
 
+            ResizeFrameWithPage();
+
             widgets[WIDX_SORT].left = width - 60;
             widgets[WIDX_SORT].right = width - 60 + 54;
 
@@ -464,8 +466,6 @@ namespace OpenRCT2::Ui::Windows
                 pressed_widgets |= (1uLL << WIDX_QUICK_DEMOLISH);
             else
                 pressed_widgets &= ~(1uLL << WIDX_QUICK_DEMOLISH);
-
-            ResizeFrameWithPage();
 
             widgets[WIDX_LIST].right = width - 26;
             widgets[WIDX_LIST].bottom = height - 15;

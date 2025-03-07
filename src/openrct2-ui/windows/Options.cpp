@@ -676,7 +676,6 @@ namespace OpenRCT2::Ui::Windows
                 y = std::max<int32_t>(y, widget.bottom);
             }
             height = y + 6;
-            ResizeFrameWithPage();
         }
 
         void OnResize() override
@@ -1618,6 +1617,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     windowMgr->InvalidateAll();
+                    WindowVisitEach([](WindowBase* w) { w->OnResize(); });
                     break;
                 case WIDX_TOUCH_ENHANCEMENTS:
                     Config::Get().interface.TouchEnhancements ^= 1;

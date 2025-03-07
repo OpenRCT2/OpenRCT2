@@ -255,6 +255,8 @@ namespace OpenRCT2::Ui::Windows
                     StatsResize();
                     break;
             }
+
+            ResizeFrameWithPage();
         }
 
         void OnUpdate() override
@@ -355,8 +357,6 @@ namespace OpenRCT2::Ui::Windows
 
             auto ft = Formatter::Common();
             staff->FormatNameTo(ft);
-
-            ResizeFrameWithPage();
         }
 
         void CommonPrepareDrawAfter()

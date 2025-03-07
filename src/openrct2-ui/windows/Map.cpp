@@ -596,6 +596,11 @@ namespace OpenRCT2::Ui::Windows
             PaintHudRectangle(dpi, screenOffset);
         }
 
+        void OnResize() override
+        {
+            ResizeFrameWithPage();
+        }
+
         void OnPrepareDraw() override
         {
             auto* windowMgr = GetWindowManager();
