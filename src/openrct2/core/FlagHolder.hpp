@@ -16,6 +16,14 @@ struct FlagHolder
 {
     THolderType holder{};
 
+    FlagHolder() = default;
+
+    template<typename... TTypes>
+    FlagHolder(TTypes... types)
+        : holder(EnumsToFlags(types...))
+    {
+    }
+
     constexpr void clearAll()
     {
         holder = 0;
@@ -31,14 +39,46 @@ struct FlagHolder
         return (holder & EnumToFlag(flag)) != 0;
     }
 
-    constexpr void set(TEnumType flag)
+    template<typename... TTypes>
+    [[nodiscard]] constexpr bool hasAny(TTypes... types) const
     {
-        holder |= EnumToFlag(flag);
+        return (holder & EnumsToFlags(types...)) != 0;
+    }
+
+    template<typename... TTypes>
+    [[nodiscard]] constexpr bool hasAll(TTypes... types) const
+    {
+        return (holder & EnumsToFlags(types...)) == EnumsToFlags(types...);
+    }
+
+    template<typename... TTypes>
+    constexpr void set(TTypes... types)
+    {
+        holder |= EnumsToFlags(types...);
+    }
+
+    /**
+     * For situations where you don’t know upfront whether to set or unset the flag,
+     * e.g. in game actions where this is passed as a variable.
+     * Otherwise, use set/unset, which are slightly more efficient.
+     */
+    constexpr void set(TEnumType flag, bool on)
+    {
+        if (on)
+            set(flag);
+        else
+            unset(flag);
     }
 
     constexpr void unset(TEnumType flag)
     {
         holder &= ~EnumToFlag(flag);
+    }
+
+    template<typename... TTypes>
+    constexpr void unset(TTypes... types)
+    {
+        holder &= ~EnumsToFlags(types...);
     }
 
     constexpr void flip(TEnumType flag)
