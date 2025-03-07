@@ -573,6 +573,9 @@ static void ViewportSurfaceDrawTileSideBottom(
             return;
         }
 
+        neighbourCornerHeight1 = std::max(cornerHeight1, neighbourCornerHeight1);
+        neighbourCornerHeight2 = std::max(cornerHeight2, neighbourCornerHeight2);
+
         cornerHeight1 = height;
         cornerHeight2 = height;
     }
@@ -762,6 +765,9 @@ static void ViewportSurfaceDrawTileSideTop(
             {
                 return;
             }
+
+            neighbourCornerHeight1 = std::max(cornerHeight1, neighbourCornerHeight1);
+            neighbourCornerHeight2 = std::max(cornerHeight2, neighbourCornerHeight2);
 
             cornerHeight1 = height;
             cornerHeight2 = height;
