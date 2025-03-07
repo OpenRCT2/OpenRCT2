@@ -3780,3 +3780,10 @@ STR_6731    :Импорт данных emscripten
 STR_6733    :Прозрачность
 STR_6734    :Элементы карты выше указанной высоты отображаются прозрачно.
 STR_6735    :Перейти вверх
+STR_6736    :Предпросмотр
+STR_6737    :Предпросмотр недоступен
+STR_6738    :{WINDOW_COLOUR_2}Рейтинг  парка: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Дата: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Деньги: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Кол-во аттр.: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Кол-во гостей: {BLACK}{UINT16}

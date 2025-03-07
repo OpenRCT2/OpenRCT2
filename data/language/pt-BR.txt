@@ -3792,3 +3792,10 @@ STR_6732    :Mostrar um botão na barra de ferramentas para girar a visualizaç�
 STR_6733    :Ver através
 STR_6734    :Elementos do mapa que estiverem na altura de corte ou superior são desenhados translúcidos.
 STR_6735    :Ir para pasta acima
+STR_6736    :Pré-visualização
+STR_6737    :Nenhuma pré-visualização disponível
+STR_6738    :{WINDOW_COLOUR_2}Classifiação do parque: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Data: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Dinheiro: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Núm. atrações: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Núm. visitantes: {BLACK}{UINT16}

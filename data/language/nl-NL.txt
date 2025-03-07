@@ -3791,3 +3791,10 @@ STR_6732    :Toon een knop in de werkbalk om het beeld tegen de klok in te draai
 STR_6733    :Doorzichtig
 STR_6734    :Maakt kaartelementen die hoger staan dan de ingestelde bovengrens doorzichtig.
 STR_6735    :Naar bovenliggende map navigeren
+STR_6736    :Preview
+STR_6737    :Geen preview beschikbaar.
+STR_6738    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Datum: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Geld: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Aantal bezoekers: {BLACK}{UINT16}

@@ -3795,3 +3795,10 @@ STR_6732    :게임 화면을 시계반대방향으로 90° 회전하기
 STR_6733    :반투명하게 보기
 STR_6734    :해당 높이 또는 그 이상의 위치에 있는 지도 요소를 반투명하게 표시합니다.
 STR_6735    :상위 폴더로 이동
+STR_6736    :미리보기
+STR_6737    :미리보기 없음
+STR_6738    :{WINDOW_COLOUR_2}공원 등급: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}날짜: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}재정: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}놀이기구 수: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}손님 수: {BLACK}{UINT16}
