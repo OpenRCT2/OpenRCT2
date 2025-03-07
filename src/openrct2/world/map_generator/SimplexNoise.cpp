@@ -206,13 +206,13 @@ namespace OpenRCT2::World::MapGenerator
         // Create the temporary height map and initialise
         const auto& mapSize = settings->mapSize;
         const auto density = 2;
-        auto heightMap = HeightMap(mapSize.x * density, mapSize.y * density);
+        auto heightMap = HeightMap(mapSize.x, mapSize.y, density);
 
         generateSimplexNoise(settings, heightMap);
         smoothHeightMap(2 + (UtilRand() % 6), heightMap);
 
         // Set the game map to the height map
-        setMapHeight(settings, heightMap, density);
+        setMapHeight(settings, heightMap);
 
         if (settings->smoothTileEdges)
         {

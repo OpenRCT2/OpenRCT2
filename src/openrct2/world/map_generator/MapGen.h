@@ -54,6 +54,6 @@ namespace OpenRCT2::World::MapGenerator
     void generate(Settings* settings);
     void resetSurfaces(Settings* settings);
     void setWaterLevel(int32_t waterLevel);
-    void setMapHeight(Settings* settings, const HeightMap& heightMap, const uint8_t density);
+    void setMapHeight(Settings* settings, const HeightMap& heightMap);
 
 } // namespace OpenRCT2::World::MapGenerator

@@ -126,14 +126,14 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Sets the height of the actual game map tiles to the height map.
      */
-    void setMapHeight(Settings* settings, const HeightMap& heightMap, const uint8_t density)
+    void setMapHeight(Settings* settings, const HeightMap& heightMap)
     {
-        for (auto y = 1; y < heightMap.height / density - 1; y++)
+        for (auto y = 1; y < heightMap.height / heightMap.density - 1; y++)
         {
-            for (auto x = 1; x < heightMap.width / density - 1; x++)
+            for (auto x = 1; x < heightMap.width / heightMap.density - 1; x++)
             {
-                auto heightX = x * density;
-                auto heightY = y * density;
+                auto heightX = x * heightMap.density;
+                auto heightY = y * heightMap.density;
 
                 uint8_t q00 = heightMap[{ heightX + 0, heightY + 0 }];
                 uint8_t q01 = heightMap[{ heightX + 0, heightY + 1 }];

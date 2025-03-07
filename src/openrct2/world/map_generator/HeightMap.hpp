@@ -26,11 +26,21 @@ namespace OpenRCT2::World::MapGenerator
     public:
         uint16_t width{};
         uint16_t height{};
+        uint8_t density{};
 
         HeightMap(int32_t targetWidth, int32_t targetHeight)
             : _height(targetWidth * targetHeight)
             , width(targetWidth)
             , height(targetHeight)
+            , density(1)
+        {
+        }
+
+        HeightMap(int32_t baseWidth, int32_t baseHeight, uint8_t density_)
+            : _height((baseWidth * density_) * (baseHeight * density_))
+            , width(baseWidth * density_)
+            , height(baseHeight * density_)
+            , density(density_)
         {
         }
 
