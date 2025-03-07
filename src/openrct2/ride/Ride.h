@@ -13,6 +13,7 @@
 #include "../actions/ResultWithMessage.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
+#include "../core/FlagHolder.hpp"
 #include "../localisation/Formatter.h"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
@@ -61,6 +62,19 @@ constexpr money64 kRideMinPrice = 0.00_GBP;
 constexpr money64 kRideMaxPrice = 20.00_GBP;
 
 extern const StringId kRideInspectionIntervalNames[];
+
+enum class RideTestingFlag : uint8_t
+{
+    sheltered,
+    turnLeft,
+    turnRight,
+    turnBanked,
+    turnSloped,
+    dropDown,
+    poweredLift,
+    dropUp,
+};
+using RideTestingFlags = FlagHolder<uint32_t, RideTestingFlag>;
 
 struct RideStation
 {
@@ -179,7 +193,7 @@ struct Ride
     fixed16_2dp maxLateralG{};
     fixed16_2dp previousVerticalG{};
     fixed16_2dp previousLateralG{};
-    uint32_t testingFlags{};
+    RideTestingFlags testingFlags{};
     // x y z map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
     TileCoordsXYZ curTestTrackLocation;
@@ -503,18 +517,6 @@ enum
     RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2 = 1 << 20,
     RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED = 1 << 21,
     RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS = 1 << 22,
-};
-
-enum
-{
-    RIDE_TESTING_SHELTERED = (1 << 0),
-    RIDE_TESTING_TURN_LEFT = (1 << 1),
-    RIDE_TESTING_TURN_RIGHT = (1 << 2),
-    RIDE_TESTING_TURN_BANKED = (1 << 3),
-    RIDE_TESTING_TURN_SLOPED = (1 << 4),
-    RIDE_TESTING_DROP_DOWN = (1 << 5),
-    RIDE_TESTING_POWERED_LIFT = (1 << 6),
-    RIDE_TESTING_DROP_UP = (1 << 7),
 };
 
 enum

@@ -1571,7 +1571,7 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.previousVerticalG);
                     cs.ReadWrite(ride.previousLateralG);
 
-                    cs.ReadWrite(ride.testingFlags);
+                    cs.ReadWrite(ride.testingFlags.holder);
                     cs.ReadWrite(ride.curTestTrackLocation);
 
                     cs.ReadWrite(ride.turnCountDefault);

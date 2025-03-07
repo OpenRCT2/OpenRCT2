@@ -1081,7 +1081,7 @@ namespace OpenRCT2::RCT1
                 dst->curTestTrackLocation = { src->curTestTrackLocation.x, src->curTestTrackLocation.y,
                                               src->curTestTrackZ / 2 };
             }
-            dst->testingFlags = src->testingFlags;
+            dst->testingFlags.holder = src->testingFlags;
             dst->currentTestSegment = src->currentTestSegment;
             dst->currentTestStation = StationIndex::GetNull();
             dst->averageSpeedTestTimeout = src->averageSpeedTestTimeout;
