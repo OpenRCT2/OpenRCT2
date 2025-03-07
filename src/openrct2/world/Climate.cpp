@@ -9,7 +9,6 @@
 
 #include "Climate.h"
 
-#include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -20,26 +19,17 @@
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"
-#include "../drawing/Drawing.h"
 #include "../object/ClimateObject.h"
 #include "../object/ObjectManager.h"
 #include "../profiling/Profiling.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 
-#include <iterator>
+#include <array>
 #include <memory>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
-
-constexpr int32_t kMaxThunderInstances = 2;
-
-enum class ThunderStatus
-{
-    none,
-    playing,
-};
 
 struct WeatherTrait
 {
@@ -50,9 +40,27 @@ struct WeatherTrait
     uint32_t spriteId;
 };
 
-// TODO: no need for these to be declared extern, just move the definitions up
-extern const WeatherTrait kClimateWeatherTraits[EnumValue(WeatherType::Count)];
-extern const FilterPaletteID kClimateWeatherGloomColours[4];
+// clang-format off
+constexpr std::array<WeatherTrait, EnumValue(WeatherType::Count)> kClimateWeatherTraits = { {
+    {  10, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_SUN          }, // Sunny
+    {   5, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
+    {   0, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_CLOUD        }, // Cloudy
+    {  -2, WeatherEffectType::Rain,     1, WeatherLevel::Light, SPR_WEATHER_LIGHT_RAIN   }, // Rain
+    {  -4, WeatherEffectType::Rain,     2, WeatherLevel::Heavy, SPR_WEATHER_HEAVY_RAIN   }, // Heavy Rain
+    {   2, WeatherEffectType::Storm,    2, WeatherLevel::Heavy, SPR_WEATHER_STORM        }, // Thunderstorm
+    { -10, WeatherEffectType::Snow,     1, WeatherLevel::Light, SPR_G2_WEATHER_SNOW      }, // Snow
+    { -15, WeatherEffectType::Snow,     2, WeatherLevel::Heavy, SPR_G2_WEATHER_HEAVY_SNOW}, // Heavy Snow
+    { -20, WeatherEffectType::Blizzard, 2, WeatherLevel::Heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
+} };
+// clang-format on
+
+constexpr int32_t kMaxThunderInstances = 2;
+
+enum class ThunderStatus
+{
+    none,
+    playing,
+};
 
 // Climate data
 uint16_t gClimateLightningFlash;
@@ -70,6 +78,13 @@ static OpenRCT2::Audio::SoundId _thunderSoundId;
 static int32_t _thunderVolume;
 static int32_t _thunderStereoEcho = 0;
 static std::shared_ptr<IAudioChannel> _weatherSoundChannel;
+
+constexpr FilterPaletteID kClimateWeatherGloomColours[4] = {
+    FilterPaletteID::PaletteNull,
+    FilterPaletteID::PaletteDarken1,
+    FilterPaletteID::PaletteDarken2,
+    FilterPaletteID::PaletteDarken3,
+};
 
 static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWeatherLevel);
 static void ClimateDetermineFutureWeather(uint32_t randomValue);
@@ -468,28 +483,3 @@ static void ClimatePlayThunder(int32_t instanceIndex, OpenRCT2::Audio::SoundId s
         _thunderStatus[instanceIndex] = ThunderStatus::playing;
     }
 }
-
-#pragma region Climate / Weather data tables
-
-const FilterPaletteID kClimateWeatherGloomColours[4] = {
-    FilterPaletteID::PaletteNull,
-    FilterPaletteID::PaletteDarken1,
-    FilterPaletteID::PaletteDarken2,
-    FilterPaletteID::PaletteDarken3,
-};
-
-// clang-format off
-const WeatherTrait kClimateWeatherTraits[EnumValue(WeatherType::Count)] = {
-    {  10, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_SUN        }, // Sunny
-    {   5, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_SUN_CLOUD  }, // Partially Cloudy
-    {   0, WeatherEffectType::None,     0, WeatherLevel::None,  SPR_WEATHER_CLOUD      }, // Cloudy
-    {  -2, WeatherEffectType::Rain,     1, WeatherLevel::Light, SPR_WEATHER_LIGHT_RAIN }, // Rain
-    {  -4, WeatherEffectType::Rain,     2, WeatherLevel::Heavy, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
-    {   2, WeatherEffectType::Storm,    2, WeatherLevel::Heavy, SPR_WEATHER_STORM      }, // Thunderstorm
-    { -10, WeatherEffectType::Snow,     1, WeatherLevel::Light, SPR_G2_WEATHER_SNOW      }, // Snow
-    { -15, WeatherEffectType::Snow,     2, WeatherLevel::Heavy, SPR_G2_WEATHER_HEAVY_SNOW}, // Heavy Snow
-    { -20, WeatherEffectType::Blizzard, 2, WeatherLevel::Heavy, SPR_G2_WEATHER_BLIZZARD  }, // Blizzard
-};
-// clang-format on
-
-#pragma endregion
