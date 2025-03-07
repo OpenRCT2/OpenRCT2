@@ -62,7 +62,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
         case RideSetAppearanceType::TrackColourMain:
         case RideSetAppearanceType::TrackColourAdditional:
         case RideSetAppearanceType::TrackColourSupports:
-            if (_index >= std::size(ride->track_colour))
+            if (_index >= std::size(ride->trackColours))
             {
                 LOG_ERROR("Invalid track colour %u", _index);
                 return GameActions::Result(
@@ -72,7 +72,7 @@ GameActions::Result RideSetAppearanceAction::Query() const
         case RideSetAppearanceType::VehicleColourBody:
         case RideSetAppearanceType::VehicleColourTrim:
         case RideSetAppearanceType::VehicleColourTertiary:
-            if (_index >= std::size(ride->vehicle_colours))
+            if (_index >= std::size(ride->vehicleColours))
             {
                 LOG_ERROR("Invalid vehicle colour %u", _index);
                 return GameActions::Result(
@@ -104,43 +104,43 @@ GameActions::Result RideSetAppearanceAction::Execute() const
     switch (_type)
     {
         case RideSetAppearanceType::TrackColourMain:
-            ride->track_colour[_index].main = _value;
+            ride->trackColours[_index].main = _value;
             GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::TrackColourAdditional:
-            ride->track_colour[_index].additional = _value;
+            ride->trackColours[_index].additional = _value;
             GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::TrackColourSupports:
-            ride->track_colour[_index].supports = _value;
+            ride->trackColours[_index].supports = _value;
             GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::VehicleColourBody:
-            ride->vehicle_colours[_index].Body = _value;
+            ride->vehicleColours[_index].Body = _value;
             RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourTrim:
-            ride->vehicle_colours[_index].Trim = _value;
+            ride->vehicleColours[_index].Trim = _value;
             RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourTertiary:
-            ride->vehicle_colours[_index].Tertiary = _value;
+            ride->vehicleColours[_index].Tertiary = _value;
             RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::VehicleColourScheme:
             ride->vehicleColourSettings = static_cast<VehicleColourSettings>(_value);
-            for (uint32_t i = 1; i < std::size(ride->vehicle_colours); i++)
+            for (uint32_t i = 1; i < std::size(ride->vehicleColours); i++)
             {
-                ride->vehicle_colours[i] = ride->vehicle_colours[0];
+                ride->vehicleColours[i] = ride->vehicleColours[0];
             }
             RideUpdateVehicleColours(*ride);
             break;
         case RideSetAppearanceType::EntranceStyle:
-            ride->entrance_style = _value;
+            ride->entranceStyle = _value;
             GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::SellingItemColourIsRandom:
-            ride->SetLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
+            ride->setLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
             break;
     }
 
@@ -148,9 +148,9 @@ GameActions::Result RideSetAppearanceAction::Execute() const
     windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
 
     auto res = GameActions::Result();
-    if (!ride->overall_view.IsNull())
+    if (!ride->overallView.IsNull())
     {
-        auto location = ride->overall_view.ToTileCentre();
+        auto location = ride->overallView.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
 

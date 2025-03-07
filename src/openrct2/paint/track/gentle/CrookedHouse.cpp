@@ -63,11 +63,11 @@ static void PaintCrookedHouseStructure(
     if (ride == nullptr)
         return;
 
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride->getRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
         auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr)
@@ -97,7 +97,7 @@ static void PaintCrookedHouse(
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 

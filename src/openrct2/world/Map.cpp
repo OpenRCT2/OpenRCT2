@@ -2349,7 +2349,7 @@ void ShiftMap(const TileCoordsXY& amount)
     // Rides
     for (auto& ride : GetRideManager())
     {
-        auto stations = ride.GetStations();
+        auto stations = ride.getStations();
         for (auto& station : stations)
         {
             shiftIfNotNull(station.Start, amountToMove);
@@ -2357,12 +2357,12 @@ void ShiftMap(const TileCoordsXY& amount)
             shiftIfNotNull(station.Exit, amount);
         }
 
-        shiftIfNotNull(ride.overall_view, amountToMove);
-        shiftIfNotNull(ride.boat_hire_return_position, amount);
-        shiftIfNotNull(ride.CurTestTrackLocation, amount);
-        shiftIfNotNull(ride.ChairliftBullwheelLocation[0], amount);
-        shiftIfNotNull(ride.ChairliftBullwheelLocation[1], amount);
-        shiftIfNotNull(ride.CableLiftLoc, amountToMove);
+        shiftIfNotNull(ride.overallView, amountToMove);
+        shiftIfNotNull(ride.boatHireReturnPosition, amount);
+        shiftIfNotNull(ride.curTestTrackLocation, amount);
+        shiftIfNotNull(ride.chairliftBullwheelLocation[0], amount);
+        shiftIfNotNull(ride.chairliftBullwheelLocation[1], amount);
+        shiftIfNotNull(ride.cableLiftLoc, amountToMove);
     }
 
     // Banners

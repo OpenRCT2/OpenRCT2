@@ -785,7 +785,7 @@ namespace OpenRCT2
             || (peep.State == PeepState::LeavingRide && peep.x == kLocationNull))
         {
             auto ride = GetRide(peep.CurrentRide);
-            if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+            if (ride != nullptr && (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 auto train = GetEntity<Vehicle>(ride->vehicles[peep.CurrentTrain]);
                 if (train != nullptr)
@@ -806,7 +806,7 @@ namespace OpenRCT2
             auto ride = GetRide(peep.CurrentRide);
             if (ride != nullptr)
             {
-                auto xy = ride->overall_view.ToTileCentre();
+                auto xy = ride->overallView.ToTileCentre();
                 CoordsXYZ coordFocus;
                 coordFocus.x = xy.x;
                 coordFocus.y = xy.y;
@@ -1438,7 +1438,7 @@ namespace OpenRCT2
                                     break;
 
                                 auto ride = vehicle->GetRide();
-                                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                                if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                                 {
                                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden
                                                                                        : VisibilityKind::Partial;

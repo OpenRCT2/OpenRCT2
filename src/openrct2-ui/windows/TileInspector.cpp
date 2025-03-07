@@ -1245,7 +1245,7 @@ static uint64_t PageDisabledWidgets[] = {
                         if (rideTile != nullptr)
                         {
                             ft = Formatter();
-                            rideTile->FormatNameTo(ft);
+                            rideTile->formatNameTo(ft);
                             DrawTextBasic(
                                 dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, ft,
                                 { colours[1] });

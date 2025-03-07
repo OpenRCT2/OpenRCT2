@@ -55,7 +55,7 @@ GameActions::Result RideSetNameAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if (!_name.empty() && Ride::NameExists(_name, ride->id))
+    if (!_name.empty() && Ride::nameExists(_name, ride->id))
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERROR_EXISTING_NAME);
@@ -76,11 +76,11 @@ GameActions::Result RideSetNameAction::Execute() const
 
     if (_name.empty())
     {
-        ride->SetNameToDefault();
+        ride->setNameToDefault();
     }
     else
     {
-        ride->custom_name = _name;
+        ride->customName = _name;
     }
 
     ScrollingTextInvalidate();
@@ -93,7 +93,7 @@ GameActions::Result RideSetNameAction::Execute() const
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
     auto res = GameActions::Result();
-    auto location = ride->overall_view.ToTileCentre();
+    auto location = ride->overallView.ToTileCentre();
     res.Position = { location, TileElementHeight(location) };
 
     return res;

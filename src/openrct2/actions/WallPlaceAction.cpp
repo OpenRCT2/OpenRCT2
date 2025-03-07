@@ -439,7 +439,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::allowDoorsOnTrack))
+    if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::allowDoorsOnTrack))
     {
         return false;
     }

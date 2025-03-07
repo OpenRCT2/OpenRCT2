@@ -64,7 +64,7 @@ bool TrackElement::IsStation() const
 uint8_t TrackElement::GetSeatRotation() const
 {
     const auto* ride = GetRide(GetRideIndex());
-    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
+    if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
         return DEFAULT_SEAT_ROTATION;
 
     return URide.ColourScheme >> 4;

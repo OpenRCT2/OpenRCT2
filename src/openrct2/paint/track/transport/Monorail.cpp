@@ -455,7 +455,7 @@ static void PaintMonorailStation(
     ImageId imageId;
     const StationObject* stationObject = nullptr;
 
-    stationObject = ride.GetStationObject();
+    stationObject = ride.getStationObject();
 
     if (stationObject == nullptr || !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {

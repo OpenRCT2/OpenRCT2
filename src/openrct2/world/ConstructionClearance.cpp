@@ -110,7 +110,7 @@ static bool MapLoc68BABCShouldContinue(
         && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
     {
         auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
-        if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings))
+        if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings))
         {
             return true;
         }
@@ -313,7 +313,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
                 res.ErrorMessage = STR_X_IN_THE_WAY;
 
                 Formatter ft(res.ErrorMessageArgs.data());
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
             }
             break;
         case TileElementType::SmallScenery:

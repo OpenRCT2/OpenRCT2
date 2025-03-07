@@ -926,7 +926,7 @@ namespace OpenRCT2::Ui::Windows
                         Ride* targetRide = GetRide(tileElement->AsEntrance()->GetRideIndex());
                         if (targetRide != nullptr)
                         {
-                            const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;
+                            const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
                             colourA = RideKeyColours[EnumValue(colourKey)];
                         }
                         break;
@@ -936,7 +936,7 @@ namespace OpenRCT2::Ui::Windows
                         Ride* targetRide = GetRide(tileElement->AsTrack()->GetRideIndex());
                         if (targetRide != nullptr)
                         {
-                            const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;
+                            const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
                             colourA = RideKeyColours[EnumValue(colourKey)];
                         }
 

@@ -34,12 +34,12 @@ static void PaintHauntedHouseStructure(
 {
     uint8_t frameNum = 0;
 
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
     auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
@@ -76,7 +76,7 @@ static void PaintHauntedHouse(
     DrawSupportForSequenceA<TrackElemType::FlatTrack3x3>(
         session, supportType.wooden, trackSequence, direction, height, GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 

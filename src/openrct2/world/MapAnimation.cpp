@@ -120,7 +120,7 @@ static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
         auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
         if (ride != nullptr)
         {
-            auto stationObj = ride->GetStationObject();
+            auto stationObj = ride->getStationObject();
             if (stationObj != nullptr)
             {
                 int32_t height = loc.z + stationObj->Height + 8;

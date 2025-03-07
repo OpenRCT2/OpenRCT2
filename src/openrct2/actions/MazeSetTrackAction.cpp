@@ -130,7 +130,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         heightDifference /= kCoordsZPerTinyZ;
 
         auto* ride = GetRide(_rideIndex);
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
             res.Error = GameActions::Status::TooHigh;
@@ -232,13 +232,13 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
         MapInvalidateTileFull(startLoc);
 
-        ride->maze_tiles++;
-        ride->GetStation().SetBaseZ(tileElement->GetBaseZ());
-        ride->GetStation().Start = { 0, 0 };
+        ride->mazeTiles++;
+        ride->getStation().SetBaseZ(tileElement->GetBaseZ());
+        ride->getStation().Start = { 0, 0 };
 
         if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            ride->overall_view = startLoc;
+            ride->overallView = startLoc;
         }
     }
 
@@ -333,8 +333,8 @@ GameActions::Result MazeSetTrackAction::Execute() const
     if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
     {
         TileElementRemove(tileElement);
-        ride->ValidateStations();
-        ride->maze_tiles--;
+        ride->validateStations();
+        ride->mazeTiles--;
     }
 
     return res;

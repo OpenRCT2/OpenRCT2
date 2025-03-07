@@ -63,7 +63,7 @@ GameActions::Result RideDemolishAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+    if ((ride->lifecycleFlags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
          && _modifyType == RideModifyType::demolish)
         && !GetGameState().Cheats.makeAllDestructible)
     {
@@ -81,13 +81,12 @@ GameActions::Result RideDemolishAction::Query() const
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
         }
 
-        if (ride->num_riders > 0)
+        if (ride->numRiders > 0)
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
         }
 
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
-            || ride->GetRideTypeDescriptor().AvailableBreakdowns == 0)
+        if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED) || ride->getRideTypeDescriptor().AvailableBreakdowns == 0)
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
         }
@@ -125,10 +124,10 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     money64 refundPrice = DemolishTracks();
 
     RideClearForConstruction(ride);
-    ride.RemovePeeps();
-    ride.StopGuestsQueuing();
+    ride.removePeeps();
+    ride.stopGuestsQueuing();
 
-    ride.ValidateStations();
+    ride.validateStations();
     RideClearLeftoverEntrances(ride);
 
     const auto rideId = ride.id;
@@ -148,13 +147,13 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Cost = refundPrice;
 
-    if (!ride.overall_view.IsNull())
+    if (!ride.overallView.IsNull())
     {
-        auto xy = ride.overall_view.ToTileCentre();
+        auto xy = ride.overallView.ToTileCentre();
         res.Position = { xy, TileElementHeight(xy) };
     }
 
-    ride.Delete();
+    ride.remove();
     GetGameState().Park.Value = Park::CalculateParkValue();
 
     // Close windows related to the demolished ride
@@ -274,16 +273,16 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride& ride) const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Cost = GetRefurbishPrice(ride);
 
-    ride.Renew();
+    ride.renew();
 
-    ride.lifecycle_flags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
-    ride.last_crash_type = RIDE_CRASH_TYPE_NONE;
+    ride.lifecycleFlags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
+    ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
 
-    ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-    if (!ride.overall_view.IsNull())
+    if (!ride.overallView.IsNull())
     {
-        auto location = ride.overall_view.ToTileCentre();
+        auto location = ride.overallView.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
 

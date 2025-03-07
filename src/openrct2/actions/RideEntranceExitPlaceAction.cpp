@@ -76,12 +76,12 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NotClosed, errorTitle, STR_MUST_BE_CLOSED_FIRST);
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
     {
         return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
     }
 
-    const auto& station = ride->GetStation(_stationNum);
+    const auto& station = ride->getStation(_stationNum);
     const auto location = _isExit ? station.Exit : station.Entrance;
 
     if (!location.IsNull())
@@ -97,7 +97,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         }
     }
 
-    auto z = ride->GetStation(_stationNum).GetBaseZ();
+    auto z = ride->getStation(_stationNum).GetBaseZ();
     if (!LocationValid(_loc))
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
@@ -153,10 +153,10 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         RideClearForConstruction(*ride);
-        ride->RemovePeeps();
+        ride->removePeeps();
     }
 
-    auto& station = ride->GetStation(_stationNum);
+    auto& station = ride->getStation(_stationNum);
     const auto location = _isExit ? station.Exit : station.Entrance;
     if (!location.IsNull())
     {

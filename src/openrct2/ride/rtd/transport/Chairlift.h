@@ -88,6 +88,6 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
-    .RideUpdate = UpdateChairlift,
+    .RideUpdate = updateChairlift,
 };
 // clang-format on

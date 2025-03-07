@@ -77,7 +77,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
-    .RideUpdate = UpdateSpiralSlide,
+    .RideUpdate = updateSpiralSlide,
     .specialType = RtdSpecialType::spiralSlide,
 };
 // clang-format on

@@ -192,8 +192,8 @@ namespace OpenRCT2::Ui::Windows
                     if (guestRide != nullptr)
                     {
                         ft.Add<StringId>(
-                            guestRide->GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
-                        guestRide->FormatNameTo(ft);
+                            guestRide->getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
+                        guestRide->formatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::Guests;
                         _highlightedIndex = {};
@@ -208,7 +208,7 @@ namespace OpenRCT2::Ui::Windows
                     if (guestRide != nullptr)
                     {
                         ft.Add<StringId>(STR_QUEUING_FOR);
-                        guestRide->FormatNameTo(ft);
+                        guestRide->formatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::Guests;
                         _highlightedIndex = {};
@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
                     if (guestRide != nullptr)
                     {
                         ft.Add<StringId>(kStringIdNone);
-                        guestRide->FormatNameTo(ft);
+                        guestRide->formatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::GuestsThinking;
                         _highlightedIndex = {};

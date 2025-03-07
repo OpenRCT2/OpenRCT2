@@ -161,7 +161,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
         {
             for (const auto& ride : GetRideManager())
             {
-                auto name = ride.GetName();
+                auto name = ride.getName();
                 console.WriteFormatLine(
                     "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", ride.id, ride.type, ride.subtype,
                     ride.mode, name.c_str());
@@ -282,7 +282,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        for (int32_t i = 0; i < ride->NumTrains; ++i)
+                        for (int32_t i = 0; i < ride->numTrains; ++i)
                         {
                             for (Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
                                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))

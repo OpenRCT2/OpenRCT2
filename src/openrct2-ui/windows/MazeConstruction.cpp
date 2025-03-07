@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide != nullptr)
             {
-                if (currentRide->overall_view.IsNull())
+                if (currentRide->overallView.IsNull())
                 {
                     auto gameAction = RideDemolishAction(currentRide->id, RideModifyType::demolish);
                     gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
@@ -292,7 +292,7 @@ namespace OpenRCT2::Ui::Windows
             if (currentRide != nullptr)
             {
                 ft.Increment(4);
-                currentRide->FormatNameTo(ft);
+                currentRide->formatNameTo(ft);
             }
             else
             {
@@ -373,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                 {
                     ToolCancel();
-                    if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                    if (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     {
                         windowMgr->CloseByClass(WindowClass::RideConstruction);
                     }

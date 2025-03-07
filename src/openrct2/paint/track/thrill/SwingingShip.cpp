@@ -66,7 +66,7 @@ static void PaintSwingingShipRiders(
     if (session.DPI.zoom_level > ZoomLevel{ 1 })
         return;
 
-    if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
         return;
 
     int32_t peep = 0;
@@ -95,7 +95,7 @@ static void PaintSwingingShipStructure(
         return;
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
     {
         vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
         session.InteractionType = ViewportInteractionItem::Entity;
@@ -126,7 +126,7 @@ static void PaintSwingingShipStructure(
     }
 
     auto supportsImageTemplate = session.TrackColours;
-    auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto vehicleImageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         vehicleImageTemplate = stationColour;
@@ -162,7 +162,7 @@ static void PaintSwingingShip(
     ImageId imageId;
     bool hasFence;
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {

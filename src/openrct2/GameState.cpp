@@ -313,7 +313,7 @@ namespace OpenRCT2
         ContextBroadcastIntent(&restoreProvisionalIntent);
         VehicleUpdateAll();
         UpdateAllMiscEntities();
-        Ride::UpdateAll();
+        Ride::updateAll();
 
         if (!isInEditorMode())
         {

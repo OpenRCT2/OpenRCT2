@@ -155,10 +155,10 @@ static void PathPaintQueueBanner(
 
         auto ft = Formatter();
 
-        if (ride->status == RideStatus::open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (ride->status == RideStatus::open && !(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
-            ride->FormatNameTo(ft);
+            ride->formatNameTo(ft);
         }
         else
         {

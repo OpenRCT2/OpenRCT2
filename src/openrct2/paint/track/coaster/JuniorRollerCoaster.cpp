@@ -1889,7 +1889,7 @@ static void JuniorRCPaintStation(
     ImageId imageId;
 
     bool isBraked = trackElement.IsBrakeClosed();
-    auto stationObj = ride.GetStationObject();
+    auto stationObj = ride.getStationObject();
 
     if (direction == 0 || direction == 2)
     {
