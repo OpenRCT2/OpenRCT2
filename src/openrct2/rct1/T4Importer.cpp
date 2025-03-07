@@ -115,7 +115,7 @@ namespace OpenRCT2::RCT1
                 // Mazes were only hedges
                 if (td4.Type == RideType::HedgeMaze)
                 {
-                    td->appearance.trackColours[i].supports = MAZE_WALL_TYPE_HEDGE;
+                    td->appearance.trackColours[i].supports = MazeWallType::hedges;
                 }
                 else if (td4.Type == RideType::RiverRapids)
                 {

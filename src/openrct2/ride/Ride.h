@@ -823,12 +823,12 @@ enum
     RIDE_CRASH_TYPE_FATALITIES = 8
 };
 
-enum
+enum MazeWallType : uint8_t
 {
-    MAZE_WALL_TYPE_BRICK,
-    MAZE_WALL_TYPE_HEDGE,
-    MAZE_WALL_TYPE_ICE,
-    MAZE_WALL_TYPE_WOOD,
+    brick,
+    hedges,
+    ice,
+    wooden,
 };
 
 enum

@@ -1219,7 +1219,7 @@ namespace OpenRCT2::RCT1
             if (src->type == RideType::HedgeMaze)
             {
                 if (_gameVersion < FILE_VERSION_RCT1_LL || src->trackColourSupports[0] > 3)
-                    dst->trackColours[0].supports = MAZE_WALL_TYPE_HEDGE;
+                    dst->trackColours[0].supports = MazeWallType::hedges;
                 else
                     dst->trackColours[0].supports = src->trackColourSupports[0];
             }
