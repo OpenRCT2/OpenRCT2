@@ -118,8 +118,24 @@ namespace OpenRCT2::Scripting
                 for (auto carId = trainHead->Id; !carId.IsNull();)
                 {
                     auto car = GetEntity<Vehicle>(carId);
+
+                    // Prevent crashes by checking if the car is valid
+                    if (!car)
+                    {
+                        break; // If car is invalid, exit loop safely
+                    }
+
+                    // Add the car to the result list
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
-                    carId = car->next_vehicle_on_train;
+
+                    // Prevent infinite loops: Ensure next_vehicle_on_train is valid
+                    auto nextCarId = car->next_vehicle_on_train;
+                    if (nextCarId.IsNull() || nextCarId == carId)
+                    {
+                        break; // Stop if next car is invalid or self-referencing
+                    }
+
+                    carId = nextCarId; // Move to the next car in the train
                 }
             }
         }
