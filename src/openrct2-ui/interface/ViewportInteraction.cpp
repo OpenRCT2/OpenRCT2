@@ -304,7 +304,7 @@ namespace OpenRCT2::Ui
                 {
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                    ride->FormatNameTo(ft);
+                    ride->formatNameTo(ft);
                     SetMapTooltip(ft);
                 }
                 return info;
@@ -340,7 +340,7 @@ namespace OpenRCT2::Ui
                     StringId stringId;
                     if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     {
-                        if (ride->num_stations > 1)
+                        if (ride->numStations > 1)
                         {
                             stringId = STR_RIDE_STATION_X_ENTRANCE;
                         }
@@ -351,7 +351,7 @@ namespace OpenRCT2::Ui
                     }
                     else
                     {
-                        if (ride->num_stations > 1)
+                        if (ride->numStations > 1)
                         {
                             stringId = STR_RIDE_STATION_X_EXIT;
                         }
@@ -365,7 +365,7 @@ namespace OpenRCT2::Ui
                 else if (tileElement->AsTrack()->IsStation())
                 {
                     StringId stringId;
-                    if (ride->num_stations > 1)
+                    if (ride->numStations > 1)
                     {
                         stringId = STR_RIDE_STATION_X;
                     }
@@ -384,13 +384,13 @@ namespace OpenRCT2::Ui
                         return info;
                     }
 
-                    ride->FormatNameTo(ft);
+                    ride->formatNameTo(ft);
                     return info;
                 }
 
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
 
-                const auto& rtd = ride->GetRideTypeDescriptor();
+                const auto& rtd = ride->getRideTypeDescriptor();
                 ft.Add<StringId>(GetRideComponentName(rtd.NameConvention.station).capitalised);
 
                 StationIndex::UnderlyingType stationIndex;
@@ -400,7 +400,7 @@ namespace OpenRCT2::Ui
                     stationIndex = tileElement->AsTrack()->GetStationIndex().ToUnderlying();
 
                 for (i = stationIndex; i >= 0; i--)
-                    if (ride->GetStations()[i].Start.IsNull())
+                    if (ride->getStations()[i].Start.IsNull())
                         stationIndex--;
                 stationIndex++;
                 ft.Add<uint16_t>(stationIndex);

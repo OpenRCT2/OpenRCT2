@@ -144,19 +144,19 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->type = _rideType;
     ride->subtype = rideEntryIndex;
-    ride->SetColourPreset(_colour1);
-    ride->overall_view.SetNull();
-    ride->SetNameToDefault();
+    ride->setColourPreset(_colour1);
+    ride->overallView.SetNull();
+    ride->setNameToDefault();
 
     // Default initialize all stations.
     RideStation station{};
     station.Start.SetNull();
     station.Entrance.SetNull();
     station.Exit.SetNull();
-    std::ranges::fill(ride->GetStations(), station);
+    std::ranges::fill(ride->getStations(), station);
 
     ride->status = RideStatus::closed;
-    ride->NumTrains = 1;
+    ride->numTrains = 1;
 
     auto& gameState = GetGameState();
     if (gameState.Cheats.disableTrainLengthLimit)
@@ -164,25 +164,25 @@ GameActions::Result RideCreateAction::Execute() const
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
         if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
         {
-            ride->ProposedNumTrains = 12;
+            ride->proposedNumTrains = 12;
         }
         else
         {
-            ride->ProposedNumTrains = rideEntry->cars_per_flat_ride;
+            ride->proposedNumTrains = rideEntry->cars_per_flat_ride;
         }
     }
     else
     {
-        ride->ProposedNumTrains = 32;
+        ride->proposedNumTrains = 32;
     }
-    ride->max_trains = OpenRCT2::Limits::kMaxTrainsPerRide;
-    ride->num_cars_per_train = 1;
-    ride->proposed_num_cars_per_train = rideEntry->max_cars_in_train;
-    ride->min_waiting_time = 10;
-    ride->max_waiting_time = 60;
-    ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
+    ride->maxTrains = OpenRCT2::Limits::kMaxTrainsPerRide;
+    ride->numCarsPerTrain = 1;
+    ride->proposedNumCarsPerTrain = rideEntry->max_cars_in_train;
+    ride->minWaitingTime = 10;
+    ride->maxWaitingTime = 60;
+    ride->departFlags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
+    const auto& rtd = ride->getRideTypeDescriptor();
     if (rtd.HasFlag(RtdFlag::allowMusic))
     {
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
@@ -191,15 +191,15 @@ GameActions::Result RideCreateAction::Execute() const
         {
             if (rtd.HasFlag(RtdFlag::hasMusicByDefault))
             {
-                ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+                ride->lifecycleFlags |= RIDE_LIFECYCLE_MUSIC;
             }
         }
     }
 
     const auto& operatingSettings = rtd.OperatingSettings;
-    ride->operation_option = (operatingSettings.MinValue * 3 + operatingSettings.MaxValue) / 4;
+    ride->operationOption = (operatingSettings.MinValue * 3 + operatingSettings.MaxValue) / 4;
 
-    ride->lift_hill_speed = rtd.LiftData.minimum_speed;
+    ride->liftHillSpeed = rtd.LiftData.minimum_speed;
 
     ride->ratings.setNull();
 
@@ -272,28 +272,28 @@ GameActions::Result RideCreateAction::Execute() const
     ride->value = kRideValueUndefined;
     ride->satisfaction = 255;
     ride->popularity = 255;
-    ride->build_date = GetDate().GetMonthsElapsed();
-    ride->music_tune_id = kTuneIDNull;
+    ride->buildDate = GetDate().GetMonthsElapsed();
+    ride->musicTuneId = kTuneIDNull;
 
-    ride->breakdown_reason = 255;
-    ride->upkeep_cost = kMoney64Undefined;
+    ride->breakdownReason = 255;
+    ride->upkeepCost = kMoney64Undefined;
     ride->reliability = kRideInitialReliability;
-    ride->unreliability_factor = 1;
-    ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
-    ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
-    ride->income_per_hour = kMoney64Undefined;
+    ride->unreliabilityFactor = 1;
+    ride->inspectionInterval = RIDE_INSPECTION_EVERY_30_MINUTES;
+    ride->lastCrashType = RIDE_CRASH_TYPE_NONE;
+    ride->incomePerHour = kMoney64Undefined;
     ride->profit = kMoney64Undefined;
 
-    ride->entrance_style = kObjectEntryIndexNull;
+    ride->entranceStyle = kObjectEntryIndexNull;
     if (rtd.HasFlag(RtdFlag::hasEntranceAndExit))
     {
-        ride->entrance_style = _entranceObjectIndex;
+        ride->entranceStyle = _entranceObjectIndex;
     }
 
-    ride->num_circuits = 1;
-    ride->mode = ride->GetDefaultMode();
-    ride->MinCarsPerTrain = rideEntry->min_cars_in_train;
-    ride->MaxCarsPerTrain = rideEntry->max_cars_in_train;
+    ride->numCircuits = 1;
+    ride->mode = ride->getDefaultMode();
+    ride->minCarsPerTrain = rideEntry->min_cars_in_train;
+    ride->maxCarsPerTrain = rideEntry->max_cars_in_train;
     RideSetVehicleColoursToRandomPreset(*ride, _colour2);
 
     auto* windowMgr = Ui::GetWindowManager();

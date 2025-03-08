@@ -577,8 +577,8 @@ void PeepDecrementNumRiders(Peep* peep)
         auto ride = GetRide(peep->CurrentRide);
         if (ride != nullptr)
         {
-            ride->num_riders = std::max(0, ride->num_riders - 1);
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            ride->numRiders = std::max(0, ride->numRiders - 1);
+            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
         }
     }
 }
@@ -602,8 +602,8 @@ void PeepWindowStateUpdate(Peep* peep)
             auto ride = GetRide(peep->CurrentRide);
             if (ride != nullptr)
             {
-                ride->num_riders++;
-                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                ride->numRiders++;
+                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
             }
         }
 
@@ -1136,7 +1136,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
+                if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
                     hungerCounter++;
                 break;
 
@@ -1147,7 +1147,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::sellsDrinks))
+                if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::sellsDrinks))
                     thirstCounter++;
                 break;
 
@@ -1158,7 +1158,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && ride->GetRideTypeDescriptor().specialType != RtdSpecialType::toilet)
+                if (ride != nullptr && ride->getRideTypeDescriptor().specialType != RtdSpecialType::toilet)
                     toiletCounter++;
                 break;
 
@@ -1446,8 +1446,8 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
-                ft.Add<StringId>(ride->GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
-                ride->FormatNameTo(ft);
+                ft.Add<StringId>(ride->getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
+                ride->formatNameTo(ft);
             }
             else
             {
@@ -1461,7 +1461,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
             }
             else
             {
@@ -1481,7 +1481,7 @@ void Peep::FormatActionTo(Formatter& ft) const
                     if (ride != nullptr)
                     {
                         ft.Add<StringId>(STR_HEADING_FOR);
-                        ride->FormatNameTo(ft);
+                        ride->formatNameTo(ft);
                     }
                 }
                 else
@@ -1498,7 +1498,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             if (ride != nullptr)
             {
                 ft.Add<StringId>(STR_QUEUING_FOR);
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
             }
             break;
         }
@@ -1512,7 +1512,7 @@ void Peep::FormatActionTo(Formatter& ft) const
                 if (ride != nullptr)
                 {
                     ft.Add<StringId>((StandingFlags & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
-                    ride->FormatNameTo(ft);
+                    ride->formatNameTo(ft);
                 }
             }
             else
@@ -1555,7 +1555,7 @@ void Peep::FormatActionTo(Formatter& ft) const
                 auto ride = GetRide(CurrentRide);
                 if (ride != nullptr)
                 {
-                    ride->FormatNameTo(ft);
+                    ride->formatNameTo(ft);
                 }
                 else
                 {
@@ -1569,7 +1569,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
             }
             else
             {
@@ -1583,7 +1583,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
             }
             else
             {
@@ -1597,7 +1597,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
             }
             else
             {
@@ -1854,7 +1854,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
         guest->InteractionRideIndex = rideIndex;
 
-        auto& station = ride->GetStation(stationNum);
+        auto& station = ride->getStation(stationNum);
         auto previous_last = station.LastPeepInQueue;
         station.LastPeepInQueue = guest->Id;
         guest->GuestNextInQueue = previous_last;
@@ -1870,7 +1870,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         {
             auto ft = Formatter();
             guest->FormatNameTo(ft);
-            ride->FormatNameTo(ft);
+            ride->formatNameTo(ft);
             if (Config::Get().notifications.GuestQueuingForRide)
             {
                 News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
@@ -2283,7 +2283,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                     guest->InteractionRideIndex = rideIndex;
 
                     // Add the peep to the ride queue.
-                    auto& station = ride->GetStation(stationNum);
+                    auto& station = ride->getStation(stationNum);
                     auto old_last_peep = station.LastPeepInQueue;
                     station.LastPeepInQueue = guest->Id;
                     guest->GuestNextInQueue = old_last_peep;
@@ -2303,7 +2303,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                     {
                         auto ft = Formatter();
                         guest->FormatNameTo(ft);
-                        ride->FormatNameTo(ft);
+                        ride->formatNameTo(ft);
                         if (Config::Get().notifications.GuestQueuingForRide)
                         {
                             News::AddItemToQueue(
@@ -2352,7 +2352,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
 {
     RideId rideIndex = coords.element->AsTrack()->GetRideIndex();
     auto ride = GetRide(rideIndex);
-    if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+    if (ride == nullptr || !ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         return false;
 
     auto* guest = peep->As<Guest>();
@@ -2389,7 +2389,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         return true;
     }
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::guestsShouldGoInsideFacility))
+    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::guestsShouldGoInsideFacility))
     {
         guest->TimeLost = 0;
         if (!guest->ShouldGoOnRide(*ride, StationIndex::FromUnderlying(0), false, false))
@@ -2401,8 +2401,8 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         auto cost = ride->price[0];
         if (cost != 0 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            ride->total_profit += cost;
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+            ride->totalProfit += cost;
+            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
             guest->SpendMoney(cost, ExpenditureType::ParkRideTickets);
         }
 
@@ -2413,13 +2413,13 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         guest->RideSubState = PeepRideSubState::ApproachShop;
 
         guest->GuestTimeOnRide = 0;
-        ride->cur_num_customers++;
+        ride->curNumCustomers++;
         if (guest->PeepFlags & PEEP_FLAGS_TRACKING)
         {
             auto ft = Formatter();
             guest->FormatNameTo(ft);
-            ride->FormatNameTo(ft);
-            StringId string_id = ride->GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
+            ride->formatNameTo(ft);
+            StringId string_id = ride->getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
                 ? STR_PEEP_TRACKING_PEEP_IS_IN_X
                 : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (Config::Get().notifications.GuestUsedFacility)

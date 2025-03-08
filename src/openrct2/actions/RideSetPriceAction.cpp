@@ -101,9 +101,9 @@ GameActions::Result RideSetPriceAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, kStringIdEmpty);
     }
 
-    if (!ride->overall_view.IsNull())
+    if (!ride->overallView.IsNull())
     {
-        auto location = ride->overall_view.ToTileCentre();
+        auto location = ride->overallView.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
 
@@ -114,7 +114,7 @@ GameActions::Result RideSetPriceAction::Execute() const
     {
         shopItem = ShopItem::Admission;
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType != RtdSpecialType::toilet)
         {
             shopItem = rideEntry->shop_item[0];
@@ -138,8 +138,8 @@ GameActions::Result RideSetPriceAction::Execute() const
         shopItem = rideEntry->shop_item[1];
         if (shopItem == ShopItem::None)
         {
-            shopItem = ride->GetRideTypeDescriptor().PhotoItem;
-            if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
+            shopItem = ride->getRideTypeDescriptor().PhotoItem;
+            if ((ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
             {
                 ride->price[1] = _price;
                 windowMgr->InvalidateByClass(WindowClass::Ride);
@@ -167,7 +167,7 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
     {
         auto invalidate = false;
         auto rideEntry = GetRideEntryByIndex(ride.subtype);
-        const auto& rtd = ride.GetRideTypeDescriptor();
+        const auto& rtd = ride.getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::toilet && shopItem == ShopItem::Admission)
         {
             if (ride.price[0] != _price)

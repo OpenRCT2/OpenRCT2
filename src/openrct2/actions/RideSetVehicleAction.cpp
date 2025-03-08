@@ -75,7 +75,7 @@ GameActions::Result RideSetVehicleAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
         return GameActions::Result(GameActions::Status::Broken, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
     }
@@ -137,16 +137,16 @@ GameActions::Result RideSetVehicleAction::Execute() const
     {
         case RideSetVehicleType::NumTrains:
             RideClearForConstruction(*ride);
-            ride->RemovePeeps();
-            ride->vehicle_change_timeout = 100;
+            ride->removePeeps();
+            ride->vehicleChangeTimeout = 100;
 
-            ride->ProposedNumTrains = _value;
+            ride->proposedNumTrains = _value;
             break;
         case RideSetVehicleType::NumCarsPerTrain:
         {
             RideClearForConstruction(*ride);
-            ride->RemovePeeps();
-            ride->vehicle_change_timeout = 100;
+            ride->removePeeps();
+            ride->vehicleChangeTimeout = 100;
 
             InvalidateTestResults(*ride);
             auto rideEntry = GetRideEntryByIndex(ride->subtype);
@@ -156,19 +156,19 @@ GameActions::Result RideSetVehicleAction::Execute() const
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
             }
             uint8_t clampValue = _value;
-            static_assert(sizeof(clampValue) == sizeof(ride->proposed_num_cars_per_train));
+            static_assert(sizeof(clampValue) == sizeof(ride->proposedNumCarsPerTrain));
             if (!GetGameState().Cheats.disableTrainLengthLimit)
             {
                 clampValue = std::clamp(clampValue, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
-            ride->proposed_num_cars_per_train = clampValue;
+            ride->proposedNumCarsPerTrain = clampValue;
             break;
         }
         case RideSetVehicleType::RideEntry:
         {
             RideClearForConstruction(*ride);
-            ride->RemovePeeps();
-            ride->vehicle_change_timeout = 100;
+            ride->removePeeps();
+            ride->vehicleChangeTimeout = 100;
 
             InvalidateTestResults(*ride);
             ride->subtype = _value;
@@ -182,18 +182,18 @@ GameActions::Result RideSetVehicleAction::Execute() const
             RideSetVehicleColoursToRandomPreset(*ride, _colour);
             if (!GetGameState().Cheats.disableTrainLengthLimit)
             {
-                ride->proposed_num_cars_per_train = std::clamp(
-                    ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
+                ride->proposedNumCarsPerTrain = std::clamp(
+                    ride->proposedNumCarsPerTrain, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
             break;
         }
         case RideSetVehicleType::TrainsReversed:
         {
             RideClearForConstruction(*ride);
-            ride->RemovePeeps();
-            ride->vehicle_change_timeout = 100;
+            ride->removePeeps();
+            ride->vehicleChangeTimeout = 100;
 
-            ride->SetLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS, _value);
+            ride->setLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS, _value);
             break;
         }
 
@@ -202,13 +202,13 @@ GameActions::Result RideSetVehicleAction::Execute() const
             return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
     }
 
-    ride->num_circuits = 1;
-    ride->UpdateMaxVehicles();
+    ride->numCircuits = 1;
+    ride->updateMaxVehicles();
 
     auto res = GameActions::Result();
-    if (!ride->overall_view.IsNull())
+    if (!ride->overallView.IsNull())
     {
-        auto location = ride->overall_view.ToTileCentre();
+        auto location = ride->overallView.ToTileCentre();
         res.Position = { location, TileElementHeight(res.Position) };
     }
 
@@ -227,10 +227,10 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
     auto& gameState = GetGameState();
 
     {
-        const auto& rtd = ride.GetRideTypeDescriptor();
+        const auto& rtd = ride.getRideTypeDescriptor();
         if (gameState.Cheats.showVehiclesFromOtherTrackTypes
             && !(
-                ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide) || rtd.specialType == RtdSpecialType::maze
+                ride.getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide) || rtd.specialType == RtdSpecialType::maze
                 || rtd.specialType == RtdSpecialType::miniGolf))
         {
             selectionShouldBeExpanded = true;

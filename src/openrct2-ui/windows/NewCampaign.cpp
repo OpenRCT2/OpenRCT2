@@ -95,12 +95,12 @@ namespace OpenRCT2::Ui::Windows
             std::string rideAName = "";
             auto rideA = GetRide(a);
             if (rideA != nullptr)
-                rideAName = rideA->GetName();
+                rideAName = rideA->getName();
 
             std::string rideBName = "";
             auto rideB = GetRide(b);
             if (rideB != nullptr)
-                rideBName = rideB->GetName();
+                rideBName = rideB->getName();
 
             return String::logicalCmp(rideAName.c_str(), rideBName.c_str()) < 0;
         }
@@ -114,7 +114,7 @@ namespace OpenRCT2::Ui::Windows
             BitSet<EnumValue(ShopItem::Count)> items = {};
             for (auto& curRide : GetRideManager())
             {
-                auto rideEntry = curRide.GetRideEntry();
+                auto rideEntry = curRide.getRideEntry();
                 if (rideEntry != nullptr)
                 {
                     for (const auto itemType : rideEntry->shop_item)
@@ -146,7 +146,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (curRide.status == RideStatus::open)
                 {
-                    const auto& rtd = curRide.GetRideTypeDescriptor();
+                    const auto& rtd = curRide.getRideTypeDescriptor();
                     if (rtd.HasFlag(RtdFlag::isShopOrFacility))
                         continue;
                     if (rtd.HasFlag(RtdFlag::sellsFood))
@@ -234,14 +234,14 @@ namespace OpenRCT2::Ui::Windows
                                 // HACK until dropdown items have longer argument buffers
                                 gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
                                 Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[numItems].Args));
-                                if (curRide->custom_name.empty())
+                                if (curRide->customName.empty())
                                 {
-                                    curRide->FormatNameTo(ft);
+                                    curRide->formatNameTo(ft);
                                 }
                                 else
                                 {
                                     gDropdownItems[numItems].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                                    ft.Add<const char*>(curRide->custom_name.c_str());
+                                    ft.Add<const char*>(curRide->customName.c_str());
                                 }
                                 numItems++;
                             }
@@ -337,7 +337,7 @@ namespace OpenRCT2::Ui::Windows
                             widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
 
                             auto ft = Formatter::Common();
-                            curRide->FormatNameTo(ft);
+                            curRide->formatNameTo(ft);
                         }
                     }
                     break;

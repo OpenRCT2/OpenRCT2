@@ -77,7 +77,7 @@ namespace OpenRCT2::Park
         money64 result = 0;
         if (ride.value != kRideValueUndefined)
         {
-            const auto& rtd = ride.GetRideTypeDescriptor();
+            const auto& rtd = ride.getRideTypeDescriptor();
             result = (ride.value * 10) * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
         }
         return result;
@@ -91,9 +91,9 @@ namespace OpenRCT2::Park
         {
             if (ride.status != RideStatus::open)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED)
                 continue;
 
             // Add ride value
@@ -124,30 +124,30 @@ namespace OpenRCT2::Park
         {
             if (ride.status != RideStatus::open)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED)
                 continue;
 
             // Add guest score for ride type
-            suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
+            suggestedMaxGuests += ride.getRideTypeDescriptor().BonusValue;
 
             // If difficult guest generation, extra guests are available for good rides
             if (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
             {
-                if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+                if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED))
                     continue;
-                if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     continue;
-                if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasDataLogging))
+                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasDataLogging))
                     continue;
-                if (ride.GetStation().SegmentLength < (600 << 16))
+                if (ride.getStation().SegmentLength < (600 << 16))
                     continue;
                 if (ride.ratings.excitement < MakeRideRating(6, 00))
                     continue;
 
                 // Bonus guests for good ride
-                difficultGenerationBonus += ride.GetRideTypeDescriptor().BonusValue * 2;
+                difficultGenerationBonus += ride.getRideTypeDescriptor().BonusValue * 2;
             }
         }
 

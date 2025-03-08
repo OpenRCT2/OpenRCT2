@@ -57,9 +57,9 @@ static void PaintRideEntranceExitScrollingText(
 
     auto ft = Formatter();
     ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
-    if (ride->status == RideStatus::open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (ride->status == RideStatus::open && !(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        ride->FormatNameTo(ft);
+        ride->formatNameTo(ft);
     }
     else
     {
@@ -129,7 +129,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         return;
     }
 
-    auto stationObj = ride->GetStationObject();
+    auto stationObj = ride->getStationObject();
     if (stationObj == nullptr || stationObj->BaseImageId == kImageIndexUndefined)
     {
         return;
@@ -140,8 +140,8 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     PaintRideEntranceExitLightEffects(session, height, entranceEl);
 
     auto hasGlass = (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT) != 0;
-    auto colourPrimary = ride->track_colour[0].main;
-    auto colourSecondary = ride->track_colour[0].additional;
+    auto colourPrimary = ride->trackColours[0].main;
+    auto colourSecondary = ride->trackColours[0].additional;
     auto imageTemplate = ImageId(0, colourPrimary, colourSecondary);
     ImageId glassImageTemplate;
     if (hasGlass)

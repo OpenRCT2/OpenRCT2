@@ -422,7 +422,7 @@ namespace OpenRCT2::PathFinding
                         continue;
                     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                     auto ride = GetRide(rideIndex);
-                    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+                    if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
                     {
                         *outRideIndex = rideIndex;
                         return PathSearchResult::ShopEntrance;
@@ -791,7 +791,7 @@ namespace OpenRCT2::PathFinding
                      * tile. */
                     rideIndex = tileElement->AsTrack()->GetRideIndex();
                     auto ride = GetRide(rideIndex);
-                    if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+                    if (ride == nullptr || !ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
                         continue;
 
                     found = true;
@@ -2056,13 +2056,13 @@ namespace OpenRCT2::PathFinding
         int32_t numEntranceStations = 0;
         BitSet<OpenRCT2::Limits::kMaxStationsPerRide> entranceStations = {};
 
-        for (const auto& station : ride->GetStations())
+        for (const auto& station : ride->getStations())
         {
             // Skip if stationNum has no entrance (so presumably an exit only station)
             if (station.Entrance.IsNull())
                 continue;
 
-            const auto stationIndex = ride->GetStationIndex(&station);
+            const auto stationIndex = ride->getStationIndex(&station);
 
             numEntranceStations++;
             entranceStations[stationIndex.ToUnderlying()] = true;
@@ -2081,7 +2081,7 @@ namespace OpenRCT2::PathFinding
         if (numEntranceStations == 0)
             closestStationNum = StationIndex::FromUnderlying(0);
 
-        if (numEntranceStations > 1 && (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
+        if (numEntranceStations > 1 && (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
         {
             closestStationNum = GuestPathfindingSelectRandomStation(peep, numEntranceStations, entranceStations);
         }
@@ -2089,7 +2089,7 @@ namespace OpenRCT2::PathFinding
         if (numEntranceStations == 0)
         {
             // closestStationNum is always 0 here.
-            const auto& closestStation = ride->GetStation(closestStationNum);
+            const auto& closestStation = ride->getStation(closestStationNum);
             auto entranceXY = TileCoordsXY(closestStation.Start);
             loc.x = entranceXY.x;
             loc.y = entranceXY.y;
@@ -2097,7 +2097,7 @@ namespace OpenRCT2::PathFinding
         }
         else
         {
-            TileCoordsXYZD entranceXYZD = ride->GetStation(closestStationNum).Entrance;
+            TileCoordsXYZD entranceXYZD = ride->getStation(closestStationNum).Entrance;
             loc.x = entranceXYZD.x;
             loc.y = entranceXYZD.y;
             loc.z = entranceXYZD.z;

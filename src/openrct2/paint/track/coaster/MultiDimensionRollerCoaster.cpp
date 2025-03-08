@@ -204,7 +204,7 @@ static void MultiDimensionRCTrackStation(
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 
     auto stationColour = GetStationColourScheme(session, trackElement);
-    const auto* stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.getStationObject();
     bool hasFence;
     if (direction == 0 || direction == 2)
     {

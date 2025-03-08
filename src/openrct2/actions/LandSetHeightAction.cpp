@@ -280,14 +280,14 @@ StringId LandSetHeightAction::CheckRideSupports() const
         if (ride == nullptr)
             continue;
 
-        const auto* rideEntry = ride->GetRideEntry();
+        const auto* rideEntry = ride->getRideEntry();
         if (rideEntry == nullptr)
             continue;
 
         int32_t maxHeight = rideEntry->max_height;
         if (maxHeight == 0)
         {
-            maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
+            maxHeight = ride->getRideTypeDescriptor().Heights.MaxHeight;
         }
 
         int32_t zDelta = trackElement->ClearanceHeight - _height;

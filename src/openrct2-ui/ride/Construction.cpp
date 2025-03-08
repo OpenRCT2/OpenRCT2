@@ -278,7 +278,7 @@ namespace OpenRCT2
 
             // Additional tower bases can only be built if the ride allows for it (elevator)
             if (trackType == TrackElemType::TowerBase
-                && !currentRide.GetRideTypeDescriptor().HasFlag(RtdFlag::allowExtraTowerBases))
+                && !currentRide.getRideTypeDescriptor().HasFlag(RtdFlag::allowExtraTowerBases))
                 entryIsDisabled = true;
 
             // Check if a previous element exists, to collate entries if possible
@@ -398,7 +398,7 @@ namespace OpenRCT2
             return entranceExitCoords;
         }
 
-        auto stationBaseZ = ride->GetStation(gRideEntranceExitPlaceStationIndex).GetBaseZ();
+        auto stationBaseZ = ride->getStation(gRideEntranceExitPlaceStationIndex).GetBaseZ();
 
         auto coordsAtHeight = ScreenGetMapXYWithZ(screenCoords, stationBaseZ);
         if (!coordsAtHeight.has_value())
@@ -415,7 +415,7 @@ namespace OpenRCT2
             return entranceExitCoords;
         }
 
-        auto stationStart = ride->GetStation(gRideEntranceExitPlaceStationIndex).Start;
+        auto stationStart = ride->getStation(gRideEntranceExitPlaceStationIndex).Start;
         if (stationStart.IsNull())
         {
             entranceExitCoords.SetNull();

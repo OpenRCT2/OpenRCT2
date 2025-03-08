@@ -128,9 +128,9 @@ GameActions::Result TrackPlaceAction::Query() const
 
     auto resultData = TrackPlaceActionResult{};
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
+    const auto& rtd = ride->getRideTypeDescriptor();
 
-    if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
+    if ((ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
@@ -150,7 +150,7 @@ GameActions::Result TrackPlaceAction::Query() const
     {
         if (_trackType == TrackElemType::OnRidePhoto)
         {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
+            if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
             {
                 return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -159,7 +159,7 @@ GameActions::Result TrackPlaceAction::Query() const
         }
         else if (_trackType == TrackElemType::CableLiftHill)
         {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
+            if (ride->lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
             {
                 return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -450,7 +450,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
     auto resultData = TrackPlaceActionResult{};
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
+    const auto& rtd = ride->getRideTypeDescriptor();
 
     const auto& ted = GetTrackElementDescriptor(_trackType);
 
@@ -560,7 +560,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         supportCosts += (supportHeight / (2 * kCoordsZStep)) * rtd.BuildCosts.SupportPrice;
 
         int32_t entranceDirections = 0;
-        if (!ride->overall_view.IsNull())
+        if (!ride->overallView.IsNull())
         {
             if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
             {
@@ -568,9 +568,9 @@ GameActions::Result TrackPlaceAction::Execute() const
             }
         }
 
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.IsNull())
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overallView.IsNull())
         {
-            ride->overall_view = mapLoc;
+            ride->overallView = mapLoc;
         }
 
         auto* trackElement = TileElementInsert<TrackElement>(mapLoc, quarterTile.GetBaseQuarterOccupied());
@@ -665,8 +665,8 @@ GameActions::Result TrackPlaceAction::Execute() const
             {
                 TrackAddStationElement({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
             }
-            ride->ValidateStations();
-            ride->UpdateMaxVehicles();
+            ride->validateStations();
+            ride->updateMaxVehicles();
         }
 
         auto* tileElement = trackElement->as<TileElement>();
@@ -695,17 +695,17 @@ GameActions::Result TrackPlaceAction::Execute() const
         switch (_trackType)
         {
             case TrackElemType::OnRidePhoto:
-                ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+                ride->lifecycleFlags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                 break;
             case TrackElemType::CableLiftHill:
-                ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
-                ride->CableLiftLoc = originLocation;
+                ride->lifecycleFlags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
+                ride->cableLiftLoc = originLocation;
                 break;
             case TrackElemType::DiagBlockBrakes:
             case TrackElemType::BlockBrakes:
             {
-                ride->num_block_brakes++;
-                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
+                ride->numBlockBrakes++;
+                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
                 // change the current mode to its circuit blocked equivalent
                 RideMode newMode = RideMode::continuousCircuitBlockSectioned;
@@ -736,7 +736,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                     break;
                 [[fallthrough]];
             case TrackElemType::CableLiftHill:
-                ride->num_block_brakes++;
+                ride->numBlockBrakes++;
                 break;
             default:
                 break;

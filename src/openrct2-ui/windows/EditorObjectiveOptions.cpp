@@ -326,7 +326,7 @@ namespace OpenRCT2::Ui::Windows
             // Check if there are any rides (not shops or facilities)
             const auto& rideManager = GetRideManager();
             if (std::any_of(
-                    rideManager.begin(), rideManager.end(), [](const Ride& rideToCheck) { return rideToCheck.IsRide(); }))
+                    rideManager.begin(), rideManager.end(), [](const Ride& rideToCheck) { return rideToCheck.isRide(); }))
             {
                 disabled_widgets &= ~(1uLL << WIDX_TAB_2);
             }
@@ -1023,7 +1023,7 @@ namespace OpenRCT2::Ui::Windows
             _rideableRides.clear();
             for (auto& currentRide : GetRideManager())
             {
-                if (currentRide.IsRide())
+                if (currentRide.isRide())
                 {
                     _rideableRides.push_back(currentRide.id);
                 }
@@ -1060,7 +1060,7 @@ namespace OpenRCT2::Ui::Windows
             auto* currentRide = GetRide(_rideableRides[i]);
             if (currentRide != nullptr)
             {
-                currentRide->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+                currentRide->lifecycleFlags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
             }
             Invalidate();
         }
@@ -1142,7 +1142,7 @@ namespace OpenRCT2::Ui::Windows
                 auto* currentRide = GetRide(_rideableRides[i]);
                 if (currentRide != nullptr)
                 {
-                    if (currentRide->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+                    if (currentRide->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
                     {
                         auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                         DrawText(
@@ -1153,7 +1153,7 @@ namespace OpenRCT2::Ui::Windows
                     // Ride name
 
                     Formatter ft;
-                    currentRide->FormatNameTo(ft);
+                    currentRide->formatNameTo(ft);
                     DrawTextBasic(dpi, { 15, y }, stringId, ft);
                 }
             }

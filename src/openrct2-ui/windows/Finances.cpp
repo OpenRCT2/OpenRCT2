@@ -722,7 +722,7 @@ namespace OpenRCT2::Ui::Windows
                         auto campaignRide = GetRide(marketingCampaign->RideId);
                         if (campaignRide != nullptr)
                         {
-                            campaignRide->FormatNameTo(ft);
+                            campaignRide->formatNameTo(ft);
                         }
                         else
                         {

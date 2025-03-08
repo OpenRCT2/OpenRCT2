@@ -523,26 +523,25 @@ void CheatSetAction::FixBrokenRides() const
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             auto mechanic = RideGetAssignedMechanic(ride);
 
             if (mechanic != nullptr)
             {
-                if (ride.mechanic_status == RIDE_MECHANIC_STATUS_FIXING)
+                if (ride.mechanicStatus == RIDE_MECHANIC_STATUS_FIXING)
                 {
                     mechanic->RideSubState = PeepRideSubState::ApproachExit;
                 }
                 else if (
-                    ride.mechanic_status == RIDE_MECHANIC_STATUS_CALLING
-                    || ride.mechanic_status == RIDE_MECHANIC_STATUS_HEADING)
+                    ride.mechanicStatus == RIDE_MECHANIC_STATUS_CALLING || ride.mechanicStatus == RIDE_MECHANIC_STATUS_HEADING)
                 {
                     mechanic->RemoveFromRide();
                 }
             }
 
             RideFixBreakdown(ride, 0);
-            ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
         }
     }
 }
@@ -551,7 +550,7 @@ void CheatSetAction::RenewRides() const
 {
     for (auto& ride : GetRideManager())
     {
-        ride.Renew();
+        ride.renew();
     }
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Ride);
@@ -562,8 +561,8 @@ void CheatSetAction::ResetRideCrashStatus() const
     for (auto& ride : GetRideManager())
     {
         // Reset crash status and history
-        ride.lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-        ride.last_crash_type = RIDE_CRASH_TYPE_NONE;
+        ride.lifecycleFlags &= ~RIDE_LIFECYCLE_CRASHED;
+        ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
     }
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Ride);
@@ -574,7 +573,7 @@ void CheatSetAction::Set10MinuteInspection() const
     for (auto& ride : GetRideManager())
     {
         // Set inspection interval to 10 minutes
-        ride.inspection_interval = RIDE_INSPECTION_EVERY_10_MINUTES;
+        ride.inspectionInterval = RIDE_INSPECTION_EVERY_10_MINUTES;
     }
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Ride);
@@ -720,9 +719,9 @@ void CheatSetAction::RemoveAllGuests() const
 {
     for (auto& ride : GetRideManager())
     {
-        ride.num_riders = 0;
+        ride.numRiders = 0;
 
-        for (auto& station : ride.GetStations())
+        for (auto& station : ride.getStations())
         {
             station.QueueLength = 0;
             station.LastPeepInQueue = EntityId::GetNull();

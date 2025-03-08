@@ -78,10 +78,10 @@ GameActions::Result RideSetStatusAction::Query() const
     res.ErrorTitle = _StatusErrorTitles[EnumValue(_status)];
 
     Formatter ft(res.ErrorMessageArgs.data());
-    ride->FormatNameTo(ft);
+    ride->formatNameTo(ft);
     if (_status != ride->status)
     {
-        if (_status == RideStatus::simulating && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (_status == RideStatus::simulating && (ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             // Simulating will force clear the track, so make sure player can't cheat around a break down
             res.Error = GameActions::Status::Disallowed;
@@ -93,13 +93,13 @@ GameActions::Result RideSetStatusAction::Query() const
         switch (_status)
         {
             case RideStatus::open:
-                modeSwitchResult = ride->Open(false);
+                modeSwitchResult = ride->open(false);
                 break;
             case RideStatus::testing:
-                modeSwitchResult = ride->Test(false);
+                modeSwitchResult = ride->test(false);
                 break;
             case RideStatus::simulating:
-                modeSwitchResult = ride->Simulate(false);
+                modeSwitchResult = ride->simulate(false);
                 break;
             default:
                 break;
@@ -134,10 +134,10 @@ GameActions::Result RideSetStatusAction::Execute() const
 
     Formatter ft(res.ErrorMessageArgs.data());
     ft.Increment(6);
-    ride->FormatNameTo(ft);
-    if (!ride->overall_view.IsNull())
+    ride->formatNameTo(ft);
+    if (!ride->overallView.IsNull())
     {
-        auto location = ride->overall_view.ToTileCentre();
+        auto location = ride->overallView.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
 
@@ -148,27 +148,27 @@ GameActions::Result RideSetStatusAction::Execute() const
         case RideStatus::closed:
             if (ride->status == _status || ride->status == RideStatus::simulating)
             {
-                if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+                if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
                 {
-                    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
+                    ride->lifecycleFlags &= ~RIDE_LIFECYCLE_CRASHED;
                     RideClearForConstruction(*ride);
-                    ride->RemovePeeps();
+                    ride->removePeeps();
                 }
             }
 
             ride->status = RideStatus::closed;
-            ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-            ride->race_winner = EntityId::GetNull();
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            ride->lifecycleFlags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+            ride->raceWinner = EntityId::GetNull();
+            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
             windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         case RideStatus::simulating:
         {
-            ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
+            ride->lifecycleFlags &= ~RIDE_LIFECYCLE_CRASHED;
             RideClearForConstruction(*ride);
-            ride->RemovePeeps();
+            ride->removePeeps();
 
-            const auto modeSwitchResult = ride->Simulate(true);
+            const auto modeSwitchResult = ride->simulate(true);
             if (!modeSwitchResult.Successful)
             {
                 res.Error = GameActions::Status::Unknown;
@@ -177,12 +177,12 @@ GameActions::Result RideSetStatusAction::Execute() const
             }
 
             ride->status = _status;
-            ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-            ride->race_winner = EntityId::GetNull();
-            ride->current_issues = 0;
-            ride->last_issue_time = 0;
-            ride->GetMeasurement();
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            ride->lifecycleFlags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+            ride->raceWinner = EntityId::GetNull();
+            ride->currentIssues = 0;
+            ride->lastIssueTime = 0;
+            ride->getMeasurement();
+            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
             windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         }
@@ -197,7 +197,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             if (ride->status == RideStatus::simulating)
             {
                 RideClearForConstruction(*ride);
-                ride->RemovePeeps();
+                ride->removePeeps();
             }
 
             // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
@@ -210,7 +210,7 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             if (_status == RideStatus::testing)
             {
-                const auto modeSwitchResult = ride->Test(true);
+                const auto modeSwitchResult = ride->test(true);
                 if (!modeSwitchResult.Successful)
                 {
                     res.Error = GameActions::Status::Unknown;
@@ -220,7 +220,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             }
             else
             {
-                const auto modeSwitchResult = ride->Open(true);
+                const auto modeSwitchResult = ride->open(true);
                 if (!modeSwitchResult.Successful)
                 {
                     res.Error = GameActions::Status::Unknown;
@@ -229,12 +229,12 @@ GameActions::Result RideSetStatusAction::Execute() const
                 }
             }
 
-            ride->race_winner = EntityId::GetNull();
+            ride->raceWinner = EntityId::GetNull();
             ride->status = _status;
-            ride->current_issues = 0;
-            ride->last_issue_time = 0;
-            ride->GetMeasurement();
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            ride->currentIssues = 0;
+            ride->lastIssueTime = 0;
+            ride->getMeasurement();
+            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
             windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
             break;
         }

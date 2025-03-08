@@ -1231,7 +1231,7 @@ namespace OpenRCT2::Ui::Windows
             _riddenRides.clear();
             for (const auto& r : GetRideManager())
             {
-                if (r.IsRide() && guest->HasRidden(r))
+                if (r.isRide() && guest->HasRidden(r))
                 {
                     _riddenRides.push_back(r.id);
                 }
@@ -1327,7 +1327,7 @@ namespace OpenRCT2::Ui::Windows
             auto* r = GetRide(peep->FavouriteRide);
             if (r != nullptr)
             {
-                r->FormatNameTo(ft);
+                r->formatNameTo(ft);
             }
             else
             {
@@ -1356,7 +1356,7 @@ namespace OpenRCT2::Ui::Windows
                 if (r != nullptr)
                 {
                     auto ft = Formatter();
-                    r->FormatNameTo(ft);
+                    r->formatNameTo(ft);
                     DrawTextBasic(dpi, { 0, y - 1 }, stringId, ft);
                 }
             }
@@ -1641,7 +1641,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ft.Rewind();
                         ft.Increment(2);
-                        invRide->FormatNameTo(ft);
+                        invRide->formatNameTo(ft);
                     }
 
                     break;
@@ -1665,7 +1665,7 @@ namespace OpenRCT2::Ui::Windows
                                 ft.Rewind();
                                 ft.Increment(2);
                                 ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-                                invRide->FormatNameTo(ft);
+                                invRide->formatNameTo(ft);
                             }
                             break;
                         case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
@@ -1695,7 +1695,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ft.Rewind();
                         ft.Increment(2);
-                        invRide->FormatNameTo(ft);
+                        invRide->formatNameTo(ft);
                     }
                     break;
                 case ShopItem::Photo3:
@@ -1704,7 +1704,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ft.Rewind();
                         ft.Increment(2);
-                        invRide->FormatNameTo(ft);
+                        invRide->formatNameTo(ft);
                     }
                     break;
                 case ShopItem::Photo4:
@@ -1713,7 +1713,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ft.Rewind();
                         ft.Increment(2);
-                        invRide->FormatNameTo(ft);
+                        invRide->formatNameTo(ft);
                     }
                     break;
                 default:

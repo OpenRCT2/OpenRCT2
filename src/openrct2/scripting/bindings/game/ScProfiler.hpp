@@ -40,7 +40,7 @@ namespace OpenRCT2::Scripting
                 obj.Set("callCount", f->GetCallCount());
                 obj.Set("minTime", f->GetMinTime());
                 obj.Set("maxTime", f->GetMaxTime());
-                obj.Set("totalTime", f->GetTotalTime());
+                obj.Set("totalTime", f->getTotalTime());
                 obj.Set("parents", GetFunctionIndexArray(data, f->GetParents()));
                 obj.Set("children", GetFunctionIndexArray(data, f->GetChildren()));
                 obj.Take().push();

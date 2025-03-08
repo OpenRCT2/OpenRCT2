@@ -43,7 +43,7 @@ static void PaintSpaceRingsStructure(
 {
     uint32_t vehicleIndex = (segment - direction) & 0x3;
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
-    if (rideEntry == nullptr || (ride.num_stations != 0 && vehicleIndex >= ride.NumTrains))
+    if (rideEntry == nullptr || (ride.numStations != 0 && vehicleIndex >= ride.numTrains))
     {
         session.CurrentlyDrawnEntity = nullptr;
         session.InteractionType = ViewportInteractionItem::Ride;
@@ -53,7 +53,7 @@ static void PaintSpaceRingsStructure(
     int32_t frameNum = direction;
     uint32_t baseImageId = rideEntry->Cars[0].base_image_id;
     auto vehicle = GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
@@ -67,7 +67,7 @@ static void PaintSpaceRingsStructure(
 
     if (stationColour == TrackStationColour)
     {
-        stationColour = ImageId(0, ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
+        stationColour = ImageId(0, ride.vehicleColours[vehicleIndex].Body, ride.vehicleColours[vehicleIndex].Trim);
     }
 
     auto imageId = stationColour.WithIndex(baseImageId + frameNum);
@@ -104,7 +104,7 @@ static void PaintSpaceRings(
     DrawSupportForSequenceA<TrackElemType::FlatTrack3x3>(
         session, supportType.wooden, trackSequence, direction, height, GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     switch (trackSequence)

@@ -48,7 +48,7 @@ protected:
     std::string FormatRatings(const Ride& ride)
     {
         RatingTuple ratings = ride.ratings;
-        auto name = std::string(ride.GetRideTypeDescriptor().Name);
+        auto name = std::string(ride.getRideTypeDescriptor().Name);
         std::string line = String::stdFormat(
             "%s: (%d, %d, %d)", name.c_str(), static_cast<int>(ratings.excitement), static_cast<int>(ratings.intensity),
             static_cast<int>(ratings.nausea));

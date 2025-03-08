@@ -35,7 +35,7 @@ static void PaintRiders(
 {
     if (session.DPI.zoom_level > ZoomLevel{ 0 })
         return;
-    if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
         return;
 
     for (int32_t peep = 0; peep <= 14; peep += 2)
@@ -60,18 +60,18 @@ static void PaintCarousel(
 {
     height += 7;
 
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
     auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
 
-        if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
-            && ride.breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE && ride.breakdown_sound_modifier >= 128)
+        if (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
+            && ride.breakdownReasonPending == BREAKDOWN_CONTROL_FAILURE && ride.breakdownSoundModifier >= 128)
         {
             height += kMerryGoRoundBreakdownVibration[(vehicle->current_time >> 1) & 7];
         }
@@ -87,7 +87,7 @@ static void PaintCarousel(
     CoordsXYZ offset(xOffset, yOffset, height);
     BoundBoxXYZ bb = { { xOffset + 16, yOffset + 16, height }, { 24, 24, 48 } };
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         imageTemplate = stationColour;
@@ -117,7 +117,7 @@ static void PaintMerryGoRound(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 

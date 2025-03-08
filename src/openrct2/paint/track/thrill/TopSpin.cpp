@@ -104,7 +104,7 @@ static void PaintTopSpinSeat(
             break;
     }
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         imageTemplate = stationColour;
@@ -130,7 +130,7 @@ static void PaintTopSpinVehicle(
     uint8_t seatRotation = 0;
     uint8_t armRotation = 0;
     auto* vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
@@ -150,8 +150,8 @@ static void PaintTopSpinVehicle(
     CoordsXYZ offset = { al, cl, height };
     BoundBoxXYZ bb = { { al + 16, cl + 16, height }, { 24, 24, 90 } };
 
-    auto supportImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].supports);
-    auto armImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].additional);
+    auto supportImageTemplate = ImageId(0, ride.trackColours[0].main, ride.trackColours[0].supports);
+    auto armImageTemplate = ImageId(0, ride.trackColours[0].main, ride.trackColours[0].additional);
     if (stationColour != TrackStationColour)
     {
         supportImageTemplate = stationColour;
@@ -193,7 +193,7 @@ static void PaintTopSpin(
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 

@@ -246,7 +246,7 @@ void SetupInUseSelectionFlags()
     for (auto& ride : GetRideManager())
     {
         Editor::SetSelectedObject(ObjectType::ride, ride.subtype, ObjectSelectionFlags::InUse);
-        Editor::SetSelectedObject(ObjectType::station, ride.entrance_style, ObjectSelectionFlags::InUse);
+        Editor::SetSelectedObject(ObjectType::station, ride.entranceStyle, ObjectSelectionFlags::InUse);
         Editor::SetSelectedObject(ObjectType::music, ride.music, ObjectSelectionFlags::InUse);
     }
 

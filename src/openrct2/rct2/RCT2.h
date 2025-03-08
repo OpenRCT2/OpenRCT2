@@ -230,7 +230,7 @@ namespace OpenRCT2::RCT2
         {
             struct
             {
-                uint8_t ReliabilitySubvalue;   // 0x196, 0 - 255, acts like the decimals for reliability_percentage
+                uint8_t ReliabilitySubvalue;   // 0x196, 0 - 255, acts like the decimals for reliabilityPercentage
                 uint8_t ReliabilityPercentage; // 0x197, Starts at 100 and decreases from there.
             };
             uint16_t Reliability; // 0x196

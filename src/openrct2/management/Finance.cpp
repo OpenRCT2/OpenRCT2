@@ -160,25 +160,25 @@ void FinancePayRideUpkeep()
 
     for (auto& ride : GetRideManager())
     {
-        if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
+        if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
         {
-            ride.Renew();
+            ride.renew();
         }
 
         if (ride.status != RideStatus::closed && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            auto upkeep = ride.upkeep_cost;
+            auto upkeep = ride.upkeepCost;
             if (upkeep != kMoney64Undefined)
             {
-                ride.total_profit -= upkeep;
-                ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+                ride.totalProfit -= upkeep;
+                ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
                 FinancePayment(upkeep, ExpenditureType::RideRunningCosts);
             }
         }
 
-        if (ride.last_crash_type != RIDE_CRASH_TYPE_NONE)
+        if (ride.lastCrashType != RIDE_CRASH_TYPE_NONE)
         {
-            ride.last_crash_type--;
+            ride.lastCrashType--;
         }
     }
 }
@@ -271,9 +271,9 @@ void FinanceUpdateDailyProfit()
         // Ride costs
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::closed && ride.upkeep_cost != kMoney64Undefined)
+            if (ride.status != RideStatus::closed && ride.upkeepCost != kMoney64Undefined)
             {
-                current_profit -= 2 * ride.upkeep_cost;
+                current_profit -= 2 * ride.upkeepCost;
             }
         }
     }

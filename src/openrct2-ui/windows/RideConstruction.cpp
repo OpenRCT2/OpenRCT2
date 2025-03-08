@@ -256,13 +256,13 @@ namespace OpenRCT2::Ui::Windows
             _currentColourScheme = RideColourScheme::main;
             _currentSeatRotationAngle = 4;
 
-            _currentlySelectedTrack = currentRide->GetRideTypeDescriptor().StartTrackPiece;
+            _currentlySelectedTrack = currentRide->getRideTypeDescriptor().StartTrackPiece;
             _currentTrackPitchEnd = TrackPitch::None;
             _currentTrackRollEnd = TrackRoll::None;
             _currentTrackHasLiftHill = false;
             _currentTrackAlternative.clearAll();
 
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
+            if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
                 _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
             _previousTrackRollEnd = TrackRoll::None;
@@ -318,7 +318,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                currentRide->SetToDefaultInspectionInterval();
+                currentRide->setToDefaultInspectionInterval();
                 auto intent = Intent(WindowClass::Ride);
                 intent.PutExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
                 ContextOpenIntent(&intent);
@@ -341,7 +341,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            const auto& rtd = currentRide->GetRideTypeDescriptor();
+            const auto& rtd = currentRide->getRideTypeDescriptor();
             const auto currentTrackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
             uint64_t disabledWidgets = 0;
@@ -413,7 +413,7 @@ namespace OpenRCT2::Ui::Windows
             if (!IsTrackEnabled(TrackGroup::slope) && !IsTrackEnabled(TrackGroup::slopeSteepDown)
                 && !IsTrackEnabled(TrackGroup::slopeSteepUp))
             {
-                if (!currentRide->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
+                if (!currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                 {
                     // Disable all slopes
                     disabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_SLOPE_DOWN_STEEP)
@@ -434,7 +434,7 @@ namespace OpenRCT2::Ui::Windows
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
                 }
             }
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
+            if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && !GetGameState().Cheats.enableAllDrawableTrackPieces)
             {
                 // Disable lift hill toggle and banking if current track piece is uphill
@@ -805,7 +805,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
                     | (1uLL << WIDX_SLOPE_DOWN_STEEP);
-                if (currentRide->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
+                if (currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                 {
                     disabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
                         | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
@@ -819,7 +819,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
                     | (1uLL << WIDX_SLOPE_UP_STEEP);
-                if (currentRide->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
+                if (currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                 {
                     disabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
                         | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
@@ -867,7 +867,7 @@ namespace OpenRCT2::Ui::Windows
                     if (_currentlySelectedTrack == TrackCurve::LeftSmall || _currentlySelectedTrack == TrackCurve::RightSmall)
                     {
                         if (_currentTrackPitchEnd == TrackPitch::None && _previousTrackRollEnd != TrackRoll::None
-                            && (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
+                            && (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                                 || GetGameState().Cheats.enableAllDrawableTrackPieces))
                         {
                             disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
@@ -1258,7 +1258,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _currentTrackRollEnd = TrackRoll::None;
                     }
-                    if (currentRide->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
+                    if (currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                     {
                         if (_rideConstructionState == RideConstructionState::Front
                             && _currentlySelectedTrack == TrackCurve::None)
@@ -1544,7 +1544,7 @@ namespace OpenRCT2::Ui::Windows
             StringId stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
             if (_currentlySelectedTrack.isTrackType)
             {
-                const auto& rtd = currentRide->GetRideTypeDescriptor();
+                const auto& rtd = currentRide->getRideTypeDescriptor();
                 const auto& ted = GetTrackElementDescriptor(_currentlySelectedTrack.trackType);
                 stringId = ted.description;
                 if (stringId == STR_RAPIDS && rtd.Category != RideCategory::water)
@@ -1574,7 +1574,7 @@ namespace OpenRCT2::Ui::Windows
             // Simulate button
             auto& simulateWidget = widgets[WIDX_SIMULATE];
             simulateWidget.type = WindowWidgetType::Empty;
-            if (currentRide->SupportsStatus(RideStatus::simulating))
+            if (currentRide->supportsStatus(RideStatus::simulating))
             {
                 simulateWidget.type = WindowWidgetType::FlatBtn;
                 if (currentRide->status == RideStatus::simulating)
@@ -1588,7 +1588,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Set window title arguments
-            currentRide->FormatNameTo(ft);
+            currentRide->formatNameTo(ft);
         }
 
         static void OnDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets)
@@ -1677,7 +1677,7 @@ namespace OpenRCT2::Ui::Windows
 
             hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
                 | (1u << WIDX_PREVIOUS_SECTION);
-            if (rtd.HasFlag(RtdFlag::isShopOrFacility) || !currentRide->HasStation())
+            if (rtd.HasFlag(RtdFlag::isShopOrFacility) || !currentRide->hasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
                 widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
@@ -1795,7 +1795,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& gameState = GetGameState();
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
+            if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && (_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
                 && !gameState.Cheats.enableAllDrawableTrackPieces)
             {
@@ -1804,7 +1804,7 @@ namespace OpenRCT2::Ui::Windows
 
             if ((IsTrackEnabled(TrackGroup::liftHill) && !_currentlySelectedTrack.isTrackType)
                 || (gameState.Cheats.enableChainLiftOnAllTrack
-                    && currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
+                    && currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
             {
                 widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
             }
@@ -2407,7 +2407,7 @@ namespace OpenRCT2::Ui::Windows
                     if (currentRide != nullptr)
                     {
                         // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
-                        const auto& rtd = currentRide->GetRideTypeDescriptor();
+                        const auto& rtd = currentRide->getRideTypeDescriptor();
                         if (rtd.HasFlag(RtdFlag::isFlatRide) && !rtd.HasFlag(RtdFlag::isShopOrFacility))
                         {
                             RideInitialiseConstructionWindow(*currentRide);
@@ -2548,7 +2548,7 @@ namespace OpenRCT2::Ui::Windows
                     auto currentRide = GetRide(_currentRideIndex);
                     if (currentRide != nullptr)
                     {
-                        const auto& rtd = currentRide->GetRideTypeDescriptor();
+                        const auto& rtd = currentRide->getRideTypeDescriptor();
                         if (rtd.Category != RideCategory::water)
                             trackPieceStringId = STR_LOG_BUMPS;
                     }
@@ -2613,7 +2613,7 @@ namespace OpenRCT2::Ui::Windows
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                 {
                     ToolCancel();
-                    if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                    if (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     {
                         windowMgr->CloseByClass(WindowClass::RideConstruction);
                     }
@@ -2705,9 +2705,9 @@ namespace OpenRCT2::Ui::Windows
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* rideEntry = currentRide->GetRideEntry();
+            const auto* rideEntry = currentRide->getRideEntry();
             auto clearanceHeight = (rideEntry != nullptr) ? rideEntry->Clearance
-                                                          : currentRide->GetRideTypeDescriptor().Heights.ClearanceHeight;
+                                                          : currentRide->getRideTypeDescriptor().Heights.ClearanceHeight;
 
             for (uint8_t i = 0; i < ted.numSequences; i++)
             {
@@ -2824,7 +2824,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
 
-        const auto& rtd = currentRide->GetRideTypeDescriptor();
+        const auto& rtd = currentRide->getRideTypeDescriptor();
         switch (rtd.ConstructionWindowContext)
         {
             case RideConstructionWindowContext::Maze:
@@ -3093,7 +3093,7 @@ namespace OpenRCT2::Ui::Windows
     {
         WindowRideConstructionUpdateEnabledTrackPieces();
         if (auto currentRide = GetRide(_currentRideIndex);
-            !currentRide || currentRide->GetRideTypeDescriptor().specialType == RtdSpecialType::maze)
+            !currentRide || currentRide->getRideTypeDescriptor().specialType == RtdSpecialType::maze)
         {
             return;
         }
@@ -3137,11 +3137,11 @@ namespace OpenRCT2::Ui::Windows
         if (ride == nullptr)
             return;
 
-        auto rideEntry = ride->GetRideEntry();
+        auto rideEntry = ride->getRideEntry();
         if (rideEntry == nullptr)
             return;
 
-        auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(ride->GetRideTypeDescriptor());
+        auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(ride->getRideTypeDescriptor());
         UpdateEnabledRideGroups(trackDrawerDescriptor);
     }
 
@@ -3327,7 +3327,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType != RtdSpecialType::maze)
         {
             auto* windowMgr = GetWindowManager();
@@ -3430,7 +3430,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
-            && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+            && ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         {
             PathElement* pathsByDir[kNumOrthogonalDirections];
 
@@ -3621,7 +3621,7 @@ namespace OpenRCT2::Ui::Windows
         // search for z value to build at, up to max ride height
         int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
         {
             for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
@@ -4728,7 +4728,7 @@ namespace OpenRCT2::Ui::Windows
             return kMoney64Undefined;
 
         RideConstructionRemoveGhosts();
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
         {
             int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
@@ -4760,7 +4760,7 @@ namespace OpenRCT2::Ui::Windows
         int16_t zBegin{}, zEnd{};
         const auto& ted = GetTrackElementDescriptor(trackType);
         const TrackCoordinates& coords = ted.coordinates;
-        if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
         {
             zBegin = coords.zBegin;
             zEnd = coords.zEnd;
@@ -4975,7 +4975,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         const auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
         if (trackDrawerDescriptor.HasCoveredPieces() && _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
         {
@@ -5111,7 +5111,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t y = _unkF440C5.y;
         int32_t z = _unkF440C5.z;
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
         {
             const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;

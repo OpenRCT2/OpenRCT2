@@ -515,7 +515,7 @@ static void SwapRideEntranceAndExit(RideId rideId)
     // Now, swap the entrance and exit.
     if (ride != nullptr)
     {
-        auto& station = ride->GetStation();
+        auto& station = ride->getStation();
         auto entranceCoords = station.Exit;
         auto exitCoords = station.Entrance;
         station.Entrance = entranceCoords;

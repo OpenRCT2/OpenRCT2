@@ -188,7 +188,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         _presetColours.list[i] = stream->ReadValue<VehicleColour>();
     }
 
-    if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
+    if (isRideTypeShopOrFacility(_legacyType.ride_type[0]))
     {
         // This used to be hard-coded. JSON objects set this themselves.
         _presetColours.count = 1;
@@ -555,7 +555,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         auto carColours = Json::AsArray(properties["carColours"]);
         _presetColours = ReadJsonCarColours(carColours);
 
-        if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
+        if (isRideTypeShopOrFacility(_legacyType.ride_type[0]))
         {
             // Standard car info for a shop
             auto& car = _legacyType.Cars[0];
@@ -962,7 +962,7 @@ std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColo
     return config;
 }
 
-bool RideObject::IsRideTypeShopOrFacility(ride_type_t rideType)
+bool RideObject::isRideTypeShopOrFacility(ride_type_t rideType)
 {
     return GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isShopOrFacility);
 }

@@ -95,7 +95,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
         heightDifference /= kCoordsZPerTinyZ;
 
         auto* ride = GetRide(_rideIndex);
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
             res.Error = GameActions::Status::TooHigh;
@@ -193,13 +193,13 @@ GameActions::Result MazePlaceTrackAction::Execute() const
 
     MapInvalidateTileFull(startLoc);
 
-    ride->maze_tiles++;
-    ride->GetStation().SetBaseZ(trackElement->GetBaseZ());
-    ride->GetStation().Start = { 0, 0 };
+    ride->mazeTiles++;
+    ride->getStation().SetBaseZ(trackElement->GetBaseZ());
+    ride->getStation().Start = { 0, 0 };
 
-    if (ride->maze_tiles == 1)
+    if (ride->mazeTiles == 1)
     {
-        ride->overall_view = startLoc;
+        ride->overallView = startLoc;
     }
 
     return res;
