@@ -126,7 +126,7 @@ namespace OpenRCT2::Scripting
 
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
 
-                    // Prevent infinite loops: Ensure next_vehicle_on_train is valid
+                    // Prevent infinite loops: Ensure next_vehicle_on_train is valid and not self-referencing
                     auto nextCarId = car->next_vehicle_on_train;
                     if (nextCarId.IsNull() || nextCarId == carId)
                     {
