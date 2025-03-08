@@ -120,7 +120,7 @@ namespace OpenRCT2::Scripting
                     auto car = GetEntity<Vehicle>(carId);
 
                     // Prevent crashes by checking if the car is valid
-                    if (!car)
+                    if (car == nullptr)
                     {
                         break; // If car is invalid, exit loop safely
                     }
