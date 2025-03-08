@@ -134,7 +134,7 @@ namespace OpenRCT2::Scripting
                         break;
                     }
 
-                    carId = nextCarId; // Move to the next car in the train
+                    carId = nextCarId;
                 }
             }
         }
