@@ -121,7 +121,7 @@ namespace OpenRCT2::Scripting
 
                     if (car == nullptr)
                     {
-                        break; // If car is invalid, exit loop safely
+                        break;
                     }
 
                     // Add the car to the result list
