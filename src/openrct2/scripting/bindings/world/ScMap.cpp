@@ -131,7 +131,7 @@ namespace OpenRCT2::Scripting
                     auto nextCarId = car->next_vehicle_on_train;
                     if (nextCarId.IsNull() || nextCarId == carId)
                     {
-                        break; // Stop if next car is invalid or self-referencing
+                        break;
                     }
 
                     carId = nextCarId; // Move to the next car in the train
