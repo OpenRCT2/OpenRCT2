@@ -124,7 +124,6 @@ namespace OpenRCT2::Scripting
                         break;
                     }
 
-                    // Add the car to the result list
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
 
                     // Prevent infinite loops: Ensure next_vehicle_on_train is valid
