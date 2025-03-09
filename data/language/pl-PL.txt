@@ -3792,3 +3792,10 @@ STR_6732    :Pokaż przycisk na pasku narzędzi do obracania widoku w kierunku p
 STR_6733    :Półprzezroczystość
 STR_6734    :Elementy mapy, które znajdują się na lub powyżej wysokości cięcia, są wyświetlane jako półprzezroczyste
 STR_6735    :Idź do katalogu nadrzędnego
+STR_6736    :Podgląd
+STR_6737    :Brak podglądu
+STR_6738    :{WINDOW_COLOUR_2}Atrakcyjność parku: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Data: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Gotówka: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Liczba atrakcji: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Liczba gości: {BLACK}{UINT16}
