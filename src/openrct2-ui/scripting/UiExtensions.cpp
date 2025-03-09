@@ -29,6 +29,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 {
     auto ctx = scriptEngine.GetContext();
 
+    // TODO (mber) remember to not add titleSequenceManager to plugin contexts and only add ui if !gOpenRCT2Headless
     dukglue_register_global(ctx, std::make_shared<ScTitleSequenceManager>(), "titleSequenceManager");
     dukglue_register_global(ctx, std::make_shared<ScUi>(scriptEngine), "ui");
 
