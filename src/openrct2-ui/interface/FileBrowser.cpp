@@ -363,6 +363,28 @@ namespace OpenRCT2::Ui::FileBrowser
                     }
                     case LoadSaveType::scenario:
                     {
+                        SetAndSaveConfigPath(Config::Get().general.LastSaveScenarioDirectory, pathBuffer);
+                        int32_t parkFlagsBackup = gameState.Park.Flags;
+                        gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                        gameState.EditorStep = EditorStep::Invalid;
+                        gameState.ScenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
+                        int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
+                        gameState.Park.Flags = parkFlagsBackup;
+
+                        if (success)
+                        {
+                            windowMgr->CloseByClass(WindowClass::Loadsave);
+                            InvokeCallback(ModalResult::ok, pathBuffer);
+
+                            auto* context = GetContext();
+                            context->SetActiveScene(context->GetTitleScene());
+                        }
+                        else
+                        {
+                            ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
+                            gameState.EditorStep = EditorStep::ObjectiveSelection;
+                            InvokeCallback(ModalResult::fail, pathBuffer);
+                        }
                         break;
                     }
                     case LoadSaveType::track:
