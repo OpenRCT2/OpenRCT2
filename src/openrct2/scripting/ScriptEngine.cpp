@@ -506,6 +506,22 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     // ScPlugin::Register(ctx);
 }
 
+JSContext* ScriptEngine::CreateContext() const
+{
+    JSContext* newCtx = JS_NewContext(_runtime);
+    if (!newCtx)
+    {
+        throw std::runtime_error("QuickJS: cannot allocate JS context\n");
+    }
+    InitialiseContext(newCtx);
+    return newCtx;
+}
+
+void ScriptEngine::FreeContext(JSContext* ctx) const
+{
+    JS_FreeContext(ctx);
+}
+
 void ScriptEngine::InitialiseContext(JSContext* ctx) const
 {
     JSValue glb = JS_GetGlobalObject(ctx);
@@ -693,7 +709,7 @@ void ScriptEngine::RegisterPlugin(std::string_view path)
 {
     try
     {
-        auto plugin = std::make_shared<Plugin>(_replContext, path);
+        auto plugin = std::make_shared<Plugin>(path);
 
         // We must load the plugin to get the metadata for it
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
@@ -757,7 +773,7 @@ void ScriptEngine::LoadTransientPlugins()
 
 void ScriptEngine::LoadPlugin(const std::string& path)
 {
-    auto plugin = std::make_shared<Plugin>(_replContext, path);
+    auto plugin = std::make_shared<Plugin>(path);
     LoadPlugin(plugin);
 }
 
@@ -1102,7 +1118,7 @@ void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::str
 
 void ScriptEngine::AddNetworkPlugin(std::string_view code)
 {
-    auto plugin = std::make_shared<Plugin>(_replContext, std::string());
+    auto plugin = std::make_shared<Plugin>(std::string());
     plugin->SetCode(code);
     _plugins.push_back(plugin);
 }

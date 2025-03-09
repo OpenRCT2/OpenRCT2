@@ -48,19 +48,21 @@ namespace OpenRCT2::Scripting
         PluginType Type{};
         int32_t MinApiVersion{};
         std::optional<int32_t> TargetApiVersion{};
-        JSValue Main;
+        JSValue Main = JS_UNDEFINED;
     };
 
     class Plugin
     {
     private:
-        JSContext* _context{};
+        JSContext* _context = nullptr;
         std::string _path;
         PluginMetadata _metadata{};
         std::string _code;
         bool _hasLoaded{};
         bool _hasStarted{};
         bool _isStopping{};
+
+        std::string TryGetString(JSValue value, const char* property, const std::string& message) const;
 
     public:
         std::string_view GetPath() const
@@ -77,6 +79,8 @@ namespace OpenRCT2::Scripting
         {
             return _metadata;
         }
+
+        void SetMetadata(JSValue obj);
 
         const std::string& GetCode() const
         {
@@ -101,7 +105,7 @@ namespace OpenRCT2::Scripting
         int32_t GetTargetAPIVersion() const;
 
         Plugin() = default;
-        Plugin(JSContext* context, std::string_view path);
+        explicit Plugin(std::string_view path);
         Plugin(const Plugin&) = delete;
         Plugin(Plugin&&) = delete;
 
@@ -111,7 +115,6 @@ namespace OpenRCT2::Scripting
         void StopBegin();
         void StopEnd();
 
-        void ThrowIfStopping() const;
         void Unload();
 
         bool IsTransient() const;
@@ -119,7 +122,6 @@ namespace OpenRCT2::Scripting
     private:
         void LoadCodeFromFile();
 
-        static PluginMetadata GetMetadata(JSValue dukMetadata);
         static PluginType ParsePluginType(std::string_view type);
         static void CheckForLicence(JSValue dukLicence, std::string_view pluginName);
     };
