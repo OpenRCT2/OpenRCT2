@@ -1047,18 +1047,18 @@ namespace OpenRCT2::Ui::Windows
         });
     }
 
-    bool WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize)
+    bool WindowSetResize(WindowBase& w, ScreenSize minSize, ScreenSize maxSize)
     {
+        if (Config::Get().interface.EnlargedUi)
+        {
+            minSize.height += kTitleHeightLarge - kTitleHeightNormal;
+            maxSize.height += kTitleHeightLarge - kTitleHeightNormal;
+        }
+
         w.min_width = minSize.width;
         w.min_height = minSize.height;
         w.max_width = maxSize.width;
         w.max_height = maxSize.height;
-
-        if (Config::Get().interface.EnlargedUi)
-        {
-            w.min_height += kTitleHeightLarge - kTitleHeightNormal;
-            w.max_height += kTitleHeightLarge - kTitleHeightNormal;
-        }
 
         // Clamp width and height to minimum and maximum
         int16_t width = std::clamp<int16_t>(
