@@ -453,6 +453,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowSetResize(*this, minSize, maxSize);
             ResizeFrameWithPage();
+            WindowSetResize(*this, minSize, maxSize);
         }
 
         void OnPrepareDrawCommon()
