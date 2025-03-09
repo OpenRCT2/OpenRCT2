@@ -14,16 +14,6 @@
 #include <array>
 #include <cstdint>
 
-// TODO: refactor usage and remove
-enum class ClimateType : uint8_t
-{
-    CoolAndWet,
-    Warm,
-    HotAndDry,
-    Cold,
-    Count
-};
-
 enum class WeatherType : uint8_t
 {
     Sunny,

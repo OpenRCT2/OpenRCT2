@@ -864,7 +864,7 @@ namespace OpenRCT2
                 if (version < kClimateObjectsVersion)
                 {
                     // Legacy climate is converted elsewhere, so we can skip it here.
-                    cs.Ignore<ClimateType>();
+                    cs.Ignore<RCT12::ClimateType>();
                 }
 
                 cs.ReadWrite(gameState.WeatherUpdateTimer);
