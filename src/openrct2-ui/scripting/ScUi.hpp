@@ -171,7 +171,11 @@ namespace OpenRCT2::Scripting
             auto& execInfo = _scriptEngine.GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
 
-            owner->ThrowIfStopping();
+            // TODO (mber) find out how to do something similar in quickjs.
+            if (IsStopping())
+            {
+                duk_error(_context, DUK_ERR_ERROR, "Plugin is stopping.");
+            }
 
             std::shared_ptr<ScWindow> scWindow = nullptr;
             auto w = WindowCustomOpen(owner, desc);

@@ -154,6 +154,8 @@ namespace OpenRCT2::Scripting
         std::list<std::shared_ptr<ScSocketBase>> _sockets;
     #endif
 
+        void InitialiseContext(JSContext* ctx) const;
+
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
         ScriptEngine(ScriptEngine&) = delete;
@@ -203,7 +205,8 @@ namespace OpenRCT2::Scripting
         void SetParkStorageFromJSON(std::string_view value);
 
         void Initialise();
-        void InitialiseContext(JSContext* ctx) const;
+        JSContext* CreateContext() const;
+        void FreeContext(JSContext* ctx) const;
         void LoadTransientPlugins();
         void UnloadTransientPlugins();
         void StopUnloadRegisterAllPlugins();
