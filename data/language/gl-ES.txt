@@ -3214,7 +3214,7 @@ STR_6102    :O valor dunha atracción non diminúe co paso do tempo, polo que os
 STR_6103    :Esta opción está desactivada durante unha partida multixogador.
 STR_6105    :Hiper montaña rusa
 STR_6107    :Camións Monstro
-STR_6109    :Hyper-Twister
+STR_6109    :Montaña Rusa Hiper-Twister
 STR_6111    :Mini montaña rusa clásica
 STR_6113    :Unha montaña rusa alta e non invertible con grandes caídas, coches de alta velocidade e cómodos con só unhas poucas barras para agarrarse
 STR_6115    :Camións 4x4 autopropulsados ​​xigantes que poden escalar outeiros impresionantes
@@ -3769,6 +3769,8 @@ STR_6707    :(Ningún escollido)
 STR_6708    :Intensidade de suavizado
 STR_6709    :Introduce a intensidade de suavizado entre {COMMA16} e {COMMA16}
 STR_6710    :Ordenación estable
+STR_6711    :Nome do ficheiro:
+STR_6712    :Gardar
 STR_6713    :{COMMA32} {STRINGID}
 STR_6714    :Nome do ficheiro
 STR_6715    :Data de modificación
@@ -3786,3 +3788,9 @@ STR_6726    :Y:
 STR_6727    :Bucle de mergullo (esquerda)
 STR_6728    :Loop de mergullo (dereita)
 STR_6729    :A subida da telecadeira debe comezar inmediatamente despois da estación ou do freno de bloqueo
+STR_6730    :Exportar datos de Emscripten
+STR_6731    :Importar datos de Emscripten
+STR_6732    :Amosar un botón na barra de ferramentas para xirar a vista en sentido antihorario
+STR_6733    :Translúcido
+STR_6734    :Os elementos do mapa que están a altura de corte ou por riba renderízanse translúcidos.
+STR_6735    :Sube ao cartafol principal

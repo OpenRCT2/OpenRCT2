@@ -3799,3 +3799,13 @@ STR_6730    :Exporter les données emscripten
 STR_6731    :Importer les données emscripten
 STR_6732    :Afficher un bouton dans la barre d’outils pour tourner la vue dans le sens inverse des aiguilles d’une montre
 
+STR_6733    :Translucide
+STR_6734    :Rend translucides les éléments de carte à la hauteur de coupe ou au-dessus
+STR_6735    :Aller au dossier parent
+STR_6736    :Aperçu
+STR_6737    :Pas d’aperçu disponible
+STR_6738    :{WINDOW_COLOUR_2}Évaluation : {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Date : {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Argent : {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Attractions : {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Visiteurs : {BLACK}{UINT16}
