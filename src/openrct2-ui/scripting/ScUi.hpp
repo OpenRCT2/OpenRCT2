@@ -9,7 +9,7 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../windows/Windows.h"
     #include "CustomMenu.h"
@@ -24,7 +24,6 @@
     #include <openrct2/Input.h>
     #include <openrct2/scenario/Scenario.h>
     #include <openrct2/scenario/ScenarioRepository.h>
-    #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <string>
 
@@ -35,34 +34,41 @@ namespace OpenRCT2::Scripting
 
 namespace OpenRCT2::Ui::Windows
 {
-    WindowBase* WindowCustomOpen(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
+    WindowBase* WindowCustomOpen(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, JSValue desc);
 }
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<ScenarioCategory> ScenarioCategoryMap({
-        { "beginner", ScenarioCategory::beginner },
-        { "challenging", ScenarioCategory::challenging },
-        { "expert", ScenarioCategory::expert },
-        { "real", ScenarioCategory::real },
-        { "other", ScenarioCategory::other },
-        { "dlc", ScenarioCategory::dlc },
-        { "build_your_own", ScenarioCategory::buildYourOwn },
-        { "competitions", ScenarioCategory::competitions },
+    class ScUi;
+    extern ScUi gScUi;
+    class ScTool;
+    extern ScTool gScTool;
+
+    // TODO (mber) consider EnumMaps
+    static constexpr std::array ScenarioCategoryMap = std::to_array({
+        std::make_tuple("beginner", ScenarioCategory::beginner),
+        std::make_tuple("challenging", ScenarioCategory::challenging),
+        std::make_tuple("expert", ScenarioCategory::expert),
+        std::make_tuple("real", ScenarioCategory::real),
+        std::make_tuple("other", ScenarioCategory::other),
+        std::make_tuple("dlc", ScenarioCategory::dlc),
+        std::make_tuple("build_your_own", ScenarioCategory::buildYourOwn),
+        std::make_tuple("competitions", ScenarioCategory::competitions),
     });
 
-    static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
-        { "rct1", ScenarioSource::RCT1 },
-        { "rct1_aa", ScenarioSource::RCT1_AA },
-        { "rct1_ll", ScenarioSource::RCT1_LL },
-        { "rct2", ScenarioSource::RCT2 },
-        { "rct2_ww", ScenarioSource::RCT2_WW },
-        { "rct2_tt", ScenarioSource::RCT2_TT },
-        { "real", ScenarioSource::Real },
-        { "extras", ScenarioSource::Extras },
-        { "other", ScenarioSource::Other },
+    static constexpr std::array ScenarioSourceMap = std::to_array({
+        std::make_tuple("rct1", ScenarioSource::RCT1),
+        std::make_tuple("rct1_aa", ScenarioSource::RCT1_AA),
+        std::make_tuple("rct1_ll", ScenarioSource::RCT1_LL),
+        std::make_tuple("rct2", ScenarioSource::RCT2),
+        std::make_tuple("rct2_ww", ScenarioSource::RCT2_WW),
+        std::make_tuple("rct2_tt", ScenarioSource::RCT2_TT),
+        std::make_tuple("real", ScenarioSource::Real),
+        std::make_tuple("extras", ScenarioSource::Extras),
+        std::make_tuple("other", ScenarioSource::Other),
     });
 
+    /*
     template<>
     inline DukValue ToDuk(duk_context* ctx, const ScenarioCategory& value)
     {
@@ -80,91 +86,97 @@ namespace OpenRCT2::Scripting
             return ToDuk(ctx, entry->first);
         return ToDuk(ctx, ScenarioSourceMap[ScenarioSource::Other]);
     }
-
-    class ScTool
+    */
+    class ScTool final : public ScBase
     {
     private:
-        duk_context* _ctx{};
-
-    public:
-        ScTool(duk_context* ctx)
-            : _ctx(ctx)
+        static JSValue id_get(JSContext* ctx, JSValue thisVal)
         {
+            return JS_NewString(ctx, ActiveCustomTool ? ActiveCustomTool->Id.c_str() : "");
         }
 
-        static void Register(duk_context* ctx)
+        static JSValue cursor_get(JSContext* ctx, JSValue thisVal)
         {
-            dukglue_register_property(ctx, &ScTool::id_get, nullptr, "id");
-            dukglue_register_property(ctx, &ScTool::cursor_get, nullptr, "cursor");
-            dukglue_register_method(ctx, &ScTool::cancel, "cancel");
+            return CursorIDToJSValue(ctx, static_cast<CursorID>(gCurrentToolId));
         }
 
-    private:
-        std::string id_get() const
-        {
-            return ActiveCustomTool ? ActiveCustomTool->Id : "";
-        }
-
-        DukValue cursor_get() const
-        {
-            return ToDuk(_ctx, static_cast<CursorID>(gCurrentToolId));
-        }
-
-        void cancel()
+        static JSValue cancel(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             ToolCancel();
+            return JS_UNDEFINED;
+        }
+
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("id", ScTool::id_get, nullptr),
+            JS_CGETSET_DEF("cursor", ScTool::cursor_get, nullptr),
+            JS_CFUNC_DEF("cancel", 0, ScTool::cancel),
+        };
+
+    public:
+        JSValue New(JSContext* ctx)
+        {
+            return MakeWithOpaque(ctx, funcs, nullptr);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Tool");
         }
     };
 
-    class ScUi
+    class ScUi final : public ScBase
     {
     private:
-        ScriptEngine& _scriptEngine;
-
-    public:
-        ScUi(ScriptEngine& scriptEngine)
-            : _scriptEngine(scriptEngine)
+        static JSValue width_get(JSContext* ctx, JSValue thisVal)
         {
+            return JS_NewInt32(ctx, ContextGetWidth());
+        }
+        static JSValue height_get(JSContext* ctx, JSValue thisVal)
+        {
+            return JS_NewInt32(ctx, ContextGetHeight());
+        }
+        static JSValue windows_get(JSContext* ctx, JSValue thisVal)
+        {
+            return JS_NewInt32(ctx, static_cast<int32_t>(g_window_list.size()));
         }
 
-    private:
-        int32_t width_get() const
+        static JSValue mainViewport_get(JSContext* ctx, JSValue thisVal)
         {
-            return ContextGetWidth();
-        }
-        int32_t height_get() const
-        {
-            return ContextGetHeight();
-        }
-        int32_t windows_get() const
-        {
-            return static_cast<int32_t>(g_window_list.size());
+            // TODO (mber)
+            return JS_NewString(ctx, "not yet implemented");
+
+            // return std::make_shared<ScViewport>(WindowClass::MainWindow);
         }
 
-        std::shared_ptr<ScViewport> mainViewport_get() const
+        static JSValue tileSelection_get(JSContext* ctx, JSValue thisVal)
         {
-            return std::make_shared<ScViewport>(WindowClass::MainWindow);
+            // TODO (mber)
+            return JS_NewString(ctx, "not yet implemented");
+
+            // return std::make_shared<ScTileSelection>(_scriptEngine.GetContext());
         }
 
-        std::shared_ptr<ScTileSelection> tileSelection_get() const
+        static JSValue tool_get(JSContext* ctx, JSValue thisVal)
         {
-            return std::make_shared<ScTileSelection>(_scriptEngine.GetContext());
+            // TODO (mber)
+            return JS_NewString(ctx, "not yet implemented");
+
+            // if (gInputFlags.has(InputFlag::toolActive))
+            // {
+            //     return std::make_shared<ScTool>(_scriptEngine.GetContext());
+            // }
+            // return {};
         }
 
-        std::shared_ptr<ScTool> tool_get() const
+        static JSValue imageManager_get(JSContext* ctx, JSValue thisVal)
         {
-            if (gInputFlags.has(InputFlag::toolActive))
-            {
-                return std::make_shared<ScTool>(_scriptEngine.GetContext());
-            }
-            return {};
+            // TODO (mber)
+            return JS_NewString(ctx, "not yet implemented");
+
+            // return std::make_shared<ScImageManager>(_scriptEngine.GetContext());
         }
 
-        std::shared_ptr<ScImageManager> imageManager_get() const
-        {
-            return std::make_shared<ScImageManager>(_scriptEngine.GetContext());
-        }
-
+        /*
         std::shared_ptr<ScWindow> openWindow(DukValue desc)
         {
             using namespace OpenRCT2::Ui::Windows;
@@ -236,12 +248,22 @@ namespace OpenRCT2::Scripting
             }
             return {};
         }
-
-        void showError(const std::string& title, const std::string& message)
+        */
+        static JSValue showError(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            ErrorOpen(title, message);
+            if (argc < 2 || !JS_IsString(argv[0]) || !JS_IsString(argv[1]))
+            {
+                JS_ThrowTypeError(ctx, "Invalid arguments");
+                return JS_EXCEPTION;
+            }
+            const char* title = JS_ToCString(ctx, argv[0]);
+            const char* message = JS_ToCString(ctx, argv[1]);
+            Ui::Windows::ErrorOpen(title, message);
+            JS_FreeCString(ctx, title);
+            JS_FreeCString(ctx, message);
+            return JS_UNDEFINED;
         }
-
+        /*
         void showTextInput(const DukValue& desc)
         {
             try
@@ -318,20 +340,42 @@ namespace OpenRCT2::Scripting
                 _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
             });
         }
-
-        void activateTool(const DukValue& desc)
+        */
+        static JSValue activateTool(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            InitialiseCustomTool(_scriptEngine, desc);
+            ScriptEngine* scriptEngine = gScUi.GetOpaque<ScriptEngine*>(thisVal);
+            if (!scriptEngine)
+            {
+                JS_ThrowInternalError(ctx, "No script engine");
+                return JS_EXCEPTION;
+            }
+            return InitialiseCustomTool(*scriptEngine, ctx, argv[0]);
         }
 
-        void registerMenuItem(std::string text, DukValue callback)
+        static JSValue registerMenuItem(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto& execInfo = _scriptEngine.GetExecInfo();
+            ScriptEngine* scriptEngine = gScUi.GetOpaque<ScriptEngine*>(thisVal);
+            if (!scriptEngine)
+            {
+                JS_ThrowInternalError(ctx, "No script engine");
+                return JS_EXCEPTION;
+            }
+            if (argc < 2 || !JS_IsString(argv[0]) || !JS_IsFunction(ctx, argv[1]))
+            {
+                JS_ThrowTypeError(ctx, "Invalid arguments");
+                return JS_EXCEPTION;
+            }
+            auto& execInfo = scriptEngine->GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
-            CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Standard, text, callback);
+            const char* text = JS_ToCString(ctx, argv[0]);
+            assert(owner->GetContext() == ctx);
+            CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Standard, text, JSCallback(ctx, argv[1]));
             std::ranges::sort(CustomMenuItems, [](auto&& a, auto&& b) { return a.Text < b.Text; });
-        }
+            JS_FreeCString(ctx, text);
 
+            return JS_UNDEFINED;
+        }
+        /*
         void registerToolboxMenuItem(const std::string& text, DukValue callback)
         {
             auto& execInfo = _scriptEngine.GetExecInfo();
@@ -374,29 +418,37 @@ namespace OpenRCT2::Scripting
                 duk_error(_scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid parameters.");
             }
         }
+        */
+
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("height", ScUi::height_get, nullptr), JS_CGETSET_DEF("width", ScUi::width_get, nullptr),
+            JS_CGETSET_DEF("windows", ScUi::windows_get, nullptr),
+            JS_CGETSET_DEF("mainViewport", ScUi::mainViewport_get, nullptr),
+            JS_CGETSET_DEF("tileSelection", ScUi::tileSelection_get, nullptr), JS_CGETSET_DEF("tool", ScUi::tool_get, nullptr),
+            JS_CGETSET_DEF("imageManager", ScUi::imageManager_get, nullptr),
+
+            // dukglue_register_method(ctx, &ScUi::openWindow, "openWindow"),
+            // dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows"),
+            // dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows"),
+            // dukglue_register_method(ctx, &ScUi::getWindow, "getWindow"),
+            JS_CFUNC_DEF("showError", 2, ScUi::showError),
+            // dukglue_register_method(ctx, &ScUi::showTextInput, "showTextInput"),
+            // dukglue_register_method(ctx, &ScUi::showFileBrowse, "showFileBrowse"),
+            // dukglue_register_method(ctx, &ScUi::showScenarioSelect, "showScenarioSelect"),
+            JS_CFUNC_DEF("activateTool", 1, ScUi::activateTool), JS_CFUNC_DEF("registerMenuItem", 2, ScUi::registerMenuItem),
+            // dukglue_register_method(ctx, &ScUi::registerToolboxMenuItem, "registerToolboxMenuItem"),
+            // dukglue_register_method(ctx, &ScUi::registerShortcut, "registerShortcut"),
+        };
 
     public:
-        static void Register(duk_context* ctx)
+        JSValue New(JSContext* ctx, ScriptEngine* scriptEngine)
         {
-            dukglue_register_property(ctx, &ScUi::height_get, nullptr, "height");
-            dukglue_register_property(ctx, &ScUi::width_get, nullptr, "width");
-            dukglue_register_property(ctx, &ScUi::windows_get, nullptr, "windows");
-            dukglue_register_property(ctx, &ScUi::mainViewport_get, nullptr, "mainViewport");
-            dukglue_register_property(ctx, &ScUi::tileSelection_get, nullptr, "tileSelection");
-            dukglue_register_property(ctx, &ScUi::tool_get, nullptr, "tool");
-            dukglue_register_property(ctx, &ScUi::imageManager_get, nullptr, "imageManager");
-            dukglue_register_method(ctx, &ScUi::openWindow, "openWindow");
-            dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows");
-            dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows");
-            dukglue_register_method(ctx, &ScUi::getWindow, "getWindow");
-            dukglue_register_method(ctx, &ScUi::showError, "showError");
-            dukglue_register_method(ctx, &ScUi::showTextInput, "showTextInput");
-            dukglue_register_method(ctx, &ScUi::showFileBrowse, "showFileBrowse");
-            dukglue_register_method(ctx, &ScUi::showScenarioSelect, "showScenarioSelect");
-            dukglue_register_method(ctx, &ScUi::activateTool, "activateTool");
-            dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
-            dukglue_register_method(ctx, &ScUi::registerToolboxMenuItem, "registerToolboxMenuItem");
-            dukglue_register_method(ctx, &ScUi::registerShortcut, "registerShortcut");
+            return MakeWithOpaque(ctx, funcs, scriptEngine);
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Ui");
         }
 
     private:
@@ -405,38 +457,40 @@ namespace OpenRCT2::Scripting
             return WindowClass::Null;
         }
 
-        DukValue GetScenarioFile(std::string_view path)
+        /*
+    DukValue GetScenarioFile(std::string_view path)
+    {
+        auto ctx = _scriptEngine.GetContext();
+        DukObject obj(ctx);
+        obj.Set("path", path);
+
+        auto* scenarioRepo = GetScenarioRepository();
+        auto entry = scenarioRepo->GetByPath(std::string(path).c_str());
+        if (entry != nullptr)
         {
-            auto ctx = _scriptEngine.GetContext();
-            DukObject obj(ctx);
-            obj.Set("path", path);
+            obj.Set("id", entry->ScenarioId);
+            obj.Set("category", ToDuk(ctx, entry->Category));
+            obj.Set("sourceGame", ToDuk(ctx, entry->SourceGame));
+            obj.Set("internalName", entry->InternalName);
+            obj.Set("name", entry->Name);
+            obj.Set("details", entry->Details);
 
-            auto* scenarioRepo = GetScenarioRepository();
-            auto entry = scenarioRepo->GetByPath(std::string(path).c_str());
-            if (entry != nullptr)
+            auto* highscore = entry->Highscore;
+            if (highscore == nullptr)
             {
-                obj.Set("id", entry->ScenarioId);
-                obj.Set("category", ToDuk(ctx, entry->Category));
-                obj.Set("sourceGame", ToDuk(ctx, entry->SourceGame));
-                obj.Set("internalName", entry->InternalName);
-                obj.Set("name", entry->Name);
-                obj.Set("details", entry->Details);
-
-                auto* highscore = entry->Highscore;
-                if (highscore == nullptr)
-                {
-                    obj.Set("highscore", nullptr);
-                }
-                else
-                {
-                    DukObject dukHighscore(ctx);
-                    dukHighscore.Set("name", highscore->name);
-                    dukHighscore.Set("companyValue", highscore->company_value);
-                    obj.Set("highscore", dukHighscore.Take());
-                }
+                obj.Set("highscore", nullptr);
             }
-            return obj.Take();
+            else
+            {
+                DukObject dukHighscore(ctx);
+                dukHighscore.Set("name", highscore->name);
+                dukHighscore.Set("companyValue", highscore->company_value);
+                obj.Set("highscore", dukHighscore.Take());
+            }
         }
+        return obj.Take();
+    }
+    */
     };
 } // namespace OpenRCT2::Scripting
 

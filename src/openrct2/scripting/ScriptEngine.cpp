@@ -137,7 +137,7 @@ private:
             {
                 StringifyFunction(val);
             }
-            else if (JS_IsArray(_context, val))
+            else if (JS_IsArray(val))
             {
                 StringifyArray(val, canStartWithNewLine, nestLevel);
             }
@@ -424,7 +424,7 @@ void ScriptEngine::Initialise()
 
     #ifndef NDEBUG
         // Dump JS engine memory leaks
-        JS_SetDumpFlags(_runtime, 0x4000);
+        JS_SetDumpFlags(_runtime, JS_DUMP_LEAKS);
     #endif
     }
 
@@ -514,6 +514,11 @@ JSContext* ScriptEngine::CreateContext() const
         throw std::runtime_error("QuickJS: cannot allocate JS context\n");
     }
     InitialiseContext(newCtx);
+
+    for (const auto& callback : _extensions)
+    {
+        callback(newCtx);
+    }
     return newCtx;
 }
 
@@ -1055,46 +1060,34 @@ std::future<void> ScriptEngine::Eval(const std::string& s)
     return future;
 }
 
-JSValue ScriptEngine::ExecutePluginCall(
+void ScriptEngine::ExecutePluginCall(
     const std::shared_ptr<Plugin>& plugin, const JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable)
 {
-    /*
-    duk_push_undefined(_context);
-    auto dukUndefined = DukValue::take_from_stack(_context);
-    return ExecutePluginCall(plugin, func, dukUndefined, args, isGameStateMutable);
-    */
-    return JSValue{};
+    ExecutePluginCall(plugin, func, JS_UNDEFINED, args, isGameStateMutable);
 }
 
 // Must pass plugin by-value, a JS function could destroy the original reference
-JSValue ScriptEngine::ExecutePluginCall(
+void ScriptEngine::ExecutePluginCall(
     std::shared_ptr<Plugin> plugin, const JSValue func, const JSValue thisValue, const std::vector<JSValue>& args,
     bool isGameStateMutable)
 {
-    /*
-    DukStackFrame frame(_context);
-    if (func.is_function() && plugin->HasStarted())
+    JSContext* ctx = plugin->GetContext();
+    if (JS_IsFunction(ctx, func) && plugin->HasStarted())
     {
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
-        func.push();
-        thisValue.push();
-        for (const auto& arg : args)
+        JSValue res = JS_Call(ctx, func, thisValue, args.size(), const_cast<JSValue*>(args.data()));
+        if (JS_IsException(res))
         {
-            arg.push();
+            JSValue exceptionVal = JS_GetException(ctx);
+            _console.WriteLineError(Stringify(ctx, exceptionVal));
+            JS_FreeValue(ctx, exceptionVal);
         }
-        auto result = duk_pcall_method(_context, static_cast<duk_idx_t>(args.size()));
-        if (result == DUK_EXEC_SUCCESS)
+        JS_FreeValue(ctx, res);
+        for (const JSValue& arg : args)
         {
-            return DukValue::take_from_stack(_context);
+            JS_FreeValue(ctx, arg);
         }
-
-        auto message = duk_safe_to_string(_context, -1);
-        LogPluginInfo(plugin, message);
-        duk_pop(_context);
     }
-    return DukValue();
-    */
-    return JSValue{};
 }
 
 void ScriptEngine::LogPluginInfo(std::string_view message)

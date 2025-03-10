@@ -11,6 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING_REFACTOR
 
+    #include "ScriptUtil.hpp"
+
     #include <optional>
     #include <quickjs.h>
     #include <string>
@@ -48,7 +50,7 @@ namespace OpenRCT2::Scripting
         PluginType Type{};
         int32_t MinApiVersion{};
         std::optional<int32_t> TargetApiVersion{};
-        JSValue Main = JS_UNDEFINED;
+        JSCallback Main;
     };
 
     class Plugin
@@ -68,7 +70,12 @@ namespace OpenRCT2::Scripting
         std::string_view GetPath() const
         {
             return _path;
-        };
+        }
+
+        JSContext* GetContext() const
+        {
+            return _context;
+        }
 
         bool HasPath() const
         {

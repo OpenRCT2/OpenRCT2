@@ -140,6 +140,7 @@ namespace OpenRCT2::Scripting
         std::unordered_set<std::string> _changedPluginFiles;
         std::mutex _changedPluginFilesMutex;
         std::vector<std::function<void(std::shared_ptr<Plugin>)>> _pluginStoppedSubscriptions;
+        std::vector<std::function<void(JSContext*)>> _extensions;
 
         struct CustomActionInfo
         {
@@ -212,9 +213,9 @@ namespace OpenRCT2::Scripting
         void StopUnloadRegisterAllPlugins();
         void Tick();
         std::future<void> Eval(const std::string& s);
-        JSValue ExecutePluginCall(
+        void ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable);
-        JSValue ExecutePluginCall(
+        void ExecutePluginCall(
             std::shared_ptr<Plugin> plugin, JSValue func, JSValue thisValue, const std::vector<JSValue>& args,
             bool isGameStateMutable);
 
@@ -224,6 +225,12 @@ namespace OpenRCT2::Scripting
         void SubscribeToPluginStoppedEvent(std::function<void(std::shared_ptr<Plugin>)> callback)
         {
             _pluginStoppedSubscriptions.push_back(callback);
+        }
+
+        void RegisterExtension(std::function<void(JSContext*)> callback)
+        {
+            _extensions.push_back(callback);
+            callback(_replContext);
         }
 
         void AddNetworkPlugin(std::string_view code);
@@ -327,6 +334,11 @@ namespace OpenRCT2::Scripting
             JSRuntime* rt = JS_GetRuntime(ctx);
             JS_NewClassID(rt, &classId);
             JS_NewClass(rt, classId, &classDef);
+        }
+
+        void RegisterBaseStr(JSContext* ctx, const char* className)
+        {
+            RegisterBase(ctx, { className, nullptr, nullptr, nullptr, nullptr });
         }
     };
 

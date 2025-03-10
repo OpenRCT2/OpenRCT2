@@ -22,8 +22,6 @@ namespace OpenRCT2::Scripting
     class ScConsole final : public ScBase
     {
     private:
-        static constexpr JSClassDef classDef = { "Console", nullptr, nullptr, nullptr, nullptr };
-
         static JSValue clear(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             if (const auto console = gScConsole.GetOpaque<InteractiveConsole*>(thisVal))
@@ -77,7 +75,7 @@ namespace OpenRCT2::Scripting
 
         void Register(JSContext* ctx)
         {
-            RegisterBase(ctx, classDef);
+            RegisterBaseStr(ctx, "Console");
         }
     };
 } // namespace OpenRCT2::Scripting
