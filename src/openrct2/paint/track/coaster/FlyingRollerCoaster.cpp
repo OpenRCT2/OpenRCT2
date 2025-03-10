@@ -213,19 +213,23 @@ static void FlyingRCTrackHalfLoopInvertedUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 62, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 62, false,
+                        session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 62, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 62, false,
+                        session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 62, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 62, false,
+                        session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 62, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 62, false,
+                        session.SupportColours);
                     break;
             }
 
@@ -548,28 +552,28 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
                         session, direction, session.TrackColours.WithIndex(27645), { 0, 0, height - 4 },
                         { { 0, 16, height + 32 }, { 32, 24, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27652), { 0, 0, height - 4 },
                         { { 0, 16, height + 32 }, { 32, 24, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27659), { 0, 0, height - 4 },
                         { { 0, 0, height + 32 }, { 32, 24, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27666), { 0, 0, height - 4 },
                         { { 0, 0, height + 32 }, { 32, 24, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, false, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -799,28 +803,28 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
                         session, direction, session.TrackColours.WithIndex(27694), { 0, 0, height - 4 },
                         { { 0, 0, height + 32 }, { 32, 24, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, false, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27687), { 0, 0, height - 4 },
                         { { 0, 0, height + 32 }, { 32, 24, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, false, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27680), { 0, 0, height - 4 },
                         { { 0, 16, height + 32 }, { 32, 24, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, false, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27673), { 0, 0, height - 4 },
                         { { 0, 16, height + 32 }, { 32, 24, 0 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, false, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
