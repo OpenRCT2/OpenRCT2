@@ -300,7 +300,7 @@ static inline MetalSupportGraphic RotateMetalSupportGraphic(const MetalSupportTy
  */
 static bool MetalASupportsPaintSetup(
     PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
-    const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate)
+    const int32_t special, const int32_t height, const bool drawCap, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -319,35 +319,36 @@ static bool MetalASupportsPaintSetup(
     uint8_t segment = EnumValue(placement);
     auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
-    const int16_t originalHeight = height;
     const auto combinedHeight = height + special;
     const auto originalSegment = segment;
 
-    uint16_t segmentHeight = 0xFFFF;
-    if (height < supportSegments[segment].height)
-    {
-        segmentHeight = height;
+    int32_t currentHeight = height;
 
-        height -= supportTypeToHeight[supportType];
-        if (height < 0)
+    uint16_t segmentHeight = 0xFFFF;
+    if (currentHeight < supportSegments[segment].height)
+    {
+        segmentHeight = currentHeight;
+
+        currentHeight -= supportTypeToHeight[supportType];
+        if (currentHeight < 0)
             return false;
 
         const uint8_t* esi = &(_97AF32[session.CurrentRotation * 2]);
 
         uint8_t newSegment = esi[segment * 8];
-        if (height <= supportSegments[newSegment].height)
+        if (currentHeight <= supportSegments[newSegment].height)
         {
             esi += kMetalSupportSkip;
             newSegment = esi[segment * 8];
-            if (height <= supportSegments[newSegment].height)
+            if (currentHeight <= supportSegments[newSegment].height)
             {
                 esi += kMetalSupportSkip;
                 newSegment = esi[segment * 8];
-                if (height <= supportSegments[newSegment].height)
+                if (currentHeight <= supportSegments[newSegment].height)
                 {
                     esi += kMetalSupportSkip;
                     newSegment = esi[segment * 8];
-                    if (height <= supportSegments[newSegment].height)
+                    if (currentHeight <= supportSegments[newSegment].height)
                     {
                         return false;
                     }
@@ -357,7 +358,7 @@ static bool MetalASupportsPaintSetup(
 
         uint8_t ebp = esi[segment * 8 + 1];
 
-        auto offset = CoordsXYZ{ SupportBoundBoxes[segment] + Loc97B052[ebp], height };
+        auto offset = CoordsXYZ{ SupportBoundBoxes[segment] + Loc97B052[ebp], currentHeight };
         auto boundBoxLength = CoordsXYZ(_97B062[ebp], 1);
 
         auto image_id = imageTemplate.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]);
@@ -365,11 +366,11 @@ static bool MetalASupportsPaintSetup(
 
         segment = newSegment;
     }
-    int16_t si = height;
-    if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery || height - supportSegments[segment].height < 6
+    int16_t si = currentHeight;
+    if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery || currentHeight - supportSegments[segment].height < 6
         || kSupportBasesAndBeams[supportType].base == kImageIndexUndefined)
     {
-        height = supportSegments[segment].height;
+        currentHeight = supportSegments[segment].height;
     }
     else
     {
@@ -382,7 +383,7 @@ static bool MetalASupportsPaintSetup(
 
         PaintAddImageAsParent(session, image_id, { xOffset, yOffset, supportSegments[segment].height }, { 1, 1, 5 });
 
-        height = supportSegments[segment].height + 6;
+        currentHeight = supportSegments[segment].height + 6;
     }
 
     const auto supportBeamImageIndex = drawCap ? kSupportBasesAndBeams[supportType].beamCapped
@@ -390,22 +391,22 @@ static bool MetalASupportsPaintSetup(
 
     // Work out if a small support segment required to bring support to normal
     // size (aka floor2(x, 16))
-    int16_t heightDiff = floor2(height + 16, 16);
+    int16_t heightDiff = floor2(currentHeight + 16, 16);
     if (heightDiff > si)
     {
         heightDiff = si;
     }
 
-    heightDiff -= height;
+    heightDiff -= currentHeight;
 
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(supportBeamImageIndex + heightDiff - 1), { SupportBoundBoxes[segment], height },
-            { 1, 1, heightDiff - 1 });
+            session, imageTemplate.WithIndex(supportBeamImageIndex + heightDiff - 1),
+            { SupportBoundBoxes[segment], currentHeight }, { 1, 1, heightDiff - 1 });
     }
 
-    height += heightDiff;
+    currentHeight += heightDiff;
     // 6632e6
 
     for (uint8_t count = 0;; count++)
@@ -413,13 +414,13 @@ static bool MetalASupportsPaintSetup(
         if (count >= 4)
             count = 0;
 
-        int16_t beamLength = height + 16;
+        int16_t beamLength = currentHeight + 16;
         if (beamLength > si)
         {
             beamLength = si;
         }
 
-        beamLength -= height;
+        beamLength -= currentHeight;
         if (beamLength <= 0)
             break;
 
@@ -429,38 +430,39 @@ static bool MetalASupportsPaintSetup(
             imageIndex++;
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], height }, { 1, 1, beamLength - 1 });
+            session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], currentHeight },
+            { 1, 1, beamLength - 1 });
 
-        height += beamLength;
+        currentHeight += beamLength;
     }
 
     supportSegments[segment].height = segmentHeight;
     supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
-    height = originalHeight;
+    currentHeight = height;
     segment = originalSegment;
     if (special == 0)
         return true;
 
-    const CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[segment], height);
+    const CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[segment], currentHeight);
 
     while (1)
     {
-        int16_t beamLength = height + 16;
+        int16_t beamLength = currentHeight + 16;
         if (beamLength > combinedHeight)
         {
             beamLength = combinedHeight;
         }
 
-        beamLength -= height;
+        beamLength -= currentHeight;
         if (beamLength <= 0)
             break;
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(supportBeamImageIndex + beamLength - 1), { SupportBoundBoxes[segment], height },
-            { boundBoxOffset, { 1, 1, 0 } });
+            session, imageTemplate.WithIndex(supportBeamImageIndex + beamLength - 1),
+            { SupportBoundBoxes[segment], currentHeight }, { boundBoxOffset, { 1, 1, 0 } });
 
-        height += beamLength;
+        currentHeight += beamLength;
     }
 
     return true;
