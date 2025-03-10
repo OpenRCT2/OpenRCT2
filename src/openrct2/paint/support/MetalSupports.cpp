@@ -322,10 +322,10 @@ static bool MetalASupportsPaintSetup(
     int16_t originalHeight = height;
     const auto originalSegment = segment;
 
-    uint16_t unk9E3294 = 0xFFFF;
+    uint16_t segmentHeight = 0xFFFF;
     if (height < supportSegments[segment].height)
     {
-        unk9E3294 = height;
+        segmentHeight = height;
 
         height -= kMetalSupportTypeToHeight[supportType];
         if (height < 0)
@@ -439,7 +439,7 @@ static bool MetalASupportsPaintSetup(
         height += beamLength;
     }
 
-    supportSegments[segment].height = unk9E3294;
+    supportSegments[segment].height = segmentHeight;
     supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
     height = originalHeight;
@@ -533,12 +533,12 @@ static bool MetalBSupportsPaintSetup(
     const uint8_t segment = EnumValue(placement);
     auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
-    uint16_t unk9E3294 = 0xFFFF;
+    uint16_t segmentHeight = 0xFFFF;
     int32_t baseHeight = height;
 
     if (height < supportSegments[segment].height)
     {
-        unk9E3294 = height;
+        segmentHeight = height;
 
         baseHeight -= kMetalSupportTypeToHeight[supportType];
         if (baseHeight < 0)
@@ -653,7 +653,7 @@ static bool MetalBSupportsPaintSetup(
         i++;
     }
 
-    supportSegments[segment].height = unk9E3294;
+    supportSegments[segment].height = segmentHeight;
     supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
     if (heightExtra != 0)
