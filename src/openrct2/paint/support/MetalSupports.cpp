@@ -319,7 +319,6 @@ static bool MetalASupportsPaintSetup(
     uint8_t segment = EnumValue(placement);
     auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
-    const auto combinedHeight = height + special;
     const auto originalSegment = segment;
 
     int32_t currentHeight = height;
@@ -440,27 +439,16 @@ static bool MetalASupportsPaintSetup(
     supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
     currentHeight = height;
-    segment = originalSegment;
-    if (special == 0)
-        return true;
-
-    const CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[segment], currentHeight);
-
-    while (1)
+    const CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[originalSegment], currentHeight);
+    while (true)
     {
-        int16_t beamLength = currentHeight + 16;
-        if (beamLength > combinedHeight)
-        {
-            beamLength = combinedHeight;
-        }
-
-        beamLength -= currentHeight;
+        const int16_t beamLength = std::min(currentHeight + 16, height + special) - currentHeight;
         if (beamLength <= 0)
             break;
 
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(supportBeamImageIndex + beamLength - 1),
-            { SupportBoundBoxes[segment], currentHeight }, { boundBoxOffset, { 1, 1, 0 } });
+            { SupportBoundBoxes[originalSegment], currentHeight }, { boundBoxOffset, { 1, 1, 0 } });
 
         currentHeight += beamLength;
     }
@@ -516,11 +504,11 @@ static bool MetalBSupportsPaintSetup(
     }
 
     const uint8_t segment = EnumValue(placement);
+    const auto originalSegment = segment;
     auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
     uint16_t segmentHeight = 0xFFFF;
     int32_t currentHeight = height;
-    const auto combinedHeight = height + special;
 
     if (height < supportSegments[segment].height)
     {
@@ -643,32 +631,19 @@ static bool MetalBSupportsPaintSetup(
     supportSegments[segment].height = segmentHeight;
     supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
-    if (special != 0)
+    currentHeight = height;
+    const CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[originalSegment], currentHeight);
+    while (true)
     {
-        currentHeight = height;
+        const int16_t beamLength = std::min(currentHeight + 16, height + special) - currentHeight;
+        if (beamLength <= 0)
+            break;
 
-        const CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[segment], height);
+        PaintAddImageAsParent(
+            session, imageTemplate.WithIndex(supportBeamImageIndex + beamLength - 1),
+            { SupportBoundBoxes[originalSegment], currentHeight }, { boundBoxOffset, { 1, 1, 0 } });
 
-        while (true)
-        {
-            endHeight = currentHeight + 16;
-            if (endHeight > combinedHeight)
-            {
-                endHeight = combinedHeight;
-            }
-
-            const int16_t beamLength = endHeight - currentHeight;
-            if (beamLength <= 0)
-            {
-                break;
-            }
-
-            PaintAddImageAsParent(
-                session, imageTemplate.WithIndex(supportBeamImageIndex + beamLength - 1),
-                { SupportBoundBoxes[segment], currentHeight }, { boundBoxOffset, { 1, 1, 0 } });
-
-            currentHeight += beamLength;
-        }
+        currentHeight += beamLength;
     }
 
     return false; // AND
