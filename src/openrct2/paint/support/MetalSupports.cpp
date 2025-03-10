@@ -390,14 +390,7 @@ static bool MetalASupportsPaintSetup(
 
     // Work out if a small support segment required to bring support to normal
     // size (aka floor2(x, 16))
-    int16_t heightDiff = floor2(currentHeight + 16, 16);
-    if (heightDiff > crossbeamHeight)
-    {
-        heightDiff = crossbeamHeight;
-    }
-
-    heightDiff -= currentHeight;
-
+    const int16_t heightDiff = std::min<int16_t>(floor2(currentHeight + 16, 16), crossbeamHeight) - currentHeight;
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
@@ -566,17 +559,13 @@ static bool MetalBSupportsPaintSetup(
     const auto supportBeamImageIndex = drawCap ? kSupportBasesAndBeams[supportType].beamCapped
                                                : kSupportBasesAndBeams[supportType].beamUncapped;
 
-    int16_t heightDiff = floor2(currentHeight + 16, 16);
-    if (heightDiff > crossbeamHeight)
-    {
-        heightDiff = crossbeamHeight;
-    }
-
-    heightDiff -= currentHeight;
+    // Work out if a small support segment required to bring support to normal
+    // size (aka floor2(x, 16))
+    const int16_t heightDiff = std::min<int16_t>(floor2(currentHeight + 16, 16), crossbeamHeight) - currentHeight;
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(supportBeamImageIndex + (heightDiff - 1)),
+            session, imageTemplate.WithIndex(supportBeamImageIndex + heightDiff - 1),
             { SupportBoundBoxes[segment], currentHeight }, { 1, 1, heightDiff - 1 });
     }
 
