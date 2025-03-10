@@ -282,12 +282,12 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
 };
 
 static bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
-    const bool drawCap, ImageId imageTemplate);
+    PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
+    const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate);
 static bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
-    const bool drawCap, ImageId imageTemplate);
-static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction);
+    PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
+    const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate);
+static inline MetalSupportGraphic RotateMetalSupportGraphic(const MetalSupportType supportType, const Direction direction);
 
 /**
  * Metal pole supports
@@ -299,8 +299,8 @@ static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType sup
  *  rct2: 0x00663105
  */
 static bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
-    const bool drawCap, ImageId imageTemplate)
+    PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
+    const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -467,20 +467,20 @@ static bool MetalASupportsPaintSetup(
 }
 
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
-    const bool drawCap, ImageId imageTemplate)
+    PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const int32_t special,
+    int32_t height, const bool drawCap, ImageId imageTemplate)
 {
-    auto supportGraphic = RotateMetalSupportGraphic(supportType, 0);
-    return MetalASupportsPaintSetup(session, supportGraphic, placement, special, height, drawCap, imageTemplate);
+    return MetalASupportsPaintSetup(
+        session, RotateMetalSupportGraphic(supportType, 0), placement, special, height, drawCap, imageTemplate);
 }
 
 bool MetalASupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
-    int32_t height, const bool drawCap, ImageId imageTemplate)
+    PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const Direction direction,
+    const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate)
 {
-    auto supportGraphic = RotateMetalSupportGraphic(supportType, direction);
-    placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
-    return MetalASupportsPaintSetup(session, supportGraphic, placement, special, height, drawCap, imageTemplate);
+    return MetalASupportsPaintSetup(
+        session, RotateMetalSupportGraphic(supportType, direction),
+        kMetalSupportPlacementRotated[EnumValue(placement)][direction], special, height, drawCap, imageTemplate);
 }
 
 /**
@@ -496,8 +496,8 @@ bool MetalASupportsPaintSetupRotated(
  * @return (Carry Flag)
  */
 static bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special,
-    const int32_t height, const bool drawCap, ImageId imageTemplate)
+    PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
+    const int32_t special, const int32_t height, const bool drawCap, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -672,30 +672,31 @@ static bool MetalBSupportsPaintSetup(
 }
 
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
-    const bool drawCap, ImageId imageTemplate)
+    PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const int32_t special,
+    int32_t height, const bool drawCap, ImageId imageTemplate)
 {
-    auto supportGraphic = RotateMetalSupportGraphic(supportType, 0);
-    return MetalBSupportsPaintSetup(session, supportGraphic, placement, special, height, drawCap, imageTemplate);
+    return MetalBSupportsPaintSetup(
+        session, RotateMetalSupportGraphic(supportType, 0), placement, special, height, drawCap, imageTemplate);
 }
 
 bool MetalBSupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
-    int32_t height, const bool drawCap, ImageId imageTemplate)
+    PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const Direction direction,
+    const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate)
 {
-    auto supportGraphic = RotateMetalSupportGraphic(supportType, direction);
-    placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
-    return MetalBSupportsPaintSetup(session, supportGraphic, placement, special, height, drawCap, imageTemplate);
+    return MetalBSupportsPaintSetup(
+        session, RotateMetalSupportGraphic(supportType, direction),
+        kMetalSupportPlacementRotated[EnumValue(placement)][direction], special, height, drawCap, imageTemplate);
 }
 
-static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction)
+static inline MetalSupportGraphic RotateMetalSupportGraphic(const MetalSupportType supportType, const Direction direction)
 {
     assert(direction < kNumOrthogonalDirections);
     return kMetalSupportGraphicRotated[EnumValue(supportType)][direction];
 }
 
 void DrawSupportsSideBySide(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType supportType, int32_t special)
+    PaintSession& session, const Direction direction, const uint16_t height, ImageId colour, const MetalSupportType supportType,
+    const int32_t special)
 {
     auto graphic = RotateMetalSupportGraphic(supportType, direction);
 
@@ -724,7 +725,7 @@ void DrawSupportsSideBySide(
  * @return Whether supports were drawn
  */
 bool PathPoleSupportsPaintSetup(
-    PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
+    PaintSession& session, MetalSupportPlace supportPlace, const bool isSloped, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo)
 {
     auto segment = EnumValue(supportPlace);
