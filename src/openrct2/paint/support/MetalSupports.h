@@ -91,20 +91,21 @@ struct PaintSession;
 
 /** @deprecated */
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
-    ImageId imageTemplate);
+    PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const int32_t heightExtra,
+    const int32_t height, ImageId imageTemplate);
 bool MetalASupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
-    int32_t height, ImageId imageTemplate);
+    PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const Direction direction,
+    const int32_t heightExtra, const int32_t height, ImageId imageTemplate);
 /** @deprecated */
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
-    ImageId imageTemplate);
+    PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const int32_t heightExtra,
+    const int32_t height, ImageId imageTemplate);
 bool MetalBSupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
-    int32_t height, ImageId imageTemplate);
+    PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const Direction direction,
+    const int32_t heightExtra, const int32_t height, ImageId imageTemplate);
 void DrawSupportsSideBySide(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
+    PaintSession& session, const Direction direction, const uint16_t height, ImageId colour, const MetalSupportType type,
+    const int32_t heightExtra = 0);
 bool PathPoleSupportsPaintSetup(
-    PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
-    const FootpathPaintInfo& pathPaintInfo);
+    PaintSession& session, const MetalSupportPlace supportPlace, const bool isSloped, const int32_t height,
+    ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo);
