@@ -37,7 +37,7 @@ enum
     S6_TYPE_SCENARIO
 };
 
-enum SCENARIO_CATEGORY
+enum SCENARIO_CATEGORY : uint8_t
 {
     // RCT2 categories (keep order)
     SCENARIO_CATEGORY_BEGINNER,

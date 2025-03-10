@@ -50,7 +50,7 @@ void Plugin::Load()
         LoadCodeFromFile();
     }
 
-    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& scriptEngine = OpenRCT2::GetContext()->GetScriptEngine();
     _context = scriptEngine.CreateContext();
     JS_SetContextOpaque(_context, this);
 
@@ -81,7 +81,7 @@ void Plugin::Start()
         throw std::runtime_error("Plugin has not been loaded.");
     }
 
-    const JSValue mainFunc = _metadata.Main;
+    const JSValue mainFunc = _metadata.Main.callback;
     if (!JS_IsFunction(_context, mainFunc))
     {
         throw std::runtime_error("No main function specified.");
@@ -119,10 +119,7 @@ void Plugin::Unload()
         throw std::runtime_error("Plugin is not loaded");
     }
 
-    JS_FreeValue(_context, _metadata.Main);
-    _metadata.Main = JS_UNDEFINED;
-
-    GetContext()->GetScriptEngine().FreeContext(_context);
+    OpenRCT2::GetContext()->GetScriptEngine().FreeContext(_context);
     _context = nullptr;
 
     // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937, fixed in GCC13
@@ -199,7 +196,7 @@ void Plugin::SetMetadata(const JSValue obj)
         JS_FreeValue(_context, targetApiVersion);
 
         const JSValue authors = JS_GetPropertyStr(_context, obj, "authors");
-        if (JS_IsArray(_context, authors))
+        if (JS_IsArray(authors))
         {
             int64_t authorsLen = -1;
             JS_GetLength(_context, authors, &authorsLen);
@@ -223,7 +220,7 @@ void Plugin::SetMetadata(const JSValue obj)
         }
         JS_FreeValue(_context, authors);
 
-        metadata.Main = JS_GetPropertyStr(_context, obj, "main");
+        metadata.Main = GetCallbackProperty(_context, obj, "main");
     }
     _metadata = metadata;
 }
