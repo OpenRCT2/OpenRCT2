@@ -365,7 +365,7 @@ static bool MetalASupportsPaintSetup(
 
         segment = newSegment;
     }
-    int16_t si = currentHeight;
+    const int16_t crossbeamHeight = currentHeight;
     if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery || currentHeight - supportSegments[segment].height < 6
         || kSupportBasesAndBeams[supportType].base == kImageIndexUndefined)
     {
@@ -391,9 +391,9 @@ static bool MetalASupportsPaintSetup(
     // Work out if a small support segment required to bring support to normal
     // size (aka floor2(x, 16))
     int16_t heightDiff = floor2(currentHeight + 16, 16);
-    if (heightDiff > si)
+    if (heightDiff > crossbeamHeight)
     {
-        heightDiff = si;
+        heightDiff = crossbeamHeight;
     }
 
     heightDiff -= currentHeight;
@@ -409,7 +409,7 @@ static bool MetalASupportsPaintSetup(
 
     for (uint8_t count = 1;; count++)
     {
-        const int16_t beamLength = std::min<int16_t>(currentHeight + 16, si) - currentHeight;
+        const int16_t beamLength = std::min<int16_t>(currentHeight + 16, crossbeamHeight) - currentHeight;
         if (beamLength <= 0)
             break;
 
@@ -543,7 +543,7 @@ static bool MetalBSupportsPaintSetup(
             { SupportBoundBoxes[segment] + Loc97B052[ebp], currentHeight }, { _97B062[ebp], 1 });
     }
 
-    int32_t si = currentHeight;
+    const int16_t crossbeamHeight = currentHeight;
 
     if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery)
         || (currentHeight - supportSegments[segment].height < 6)
@@ -567,9 +567,9 @@ static bool MetalBSupportsPaintSetup(
                                                : kSupportBasesAndBeams[supportType].beamUncapped;
 
     int16_t heightDiff = floor2(currentHeight + 16, 16);
-    if (heightDiff > si)
+    if (heightDiff > crossbeamHeight)
     {
-        heightDiff = si;
+        heightDiff = crossbeamHeight;
     }
 
     heightDiff -= currentHeight;
@@ -584,7 +584,7 @@ static bool MetalBSupportsPaintSetup(
 
     for (uint8_t count = 1;; count++)
     {
-        const int16_t beamLength = std::min<int16_t>(currentHeight + 16, si) - currentHeight;
+        const int16_t beamLength = std::min<int16_t>(currentHeight + 16, crossbeamHeight) - currentHeight;
         if (beamLength <= 0)
             break;
 
