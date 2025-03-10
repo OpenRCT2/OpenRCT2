@@ -84,7 +84,6 @@
     <ClInclude Include="actions\BannerSetStyleAction.h" />
     <ClInclude Include="actions\CheatSetAction.h" />
     <ClInclude Include="actions\ClearAction.h" />
-    <ClInclude Include="actions\ClimateSetAction.h" />
     <ClInclude Include="actions\CustomAction.h" />
     <ClInclude Include="actions\FootpathLayoutPlaceAction.h" />
     <ClInclude Include="actions\FootpathPlaceAction.h" />
@@ -327,6 +326,7 @@
     <ClInclude Include="object\AudioSampleTable.h" />
     <ClInclude Include="object\BannerObject.h" />
     <ClInclude Include="object\BannerSceneryEntry.h" />
+    <ClInclude Include="object\ClimateObject.h" />
     <ClInclude Include="object\DefaultObjects.h" />
     <ClInclude Include="object\EntranceEntry.h" />
     <ClInclude Include="object\EntranceObject.h" />
@@ -661,7 +661,6 @@
     <ClCompile Include="actions\BannerSetStyleAction.cpp" />
     <ClCompile Include="actions\CheatSetAction.cpp" />
     <ClCompile Include="actions\ClearAction.cpp" />
-    <ClCompile Include="actions\ClimateSetAction.cpp" />
     <ClCompile Include="actions\CustomAction.cpp" />
     <ClCompile Include="actions\FootpathAdditionPlaceAction.cpp" />
     <ClCompile Include="actions\FootpathAdditionRemoveAction.cpp" />
@@ -872,6 +871,7 @@
     <ClCompile Include="object\AudioObject.cpp" />
     <ClCompile Include="object\AudioSampleTable.cpp" />
     <ClCompile Include="object\BannerObject.cpp" />
+    <ClCompile Include="object\ClimateObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />
     <ClCompile Include="object\FootpathObject.cpp" />

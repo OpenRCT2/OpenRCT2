@@ -64,7 +64,7 @@ namespace OpenRCT2
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
         ResetDate();
-        ClimateReset(ClimateType::CoolAndWet);
+        ClimateReset();
         News::InitQueue();
 
         gInMapInitCode = false;

@@ -14,6 +14,8 @@
     #include "../../../Context.h"
     #include "../../../GameState.h"
     #include "../../../core/StringTypes.h"
+    #include "../../../object/ClimateObject.h"
+    #include "../../../object/ObjectManager.h"
     #include "../../../world/Climate.h"
     #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
@@ -53,24 +55,6 @@ namespace OpenRCT2::Scripting
     class ScClimate
     {
     public:
-        static std::string ClimateTypeToString(ClimateType token)
-        {
-            switch (token)
-            {
-                case ClimateType::CoolAndWet:
-                    return "coolAndWet";
-                case ClimateType::Warm:
-                    return "warm";
-                case ClimateType::HotAndDry:
-                    return "hotAndDry";
-                case ClimateType::Cold:
-                    return "cold";
-                case ClimateType::Count:
-                    return "";
-            }
-            return "";
-        }
-
         static std::string WeatherTypeToString(WeatherType token)
         {
             switch (token)
@@ -101,8 +85,12 @@ namespace OpenRCT2::Scripting
 
         std::string type_get() const
         {
-            auto& gameState = GetGameState();
-            return ClimateTypeToString(gameState.Climate);
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* climateObj = objManager.GetLoadedObject<ClimateObject>(0);
+            if (climateObj == nullptr)
+                return "";
+
+            return climateObj->getScriptName();
         }
 
         std::shared_ptr<ScWeatherState> current_get() const

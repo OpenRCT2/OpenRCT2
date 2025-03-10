@@ -53,27 +53,28 @@ const DrawWeatherFunc DrawSnowFunctions[] = {
  */
 void DrawWeather(DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer)
 {
-    if (Config::Get().general.RenderWeatherEffects)
+    if (!Config::Get().general.RenderWeatherEffects)
+        return;
+
+    uint32_t viewFlags = 0;
+
+    const auto* viewport = WindowGetViewport(WindowGetMain());
+    if (viewport != nullptr)
+        viewFlags = viewport->flags;
+
+    auto weatherLevel = GetGameState().WeatherCurrent.level;
+    if (weatherLevel == WeatherLevel::None || gTrackDesignSaveMode || (viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+        return;
+
+    // Get weather draw function and draw weather
+    auto drawFunc = DrawRainFunctions[EnumValue(weatherLevel)];
+    if (ClimateIsSnowing() || ClimateTransitioningToSnow())
     {
-        uint32_t viewFlags = 0;
-
-        const auto* viewport = WindowGetViewport(WindowGetMain());
-        if (viewport != nullptr)
-            viewFlags = viewport->flags;
-
-        // Get weather draw function and draw weather
-        auto weatherLevel = GetGameState().WeatherCurrent.level;
-        if (weatherLevel != WeatherLevel::None && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
-        {
-            auto drawFunc = DrawRainFunctions[EnumValue(weatherLevel)];
-            if (ClimateIsSnowing())
-            {
-                drawFunc = DrawSnowFunctions[EnumValue(weatherLevel)];
-            }
-            auto uiContext = GetContext()->GetUiContext();
-            uiContext->DrawWeatherAnimation(weatherDrawer, dpi, drawFunc);
-        }
+        drawFunc = DrawSnowFunctions[EnumValue(weatherLevel)];
     }
+
+    auto uiContext = GetContext()->GetUiContext();
+    uiContext->DrawWeatherAnimation(weatherDrawer, dpi, drawFunc);
 }
 
 /**
