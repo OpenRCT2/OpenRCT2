@@ -1,5 +1,6 @@
 0.4.21 (in development)
 ------------------------------------------------------------------------
+- Feature: [#23774] Climates can now be customised using objects.
 - Feature: [#23876] New park save files now contain a preview image, shown in the load/save window.
 - Change: [#23932] The land rights window now checks 'Land Owned' by default.
 - Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve (original bug).
