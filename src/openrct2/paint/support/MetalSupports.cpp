@@ -519,15 +519,15 @@ static bool MetalBSupportsPaintSetup(
     auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
     uint16_t segmentHeight = 0xFFFF;
-    int32_t baseHeight = height;
+    int32_t currentHeight = height;
     const auto combinedHeight = height + special;
 
     if (height < supportSegments[segment].height)
     {
         segmentHeight = height;
 
-        baseHeight -= supportTypeToHeight[supportType];
-        if (baseHeight < 0)
+        currentHeight -= supportTypeToHeight[supportType];
+        if (currentHeight < 0)
         {
             return false; // AND
         }
@@ -535,19 +535,19 @@ static bool MetalBSupportsPaintSetup(
         uint16_t baseIndex = session.CurrentRotation * 2;
 
         uint8_t ebp = _97AF32[baseIndex + segment * 8];
-        if (baseHeight <= supportSegments[ebp].height)
+        if (currentHeight <= supportSegments[ebp].height)
         {
             baseIndex += kMetalSupportSkip; // 9 segments, 4 directions, 2 values
             uint8_t ebp2 = _97AF32[baseIndex + segment * 8];
-            if (baseHeight <= supportSegments[ebp2].height)
+            if (currentHeight <= supportSegments[ebp2].height)
             {
                 baseIndex += kMetalSupportSkip;
                 uint8_t ebp3 = _97AF32[baseIndex + segment * 8];
-                if (baseHeight <= supportSegments[ebp3].height)
+                if (currentHeight <= supportSegments[ebp3].height)
                 {
                     baseIndex += kMetalSupportSkip;
                     uint8_t ebp4 = _97AF32[baseIndex + segment * 8];
-                    if (baseHeight <= supportSegments[ebp4].height)
+                    if (currentHeight <= supportSegments[ebp4].height)
                     {
                         return true; // STC
                     }
@@ -563,15 +563,16 @@ static bool MetalBSupportsPaintSetup(
 
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]),
-            { SupportBoundBoxes[segment] + Loc97B052[ebp], baseHeight }, { _97B062[ebp], 1 });
+            { SupportBoundBoxes[segment] + Loc97B052[ebp], currentHeight }, { _97B062[ebp], 1 });
     }
 
-    int32_t si = baseHeight;
+    int32_t si = currentHeight;
 
-    if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (baseHeight - supportSegments[segment].height < 6)
+    if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery)
+        || (currentHeight - supportSegments[segment].height < 6)
         || (kSupportBasesAndBeams[supportType].base == kImageIndexUndefined))
     {
-        baseHeight = supportSegments[segment].height;
+        currentHeight = supportSegments[segment].height;
     }
     else
     {
@@ -582,40 +583,40 @@ static bool MetalBSupportsPaintSetup(
             session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[segment], supportSegments[segment].height },
             { 1, 1, 5 });
 
-        baseHeight = supportSegments[segment].height + 6;
+        currentHeight = supportSegments[segment].height + 6;
     }
 
     const auto supportBeamImageIndex = drawCap ? kSupportBasesAndBeams[supportType].beamCapped
                                                : kSupportBasesAndBeams[supportType].beamUncapped;
 
-    int16_t heightDiff = floor2(baseHeight + 16, 16);
+    int16_t heightDiff = floor2(currentHeight + 16, 16);
     if (heightDiff > si)
     {
         heightDiff = si;
     }
 
-    heightDiff -= baseHeight;
+    heightDiff -= currentHeight;
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(supportBeamImageIndex + (heightDiff - 1)),
-            { SupportBoundBoxes[segment], baseHeight }, { 1, 1, heightDiff - 1 });
+            { SupportBoundBoxes[segment], currentHeight }, { 1, 1, heightDiff - 1 });
     }
 
-    baseHeight += heightDiff;
+    currentHeight += heightDiff;
 
     int16_t endHeight;
 
     int32_t i = 1;
     while (true)
     {
-        endHeight = baseHeight + 16;
+        endHeight = currentHeight + 16;
         if (endHeight > si)
         {
             endHeight = si;
         }
 
-        int16_t beamLength = endHeight - baseHeight;
+        int16_t beamLength = endHeight - currentHeight;
 
         if (beamLength <= 0)
         {
@@ -633,9 +634,9 @@ static bool MetalBSupportsPaintSetup(
         }
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[segment], baseHeight }, { 1, 1, beamLength - 1 });
+            session, imageTemplate.WithIndex(imageId), { SupportBoundBoxes[segment], currentHeight }, { 1, 1, beamLength - 1 });
 
-        baseHeight += beamLength;
+        currentHeight += beamLength;
         i++;
     }
 
@@ -644,19 +645,19 @@ static bool MetalBSupportsPaintSetup(
 
     if (special != 0)
     {
-        baseHeight = height;
+        currentHeight = height;
 
         const CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[segment], height);
 
         while (true)
         {
-            endHeight = baseHeight + 16;
+            endHeight = currentHeight + 16;
             if (endHeight > combinedHeight)
             {
                 endHeight = combinedHeight;
             }
 
-            const int16_t beamLength = endHeight - baseHeight;
+            const int16_t beamLength = endHeight - currentHeight;
             if (beamLength <= 0)
             {
                 break;
@@ -664,9 +665,9 @@ static bool MetalBSupportsPaintSetup(
 
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(supportBeamImageIndex + beamLength - 1),
-                { SupportBoundBoxes[segment], baseHeight }, { boundBoxOffset, { 1, 1, 0 } });
+                { SupportBoundBoxes[segment], currentHeight }, { boundBoxOffset, { 1, 1, 0 } });
 
-            baseHeight += beamLength;
+            currentHeight += beamLength;
         }
     }
 
@@ -753,43 +754,43 @@ bool PathPoleSupportsPaintSetup(
         return true; // STC
     }
 
-    uint16_t baseHeight;
+    uint16_t currentHeight;
 
     if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (height - supportSegments[segment].height < 6)
         || !(pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
     {
-        baseHeight = supportSegments[segment].height;
+        currentHeight = supportSegments[segment].height;
     }
     else
     {
         uint8_t imageOffset = kMetalSupportsSlopeImageOffsetMap[supportSegments[segment].slope & kTileSlopeMask];
-        baseHeight = supportSegments[segment].height;
+        currentHeight = supportSegments[segment].height;
 
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 37 + imageOffset),
-            { SupportBoundBoxes[segment].x, SupportBoundBoxes[segment].y, baseHeight }, { 0, 0, 5 });
-        baseHeight += 6;
+            { SupportBoundBoxes[segment].x, SupportBoundBoxes[segment].y, currentHeight }, { 0, 0, 5 });
+        currentHeight += 6;
     }
 
     // si = height
-    // dx = baseHeight
+    // dx = currentHeight
 
-    int16_t heightDiff = floor2(baseHeight + 16, 16);
+    int16_t heightDiff = floor2(currentHeight + 16, 16);
     if (heightDiff > height)
     {
         heightDiff = height;
     }
 
-    heightDiff -= baseHeight;
+    heightDiff -= currentHeight;
 
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 20 + (heightDiff - 1)),
-            { SupportBoundBoxes[segment], baseHeight }, { 0, 0, heightDiff - 1 });
+            { SupportBoundBoxes[segment], currentHeight }, { 0, 0, heightDiff - 1 });
     }
 
-    baseHeight += heightDiff;
+    currentHeight += heightDiff;
 
     bool keepGoing = true;
     while (keepGoing)
@@ -798,12 +799,12 @@ bool PathPoleSupportsPaintSetup(
 
         for (int32_t i = 0; i < 4; ++i)
         {
-            z = baseHeight + 16;
+            z = currentHeight + 16;
             if (z > height)
             {
                 z = height;
             }
-            z -= baseHeight;
+            z -= currentHeight;
 
             if (z <= 0)
             {
@@ -819,9 +820,9 @@ bool PathPoleSupportsPaintSetup(
 
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 20 + (z - 1)),
-                { SupportBoundBoxes[segment], baseHeight }, { 0, 0, (z - 1) });
+                { SupportBoundBoxes[segment], currentHeight }, { 0, 0, (z - 1) });
 
-            baseHeight += z;
+            currentHeight += z;
         }
 
         if (!keepGoing)
@@ -836,9 +837,9 @@ bool PathPoleSupportsPaintSetup(
         }
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], baseHeight }, { 0, 0, (z - 1) });
+            session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], currentHeight }, { 0, 0, (z - 1) });
 
-        baseHeight += z;
+        currentHeight += z;
     }
 
     // Loc6A34D8
@@ -847,17 +848,17 @@ bool PathPoleSupportsPaintSetup(
 
     if (isSloped)
     {
-        int16_t si = baseHeight + kCoordsZStep;
+        int16_t si = currentHeight + kCoordsZStep;
 
         while (true)
         {
-            int16_t z = baseHeight + (2 * kCoordsZStep);
+            int16_t z = currentHeight + (2 * kCoordsZStep);
             if (z > si)
             {
                 z = si;
             }
 
-            z -= baseHeight;
+            z -= currentHeight;
             if (z <= 0)
             {
                 break;
@@ -865,9 +866,9 @@ bool PathPoleSupportsPaintSetup(
 
             ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 20 + (z - 1);
             PaintAddImageAsParent(
-                session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], baseHeight }, { 0, 0, 0 });
+                session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], currentHeight }, { 0, 0, 0 });
 
-            baseHeight += z;
+            currentHeight += z;
         }
     }
 
