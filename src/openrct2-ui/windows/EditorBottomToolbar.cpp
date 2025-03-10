@@ -199,6 +199,9 @@ namespace OpenRCT2::Ui::Windows
             if (!EditorObjectSelectionWindowCheck())
                 return;
 
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+
             FinishObjectSelection();
             if (gLegacyScene == LegacyScene::trackDesigner)
             {
