@@ -87,7 +87,7 @@ static constexpr CoordsXY SupportBoundBoxes[] = {
 };
 
 /** rct2: 0x0097AF32 */
-static constexpr uint8_t _97AF32[] = {
+static constexpr uint8_t kMetalSupportSegmentOffsets[] = {
     5, 2, 5, 2, 5, 2, 5, 2,
     7, 1, 7, 1, 7, 1, 7, 1,
     6, 3, 6, 3, 6, 3, 6, 3,
@@ -333,21 +333,20 @@ static bool MetalASupportsPaintSetup(
         if (currentHeight < 0)
             return false;
 
-        const uint8_t* esi = &(_97AF32[session.CurrentRotation * 2]);
-
-        uint8_t newSegment = esi[segment * 8];
+        uint16_t baseIndex = session.CurrentRotation * 2;
+        uint8_t newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
         if (currentHeight <= supportSegments[newSegment].height)
         {
-            esi += kMetalSupportSkip;
-            newSegment = esi[segment * 8];
+            baseIndex += kMetalSupportSkip;
+            newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
             if (currentHeight <= supportSegments[newSegment].height)
             {
-                esi += kMetalSupportSkip;
-                newSegment = esi[segment * 8];
+                baseIndex += kMetalSupportSkip;
+                newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
                 if (currentHeight <= supportSegments[newSegment].height)
                 {
-                    esi += kMetalSupportSkip;
-                    newSegment = esi[segment * 8];
+                    baseIndex += kMetalSupportSkip;
+                    newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
                     if (currentHeight <= supportSegments[newSegment].height)
                     {
                         return false;
@@ -356,13 +355,12 @@ static bool MetalASupportsPaintSetup(
             }
         }
 
-        uint8_t ebp = esi[segment * 8 + 1];
+        const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[baseIndex + segment * 8 + 1];
 
-        auto offset = CoordsXYZ{ SupportBoundBoxes[segment] + kMetalSupportCrossBeamBoundBoxOffsets[ebp], currentHeight };
-        auto boundBoxLength = CoordsXYZ(kMetalSupportCrossBeamBoundBoxLengths[ebp], 1);
-
-        auto image_id = imageTemplate.WithIndex(kMetalSupportTypeToCrossbeamImages[supportType][ebp]);
-        PaintAddImageAsParent(session, image_id, offset, boundBoxLength);
+        PaintAddImageAsParent(
+            session, imageTemplate.WithIndex(kMetalSupportTypeToCrossbeamImages[supportType][crossBeamIndex]),
+            { SupportBoundBoxes[segment] + kMetalSupportCrossBeamBoundBoxOffsets[crossBeamIndex], currentHeight },
+            { kMetalSupportCrossBeamBoundBoxLengths[crossBeamIndex], 1 });
 
         segment = newSegment;
     }
@@ -493,49 +491,46 @@ static bool MetalBSupportsPaintSetup(
     int32_t currentHeight = height;
     uint8_t segment = originalSegment;
     uint16_t segmentHeight = 0xFFFF;
-    if (height < supportSegments[segment].height)
+    if (currentHeight < supportSegments[segment].height)
     {
-        segmentHeight = height;
+        segmentHeight = currentHeight;
 
         currentHeight -= kMetalSupportTypeToHeight[supportType];
         if (currentHeight < 0)
-        {
-            return false; // AND
-        }
+            return false;
 
         uint16_t baseIndex = session.CurrentRotation * 2;
-
-        uint8_t ebp = _97AF32[baseIndex + segment * 8];
-        if (currentHeight <= supportSegments[ebp].height)
+        uint8_t newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
+        if (currentHeight <= supportSegments[newSegment].height)
         {
-            baseIndex += kMetalSupportSkip; // 9 segments, 4 directions, 2 values
-            uint8_t ebp2 = _97AF32[baseIndex + segment * 8];
-            if (currentHeight <= supportSegments[ebp2].height)
+            baseIndex += kMetalSupportSkip;
+            newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
+            if (currentHeight <= supportSegments[newSegment].height)
             {
                 baseIndex += kMetalSupportSkip;
-                uint8_t ebp3 = _97AF32[baseIndex + segment * 8];
-                if (currentHeight <= supportSegments[ebp3].height)
+                newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
+                if (currentHeight <= supportSegments[newSegment].height)
                 {
                     baseIndex += kMetalSupportSkip;
-                    uint8_t ebp4 = _97AF32[baseIndex + segment * 8];
-                    if (currentHeight <= supportSegments[ebp4].height)
+                    newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
+                    if (currentHeight <= supportSegments[newSegment].height)
                     {
-                        return true; // STC
+                        return true;
                     }
                 }
             }
         }
 
-        ebp = _97AF32[baseIndex + segment * 8 + 1];
-        if (ebp >= 4)
-        {
-            return true; // STC
-        }
+        const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[baseIndex + segment * 8 + 1];
+        if (crossBeamIndex >= 4)
+            return true;
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(kMetalSupportTypeToCrossbeamImages[supportType][ebp]),
-            { SupportBoundBoxes[segment] + kMetalSupportCrossBeamBoundBoxOffsets[ebp], currentHeight },
-            { kMetalSupportCrossBeamBoundBoxLengths[ebp], 1 });
+            session, imageTemplate.WithIndex(kMetalSupportTypeToCrossbeamImages[supportType][crossBeamIndex]),
+            { SupportBoundBoxes[segment] + kMetalSupportCrossBeamBoundBoxOffsets[crossBeamIndex], currentHeight },
+            { kMetalSupportCrossBeamBoundBoxLengths[crossBeamIndex], 1 });
+
+        segment = newSegment;
     }
 
     const int16_t crossbeamHeight = currentHeight;
