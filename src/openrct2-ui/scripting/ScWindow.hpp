@@ -9,363 +9,435 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "ScWidget.hpp"
 
     #include <openrct2/interface/Window.h>
     #include <openrct2/interface/WindowBase.h>
-    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/ui/WindowManager.h>
+    #include <openrct2-ui/interface/Window.h>
 
 namespace OpenRCT2::Scripting
 {
     using namespace OpenRCT2::Ui::Windows;
 
-    class ScWindow
+    class ScWindow;
+    extern ScWindow gScWindow;
+
+    class ScWindow final : public ScBase
     {
     private:
-        WindowClass _class;
-        rct_windownumber _number;
+        using OpaqueType = std::tuple<WindowClass, rct_windownumber>;
 
-    public:
-        ScWindow(WindowBase* w)
-            : ScWindow(w->classification, w->number)
+        static JSValue classification_get(JSContext* ctx, JSValue thisVal)
         {
-        }
-
-        ScWindow(WindowClass c, rct_windownumber n)
-            : _class(c)
-            , _number(n)
-        {
+            OpaqueType* data = gScWindow.GetOpaque<OpaqueType*>(thisVal);
+            return JS_NewInt32(ctx, static_cast<int32_t>(std::get<0>(*data)));
         }
 
-        int32_t classification_get() const
+        static JSValue number_get(JSContext* ctx, JSValue thisVal)
         {
-            return static_cast<int32_t>(_class);
+            OpaqueType* data = gScWindow.GetOpaque<OpaqueType*>(thisVal);
+            return JS_NewInt32(ctx, std::get<1>(*data));
         }
 
-        int32_t number_get() const
+        static JSValue x_get(JSContext* ctx, JSValue thisVal)
         {
-            return static_cast<int32_t>(_number);
-        }
-
-        int32_t x_get() const
-        {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                return w->windowPos.x;
+                return JS_NewInt32(ctx, w->windowPos.x);
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void x_set(int32_t value)
+        static JSValue x_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
-            if (w != nullptr)
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && JS_IsNumber(value))
             {
-                WindowSetPosition(*w, { value, w->windowPos.y });
+                int32_t valueInt = -1;
+                JS_ToInt32(ctx, &valueInt, value);
+                WindowSetPosition(*w, { valueInt, w->windowPos.y });
             }
+            return JS_UNDEFINED;
         }
-        int32_t y_get() const
+        static JSValue y_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                return w->windowPos.y;
+                return JS_NewInt32(ctx, w->windowPos.y);
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void y_set(int32_t value)
+        static JSValue y_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
-            if (w != nullptr)
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && JS_IsNumber(value))
             {
-                WindowSetPosition(*w, { w->windowPos.x, value });
+                int32_t valueInt = -1;
+                JS_ToInt32(ctx, &valueInt, value);
+                WindowSetPosition(*w, { w->windowPos.x, valueInt });
             }
+            return JS_UNDEFINED;
         }
-        int32_t width_get() const
+        static JSValue width_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                return w->width;
+                return JS_NewInt32(ctx, w->width);
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void width_set(int32_t value)
+        static JSValue width_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
-            if (w != nullptr)
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && JS_IsNumber(value))
             {
+                int32_t valueInt = -1;
+                JS_ToInt32(ctx, &valueInt, value);
                 if (WindowCanResize(*w))
                 {
-                    WindowResizeByDelta(*w, value - w->width, 0);
+                    WindowResizeByDelta(*w, valueInt - w->width, 0);
                 }
                 else
                 {
-                    WindowSetResize(*w, { value, w->min_height }, { value, w->max_height });
+                    WindowSetResize(*w, { valueInt, w->min_height }, { valueInt, w->max_height });
                 }
             }
+            return JS_UNDEFINED;
         }
-        int32_t height_get() const
+        static JSValue height_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                return w->height - w->getTitleBarDiffNormal();
+                return JS_NewInt32(ctx, w->height - w->getTitleBarDiffNormal());
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void height_set(int32_t value)
+        static JSValue height_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
-            if (w != nullptr)
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && JS_IsNumber(value))
             {
-                value += w->getTitleBarDiffNormal();
+                int32_t valueInt = -1;
+                JS_ToInt32(ctx, &valueInt, value);
+                valueInt += w->getTitleBarDiffNormal();
                 if (WindowCanResize(*w))
                 {
-                    WindowResizeByDelta(*w, 0, value - w->height);
+                    WindowResizeByDelta(*w, 0, valueInt - w->height);
                 }
                 else
                 {
-                    WindowSetResize(*w, { w->min_width, value }, { w->max_width, value });
+                    WindowSetResize(*w, { w->min_width, valueInt }, { w->max_width, valueInt });
                 }
             }
+            return JS_UNDEFINED;
         }
-        int32_t minWidth_get() const
+        static JSValue minWidth_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                return w->min_width;
+                return JS_NewInt32(ctx, w->min_width);
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void minWidth_set(int32_t value)
+        static JSValue minWidth_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && JS_IsNumber(value))
+            {
+                int32_t valueInt = -1;
+                JS_ToInt32(ctx, &valueInt, value);
+                WindowSetResize(*w, { valueInt, w->min_height }, { w->max_width, w->max_height });
+            }
+            return JS_UNDEFINED;
+        }
+        static JSValue maxWidth_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                WindowSetResize(*w, { value, w->min_height }, { w->max_width, w->max_height });
+                return JS_NewInt32(ctx, w->max_width);
             }
+            return JS_NewInt32(ctx, 0);
         }
-        int32_t maxWidth_get() const
+        static JSValue maxWidth_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && JS_IsNumber(value))
+            {
+                int32_t valueInt = -1;
+                JS_ToInt32(ctx, &valueInt, value);
+                WindowSetResize(*w, { w->min_width, w->min_height }, { valueInt, w->max_height });
+            }
+            return JS_UNDEFINED;
+        }
+        static JSValue minHeight_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                return w->max_width;
+                return JS_NewInt32(ctx, w->min_height - w->getTitleBarDiffNormal());
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void maxWidth_set(int32_t value)
+        static JSValue minHeight_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && JS_IsNumber(value))
+            {
+                int32_t valueInt = -1;
+                JS_ToInt32(ctx, &valueInt, value);
+                valueInt += w->getTitleBarDiffNormal();
+                WindowSetResize(*w, { w->min_width, valueInt }, { w->max_width, w->max_height });
+            }
+            return JS_UNDEFINED;
+        }
+        static JSValue maxHeight_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                WindowSetResize(*w, { w->min_width, w->min_height }, { value, w->max_height });
+                return JS_NewInt32(ctx, w->max_height - w->getTitleBarDiffNormal());
             }
+            return JS_NewInt32(ctx, 0);
         }
-        int32_t minHeight_get() const
+        static JSValue maxHeight_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && JS_IsNumber(value))
+            {
+                int32_t valueInt = -1;
+                JS_ToInt32(ctx, &valueInt, value);
+                valueInt += w->getTitleBarDiffNormal();
+                WindowSetResize(*w, { w->min_width, w->min_height }, { w->max_width, valueInt });
+            }
+            return JS_UNDEFINED;
+        }
+        static JSValue isSticky_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                return w->min_height - w->getTitleBarDiffNormal();
+                return JS_NewBool(ctx, (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)) != 0);
             }
-            return 0;
-        }
-        void minHeight_set(int32_t value)
-        {
-            auto w = GetWindow();
-            if (w != nullptr)
-            {
-                value += w->getTitleBarDiffNormal();
-                WindowSetResize(*w, { w->min_width, value }, { w->max_width, w->max_height });
-            }
-        }
-        int32_t maxHeight_get() const
-        {
-            auto w = GetWindow();
-            if (w != nullptr)
-            {
-                return w->max_height - w->getTitleBarDiffNormal();
-            }
-            return 0;
-        }
-        void maxHeight_set(int32_t value)
-        {
-            auto w = GetWindow();
-            if (w != nullptr)
-            {
-                value += w->getTitleBarDiffNormal();
-                WindowSetResize(*w, { w->min_width, w->min_height }, { w->max_width, value });
-            }
-        }
-        bool isSticky_get() const
-        {
-            auto w = GetWindow();
-            if (w != nullptr)
-            {
-                return (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)) != 0;
-            }
-            return false;
+            return JS_NewBool(ctx, false);
         }
 
-        std::vector<DukValue> widgets_get() const
+        static JSValue widgets_get(JSContext* ctx, JSValue thisVal)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-
-            std::vector<DukValue> result;
-            auto w = GetWindow();
+            JSValue result = JS_NewArray(ctx);
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
                 for (WidgetIndex widgetIndex = 0; widgetIndex < w->widgets.size(); widgetIndex++)
                 {
-                    result.push_back(ScWidget::ToDukValue(ctx, w, widgetIndex));
+                    // TODO (mber)
+                    // result.push_back(ScWidget::ToDukValue(ctx, w, widgetIndex));
                 }
             }
             return result;
         }
 
-        std::vector<int32_t> colours_get() const
+        static JSValue colours_get(JSContext* ctx, JSValue thisVal)
         {
-            std::vector<int32_t> result;
-            auto w = GetWindow();
+            JSValue result = JS_NewArray(ctx);
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
-                result.reserve(std::size(w->colours));
+                int64_t i = 0;
                 for (auto c : w->colours)
                 {
                     auto colour = c.colour;
                     if (c.hasFlag(ColourFlag::translucent))
                         colour |= kLegacyColourFlagTranslucent;
-                    result.push_back(colour);
+
+                    JS_SetPropertyInt64(ctx, result, i++, JS_NewInt32(ctx, colour));
                 }
             }
             return result;
         }
-        void colours_set(std::vector<int32_t> colours)
+        static JSValue colours_set(JSContext* ctx, JSValue thisVal, JSValue colours)
         {
-            auto w = GetWindow();
-            if (w != nullptr)
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && JS_IsArray(colours))
             {
-                for (size_t i = 0; i < std::size(w->colours); i++)
+                int64_t coloursLen = -1;
+                JS_GetLength(ctx, colours, &coloursLen);
+                for (int64_t i = 0; i < std::ssize(w->colours); i++)
                 {
                     auto c = ColourWithFlags{ COLOUR_BLACK };
-                    if (i < colours.size())
+                    if (i < coloursLen)
                     {
-                        colour_t colour = colours[i] & ~kLegacyColourFlagTranslucent;
-                        auto isTranslucent = (colours[i] & kLegacyColourFlagTranslucent);
-                        c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);
-                        c.flags = (isTranslucent ? EnumToFlag(ColourFlag::translucent) : 0);
+                        JSValue elem = JS_GetPropertyInt64(ctx,colours,i);
+                        if (JS_IsNumber(elem))
+                        {
+                            int32_t colorInt = -1;
+                            JS_ToInt32(ctx, &colorInt, elem);
+                            colour_t colour = colorInt & ~kLegacyColourFlagTranslucent;
+                            auto isTranslucent = (colorInt & kLegacyColourFlagTranslucent);
+                            c.colour = std::clamp<colour_t>(colour, COLOUR_BLACK, COLOUR_COUNT - 1);
+                            c.flags = (isTranslucent ? EnumToFlag(ColourFlag::translucent) : 0);
+                        }
+                        JS_FreeValue(ctx, elem);
                     }
                     w->colours[i] = c;
                 }
                 w->Invalidate();
             }
+            return JS_UNDEFINED;
         }
 
-        std::string title_get() const
+        static JSValue title_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
             if (w != nullptr && w->classification == WindowClass::Custom)
             {
-                return GetWindowTitle(w);
+                // TODO (mber)
+                // return GetWindowTitle(w);
             }
-            return {};
+            return JS_NULL;
         }
-        void title_set(std::string value)
+        static JSValue title_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
+            if (!JS_IsString(thisVal))
+            {
+                JS_ThrowTypeError(ctx, "Expected string");
+                return JS_EXCEPTION;
+            }
+            auto w = GetWindow(thisVal);
             if (w != nullptr && w->classification == WindowClass::Custom)
             {
-                UpdateWindowTitle(w, value);
+                const char* valueStr = JS_ToCString(ctx, value);
+                // TODO (mber)
+                // UpdateWindowTitle(w, valueStr);
+                JS_FreeCString(ctx, valueStr);
             }
-        }
-
-        int32_t tabIndex_get() const
-        {
-            auto w = GetWindow();
-            if (w != nullptr && w->classification == WindowClass::Custom)
-            {
-                return w->page;
-            }
-            return 0;
-        }
-        void tabIndex_set(int32_t tab)
-        {
-            auto w = GetWindow();
-            if (w != nullptr && w->classification == WindowClass::Custom)
-            {
-                UpdateWindowTab(w, tab);
-            }
+            return JS_UNDEFINED;
         }
 
-        void close()
+        static JSValue tabIndex_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            auto w = GetWindow(thisVal);
+            if (w != nullptr && w->classification == WindowClass::Custom)
+            {
+                return JS_NewInt32(ctx, w->page);
+            }
+            return JS_NewInt32(ctx, 0);
+        }
+        static JSValue tabIndex_set(JSContext* ctx, JSValue thisVal, JSValue tab)
+        {
+            if (JS_IsNumber(tab))
+            {
+                auto w = GetWindow(thisVal);
+                if (w != nullptr && w->classification == WindowClass::Custom)
+                {
+                    int32_t tabNumber = -1;
+                    JS_ToInt32(ctx, &tabNumber, tab);
+                    // TODO (mber)
+                    // UpdateWindowTab(w, tabNumber);
+                }
+            }
+            return JS_UNDEFINED;
+        }
+
+        static JSValue close(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            auto w = GetWindow(thisVal);
             if (w != nullptr)
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->Close(*w);
             }
+            return JS_UNDEFINED;
         }
 
-        DukValue findWidget(std::string name) const
+        static JSValue findWidget(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto w = GetWindow();
-            if (w != nullptr)
-            {
-                auto widgetIndex = FindWidgetIndexByName(w, name);
-                if (widgetIndex)
-                {
-                    return ScWidget::ToDukValue(ctx, w, *widgetIndex);
-                }
-            }
-            return GetObjectAsDukValue<ScWidget>(ctx, nullptr);
+            throw new std::runtime_error("Not implemented");
+            // TODO (mber) widgets
+            // auto w = GetWindow(thisVal);
+            // if (w != nullptr)
+            // {
+            //     auto widgetIndex = FindWidgetIndexByName(w, name);
+            //     if (widgetIndex)
+            //     {
+            //         return ScWidget::ToDukValue(ctx, w, *widgetIndex);
+            //     }
+            // }
+            // return GetObjectAsDukValue<ScWidget>(ctx, nullptr);
         }
 
-        void bringToFront()
+        static JSValue bringToFront(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto* w = GetWindow();
+            auto* w = GetWindow(thisVal);
             if (w != nullptr)
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 w = windowMgr->BringToFront(*w);
                 w->flags |= WF_WHITE_BORDER_MASK;
             }
+            return JS_UNDEFINED;
         }
 
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_property(ctx, &ScWindow::classification_get, nullptr, "classification");
-            dukglue_register_property(ctx, &ScWindow::number_get, nullptr, "number");
-            dukglue_register_property(ctx, &ScWindow::x_get, &ScWindow::x_set, "x");
-            dukglue_register_property(ctx, &ScWindow::y_get, &ScWindow::y_set, "y");
-            dukglue_register_property(ctx, &ScWindow::width_get, &ScWindow::width_set, "width");
-            dukglue_register_property(ctx, &ScWindow::height_get, &ScWindow::height_set, "height");
-            dukglue_register_property(ctx, &ScWindow::minWidth_get, &ScWindow::minWidth_set, "minWidth");
-            dukglue_register_property(ctx, &ScWindow::maxWidth_get, &ScWindow::maxWidth_set, "maxWidth");
-            dukglue_register_property(ctx, &ScWindow::minHeight_get, &ScWindow::minHeight_set, "minHeight");
-            dukglue_register_property(ctx, &ScWindow::maxHeight_get, &ScWindow::maxHeight_set, "maxHeight");
-            dukglue_register_property(ctx, &ScWindow::isSticky_get, nullptr, "isSticky");
-            dukglue_register_property(ctx, &ScWindow::widgets_get, nullptr, "widgets");
-            dukglue_register_property(ctx, &ScWindow::colours_get, &ScWindow::colours_set, "colours");
-            dukglue_register_property(ctx, &ScWindow::title_get, &ScWindow::title_set, "title");
-            dukglue_register_property(ctx, &ScWindow::tabIndex_get, &ScWindow::tabIndex_set, "tabIndex");
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("classification", ScWindow::classification_get, nullptr),
+            JS_CGETSET_DEF("number", ScWindow::number_get, nullptr),
+            JS_CGETSET_DEF("x", ScWindow::x_get, ScWindow::x_set),
+            JS_CGETSET_DEF("y", ScWindow::y_get, ScWindow::y_set),
+            JS_CGETSET_DEF("width", ScWindow::width_get, ScWindow::width_set),
+            JS_CGETSET_DEF("height", ScWindow::height_get, ScWindow::height_set),
+            JS_CGETSET_DEF("minWidth", ScWindow::minWidth_get, ScWindow::minWidth_set),
+            JS_CGETSET_DEF("maxWidth", ScWindow::maxWidth_get, ScWindow::maxWidth_set),
+            JS_CGETSET_DEF("minHeight", ScWindow::minHeight_get, ScWindow::minHeight_set),
+            JS_CGETSET_DEF("maxHeight", ScWindow::maxHeight_get, ScWindow::maxHeight_set),
+            JS_CGETSET_DEF("isSticky", ScWindow::isSticky_get, nullptr),
+            JS_CGETSET_DEF("widgets", ScWindow::widgets_get, nullptr),
+            JS_CGETSET_DEF("colours", ScWindow::colours_get, ScWindow::colours_set),
+            JS_CGETSET_DEF("title", ScWindow::title_get, ScWindow::title_set),
+            JS_CGETSET_DEF("tabIndex", ScWindow::tabIndex_get, ScWindow::tabIndex_set),
 
-            dukglue_register_method(ctx, &ScWindow::close, "close");
-            dukglue_register_method(ctx, &ScWindow::findWidget, "findWidget");
-            dukglue_register_method(ctx, &ScWindow::bringToFront, "bringToFront");
+            JS_CFUNC_DEF("close", 0, ScWindow::close),
+            JS_CFUNC_DEF("findWidget", 1, ScWindow::findWidget),
+            JS_CFUNC_DEF("bringToFront", 0, ScWindow::bringToFront)
+        };
+
+    public:
+        JSValue New(JSContext* ctx, WindowBase* w)
+        {
+            return New(ctx, w->classification, w->number);
+        }
+
+        JSValue New(JSContext* ctx, WindowClass wClass, rct_windownumber wNum)
+        {
+            return MakeWithOpaque(ctx, funcs, new OpaqueType{ wClass, wNum });
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Window", Finalize);
         }
 
     private:
-        WindowBase* GetWindow() const
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
         {
+            OpaqueType* data = gScWindow.GetOpaque<OpaqueType*>(thisVal);
+            if (data)
+                delete data;
+        }
+
+        static WindowBase* GetWindow(JSValue thisVal)
+        {
+            OpaqueType* data = gScWindow.GetOpaque<OpaqueType*>(thisVal);
+            if (!data)
+                return nullptr;
             auto* windowMgr = Ui::GetWindowManager();
-            return windowMgr->FindByNumber(_class, _number);
+            return windowMgr->FindByNumber(std::get<0>(*data), std::get<1>(*data));
         }
     };
 } // namespace OpenRCT2::Scripting

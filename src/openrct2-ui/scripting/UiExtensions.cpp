@@ -27,6 +27,7 @@ using namespace OpenRCT2::Scripting;
 
 ScTool OpenRCT2::Scripting::gScTool;
 ScUi OpenRCT2::Scripting::gScUi;
+ScWindow OpenRCT2::Scripting::gScWindow;
 
 static void InitialiseContext(JSContext* ctx)
 {
@@ -41,40 +42,34 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     JSContext* ctx = scriptEngine.GetContext();
     scriptEngine.RegisterExtension(InitialiseContext);
 
-    /*
-    ScGraphicsContext::Register(ctx);
-    ScImageManager::Register(ctx);
-    ScTileSelection::Register(ctx);
-    */
+    // ScGraphicsContext::Register(ctx);
+    // ScImageManager::Register(ctx);
+    // ScTileSelection::Register(ctx);
     gScTool.Register(ctx);
     gScUi.Register(ctx);
-    /*
-    ScViewport::Register(ctx);
+    // ScViewport::Register(ctx);
 
-    ScWidget::Register(ctx);
-    ScButtonWidget::Register(ctx);
-    ScColourPickerWidget::Register(ctx);
-    ScCheckBoxWidget::Register(ctx);
-    ScDropdownWidget::Register(ctx);
-    ScGroupBoxWidget::Register(ctx);
-    ScLabelWidget::Register(ctx);
-    ScListViewWidget::Register(ctx);
-    ScSpinnerWidget::Register(ctx);
-    ScTextBoxWidget::Register(ctx);
-    ScViewportWidget::Register(ctx);
+    // ScWidget::Register(ctx);
+    // ScButtonWidget::Register(ctx);
+    // ScColourPickerWidget::Register(ctx);
+    // ScCheckBoxWidget::Register(ctx);
+    // ScDropdownWidget::Register(ctx);
+    // ScGroupBoxWidget::Register(ctx);
+    // ScLabelWidget::Register(ctx);
+    // ScListViewWidget::Register(ctx);
+    // ScSpinnerWidget::Register(ctx);
+    // ScTextBoxWidget::Register(ctx);
+    // ScViewportWidget::Register(ctx);
 
-    ScTitleSequence::Register(ctx);
-    ScTitleSequenceManager::Register(ctx);
-    ScTitleSequencePark::Register(ctx);
-    ScWindow::Register(ctx);
+    // ScTitleSequence::Register(ctx);
+    // ScTitleSequenceManager::Register(ctx);
+    // ScTitleSequencePark::Register(ctx);
+    gScWindow.Register(ctx);
 
-    InitialiseCustomImages(scriptEngine);
-    */
+    // InitialiseCustomImages(scriptEngine);
     InitialiseCustomMenuItems(scriptEngine);
-    /*
-    scriptEngine.SubscribeToPluginStoppedEvent(
-        [](std::shared_ptr<Plugin> plugin) -> void { CloseWindowsOwnedByPlugin(plugin); });
-    */
+    // scriptEngine.SubscribeToPluginStoppedEvent(
+    //     [](std::shared_ptr<Plugin> plugin) -> void { CloseWindowsOwnedByPlugin(plugin); });
 }
 
 // TODO (mber) widget
