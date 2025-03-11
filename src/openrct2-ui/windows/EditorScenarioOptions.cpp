@@ -90,6 +90,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_GUEST_INITIAL_THIRST,
         WIDX_GUEST_INITIAL_THIRST_INCREASE,
         WIDX_GUEST_INITIAL_THIRST_DECREASE,
+        WIDX_GUESTS_INTENSITY_PREFERENCE_LABEL,
         WIDX_GUESTS_INTENSITY_PREFERENCE,
         WIDX_GUESTS_INTENSITY_PREFERENCE_DROPDOWN,
 
@@ -138,6 +139,7 @@ namespace OpenRCT2::Ui::Windows
         MakeSpinnerWidgets({298,  65}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
         MakeSpinnerWidgets({298,  82}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
         MakeSpinnerWidgets({298,  99}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeWidget        ({  8, 116}, {      170,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
         MakeWidget        ({198, 116}, {      170,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                        STR_GUESTS_PREFER_INTENSITY_TIP   ),
         MakeWidget        ({357, 117}, {       11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                   STR_GUESTS_PREFER_INTENSITY_TIP   ),
     };
@@ -906,16 +908,10 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<uint16_t>(((255 - gameState.GuestInitialThirst) * 100) / 255);
             DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
-            // Guests' intensity label
-            const auto& guestsIntensityLabel = widgets[WIDX_GUESTS_INTENSITY_PREFERENCE];
-            {
-                screenCoords = windowPos + ScreenCoordsXY{ 8, guestsIntensityLabel.top };
-                DrawTextBasic(dpi, screenCoords, STR_GUESTS_PREFER_INTENSITY_LABEL);
-            }
-
             // Guests' intensity value
             {
-                screenCoords = windowPos + ScreenCoordsXY{ guestsIntensityLabel.left + 1, guestsIntensityLabel.top };
+                const auto& guestsIntensity = widgets[WIDX_GUESTS_INTENSITY_PREFERENCE];
+                screenCoords = windowPos + ScreenCoordsXY{ guestsIntensity.left + 1, guestsIntensity.top };
 
                 const auto preferLess = gameState.Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
                 const auto preferMore = gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
