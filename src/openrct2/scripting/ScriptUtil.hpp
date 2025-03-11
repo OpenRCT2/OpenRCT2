@@ -89,6 +89,18 @@ namespace OpenRCT2::Scripting
         return out;
     }
 
+    inline std::string GetStdString(JSContext* ctx, JSValue obj)
+    {
+        if (JS_IsString(obj))
+        {
+            const char* buf = JS_ToCString(ctx, obj);
+            std::string str(buf);
+            JS_FreeCString(ctx, buf);
+            return str;
+        }
+        return {};
+    }
+
     inline JSValue ToJSValue(JSContext* ctx, const CoordsXY& coords)
     {
         JSValue obj = JS_NewObject(ctx);

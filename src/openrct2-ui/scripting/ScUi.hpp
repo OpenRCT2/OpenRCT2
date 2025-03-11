@@ -158,14 +158,11 @@ namespace OpenRCT2::Scripting
 
         static JSValue tool_get(JSContext* ctx, JSValue thisVal)
         {
-            // TODO (mber)
-            return JS_NewString(ctx, "not yet implemented");
-
-            // if (gInputFlags.has(InputFlag::toolActive))
-            // {
-            //     return std::make_shared<ScTool>(_scriptEngine.GetContext());
-            // }
-            // return {};
+            if (gInputFlags.has(InputFlag::toolActive))
+            {
+                return gScTool.New(ctx);
+            }
+            return JS_NULL;
         }
 
         static JSValue imageManager_get(JSContext* ctx, JSValue thisVal)
@@ -221,34 +218,36 @@ namespace OpenRCT2::Scripting
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
         }
-
-        std::shared_ptr<ScWindow> getWindow(DukValue a) const
+        */
+        static JSValue getWindow(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            if (a.type() == DukValue::Type::NUMBER)
+            if (JS_IsNumber(argv[0]))
             {
-                auto index = a.as_uint();
-                size_t i = 0;
+                int32_t index = -1;
+                JS_ToInt32(ctx, &index, argv[0]);
+                int32_t i = 0;
                 for (const auto& w : g_window_list)
                 {
                     if (i == index)
                     {
-                        return std::make_shared<ScWindow>(w.get());
+                        return gScWindow.New(ctx, w.get());
                     }
                     i++;
                 }
             }
-            else if (a.type() == DukValue::Type::STRING)
+            else if (JS_IsString(argv[0]))
             {
-                const auto& classification = a.as_string();
-                auto w = FindCustomWindowByClassification(classification);
-                if (w != nullptr)
-                {
-                    return std::make_shared<ScWindow>(w);
-                }
+                std::string classification = GetStdString(ctx, argv[0]);
+                // TODO (mber)
+                // auto w = FindCustomWindowByClassification(classification);
+                // if (w != nullptr)
+                // {
+                //     return std::make_shared<ScWindow>(w);
+                // }
             }
-            return {};
+            return JS_NULL;
         }
-        */
+
         static JSValue showError(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             if (argc < 2 || !JS_IsString(argv[0]) || !JS_IsString(argv[1]))
@@ -430,8 +429,7 @@ namespace OpenRCT2::Scripting
             // dukglue_register_method(ctx, &ScUi::openWindow, "openWindow"),
             // dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows"),
             // dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows"),
-            // dukglue_register_method(ctx, &ScUi::getWindow, "getWindow"),
-            JS_CFUNC_DEF("showError", 2, ScUi::showError),
+            JS_CFUNC_DEF("getWindow", 1, ScUi::getWindow), JS_CFUNC_DEF("showError", 2, ScUi::showError),
             // dukglue_register_method(ctx, &ScUi::showTextInput, "showTextInput"),
             // dukglue_register_method(ctx, &ScUi::showFileBrowse, "showFileBrowse"),
             // dukglue_register_method(ctx, &ScUi::showScenarioSelect, "showScenarioSelect"),
