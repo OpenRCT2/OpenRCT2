@@ -7,6 +7,7 @@
 - Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve (original bug).
 - Fix: [#10379] Banners outside the park can be renamed and modified (original bug).
 - Fix: [#10582] Low clearance tunnels below water are drawn incorrectly (original bug).
+- Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.
 - Fix: [#23743] Parks with guest goals over 32767 do not appear in the scenario list.
 - Fix: [#23844] Sound effects keep playing when loading another save.
 - Fix: [#23891] Inverted Hairpin Coaster track can draw over things above it (original bug).

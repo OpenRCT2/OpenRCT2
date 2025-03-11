@@ -931,6 +931,12 @@ public:
      */
     void Close(WindowBase& w) override
     {
+        if (!w.CanClose())
+        {
+            // Something's preventing this window from closing -- bail out early
+            return;
+        }
+
         w.OnClose();
 
         // Remove viewport

@@ -366,8 +366,12 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !EditorObjectSelectionWindowCheck())
+                {
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && !EditorObjectSelectionWindowCheck())
                         return;
+
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
 
                     if (isInEditorMode())
                     {
@@ -382,6 +386,7 @@ namespace OpenRCT2::Ui::Windows
                         context->SetActiveScene(context->GetTitleScene());
                     }
                     break;
+                }
 
                 case WIDX_SUB_TAB_0:
                 case WIDX_SUB_TAB_1:
@@ -1708,17 +1713,15 @@ namespace OpenRCT2::Ui::Windows
 
     bool EditorObjectSelectionWindowCheck()
     {
-        auto* windowMgr = Ui::GetWindowManager();
-
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::none)
         {
-            windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
             return true;
         }
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
 
+        auto* windowMgr = Ui::GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {
