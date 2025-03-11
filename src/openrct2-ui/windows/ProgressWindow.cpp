@@ -35,9 +35,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget kProgressWindowWidgets[] = {
-        MakeWidget({                0, 0}, {    kWindowWidth, kWindowHeight}, WindowWidgetType::Frame,    WindowColour::Primary                                     ), // panel / background
-        MakeWidget({                1, 1}, {kWindowWidth - 3,            14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_STRINGID,  STR_WINDOW_TITLE_TIP), // title bar
-        MakeWidget({kWindowWidth - 12, 2}, {              11,            12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,   STR_CLOSE_WINDOW_TIP), // close x button
+        WINDOW_SHIM(STR_STRINGID, kWindowWidth, kWindowHeight)
     };
 
     struct LoaderVehicleStyle
@@ -92,6 +90,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
 
             ApplyStyle();
+            OnResize();
         }
 
         void OnClose() override
