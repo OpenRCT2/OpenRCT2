@@ -130,7 +130,7 @@ static constexpr uint8_t _97AF32[] = {
 };
 
 /** rct2: 0x0097B052, 0x0097B053 */
-static constexpr CoordsXY Loc97B052[] = {
+static constexpr CoordsXY kMetalSupportCrossBeamBoundBoxOffsets[] = {
     { -15,  -1 },
     {   0,  -2 },
     {  -2,  -1 },
@@ -142,7 +142,7 @@ static constexpr CoordsXY Loc97B052[] = {
 };
 
 /** rct2: 0x0097B062, 0x0097B063 */
-static constexpr CoordsXY _97B062[] = {
+static constexpr CoordsXY kMetalSupportCrossBeamBoundBoxLengths[] = {
     { 18,  3 },
     {  3, 18 },
     { 18,  3 },
@@ -154,7 +154,7 @@ static constexpr CoordsXY _97B062[] = {
 };
 
 /** rct2: 0x0097B072 */
-static constexpr uint32_t _metalSupportTypeToCrossbeamImages[][8] = {
+static constexpr uint32_t kMetalSupportTypeToCrossbeamImages[][8] = {
     { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportGraphic::Tubes
     { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::Fork
     { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::ForkAlt
@@ -171,7 +171,7 @@ static constexpr uint32_t _metalSupportTypeToCrossbeamImages[][8] = {
 };
 
 /** rct2: 0x0097B142 */
-static constexpr uint8_t supportTypeToHeight[] = {
+static constexpr uint8_t kMetalSupportTypeToHeight[] = {
     6, // MetalSupportGraphic::Tubes
     3, // MetalSupportGraphic::Fork
     3, // MetalSupportGraphic::ForkAlt
@@ -329,7 +329,7 @@ static bool MetalASupportsPaintSetup(
     {
         segmentHeight = currentHeight;
 
-        currentHeight -= supportTypeToHeight[supportType];
+        currentHeight -= kMetalSupportTypeToHeight[supportType];
         if (currentHeight < 0)
             return false;
 
@@ -358,10 +358,10 @@ static bool MetalASupportsPaintSetup(
 
         uint8_t ebp = esi[segment * 8 + 1];
 
-        auto offset = CoordsXYZ{ SupportBoundBoxes[segment] + Loc97B052[ebp], currentHeight };
-        auto boundBoxLength = CoordsXYZ(_97B062[ebp], 1);
+        auto offset = CoordsXYZ{ SupportBoundBoxes[segment] + kMetalSupportCrossBeamBoundBoxOffsets[ebp], currentHeight };
+        auto boundBoxLength = CoordsXYZ(kMetalSupportCrossBeamBoundBoxLengths[ebp], 1);
 
-        auto image_id = imageTemplate.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]);
+        auto image_id = imageTemplate.WithIndex(kMetalSupportTypeToCrossbeamImages[supportType][ebp]);
         PaintAddImageAsParent(session, image_id, offset, boundBoxLength);
 
         segment = newSegment;
@@ -497,7 +497,7 @@ static bool MetalBSupportsPaintSetup(
     {
         segmentHeight = height;
 
-        currentHeight -= supportTypeToHeight[supportType];
+        currentHeight -= kMetalSupportTypeToHeight[supportType];
         if (currentHeight < 0)
         {
             return false; // AND
@@ -533,8 +533,9 @@ static bool MetalBSupportsPaintSetup(
         }
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(_metalSupportTypeToCrossbeamImages[supportType][ebp]),
-            { SupportBoundBoxes[segment] + Loc97B052[ebp], currentHeight }, { _97B062[ebp], 1 });
+            session, imageTemplate.WithIndex(kMetalSupportTypeToCrossbeamImages[supportType][ebp]),
+            { SupportBoundBoxes[segment] + kMetalSupportCrossBeamBoundBoxOffsets[ebp], currentHeight },
+            { kMetalSupportCrossBeamBoundBoxLengths[ebp], 1 });
     }
 
     const int16_t crossbeamHeight = currentHeight;
