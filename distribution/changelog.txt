@@ -3,7 +3,7 @@
 - Feature: [#23774] Climates can now be customised using objects.
 - Feature: [#23876] New park save files now contain a preview image, shown in the load/save window.
 - Change: [#23932] The land rights window now checks 'Land Owned' by default.
-- Change: [#23936] The 'guests prefer less/more intense rides' settings have been turned into a dropdown.
+- Change: [#23936] The ‘guests prefer less/more intense rides’ settings have been turned into a dropdown.
 - Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve (original bug).
 - Fix: [#10379] Banners outside the park can be renamed and modified (original bug).
 - Fix: [#10582] Low clearance tunnels below water are drawn incorrectly (original bug).
