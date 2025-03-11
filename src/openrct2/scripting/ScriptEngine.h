@@ -340,6 +340,11 @@ namespace OpenRCT2::Scripting
         {
             RegisterBase(ctx, { className, nullptr, nullptr, nullptr, nullptr });
         }
+
+        void RegisterBaseStr(JSContext* ctx, const char* className, JSClassFinalizer* finalizer)
+        {
+            RegisterBase(ctx, { className, finalizer, nullptr, nullptr, nullptr });
+        }
     };
 
 } // namespace OpenRCT2::Scripting
