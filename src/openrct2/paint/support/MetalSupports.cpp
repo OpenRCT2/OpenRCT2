@@ -283,8 +283,6 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
 
 constexpr int32_t kMetalSupportBaseHeight = 6;
 
-static inline MetalSupportGraphic RotateMetalSupportGraphic(const MetalSupportType supportType, const Direction direction);
-
 template<bool typeB>
 bool MetalSupportsPaintSetup(
     PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
@@ -428,6 +426,12 @@ bool MetalSupportsPaintSetup(
     return true;
 }
 
+static inline MetalSupportGraphic RotateMetalSupportGraphic(const MetalSupportType supportType, const Direction direction)
+{
+    assert(direction < kNumOrthogonalDirections);
+    return kMetalSupportGraphicRotated[EnumValue(supportType)][direction];
+}
+
 bool MetalASupportsPaintSetup(
     PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const int32_t heightExtra,
     int32_t height, const bool drawCap, ImageId imageTemplate)
@@ -460,12 +464,6 @@ bool MetalBSupportsPaintSetupRotated(
     return MetalSupportsPaintSetup<true>(
         session, RotateMetalSupportGraphic(supportType, direction),
         kMetalSupportPlacementRotated[EnumValue(placement)][direction], heightExtra, height, drawCap, imageTemplate);
-}
-
-static inline MetalSupportGraphic RotateMetalSupportGraphic(const MetalSupportType supportType, const Direction direction)
-{
-    assert(direction < kNumOrthogonalDirections);
-    return kMetalSupportGraphicRotated[EnumValue(supportType)][direction];
 }
 
 void DrawSupportsSideBySide(
