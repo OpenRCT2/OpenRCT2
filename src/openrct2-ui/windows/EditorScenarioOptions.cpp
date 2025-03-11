@@ -786,7 +786,7 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() - 1,
-                        colours[1], 0, 0, 4, dropdownWidget.width() - 3);
+                        colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget.width() - 3);
 
                     const auto preferLess = gameState.Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
                     const auto preferMore = gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
