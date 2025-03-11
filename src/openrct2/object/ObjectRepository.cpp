@@ -76,7 +76,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 30;
+    static constexpr uint16_t VERSION = 31;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -149,10 +149,6 @@ protected:
         {
             case ObjectType::ride:
                 ds << item.RideInfo.RideFlags;
-                for (size_t i = 0; i < std::size(item.RideInfo.rideCategory); i++)
-                {
-                    ds << item.RideInfo.rideCategory[i];
-                }
                 ds << item.RideInfo.RideType;
                 break;
             case ObjectType::sceneryGroup:

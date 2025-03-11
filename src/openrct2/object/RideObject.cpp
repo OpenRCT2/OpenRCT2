@@ -386,17 +386,9 @@ ImageIndex RideObject::GetPreviewImage(ride_type_t type)
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
-    // Find the first non-null ride type, to be used when checking the ride group and determining the category.
-    auto firstRideType = _legacyType.GetFirstNonNullRideType();
-    auto category = GetRideTypeDescriptor(firstRideType).Category;
-
     for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
     {
         item->RideInfo.RideType[i] = _legacyType.ride_type[i];
-    }
-    for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxCategoriesPerRide; i++)
-    {
-        item->RideInfo.rideCategory[i] = category;
     }
 
     item->RideInfo.RideFlags = 0;
