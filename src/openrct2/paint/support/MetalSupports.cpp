@@ -318,13 +318,12 @@ static bool MetalASupportsPaintSetup(
         imageTemplate = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    uint8_t segment = EnumValue(placement);
-    auto supportType = EnumValue(supportTypeMember);
-    SupportHeight* supportSegments = session.SupportSegments;
-    const auto originalSegment = segment;
+    const uint8_t originalSegment = EnumValue(placement);
+    const uint32_t supportType = EnumValue(supportTypeMember);
+    SupportHeight* const supportSegments = session.SupportSegments;
 
     int32_t currentHeight = height;
-
+    uint8_t segment = originalSegment;
     uint16_t segmentHeight = 0xFFFF;
     if (currentHeight < supportSegments[segment].height)
     {
@@ -475,7 +474,7 @@ static bool MetalBSupportsPaintSetup(
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
-        return false; // AND
+        return false;
     }
 
     if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
@@ -487,13 +486,13 @@ static bool MetalBSupportsPaintSetup(
         imageTemplate = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    const uint8_t segment = EnumValue(placement);
-    const auto originalSegment = segment;
-    auto supportType = EnumValue(supportTypeMember);
-    SupportHeight* supportSegments = session.SupportSegments;
-    uint16_t segmentHeight = 0xFFFF;
-    int32_t currentHeight = height;
+    const uint8_t originalSegment = EnumValue(placement);
+    const uint32_t supportType = EnumValue(supportTypeMember);
+    SupportHeight* const supportSegments = session.SupportSegments;
 
+    int32_t currentHeight = height;
+    uint8_t segment = originalSegment;
+    uint16_t segmentHeight = 0xFFFF;
     if (height < supportSegments[segment].height)
     {
         segmentHeight = height;
