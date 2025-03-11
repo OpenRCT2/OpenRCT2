@@ -513,6 +513,9 @@ namespace OpenRCT2
         min_height += heightDifference;
         max_height += heightDifference;
 
+        // Resize frame again to match new height
+        frameWidget.bottom = height - 1;
+
         // Offset body widgets
         // NB: we're offsetting page widget as well!
         for (WidgetIndex i = 3; i < widgets.size(); i++)
