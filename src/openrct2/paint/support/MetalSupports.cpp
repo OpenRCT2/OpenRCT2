@@ -283,24 +283,10 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
 
 constexpr int32_t kMetalSupportBaseHeight = 6;
 
-static bool MetalASupportsPaintSetup(
-    PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
-    const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate);
-static bool MetalBSupportsPaintSetup(
-    PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
-    const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate);
 static inline MetalSupportGraphic RotateMetalSupportGraphic(const MetalSupportType supportType, const Direction direction);
 
-/**
- * Metal pole supports
- * @param supportType (edi)
- * @param segment (ebx)
- * @param special (ax)
- * @param height (edx)
- * @param imageTemplate (ebp)
- *  rct2: 0x00663105
- */
-static bool MetalASupportsPaintSetup(
+template<bool typeB>
+bool MetalSupportsPaintSetup(
     PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
     const int32_t special, const int32_t height, const bool drawCap, ImageId imageTemplate)
 {
@@ -356,6 +342,11 @@ static bool MetalASupportsPaintSetup(
         }
 
         const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[baseIndex + segment * 8 + 1];
+        if constexpr (typeB)
+        {
+            if (crossBeamIndex >= 4)
+                return false;
+        }
 
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(kMetalSupportTypeToCrossbeamImages[supportType][crossBeamIndex]),
@@ -441,7 +432,7 @@ bool MetalASupportsPaintSetup(
     PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const int32_t special,
     int32_t height, const bool drawCap, ImageId imageTemplate)
 {
-    return MetalASupportsPaintSetup(
+    return MetalSupportsPaintSetup<false>(
         session, RotateMetalSupportGraphic(supportType, 0), placement, special, height, drawCap, imageTemplate);
 }
 
@@ -449,167 +440,16 @@ bool MetalASupportsPaintSetupRotated(
     PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const Direction direction,
     const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate)
 {
-    return MetalASupportsPaintSetup(
+    return MetalSupportsPaintSetup<false>(
         session, RotateMetalSupportGraphic(supportType, direction),
         kMetalSupportPlacementRotated[EnumValue(placement)][direction], special, height, drawCap, imageTemplate);
-}
-
-/**
- * Metal pole supports
- *  rct2: 0x00663584
- *
- * @param supportType (edi)
- * @param segment (ebx)
- * @param special (ax)
- * @param height (edx)
- * @param imageTemplate (ebp)
- *
- * @return (Carry Flag)
- */
-static bool MetalBSupportsPaintSetup(
-    PaintSession& session, const MetalSupportGraphic supportTypeMember, const MetalSupportPlace placement,
-    const int32_t special, const int32_t height, const bool drawCap, ImageId imageTemplate)
-{
-    if (!(session.Flags & PaintSessionFlags::PassedSurface))
-    {
-        return false;
-    }
-
-    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
-    {
-        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-        {
-            return false;
-        }
-        imageTemplate = ImageId(0).WithTransparency(FilterPaletteID::PaletteDarken1);
-    }
-
-    const uint8_t originalSegment = EnumValue(placement);
-    const uint32_t supportType = EnumValue(supportTypeMember);
-    SupportHeight* const supportSegments = session.SupportSegments;
-
-    int32_t currentHeight = height;
-    uint8_t segment = originalSegment;
-    uint16_t segmentHeight = 0xFFFF;
-    if (currentHeight < supportSegments[segment].height)
-    {
-        segmentHeight = currentHeight;
-
-        currentHeight -= kMetalSupportTypeToHeight[supportType];
-        if (currentHeight < 0)
-            return false;
-
-        uint16_t baseIndex = session.CurrentRotation * 2;
-        uint8_t newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-        if (currentHeight <= supportSegments[newSegment].height)
-        {
-            baseIndex += kMetalSupportSkip;
-            newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-            if (currentHeight <= supportSegments[newSegment].height)
-            {
-                baseIndex += kMetalSupportSkip;
-                newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-                if (currentHeight <= supportSegments[newSegment].height)
-                {
-                    baseIndex += kMetalSupportSkip;
-                    newSegment = kMetalSupportSegmentOffsets[baseIndex + segment * 8];
-                    if (currentHeight <= supportSegments[newSegment].height)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[baseIndex + segment * 8 + 1];
-        if (crossBeamIndex >= 4)
-            return true;
-
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(kMetalSupportTypeToCrossbeamImages[supportType][crossBeamIndex]),
-            { SupportBoundBoxes[segment] + kMetalSupportCrossBeamBoundBoxOffsets[crossBeamIndex], currentHeight },
-            { kMetalSupportCrossBeamBoundBoxLengths[crossBeamIndex], 1 });
-
-        segment = newSegment;
-    }
-
-    const int16_t crossbeamHeight = currentHeight;
-
-    if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery
-        || currentHeight - supportSegments[segment].height < kMetalSupportBaseHeight
-        || kSupportBasesAndBeams[supportType].base == kImageIndexUndefined)
-    {
-        currentHeight = supportSegments[segment].height;
-    }
-    else
-    {
-        const auto imageIndex = kSupportBasesAndBeams[supportType].base
-            + kMetalSupportsSlopeImageOffsetMap[supportSegments[segment].slope & kTileSlopeMask];
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], supportSegments[segment].height },
-            { 1, 1, kMetalSupportBaseHeight - 1 });
-
-        currentHeight = supportSegments[segment].height + kMetalSupportBaseHeight;
-    }
-
-    const auto supportBeamImageIndex = drawCap ? kSupportBasesAndBeams[supportType].beamCapped
-                                               : kSupportBasesAndBeams[supportType].beamUncapped;
-
-    // Work out if a small support segment required to bring support to normal
-    // size (aka floor2(x, 16))
-    const int16_t heightDiff = std::min<int16_t>(floor2(currentHeight + 16, 16), crossbeamHeight) - currentHeight;
-    if (heightDiff > 0)
-    {
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(supportBeamImageIndex + heightDiff - 1),
-            { SupportBoundBoxes[segment], currentHeight }, { 1, 1, heightDiff - 1 });
-    }
-
-    currentHeight += heightDiff;
-
-    for (uint8_t count = 1;; count++)
-    {
-        const int16_t beamLength = std::min<int16_t>(currentHeight + 16, crossbeamHeight) - currentHeight;
-        if (beamLength <= 0)
-            break;
-
-        uint32_t imageIndex = supportBeamImageIndex + beamLength - 1;
-        if (count % 4 == 0 && beamLength == 16)
-            imageIndex++;
-
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], currentHeight },
-            { 1, 1, beamLength - 1 });
-
-        currentHeight += beamLength;
-    }
-
-    supportSegments[segment].height = segmentHeight;
-    supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
-
-    currentHeight = height;
-    const CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[originalSegment], currentHeight);
-    while (true)
-    {
-        const int16_t beamLength = std::min(currentHeight + 16, height + special) - currentHeight;
-        if (beamLength <= 0)
-            break;
-
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(supportBeamImageIndex + beamLength - 1),
-            { SupportBoundBoxes[originalSegment], currentHeight }, { boundBoxOffset, { 1, 1, 0 } });
-
-        currentHeight += beamLength;
-    }
-
-    return false; // AND
 }
 
 bool MetalBSupportsPaintSetup(
     PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const int32_t special,
     int32_t height, const bool drawCap, ImageId imageTemplate)
 {
-    return MetalBSupportsPaintSetup(
+    return MetalSupportsPaintSetup<true>(
         session, RotateMetalSupportGraphic(supportType, 0), placement, special, height, drawCap, imageTemplate);
 }
 
@@ -617,7 +457,7 @@ bool MetalBSupportsPaintSetupRotated(
     PaintSession& session, const MetalSupportType supportType, const MetalSupportPlace placement, const Direction direction,
     const int32_t special, int32_t height, const bool drawCap, ImageId imageTemplate)
 {
-    return MetalBSupportsPaintSetup(
+    return MetalSupportsPaintSetup<true>(
         session, RotateMetalSupportGraphic(supportType, direction),
         kMetalSupportPlacementRotated[EnumValue(placement)][direction], special, height, drawCap, imageTemplate);
 }
@@ -636,13 +476,13 @@ void DrawSupportsSideBySide(
 
     if (direction & 1)
     {
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::TopRightSide, special, height, false, colour);
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::BottomLeftSide, special, height, false, colour);
+        MetalSupportsPaintSetup<false>(session, graphic, MetalSupportPlace::TopRightSide, special, height, false, colour);
+        MetalSupportsPaintSetup<false>(session, graphic, MetalSupportPlace::BottomLeftSide, special, height, false, colour);
     }
     else
     {
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::TopLeftSide, special, height, false, colour);
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::BottomRightSide, special, height, false, colour);
+        MetalSupportsPaintSetup<false>(session, graphic, MetalSupportPlace::TopLeftSide, special, height, false, colour);
+        MetalSupportsPaintSetup<false>(session, graphic, MetalSupportPlace::BottomRightSide, special, height, false, colour);
     }
 }
 
