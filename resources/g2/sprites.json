@@ -12,9 +12,6 @@
         "path": "logo_text.png"
     },
     {
-        "path": "logo_mono_dithered.png"
-    },
-    {
         "path": "icons/fast_forward.png"
     },
     {
@@ -365,6 +362,9 @@
     {
         "path": "icons/weather_blizzard.png",
         "x": 1
+    },
+    {
+        "path": "logo_mono_dithered.png"
     },
     {
         "path": "loader/loader_hybrid_supports.png",
