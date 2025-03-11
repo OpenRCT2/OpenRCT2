@@ -884,7 +884,6 @@ enum : ImageIndex
 
     SPR_G2_LOGO,
     SPR_G2_TITLE,
-    SPR_G2_LOGO_MONO_DITHERED,
     SPR_G2_FASTFORWARD,
     SPR_G2_SPEED_ARROW,
     SPR_G2_HYPER_ARROW,
@@ -984,6 +983,7 @@ enum : ImageIndex
     SPR_G2_WEATHER_SNOW,
     SPR_G2_WEATHER_HEAVY_SNOW,
     SPR_G2_WEATHER_BLIZZARD,
+    SPR_G2_LOGO_MONO_DITHERED,
 
     // G2 Loading progress
 
