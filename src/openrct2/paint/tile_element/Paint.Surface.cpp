@@ -788,6 +788,9 @@ static void ViewportSurfaceDrawTileSideTop(
             baseImageId = GetEdgeImage(edgeObject, 1); // var_04
         }
         baseImageId = baseImageId.WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
+
+        offset.x = 0;
+        offset.y = 0;
     }
     else
     {
@@ -822,12 +825,6 @@ static void ViewportSurfaceDrawTileSideTop(
     }
 
     neighbourCornerHeight1 = cornerHeight2;
-
-    if (isWater)
-    {
-        offset.x = 0;
-        offset.y = 0;
-    }
 
     while (cur_height < cornerHeight1 && cur_height < neighbourCornerHeight1)
     {

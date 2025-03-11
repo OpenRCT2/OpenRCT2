@@ -11,6 +11,7 @@
 - Fix: [#23897] Reverse Freefall Coaster slope up to vertical track piece does not draw a vertical tunnel.
 - Fix: [#23939] Incorrect assertion when trying to load heightmap.
 - Fix: [#23941] Underflow in “Repay loan and achieve a certain park value” objective when using Japanese.
+- Fix: [#23949] Walls draw over sloped rear water edges and those edge sprites are misaligned (original bug).
 
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------
