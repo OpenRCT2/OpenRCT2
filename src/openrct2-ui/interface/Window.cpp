@@ -498,7 +498,7 @@ namespace OpenRCT2
             closeButton.right = width - 3;
         }
 
-        auto preferredHeight = OpenRCT2::Ui::Windows::GetTitleBarHeight();
+        auto preferredHeight = GetTitleBarHeight();
         auto currentHeight = titleWidget.height();
         auto heightDifference = preferredHeight - currentHeight;
 
@@ -1187,10 +1187,4 @@ namespace OpenRCT2::Ui::Windows
         else
             WindowZoomOut(*mainWindow, atCursor);
     }
-
-    int16_t GetTitleBarHeight()
-    {
-        return Config::Get().interface.EnlargedUi ? kTitleHeightLarge : kTitleHeightNormal;
-    }
-
 } // namespace OpenRCT2::Ui::Windows

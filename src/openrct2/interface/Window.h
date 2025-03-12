@@ -352,4 +352,5 @@ namespace OpenRCT2
     void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);
     void WindowUnfollowSprite(WindowBase& w);
 
+    int16_t GetTitleBarHeight();
 } // namespace OpenRCT2

@@ -975,6 +975,11 @@ static constexpr float kWindowScrollLocations[][2] = {
         return w->viewport;
     }
 
+    int16_t GetTitleBarHeight()
+    {
+        return Config::Get().interface.EnlargedUi ? kTitleHeightLarge : kTitleHeightNormal;
+    }
+
     // TODO: declared in WindowManager.h; move when refactors continue
     Ui::IWindowManager* Ui::GetWindowManager()
     {
