@@ -486,7 +486,6 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t newPage)
         {
-            // Skip setting page if we're already on this page, unless we're initialising the window
             if (isToolActive(classification, number))
                 ToolCancel();
 
@@ -497,6 +496,7 @@ namespace OpenRCT2::Ui::Windows
                     listen = 1;
             }
 
+            // Skip setting page if we're already on this page, unless we're initialising the window
             if (page == newPage && !widgets.empty())
                 return;
 
