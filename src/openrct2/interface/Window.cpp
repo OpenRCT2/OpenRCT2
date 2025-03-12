@@ -980,6 +980,14 @@ static constexpr float kWindowScrollLocations[][2] = {
         return Config::Get().interface.EnlargedUi ? kTitleHeightLarge : kTitleHeightNormal;
     }
 
+    int16_t GetTitleHeightDiff()
+    {
+        if (Config::Get().interface.EnlargedUi)
+            return kTitleHeightLarge - kTitleHeightNormal;
+        else
+            return 0;
+    }
+
     // TODO: declared in WindowManager.h; move when refactors continue
     Ui::IWindowManager* Ui::GetWindowManager()
     {

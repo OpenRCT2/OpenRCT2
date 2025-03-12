@@ -1059,8 +1059,8 @@ namespace OpenRCT2::Ui::Windows
 
         if (Config::Get().interface.EnlargedUi)
         {
-            w.min_height += kTitleHeightLarge - kTitleHeightNormal;
-            w.max_height += kTitleHeightLarge - kTitleHeightNormal;
+            w.min_height += GetTitleHeightDiff();
+            w.max_height += GetTitleHeightDiff();
         }
 
         // Clamp width and height to minimum and maximum

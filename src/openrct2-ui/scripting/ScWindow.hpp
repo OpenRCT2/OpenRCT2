@@ -112,7 +112,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return w->height;
+                return w->height - GetTitleHeightDiff();
             }
             return 0;
         }
@@ -121,6 +121,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
+                value += GetTitleHeightDiff();
                 if (WindowCanResize(*w))
                 {
                     WindowResizeByDelta(*w, 0, value - w->height);
