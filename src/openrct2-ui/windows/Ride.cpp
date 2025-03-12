@@ -1152,6 +1152,10 @@ namespace OpenRCT2::Ui::Windows
                 && !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
                 listen = true;
 
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
+
             page = newPage;
             frame_no = 0;
             picked_peep_frame = 0;

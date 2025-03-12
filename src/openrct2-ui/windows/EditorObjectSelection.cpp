@@ -1143,7 +1143,8 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t _page)
         {
-            if (selected_tab == _page)
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (selected_tab == _page && !widgets.empty())
                 return;
 
             selected_tab = _page;

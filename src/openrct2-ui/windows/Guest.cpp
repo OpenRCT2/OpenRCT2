@@ -496,6 +496,10 @@ namespace OpenRCT2::Ui::Windows
                     listen = 1;
             }
 
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
+
             page = newPage;
             frame_no = 0;
             _riddenRides.clear();

@@ -199,6 +199,10 @@ namespace OpenRCT2::Ui::Windows
     private:
         void SetPage(int32_t p)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == p && !widgets.empty())
+                return;
+
             page = p;
             frame_no = 0;
             pressed_widgets = 0;
