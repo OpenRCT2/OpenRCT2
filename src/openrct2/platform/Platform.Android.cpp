@@ -165,8 +165,7 @@ namespace OpenRCT2::Platform
     #ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
-        STUB();
-        return {};
+        return "/sdcard/openrct2/rct2.ttf";
     }
     #endif
 
