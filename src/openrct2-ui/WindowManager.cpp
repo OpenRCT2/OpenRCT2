@@ -842,6 +842,8 @@ public:
         std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
         uint32_t flags) override
     {
+        height += GetTitleHeightDiff();
+
         if (flags & WF_AUTO_POSITION)
         {
             if (flags & WF_CENTRE_SCREEN)
@@ -853,6 +855,8 @@ public:
                 pos = GetAutoPositionForNewWindow(width, height);
             }
         }
+
+        height -= GetTitleHeightDiff();
 
         // Check if there are any window slots left
         // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
