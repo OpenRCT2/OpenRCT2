@@ -38,7 +38,10 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW_OBJECTIVE = 450;
-    static constexpr int32_t WH_OBJECTIVE = 229;
+    static constexpr int32_t WH_OBJECTIVE = 109;
+
+    static constexpr int32_t WW_SCENARIO_DETAILS = 450;
+    static constexpr int32_t WH_SCENARIO_DETAILS = 169;
 
     static constexpr int32_t WW_FINANCIAL = 300;
     static constexpr int32_t WH_FINANCIAL = 200;
@@ -82,6 +85,7 @@ namespace OpenRCT2::Ui::Windows
     enum
     {
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE,
+        WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK,
@@ -115,6 +119,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_3,
         WIDX_TAB_4,
         WIDX_TAB_5,
+        WIDX_TAB_6,
         WIDX_PAGE_START,
 
         // Objective tab
@@ -126,7 +131,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OBJECTIVE_ARG_2,
         WIDX_OBJECTIVE_ARG_2_INCREASE,
         WIDX_OBJECTIVE_ARG_2_DECREASE,
-        WIDX_PARK_NAME,
+
+        // Scenario details tab
+        WIDX_PARK_NAME = WIDX_PAGE_START,
         WIDX_SCENARIO_NAME,
         WIDX_CATEGORY,
         WIDX_CATEGORY_DROPDOWN,
@@ -190,10 +197,11 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_SHIM(TITLE, WIDTH, HEIGHT), \
         MakeWidget({  0, 43}, { WIDTH, 106 }, WindowWidgetType::Resize, WindowColour::Secondary), \
         MakeTab   ({  3, 17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
-        MakeTab   ({ 34, 17}, STR_SCENARIO_OPTIONS_FINANCIAL_TIP             ), \
-        MakeTab   ({ 65, 17}, STR_SCENARIO_OPTIONS_GUESTS_TIP                ), \
-        MakeTab   ({ 96, 17}, STR_SCENARIO_OPTIONS_PARK_TIP                  ), \
-        MakeTab   ({127, 17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
+        MakeTab   ({ 34, 17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
+        MakeTab   ({ 65, 17}, STR_SCENARIO_OPTIONS_FINANCIAL_TIP             ), \
+        MakeTab   ({ 96, 17}, STR_SCENARIO_OPTIONS_GUESTS_TIP                ), \
+        MakeTab   ({127, 17}, STR_SCENARIO_OPTIONS_PARK_TIP                  ), \
+        MakeTab   ({158, 17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
 
     static constexpr Widget window_editor_scenario_options_objective_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_OBJECTIVE_SELECTION, WW_OBJECTIVE, WH_OBJECTIVE),
@@ -201,11 +209,15 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeSpinnerWidgets({158,  65}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
         MakeSpinnerWidgets({158,  82}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
-        MakeWidget        ({370,  99}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
-        MakeWidget        ({370, 116}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
-        MakeWidget        ({ 98, 133}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
-        MakeWidget        ({266, 134}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
-        MakeWidget        ({370, 150}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP),
+    };
+
+    static constexpr Widget window_editor_scenario_options_scenario_details_widgets[] = {
+        MAIN_OPTIONS_WIDGETS(STR_OBJECTIVE_SELECTION, WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS),
+        MakeWidget        ({370, 48}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
+        MakeWidget        ({370, 65}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
+        MakeWidget        ({ 98, 82}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
+        MakeWidget        ({266, 83}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
+        MakeWidget        ({370, 99}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP),
     };
 
     static constexpr Widget window_editor_scenario_options_financial_widgets[] = {
@@ -251,6 +263,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr std::span<const Widget> window_editor_scenario_options_widgets[] = {
         window_editor_scenario_options_objective_widgets,
+        window_editor_scenario_options_scenario_details_widgets,
         window_editor_scenario_options_financial_widgets,
         window_editor_scenario_options_guests_widgets,
         window_editor_scenario_options_park_widgets,
@@ -266,6 +279,7 @@ namespace OpenRCT2::Ui::Windows
             (1uLL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
             (1uLL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
             (1uLL << WIDX_OBJECTIVE_ARG_2_DECREASE),
+        0,
         (1uLL << WIDX_INITIAL_CASH_INCREASE) |
             (1uLL << WIDX_INITIAL_CASH_DECREASE) |
             (1uLL << WIDX_INITIAL_LOAN_INCREASE) |
@@ -318,18 +332,17 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_3:
                 case WIDX_TAB_4:
                 case WIDX_TAB_5:
+                case WIDX_TAB_6:
                     SetPage(widgetIndex - WIDX_TAB_1);
                     return;
             }
 
             switch (page)
             {
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
-                    return ObjectiveOnMouseUp(widgetIndex);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
+                    return ScenarioDetailsOnMouseUp(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialMouseUp(widgetIndex);
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
-                    return GuestsMouseUp(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
                     return ParkMouseUp(widgetIndex);
             }
@@ -341,6 +354,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnResize();
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
+                    return ScenarioDetailsOnResize();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialResize();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
@@ -358,6 +373,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnMouseDown(widgetIndex);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
+                    return ScenarioDetailsOnMouseDown(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialMouseDown(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
@@ -373,6 +390,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnUpdate();
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
+                    return ScenarioDetailsOnUpdate();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialUpdate();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
@@ -390,6 +409,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnPrepareDraw();
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
+                    return ScenarioDetailsOnPrepareDraw();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialPrepareDraw();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
@@ -407,6 +428,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnDraw(dpi);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
+                    return ScenarioDetailsOnDraw(dpi);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialDraw(dpi);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
@@ -424,6 +447,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnDropdown(widgetIndex, selectedIndex);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
+                    return ScenarioDetailsOnDropdown(widgetIndex, selectedIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialDropdown(widgetIndex, selectedIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
@@ -433,9 +458,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
-            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE)
+            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS)
             {
-                ObjectiveOnTextInput(widgetIndex, text);
+                ScenarioDetailsOnTextInput(widgetIndex, text);
             }
         }
 
@@ -502,29 +527,37 @@ namespace OpenRCT2::Ui::Windows
 
             // Tab 2
             widget = &widgets[WIDX_TAB_2];
+            spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
+            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS)
+                spriteIndex += (frame_no / 4) % 8;
+
+            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+
+            // Tab 3
+            widget = &widgets[WIDX_TAB_3];
             spriteIndex = SPR_TAB_FINANCES_SUMMARY_0;
             if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
                 spriteIndex += (frame_no / 2) % 8;
 
             GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
-            // Tab 3
-            widget = &widgets[WIDX_TAB_3];
+            // Tab 4
+            widget = &widgets[WIDX_TAB_4];
             spriteIndex = SPR_TAB_GUESTS_0;
             if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
                 spriteIndex += (frame_no / 4) % 8;
 
             GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
-            // Tab 4
-            widget = &widgets[WIDX_TAB_4];
+            // Tab 5
+            widget = &widgets[WIDX_TAB_5];
             spriteIndex = SPR_G2_MAP_GEN_TERRAIN_TAB;
             GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
-            // Tab 5
-            if (!IsWidgetDisabled(WIDX_TAB_5))
+            // Tab 6
+            if (!IsWidgetDisabled(WIDX_TAB_6))
             {
-                widget = &widgets[WIDX_TAB_5];
+                widget = &widgets[WIDX_TAB_6];
                 spriteIndex = SPR_TAB_RIDE_0;
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES)
                     spriteIndex += (frame_no / 4) % 16;
@@ -564,11 +597,11 @@ namespace OpenRCT2::Ui::Windows
             if (std::any_of(
                     rideManager.begin(), rideManager.end(), [](const Ride& rideToCheck) { return rideToCheck.isRide(); }))
             {
-                disabled_widgets &= ~(1uLL << WIDX_TAB_5);
+                disabled_widgets &= ~(1uLL << WIDX_TAB_6);
             }
             else
             {
-                disabled_widgets |= (1uLL << WIDX_TAB_5);
+                disabled_widgets |= (1uLL << WIDX_TAB_6);
             }
         }
 
@@ -840,35 +873,6 @@ namespace OpenRCT2::Ui::Windows
 
         /**
          *
-         *  rct2: 0x006719CA
-         */
-        void ObjectiveOnMouseUp(WidgetIndex widgetIndex)
-        {
-            const auto& gameState = getGameState();
-            switch (widgetIndex)
-            {
-                case WIDX_PARK_NAME:
-                {
-                    WindowTextInputRawOpen(
-                        this, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, gameState.park.Name.c_str(),
-                        kParkNameMaxLength);
-                    break;
-                }
-                case WIDX_SCENARIO_NAME:
-                    WindowTextInputRawOpen(
-                        this, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, {},
-                        gameState.scenarioName.c_str(), kScenarioNameMaxLength);
-                    break;
-                case WIDX_DETAILS:
-                    WindowTextInputRawOpen(
-                        this, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, {},
-                        gameState.scenarioDetails.c_str(), kScenarioDetailsNameMaxLength);
-                    break;
-            }
-        }
-
-        /**
-         *
          *  rct2: 0x00672254
          */
         void ObjectiveOnResize()
@@ -899,9 +903,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_OBJECTIVE_ARG_2_DECREASE:
                     Arg2Decrease();
                     break;
-                case WIDX_CATEGORY_DROPDOWN:
-                    ShowCategoryDropdown();
-                    break;
             }
         }
 
@@ -924,13 +925,6 @@ namespace OpenRCT2::Ui::Windows
                     newObjectiveType = static_cast<uint8_t>(gDropdownItems[dropdownIndex].Args - STR_OBJECTIVE_DROPDOWN_NONE);
                     if (gameState.scenarioObjective.Type != newObjectiveType)
                         SetObjective(newObjectiveType);
-                    break;
-                case WIDX_CATEGORY_DROPDOWN:
-                    if (gameState.scenarioCategory != static_cast<ScenarioCategory>(dropdownIndex))
-                    {
-                        gameState.scenarioCategory = static_cast<ScenarioCategory>(dropdownIndex);
-                        Invalidate();
-                    }
                     break;
             }
         }
@@ -959,40 +953,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Reset objective
                 SetObjective(OBJECTIVE_GUESTS_AND_RATING);
-            }
-        }
-
-        /**
-         *
-         *  rct2: 0x00671A73
-         */
-        void ObjectiveOnTextInput(WidgetIndex widgetIndex, std::string_view text)
-        {
-            if (text.empty())
-                return;
-
-            auto& gameState = getGameState();
-            switch (widgetIndex)
-            {
-                case WIDX_PARK_NAME:
-                {
-                    auto action = ParkSetNameAction(std::string(text));
-                    GameActions::Execute(&action);
-
-                    if (gameState.scenarioName.empty())
-                    {
-                        gameState.scenarioName = gameState.park.Name;
-                    }
-                    break;
-                }
-                case WIDX_SCENARIO_NAME:
-                    gameState.scenarioName = text;
-                    Invalidate();
-                    break;
-                case WIDX_DETAILS:
-                    gameState.scenarioDetails = text;
-                    Invalidate();
-                    break;
             }
         }
 
@@ -1053,7 +1013,6 @@ namespace OpenRCT2::Ui::Windows
         void ObjectiveOnDraw(DrawPixelInfo& dpi)
         {
             const auto& gameState = getGameState();
-            int32_t widthToSet;
             StringId stringId;
 
             DrawWidgets(dpi);
@@ -1145,15 +1104,91 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<uint16_t>((gameState.scenarioObjective.Year * MONTH_COUNT) - 1);
                 DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, ft);
             }
+        }
+
+#pragma endregion
+
+#pragma region ScenarioDetails
+
+        /**
+         *
+         *  rct2: 0x006719CA
+         */
+        void ScenarioDetailsOnMouseUp(WidgetIndex widgetIndex)
+        {
+            const auto& gameState = getGameState();
+            switch (widgetIndex)
+            {
+                case WIDX_PARK_NAME:
+                {
+                    WindowTextInputRawOpen(
+                        this, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, gameState.park.Name.c_str(),
+                        kParkNameMaxLength);
+                    break;
+                }
+                case WIDX_SCENARIO_NAME:
+                    WindowTextInputRawOpen(
+                        this, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, {},
+                        gameState.scenarioName.c_str(), kScenarioNameMaxLength);
+                    break;
+                case WIDX_DETAILS:
+                    WindowTextInputRawOpen(
+                        this, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, {},
+                        gameState.scenarioDetails.c_str(), kScenarioDetailsNameMaxLength);
+                    break;
+            }
+        }
+
+        void ScenarioDetailsOnMouseDown(WidgetIndex widgetIndex)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_CATEGORY_DROPDOWN:
+                    ShowCategoryDropdown();
+                    break;
+            }
+        }
+
+        void ScenarioDetailsOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+            if (dropdownIndex == -1)
+                return;
+
+            switch (widgetIndex)
+            {
+                case WIDX_CATEGORY_DROPDOWN:
+                {
+                    auto& gameState = getGameState();
+                    if (gameState.scenarioCategory != static_cast<ScenarioCategory>(dropdownIndex))
+                    {
+                        gameState.scenarioCategory = static_cast<ScenarioCategory>(dropdownIndex);
+                        Invalidate();
+                    }
+                    break;
+                }
+            }
+        }
+        void ScenarioDetailsOnPrepareDraw()
+        {
+            SetPressedTab();
+            AnchorBorderWidgets();
+        }
+
+        void ScenarioDetailsOnDraw(DrawPixelInfo& dpi)
+        {
+            DrawWidgets(dpi);
+            DrawTabImages(dpi);
+
+            const auto& gameState = getGameState();
 
             // Park name
-            screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_PARK_NAME].top };
-            widthToSet = widgets[WIDX_PARK_NAME].left - 16;
+            auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_PARK_NAME].top };
+            int32_t widthToSet = widgets[WIDX_PARK_NAME].left - 16;
 
             {
-                auto parkName = getGameState().park.Name.c_str();
+                auto parkName = gameState.park.Name.c_str();
 
-                ft = Formatter();
+                auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(parkName);
                 DrawTextEllipsised(dpi, screenCoords, widthToSet, STR_WINDOW_PARK_NAME, ft);
@@ -1163,7 +1198,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_SCENARIO_NAME].top };
             widthToSet = widgets[WIDX_SCENARIO_NAME].left - 16;
 
-            ft = Formatter();
+            auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(gameState.scenarioName.c_str());
             DrawTextEllipsised(dpi, screenCoords, widthToSet, STR_WINDOW_SCENARIO_NAME, ft);
@@ -1190,6 +1225,51 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<StringId>(kScenarioCategoryStringIds[EnumValue(gameState.scenarioCategory)]);
             DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+        }
+
+        /**
+         *
+         *  rct2: 0x00671A73
+         */
+        void ScenarioDetailsOnTextInput(WidgetIndex widgetIndex, std::string_view text)
+        {
+            if (text.empty())
+                return;
+
+            auto& gameState = getGameState();
+            switch (widgetIndex)
+            {
+                case WIDX_PARK_NAME:
+                {
+                    auto action = ParkSetNameAction(std::string(text));
+                    GameActions::Execute(&action);
+
+                    if (gameState.scenarioName.empty())
+                    {
+                        gameState.scenarioName = gameState.park.Name;
+                    }
+                    break;
+                }
+                case WIDX_SCENARIO_NAME:
+                    gameState.scenarioName = text;
+                    Invalidate();
+                    break;
+                case WIDX_DETAILS:
+                    gameState.scenarioDetails = text;
+                    Invalidate();
+                    break;
+            }
+        }
+
+        void ScenarioDetailsOnUpdate()
+        {
+            frame_no++;
+            InvalidateWidget(WIDX_TAB_1);
+        }
+
+        void ScenarioDetailsOnResize()
+        {
+            WindowSetResize(*this, { WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS }, { WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS });
         }
 
 #pragma endregion
