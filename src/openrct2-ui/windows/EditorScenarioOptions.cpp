@@ -40,8 +40,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW_OBJECTIVE = 450;
     static constexpr int32_t WH_OBJECTIVE = 229;
 
-    static constexpr int32_t WW_FINANCIAL = 280;
-    static constexpr int32_t WH_FINANCIAL = 166;
+    static constexpr int32_t WW_FINANCIAL = 300;
+    static constexpr int32_t WH_FINANCIAL = 200;
 
     static constexpr int32_t WW_GUESTS = 380;
     static constexpr int32_t WH_GUESTS = 154;
@@ -146,9 +146,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_INTEREST_RATE,
         WIDX_INTEREST_RATE_INCREASE,
         WIDX_INTEREST_RATE_DECREASE,
+        WIDX_PAY_FOR_PARK_OR_RIDES,
+        WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN,
+        WIDX_ENTRY_PRICE,
+        WIDX_ENTRY_PRICE_INCREASE,
+        WIDX_ENTRY_PRICE_DECREASE,
         WIDX_FORBID_MARKETING,
-        WIDX_RCT1_INTEREST,
         WIDX_HARD_PARK_RATING,
+        WIDX_RCT1_INTEREST,
 
         // Guests tab
         WIDX_CASH_PER_GUEST = WIDX_PAGE_START,
@@ -175,11 +180,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CONSTRUCTION_RIGHTS_COST,
         WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE,
         WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE,
-        WIDX_PAY_FOR_PARK_OR_RIDES,
-        WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN,
-        WIDX_ENTRY_PRICE,
-        WIDX_ENTRY_PRICE_INCREASE,
-        WIDX_ENTRY_PRICE_DECREASE,
         WIDX_FORBID_TREE_REMOVAL,
         WIDX_FORBID_LANDSCAPE_CHANGES,
         WIDX_FORBID_HIGH_CONSTRUCTION
@@ -211,13 +211,16 @@ namespace OpenRCT2::Ui::Windows
     static constexpr Widget window_editor_scenario_options_financial_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
         MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
-        MakeSpinnerWidgets({168,  65}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeSpinnerWidgets({168,  82}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeSpinnerWidgets({168,  99}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
-        MakeWidget        ({  8, 116}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
-        MakeWidget        ({  8, 150}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP          ),
+        MakeSpinnerWidgets({188,  65}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({188,  82}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({188,  99}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({218, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({ 78, 133}, {              210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeWidget        ({276, 134}, {               11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeSpinnerWidgets({218, 150}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+        MakeWidget        ({  8, 167}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
+        MakeWidget        ({  8, 184}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP          ),
+        MakeWidget        ({  8, 201}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
     };
 
     static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
@@ -236,9 +239,6 @@ namespace OpenRCT2::Ui::Windows
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
         MakeSpinnerWidgets({188,  48}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeSpinnerWidgets({188,  65}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeWidget        ({  8,  82}, {         210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-        MakeWidget        ({206,  83}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-        MakeSpinnerWidgets({328,  82}, {          67,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
         MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
         MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
@@ -424,10 +424,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnDropdown(widgetIndex, selectedIndex);
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
+                    return FinancialDropdown(widgetIndex, selectedIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
                     return GuestsDropdown(widgetIndex, selectedIndex);
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                    return ParkDropdown(widgetIndex, selectedIndex);
             }
         }
 
@@ -1352,6 +1352,56 @@ namespace OpenRCT2::Ui::Windows
                     }
                     Invalidate();
                     break;
+                case WIDX_ENTRY_PRICE_INCREASE:
+                    if (gameState.park.EntranceFee < kMaxEntranceFee)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::ParkChargeEntryFee, gameState.park.EntranceFee + 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_ENTRY_PRICE_DECREASE:
+                    if (gameState.park.EntranceFee > 0.00_GBP)
+                    {
+                        auto scenarioSetSetting = ScenarioSetSettingAction(
+                            ScenarioSetSetting::ParkChargeEntryFee, gameState.park.EntranceFee - 1.00_GBP);
+                        GameActions::Execute(&scenarioSetSetting);
+                    }
+                    else
+                    {
+                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
+                {
+                    Widget* dropdownWidget = &widgets[widgetIndex - 1];
+
+                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[0].Args = STR_FREE_PARK_ENTER;
+                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[1].Args = STR_PAY_PARK_ENTER;
+                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[2].Args = STR_PAID_ENTRY_PAID_RIDES;
+
+                    WindowDropdownShowTextCustomWidth(
+                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
+                        colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
+
+                    if (gameState.park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                        Dropdown::SetChecked(2, true);
+                    else if (gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
+                        Dropdown::SetChecked(0, true);
+                    else
+                        Dropdown::SetChecked(1, true);
+
+                    break;
+                }
             }
 
             if (gLegacyScene == LegacyScene::playing)
@@ -1359,6 +1409,25 @@ namespace OpenRCT2::Ui::Windows
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->InvalidateByClass(WindowClass::Finances);
                 windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+            }
+        }
+
+        void FinancialDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+            if (dropdownIndex == -1)
+            {
+                return;
+            }
+
+            switch (widgetIndex)
+            {
+                case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ParkChargeMethod, dropdownIndex);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
             }
         }
 
@@ -1392,6 +1461,15 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
+                widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
+                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
+
+                if (!Park::EntranceFeeUnlocked())
+                {
+                    widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Empty;
+                }
 
                 if (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
                 {
@@ -1476,6 +1554,38 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<int16_t>(
                     std::clamp<int16_t>(static_cast<int16_t>(gameState.bankLoanInterestRate), INT16_MIN, INT16_MAX));
                 DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+            }
+
+            const auto& payForParkOrRidesWidget = widgets[WIDX_PAY_FOR_PARK_OR_RIDES];
+            if (payForParkOrRidesWidget.type != WindowWidgetType::Empty)
+            {
+                // Pay for park or rides label
+                screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.left + 1, payForParkOrRidesWidget.top };
+
+                auto ft = Formatter();
+                // Pay for park and/or rides value
+                if (gameState.park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                    ft.Add<StringId>(STR_PAID_ENTRY_PAID_RIDES);
+                else if (gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
+                    ft.Add<StringId>(STR_FREE_PARK_ENTER);
+                else
+                    ft.Add<StringId>(STR_PAY_PARK_ENTER);
+
+                DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+            }
+
+            const auto& entryPriceWidget = widgets[WIDX_ENTRY_PRICE];
+            if (entryPriceWidget.type != WindowWidgetType::Empty)
+            {
+                // Entry price label
+                screenCoords = windowPos + ScreenCoordsXY{ 8, entryPriceWidget.top };
+                DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
+
+                // Entry price value
+                screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
+                auto ft = Formatter();
+                ft.Add<money64>(gameState.park.EntranceFee);
+                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
         }
 
@@ -1814,9 +1924,6 @@ namespace OpenRCT2::Ui::Windows
 
         void ParkMouseDown(WidgetIndex widgetIndex)
         {
-            Widget* dropdownWidget;
-            Widget* widget = &widgets[widgetIndex];
-
             auto& gameState = getGameState();
             switch (widgetIndex)
             {
@@ -1872,73 +1979,6 @@ namespace OpenRCT2::Ui::Windows
                     }
                     Invalidate();
                     break;
-                case WIDX_ENTRY_PRICE_INCREASE:
-                    if (gameState.park.EntranceFee < kMaxEntranceFee)
-                    {
-                        auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::ParkChargeEntryFee, gameState.park.EntranceFee + 1.00_GBP);
-                        GameActions::Execute(&scenarioSetSetting);
-                    }
-                    else
-                    {
-                        ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
-                    }
-                    Invalidate();
-                    break;
-                case WIDX_ENTRY_PRICE_DECREASE:
-                    if (gameState.park.EntranceFee > 0.00_GBP)
-                    {
-                        auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::ParkChargeEntryFee, gameState.park.EntranceFee - 1.00_GBP);
-                        GameActions::Execute(&scenarioSetSetting);
-                    }
-                    else
-                    {
-                        ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
-                    }
-                    Invalidate();
-                    break;
-                case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
-                    dropdownWidget = widget - 1;
-
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_FREE_PARK_ENTER;
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Args = STR_PAY_PARK_ENTER;
-                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[2].Args = STR_PAID_ENTRY_PAID_RIDES;
-
-                    WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
-                        colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-
-                    if (gameState.park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-                        Dropdown::SetChecked(2, true);
-                    else if (gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
-                        Dropdown::SetChecked(0, true);
-                    else
-                        Dropdown::SetChecked(1, true);
-
-                    break;
-            }
-        }
-
-        void ParkDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
-        {
-            if (dropdownIndex == -1)
-            {
-                return;
-            }
-
-            switch (widgetIndex)
-            {
-                case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ParkChargeMethod, dropdownIndex);
-                    GameActions::Execute(&scenarioSetSetting);
-                    Invalidate();
-                    break;
-                }
             }
         }
 
@@ -1955,7 +1995,7 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
             if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
             {
-                for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
+                for (int32_t i = WIDX_LAND_COST; i <= WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE; i++)
                     widgets[i].type = WindowWidgetType::Empty;
             }
             else
@@ -1966,21 +2006,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type = WindowWidgetType::Spinner;
                 widgets[WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
-                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
-
-                if (!Park::EntranceFeeUnlocked())
-                {
-                    widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Empty;
-                }
-                else
-                {
-                    widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Spinner;
-                    widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
-                    widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
-                }
             }
 
             SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL);
@@ -2027,38 +2052,6 @@ namespace OpenRCT2::Ui::Windows
                     + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.constructionRightsPrice);
-                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
-            }
-
-            const auto& payForParkOrRidesWidget = widgets[WIDX_PAY_FOR_PARK_OR_RIDES];
-            if (payForParkOrRidesWidget.type != WindowWidgetType::Empty)
-            {
-                // Pay for park or rides label
-                screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.left + 1, payForParkOrRidesWidget.top };
-
-                auto ft = Formatter();
-                // Pay for park and/or rides value
-                if (gameState.park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-                    ft.Add<StringId>(STR_PAID_ENTRY_PAID_RIDES);
-                else if (gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
-                    ft.Add<StringId>(STR_FREE_PARK_ENTER);
-                else
-                    ft.Add<StringId>(STR_PAY_PARK_ENTER);
-
-                DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
-            }
-
-            const auto& entryPriceWidget = widgets[WIDX_ENTRY_PRICE];
-            if (entryPriceWidget.type != WindowWidgetType::Empty)
-            {
-                // Entry price label
-                screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.right + 8, entryPriceWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
-
-                // Entry price value
-                screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
-                auto ft = Formatter();
-                ft.Add<money64>(gameState.park.EntranceFee);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
         }
