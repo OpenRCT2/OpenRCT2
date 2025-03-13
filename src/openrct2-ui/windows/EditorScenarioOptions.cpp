@@ -41,13 +41,13 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH_OBJECTIVE = 229;
 
     static constexpr int32_t WW_FINANCIAL = 280;
-    static constexpr int32_t WH_FINANCIAL = 149;
+    static constexpr int32_t WH_FINANCIAL = 166;
 
     static constexpr int32_t WW_GUESTS = 380;
     static constexpr int32_t WH_GUESTS = 154;
 
     static constexpr int32_t WW_PARK = 400;
-    static constexpr int32_t WH_PARK = 183;
+    static constexpr int32_t WH_PARK = 166;
 
     static constexpr int32_t WW_RIDES = 380;
     static constexpr int32_t WH_RIDES = 224;
@@ -148,6 +148,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_INTEREST_RATE_DECREASE,
         WIDX_FORBID_MARKETING,
         WIDX_RCT1_INTEREST,
+        WIDX_HARD_PARK_RATING,
 
         // Guests tab
         WIDX_CASH_PER_GUEST = WIDX_PAGE_START,
@@ -181,8 +182,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ENTRY_PRICE_DECREASE,
         WIDX_FORBID_TREE_REMOVAL,
         WIDX_FORBID_LANDSCAPE_CHANGES,
-        WIDX_FORBID_HIGH_CONSTRUCTION,
-        WIDX_HARD_PARK_RATING
+        WIDX_FORBID_HIGH_CONSTRUCTION
     };
 
     // clang-format off
@@ -217,6 +217,7 @@ namespace OpenRCT2::Ui::Windows
         MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
         MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
         MakeWidget        ({  8, 116}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
+        MakeWidget        ({  8, 150}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP          ),
     };
 
     static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
@@ -241,7 +242,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
         MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
         MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
-        MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
     };
 
     static constexpr Widget window_editor_scenario_options_rides_widgets[] = {
@@ -1226,6 +1226,15 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 }
+                case WIDX_HARD_PARK_RATING:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
+                        gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
             }
         }
 
@@ -1402,6 +1411,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
+            SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
@@ -1794,15 +1804,6 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 }
-                case WIDX_HARD_PARK_RATING:
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
-                        gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
-                    GameActions::Execute(&scenarioSetSetting);
-                    Invalidate();
-                    break;
-                }
             }
         }
 
@@ -1985,7 +1986,6 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL);
             SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
             SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
-            SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
