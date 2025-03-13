@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui::Windows
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
-            ContextOpenWindow(WindowClass::EditorObjectiveOptions);
+            ContextOpenWindow(WindowClass::EditorScenarioOptions);
             getGameState().editorStep = EditorStep::ObjectiveSelection;
             GfxInvalidateScreen();
         }
