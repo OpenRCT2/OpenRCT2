@@ -74,9 +74,9 @@ namespace OpenRCT2::Ui::FileBrowser
             case FileBrowserSort::DateAscending:
                 return difftime(a.dateModified, b.dateModified) < 0;
             case FileBrowserSort::SizeDescending:
-                return a.fileSizeBytes - b.fileSizeBytes;
+                return a.fileSizeBytes > b.fileSizeBytes;
             case FileBrowserSort::SizeAscending:
-                return b.fileSizeBytes - a.fileSizeBytes;
+                return a.fileSizeBytes < b.fileSizeBytes;
         }
         return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
     }
