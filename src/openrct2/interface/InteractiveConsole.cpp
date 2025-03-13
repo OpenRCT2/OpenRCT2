@@ -1185,17 +1185,6 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
         {
             ContextOpenWindow(WindowClass::EditorScenarioOptions);
         }
-        else if (argv[0] == "objective_options" && InvalidArguments(&invalidTitle, !title))
-        {
-            if (NetworkGetMode() != NETWORK_MODE_NONE)
-            {
-                console.WriteLineError("Cannot open this window in multiplayer mode.");
-            }
-            else
-            {
-                ContextOpenWindow(WindowClass::EditorObjectiveOptions);
-            }
-        }
         else if (argv[0] == "options")
         {
             ContextOpenWindow(WindowClass::Options);

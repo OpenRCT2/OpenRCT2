@@ -80,8 +80,6 @@ public:
                 return EditorInventionsListOpen();
             case WindowClass::EditorObjectSelection:
                 return EditorObjectSelectionOpen();
-            case WindowClass::EditorObjectiveOptions:
-                return EditorObjectiveOptionsOpen();
             case WindowClass::EditorScenarioOptions:
                 return EditorScenarioOptionsOpen();
             case WindowClass::Finances:

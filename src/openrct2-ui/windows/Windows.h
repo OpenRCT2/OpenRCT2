@@ -75,9 +75,6 @@ namespace OpenRCT2::Ui::Windows
     // EditorBottomToolbar
     WindowBase* EditorBottomToolbarOpen();
 
-    // EditorObjectiveOptions
-    WindowBase* EditorObjectiveOptionsOpen();
-
     // EditorObjectSelection
     WindowBase* EditorObjectSelectionOpen();
     bool EditorObjectSelectionWindowCheck();
