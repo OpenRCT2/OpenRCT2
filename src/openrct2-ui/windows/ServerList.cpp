@@ -64,9 +64,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget _serverListWidgets[] = {
-        MakeWidget({  0,  0}, {341,  91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
-        MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
-        MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
+        WINDOW_SHIM(STR_SERVER_LIST, 340, 90),
         MakeWidget({100, 20}, {245,  12}, WindowWidgetType::TextBox,  WindowColour::Secondary                                         ), // player name text box
         MakeWidget({  6, 37}, {489, 226}, WindowWidgetType::Scroll,   WindowColour::Secondary                                         ), // server list
         MakeWidget({  6, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
@@ -98,7 +96,6 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_serverListWidgets);
             widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
             InitScrollWidgets();
-            WindowSetResize(*this, { 320, 90 }, { 320, 90 });
 
             no_list_items = 0;
             selected_list_item = -1;
