@@ -37,8 +37,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WH_OBJECTIVE = 229;
     static constexpr int32_t WW_OBJECTIVE = 450;
+    static constexpr int32_t WH_OBJECTIVE = 229;
 
     static constexpr int32_t WW_FINANCIAL = 280;
     static constexpr int32_t WH_FINANCIAL = 149;
@@ -48,6 +48,9 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr int32_t WW_PARK = 400;
     static constexpr int32_t WH_PARK = 200;
+
+    static constexpr int32_t WW_RIDES = 380;
+    static constexpr int32_t WH_RIDES = 224;
 
     static constexpr money64 kObjectiveCurrencyLoanAndValueMax = 2000000.00_GBP;
     static constexpr money64 kObjectiveCurrencyLoanAndValueMin = 1000.00_GBP;
@@ -870,7 +873,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void ObjectiveOnResize()
         {
-            WindowSetResize(*this, { 450, 229 }, { 450, 229 });
+            WindowSetResize(*this, { WW_OBJECTIVE, WH_OBJECTIVE }, { WW_OBJECTIVE, WH_OBJECTIVE });
         }
 
         /**
@@ -1228,7 +1231,7 @@ namespace OpenRCT2::Ui::Windows
 
         void FinancialResize()
         {
-            WindowSetResize(*this, { 280, 149 }, { 280, 149 });
+            WindowSetResize(*this, { WW_FINANCIAL, WH_FINANCIAL }, { WW_FINANCIAL, WH_FINANCIAL });
         }
 
         void FinancialMouseDown(WidgetIndex widgetIndex)
@@ -1803,7 +1806,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ParkResize()
         {
-            WindowSetResize(*this, { 400, 200 }, { 400, 200 });
+            WindowSetResize(*this, { WW_PARK, WH_PARK }, { WW_PARK, WH_PARK });
         }
 
         void ParkMouseDown(WidgetIndex widgetIndex)
@@ -2069,7 +2072,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void RidesOnResize()
         {
-            WindowSetResize(*this, { 380, 224 }, { 380, 224 });
+            WindowSetResize(*this, { WW_RIDES, WH_RIDES }, { WW_RIDES, WH_RIDES });
         }
 
         /**
