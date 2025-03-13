@@ -46,8 +46,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW_GUESTS = 380;
     static constexpr int32_t WH_GUESTS = 154;
 
-    static constexpr int32_t WW_PARK = 400;
-    static constexpr int32_t WH_PARK = 166;
+    static constexpr int32_t WW_PARK = 268;
+    static constexpr int32_t WH_PARK = 134;
 
     static constexpr int32_t WW_RIDES = 380;
     static constexpr int32_t WH_RIDES = 224;
@@ -239,9 +239,9 @@ namespace OpenRCT2::Ui::Windows
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
         MakeSpinnerWidgets({188,  48}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeSpinnerWidgets({188,  65}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
-        MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
-        MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+        MakeWidget        ({  8,  82}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+        MakeWidget        ({  8,  99}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+        MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
     };
 
     static constexpr Widget window_editor_scenario_options_rides_widgets[] = {
@@ -518,7 +518,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Tab 4
             widget = &widgets[WIDX_TAB_4];
-            spriteIndex = SPR_TAB_PARK;
+            spriteIndex = SPR_G2_MAP_GEN_TERRAIN_TAB;
             GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
             // Tab 5
