@@ -20,7 +20,6 @@
 
 // Set to 255 on all tracked ride entries
 static uint8_t constexpr kNoFlatRideCars = 0xFF;
-static ride_type_t constexpr kRideTypeNull = 0xFF;
 
 struct RideNaming
 {
