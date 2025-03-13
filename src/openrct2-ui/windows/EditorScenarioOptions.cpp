@@ -44,10 +44,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH_FINANCIAL = 149;
 
     static constexpr int32_t WW_GUESTS = 380;
-    static constexpr int32_t WH_GUESTS = 137;
+    static constexpr int32_t WH_GUESTS = 154;
 
     static constexpr int32_t WW_PARK = 400;
-    static constexpr int32_t WH_PARK = 200;
+    static constexpr int32_t WH_PARK = 183;
 
     static constexpr int32_t WW_RIDES = 380;
     static constexpr int32_t WH_RIDES = 224;
@@ -165,6 +165,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_GUESTS_INTENSITY_PREFERENCE_LABEL,
         WIDX_GUESTS_INTENSITY_PREFERENCE,
         WIDX_GUESTS_INTENSITY_PREFERENCE_DROPDOWN,
+        WIDX_HARD_GUEST_GENERATION,
 
         // Park tab
         WIDX_LAND_COST = WIDX_PAGE_START,
@@ -181,8 +182,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_FORBID_TREE_REMOVAL,
         WIDX_FORBID_LANDSCAPE_CHANGES,
         WIDX_FORBID_HIGH_CONSTRUCTION,
-        WIDX_HARD_PARK_RATING,
-        WIDX_HARD_GUEST_GENERATION
+        WIDX_HARD_PARK_RATING
     };
 
     // clang-format off
@@ -228,6 +228,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  8, 116}, {      170,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
         MakeWidget        ({198, 116}, {      170,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                        STR_GUESTS_PREFER_INTENSITY_TIP   ),
         MakeWidget        ({357, 117}, {       11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                   STR_GUESTS_PREFER_INTENSITY_TIP   ),
+        MakeWidget        ({  8, 133}, {      350,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_HARD_GUEST_GENERATION,            STR_HARD_GUEST_GENERATION_TIP     ),
     };
 
     static constexpr Widget window_editor_scenario_options_park_widgets[] = {
@@ -241,7 +242,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
         MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
         MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
-        MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
     };
 
     static constexpr Widget window_editor_scenario_options_rides_widgets[] = {
@@ -1621,6 +1621,15 @@ namespace OpenRCT2::Ui::Windows
                     Dropdown::SetChecked(prefItem, true);
                     break;
                 }
+                case WIDX_HARD_GUEST_GENERATION:
+                {
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::GuestGenerationHigherDifficultyLevel,
+                        gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
             }
         }
 
@@ -1667,6 +1676,8 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
+
+            SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
 
             AnchorBorderWidgets();
         }
@@ -1788,15 +1799,6 @@ namespace OpenRCT2::Ui::Windows
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
                         gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
-                    GameActions::Execute(&scenarioSetSetting);
-                    Invalidate();
-                    break;
-                }
-                case WIDX_HARD_GUEST_GENERATION:
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestGenerationHigherDifficultyLevel,
-                        gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -1984,7 +1986,6 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
             SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
             SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
-            SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
