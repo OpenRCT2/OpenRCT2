@@ -141,7 +141,6 @@ namespace OpenRCT2::Ui::Windows
 
         // Financial tab
         WIDX_NO_MONEY = WIDX_PAGE_START,
-
         WIDX_GROUP_LOAN,
         WIDX_INITIAL_LOAN,
         WIDX_INITIAL_LOAN_INCREASE,
@@ -152,7 +151,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_INTEREST_RATE,
         WIDX_INTEREST_RATE_INCREASE,
         WIDX_INTEREST_RATE_DECREASE,
-
         WIDX_GROUP_BUSINESS_MODEL,
         WIDX_INITIAL_CASH,
         WIDX_INITIAL_CASH_INCREASE,
@@ -163,7 +161,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ENTRY_PRICE,
         WIDX_ENTRY_PRICE_INCREASE,
         WIDX_ENTRY_PRICE_DECREASE,
-
         WIDX_FORBID_MARKETING,
         WIDX_HARD_PARK_RATING,
         WIDX_RCT1_INTEREST,
@@ -1534,24 +1531,35 @@ namespace OpenRCT2::Ui::Windows
             if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 SetWidgetPressed(WIDX_NO_MONEY, true);
-                for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_RCT1_INTEREST; i++)
+                for (int32_t i = WIDX_GROUP_LOAN; i <= WIDX_FORBID_MARKETING; i++)
                     widgets[i].type = WindowWidgetType::Empty;
             }
             else
             {
                 SetWidgetPressed(WIDX_NO_MONEY, false);
-                widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
-                widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_GROUP_LOAN].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_INITIAL_LOAN].type = WindowWidgetType::Spinner;
                 widgets[WIDX_INITIAL_LOAN_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_INITIAL_LOAN_DECREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_MAXIMUM_LOAN].type = WindowWidgetType::Spinner;
                 widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
+                widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
+                widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_GROUP_BUSINESS_MODEL].type = WindowWidgetType::Groupbox;
+                widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
+                widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
+                widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Spinner;
+                widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
+                widgets[WIDX_HARD_PARK_RATING].type = WindowWidgetType::Checkbox;
+                widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Checkbox;
 
                 if (!Park::EntranceFeeUnlocked())
                 {
