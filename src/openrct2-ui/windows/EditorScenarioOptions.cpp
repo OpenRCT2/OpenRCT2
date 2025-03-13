@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH_SCENARIO_DETAILS = 169;
 
     static constexpr int32_t WW_FINANCIAL = 380;
-    static constexpr int32_t WH_FINANCIAL = 243;
+    static constexpr int32_t WH_FINANCIAL = 226;
 
     static constexpr int32_t WW_GUESTS = 380;
     static constexpr int32_t WH_GUESTS = 154;
@@ -152,6 +152,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_INTEREST_RATE,
         WIDX_INTEREST_RATE_INCREASE,
         WIDX_INTEREST_RATE_DECREASE,
+        WIDX_RCT1_INTEREST,
         WIDX_GROUP_BUSINESS_MODEL,
         WIDX_INITIAL_CASH,
         WIDX_INITIAL_CASH_INCREASE,
@@ -163,7 +164,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ENTRY_PRICE_INCREASE,
         WIDX_ENTRY_PRICE_DECREASE,
         WIDX_FORBID_MARKETING,
-        WIDX_RCT1_INTEREST,
 
         // Guests tab
         WIDX_CASH_PER_GUEST = WIDX_PAGE_START,
@@ -227,18 +227,18 @@ namespace OpenRCT2::Ui::Windows
     static constexpr Widget window_editor_scenario_options_financial_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
         MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
-        MakeWidget        ({  5,  63}, {WW_FINANCIAL - 10, 67}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_LOAN_OPTIONS                                                              ), // Hardware group
+        MakeWidget        ({  5,  63}, {WW_FINANCIAL - 10, 67}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_LOAN_OPTIONS                                    ),
         MakeSpinnerWidgets({268,  77}, {              100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
         MakeSpinnerWidgets({268,  94}, {              100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
         MakeSpinnerWidgets({298, 111}, {               70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeWidget        ({  5, 133}, {WW_FINANCIAL - 10, 70}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_BUSINESS_MODEL                                                              ), // Hardware group
+        MakeWidget        ({ 10, 111}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
+        MakeWidget        ({  5, 133}, {WW_FINANCIAL - 10, 87}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_BUSINESS_MODEL                                  ),
         MakeSpinnerWidgets({268, 150}, {              100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
         MakeWidget        ({ 10, 167}, {              150, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_EARNINGS_LABEL                                        ),
         MakeWidget        ({158, 167}, {              210, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,      STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeWidget        ({356, 168}, {               11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeSpinnerWidgets({298, 184}, {               70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeWidget        ({  8, 209}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
-        MakeWidget        ({  8, 226}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
+        MakeWidget        ({ 10, 201}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
     };
 
     static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
@@ -1549,6 +1549,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 SetWidgetPressed(WIDX_NO_MONEY, false);
+
                 widgets[WIDX_GROUP_LOAN].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_INITIAL_LOAN].type = WindowWidgetType::Spinner;
                 widgets[WIDX_INITIAL_LOAN_INCREASE].type = WindowWidgetType::Button;
@@ -1556,28 +1557,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MAXIMUM_LOAN].type = WindowWidgetType::Spinner;
                 widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
-                widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_GROUP_BUSINESS_MODEL].type = WindowWidgetType::Groupbox;
-                widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
-                widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_LABEL].type = WindowWidgetType::Label;
-                widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
-                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
-                widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Spinner;
-                widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
-                widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Checkbox;
-
-                if (!Park::EntranceFeeUnlocked())
-                {
-                    widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Empty;
-                }
 
                 if (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
                 {
@@ -1593,6 +1572,25 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
                     widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
                     widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Empty;
+                }
+
+                widgets[WIDX_GROUP_BUSINESS_MODEL].type = WindowWidgetType::Groupbox;
+                widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
+                widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_LABEL].type = WindowWidgetType::Label;
+                widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
+                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
+                widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Spinner;
+                widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
+
+                if (!Park::EntranceFeeUnlocked())
+                {
+                    widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Empty;
                 }
             }
 
