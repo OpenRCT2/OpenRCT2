@@ -38,13 +38,13 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW_OBJECTIVE = 450;
-    static constexpr int32_t WH_OBJECTIVE = 109;
+    static constexpr int32_t WH_OBJECTIVE = 122;
 
     static constexpr int32_t WW_SCENARIO_DETAILS = 450;
     static constexpr int32_t WH_SCENARIO_DETAILS = 169;
 
     static constexpr int32_t WW_FINANCIAL = 380;
-    static constexpr int32_t WH_FINANCIAL = 260;
+    static constexpr int32_t WH_FINANCIAL = 243;
 
     static constexpr int32_t WW_GUESTS = 380;
     static constexpr int32_t WH_GUESTS = 154;
@@ -131,6 +131,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OBJECTIVE_ARG_2,
         WIDX_OBJECTIVE_ARG_2_INCREASE,
         WIDX_OBJECTIVE_ARG_2_DECREASE,
+        WIDX_HARD_PARK_RATING,
 
         // Scenario details tab
         WIDX_PARK_NAME = WIDX_PAGE_START,
@@ -162,7 +163,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ENTRY_PRICE_INCREASE,
         WIDX_ENTRY_PRICE_DECREASE,
         WIDX_FORBID_MARKETING,
-        WIDX_HARD_PARK_RATING,
         WIDX_RCT1_INTEREST,
 
         // Guests tab
@@ -212,6 +212,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeSpinnerWidgets({158,  65}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
         MakeSpinnerWidgets({158,  82}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
+        MakeWidget        ({ 15,  99}, {340,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP                   ),
     };
 
     static constexpr Widget window_editor_scenario_options_scenario_details_widgets[] = {
@@ -237,8 +238,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({356, 168}, {               11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeSpinnerWidgets({298, 184}, {               70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
         MakeWidget        ({  8, 209}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
-        MakeWidget        ({  8, 226}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP          ),
-        MakeWidget        ({  8, 243}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
+        MakeWidget        ({  8, 226}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
     };
 
     static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
@@ -345,6 +345,8 @@ namespace OpenRCT2::Ui::Windows
 
             switch (page)
             {
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
+                    return ObjectiveOnMouseUp(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
                     return ScenarioDetailsOnMouseUp(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
@@ -886,6 +888,23 @@ namespace OpenRCT2::Ui::Windows
             WindowSetResize(*this, { WW_OBJECTIVE, WH_OBJECTIVE }, { WW_OBJECTIVE, WH_OBJECTIVE });
         }
 
+        void ObjectiveOnMouseUp(WidgetIndex widgetIndex)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_HARD_PARK_RATING:
+                {
+                    auto& gameState = getGameState();
+                    auto scenarioSetSetting = ScenarioSetSettingAction(
+                        ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
+                        gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
+                    GameActions::Execute(&scenarioSetSetting);
+                    Invalidate();
+                    break;
+                }
+            }
+        }
+
         /**
          *
          *  rct2: 0x00671A0D
@@ -1008,6 +1027,8 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
+
+            SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
 
             AnchorBorderWidgets();
         }
@@ -1312,15 +1333,6 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 }
-                case WIDX_HARD_PARK_RATING:
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
-                        gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
-                    GameActions::Execute(&scenarioSetSetting);
-                    Invalidate();
-                    break;
-                }
             }
         }
 
@@ -1558,7 +1570,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
-                widgets[WIDX_HARD_PARK_RATING].type = WindowWidgetType::Checkbox;
                 widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Checkbox;
 
                 if (!Park::EntranceFeeUnlocked())
@@ -1586,7 +1597,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
-            SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
