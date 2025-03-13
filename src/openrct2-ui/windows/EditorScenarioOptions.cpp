@@ -1199,14 +1199,6 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
             switch (widgetIndex)
             {
-                case WIDX_CLOSE:
-                    Close();
-                    break;
-                case WIDX_TAB_1:
-                case WIDX_TAB_2:
-                case WIDX_TAB_3:
-                    SetPage(widgetIndex - WIDX_TAB_1);
-                    break;
                 case WIDX_NO_MONEY:
                 {
                     auto newMoneySetting = (gameState.park.Flags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
@@ -1600,21 +1592,6 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Guests
 
-        void GuestsMouseUp(WidgetIndex widgetIndex)
-        {
-            switch (widgetIndex)
-            {
-                case WIDX_CLOSE:
-                    Close();
-                    break;
-                case WIDX_TAB_1:
-                case WIDX_TAB_2:
-                case WIDX_TAB_3:
-                    SetPage(widgetIndex - WIDX_TAB_1);
-                    break;
-            }
-        }
-
         void GuestsResize()
         {
             WindowSetResize(*this, { WW_GUESTS, WH_GUESTS }, { WW_GUESTS, WH_GUESTS });
@@ -1911,14 +1888,6 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
             switch (widgetIndex)
             {
-                case WIDX_CLOSE:
-                    Close();
-                    break;
-                case WIDX_TAB_1:
-                case WIDX_TAB_2:
-                case WIDX_TAB_3:
-                    SetPage(widgetIndex - WIDX_TAB_1);
-                    break;
                 case WIDX_FORBID_TREE_REMOVAL:
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
