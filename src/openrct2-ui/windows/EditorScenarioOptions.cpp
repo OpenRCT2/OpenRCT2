@@ -43,8 +43,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW_SCENARIO_DETAILS = 450;
     static constexpr int32_t WH_SCENARIO_DETAILS = 169;
 
-    static constexpr int32_t WW_FINANCIAL = 300;
-    static constexpr int32_t WH_FINANCIAL = 200;
+    static constexpr int32_t WW_FINANCIAL = 380;
+    static constexpr int32_t WH_FINANCIAL = 260;
 
     static constexpr int32_t WW_GUESTS = 380;
     static constexpr int32_t WH_GUESTS = 154;
@@ -141,9 +141,8 @@ namespace OpenRCT2::Ui::Windows
 
         // Financial tab
         WIDX_NO_MONEY = WIDX_PAGE_START,
-        WIDX_INITIAL_CASH,
-        WIDX_INITIAL_CASH_INCREASE,
-        WIDX_INITIAL_CASH_DECREASE,
+
+        WIDX_GROUP_LOAN,
         WIDX_INITIAL_LOAN,
         WIDX_INITIAL_LOAN_INCREASE,
         WIDX_INITIAL_LOAN_DECREASE,
@@ -153,11 +152,18 @@ namespace OpenRCT2::Ui::Windows
         WIDX_INTEREST_RATE,
         WIDX_INTEREST_RATE_INCREASE,
         WIDX_INTEREST_RATE_DECREASE,
+
+        WIDX_GROUP_BUSINESS_MODEL,
+        WIDX_INITIAL_CASH,
+        WIDX_INITIAL_CASH_INCREASE,
+        WIDX_INITIAL_CASH_DECREASE,
+        WIDX_PAY_FOR_PARK_OR_RIDES_LABEL,
         WIDX_PAY_FOR_PARK_OR_RIDES,
         WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN,
         WIDX_ENTRY_PRICE,
         WIDX_ENTRY_PRICE_INCREASE,
         WIDX_ENTRY_PRICE_DECREASE,
+
         WIDX_FORBID_MARKETING,
         WIDX_HARD_PARK_RATING,
         WIDX_RCT1_INTEREST,
@@ -222,17 +228,20 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_editor_scenario_options_financial_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
-        MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
-        MakeSpinnerWidgets({188,  65}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeSpinnerWidgets({188,  82}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeSpinnerWidgets({188,  99}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeSpinnerWidgets({218, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeWidget        ({ 78, 133}, {              210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-        MakeWidget        ({276, 134}, {               11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-        MakeSpinnerWidgets({218, 150}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeWidget        ({  8, 167}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
-        MakeWidget        ({  8, 184}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP          ),
-        MakeWidget        ({  8, 201}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
+        MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
+        MakeWidget        ({  5,  63}, {WW_FINANCIAL - 10, 67}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_LOAN_OPTIONS                                                              ), // Hardware group
+        MakeSpinnerWidgets({268,  77}, {              100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({268,  94}, {              100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({298, 111}, {               70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({  5, 133}, {WW_FINANCIAL - 10, 70}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_BUSINESS_MODEL                                                              ), // Hardware group
+        MakeSpinnerWidgets({268, 150}, {              100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({ 10, 167}, {              150, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_EARNINGS_LABEL                                        ),
+        MakeWidget        ({158, 167}, {              210, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,      STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeWidget        ({356, 168}, {               11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeSpinnerWidgets({298, 184}, {               70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({  8, 209}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
+        MakeWidget        ({  8, 226}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP          ),
+        MakeWidget        ({  8, 243}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
     };
 
     static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
@@ -1589,7 +1598,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
             if (initialCashWidget.type != WindowWidgetType::Empty)
             {
-                screenCoords = windowPos + ScreenCoordsXY{ 8, initialCashWidget.top };
+                screenCoords = windowPos + ScreenCoordsXY{ 10, initialCashWidget.top };
                 DrawTextBasic(dpi, screenCoords, STR_INIT_CASH_LABEL);
 
                 screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
@@ -1601,7 +1610,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& initialLoanWidget = widgets[WIDX_INITIAL_LOAN];
             if (initialLoanWidget.type != WindowWidgetType::Empty)
             {
-                screenCoords = windowPos + ScreenCoordsXY{ 8, initialLoanWidget.top };
+                screenCoords = windowPos + ScreenCoordsXY{ 10, initialLoanWidget.top };
                 DrawTextBasic(dpi, screenCoords, STR_INIT_LOAN_LABEL);
 
                 screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
@@ -1613,7 +1622,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& maximumLoanWidget = widgets[WIDX_MAXIMUM_LOAN];
             if (maximumLoanWidget.type != WindowWidgetType::Empty)
             {
-                screenCoords = windowPos + ScreenCoordsXY{ 8, maximumLoanWidget.top };
+                screenCoords = windowPos + ScreenCoordsXY{ 10, maximumLoanWidget.top };
                 DrawTextBasic(dpi, screenCoords, STR_MAX_LOAN_LABEL);
 
                 screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
@@ -1625,7 +1634,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& interestRateWidget = widgets[WIDX_INTEREST_RATE];
             if (interestRateWidget.type != WindowWidgetType::Empty)
             {
-                screenCoords = windowPos + ScreenCoordsXY{ 8, interestRateWidget.top };
+                screenCoords = windowPos + ScreenCoordsXY{ 10, interestRateWidget.top };
                 DrawTextBasic(dpi, screenCoords, STR_INTEREST_RATE_LABEL);
 
                 screenCoords = windowPos + ScreenCoordsXY{ interestRateWidget.left + 1, interestRateWidget.top };
@@ -1658,7 +1667,7 @@ namespace OpenRCT2::Ui::Windows
             if (entryPriceWidget.type != WindowWidgetType::Empty)
             {
                 // Entry price label
-                screenCoords = windowPos + ScreenCoordsXY{ 8, entryPriceWidget.top };
+                screenCoords = windowPos + ScreenCoordsXY{ 10, entryPriceWidget.top };
                 DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
 
                 // Entry price value

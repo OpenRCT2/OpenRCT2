@@ -3802,3 +3802,6 @@ STR_6754    :Scenario options - Land Restrictions
 STR_6755    :Show objective options
 STR_6756    :Show scenario details options
 STR_6757    :Show land restriction options
+STR_6758    :Loan options
+STR_6759    :Business model
+STR_6760    :Earnings:
