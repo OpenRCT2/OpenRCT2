@@ -2236,12 +2236,10 @@ STR_3228    :Set starting positions for people
 STR_3229    :Block Brakes cannot be used directly after station
 STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
-STR_3232    :Options - Financial
-STR_3233    :Options - Guests
-STR_3234    :Options - Park
+STR_3232    :Scenario options - Financial
+STR_3233    :Scenario options - Guests
 STR_3235    :Show financial options
 STR_3236    :Show guest options
-STR_3237    :Show park options
 STR_3238    :No Money
 STR_3239    :Make this park a ‘no money’ park with no financial restrictions
 STR_3240    :{WINDOW_COLOUR_2}Initial cash:
@@ -2282,18 +2280,10 @@ STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
 STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
 STR_3281    :{WINDOW_COLOUR_2}Entry price:
-STR_3282    :Select objective and park name
 STR_3283    :Select rides to be preserved
-STR_3284    :Objective Selection
-STR_3285    :Preserved Rides
+STR_3285    :Scenario options - Preserved Rides
 STR_3286    :Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Objective:
-STR_3288    :Select climate
-STR_3289    :{WINDOW_COLOUR_2}Climate:
-STR_3290    :Cool and wet
-STR_3291    :Warm
-STR_3292    :Hot and dry
-STR_3293    :Cold
 STR_3294    :Change…
 STR_3295    :Change name of park
 STR_3296    :Change name of scenario
@@ -3806,3 +3796,9 @@ STR_6748    :Only less intense rides
 STR_6749    :Only more intense rides
 STR_6750    :Select what kind of ride intensity newly spawned guests prefer.
 STR_6751    :Queue paths cannot be used for level crossings!
+STR_6752    :Scenario options - Objective
+STR_6753    :Scenario options - Scenario Details
+STR_6754    :Scenario options - Land Restrictions
+STR_6755    :Show objective options
+STR_6756    :Show scenario details options
+STR_6757    :Show land restriction options

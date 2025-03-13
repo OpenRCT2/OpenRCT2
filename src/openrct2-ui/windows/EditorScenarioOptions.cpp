@@ -196,15 +196,15 @@ namespace OpenRCT2::Ui::Windows
     #define MAIN_OPTIONS_WIDGETS(TITLE, WIDTH, HEIGHT) \
         WINDOW_SHIM(TITLE, WIDTH, HEIGHT), \
         MakeWidget({  0, 43}, { WIDTH, 106 }, WindowWidgetType::Resize, WindowColour::Secondary), \
-        MakeTab   ({  3, 17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
-        MakeTab   ({ 34, 17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
+        MakeTab   ({  3, 17}, STR_SCENARIO_OPTIONS_OBJECTIVE_TIP             ), \
+        MakeTab   ({ 34, 17}, STR_SCENARIO_OPTIONS_SCENARIO_DETAILS_TIP      ), \
         MakeTab   ({ 65, 17}, STR_SCENARIO_OPTIONS_FINANCIAL_TIP             ), \
         MakeTab   ({ 96, 17}, STR_SCENARIO_OPTIONS_GUESTS_TIP                ), \
-        MakeTab   ({127, 17}, STR_SCENARIO_OPTIONS_PARK_TIP                  ), \
-        MakeTab   ({158, 17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
+        MakeTab   ({127, 17}, STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS_TIP     ), \
+        MakeTab   ({158, 17}, STR_SCENARIO_OPTIONS_PRESERVED_RIDES_TIP       )
 
     static constexpr Widget window_editor_scenario_options_objective_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_OBJECTIVE_SELECTION, WW_OBJECTIVE, WH_OBJECTIVE),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_OBJECTIVE, WW_OBJECTIVE, WH_OBJECTIVE),
         MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeSpinnerWidgets({158,  65}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
@@ -212,7 +212,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget window_editor_scenario_options_scenario_details_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_OBJECTIVE_SELECTION, WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_SCENARIO_DETAILS, WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS),
         MakeWidget        ({370, 48}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
         MakeWidget        ({370, 65}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
         MakeWidget        ({ 98, 82}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
@@ -248,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget window_editor_scenario_options_park_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS, WW_PARK, WH_PARK),
         MakeSpinnerWidgets({188,  48}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeSpinnerWidgets({188,  65}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeWidget        ({  8,  82}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget window_editor_scenario_options_rides_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_OBJECTIVE_SELECTION, WW_OBJECTIVE, WH_OBJECTIVE),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_PRESERVED_RIDES, WW_OBJECTIVE, WH_OBJECTIVE),
         MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     };
 
@@ -1020,7 +1020,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Objective label
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_OBJECTIVE].top };
-            DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_WINDOW);
+            DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_DROPDOWN_LABEL);
 
             // Objective value
             screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE].left + 1, widgets[WIDX_OBJECTIVE].top };
