@@ -281,9 +281,9 @@ namespace OpenRCT2::Ui::Windows
         RideSelection _windowNewRideListItems[RideListItemsMax]{};
         struct NewRideVariables
         {
-            RideSelection SelectedRide;
-            RideSelection HighlightedRide;
-            uint16_t SelectedRideCountdown;
+            RideSelection SelectedRide{};
+            RideSelection HighlightedRide{};
+            uint16_t SelectedRideCountdown{};
         } _newRideVars{};
 
     public:
