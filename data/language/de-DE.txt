@@ -2259,10 +2259,6 @@ STR_3252    :Maximales Darlehen kann nicht{NEWLINE}weiter erhöht werden!
 STR_3253    :Maximales Darlehen kann nicht{NEWLINE}weiter reduziert werden!
 STR_3254    :Zinsrate kann nicht weiter{NEWLINE}erhöht werden!
 STR_3255    :Zinsrate kann nicht weiter{NEWLINE}reduziert werden!
-STR_3256    :Weniger aufregende Bahnen bevorzugt
-STR_3257    :Wählen Sie aus, ob die Besucher im Allgemeinen weniger aufregende{NEWLINE}Bahnen vorziehen
-STR_3258    :Aufregendere Bahnen bevorzugt
-STR_3259    :Wählen Sie aus, ob die Besucher im Allgemeinen aufregendere{NEWLINE}Bahnen vorziehen
 STR_3260    :{WINDOW_COLOUR_2}Durchschnittliches Geld pro Besucher:
 STR_3261    :{WINDOW_COLOUR_2}Vergnügen der Besucher zu Beginn:
 STR_3262    :{WINDOW_COLOUR_2}Hunger der Besucher zu Beginn:

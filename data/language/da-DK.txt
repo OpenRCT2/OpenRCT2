@@ -2259,10 +2259,6 @@ STR_3252    :Kan ikke forøge maksimum lånestørrelse yderligere!
 STR_3253    :Kan ikke reducere maksimum lånestørrelse yderligere!
 STR_3254    :Kan ikke forøge rentesats yderligere!
 STR_3255    :Kan ikke reducere rentesats yderligere!
-STR_3256    :Gæster foretrækker mindre intense forlystelser
-STR_3257    :Vælg om gæster generelt foretrækker mindre intense forlystelser
-STR_3258    :Gæster foretrækker mere intense forlystelser
-STR_3259    :Vælg om gæster generelt foretrækker mere intense forlystelser
 STR_3260    :{WINDOW_COLOUR_2}Penge per gæst (gennemsnit):
 STR_3261    :{WINDOW_COLOUR_2}Gæsters start-glæde:
 STR_3262    :{WINDOW_COLOUR_2}Gæsters start-sult:

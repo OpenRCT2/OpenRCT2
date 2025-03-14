@@ -2260,10 +2260,6 @@ STR_3252    :Kan inte höja maxlån mer!
 STR_3253    :Kan inte sänka maxlån mer!
 STR_3254    :Kan inte höja räntan mer!
 STR_3255    :Kan inte sänka räntan mer!
-STR_3256    :Besökare föredrar mindre intensiva åkturer
-STR_3257    :Välj om besökare endast ska föredra mindre intensiva åkturer
-STR_3258    :Besökare föredrar mer intensiva åkturer
-STR_3259    :Välj om besökare endast ska föredra mer intensiva åkturer
 STR_3260    :{WINDOW_COLOUR_2}Pengar per besökare (genomsnitt):
 STR_3261    :{WINDOW_COLOUR_2}Besökares startglädje:
 STR_3262    :{WINDOW_COLOUR_2}Besökares starthunger:

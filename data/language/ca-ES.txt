@@ -2264,10 +2264,6 @@ STR_3252    :El préstec màxim no es pot augmentar més!
 STR_3253    :El préstec màxim no es pot reduir més!
 STR_3254    :La taxa d’interès anual no es pot augmentar més!
 STR_3255    :La taxa d’interès anual no es pot reduir més!
-STR_3256    :Els visitants prefereixen atraccions menys intenses
-STR_3257    :Trieu si els visitants haurien de preferir només les atraccions menys intenses.
-STR_3258    :Els visitants prefereixen atraccions més intenses
-STR_3259    :Trieu si els visitants haurien de preferir només les atraccions més intenses.
 STR_3260    :{WINDOW_COLOUR_2}Efectiu per visitant (mitjana):
 STR_3261    :{WINDOW_COLOUR_2}Felicitat inicial dels visitants:
 STR_3262    :{WINDOW_COLOUR_2}Gana inicial dels visitants:

@@ -2260,10 +2260,6 @@ STR_3252    :Nie można bardziej zwiększyć maksymalnego zadłużenia!
 STR_3253    :Nie można bardziej zmniejszyć maksymalnego zadłużenia!
 STR_3254    :Nie można bardziej zwiększyć oprocentowania pożyczek!
 STR_3255    :Nie można bardziej zmniejszyć oprocentowania pożyczek!
-STR_3256    :Goście preferują mniej intensywne atrakcje
-STR_3257    :Wybierz czy goście powinni preferować tylko mniej intensywne atrakcje
-STR_3258    :Goście preferują bardziej intensywne atrakcje
-STR_3259    :Wybierz czy goście powinni preferować tylko bardziej intensywne atrakcje
 STR_3260    :{WINDOW_COLOUR_2}Gotówka na gościa (średnia):
 STR_3261    :{WINDOW_COLOUR_2}Początkowe zadowolenie gości:
 STR_3262    :{WINDOW_COLOUR_2}Początkowy głód gości:

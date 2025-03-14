@@ -2260,10 +2260,6 @@ STR_3252    :Ne eblas pliigi maksimuman prunton plu!
 STR_3253    :Ne eblas malpliigi maksimuman prunton plu!
 STR_3254    :Ne eblas pliigi procenton de interezo plu!
 STR_3255    :Ne eblas malpliigi procenton de interezo plu!
-STR_3256    :Gastoj preferas malpli intensajn atrakciojn
-STR_3257    :Elekti ĉu gastoj kutime preferas nur malpli intensajn atrakciojn
-STR_3258    :Gastoj preferas pli intensajn atrakciojn
-STR_3259    :Elekti ĉu gastoj kutime preferas nur pli intensajn atrakciojn
 STR_3260    :{WINDOW_COLOUR_2}Mono por ĉiu gasto (meznombro):
 STR_3261    :{WINDOW_COLOUR_2}Komenca feliĉeco de gastoj:
 STR_3262    :{WINDOW_COLOUR_2}Komenca malsateco de gastoj:

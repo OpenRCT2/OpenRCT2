@@ -2261,10 +2261,6 @@ STR_3252    :O préstamo máximo non se pode aumentar máis!
 STR_3253    :O préstamo máximo non se pode reducir máis!
 STR_3254    :O tipo de interese non se pode aumentar máis!
 STR_3255    :O tipo de interese non se pode reducir máis!
-STR_3256    :Os visitantes prefiren as atraccións tranquilas
-STR_3257    :Os visitantes adoitan preferir atraccións de baixa intensidade
-STR_3258    :Os visitantes prefiren atraccións intensas
-STR_3259    :Os visitantes adoitan preferir atraccións de alta intensidade
 STR_3260    :{WINDOW_COLOUR_2}Efectivo por visitante (media):
 STR_3261    :{WINDOW_COLOUR_2}Felicidade inicial do visitante:
 STR_3262    :{WINDOW_COLOUR_2}Fame inicial do visitante:
@@ -3786,7 +3782,7 @@ STR_6724    :Textos do escenario
 STR_6725    :X:
 STR_6726    :Y:
 STR_6727    :Bucle de mergullo (esquerda)
-STR_6728    :Loop de mergullo (dereita)
+STR_6728    :Bucle de mergullo (dereita)
 STR_6729    :A subida da telecadeira debe comezar inmediatamente despois da estación ou do freno de bloqueo
 STR_6730    :Exportar datos de Emscripten
 STR_6731    :Importar datos de Emscripten
@@ -3794,3 +3790,12 @@ STR_6732    :Amosar un botón na barra de ferramentas para xirar a vista en sent
 STR_6733    :Translúcido
 STR_6734    :Os elementos do mapa que están a altura de corte ou por riba renderízanse translúcidos.
 STR_6735    :Sube ao cartafol principal
+STR_6736    :Vista previa
+STR_6737    :Non hai vista previa dispoñible
+STR_6738    :{WINDOW_COLOUR_2}Valoración do parque: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Data: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Efectivo: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Núm. de atraccións: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Núm. de visitantes: {BLACK}{UINT16}
+STR_6743    :Clima
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%

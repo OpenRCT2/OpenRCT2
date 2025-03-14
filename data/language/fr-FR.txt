@@ -2267,10 +2267,6 @@ STR_3252    :Impossible d’augmenter davantage l’emprunt maximum !
 STR_3253    :Impossible de diminuer davantage l’emprunt maximum !
 STR_3254    :Impossible d’augmenter davantage le taux d’intérêt !
 STR_3255    :Impossible de diminuer davantage le taux d’intérêt !
-STR_3256    :Attr. moins dures pour visiteurs
-STR_3257    :Les visiteurs préfèrent des attractions moins intenses
-STR_3258    :Attr. plus dures pour visiteurs
-STR_3259    :Les visiteurs préfèrent des attractions plus intenses
 STR_3260    :{WINDOW_COLOUR_2}Argent par visiteur (en moyenne) :
 STR_3261    :{WINDOW_COLOUR_2}Bonheur initial :
 STR_3262    :{WINDOW_COLOUR_2}Faim initiale :

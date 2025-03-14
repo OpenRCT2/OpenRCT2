@@ -2262,10 +2262,6 @@ STR_3252    :¡No se puede incrementar más el préstamo máximo!
 STR_3253    :¡No se puede reducir más el préstamo máximo!
 STR_3254    :¡No se puede incrementar más la tasa de interés!
 STR_3255    :¡No se puede reducir más la tasa de interés!
-STR_3256    :Visitantes prefieren atracciones tranquilas
-STR_3257    :Los visitantes prefieren atracciones de baja intensidad normalmente
-STR_3258    :Visitantes prefieren atracciones intensas
-STR_3259    :Los visitantes prefieren atracciones de alta intensidad normalmente
 STR_3260    :{WINDOW_COLOUR_2}Efectivo por visitante (media):
 STR_3261    :{WINDOW_COLOUR_2}Felicidad inicial de visitantes:
 STR_3262    :{WINDOW_COLOUR_2}Hambre inicial de visitantes:

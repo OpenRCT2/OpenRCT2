@@ -2259,10 +2259,6 @@ STR_3252    :Kan de maximumlening niet verder verhogen!
 STR_3253    :Kan de maximumlening niet verder verlagen!
 STR_3254    :Kan de rente niet verder verhogen!
 STR_3255    :Kan de rente niet verder verlagen!
-STR_3256    :Bezoekers houden meer van rustigere attracties
-STR_3257    :Selecteer of bezoekers in het algemeen meer van rustigere attracties houden
-STR_3258    :Bezoekers houden meer van spannende attracties
-STR_3259    :Selecteer of bezoekers in het algemeen meer van spannende attracties houden
 STR_3260    :{WINDOW_COLOUR_2}Geld per bezoeker (gemiddeld):
 STR_3261    :{WINDOW_COLOUR_2}Aanvankelijke stemming bezoekers:
 STR_3262    :{WINDOW_COLOUR_2}Aanvankelijke honger bezoekers:

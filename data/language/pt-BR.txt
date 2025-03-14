@@ -2260,10 +2260,6 @@ STR_3252    :Impossível aumentar ainda mais o tamanho do empréstimo!
 STR_3253    :Impossível diminuir ainda mais o tamanho do empréstimo!
 STR_3254    :Impossível aumentar ainda mais a taxa de juros!
 STR_3255    :Impossível diminuir ainda mais a taxa de juros!
-STR_3256    :Visitantes preferem atrações menos intensas
-STR_3257    :Selecionar se os visitantes geralmente preferem somente atrações menos intensas
-STR_3258    :Visitantes preferem atrações mais intensas
-STR_3259    :Selecionar se os visitantes geralmente preferem somente atrações mais intensas
 STR_3260    :{WINDOW_COLOUR_2}Dinheiro por visitante (em média):
 STR_3261    :{WINDOW_COLOUR_2}Felicidade inicial dos visitantes:
 STR_3262    :{WINDOW_COLOUR_2}Fome inicial dos visitantes:
