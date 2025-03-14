@@ -1201,6 +1201,13 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
             InitScrollWidgets();
 
+            if (page == WINDOW_PARK_PAGE_GUESTS || WINDOW_PARK_PAGE_RATING)
+            {
+                // We need to compensate for the enlarged title bar for windows that do not
+                // constrain the window height between tabs (e.g. chart tabs)
+                height -= GetTitleHeightDiff();
+            }
+
             OnResize();
             OnPrepareDraw();
             OnUpdate();
