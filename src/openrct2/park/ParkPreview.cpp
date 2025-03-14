@@ -115,25 +115,40 @@ namespace OpenRCT2
     static std::optional<PreviewImage> generatePreviewMap()
     {
         const auto& gameState = getGameState();
-        const auto previewSize = 128;
-        const auto longEdgeSize = std::max(gameState.mapSize.x, gameState.mapSize.y);
-        const auto nearestPower = Numerics::ceil2(longEdgeSize, previewSize);
-        const auto mapSkipFactor = nearestPower / previewSize;
-        const auto offset = mapSkipFactor > 0 ? (nearestPower - longEdgeSize) / mapSkipFactor : 1;
+        const auto drawableMapSize = TileCoordsXY{ gameState.mapSize.x - 2, gameState.mapSize.y - 2 };
+        const auto longEdgeSize = std::max(drawableMapSize.x, drawableMapSize.y);
+        const auto idealPreviewSize = 150;
+
+        auto longEdgeSizeLeft = longEdgeSize;
+        uint8_t mapSkipFactor = 1;
+        while (longEdgeSizeLeft > idealPreviewSize)
+        {
+            longEdgeSizeLeft -= idealPreviewSize;
+            mapSkipFactor++;
+        }
+
+        const uint8_t previewWidth = std::max(1, drawableMapSize.x / mapSkipFactor);
+        const uint8_t previewHeight = std::max(1, drawableMapSize.y / mapSkipFactor);
 
         PreviewImage image{
             .type = PreviewImageType::miniMap,
-            .width = previewSize,
-            .height = previewSize,
+            .width = previewWidth,
+            .height = previewHeight,
         };
 
         for (auto y = 0u; y < image.height; y++)
         {
+            int32_t mapY = 1 + (y * mapSkipFactor);
+            if (mapY >= drawableMapSize.y)
+                break;
+
             for (auto x = 0u; x < image.width; x++)
             {
-                auto pos = TileCoordsXY(gameState.mapSize.x - (x + 1) * mapSkipFactor + 1, y * mapSkipFactor + 1);
+                int32_t mapX = drawableMapSize.x - (x * mapSkipFactor);
+                if (mapX < 1)
+                    break;
 
-                image.pixels[(y + offset) * previewSize + (x + offset)] = getPreviewColourByTilePos(pos);
+                image.pixels[y * image.width + x] = getPreviewColourByTilePos({ mapX, mapY });
             }
         }
 
