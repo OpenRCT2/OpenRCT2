@@ -18,6 +18,7 @@
 - Fix: [#23941] Underflow in “Repay loan and achieve a certain park value” objective when using Japanese.
 - Fix: [#23949] Walls draw over sloped rear water edges and those edge sprites are misaligned (original bug).
 - Fix: [#23960] Corner path fences can draw over adjacent sloped land (original bug).
+- Fix: [#23983] Ordering files by size not working and also potentially crashing the game.
 
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------
