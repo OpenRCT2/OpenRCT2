@@ -16,6 +16,8 @@ struct TextInputSession;
 
 namespace OpenRCT2
 {
+    constexpr ScreenSize kMaxWindowSize = { 5000, 5000 };
+
     struct Window : WindowBase
     {
         void OnDraw(DrawPixelInfo& dpi) override;

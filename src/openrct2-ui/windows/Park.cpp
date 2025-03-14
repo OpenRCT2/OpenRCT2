@@ -676,7 +676,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeRating()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
+            WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
             ResizeFrameWithPage();
         }
 
@@ -744,7 +744,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeGuests()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
+            WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
             ResizeFrameWithPage();
         }
 
