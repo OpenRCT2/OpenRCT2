@@ -1988,8 +1988,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             const auto& ted = GetTrackElementDescriptor(trackType);
             const auto blockedSegmentsType = trackDrawerEntry.trackGroupBlockedSegmentTypes[EnumValue(ted.definition.group)];
 
-            if (BlockedSegments::IsTypeInverted(blockedSegmentsType)
-                != BlockedSegments::GetShouldInvertPrePostCall(trackType, trackSequence))
+            if (BlockedSegments::IsTypeInverted(blockedSegmentsType) != ted.sequences[trackSequence].invertSegmentBlocking)
             {
                 BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, blockedSegmentsType);
                 paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
