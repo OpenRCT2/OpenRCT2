@@ -68,6 +68,8 @@ namespace OpenRCT2::BlockedSegments
             return array;
         }();
 
+    bool IsTypeInverted(const BlockedSegmentsType blockedSegmentsType);
+
     bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence);
 
     void BlockSegmentsForTrackSequence(

@@ -372,6 +372,20 @@ namespace OpenRCT2::BlockedSegments
 
     static_assert(std::size(kBlockedSegmentsShouldInvertPrePostCall) == EnumValue(TrackElemType::Count));
 
+    static constexpr bool kBlockedSegmentsTypeIsInverted[] = {
+        false, // narrow
+        true,  // inverted
+        false, // wide
+        true,  // suspendedSwinging
+        false, // wideTrain
+    };
+    static_assert(std::size(kBlockedSegmentsTypeIsInverted) == EnumValue(BlockedSegmentsType::count));
+
+    bool IsTypeInverted(const BlockedSegmentsType blockedSegmentsType)
+    {
+        return kBlockedSegmentsTypeIsInverted[EnumValue(blockedSegmentsType)];
+    }
+
     bool GetShouldInvertPrePostCall(const TrackElemType trackElemType, const uint8_t trackSequence)
     {
         return kBlockedSegmentsShouldInvertPrePostCall[EnumValue(trackElemType)][trackSequence];
