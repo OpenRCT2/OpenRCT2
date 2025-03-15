@@ -3797,3 +3797,9 @@ STR_6741    :{WINDOW_COLOUR_2}Nombro de atrakcioj: {BLACK}{UINT16}
 STR_6742    :{WINDOW_COLOUR_2}Nombro de gastoj: {BLACK}{UINT16}
 STR_6743    :Klimato
 STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Intenseco-preferoj de gastoj:
+STR_6746    :Neniuj preferoj
+STR_6747    :Preferoj varias (defaŭlto)
+STR_6748    :Nur malpli intensaj atrakcioj
+STR_6749    :Nur pli intensaj atrakcioj
+STR_6750    :Elekti kian atrakcio-intensecon, ke nove generitaj gastoj preferas.

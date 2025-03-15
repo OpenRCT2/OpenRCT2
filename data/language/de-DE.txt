@@ -99,6 +99,8 @@ STR_0094    :Einschienenachterbahn
 STR_0095    :Alpenachterbahn
 STR_0096    :Klassische Holzachterbahn
 STR_0097    :Klassische Stehachterbahn
+STR_0098    :LSM-Achterbahn
+STR_0099    :Klassische Holztwisterachterbahn
 STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
 STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
@@ -183,6 +185,8 @@ STR_0604    :Die Fahrgäste fahren in einer Einzelreihe auf einer engen Einschie
 STR_0605    :Die Fahrgäste rodeln eine sich schlängelnde Stahlbahn hinunter und bremsen, um ihre Geschwindigkeit zu regulieren
 STR_0606    :Eine Holzachterbahn nach älterer Art. Sie ist schnell, rau, laut und gibt einem das Gefühl, außer Kontrolle zu sein, wobei man gelegentlich seitlichen Gs ausgesetzt und häufig „in der Luft“ ist
 STR_0607    :Eine intensive Stahl-Looping-Achterbahn älterer Art, bei der die Fahrer im Stehen fahren
+STR_0608    :Die Achterbahnzüge werden von linearen Synchronmotoren angetrieben und rasen durch enge Windungen und Kurven
+STR_0609    :Eine Holzachterbahn der älteren Bauart mit einer schnellen und ruppigen Fahrt mit Gelenkzügen, viel Zeit „in der Luft“ und einer sich windenden Strecke
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -2164,7 +2168,6 @@ STR_3136    :Warnung: Dieser Entwurf wird mit einer alternativen Fahrzeugart geb
 STR_3137    :Nahe Szenerie auswählen
 STR_3138    :Auswahl zurücksetzen
 STR_3139    :Kabellift funktioniert nicht in diesem Betriebsmodus
-STR_3140    :Kabellifthügel muss direkt nach der Station beginnen
 STR_3141    :Mehrere Runden bei Kabellifthügel nicht möglich
 STR_3142    :{WINDOW_COLOUR_2}Fassungsvermögen: {BLACK}{STRINGID}
 STR_3143    :Personen auf Karte anzeigen
@@ -2196,7 +2199,7 @@ STR_3188    :Fußwegschilder
 STR_3189    :Legacy-Fußwege
 STR_3190    :Fußwegextras
 STR_3191    :Szeneriegruppen
-STR_3192    :Parkeingang
+STR_3192    :Parkeingänge
 STR_3193    :Wasser
 STR_3195    :Erfindungsliste
 STR_3196    :{WINDOW_COLOUR_2}Forschungsgruppe: {BLACK}{STRINGID}
@@ -2596,7 +2599,7 @@ STR_5368    :Unfallstatus entf.
 STR_5371    :Objektauswahl
 STR_5372    :Ziehen mit rechter Maustaste umkehren
 STR_5373    :Name {STRINGID}
-STR_5374    :Datum {STRINGID}
+STR_5374    :Änderungsdatum {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Dieser Name existiert bereits
@@ -3587,7 +3590,7 @@ STR_6537    :Normale Fußwege als Warteschlangen erlauben
 STR_6538    :Zeigt normale Fußwege in der Warteschlangenliste im Fußwegfenster an
 STR_6539    :Bremse geschlossen
 STR_6540    :{WINDOW_COLOUR_2}Besonderen Dank an die folgenden Unternehmen für die Gestattung der Verwendung ihrer Abbilder:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Mitwirkende
 STR_6543    :Mitwirkende …
 STR_6544    :Darlehen kann nicht negativ sein!
@@ -3756,3 +3759,44 @@ STR_6706    :{WINDOW_COLOUR_2}Aktuelle Bilddatei: {BLACK}{STRING}
 STR_6707    :(keine ausgewählt)
 STR_6708    :Weiche Stärke
 STR_6709    :Weiche Stärke zwischen {COMMA16} und {COMMA16} eingeben
+STR_6710    :Stabile Sortierung
+STR_6711    :Dateiname:
+STR_6712    :Speichern
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Dateiname
+STR_6715    :Änderungsdatum
+STR_6716    :Dateigröße
+STR_6717    :Dateigröße {STRINGID}
+STR_6718    :Besucheranimationen
+STR_6719    :Es muss mindestens ein Besucher-Peep-Animationsobjekt ausgewählt sein
+STR_6720    :Es muss mindestens ein Parkpfleger-Peep-Animationsobjekt ausgewählt sein
+STR_6721    :Es muss mindestens ein Mechaniker-Peep-Animationsobjekt ausgewählt sein
+STR_6722    :Es muss mindestens ein Aufseher-Peep-Animationsobjekt ausgewählt sein
+STR_6723    :Es muss mindestens ein Entertainer-Peep-Animationsobjekt ausgewählt sein
+STR_6724    :Szenariotexte
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Sturzflugschleife (links)
+STR_6728    :Sturzflugschleife (rechts)
+STR_6729    :Kabellifthügel muss direkt nach der Station oder einer Blockbremse beginnen
+STR_6730    :Emscripten-Daten exportieren
+STR_6731    :Emscripten-Daten importieren
+STR_6732    :Einen Knopf in der Werkzeugleiste anzeigen, um die Ansicht entgegen dem Uhrzeigersinn zu rotieren
+STR_6733    :Durchsichtig
+STR_6734    :Kartenelemente, welche sich an oder oberhalb der Schnitthöhe befinden, werden transluzent angezeigt
+STR_6735    :Hoch zum übergeordnetem Ordner gehen
+STR_6736    :Vorschau
+STR_6737    :Keine Vorschau verfügbar
+STR_6738    :{WINDOW_COLOUR_2}Parkbewertung: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Datum: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Geld: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Anz. Fahrgeschäfte: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Anz. Besucher: {BLACK}{UINT16}
+STR_6743    :Klima
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Intensitätspräferenzen der Besucher:
+STR_6746    :Keine Präferenzen
+STR_6747    :Präferenzen variieren (Standard)
+STR_6748    :Nur weniger intensive Fahrgeschäfte
+STR_6749    :Nur intensivere Fahrgeschäfte
+STR_6750    :Auswählen, welche Art von Fahrgeschäft die neu erzeugten Besucher bevorzugen.
