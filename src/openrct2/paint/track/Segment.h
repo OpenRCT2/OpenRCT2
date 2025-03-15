@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../ride/TrackData.h"
+#include "../../ride/Track.h"
 #include "../../world/tile_element/TrackElement.h"
 #include "../Paint.h"
 #include "../tile_element/Segment.h"

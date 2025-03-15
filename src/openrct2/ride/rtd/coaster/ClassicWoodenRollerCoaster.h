@@ -22,11 +22,11 @@ constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
    .TrackPaintFunctions = TrackDrawerDescriptor({
        .trackStyle = TrackStyle::classicWoodenRollerCoaster,
         .trackGroupBlockedSegmentTypes = []() consteval {
-            std::array<BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
-            array.fill(BlockedSegments::BlockedSegmentsType::wide);
-            array[EnumValue(TrackGroup::verticalLoop)] = BlockedSegments::BlockedSegmentsType::narrow;
-            array[EnumValue(TrackGroup::halfLoopMedium)] = BlockedSegments::BlockedSegmentsType::narrow;
-            array[EnumValue(TrackGroup::halfLoopLarge)] = BlockedSegments::BlockedSegmentsType::narrow;
+            std::array<OpenRCT2::BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(OpenRCT2::BlockedSegments::BlockedSegmentsType::wide);
+            array[EnumValue(TrackGroup::verticalLoop)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopMedium)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopLarge)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow;
             return array;
         }(),
        .supportType = WoodenSupportType::Truss,

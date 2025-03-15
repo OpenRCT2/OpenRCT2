@@ -290,7 +290,7 @@ enum class RideConstructionWindowContext : uint8_t
 struct TrackDrawerEntry
 {
     TrackStyle trackStyle = TrackStyle::null;
-    std::array<BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> trackGroupBlockedSegmentTypes{};
+    std::array<OpenRCT2::BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> trackGroupBlockedSegmentTypes{};
     SupportType supportType{};
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
     RideTrackGroups enabledTrackGroups{};
