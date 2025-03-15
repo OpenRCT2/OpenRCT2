@@ -307,6 +307,8 @@ bool MetalSupportsPaintSetup(
     SupportHeight* const supportSegments = session.SupportSegments;
 
     int32_t currentHeight = height;
+
+    // Offset the support and draw a crossbeam
     uint8_t segment = originalSegment;
     uint16_t segmentHeight = 0xFFFF;
     if (currentHeight < supportSegments[segment].height)
@@ -356,6 +358,7 @@ bool MetalSupportsPaintSetup(
 
     const int16_t crossbeamHeight = currentHeight;
 
+    // Draw support bases
     if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery
         || currentHeight - supportSegments[segment].height < kMetalSupportBaseBoundBoxHeight
         || kSupportBasesAndBeams[supportType].base == kImageIndexUndefined)
@@ -377,8 +380,7 @@ bool MetalSupportsPaintSetup(
     const auto supportBeamImageIndex = drawCap ? kSupportBasesAndBeams[supportType].beamCapped
                                                : kSupportBasesAndBeams[supportType].beamUncapped;
 
-    // Work out if a small support segment required to bring support to normal
-    // size (aka floor2(x, 16))
+    // Draw an initial support segment to get the main segment heights to a multiple of 16
     const int16_t heightDiff = std::min<int16_t>(floor2(currentHeight + 16, 16), crossbeamHeight) - currentHeight;
     if (heightDiff > 0)
     {
@@ -389,6 +391,7 @@ bool MetalSupportsPaintSetup(
 
     currentHeight += heightDiff;
 
+    // Draw main support segments
     for (uint8_t count = 1;; count++)
     {
         const int16_t beamLength = std::min<int16_t>(currentHeight + 16, crossbeamHeight) - currentHeight;
@@ -409,6 +412,7 @@ bool MetalSupportsPaintSetup(
     supportSegments[segment].height = segmentHeight;
     supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
+    // Draw extra support segments above height with a zero height bounding box
     currentHeight = height;
     const CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[originalSegment], currentHeight);
     while (true)
