@@ -23,7 +23,7 @@ namespace OpenRCT2::BlockedSegments
         narrow = 0,
         inverted = 1,
         wide = 2,
-        suspendedSwinging = 3,
+        suspendedSwingingTrain = 3,
         wideTrain = 4,
 
         count = 5,
@@ -53,9 +53,9 @@ namespace OpenRCT2::BlockedSegments
         }();
 
     static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)>
-        kTrackGroupBlockedSegmentsSuspendedSwinging = []() consteval {
+        kTrackGroupBlockedSegmentsSuspendedSwingingTrain = []() consteval {
             std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
-            array.fill(BlockedSegmentsType::suspendedSwinging);
+            array.fill(BlockedSegmentsType::suspendedSwingingTrain);
             array[EnumValue(TrackGroup::stationEnd)] = BlockedSegments::BlockedSegmentsType::wide;
             array[EnumValue(TrackGroup::onridePhoto)] = BlockedSegments::BlockedSegmentsType::wide;
             return array;

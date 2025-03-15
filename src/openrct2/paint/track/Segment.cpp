@@ -19,7 +19,7 @@ namespace OpenRCT2::BlockedSegments
         false, // narrow
         true,  // inverted
         false, // wide
-        true,  // suspendedSwinging
+        true,  // suspendedSwingingTrain
         false, // wideTrain
     };
     static_assert(std::size(kBlockedSegmentsTypeIsInverted) == EnumValue(BlockedSegmentsType::count));
@@ -5829,7 +5829,7 @@ namespace OpenRCT2::BlockedSegments
         kBlockedSegmentsNarrow,                 // narrow
         kBlockedSegmentsInverted,               // inverted
         kBlockedSegmentsWide,                   // wide
-        kBlockedSegmentsSuspendedSwingingTrain, // suspendedSwinging
+        kBlockedSegmentsSuspendedSwingingTrain, // suspendedSwingingTrain
         kBlockedSegmentsWideTrain,              // wideTrain
     };
 
