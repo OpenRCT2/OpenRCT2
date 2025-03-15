@@ -1990,13 +1990,15 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
 
             if (BlockedSegments::IsTypeInverted(blockedSegmentsType) != ted.sequences[trackSequence].invertSegmentBlocking)
             {
-                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, blockedSegmentsType);
+                BlockedSegments::BlockSegmentsForTrackSequence(
+                    session, trackSequence, direction, height, trackType, blockedSegmentsType);
                 paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
             }
             else
             {
                 paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
-                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, blockedSegmentsType);
+                BlockedSegments::BlockSegmentsForTrackSequence(
+                    session, trackSequence, direction, height, trackType, blockedSegmentsType);
             }
         }
     }

@@ -23,9 +23,9 @@ constexpr RideTypeDescriptor CarRideRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::carRide,
         .trackGroupBlockedSegmentTypes = []() consteval {
-            std::array<BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
-            array.fill(BlockedSegments::BlockedSegmentsType::narrow);
-            array[EnumValue(TrackGroup::curveVerySmall)] = BlockedSegments::BlockedSegmentsType::wide;
+            std::array<OpenRCT2::BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow);
+            array[EnumValue(TrackGroup::curveVerySmall)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::wide;
             return array;
         }(),
         .supportType = MetalSupportType::Boxed,
