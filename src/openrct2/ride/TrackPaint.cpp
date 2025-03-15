@@ -1986,20 +1986,18 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         else
         {
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto trackStyleBlockedSegments = trackDrawerEntry
-                                                       .trackGroupBlockedSegmentTypes[EnumValue(ted.definition.group)];
+            const auto blockedSegmentsType = trackDrawerEntry.trackGroupBlockedSegmentTypes[EnumValue(ted.definition.group)];
 
-            if ((trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::inverted
-                 || trackStyleBlockedSegments == BlockedSegments::BlockedSegmentsType::suspendedSwinging)
+            if (BlockedSegments::IsTypeInverted(blockedSegmentsType)
                 != BlockedSegments::GetShouldInvertPrePostCall(trackType, trackSequence))
             {
-                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
+                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, blockedSegmentsType);
                 paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
             }
             else
             {
                 paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
-                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, trackStyleBlockedSegments);
+                BlockSegmentsForTrackSequence(session, trackSequence, direction, height, trackType, blockedSegmentsType);
             }
         }
     }
