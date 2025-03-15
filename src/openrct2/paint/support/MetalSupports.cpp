@@ -281,7 +281,7 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
       MetalSupportGraphic::BoxedCoated },
 };
 
-constexpr int32_t kMetalSupportBaseHeight = 6;
+constexpr int32_t kMetalSupportBaseBoundBoxHeight = 6;
 
 template<bool typeB>
 bool MetalSupportsPaintSetup(
@@ -357,7 +357,7 @@ bool MetalSupportsPaintSetup(
     const int16_t crossbeamHeight = currentHeight;
 
     if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery
-        || currentHeight - supportSegments[segment].height < kMetalSupportBaseHeight
+        || currentHeight - supportSegments[segment].height < kMetalSupportBaseBoundBoxHeight
         || kSupportBasesAndBeams[supportType].base == kImageIndexUndefined)
     {
         currentHeight = supportSegments[segment].height;
@@ -368,9 +368,10 @@ bool MetalSupportsPaintSetup(
             + kMetalSupportsSlopeImageOffsetMap[supportSegments[segment].slope & kTileSlopeMask];
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], supportSegments[segment].height },
-            { 1, 1, kMetalSupportBaseHeight - 1 });
+            { { SupportBoundBoxes[segment], supportSegments[segment].height + 2 },
+              { 1, 1, kMetalSupportBaseBoundBoxHeight - 3 } });
 
-        currentHeight = supportSegments[segment].height + kMetalSupportBaseHeight;
+        currentHeight = supportSegments[segment].height + kMetalSupportBaseBoundBoxHeight;
     }
 
     const auto supportBeamImageIndex = drawCap ? kSupportBasesAndBeams[supportType].beamCapped
