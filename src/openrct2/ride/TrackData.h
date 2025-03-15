@@ -98,6 +98,7 @@ namespace OpenRCT2::TrackMetaData
         SequenceWoodenSupport woodenSupports{};
         SequenceMetalSupport metalSupports{};
         int8_t extraSupportRotation = 0;
+        bool invertSegmentBlocking = false;
     };
 
     using TrackComputeFunction = int32_t (*)(const int16_t);

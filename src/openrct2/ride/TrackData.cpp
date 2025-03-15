@@ -5776,6 +5776,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftTwistDownToUpSeq2 = {
         .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightTwistDownToUpSeq0 = {
@@ -5792,11 +5793,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightTwistDownToUpSeq2 = {
         .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftTwistUpToDownSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftTwistUpToDownSeq1 = {
@@ -5813,6 +5816,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightTwistUpToDownSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightTwistUpToDownSeq1 = {
@@ -5883,6 +5887,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, -32, 48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
         .metalSupports = { MetalSupportPlace::Centre },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightCorkscrewUpSeq0 = {
@@ -5900,12 +5905,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 32, 48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
         .metalSupports = { MetalSupportPlace::Centre },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::Centre },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewDownSeq1 = {
@@ -5923,6 +5930,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .metalSupports = { MetalSupportPlace::Centre },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightCorkscrewDownSeq1 = {
@@ -8436,6 +8444,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightBarrelRollUpToDownSeq0 = {
@@ -8454,12 +8463,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq1 = {
@@ -8478,6 +8489,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightBarrelRollDownToUpSeq1 = {
@@ -8619,6 +8631,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq6 = {
         .clearance = { -64, -32, 248, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq0 = {
@@ -8654,11 +8667,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq6 = {
         .clearance = { -64, 32, 248, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq1 = {
@@ -8694,6 +8709,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq1 = {
@@ -8739,6 +8755,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerTwistUpSeq2 = {
         .clearance = { -64, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistUpSeq0 = {
@@ -8754,6 +8771,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerTwistUpSeq2 = {
         .clearance = { -64, 0, -16, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq0 = {
@@ -8769,6 +8787,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq2 = {
         .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerTwistDownSeq0 = {
@@ -8784,6 +8803,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerTwistDownSeq2 = {
         .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq0 = {
@@ -8799,10 +8819,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq2 = {
         .clearance = { -64, 0, 32, 96, { 0b0011, 0 }, 0 },
         .allowedWallEdges = 0b1011,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq3 = {
         .clearance = { -32, 0, 120, 16, { 0b1111, 0 }, 0 },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq0 = {
@@ -8817,11 +8839,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq2 = {
         .clearance = { 0, 0, -104, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq3 = {
         .clearance = { 32, 0, -120, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq0 = {
@@ -8837,6 +8861,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq2 = {
         .clearance = { -32, -32, 48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq0 = {
@@ -8852,6 +8877,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq2 = {
         .clearance = { -32, 32, 48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq0 = {
@@ -8867,6 +8893,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq2 = {
         .clearance = { -32, -32, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq0 = {
@@ -8882,6 +8909,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq2 = {
         .clearance = { -32, 32, -48, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kHeartLineTransferUpSeq0 = {
@@ -10135,11 +10163,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq4 = {
         .clearance = { -64, -32, 48, 40, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq5 = {
         .clearance = { -64, -64, 72, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq0 = {
@@ -10165,21 +10195,25 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq4 = {
         .clearance = { -64, 32, 48, 40, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0001,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq5 = {
         .clearance = { -64, 64, 72, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq0 = {
         .clearance = { 0, 0, -40, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq1 = {
         .clearance = { -32, 0, -64, 40, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq2 = {
@@ -10205,11 +10239,13 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq0 = {
         .clearance = { 0, 0, -40, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq1 = {
         .clearance = { -32, 0, -64, 40, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq2 = {
@@ -10348,6 +10384,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 0, 24, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightZeroGRollUpSeq0 = {
@@ -10366,12 +10403,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -64, 0, 24, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftZeroGRollDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftZeroGRollDownSeq1 = {
@@ -10390,6 +10429,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightZeroGRollDownSeq1 = {
@@ -10426,6 +10466,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -96, 0, 120, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq0 = {
@@ -10450,12 +10491,14 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -96, 0, 120, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq0 = {
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq1 = {
@@ -10480,6 +10523,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq1 = {
@@ -10533,6 +10577,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq6 = {
         .clearance = { -64, -32, 248, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq0 = {
@@ -10568,6 +10613,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq6 = {
         .clearance = { -64, 32, 248, 16, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq0 = {
@@ -10588,21 +10634,25 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq3 = {
         .clearance = { -32, -32, -184, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1001,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq4 = {
         .clearance = { 0, -32, -216, 56, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq5 = {
         .clearance = { 32, -32, -232, 40, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq6 = {
         .clearance = { 64, -32, -248, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq0 = {
@@ -10623,21 +10673,25 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq3 = {
         .clearance = { -32, 32, -184, 192, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0011,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq4 = {
         .clearance = { 0, 32, -216, 56, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq5 = {
         .clearance = { 32, 32, -232, 40, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq6 = {
         .clearance = { 64, 32, -248, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq0 = {
@@ -10673,6 +10727,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq6 = {
         .clearance = { -64, -32, 248, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1000,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq0 = {
@@ -10708,6 +10763,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq6 = {
         .clearance = { -64, 32, 248, 32, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq0 = {
@@ -10743,6 +10799,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq6 = {
         .clearance = { 64, -32, -280, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq0 = {
@@ -10778,6 +10835,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq6 = {
         .clearance = { 64, 32, -280, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq0 = {
@@ -10797,6 +10855,7 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq3 = {
         .clearance = { -32, 0, 120, 32, { 0b1111, 0 }, 0 },
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq0 = {
@@ -10816,6 +10875,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq3 = {
         .clearance = { 32, 0, -152, 16, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
 
     static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq0 = {
@@ -12045,10 +12105,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq4 = {
         .clearance = { -64, 32, 80, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq5 = {
         .clearance = { -96, 32, 112, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq0 = {
         .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
@@ -12069,18 +12131,22 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq4 = {
         .clearance = { -32, 64, 80, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
+        .invertSegmentBlocking = true,
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq5 = {
         .clearance = { -32, 96, 112, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b0101,
+        .invertSegmentBlocking = true,
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq0 = {
         .clearance = { 0, 0, 112, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq1 = {
         .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq2 = {
         .clearance = { -64, 0, 32, 80, { 0b1111, 0 }, 0 },
@@ -12101,10 +12167,12 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq0 = {
         .clearance = { 0, 0, 112, 24, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq1 = {
         .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
+        .invertSegmentBlocking = true,
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq2 = {
         .clearance = { -64, 0, 32, 80, { 0b1111, 0 }, 0 },
