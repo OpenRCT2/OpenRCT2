@@ -77,6 +77,8 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(window_clear_scenery_widgets);
+            ResizeFrame();
+
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);

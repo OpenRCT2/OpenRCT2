@@ -1370,6 +1370,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Add the base widgets
             SetWidgets(WindowSceneryBaseWidgets);
+            ResizeFrameWithPage();
 
             // Add tabs
             int32_t xInit = InitTabPosX;
