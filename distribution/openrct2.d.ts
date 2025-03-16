@@ -625,7 +625,11 @@ declare global {
         "station" |
         "music" |
         "footpath_surface" |
-        "footpath_railings";
+        "footpath_railings" |
+        "audio" |
+        "peep_names" |
+        "peep_animations" |
+        "climate";
 
     type HookType =
         "action.execute" |
@@ -5362,7 +5366,6 @@ declare global {
         getObject(type: "footpath_addition", index: number): FootpathAdditionObject;
         getObject(type: "banner", index: number): BannerObject;
         getObject(type: "scenery_group", index: number): SceneryGroupObject;
-        getObject(type: "music", index: number): LoadedObject;
 
         /**
          * Gets all the currently loaded objects for a given object type.
@@ -5376,7 +5379,6 @@ declare global {
         getAllObjects(type: "footpath_addition"): FootpathAdditionObject[];
         getAllObjects(type: "banner"): BannerObject[];
         getAllObjects(type: "scenery_group"): SceneryGroupObject[];
-        getAllObjects(type: "music"): LoadedObject[];
     }
 
     /**

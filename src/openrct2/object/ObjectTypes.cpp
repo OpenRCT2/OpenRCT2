@@ -9,6 +9,7 @@
 
 #include "ObjectTypes.h"
 
+#include "../core/EnumMap.hpp"
 #include "../core/EnumUtils.hpp"
 #include "Object.h"
 
@@ -80,4 +81,39 @@ std::span<const ObjectType> getTransientObjectTypes()
 std::span<const ObjectType> getIntransientObjectTypes()
 {
     return kIntransientObjectTypes;
+}
+
+static const EnumMap<ObjectType> kObjectTypeMap = {
+    { "ride", ObjectType::ride },
+    { "scenery_small", ObjectType::smallScenery },
+    { "scenery_large", ObjectType::largeScenery },
+    { "scenery_wall", ObjectType::walls },
+    { "footpath_banner", ObjectType::banners },
+    { "footpath_item", ObjectType::pathAdditions },
+    { "scenery_group", ObjectType::sceneryGroup },
+    { "park_entrance", ObjectType::parkEntrance },
+    { "water", ObjectType::water },
+    { "scenario_text", ObjectType::scenarioText },
+    { "terrain_surface", ObjectType::terrainSurface },
+    { "terrain_edge", ObjectType::terrainEdge },
+    { "station", ObjectType::station },
+    { "music", ObjectType::music },
+    { "footpath_surface", ObjectType::footpathSurface },
+    { "footpath_railings", ObjectType::footpathRailings },
+    { "audio", ObjectType::audio },
+    { "peep_names", ObjectType::peepNames },
+    { "peep_animations", ObjectType::peepAnimations },
+    { "climate", ObjectType::climate },
+};
+
+std::string_view objectTypeToString(ObjectType type)
+{
+    auto result = kObjectTypeMap.find(type);
+    return result != kObjectTypeMap.end() ? result->first : "";
+}
+
+ObjectType objectTypeFromString(std::string_view string)
+{
+    auto result = kObjectTypeMap.find(string);
+    return result != kObjectTypeMap.end() ? result->second : ObjectType::none;
 }

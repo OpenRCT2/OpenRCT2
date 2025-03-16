@@ -404,51 +404,6 @@ namespace OpenRCT2::ObjectFactory
         return result;
     }
 
-    static ObjectType ParseObjectType(const std::string& s)
-    {
-        if (s == "ride")
-            return ObjectType::ride;
-        if (s == "footpath_banner")
-            return ObjectType::banners;
-        if (s == "footpath_item")
-            return ObjectType::pathAdditions;
-        if (s == "scenery_small")
-            return ObjectType::smallScenery;
-        if (s == "scenery_large")
-            return ObjectType::largeScenery;
-        if (s == "scenery_wall")
-            return ObjectType::walls;
-        if (s == "scenery_group")
-            return ObjectType::sceneryGroup;
-        if (s == "park_entrance")
-            return ObjectType::parkEntrance;
-        if (s == "water")
-            return ObjectType::water;
-        if (s == "scenario_text")
-            return ObjectType::scenarioText;
-        if (s == "terrain_surface")
-            return ObjectType::terrainSurface;
-        if (s == "terrain_edge")
-            return ObjectType::terrainEdge;
-        if (s == "station")
-            return ObjectType::station;
-        if (s == "music")
-            return ObjectType::music;
-        if (s == "footpath_surface")
-            return ObjectType::footpathSurface;
-        if (s == "footpath_railings")
-            return ObjectType::footpathRailings;
-        if (s == "audio")
-            return ObjectType::audio;
-        if (s == "peep_names")
-            return ObjectType::peepNames;
-        if (s == "peep_animations")
-            return ObjectType::peepAnimations;
-        if (s == "climate")
-            return ObjectType::climate;
-        return ObjectType::none;
-    }
-
     std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path, bool loadImages)
     {
         try
@@ -544,7 +499,7 @@ namespace OpenRCT2::ObjectFactory
 
         std::unique_ptr<Object> result;
 
-        auto objectType = ParseObjectType(Json::GetString(jRoot["objectType"]));
+        auto objectType = objectTypeFromString(Json::GetString(jRoot["objectType"]));
         if (objectType != ObjectType::none)
         {
             auto id = Json::GetString(jRoot["id"]);

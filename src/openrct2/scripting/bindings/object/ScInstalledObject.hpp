@@ -20,32 +20,6 @@
 
 namespace OpenRCT2::Scripting
 {
-    inline std::string_view ObjectTypeToString(uint8_t type)
-    {
-        static constexpr std::string_view Types[] = {
-            "ride",
-            "small_scenery",
-            "large_scenery",
-            "wall",
-            "banner",
-            "footpath",
-            "footpath_addition",
-            "scenery_group",
-            "park_entrance",
-            "water",
-            "stex",
-            "terrain_surface",
-            "terrain_edge",
-            "station",
-            "music",
-            "footpath_surface",
-            "footpath_railings",
-        };
-        if (type >= std::size(Types))
-            return "unknown";
-        return Types[type];
-    }
-
     inline std::string_view ObjectSourceGameToString(ObjectSourceGame sourceGame)
     {
         static constexpr std::string_view values[] = { "custom", "wacky_worlds",      "time_twister",     "openrct2_official",
@@ -122,7 +96,7 @@ namespace OpenRCT2::Scripting
             auto installedObject = GetInstalledObject();
             if (installedObject != nullptr)
             {
-                return std::string(ObjectTypeToString(EnumValue(installedObject->Type)));
+                return std::string(objectTypeToString(installedObject->Type));
             }
             return {};
         }
