@@ -3797,3 +3797,9 @@ STR_6741    :{WINDOW_COLOUR_2}Núm. atrações: {BLACK}{UINT16}
 STR_6742    :{WINDOW_COLOUR_2}Núm. visitantes: {BLACK}{UINT16}
 STR_6743    :Clima
 STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Preferências de intensidade dos visitantes:
+STR_6746    :Sem preferências
+STR_6747    :Preferências variam (padrão)
+STR_6748    :Apenas atrações menos intensas
+STR_6749    :Apenas atrações mais intensas
+STR_6750    :Selecionar que tipo de intensidade de atração visitantes recém criados preferem.
