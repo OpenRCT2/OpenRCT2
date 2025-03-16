@@ -13426,7 +13426,6 @@ namespace OpenRCT2::HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
@@ -13440,7 +13439,6 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenBSupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::Corner0, direction, height + 16, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
@@ -13454,7 +13452,6 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenBSupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::Corner2, direction, height + 16, session.SupportColours);
-                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
@@ -13466,7 +13463,6 @@ namespace OpenRCT2::HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
