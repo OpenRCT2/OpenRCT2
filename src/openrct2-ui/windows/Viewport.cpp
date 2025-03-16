@@ -12,9 +12,9 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Map.h>
 
@@ -98,10 +98,7 @@ namespace OpenRCT2::Ui::Windows
 
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
 
-            min_width = WW;
-            min_height = WH;
-            max_width = WW;
-            max_height = WH;
+            WindowSetResize(*this, { WW, WH }, { WW, WH });
         }
 
         void OnUpdate() override
@@ -185,7 +182,7 @@ namespace OpenRCT2::Ui::Windows
             min_width = WW;
             min_height = WH;
 
-            WindowSetResize(*this, min_width, min_height, max_width, max_height);
+            WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
         }
 
         void OnPrepareDraw() override

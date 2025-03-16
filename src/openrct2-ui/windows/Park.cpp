@@ -19,6 +19,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkSetEntranceFeeAction.h>
 #include <openrct2/actions/ParkSetNameAction.h>
 #include <openrct2/config/Config.h>
@@ -28,8 +29,6 @@
 #include <openrct2/management/Award.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/scenario/Scenario.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -450,7 +449,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeEntrance()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
+            WindowSetResize(*this, { 230, 174 + 9 }, { 230 * 3, (274 + 9) * 3 });
             InitViewport();
         }
 
@@ -500,7 +499,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdateEntrance()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_1);
         }
 
         void OnTextInputEntrance(WidgetIndex widgetIndex, std::string_view text)
@@ -678,13 +677,13 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeRating()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
+            WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
         }
 
         void OnUpdateRating()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_2);
             if (_ratingProps.UpdateHoverIndex())
             {
                 InvalidateWidget(WIDX_BACKGROUND);
@@ -746,14 +745,14 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeGuests()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
+            WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
         }
 
         void OnUpdateGuests()
         {
             frame_no++;
             _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_3);
             if (_guestProps.UpdateHoverIndex())
             {
                 InvalidateWidget(WIDX_BACKGROUND);
@@ -825,7 +824,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Price page
         void OnResizePrice()
         {
-            WindowSetResize(*this, 230, 124, 230, 124);
+            WindowSetResize(*this, { 230, 124 }, { 230, 124 });
         }
 
         void OnMouseDownPrice(WidgetIndex widgetIndex)
@@ -835,7 +834,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_INCREASE_PRICE:
                 {
-                    const auto newFee = std::min(MAX_ENTRANCE_FEE, gameState.Park.EntranceFee + 1.00_GBP);
+                    const auto newFee = std::min(kMaxEntranceFee, gameState.Park.EntranceFee + 1.00_GBP);
                     auto gameAction = ParkSetEntranceFeeAction(newFee);
                     GameActions::Execute(&gameAction);
                     break;
@@ -860,7 +859,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdatePrice()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_4);
+            InvalidateWidget(WIDX_TAB_4);
         }
 
         void OnPrepareDrawPrice()
@@ -923,20 +922,20 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Stats page
         void OnResizeStats()
         {
-            WindowSetResize(*this, 230, 119, 230, 119);
+            WindowSetResize(*this, { 230, 119 }, { 230, 119 });
         }
 
         void OnUpdateStats()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_5);
+            InvalidateWidget(WIDX_TAB_5);
 
             // Invalidate ride count if changed
             const auto rideCount = RideGetCount();
             if (_numberOfRides != rideCount)
             {
                 _numberOfRides = rideCount;
-                WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
+                InvalidateWidget(WIDX_PAGE_BACKGROUND);
             }
 
             // Invalidate number of staff if changed
@@ -944,7 +943,7 @@ namespace OpenRCT2::Ui::Windows
             if (_numberOfStaff != staffCount)
             {
                 _numberOfStaff = staffCount;
-                WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
+                InvalidateWidget(WIDX_PAGE_BACKGROUND);
             }
         }
 
@@ -1026,16 +1025,16 @@ namespace OpenRCT2::Ui::Windows
         {
 #ifndef NO_TTF
             if (gCurrentTTFFontSet != nullptr)
-                WindowSetResize(*this, 230, 270, 230, 270);
+                WindowSetResize(*this, { 230, 270 }, { 230, 270 });
             else
 #endif
-                WindowSetResize(*this, 230, 226, 230, 226);
+                WindowSetResize(*this, { 230, 226 }, { 230, 226 });
         }
 
         void OnUpdateObjective()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_6);
+            InvalidateWidget(WIDX_TAB_6);
         }
 
         void OnTextInputObjective(WidgetIndex widgetIndex, std::string_view text)
@@ -1059,7 +1058,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
                 }
 
-                money = std::clamp(money, 0.00_GBP, MAX_ENTRANCE_FEE);
+                money = std::clamp(money, 0.00_GBP, kMaxEntranceFee);
                 auto gameAction = ParkSetEntranceFeeAction(money);
                 GameActions::Execute(&gameAction);
             }
@@ -1113,7 +1112,7 @@ namespace OpenRCT2::Ui::Windows
             // Objective outcome
             if (gameState.ScenarioCompletedCompanyValue != kMoney64Undefined)
             {
-                if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                if (gameState.ScenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
                 {
                     // Objective failed
                     DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
@@ -1132,13 +1131,13 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Awards page
         void OnResizeAwards()
         {
-            WindowSetResize(*this, 230, 182, 230, 182);
+            WindowSetResize(*this, { 230, 182 }, { 230, 182 });
         }
 
         void OnUpdateAwards()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_7);
+            InvalidateWidget(WIDX_TAB_7);
         }
 
         void OnPrepareDrawAwards()
@@ -1183,6 +1182,10 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (newPage == WINDOW_PARK_PAGE_ENTRANCE && viewport != nullptr && !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
                 listen = true;
+
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
 
             page = newPage;
             frame_no = 0;

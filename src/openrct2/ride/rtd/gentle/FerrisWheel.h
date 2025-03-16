@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor FerrisWheelRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4C,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::ferrisWheel,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::ForwardRotation, RideMode::BackwardRotation),
-    .DefaultMode = RideMode::ForwardRotation,
+    .RideModes = EnumsToFlags(RideMode::forwardRotation, RideMode::backwardRotation),
+    .DefaultMode = RideMode::forwardRotation,
     .OperatingSettings = { 1, 3 },
     .Naming = { STR_RIDE_NAME_FERRIS_WHEEL, STR_RIDE_DESCRIPTION_FERRIS_WHEEL },
     .NameConvention = { RideComponentType::Wheel, RideComponentType::Structure, RideComponentType::Station },
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 112.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(0, 60), RIDE_RATING(0, 25), RIDE_RATING(0, 30) },
+        { MakeRideRating(0, 60), MakeRideRating(0, 25), MakeRideRating(0, 30) },
         16,
         0,
         false,

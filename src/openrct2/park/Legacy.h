@@ -22,6 +22,11 @@ namespace OpenRCT2
 
     enum class TrackElemType : uint16_t;
 
+    namespace RCT12
+    {
+        enum class ClimateType : uint8_t;
+    }
+
     namespace RCT2
     {
         struct FootpathMapping;
@@ -40,8 +45,10 @@ void UpdateFootpathsFromMapping(
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
     const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
 
-const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList);
+const std::vector<std::string_view>& GetLegacyPeepAnimationObjects();
 void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState);
+
+std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::ClimateType);
 
 /**
  * If new pieces get added to existing ride types, this could cause existing parks to change appearance,

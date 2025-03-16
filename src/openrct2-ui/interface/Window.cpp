@@ -20,17 +20,17 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
-#include <openrct2/localisation/Formatter.h>
-#include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
+
+class Formatter;
 
 namespace OpenRCT2
 {
@@ -112,7 +112,9 @@ namespace OpenRCT2
         }
 
         WidgetScrollUpdateThumbs(w, widgetIndex);
-        WidgetInvalidate(w, widgetIndex);
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateWidget(w, widgetIndex);
     }
 
     /**
@@ -147,7 +149,7 @@ namespace OpenRCT2
      */
     static void WindowViewportWheelInput(WindowBase& w, int32_t wheel)
     {
-        if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))
+        if (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::titleSequence)
             return;
 
         if (wheel < 0)
@@ -161,6 +163,9 @@ namespace OpenRCT2
         const auto& widgets = w.widgets;
 
         if (widgets[index].type != WindowWidgetType::Spinner && widgets[index].type != WindowWidgetType::ImgBtn)
+            return false;
+
+        if (static_cast<size_t>(index + 2) >= widgets.size())
             return false;
 
         if (widgets[index + 1].type != buttonType)
@@ -239,6 +244,8 @@ namespace OpenRCT2
             // Expected widget order: increase, decrease
             targetWidgetIndex += wheel < 0 ? 1 : 2;
         }
+
+        assert(targetWidgetIndex >= 0 && targetWidgetIndex < w.widgets.size());
 
         if (WidgetIsDisabled(w, targetWidgetIndex))
         {
@@ -361,7 +368,8 @@ namespace OpenRCT2
 
     void Window::InvalidateWidget(WidgetIndex widgetIndex)
     {
-        WidgetInvalidate(*this, widgetIndex);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateWidget(*this, widgetIndex);
     }
 
     bool Window::IsWidgetDisabled(WidgetIndex widgetIndex) const
@@ -413,11 +421,11 @@ namespace OpenRCT2
     {
         CloseWindowModifier modifier = GetCloseModifier();
 
-        if (modifier == CloseWindowModifier::Shift)
+        if (modifier == CloseWindowModifier::shift)
         {
             CloseOthers();
         }
-        else if (modifier == CloseWindowModifier::Control)
+        else if (modifier == CloseWindowModifier::control)
         {
             CloseOthersOfThisClass();
         }
@@ -442,14 +450,14 @@ namespace OpenRCT2
 
     CloseWindowModifier Window::GetCloseModifier()
     {
-        CloseWindowModifier lastModifier = CloseWindowModifier::None;
+        CloseWindowModifier lastModifier = CloseWindowModifier::none;
 
         if (gLastCloseModifier.window.number == number && gLastCloseModifier.window.classification == classification)
         {
             lastModifier = gLastCloseModifier.modifier;
         }
 
-        gLastCloseModifier.modifier = CloseWindowModifier::None;
+        gLastCloseModifier.modifier = CloseWindowModifier::none;
 
         return lastModifier;
     }
@@ -473,11 +481,11 @@ namespace OpenRCT2
         if (Config::Get().interface.WindowButtonsOnTheLeft)
         {
             widgets[2].left = 2;
-            widgets[2].right = 2 + kCloseButtonWidth;
+            widgets[2].right = 2 + kCloseButtonSize;
         }
         else
         {
-            widgets[2].left = width - 3 - kCloseButtonWidth;
+            widgets[2].left = width - 3 - kCloseButtonSize;
             widgets[2].right = width - 3;
         }
     }
@@ -527,12 +535,17 @@ namespace OpenRCT2
 
     void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id)
     {
+        assert(start_tab_id < w->widgets.size());
+        assert(end_tab_id < w->widgets.size());
+
         int32_t i, x = w->widgets[start_tab_id].left;
         int32_t tab_width = w->widgets[start_tab_id].width();
 
         for (i = start_tab_id; i <= end_tab_id; i++)
         {
             auto& widget = w->widgets[i];
+            assert(widget.type == WindowWidgetType::Tab);
+
             if (!WidgetIsDisabled(*w, i))
             {
                 widget.left = x;
@@ -551,7 +564,7 @@ namespace OpenRCT2
 
     ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     {
-        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonWidth + 2 : 0;
+        const uint8_t buttonOffset = (Config::Get().interface.WindowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
         return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
     }
 } // namespace OpenRCT2
@@ -620,7 +633,7 @@ namespace OpenRCT2::Ui::Windows
             _usingWidgetTextBox = false;
             if (w != nullptr)
             {
-                WidgetInvalidate(*w, _currentTextBox.widget_index);
+                windowMgr->InvalidateWidget(*w, _currentTextBox.widget_index);
             }
             _currentTextBox.widget_index = kWidgetIndexNull;
         }
@@ -640,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
             _textBoxFrameNo = 0;
             auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
-            WidgetInvalidate(*w, _currentTextBox.widget_index);
+            windowMgr->InvalidateWidget(*w, _currentTextBox.widget_index);
             w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
         }
     }
@@ -901,7 +914,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
     {
         auto originalPos = w.windowPos;
-        int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : kTopToolbarHeight + 2;
+        int32_t minY = gLegacyScene == LegacyScene::titleSequence ? 1 : kTopToolbarHeight + 2;
 
         newWindowCoords.y = std::clamp(newWindowCoords.y, minY, ContextGetHeight() - 34);
 
@@ -989,16 +1002,18 @@ namespace OpenRCT2::Ui::Windows
         });
     }
 
-    void WindowSetResize(WindowBase& w, int16_t minWidth, int16_t minHeight, int16_t maxWidth, int16_t maxHeight)
+    bool WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize)
     {
-        w.min_width = minWidth;
-        w.min_height = minHeight;
-        w.max_width = maxWidth;
-        w.max_height = maxHeight;
+        w.min_width = minSize.width;
+        w.min_height = minSize.height;
+        w.max_width = maxSize.width;
+        w.max_height = maxSize.height;
 
         // Clamp width and height to minimum and maximum
-        int16_t width = std::clamp<int16_t>(w.width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
-        int16_t height = std::clamp<int16_t>(w.height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
+        int16_t width = std::clamp<int16_t>(
+            w.width, std::min(minSize.width, maxSize.width), std::max(minSize.width, maxSize.width));
+        int16_t height = std::clamp<int16_t>(
+            w.height, std::min(minSize.height, maxSize.height), std::max(minSize.height, maxSize.height));
 
         // Resize window if size has changed
         if (w.width != width || w.height != height)
@@ -1007,7 +1022,10 @@ namespace OpenRCT2::Ui::Windows
             w.width = width;
             w.height = height;
             w.Invalidate();
+            return true;
         }
+
+        return false;
     }
 
     bool WindowCanResize(const WindowBase& w)
@@ -1103,13 +1121,13 @@ namespace OpenRCT2::Ui::Windows
         if (mainWindow == nullptr)
             return;
 
-        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        if (gLegacyScene == LegacyScene::titleSequence)
             return;
 
-        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor)
             return;
 
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+        if (gLegacyScene == LegacyScene::trackDesignsManager)
             return;
 
         if (zoomIn)

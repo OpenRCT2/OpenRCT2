@@ -13,10 +13,10 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../Input.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../profiling/Profiling.h"
-#include "../sprites.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/TileElementsView.h"
@@ -264,7 +264,7 @@ static void VirtualFloorGetTileProperties(
             {
                 *outBelowGround = true;
             }
-            else if (height < (tileElement->GetBaseZ() + LAND_HEIGHT_STEP) && tileElement->AsSurface()->GetSlope() != 0)
+            else if (height < (tileElement->GetBaseZ() + kLandHeightStep) && tileElement->AsSurface()->GetSlope() != 0)
             {
                 *outBelowGround = true;
                 *outOccupied = true;

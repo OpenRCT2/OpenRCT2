@@ -23,7 +23,7 @@ private:
     AudioSampleTable _loadedSampleTable;
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::Audio;
+    static constexpr ObjectType kObjectType = ObjectType::audio;
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;

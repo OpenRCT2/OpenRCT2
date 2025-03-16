@@ -197,7 +197,7 @@ namespace OpenRCT2::RCT2
                 sceneryElement.flags = t6SceneryElement.Flags;
                 sceneryElement.primaryColour = t6SceneryElement.PrimaryColour;
                 sceneryElement.secondaryColour = t6SceneryElement.SecondaryColour;
-                if (t6SceneryElement.SceneryObject.GetType() == ObjectType::Walls)
+                if (t6SceneryElement.SceneryObject.GetType() == ObjectType::walls)
                     sceneryElement.tertiaryColour = t6SceneryElement.getTertiaryWallColour();
 
                 td->sceneryElements.push_back(std::move(sceneryElement));

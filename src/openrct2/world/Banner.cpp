@@ -15,11 +15,10 @@
 #include "../GameState.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../management/Finance.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/BannerSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/WallSceneryEntry.h"
@@ -75,7 +74,7 @@ void Banner::FormatTextTo(Formatter& ft) const
         auto ride = GetRide(ride_index);
         if (ride != nullptr)
         {
-            ride->FormatNameTo(ft);
+            ride->formatNameTo(ft);
         }
         else
         {
@@ -109,7 +108,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
 
         RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto ride = GetRide(rideIndex);
-        if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+        if (ride == nullptr || ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
             continue;
 
         if ((tileElement->GetClearanceZ()) + (4 * kCoordsZStep) <= bannerCoords.z)
@@ -230,10 +229,10 @@ RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
     auto resultDistance = std::numeric_limits<int32_t>::max();
     for (auto& ride : GetRideManager())
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
             continue;
 
-        auto rideCoords = ride.overall_view;
+        auto rideCoords = ride.overallView;
         if (rideCoords.IsNull())
             continue;
 

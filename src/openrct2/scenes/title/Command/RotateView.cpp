@@ -10,7 +10,6 @@
 #include "RotateView.h"
 
 #include "../../../interface/Viewport.h"
-#include "../../../interface/Window.h"
 
 namespace OpenRCT2::Title
 {

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor CorkscrewRollerCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::corkscrewRollerCoaster,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor CorkscrewRollerCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch, RideMode::ReverseInclineLaunchedShuttle),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch, RideMode::reverseInclineLaunchedShuttle),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },
@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor CorkscrewRollerCoasterRTD =
     .UpkeepCosts = { 40, 20, 80, 11, 3, 10 },
     .BuildCosts = { 52.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -59,13 +59,13 @@ constexpr RideTypeDescriptor CorkscrewRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 00), RIDE_RATING(0, 50), RIDE_RATING(0, 20) },
+        { MakeRideRating(3, 00), MakeRideRating(0, 50), MakeRideRating(0, 20) },
         16,
         -1,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -79,7 +79,7 @@ constexpr RideTypeDescriptor CorkscrewRollerCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 40), 2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 49648 },
         },

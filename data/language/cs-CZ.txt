@@ -1923,9 +1923,6 @@ STR_2706    :nikdy
 STR_2707    :Použít systémového průzkumníka souborů
 STR_2708    :{WINDOW_COLOUR_1}Opravdu chcete přepsat {STRINGID}?
 STR_2709    :Přepsat
-STR_2710    :Napište název souboru.
-STR_2718    :(up)
-STR_2719    :(new file)
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}min:{UINT16}s
@@ -2263,10 +2260,6 @@ STR_3252    :Nelze zvýšit maximální půjčku!
 STR_3253    :Nelze snížit maximální půjčku!
 STR_3254    :Nelze zvýšit úrok půjčky!
 STR_3255    :Nelze snížit úrok půjčky!
-STR_3256    :Návštěvníci preferují mírnější atrakce
-STR_3257    :Vyberte, zda návštěvníci mají obecně preferovat jen mírnější atrakce
-STR_3258    :Návštěvníci preferují divočejší atrakce
-STR_3259    :Vyberte, zda návštěvníci mají obecně preferovat jen divočejší atrakce
 STR_3260    :{WINDOW_COLOUR_2}Průměrná hotovost návštěvníků:
 STR_3261    :{WINDOW_COLOUR_2}Počáteční nálada návštěvníků:
 STR_3262    :{WINDOW_COLOUR_2}Počáteční hlad návštěvníků:
@@ -3002,7 +2995,6 @@ STR_5887    :Předpona
 STR_5888    :Přípona
 STR_5889    :Značka vlastní měny
 STR_5890    :Zadejte symbol měny
-STR_5891    :Výchozí
 STR_5892    :Přejít do výchozí složky
 STR_5893    :Kurz měny
 STR_5894    :Zadejte kurz měny

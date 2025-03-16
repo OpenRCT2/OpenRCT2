@@ -26,7 +26,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/park/ParkFile.h>
 #include <openrct2/platform/Platform.h>

@@ -7,13 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../core/Numerics.hpp"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
@@ -72,7 +72,7 @@ static void MazePaintSetup(
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
 
     int32_t baseImageId = 0;
-    switch (ride.track_colour[0].supports)
+    switch (ride.trackColours[0].supports)
     {
         case 0:
             baseImageId = SprMazeBaseBrick;

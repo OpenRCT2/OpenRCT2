@@ -39,7 +39,7 @@ protected:
         GameLoadInit();
 
         // Changed in some tests. Store to restore its value
-        _gScreenFlags = gScreenFlags;
+        _gLegacyScene = gLegacyScene;
         SUCCEED();
     }
 
@@ -48,16 +48,16 @@ protected:
         if (_context)
             _context.reset();
 
-        gScreenFlags = _gScreenFlags;
+        gLegacyScene = _gLegacyScene;
     }
 
 private:
     static std::shared_ptr<IContext> _context;
-    static uint8_t _gScreenFlags;
+    static LegacyScene _gLegacyScene;
 };
 
 std::shared_ptr<IContext> TileElementWantsFootpathConnection::_context;
-uint8_t TileElementWantsFootpathConnection::_gScreenFlags;
+LegacyScene TileElementWantsFootpathConnection::_gLegacyScene;
 
 TEST_F(TileElementWantsFootpathConnection, FlatPath)
 {
@@ -157,8 +157,7 @@ TEST_F(TileElementWantsFootpathConnection, MapEdge)
     // This tile is a single, unconnected footpath on the map edge - on load, GetEdges() returns 0
     auto* pathElement = MapGetFootpathElement(TileCoordsXYZ{ 1, 4, 14 }.ToCoordsXYZ());
 
-    // Enable flag to simulate enabling the scenario editor
-    gScreenFlags |= SCREEN_FLAGS_SCENARIO_EDITOR;
+    gLegacyScene = LegacyScene::scenarioEditor;
 
     // Calculate the connected edges and set the appropriate edge flags
     // FIXME: The footpath functions should only take PathElement and not TileElement.

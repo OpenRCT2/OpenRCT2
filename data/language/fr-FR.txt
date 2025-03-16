@@ -1931,9 +1931,6 @@ STR_2706    :Jamais
 STR_2707    :Explorateur de fichiers système
 STR_2708    :{WINDOW_COLOUR_1}Voulez-vous vraiment écraser {STRINGID} ?
 STR_2709    :Écraser
-STR_2710    :Entrez le nom du fichier.
-STR_2718    :Dossier parent
-STR_2719    :Nv. fichier
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}m {UINT16}s
@@ -2176,7 +2173,6 @@ STR_3136    :Attention : cette construction sera fabriquée avec un autre type 
 STR_3137    :Choisir décor proche
 STR_3138    :Recomm. sélection
 STR_3139    :Impossible d’appliquer une remontée à chaîne dans ce mode de fonctionnement
-STR_3140    :La remontée à chaîne doit commencer immédiatement à la sortie de la station
 STR_3141    :La remontée à chaîne n’est pas compatible avec une attraction multi-parcours
 STR_3142    :{WINDOW_COLOUR_2}Capacité : {BLACK}{STRINGID}
 STR_3143    :Voir les personnes sur la carte
@@ -2208,7 +2204,7 @@ STR_3188    :Panneaux de direction
 STR_3189    :Allées classiques
 STR_3190    :Suppléments allées
 STR_3191    :Groupes de décor
-STR_3192    :Entrée du parc
+STR_3192    :Entrées du parc
 STR_3193    :Etendue d’eau
 STR_3195    :Liste d’inventions
 STR_3196    :{WINDOW_COLOUR_2}Groupe de recherche : {BLACK}{STRINGID}
@@ -2271,10 +2267,6 @@ STR_3252    :Impossible d’augmenter davantage l’emprunt maximum !
 STR_3253    :Impossible de diminuer davantage l’emprunt maximum !
 STR_3254    :Impossible d’augmenter davantage le taux d’intérêt !
 STR_3255    :Impossible de diminuer davantage le taux d’intérêt !
-STR_3256    :Attr. moins dures pour visiteurs
-STR_3257    :Les visiteurs préfèrent des attractions moins intenses
-STR_3258    :Attr. plus dures pour visiteurs
-STR_3259    :Les visiteurs préfèrent des attractions plus intenses
 STR_3260    :{WINDOW_COLOUR_2}Argent par visiteur (en moyenne) :
 STR_3261    :{WINDOW_COLOUR_2}Bonheur initial :
 STR_3262    :{WINDOW_COLOUR_2}Faim initiale :
@@ -2615,7 +2607,7 @@ STR_5368    :Réinit. accidents
 STR_5371    :Sélection d’objets
 STR_5372    :Inverser le déplacement du clic droit
 STR_5373    :Nom {STRINGID}
-STR_5374    :Date {STRINGID}
+STR_5374    :Date de modification {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Le nom existe déjà
@@ -3014,7 +3006,6 @@ STR_5887    :Préfixe
 STR_5888    :Suffixe
 STR_5889    :Symbole monétaire personnalisé
 STR_5890    :Entrez le symbole monétaire à utiliser
-STR_5891    :Par défaut
 STR_5892    :Aller au répertoire de sauvegarde par défaut
 STR_5893    :Taux de change
 STR_5894    :Entrez le taux de change
@@ -3227,7 +3218,7 @@ STR_6102    :La valeur d’une attraction ne se dégradera pas au fil du temps, 
 STR_6103    :Cette option est désactivée dans les parties multijoueurs.
 STR_6105    :Hyper montagnes russes
 STR_6107    :Camions monstrueux
-STR_6109    :Hyper-tornades
+STR_6109    :Montagnes russes hyper-tornade
 STR_6111    :Mini-montagnes russes classiques
 STR_6113    :Une grande montagne russe sans inversions avec de grandes descentes, une forte vitesse, et des trains confortables avec une simple ceinture
 STR_6115    :Des camions 4 x 4 géants qui peuvent grimper de pentes fortes
@@ -3781,3 +3772,36 @@ STR_6707    :(aucun sélectionné)
 STR_6708    :Puissance du lissage
 STR_6709    :Entrez une puissance du lissage comprise entre {COMMA16} et {COMMA16}
 STR_6710    :Tri stable
+STR_6711    :Nom de fichier :
+STR_6712    :Enregistrer
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Nom de fichier
+STR_6715    :Date de modification
+STR_6716    :Taille
+STR_6717    :Taille {STRINGID}
+STR_6718    :Animations de personnel
+STR_6719    :Au moins un objet d’animations de personnel doit être sélectionné
+STR_6720    :Au moins un objet d’animations d’agent d’entretien doit être sélectionné
+STR_6721    :Au moins un objet d’animations de mécanicien doit être sélectionné
+STR_6722    :Au moins un objet d’animations d’agent de sécurité doit être sélectionné
+STR_6723    :Au moins un objet d’animations d’animateur doit être sélectionné
+STR_6724    :Textes de scénario
+STR_6725    :X :
+STR_6726    :Y :
+STR_6727    :Boucle plongeante (gauche)
+STR_6728    :Boucle plongeante (droite)
+STR_6729    :La remontée à chaîne doit commencer immédiatement à la sortie de la station ou des freins de bloc
+STR_6730    :Exporter les données emscripten
+STR_6731    :Importer les données emscripten
+STR_6732    :Afficher un bouton dans la barre d’outils pour tourner la vue dans le sens inverse des aiguilles d’une montre
+
+STR_6733    :Translucide
+STR_6734    :Rend translucides les éléments de carte à la hauteur de coupe ou au-dessus
+STR_6735    :Aller au dossier parent
+STR_6736    :Aperçu
+STR_6737    :Pas d’aperçu disponible
+STR_6738    :{WINDOW_COLOUR_2}Évaluation : {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Date : {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Argent : {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Attractions : {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Visiteurs : {BLACK}{UINT16}

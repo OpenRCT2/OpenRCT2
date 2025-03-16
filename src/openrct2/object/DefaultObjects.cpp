@@ -153,6 +153,9 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.peep_animations.handyman",
     "rct2.peep_animations.mechanic",
     "rct2.peep_animations.security",
+
+    // Climate object
+    "rct2.climate.warm",
 };
 
 const std::string_view DesignerSelectedObjects[] = {

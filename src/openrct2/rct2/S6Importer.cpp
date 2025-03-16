@@ -38,13 +38,12 @@
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"
@@ -53,6 +52,7 @@
 #include "../object/ScenarioTextObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../park/Legacy.h"
+#include "../park/ParkPreview.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
@@ -68,7 +68,6 @@
 #include "../ride/Track.h"
 #include "../ride/TrainManager.h"
 #include "../ride/Vehicle.h"
-#include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "../world/Climate.h"
@@ -244,7 +243,7 @@ namespace OpenRCT2::RCT2
             stream.Read(&_s6.EntityListsHead, postEntitiesSize);
         }
 
-        bool GetDetails(ScenarioIndexEntry* dst) override
+        bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
         {
             *dst = {};
 
@@ -258,18 +257,17 @@ namespace OpenRCT2::RCT2
             if (String::isNullOrEmpty(_s6.Info.Name))
             {
                 // If the scenario doesn't have a name, set it to the filename
-                String::set(dst->Name, sizeof(dst->Name), Path::GetFileNameWithoutExtension(dst->Path).c_str());
+                dst->Name = Path::GetFileNameWithoutExtension(dst->Path);
             }
             else
             {
                 // Normalise the name to make the scenario as recognisable as possible.
-                auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
-                String::set(dst->Name, sizeof(dst->Name), normalisedName.c_str());
+                dst->Name = ScenarioSources::NormaliseName(_s6.Info.Name);
             }
 
             // Look up and store information regarding the origins of this scenario.
             SourceDescriptor desc;
-            if (ScenarioSources::TryGetByName(dst->Name, &desc))
+            if (ScenarioSources::TryGetByName(dst->Name.c_str(), &desc))
             {
                 dst->ScenarioId = desc.id;
                 dst->SourceIndex = desc.index;
@@ -291,8 +289,8 @@ namespace OpenRCT2::RCT2
             }
 
             // dst->name will be translated later so keep the untranslated name here
-            String::set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
-            String::set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
+            dst->InternalName = dst->Name;
+            dst->Details = _s6.Info.Details;
 
             if (!desc.textObjectId.empty())
             {
@@ -302,22 +300,24 @@ namespace OpenRCT2::RCT2
                 std::lock_guard lock(mtx);
 
                 // Unload loaded scenario text object, if any.
-                if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                if (auto* obj = objManager.GetLoadedObject(ObjectType::scenarioText, 0); obj != nullptr)
                     objManager.UnloadObjects({ obj->GetDescriptor() });
 
                 // Load the one specified
                 if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                 {
                     auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                    auto name = textObject->GetScenarioName();
-                    auto details = textObject->GetScenarioDetails();
-
-                    String::set(dst->Name, sizeof(dst->Name), name.c_str());
-                    String::set(dst->Details, sizeof(dst->Details), details.c_str());
+                    dst->Name = textObject->GetScenarioName();
+                    dst->Details = textObject->GetScenarioDetails();
                 }
             }
 
             return true;
+        }
+
+        ParkPreview GetParkPreview() override
+        {
+            return {};
         }
 
         void Import(GameState_t& gameState) override
@@ -552,21 +552,25 @@ namespace OpenRCT2::RCT2
             // unk_13CA73E
             // Pad13CA73F
             // unk_13CA740
-            gameState.Climate = ClimateType{ _s6.Climate };
+            // gameState.Climate = ClimateType{ _s6.Climate };
             // Pad13CA741;
             // Byte13CA742
             // Pad013CA747
-            gameState.ClimateUpdateTimer = _s6.ClimateUpdateTimer;
-            gameState.ClimateCurrent.Weather = WeatherType{ _s6.CurrentWeather };
-            gameState.ClimateNext.Weather = WeatherType{ _s6.NextWeather };
-            gameState.ClimateCurrent.Temperature = _s6.Temperature;
-            gameState.ClimateNext.Temperature = _s6.NextTemperature;
-            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect };
-            gameState.ClimateNext.WeatherEffect = WeatherEffectType{ _s6.NextWeatherEffect };
-            gameState.ClimateCurrent.WeatherGloom = _s6.CurrentWeatherGloom;
-            gameState.ClimateNext.WeatherGloom = _s6.NextWeatherGloom;
-            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel);
-            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s6.NextWeatherLevel);
+            gameState.WeatherUpdateTimer = _s6.WeatherUpdateTimer;
+            gameState.WeatherCurrent = {
+                .weatherType = WeatherType{ _s6.CurrentWeather },
+                .temperature = static_cast<int8_t>(_s6.Temperature),
+                .weatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect },
+                .weatherGloom = _s6.CurrentWeatherGloom,
+                .level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel),
+            };
+            gameState.WeatherNext = {
+                .weatherType = WeatherType{ _s6.NextWeather },
+                .temperature = static_cast<int8_t>(_s6.NextTemperature),
+                .weatherEffect = WeatherEffectType{ _s6.NextWeatherEffect },
+                .weatherGloom = _s6.NextWeatherGloom,
+                .level = static_cast<WeatherLevel>(_s6.NextWeatherLevel),
+            };
 
             // News items
             News::InitQueue();
@@ -640,7 +644,7 @@ namespace OpenRCT2::RCT2
             for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
-                if (src->Type != RIDE_TYPE_NULL)
+                if (src->type != kRideTypeNull)
                 {
                     const auto rideId = RideId::FromUnderlying(index);
                     auto dst = RideAllocateAtIndex(rideId);
@@ -666,13 +670,13 @@ namespace OpenRCT2::RCT2
             for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
-                if (src->Type == RIDE_TYPE_NULL)
+                if (src->type == kRideTypeNull)
                     continue;
 
-                auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->Subtype);
+                auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
                 auto* rideEntry = GetRideEntryByIndex(subtype);
                 // If the ride is tracked, we don’t need to check the vehicle any more.
-                if (!GetRideTypeDescriptor(src->Type).HasFlag(RtdFlag::isFlatRide))
+                if (!GetRideTypeDescriptor(src->type).HasFlag(RtdFlag::isFlatRide))
                 {
                     _isFlatRide[index] = false;
                     continue;
@@ -680,7 +684,7 @@ namespace OpenRCT2::RCT2
 
                 // We have established the ride type is a flat ride, which means the vehicle now determines whether it is a
                 // true flat ride (scenario 4) or a tracked ride with an invisibility hack (scenario 2).
-                ObjectEntryIndex originalRideType = src->Type;
+                ObjectEntryIndex originalRideType = src->type;
                 if (rideEntry != nullptr)
                 {
                     originalRideType = rideEntry->GetFirstNonNullRideType();
@@ -702,14 +706,14 @@ namespace OpenRCT2::RCT2
             *dst = {};
             dst->id = rideIndex;
 
-            auto rideType = src->Type;
-            auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->Subtype);
-            if (RCT2RideTypeNeedsConversion(src->Type))
+            auto rideType = src->type;
+            auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
+            if (RCT2RideTypeNeedsConversion(src->type))
             {
                 auto* rideEntry = GetRideEntryByIndex(subtype);
                 if (rideEntry != nullptr)
                 {
-                    rideType = RCT2RideTypeToOpenRCT2RideType(src->Type, *rideEntry);
+                    rideType = RCT2RideTypeToOpenRCT2RideType(src->type, *rideEntry);
                 }
             }
 
@@ -721,82 +725,82 @@ namespace OpenRCT2::RCT2
             dst->type = rideType;
             dst->subtype = subtype;
             // Pad002;
-            dst->mode = static_cast<RideMode>(src->Mode);
+            dst->mode = static_cast<RideMode>(src->mode);
             dst->vehicleColourSettings = src->vehicleColourSettings;
 
             for (uint8_t i = 0; i < Limits::kMaxVehicleColours; i++)
             {
-                dst->vehicle_colours[i].Body = src->VehicleColours[i].BodyColour;
-                dst->vehicle_colours[i].Trim = src->VehicleColours[i].TrimColour;
+                dst->vehicleColours[i].Body = src->vehicleColours[i].BodyColour;
+                dst->vehicleColours[i].Trim = src->vehicleColours[i].TrimColour;
             }
 
             // Pad046;
-            dst->status = static_cast<RideStatus>(src->Status);
+            dst->status = static_cast<RideStatus>(src->status);
 
-            dst->default_name_number = src->NameArgumentsNumber;
-            if (IsUserStringID(src->Name))
+            dst->defaultNameNumber = src->nameArgumentsNumber;
+            if (IsUserStringID(src->name))
             {
-                dst->custom_name = GetUserString(src->Name);
+                dst->customName = GetUserString(src->name);
             }
             else
             {
-                dst->default_name_number = src->NameArgumentsNumber;
+                dst->defaultNameNumber = src->nameArgumentsNumber;
             }
 
-            if (src->OverallView.IsNull())
+            if (src->overallView.IsNull())
             {
-                dst->overall_view.SetNull();
+                dst->overallView.SetNull();
             }
             else
             {
-                auto tileLoc = TileCoordsXY(src->OverallView.x, src->OverallView.y);
-                dst->overall_view = tileLoc.ToCoordsXY();
+                auto tileLoc = TileCoordsXY(src->overallView.x, src->overallView.y);
+                dst->overallView = tileLoc.ToCoordsXY();
             }
 
             for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
             {
                 StationIndex stationIndex = StationIndex::FromUnderlying(i);
-                auto& destStation = dst->GetStation(stationIndex);
+                auto& destStation = dst->getStation(stationIndex);
 
-                if (src->StationStarts[i].IsNull())
+                if (src->stationStarts[i].IsNull())
                 {
                     destStation.Start.SetNull();
                 }
                 else
                 {
-                    auto tileStartLoc = TileCoordsXY(src->StationStarts[i].x, src->StationStarts[i].y);
+                    auto tileStartLoc = TileCoordsXY(src->stationStarts[i].x, src->stationStarts[i].y);
                     destStation.Start = tileStartLoc.ToCoordsXY();
                 }
-                destStation.Height = src->StationHeights[i];
-                destStation.Length = src->StationLength[i];
-                destStation.Depart = src->StationDepart[i];
-                destStation.TrainAtStation = src->TrainAtStation[i];
+                destStation.Height = src->stationHeights[i];
+                destStation.Length = src->stationLength[i];
+                destStation.Depart = src->stationDepart[i];
+                destStation.TrainAtStation = src->trainAtStation[i];
                 // Direction is fixed later.
 
-                if (src->Entrances[i].IsNull())
+                if (src->entrances[i].IsNull())
                     destStation.Entrance.SetNull();
                 else
-                    destStation.Entrance = { src->Entrances[i].x, src->Entrances[i].y, src->StationHeights[i], 0 };
+                    destStation.Entrance = { src->entrances[i].x, src->entrances[i].y, src->stationHeights[i], 0 };
 
-                if (src->Exits[i].IsNull())
+                if (src->exits[i].IsNull())
                     destStation.Exit.SetNull();
                 else
-                    destStation.Exit = { src->Exits[i].x, src->Exits[i].y, src->StationHeights[i], 0 };
+                    destStation.Exit = { src->exits[i].x, src->exits[i].y, src->stationHeights[i], 0 };
 
-                destStation.LastPeepInQueue = EntityId::FromUnderlying(src->LastPeepInQueue[i]);
+                destStation.LastPeepInQueue = EntityId::FromUnderlying(src->lastPeepInQueue[i]);
 
-                destStation.SegmentLength = src->Length[i];
-                destStation.SegmentTime = src->Time[i];
+                destStation.SegmentLength = src->length[i];
+                destStation.SegmentTime = src->time[i];
 
-                destStation.QueueTime = src->QueueTime[i];
+                destStation.QueueTime = src->queueTime[i];
 
-                destStation.QueueLength = src->QueueLength[i];
+                destStation.QueueLength = src->queueLength[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
             for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             {
                 StationIndex stationIndex = StationIndex::FromUnderlying(i);
-                auto& destStation = dst->GetStation(stationIndex);
+                auto& destStation = dst->getStation(stationIndex);
 
                 destStation.Start.SetNull();
                 destStation.TrainAtStation = RideStation::kNoTrain;
@@ -807,204 +811,204 @@ namespace OpenRCT2::RCT2
 
             for (int32_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
-                dst->vehicles[i] = EntityId::FromUnderlying(src->Vehicles[i]);
+                dst->vehicles[i] = EntityId::FromUnderlying(src->vehicles[i]);
             }
             for (int32_t i = Limits::kMaxTrainsPerRide - 1; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = EntityId::GetNull();
             }
 
-            dst->depart_flags = src->DepartFlags;
+            dst->departFlags = src->departFlags;
 
-            dst->num_stations = src->NumStations;
-            dst->NumTrains = src->NumTrains;
-            dst->num_cars_per_train = src->NumCarsPerTrain;
-            dst->ProposedNumTrains = src->ProposedNumTrains;
-            dst->proposed_num_cars_per_train = src->ProposedNumCarsPerTrain;
-            dst->max_trains = src->MaxTrains;
-            dst->MinCarsPerTrain = src->GetMinCarsPerTrain();
-            dst->MaxCarsPerTrain = src->GetMaxCarsPerTrain();
-            dst->min_waiting_time = src->MinWaitingTime;
-            dst->max_waiting_time = src->MaxWaitingTime;
+            dst->numStations = src->numStations;
+            dst->numTrains = src->numTrains;
+            dst->numCarsPerTrain = src->numCarsPerTrain;
+            dst->proposedNumTrains = src->proposedNumTrains;
+            dst->proposedNumCarsPerTrain = src->proposedNumCarsPerTrain;
+            dst->maxTrains = src->maxTrains;
+            dst->minCarsPerTrain = src->getMinCarsPerTrain();
+            dst->maxCarsPerTrain = src->getMaxCarsPerTrain();
+            dst->minWaitingTime = src->minWaitingTime;
+            dst->maxWaitingTime = src->maxWaitingTime;
 
-            // Includes time_limit, NumLaps, launch_speed, speed, rotations
-            dst->operation_option = src->OperationOption;
+            // Includes timeLimit, NumLaps, launchSpeed, speed, rotations
+            dst->operationOption = src->operationOption;
 
-            dst->boat_hire_return_direction = src->BoatHireReturnDirection;
-            dst->boat_hire_return_position = { src->BoatHireReturnPosition.x, src->BoatHireReturnPosition.y };
+            dst->boatHireReturnDirection = src->boatHireReturnDirection;
+            dst->boatHireReturnPosition = { src->boatHireReturnPosition.x, src->boatHireReturnPosition.y };
 
-            dst->special_track_elements = src->SpecialTrackElements;
+            dst->specialTrackElements = src->specialTrackElements;
             // Pad0D6[2];
 
-            dst->max_speed = src->MaxSpeed;
-            dst->average_speed = src->AverageSpeed;
-            dst->current_test_segment = src->CurrentTestSegment;
-            dst->average_speed_test_timeout = src->AverageSpeedTestTimeout;
+            dst->maxSpeed = src->maxSpeed;
+            dst->averageSpeed = src->averageSpeed;
+            dst->currentTestSegment = src->currentTestSegment;
+            dst->averageSpeedTestTimeout = src->averageSpeedTestTimeout;
             // Pad0E2[0x2];
 
-            dst->max_positive_vertical_g = src->MaxPositiveVerticalG;
-            dst->max_negative_vertical_g = src->MaxNegativeVerticalG;
-            dst->max_lateral_g = src->MaxLateralG;
-            dst->previous_vertical_g = src->PreviousVerticalG;
-            dst->previous_lateral_g = src->PreviousLateralG;
+            dst->maxPositiveVerticalG = src->maxPositiveVerticalG;
+            dst->maxNegativeVerticalG = src->maxNegativeVerticalG;
+            dst->maxLateralG = src->maxLateralG;
+            dst->previousVerticalG = src->previousVerticalG;
+            dst->previousLateralG = src->previousLateralG;
             // Pad106[0x2];
-            dst->testing_flags = src->TestingFlags;
+            dst->testingFlags = src->testingFlags;
 
-            if (src->CurTestTrackLocation.IsNull())
+            if (src->curTestTrackLocation.IsNull())
             {
-                dst->CurTestTrackLocation.SetNull();
+                dst->curTestTrackLocation.SetNull();
             }
             else
             {
-                dst->CurTestTrackLocation = { src->CurTestTrackLocation.x, src->CurTestTrackLocation.y, src->CurTestTrackZ };
+                dst->curTestTrackLocation = { src->curTestTrackLocation.x, src->curTestTrackLocation.y, src->curTestTrackZ };
             }
 
-            dst->turn_count_default = src->TurnCountDefault;
-            dst->turn_count_banked = src->TurnCountBanked;
-            dst->turn_count_sloped = src->TurnCountSloped;
-            if (src->Type == RIDE_TYPE_MINI_GOLF)
-                dst->holes = src->Inversions & kRCT12InversionAndHoleMask;
+            dst->turnCountDefault = src->turnCountDefault;
+            dst->turnCountBanked = src->turnCountBanked;
+            dst->turnCountSloped = src->turnCountSloped;
+            if (src->type == RIDE_TYPE_MINI_GOLF)
+                dst->holes = src->inversions & kRCT12InversionAndHoleMask;
             else
-                dst->inversions = src->Inversions & kRCT12InversionAndHoleMask;
-            dst->sheltered_eighths = src->Inversions >> 5;
-            dst->dropsPoweredLifts = src->Drops;
-            dst->start_drop_height = src->StartDropHeight;
-            dst->highest_drop_height = src->HighestDropHeight;
-            dst->sheltered_length = src->ShelteredLength;
-            dst->var_11C = src->Var11C;
-            dst->num_sheltered_sections = src->NumShelteredSections;
+                dst->inversions = src->inversions & kRCT12InversionAndHoleMask;
+            dst->shelteredEighths = src->inversions >> 5;
+            dst->dropsPoweredLifts = src->drops;
+            dst->startDropHeight = src->startDropHeight;
+            dst->highestDropHeight = src->highestDropHeight;
+            dst->shelteredLength = src->shelteredLength;
+            dst->var11C = src->var11C;
+            dst->numShelteredSections = src->numShelteredSections;
 
-            dst->cur_num_customers = src->CurNumCustomers;
-            dst->num_customers_timeout = src->NumCustomersTimeout;
+            dst->curNumCustomers = src->curNumCustomers;
+            dst->numCustomersTimeout = src->numCustomersTimeout;
 
             for (uint8_t i = 0; i < Limits::kCustomerHistorySize; i++)
             {
-                dst->num_customers[i] = src->NumCustomers[i];
+                dst->numCustomers[i] = src->numCustomers[i];
             }
 
-            dst->price[0] = src->Price;
+            dst->price[0] = src->price;
 
             for (uint8_t i = 0; i < 2; i++)
             {
-                dst->ChairliftBullwheelLocation[i] = { src->ChairliftBullwheelLocation[i].x,
-                                                       src->ChairliftBullwheelLocation[i].y, src->ChairliftBullwheelZ[i] };
+                dst->chairliftBullwheelLocation[i] = { src->chairliftBullwheelLocation[i].x,
+                                                       src->chairliftBullwheelLocation[i].y, src->chairliftBullwheelZ[i] };
             }
 
             dst->ratings = src->ratings;
-            dst->value = ToMoney64(src->Value);
+            dst->value = ToMoney64(src->value);
 
-            dst->chairlift_bullwheel_rotation = src->ChairliftBullwheelRotation;
+            dst->chairliftBullwheelRotation = src->chairliftBullwheelRotation;
 
-            dst->satisfaction = src->Satisfaction;
-            dst->satisfaction_time_out = src->SatisfactionTimeOut;
-            dst->satisfaction_next = src->SatisfactionNext;
+            dst->satisfaction = src->satisfaction;
+            dst->satisfactionTimeout = src->satisfactionTimeOut;
+            dst->satisfactionNext = src->satisfactionNext;
 
-            dst->window_invalidate_flags = src->WindowInvalidateFlags;
+            dst->windowInvalidateFlags = src->windowInvalidateFlags;
             // Pad14E[0x02];
 
-            dst->total_customers = src->TotalCustomers;
-            dst->total_profit = ToMoney64(src->TotalProfit);
-            dst->popularity = src->Popularity;
-            dst->popularity_time_out = src->PopularityTimeOut;
-            dst->popularity_next = src->PopularityNext;
+            dst->totalCustomers = src->totalCustomers;
+            dst->totalProfit = ToMoney64(src->totalProfit);
+            dst->popularity = src->popularity;
+            dst->popularityTimeout = src->popularityTimeOut;
+            dst->popularityNext = src->popularityNext;
 
             ImportNumRiders(dst, rideIndex);
 
-            dst->music_tune_id = src->MusicTuneId;
-            dst->slide_in_use = src->SlideInUse;
-            // Includes maze_tiles
-            dst->slide_peep = EntityId::FromUnderlying(src->SlidePeep);
+            dst->musicTuneId = src->musicTuneId;
+            dst->slideInUse = src->slideInUse;
+            // Includes mazeTiles
+            dst->slidePeep = EntityId::FromUnderlying(src->slidePeep);
             // Pad160[0xE];
-            dst->slide_peep_t_shirt_colour = src->SlidePeepTShirtColour;
+            dst->slidePeepTShirtColour = src->slidePeepTShirtColour;
             // Pad16F[0x7];
-            dst->spiral_slide_progress = src->SpiralSlideProgress;
+            dst->spiralSlideProgress = src->spiralSlideProgress;
             // Pad177[0x9];
-            dst->build_date = static_cast<int32_t>(src->BuildDate);
-            dst->upkeep_cost = ToMoney64(src->UpkeepCost);
-            dst->race_winner = EntityId::FromUnderlying(src->RaceWinner);
+            dst->buildDate = static_cast<int32_t>(src->buildDate);
+            dst->upkeepCost = ToMoney64(src->upkeepCost);
+            dst->raceWinner = EntityId::FromUnderlying(src->raceWinner);
             // Pad186[0x02];
-            dst->music_position = src->MusicPosition;
+            dst->musicPosition = src->musicPosition;
 
-            dst->breakdown_reason_pending = src->BreakdownReasonPending;
-            dst->mechanic_status = src->MechanicStatus;
-            dst->mechanic = EntityId::FromUnderlying(src->Mechanic);
-            dst->inspection_station = StationIndex::FromUnderlying(src->InspectionStation);
-            dst->broken_vehicle = src->BrokenVehicle;
-            dst->broken_car = src->BrokenCar;
-            dst->breakdown_reason = src->BreakdownReason;
+            dst->breakdownReasonPending = src->breakdownReasonPending;
+            dst->mechanicStatus = src->mechanicStatus;
+            dst->mechanic = EntityId::FromUnderlying(src->mechanic);
+            dst->inspectionStation = StationIndex::FromUnderlying(src->inspectionStation);
+            dst->brokenTrain = src->brokenTrain;
+            dst->brokenCar = src->brokenCar;
+            dst->breakdownReason = src->breakdownReason;
 
-            dst->price[1] = src->PriceSecondary;
+            dst->price[1] = src->priceSecondary;
 
-            dst->reliability = src->Reliability;
-            dst->unreliability_factor = src->UnreliabilityFactor;
-            dst->downtime = src->Downtime;
-            dst->inspection_interval = src->InspectionInterval;
-            dst->last_inspection = src->LastInspection;
+            dst->reliability = src->reliability;
+            dst->unreliabilityFactor = src->unreliabilityFactor;
+            dst->downtime = src->downtime;
+            dst->inspectionInterval = src->inspectionInterval;
+            dst->lastInspection = src->lastInspection;
 
             for (uint8_t i = 0; i < Limits::kDowntimeHistorySize; i++)
             {
-                dst->downtime_history[i] = src->DowntimeHistory[i];
+                dst->downtimeHistory[i] = src->downtimeHistory[i];
             }
 
-            dst->no_primary_items_sold = src->NoPrimaryItemsSold;
-            dst->no_secondary_items_sold = src->NoSecondaryItemsSold;
+            dst->numPrimaryItemsSold = src->numPrimaryItemsSold;
+            dst->numSecondaryItemsSold = src->numSecondaryItemsSold;
 
-            dst->breakdown_sound_modifier = src->BreakdownSoundModifier;
-            dst->not_fixed_timeout = src->NotFixedTimeout;
-            dst->last_crash_type = src->LastCrashType;
-            dst->connected_message_throttle = src->ConnectedMessageThrottle;
+            dst->breakdownSoundModifier = src->breakdownSoundModifier;
+            dst->notFixedTimeout = src->notFixedTimeout;
+            dst->lastCrashType = src->lastCrashType;
+            dst->connectedMessageThrottle = src->connectedMessageThrottle;
 
-            dst->income_per_hour = ToMoney64(src->IncomePerHour);
-            dst->profit = ToMoney64(src->Profit);
+            dst->incomePerHour = ToMoney64(src->incomePerHour);
+            dst->profit = ToMoney64(src->profit);
 
             for (uint8_t i = 0; i < Limits::kNumColourSchemes; i++)
             {
-                dst->track_colour[i].main = src->TrackColourMain[i];
-                dst->track_colour[i].additional = src->TrackColourAdditional[i];
-                dst->track_colour[i].supports = src->TrackColourSupports[i];
+                dst->trackColours[i].main = src->trackColourMain[i];
+                dst->trackColours[i].additional = src->trackColourAdditional[i];
+                dst->trackColours[i].supports = src->trackColourSupports[i];
             }
             // This stall was not colourable in RCT2.
             if (dst->type == RIDE_TYPE_FOOD_STALL)
             {
-                auto object = ObjectEntryGetObject(ObjectType::Ride, dst->subtype);
+                auto object = ObjectEntryGetObject(ObjectType::ride, dst->subtype);
                 if (object != nullptr && object->GetIdentifier() == "rct2.ride.icecr1")
                 {
-                    dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
+                    dst->trackColours[0].main = COLOUR_LIGHT_BLUE;
                 }
             }
 
-            auto musicStyle = OBJECT_ENTRY_INDEX_NULL;
+            auto musicStyle = kObjectEntryIndexNull;
             if (GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::allowMusic))
             {
-                musicStyle = src->Music;
+                musicStyle = src->music;
             }
             dst->music = musicStyle;
 
             // In SV7, "plain" entrances are invisible.
-            auto entranceStyle = OBJECT_ENTRY_INDEX_NULL;
+            auto entranceStyle = kObjectEntryIndexNull;
             if (!_isSV7 && GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::hasEntranceAndExit))
             {
-                entranceStyle = src->EntranceStyle;
+                entranceStyle = src->entranceStyle;
             }
-            dst->entrance_style = entranceStyle;
+            dst->entranceStyle = entranceStyle;
 
-            dst->vehicle_change_timeout = src->VehicleChangeTimeout;
-            dst->num_block_brakes = src->NumBlockBrakes;
-            dst->lift_hill_speed = src->LiftHillSpeed;
-            dst->guests_favourite = src->GuestsFavourite;
-            dst->lifecycle_flags = src->LifecycleFlags;
+            dst->vehicleChangeTimeout = src->vehicleChangeTimeout;
+            dst->numBlockBrakes = src->numBlockBrakes;
+            dst->liftHillSpeed = src->liftHillSpeed;
+            dst->guestsFavourite = src->guestsFavourite;
+            dst->lifecycleFlags = src->lifecycleFlags;
 
             for (uint8_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
-                dst->vehicle_colours[i].Tertiary = src->VehicleColoursExtended[i];
+                dst->vehicleColours[i].Tertiary = src->vehicleColoursExtended[i];
             }
 
-            dst->totalAirTime = src->TotalAirTime;
-            dst->current_test_station = StationIndex::FromUnderlying(src->CurrentTestStation);
-            dst->num_circuits = src->NumCircuits;
-            dst->CableLiftLoc = { src->CableLiftX, src->CableLiftY, src->CableLiftZ * kCoordsZStep };
+            dst->totalAirTime = src->totalAirTime;
+            dst->currentTestStation = StationIndex::FromUnderlying(src->currentTestStation);
+            dst->numCircuits = src->numCircuits;
+            dst->cableLiftLoc = { src->cableLiftX, src->cableLiftY, src->cableLiftZ * kCoordsZStep };
             // Pad1FD;
-            dst->cable_lift = EntityId::FromUnderlying(src->CableLift);
+            dst->cableLift = EntityId::FromUnderlying(src->cableLift);
 
             // Pad208[0x58];
         }
@@ -1021,10 +1025,10 @@ namespace OpenRCT2::RCT2
             dst.ProximityStart = { src.ProximityStartX, src.ProximityStartY, src.ProximityStartZ };
             dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.CurrentRide);
             dst.State = src.State;
-            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(RideTypeDescriptors))
+            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].type < std::size(kRideTypeDescriptors))
             {
                 dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
-                    src.ProximityTrackType, _s6.Rides[src.CurrentRide].Type, IsFlatRide(src.CurrentRide));
+                    src.ProximityTrackType, _s6.Rides[src.CurrentRide].type, IsFlatRide(src.CurrentRide));
             }
             else
             {
@@ -1194,7 +1198,7 @@ namespace OpenRCT2::RCT2
                     }
                 }
             }
-            dst->num_riders = numRiders;
+            dst->numRiders = numRiders;
         }
 
         void ImportTileElements(GameState_t& gameState)
@@ -1312,7 +1316,7 @@ namespace OpenRCT2::RCT2
                     auto pathEntryIndex = src2->GetEntryIndex();
                     auto surfaceEntry = src2->IsQueue() ? _pathToQueueSurfaceMap[pathEntryIndex]
                                                         : _pathToSurfaceMap[pathEntryIndex];
-                    if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                    if (surfaceEntry == kObjectEntryIndexNull)
                     {
                         // Legacy footpath object
                         dst2->SetLegacyPathEntryIndex(pathEntryIndex);
@@ -1347,7 +1351,7 @@ namespace OpenRCT2::RCT2
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
 
-                    auto rideType = _s6.Rides[src2->GetRideIndex()].Type;
+                    auto rideType = _s6.Rides[src2->GetRideIndex()].type;
                     auto oldTrackType = src2->GetTrackType();
                     OpenRCT2::TrackElemType trackType = RCT2TrackTypeToOpenRCT2(
                         oldTrackType, rideType, IsFlatRide(src2->GetRideIndex()));
@@ -1433,7 +1437,7 @@ namespace OpenRCT2::RCT2
                     {
                         auto pathEntryIndex = src2->GetPathType();
                         auto surfaceEntry = _pathToSurfaceMap[pathEntryIndex];
-                        if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                        if (surfaceEntry == kObjectEntryIndexNull)
                         {
                             // Legacy footpath object
                             dst2->SetLegacyPathEntryIndex(pathEntryIndex);
@@ -1446,7 +1450,7 @@ namespace OpenRCT2::RCT2
                     }
                     else
                     {
-                        dst2->SetSurfaceEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+                        dst2->SetSurfaceEntryIndex(kObjectEntryIndexNull);
                     }
                     break;
                 }
@@ -1650,7 +1654,7 @@ namespace OpenRCT2::RCT2
             dst->SubState = src->SubState;
 
             // TODO
-            dst->AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
+            dst->AnimationObjectIndex = kObjectEntryIndexNull;
             dst->AnimationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
 
             dst->TshirtColour = src->TshirtColour;
@@ -1799,22 +1803,22 @@ namespace OpenRCT2::RCT2
 
         ObjectList GetRequiredObjects()
         {
-            std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-            std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), kObjectEntryIndexNull);
 
             ObjectList objectList;
             int objectIt = 0;
             ObjectEntryIndex surfaceCount = 0;
             ObjectEntryIndex railingCount = 0;
-            for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
+            for (int16_t objectType = EnumValue(ObjectType::ride); objectType <= EnumValue(ObjectType::water); objectType++)
             {
                 for (int16_t i = 0; i < kRCT2ObjectEntryGroupCounts[objectType]; i++, objectIt++)
                 {
                     auto entry = ObjectEntryDescriptor(_s6.Objects[objectIt]);
                     if (entry.HasValue())
                     {
-                        if (objectType == EnumValue(ObjectType::Paths))
+                        if (objectType == EnumValue(ObjectType::paths))
                         {
                             auto footpathMapping = GetFootpathSurfaceId(entry);
                             if (footpathMapping == nullptr)
@@ -1826,28 +1830,28 @@ namespace OpenRCT2::RCT2
                             {
                                 // We have surface objects for this footpath
                                 auto surfaceIndex = objectList.Find(
-                                    ObjectType::FootpathSurface, footpathMapping->NormalSurface);
-                                if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                                    ObjectType::footpathSurface, footpathMapping->NormalSurface);
+                                if (surfaceIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(
-                                        ObjectType::FootpathSurface, surfaceCount, footpathMapping->NormalSurface);
+                                        ObjectType::footpathSurface, surfaceCount, footpathMapping->NormalSurface);
                                     surfaceIndex = surfaceCount++;
                                 }
                                 _pathToSurfaceMap[i] = surfaceIndex;
 
-                                surfaceIndex = objectList.Find(ObjectType::FootpathSurface, footpathMapping->QueueSurface);
-                                if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                                surfaceIndex = objectList.Find(ObjectType::footpathSurface, footpathMapping->QueueSurface);
+                                if (surfaceIndex == kObjectEntryIndexNull)
                                 {
                                     objectList.SetObject(
-                                        ObjectType::FootpathSurface, surfaceCount, footpathMapping->QueueSurface);
+                                        ObjectType::footpathSurface, surfaceCount, footpathMapping->QueueSurface);
                                     surfaceIndex = surfaceCount++;
                                 }
                                 _pathToQueueSurfaceMap[i] = surfaceIndex;
 
-                                auto railingIndex = objectList.Find(ObjectType::FootpathRailings, footpathMapping->Railing);
-                                if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
+                                auto railingIndex = objectList.Find(ObjectType::footpathRailings, footpathMapping->Railing);
+                                if (railingIndex == kObjectEntryIndexNull)
                                 {
-                                    objectList.SetObject(ObjectType::FootpathRailings, railingCount, footpathMapping->Railing);
+                                    objectList.SetObject(ObjectType::footpathRailings, railingCount, footpathMapping->Railing);
                                     railingIndex = railingCount++;
                                 }
                                 _pathToRailingMap[i] = railingIndex;
@@ -1890,10 +1894,10 @@ namespace OpenRCT2::RCT2
                 _terrainEdgeEntries.AddRange(OpenRCT2HybridTerrainEdges);
             }
 
-            AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);
-            AppendRequiredObjects(objectList, ObjectType::TerrainEdge, _terrainEdgeEntries);
+            AppendRequiredObjects(objectList, ObjectType::terrainSurface, _terrainSurfaceEntries);
+            AppendRequiredObjects(objectList, ObjectType::terrainEdge, _terrainEdgeEntries);
             AppendRequiredObjects(
-                objectList, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
+                objectList, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(objectList);
 
             // Normalise the name to make the scenario as recognisable as possible
@@ -1903,10 +1907,13 @@ namespace OpenRCT2::RCT2
             SourceDescriptor desc;
             if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
                 AppendRequiredObjects(
-                    objectList, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+                    objectList, ObjectType::scenarioText, std::vector<std::string_view>({ desc.textObjectId }));
 
-            auto animObjects = GetLegacyPeepAnimationObjects(objectList);
-            AppendRequiredObjects(objectList, ObjectType::PeepAnimations, animObjects);
+            auto animObjects = GetLegacyPeepAnimationObjects();
+            AppendRequiredObjects(objectList, ObjectType::peepAnimations, animObjects);
+
+            auto climateObjId = GetClimateObjectIdFromLegacyClimateType(_s6.Climate);
+            AppendRequiredObjects(objectList, ObjectType::climate, std::vector({ climateObjId }));
 
             return objectList;
         }
@@ -1933,7 +1940,7 @@ namespace OpenRCT2::RCT2
         dst->colours.Tertiary = src->ColoursExtended;
         dst->track_progress = src->TrackProgress;
         dst->TrackLocation = { src->TrackX, src->TrackY, src->TrackZ };
-        if (src->BoatLocation.IsNull() || static_cast<RideMode>(ride.Mode) != RideMode::BoatHire
+        if (src->BoatLocation.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::boatHire
             || src->Status != static_cast<uint8_t>(::Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.SetNull();

@@ -17,14 +17,14 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
-#include <openrct2/network/network.h>
-#include <openrct2/sprites.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
@@ -578,7 +578,7 @@ static StringId window_cheats_page_titles[] = {
             // Current weather
             if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
-                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.ClimateCurrent.Weather)];
+                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.WeatherCurrent.weatherType)];
             }
 
             // Staff speed
@@ -587,7 +587,7 @@ static StringId window_cheats_page_titles[] = {
                 widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gameState.Cheats.selectedStaffSpeed)];
             }
 
-            if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+            if (isInEditorMode())
             {
                 SetWidgetDisabled(WIDX_TAB_2, true);
                 SetWidgetDisabled(WIDX_TAB_3, true);
@@ -737,6 +737,10 @@ static StringId window_cheats_page_titles[] = {
     private:
         void SetPage(int32_t p)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == p && !widgets.empty())
+                return;
+
             page = p;
             frame_no = 0;
 
@@ -755,8 +759,7 @@ static StringId window_cheats_page_titles[] = {
             Invalidate();
             WindowInitScrollWidgets(*this);
             height = maxY;
-            widgets[WIDX_BACKGROUND].bottom = maxY - 1;
-            widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;
+            ResizeFrameWithPage();
             Invalidate();
         }
 
@@ -870,6 +873,8 @@ static StringId window_cheats_page_titles[] = {
 
         void OnMouseDownDate(WidgetIndex widgetIndex)
         {
+            auto* windowMgr = Ui::GetWindowManager();
+
             switch (widgetIndex)
             {
                 case WIDX_YEAR_UP:
@@ -914,14 +919,14 @@ static StringId window_cheats_page_titles[] = {
                 {
                     auto setDateAction = ParkSetDateAction(_yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                     GameActions::Execute(&setDateAction);
-                    WindowInvalidateByClass(WindowClass::BottomToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     break;
                 }
                 case WIDX_DATE_RESET:
                 {
                     auto setDateAction = ParkSetDateAction(0, 0, 0);
                     GameActions::Execute(&setDateAction);
-                    WindowInvalidateByClass(WindowClass::BottomToolbar);
+                    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     InvalidateWidget(WIDX_YEAR_BOX);
                     InvalidateWidget(WIDX_MONTH_BOX);
                     InvalidateWidget(WIDX_DAY_BOX);
@@ -1021,7 +1026,7 @@ static StringId window_cheats_page_titles[] = {
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 3);
 
-                    auto currentWeather = gameState.ClimateCurrent.Weather;
+                    auto currentWeather = gameState.WeatherCurrent.weatherType;
                     Dropdown::SetChecked(EnumValue(currentWeather), true);
 
                     break;

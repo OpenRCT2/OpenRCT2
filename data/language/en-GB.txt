@@ -1925,9 +1925,6 @@ STR_2706    :Never
 STR_2707    :Use system file browser
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
-STR_2718    :Up
-STR_2719    :New file
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -2265,14 +2262,10 @@ STR_3252    :Can’t increase maximum loan size any further!
 STR_3253    :Can’t reduce maximum loan size any further!
 STR_3254    :Can’t increase interest rate any further!
 STR_3255    :Can’t reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
-STR_3257    :Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
-STR_3259    :Select whether guests should generally prefer more intense rides only
 STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
-STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
-STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
-STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
+STR_3261    :{WINDOW_COLOUR_2}Guests’ initial happiness:
+STR_3262    :{WINDOW_COLOUR_2}Guests’ initial hunger:
+STR_3263    :{WINDOW_COLOUR_2}Guests’ initial thirst:
 STR_3264    :Can’t increase this any further!
 STR_3265    :Can’t reduce this any further!
 STR_3266    :Select how this park charges for entrance and rides
@@ -3006,7 +2999,6 @@ STR_5887    :Prefix
 STR_5888    :Suffix
 STR_5889    :Custom currency symbol
 STR_5890    :Enter the currency symbol to display
-STR_5891    :Default
 STR_5892    :Go to the default directory
 STR_5893    :Exchange Rate
 STR_5894    :Enter the exchange rate
@@ -3219,7 +3211,7 @@ STR_6102    :The value of a ride won’t decrease over time, so guests will not 
 STR_6103    :This option is disabled during network play.
 STR_6105    :Hypercoaster
 STR_6107    :Monster Trucks
-STR_6109    :Hyper-Twister
+STR_6109    :Hyper-Twister Roller Coaster
 STR_6111    :Classic Mini Roller Coaster
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
 STR_6115    :Powered giant 4 × 4 trucks which can climb steep slopes
@@ -3794,3 +3786,24 @@ STR_6726    :Y:
 STR_6727    :Dive Loop (left)
 STR_6728    :Dive Loop (right)
 STR_6729    :Cable lift hill must start immediately after station or block brake
+STR_6730    :Export emscripten data
+STR_6731    :Import emscripten data
+STR_6732    :Show a button in the toolbar to rotate the view anti-clockwise
+STR_6733    :See-Through
+STR_6734    :Map elements that are at or above the cutting height are rendered translucent.
+STR_6735    :Go up to parent folder
+STR_6736    :Preview
+STR_6737    :No preview available
+STR_6738    :{WINDOW_COLOUR_2}Park rating: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Date: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Num. rides: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Num. guests: {BLACK}{UINT16}
+STR_6743    :Climate
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Guests’ intensity preferences:
+STR_6746    :No preferences
+STR_6747    :Preferences vary (default)
+STR_6748    :Only less intense rides
+STR_6749    :Only more intense rides
+STR_6750    :Select what kind of ride intensity newly spawned guests prefer.

@@ -76,7 +76,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 30;
+    static constexpr uint16_t VERSION = 31;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -147,24 +147,23 @@ protected:
 
         switch (item.Type)
         {
-            case ObjectType::Ride:
+            case ObjectType::ride:
                 ds << item.RideInfo.RideFlags;
-                ds << item.RideInfo.RideCategory;
                 ds << item.RideInfo.RideType;
                 break;
-            case ObjectType::SceneryGroup:
+            case ObjectType::sceneryGroup:
             {
                 ds << item.SceneryGroupInfo.Entries;
                 break;
             }
-            case ObjectType::FootpathSurface:
+            case ObjectType::footpathSurface:
                 ds << item.FootpathSurfaceInfo.Flags;
                 break;
-            case ObjectType::PeepAnimations:
+            case ObjectType::peepAnimations:
                 ds << item.PeepAnimationsInfo.PeepType;
                 break;
             default:
-                // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
+                // Switch processes only ObjectType::ride and ObjectType::sceneryGroup
                 break;
         }
     }

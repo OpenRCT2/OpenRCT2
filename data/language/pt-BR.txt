@@ -1924,9 +1924,6 @@ STR_2706    :Nunca
 STR_2707    :Usar explorador de arquivos do sistema
 STR_2708    :{WINDOW_COLOUR_1}Você tem certeza que quer sobrescrever {STRINGID}?
 STR_2709    :Sobrescrever
-STR_2710    :Tipo de nome para o arquivo.
-STR_2718    :Voltar Pasta
-STR_2719    :Novo Arquivo
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}min:{UINT16}s
@@ -2263,10 +2260,6 @@ STR_3252    :Impossível aumentar ainda mais o tamanho do empréstimo!
 STR_3253    :Impossível diminuir ainda mais o tamanho do empréstimo!
 STR_3254    :Impossível aumentar ainda mais a taxa de juros!
 STR_3255    :Impossível diminuir ainda mais a taxa de juros!
-STR_3256    :Visitantes preferem atrações menos intensas
-STR_3257    :Selecionar se os visitantes geralmente preferem somente atrações menos intensas
-STR_3258    :Visitantes preferem atrações mais intensas
-STR_3259    :Selecionar se os visitantes geralmente preferem somente atrações mais intensas
 STR_3260    :{WINDOW_COLOUR_2}Dinheiro por visitante (em média):
 STR_3261    :{WINDOW_COLOUR_2}Felicidade inicial dos visitantes:
 STR_3262    :{WINDOW_COLOUR_2}Fome inicial dos visitantes:
@@ -3004,7 +2997,6 @@ STR_5887    :Prefixo
 STR_5888    :Sufixo
 STR_5889    :Símbolo de moeda personalizada
 STR_5890    :Insira o símbolo da moeda para exibir
-STR_5891    :Padrão
 STR_5892    :Vai para o diretório padrão
 STR_5893    :Taxa de Câmbio
 STR_5894    :Insira a taxa de câmbio
@@ -3217,7 +3209,7 @@ STR_6102    :O valor de uma atração não diminuirá com o tempo, então visita
 STR_6103    :Esta opção é desabilitada durante jogo de rede.
 STR_6105    :Hipermontanha-Russa
 STR_6107    :Caminhões Monstruosos
-STR_6109    :Hipertornado
+STR_6109    :Montanha-russa Hipertornado
 STR_6111    :Minimontanha-Russa Clássica
 STR_6113    :Uma montanha russa alta que não inverte com grandes quedas, alta velocidade, e trens confortáveis com apenas uma trava de colo
 STR_6115    :Gigantes caminhões 4x4 eletrizados que podem subir colinas íngremes
@@ -3790,3 +3782,24 @@ STR_6726    :Y:
 STR_6727    :Loop em mergulho (esquerda)
 STR_6728    :Loop em mergulho (direita)
 STR_6729    :Cabo de elevação deve estar imediatamente após a estação ou freio bloqueador
+STR_6730    :Exportar dados emscripten
+STR_6731    :Importar dados emscripten
+STR_6732    :Mostrar um botão na barra de ferramentas para girar a visualização no sentido anti-horário
+STR_6733    :Ver através
+STR_6734    :Elementos do mapa que estiverem na altura de corte ou superior são desenhados translúcidos.
+STR_6735    :Ir para pasta acima
+STR_6736    :Pré-visualização
+STR_6737    :Nenhuma pré-visualização disponível
+STR_6738    :{WINDOW_COLOUR_2}Classifiação do parque: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Data: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Dinheiro: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Núm. atrações: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Núm. visitantes: {BLACK}{UINT16}
+STR_6743    :Clima
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Preferências de intensidade dos visitantes:
+STR_6746    :Sem preferências
+STR_6747    :Preferências variam (padrão)
+STR_6748    :Apenas atrações menos intensas
+STR_6749    :Apenas atrações mais intensas
+STR_6750    :Selecionar que tipo de intensidade de atração visitantes recém criados preferem.

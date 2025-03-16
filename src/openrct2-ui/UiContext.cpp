@@ -18,6 +18,7 @@
 #include "input/ShortcutManager.h"
 #include "interface/InGameConsole.h"
 #include "interface/Theme.h"
+#include "interface/Viewport.h"
 #include "scripting/UiExtensions.h"
 #include "title/TitleSequencePlayer.h"
 
@@ -48,6 +49,11 @@
 #include <openrct2/world/Location.hpp>
 #include <vector>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+    #include <emscripten/html5.h>
+#endif
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Scripting;
@@ -55,9 +61,9 @@ using namespace OpenRCT2::Ui;
 
 #ifdef __MACOSX__
     // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
-    #define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
+    #define KB_PRIMARY_MODIFIER KMOD_GUI
 #else
-    #define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
+    #define KB_PRIMARY_MODIFIER KMOD_CTRL
 #endif
 
 class UiContext final : public IUiContext
@@ -712,7 +718,25 @@ public:
 
     bool SetClipboardText(const utf8* target) override
     {
+#ifndef __EMSCRIPTEN__
         return (SDL_SetClipboardText(target) == 0);
+#else
+        return (
+            MAIN_THREAD_EM_ASM_INT(
+                {
+                    try
+                    {
+                        navigator.clipboard.writeText(UTF8ToString($0));
+                        return 0;
+                    }
+                    catch (e)
+                    {
+                        return -1;
+                    };
+                },
+                target)
+            == 0);
+#endif
     }
 
     ITitleSequencePlayer* GetTitleSequencePlayer() override
@@ -752,9 +776,19 @@ private:
 
     void CreateWindow(const ScreenCoordsXY& windowPos)
     {
+#ifdef __EMSCRIPTEN__
+        MAIN_THREAD_EM_ASM({
+            Module.canvas.width = window.innerWidth;
+            Module.canvas.height = window.innerHeight;
+        });
+        int32_t width = 0;
+        int32_t height = 0;
+        emscripten_get_canvas_element_size("!canvas", &width, &height);
+#else
         // Get saved window size
         int32_t width = Config::Get().general.WindowWidth;
         int32_t height = Config::Get().general.WindowHeight;
+#endif
         if (width <= 0)
             width = 640;
         if (height <= 0)

@@ -15,7 +15,6 @@
 #include "BannerSetStyleAction.h"
 #include "CheatSetAction.h"
 #include "ClearAction.h"
-#include "ClimateSetAction.h"
 #include "CustomAction.h"
 #include "FootpathAdditionPlaceAction.h"
 #include "FootpathAdditionRemoveAction.h"
@@ -136,7 +135,6 @@ namespace OpenRCT2::GameActions
         REGISTER_ACTION(BannerSetColourAction);
         REGISTER_ACTION(BannerSetNameAction);
         REGISTER_ACTION(BannerSetStyleAction);
-        REGISTER_ACTION(ClimateSetAction);
         REGISTER_ACTION(FootpathPlaceAction);
         REGISTER_ACTION(FootpathLayoutPlaceAction);
         REGISTER_ACTION(FootpathRemoveAction);

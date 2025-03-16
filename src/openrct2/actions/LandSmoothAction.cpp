@@ -15,8 +15,7 @@
 #include "../actions/LandLowerAction.h"
 #include "../actions/LandRaiseAction.h"
 #include "../actions/LandSetHeightAction.h"
-#include "../audio/audio.h"
-#include "../interface/Window.h"
+#include "../audio/Audio.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
@@ -339,8 +338,8 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
     // Cap bounds to map
     auto l = std::max(normRange.GetLeft(), 32);
     auto t = std::max(normRange.GetTop(), 32);
-    auto r = std::clamp(normRange.GetRight(), 0, MAXIMUM_TILE_START_XY);
-    auto b = std::clamp(normRange.GetBottom(), 0, MAXIMUM_TILE_START_XY);
+    auto r = std::clamp(normRange.GetRight(), 0, kMaximumTileStartXY);
+    auto b = std::clamp(normRange.GetBottom(), 0, kMaximumTileStartXY);
     auto validRange = MapRange{ l, t, r, b };
 
     int32_t centreZ = TileElementHeight(_coords);

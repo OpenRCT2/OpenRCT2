@@ -18,23 +18,23 @@
 #include "../actions/ParkSetParameterAction.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
+#include "../entity/EntityList.h"
 #include "../entity/Litter.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Colour.h"
-#include "../interface/Window.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/Research.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
-#include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
@@ -75,9 +75,9 @@ namespace OpenRCT2::Park
     static money64 calculateRideValue(const Ride& ride)
     {
         money64 result = 0;
-        if (ride.value != RIDE_VALUE_UNDEFINED)
+        if (ride.value != kRideValueUndefined)
         {
-            const auto& rtd = ride.GetRideTypeDescriptor();
+            const auto& rtd = ride.getRideTypeDescriptor();
             result = (ride.value * 10) * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
         }
         return result;
@@ -89,15 +89,15 @@ namespace OpenRCT2::Park
         bool ridePricesUnlocked = RidePricesUnlocked() && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY);
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Open)
+            if (ride.status != RideStatus::open)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED)
                 continue;
 
             // Add ride value
-            if (ride.value != RIDE_VALUE_UNDEFINED)
+            if (ride.value != kRideValueUndefined)
             {
                 money64 rideValue = ride.value;
                 if (ridePricesUnlocked)
@@ -122,32 +122,32 @@ namespace OpenRCT2::Park
 
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Open)
+            if (ride.status != RideStatus::open)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED)
                 continue;
 
             // Add guest score for ride type
-            suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
+            suggestedMaxGuests += ride.getRideTypeDescriptor().BonusValue;
 
             // If difficult guest generation, extra guests are available for good rides
             if (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
             {
-                if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+                if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED))
                     continue;
-                if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     continue;
-                if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasDataLogging))
+                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasDataLogging))
                     continue;
-                if (ride.GetStation().SegmentLength < (600 << 16))
+                if (ride.getStation().SegmentLength < (600 << 16))
                     continue;
-                if (ride.ratings.excitement < RIDE_RATING(6, 00))
+                if (ride.ratings.excitement < MakeRideRating(6, 00))
                     continue;
 
                 // Bonus guests for good ride
-                difficultGenerationBonus += ride.GetRideTypeDescriptor().BonusValue * 2;
+                difficultGenerationBonus += ride.getRideTypeDescriptor().BonusValue * 2;
             }
         }
 
@@ -339,6 +339,7 @@ namespace OpenRCT2::Park
         }
 
         const auto currentTicks = gameState.CurrentTicks;
+        auto* windowMgr = Ui::GetWindowManager();
 
         // Every ~13 seconds
         if (currentTicks % 512 == 0)
@@ -350,7 +351,7 @@ namespace OpenRCT2::Park
             gameState.SuggestedGuestMaximum = calculateSuggestedMaxGuests();
             gameState.GuestGenerationProbability = calculateGuestGenerationProbability();
 
-            WindowInvalidateByClass(WindowClass::Finances);
+            windowMgr->InvalidateByClass(WindowClass::Finances);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
             ContextBroadcastIntent(&intent);
         }
@@ -359,7 +360,7 @@ namespace OpenRCT2::Park
         if (currentTicks % 4096 == 0)
         {
             gameState.Park.Size = CalculateParkSize();
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
 
         generateGuests(gameState);
@@ -385,7 +386,8 @@ namespace OpenRCT2::Park
         if (tiles != gameState.Park.Size)
         {
             gameState.Park.Size = tiles;
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
 
         return tiles;
@@ -631,8 +633,10 @@ namespace OpenRCT2::Park
         // Invalidate relevant windows
         auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
         ContextBroadcastIntent(&intent);
-        WindowInvalidateByClass(WindowClass::ParkInformation);
-        WindowInvalidateByClass(WindowClass::Finances);
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+        windowMgr->InvalidateByClass(WindowClass::Finances);
     }
 
     uint32_t UpdateSize(GameState_t& gameState)
@@ -641,7 +645,9 @@ namespace OpenRCT2::Park
         if (tiles != gameState.Park.Size)
         {
             gameState.Park.Size = tiles;
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
         return tiles;
     }

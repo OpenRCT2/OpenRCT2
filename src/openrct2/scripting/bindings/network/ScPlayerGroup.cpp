@@ -15,8 +15,8 @@
     #include "../../../actions/NetworkModifyGroupAction.h"
     #include "../../../actions/PlayerSetGroupAction.h"
     #include "../../../core/String.hpp"
+    #include "../../../network/Network.h"
     #include "../../../network/NetworkAction.h"
-    #include "../../../network/network.h"
     #include "../../Duktape.hpp"
 
 namespace OpenRCT2::Scripting

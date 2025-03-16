@@ -25,13 +25,13 @@ enum edge_t
     EDGE_TOPRIGHT = EDGE_NE
 };
 
-extern const uint16_t segment_offsets[9];
+extern const uint16_t kSegmentOffsets[9];
 
 extern bool gShowSupportSegmentHeights;
 
-extern const CoordsXY BannerBoundBoxes[][2];
+extern const CoordsXY kBannerBoundBoxes[][2];
 
-extern const uint8_t PathSlopeToLandSlope[4];
+extern const uint8_t kPathSlopeToLandSlope[4];
 
 void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height);
 void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);

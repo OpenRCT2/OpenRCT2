@@ -11,14 +11,14 @@
 
 #include "../GameState.h"
 #include "../config/Config.h"
+#include "../entity/EntityList.h"
 #include "../entity/Guest.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
-#include "../scenario/Scenario.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "NewsItem.h"
 
@@ -142,18 +142,18 @@ static bool AwardIsDeservedBestRollercoasters([[maybe_unused]] int32_t activeAwa
     auto rollerCoasters = 0;
     for (const auto& ride : GetRideManager())
     {
-        auto rideEntry = ride.GetRideEntry();
+        auto rideEntry = ride.getRideEntry();
         if (rideEntry == nullptr)
         {
             continue;
         }
 
-        if (ride.status != RideStatus::Open || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        if (ride.status != RideStatus::open || (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
         {
             continue;
         }
 
-        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+        if (!RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster))
         {
             continue;
         }
@@ -257,7 +257,7 @@ static bool AwardIsDeservedSafest([[maybe_unused]] int32_t activeAwardTypes)
     // Check for rides that have crashed maybe?
     const auto& rideManager = GetRideManager();
     if (std::any_of(rideManager.begin(), rideManager.end(), [](const Ride& ride) {
-            return ride.last_crash_type != RIDE_CRASH_TYPE_NONE;
+            return ride.lastCrashType != RIDE_CRASH_TYPE_NONE;
         }))
     {
         return false;
@@ -289,9 +289,9 @@ static bool AwardIsDeservedBestFood(int32_t activeAwardTypes)
     uint64_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status != RideStatus::Open)
+        if (ride.status != RideStatus::open)
             continue;
-        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
+        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
             continue;
 
         shops++;
@@ -334,13 +334,13 @@ static bool AwardIsDeservedWorstFood(int32_t activeAwardTypes)
     uint64_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status != RideStatus::Open)
+        if (ride.status != RideStatus::open)
             continue;
-        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
+        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
             continue;
 
         shops++;
-        auto rideEntry = ride.GetRideEntry();
+        auto rideEntry = ride.getRideEntry();
         if (rideEntry != nullptr)
         {
             if (!(shopTypes & EnumToFlag(rideEntry->shop_item[0])))
@@ -374,8 +374,8 @@ static bool AwardIsDeservedBestToilets([[maybe_unused]] int32_t activeAwardTypes
     // Count open toilets
     const auto& rideManager = GetRideManager();
     auto numToilets = static_cast<size_t>(std::count_if(rideManager.begin(), rideManager.end(), [](const Ride& ride) {
-        const auto& rtd = ride.GetRideTypeDescriptor();
-        return rtd.specialType == RtdSpecialType::toilet && ride.status == RideStatus::Open;
+        const auto& rtd = ride.getRideTypeDescriptor();
+        return rtd.specialType == RtdSpecialType::toilet && ride.status == RideStatus::open;
     }));
 
     // At least 4 open toilets
@@ -433,18 +433,18 @@ static bool AwardIsDeservedBestWaterRides([[maybe_unused]] int32_t activeAwardTy
     auto waterRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        auto rideEntry = ride.GetRideEntry();
+        auto rideEntry = ride.getRideEntry();
         if (rideEntry == nullptr)
         {
             continue;
         }
 
-        if (ride.status != RideStatus::Open || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        if (ride.status != RideStatus::open || (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
         {
             continue;
         }
 
-        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_WATER))
+        if (!RideEntryHasCategory(*rideEntry, RideCategory::water))
         {
             continue;
         }
@@ -464,13 +464,13 @@ static bool AwardIsDeservedBestCustomDesignedRides(int32_t activeAwardTypes)
     auto customDesignedRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
             continue;
-        if (ride.lifecycle_flags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
+        if (ride.lifecycleFlags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
             continue;
-        if (ride.ratings.excitement < RIDE_RATING(5, 50))
+        if (ride.ratings.excitement < MakeRideRating(5, 50))
             continue;
-        if (ride.status != RideStatus::Open || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        if (ride.status != RideStatus::open || (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
             continue;
 
         customDesignedRides++;
@@ -496,12 +496,12 @@ static bool AwardIsDeservedMostDazzlingRideColours(int32_t activeAwardTypes)
     auto colourfulRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
             continue;
 
         countedRides++;
 
-        auto mainTrackColour = ride.track_colour[0].main;
+        auto mainTrackColour = ride.trackColours[0].main;
         for (auto dazzling_ride_colour : dazzling_ride_colours)
         {
             if (mainTrackColour == dazzling_ride_colour)
@@ -540,18 +540,18 @@ static bool AwardIsDeservedBestGentleRides([[maybe_unused]] int32_t activeAwardT
     auto gentleRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        auto rideEntry = ride.GetRideEntry();
+        auto rideEntry = ride.getRideEntry();
         if (rideEntry == nullptr)
         {
             continue;
         }
 
-        if (ride.status != RideStatus::Open || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        if (ride.status != RideStatus::open || (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
         {
             continue;
         }
 
-        if (!RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_GENTLE))
+        if (!RideEntryHasCategory(*rideEntry, RideCategory::gentle))
         {
             continue;
         }
@@ -606,18 +606,21 @@ void AwardUpdateAll()
 
     auto& gameState = GetGameState();
     auto& currentAwards = gameState.CurrentAwards;
+    auto* windowMgr = Ui::GetWindowManager();
+
     // Decrease award times
     for (auto& award : currentAwards)
     {
         --award.Time;
     }
+
     // Remove any 0 time awards
     auto res = std::remove_if(
         std::begin(currentAwards), std::end(currentAwards), [](const Award& award) { return award.Time == 0; });
     if (res != std::end(currentAwards))
     {
         currentAwards.erase(res, std::end(currentAwards));
-        WindowInvalidateByClass(WindowClass::ParkInformation);
+        windowMgr->InvalidateByClass(WindowClass::ParkInformation);
     }
 
     // Only add new awards if park is open
@@ -649,7 +652,7 @@ void AwardUpdateAll()
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});
                 }
-                WindowInvalidateByClass(WindowClass::ParkInformation);
+                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
             }
         }
     }

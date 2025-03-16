@@ -26,7 +26,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform.h"
 #include "../rct1/Csg.h"
@@ -258,6 +258,7 @@ namespace OpenRCT2::Config
             model->FileBrowserHeight = reader->GetInt32("file_browser_height", 0);
             model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
             model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
+            model->FileBrowserShowPreviews = reader->GetBoolean("file_browser_show_previews", true);
         }
     }
 
@@ -348,6 +349,7 @@ namespace OpenRCT2::Config
         writer->WriteInt32("file_browser_height", model->FileBrowserHeight);
         writer->WriteBoolean("file_browser_show_size_column", model->FileBrowserShowSizeColumn);
         writer->WriteBoolean("file_browser_show_date_column", model->FileBrowserShowDateColumn);
+        writer->WriteBoolean("file_browser_show_previews", model->FileBrowserShowPreviews);
     }
 
     static void ReadInterface(IIniReader* reader)
@@ -363,6 +365,7 @@ namespace OpenRCT2::Config
             model->ToolbarShowMute = reader->GetBoolean("toolbar_show_mute", false);
             model->ToolbarShowChat = reader->GetBoolean("toolbar_show_chat", false);
             model->ToolbarShowZoom = reader->GetBoolean("toolbar_show_zoom", true);
+            model->ToolbarShowRotateAnticlockwise = reader->GetBoolean("toolbar_show_rotate_anti_clockwise", false);
             model->ConsoleSmallFont = reader->GetBoolean("console_small_font", false);
             model->CurrentThemePreset = reader->GetString("current_theme", "*RCT2");
             model->CurrentTitleSequencePreset = reader->GetString("current_title_sequence", "*OPENRCT2");
@@ -388,6 +391,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("toolbar_show_mute", model->ToolbarShowMute);
         writer->WriteBoolean("toolbar_show_chat", model->ToolbarShowChat);
         writer->WriteBoolean("toolbar_show_zoom", model->ToolbarShowZoom);
+        writer->WriteBoolean("toolbar_show_rotate_anti_clockwise", model->ToolbarShowRotateAnticlockwise);
         writer->WriteBoolean("console_small_font", model->ConsoleSmallFont);
         writer->WriteString("current_theme", model->CurrentThemePreset);
         writer->WriteString("current_title_sequence", model->CurrentTitleSequencePreset);

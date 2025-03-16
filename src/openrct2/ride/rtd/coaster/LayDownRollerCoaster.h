@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
@@ -38,8 +38,8 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },
@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .UpkeepCosts = { 49, 20, 90, 11, 3, 15 },
     .BuildCosts = { 53.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -67,13 +67,13 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 85), RIDE_RATING(1, 15), RIDE_RATING(2, 75) },
+        { MakeRideRating(3, 85), MakeRideRating(1, 15), MakeRideRating(2, 75) },
         18,
         -1,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -86,7 +86,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementInversions, 1,                4, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 40), 2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
         },
@@ -95,7 +95,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
 
 constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
 {
-    .Category = RIDE_CATEGORY_NONE,
+    .Category = RideCategory::none,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .trackStyle = TrackStyle::null,
@@ -109,8 +109,8 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
     }),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },
@@ -124,7 +124,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
     .UpkeepCosts = { 49, 20, 90, 11, 3, 15 },
     .BuildCosts = { 53.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 100,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -138,13 +138,13 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 85), RIDE_RATING(1, 15), RIDE_RATING(2, 75) },
+        { MakeRideRating(3, 85), MakeRideRating(1, 15), MakeRideRating(2, 75) },
         18,
         -1,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -157,7 +157,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementInversions, 1,                4, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 40), 2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 38130, 49648 },
         },

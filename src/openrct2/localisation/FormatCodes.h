@@ -9,10 +9,11 @@
 
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <string_view>
 
-enum class FormatToken
+enum class FormatToken : uint8_t
 {
     Unknown,
     Literal,

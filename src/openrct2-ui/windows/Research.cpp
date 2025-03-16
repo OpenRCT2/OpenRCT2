@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
@@ -20,7 +21,6 @@
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -52,7 +52,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LAST_DEVELOPMENT_GROUP,
         WIDX_LAST_DEVELOPMENT_BUTTON,
 
-        WIDX_FUNDING_GROUP = 6,
+        WIDX_RESEARCH_FUNDING_GROUP = 6,
         WIDX_RESEARCH_FUNDING,
         WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON,
         WIDX_PRIORITIES_GROUP,
@@ -129,6 +129,9 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t newPageIndex)
         {
+            if (page == newPageIndex && !widgets.empty())
+                return;
+
             page = newPageIndex;
             frame_no = 0;
             RemoveViewport();
@@ -591,7 +594,8 @@ namespace OpenRCT2::Ui::Windows
         int32_t currentResearchLevel = gameState.ResearchFundingLevel;
         auto ft = Formatter();
         ft.Add<money64>(research_cost_table[currentResearchLevel]);
-        DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 10, 77 }, STR_RESEARCH_COST_PER_MONTH, ft);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_TAB_1].top + 60 }, STR_RESEARCH_COST_PER_MONTH, ft);
     }
 
 #pragma endregion

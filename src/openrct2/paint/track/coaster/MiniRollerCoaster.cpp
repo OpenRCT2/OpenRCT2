@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
@@ -31,7 +31,7 @@ static constexpr uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_OPEN = 18743;
 static constexpr uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED = 18744;
 static constexpr uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED = 18745;
 
-static constexpr uint32_t _MiniRCBlockBrakeImages[kNumOrthogonalDirections][2] = {
+static constexpr uint32_t kMiniRCBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { MINI_RC_BLOCK_BRAKE_SW_NE_OPEN, MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED },
     { MINI_RC_BLOCK_BRAKE_NW_SE_OPEN, MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED },
     { MINI_RC_BLOCK_BRAKE_SW_NE_OPEN, MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -112,7 +112,7 @@ static void MiniRCTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(_MiniRCBlockBrakeImages[direction][isClosed]), { 0, 0, height },
+            session, direction, session.TrackColours.WithIndex(kMiniRCBlockBrakeImages[direction][isClosed]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
@@ -4623,7 +4623,7 @@ static void MiniRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19070), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 3 } });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -7705,7 +7705,7 @@ static void MiniRCTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_MiniRCBlockBrakeImages[direction][isClosed]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(kMiniRCBlockBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {

@@ -15,7 +15,6 @@
 #include "../object/PathAdditionEntry.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
-#include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
@@ -408,7 +407,7 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    // TODO: Move into sprites.h
+    // TODO: Move into SpriteIds.h
     constexpr uint32_t kJumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t kJumpingFountainWaterBaseImage = 22973;
 

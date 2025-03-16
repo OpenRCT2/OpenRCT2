@@ -38,7 +38,7 @@ enum
 
 struct PathAdditionEntry
 {
-    static constexpr auto kObjectType = ObjectType::PathAdditions;
+    static constexpr auto kObjectType = ObjectType::pathAdditions;
 
     StringId name;
     uint32_t image;

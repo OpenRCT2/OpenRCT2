@@ -11,7 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../config/Config.h"
-#include "../interface/Window.h"
+#include "../ui/WindowManager.h"
 
 using namespace OpenRCT2;
 
@@ -63,7 +63,9 @@ GameActions::Result GameSetSpeedAction::Execute() const
     }
 
     gGameSpeed = _speed;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
 
     return res;
 }

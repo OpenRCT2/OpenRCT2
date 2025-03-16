@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/SmallSceneryEntry.h"
@@ -72,7 +71,7 @@ GameActions::Result LandSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, errorMessage);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.Cheats.sandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {
@@ -281,14 +280,14 @@ StringId LandSetHeightAction::CheckRideSupports() const
         if (ride == nullptr)
             continue;
 
-        const auto* rideEntry = ride->GetRideEntry();
+        const auto* rideEntry = ride->getRideEntry();
         if (rideEntry == nullptr)
             continue;
 
         int32_t maxHeight = rideEntry->max_height;
         if (maxHeight == 0)
         {
-            maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
+            maxHeight = ride->getRideTypeDescriptor().Heights.MaxHeight;
         }
 
         int32_t zDelta = trackElement->ClearanceHeight - _height;

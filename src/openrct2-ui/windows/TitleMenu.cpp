@@ -16,8 +16,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
@@ -290,6 +290,6 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         return windowMgr->Create<TitleMenuWindow>(
             WindowClass::TitleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), 0, windowHeight,
-            WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
+            WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
     }
 } // namespace OpenRCT2::Ui::Windows

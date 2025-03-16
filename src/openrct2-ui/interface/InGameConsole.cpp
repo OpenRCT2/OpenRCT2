@@ -20,6 +20,7 @@
 #include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>

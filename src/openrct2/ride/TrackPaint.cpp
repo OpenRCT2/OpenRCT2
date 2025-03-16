@@ -12,11 +12,11 @@
 #include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
 #include "../object/StationObject.h"
 #include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
@@ -26,8 +26,6 @@
 #include "../paint/tile_element/Segment.h"
 #include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
-#include "../scenario/Scenario.h"
-#include "../sprites.h"
 #include "../world/Map.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideData.h"
@@ -101,7 +99,7 @@ enum
 bool TrackPaintUtilHasFence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation)
 {
-    const auto* stationObject = ride.GetStationObject();
+    const auto* stationObject = ride.getStationObject();
     if (stationObject != nullptr && stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
         return false;
 
@@ -124,7 +122,7 @@ bool TrackPaintUtilHasFence(
 
     auto entranceLoc = TileCoordsXY(position) + offset;
     auto entranceId = trackElement.GetStationIndex();
-    const auto& station = ride.GetStation(entranceId);
+    const auto& station = ride.getStation(entranceId);
 
     return (entranceLoc != station.Entrance && entranceLoc != station.Exit);
 }
@@ -225,7 +223,7 @@ static void TrackPaintUtilDrawStationImpl(
     const TrackElement& trackElement, int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
     CoordsXY position = session.MapPosition;
-    const auto* stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.getStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -432,7 +430,7 @@ void TrackPaintUtilDrawStationInverted(
     uint8_t stationVariant)
 {
     CoordsXY position = session.MapPosition;
-    const auto* stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.getStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -707,7 +705,7 @@ void TrackPaintUtilDrawNarrowStationPlatform(
     const TrackElement& trackElement)
 {
     CoordsXY position = session.MapPosition;
-    const auto* stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.getStationObject();
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
         return;
     auto colour = GetStationColourScheme(session, trackElement);
@@ -1057,7 +1055,7 @@ constexpr CoordsXY defaultRightEighthToDiagBoundLengths[4][4] = {
     {
         { 32, 20 },
         { 34, 16 },
-        { 28, 28 },
+        { 16, 16 },
         { 16, 18 },
     },
     {
@@ -1084,7 +1082,7 @@ constexpr CoordsXYZ defaultRightEighthToDiagBoundOffsets[4][4] = {
     {
         { 0, 6, 0 },
         { 0, 0, 0 },
-        { 4, 4, 0 },
+        { 16, 16, 0 },
         { 0, 16, 0 },
     },
     {
@@ -1750,11 +1748,11 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
     imageId = colourFlags.WithIndex(trackSpritesGhostTrainSpinningTunnel[direction & 1][1][frame]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 28, height }, { 26, 1, 23 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 28, height }, { 28, 1, 23 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 4, height }, { 1, 26, 23 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 2, height }, { 1, 28, 23 } });
     }
 }
 
@@ -1960,7 +1958,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             const auto& ted = GetTrackElementDescriptor(trackType);
             if (ted.heightMarkerPositions & (1 << trackSequence))
             {
-                uint16_t ax = ride->GetRideTypeDescriptor().Heights.VehicleZOffset;
+                uint16_t ax = ride->getRideTypeDescriptor().Heights.VehicleZOffset;
                 // 0x1689 represents 0 height there are -127 to 128 heights above and below it
                 // There are 3 arrays of 256 heights (units, m, ft) chosen with the GetHeightMarkerOffset()
                 auto heightNum = (height + 8) / 16 - kMapBaseZ;
@@ -1973,23 +1971,23 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         if (LightFx::IsAvailable())
         {
             uint8_t zOffset = 16;
-            const auto& rtd = ride->GetRideTypeDescriptor();
+            const auto& rtd = ride->getRideTypeDescriptor();
             if (rtd.specialType == RtdSpecialType::toilet || rtd.specialType == RtdSpecialType::firstAid
                 || rtd.specialType == RtdSpecialType::cashMachine)
                 zOffset = 23;
 
-            const auto* originElement = ride->GetOriginElement(StationIndex::FromUnderlying(0));
+            const auto* originElement = ride->getOriginElement(StationIndex::FromUnderlying(0));
             if (originElement != nullptr && originElement->GetTrackType() == TrackElemType::FlatTrack1x1B)
                 LightFx::AddKioskLights(session.MapPosition, height, zOffset);
-            else if (RideTypeDescriptors[ride->type].HasFlag(RtdFlag::isShopOrFacility))
+            else if (kRideTypeDescriptors[ride->type].HasFlag(RtdFlag::isShopOrFacility))
                 LightFx::AddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 
         session.InteractionType = ViewportInteractionItem::Ride;
         session.TrackColours = ImageId(
-            0, ride->track_colour[trackColourScheme].main, ride->track_colour[trackColourScheme].additional);
+            0, ride->trackColours[trackColourScheme].main, ride->trackColours[trackColourScheme].additional);
         session.SupportColours = ImageId(
-            0, ride->track_colour[trackColourScheme].supports, ride->track_colour[trackColourScheme].additional);
+            0, ride->trackColours[trackColourScheme].supports, ride->trackColours[trackColourScheme].additional);
         if (trackElement.IsHighlighted() || session.SelectedElement == reinterpret_cast<const TileElement*>(&trackElement))
         {
             session.TrackColours = HighlightMarker;

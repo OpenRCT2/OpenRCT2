@@ -9,7 +9,7 @@
 
 #include "PlayerSetGroupAction.h"
 
-#include "../network/network.h"
+#include "../network/Network.h"
 
 using namespace OpenRCT2;
 

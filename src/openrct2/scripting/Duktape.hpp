@@ -495,7 +495,7 @@ namespace OpenRCT2::Scripting
                 return static_cast<ObjectEntryIndex>(value);
             }
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     uint32_t ImageFromDuk(const DukValue& d);

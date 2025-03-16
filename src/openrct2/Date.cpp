@@ -9,11 +9,9 @@
 
 #include "Date.h"
 
-#include "Context.h"
 #include "Game.h"
 #include "GameState.h"
 #include "core/Guard.hpp"
-#include "localisation/Localisation.Date.h"
 
 using namespace OpenRCT2;
 

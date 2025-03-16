@@ -32,7 +32,7 @@ static constexpr CommandLineOptionDefinition kScreenshotOptionsDef[]
 
 static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator);
 
-const CommandLineCommand CommandLine::ScreenshotCommands[]
+const CommandLineCommand CommandLine::kScreenshotCommands[]
 {
     // Main commands
     DefineCommand("", "<file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]", kScreenshotOptionsDef, HandleScreenshot),

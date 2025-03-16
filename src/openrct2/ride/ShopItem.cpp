@@ -10,11 +10,11 @@
 #include "ShopItem.h"
 
 #include "../GameState.h"
+#include "../SpriteIds.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../ride/RideEntry.h"
 #include "../ride/RideManager.hpp"
-#include "../sprites.h"
 
 using namespace OpenRCT2;
 
@@ -122,7 +122,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
     {
         if (&ride != forRide)
         {
-            auto rideEntry = ride.GetRideEntry();
+            auto rideEntry = ride.getRideEntry();
             if (rideEntry == nullptr)
             {
                 continue;
@@ -135,7 +135,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
             {
                 return ride.price[1];
             }
-            if (GetShopItemDescriptor(shopItem).IsPhoto() && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
+            if (GetShopItemDescriptor(shopItem).IsPhoto() && (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
             {
                 return ride.price[1];
             }

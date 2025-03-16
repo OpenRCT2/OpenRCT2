@@ -19,6 +19,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/BannerPlaceAction.h>
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
@@ -29,13 +30,13 @@
 #include <openrct2/actions/SmallScenerySetColourAction.h>
 #include <openrct2/actions/WallPlaceAction.h>
 #include <openrct2/actions/WallSetColourAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
@@ -48,7 +49,6 @@
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/ConstructionClearance.h>
@@ -156,7 +156,7 @@ namespace OpenRCT2::Ui::Windows
         struct SceneryTabInfo
         {
             SceneryTabType Type = SCENERY_TAB_TYPE_GROUP;
-            ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
+            ObjectEntryIndex SceneryGroupIndex = kObjectEntryIndexNull;
             std::deque<ScenerySelection> Entries{};
             u8string Filter = "";
 
@@ -504,7 +504,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             Invalidate();
@@ -517,11 +517,11 @@ namespace OpenRCT2::Ui::Windows
 
             if (gWindowSceneryEyedropperEnabled)
             {
-                gCurrentToolId = Tool::Crosshair;
+                gCurrentToolId = Tool::crosshair;
             }
             else if (_sceneryPaintEnabled)
             {
-                gCurrentToolId = Tool::PaintDown;
+                gCurrentToolId = Tool::paintDown;
             }
             else
             {
@@ -531,7 +531,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
                     {
-                        gCurrentToolId = Tool::EntranceDown;
+                        gCurrentToolId = Tool::entranceDown;
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
                     {
@@ -556,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gCurrentToolId = Tool::Arrow;
+                    gCurrentToolId = Tool::arrow;
                 }
             }
         }
@@ -691,7 +691,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
                 }
 
-                if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode)
                 {
                     widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
                     if (IsSceneryItemRestricted(tabSelectedScenery))
@@ -782,13 +782,14 @@ namespace OpenRCT2::Ui::Windows
                 const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
                 windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
+                auto tabTop = widgets[WIDX_SCENERY_TITLE].bottom + 3;
                 if (GetSceneryTabInfoForMisc() != nullptr)
                 {
                     auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
                     miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
                     miscTabWidget->right = windowWidth - TabWidth - 7;
-                    miscTabWidget->top = InitTabPosY;
-                    miscTabWidget->bottom = InitTabPosY + TabHeight;
+                    miscTabWidget->top = tabTop;
+                    miscTabWidget->bottom = tabTop + TabHeight;
                 }
 
                 if (_tabEntries.back().IsAll())
@@ -796,8 +797,8 @@ namespace OpenRCT2::Ui::Windows
                     auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
                     allTabWidget->left = windowWidth - TabWidth - 6;
                     allTabWidget->right = windowWidth - 7;
-                    allTabWidget->top = InitTabPosY;
-                    allTabWidget->bottom = InitTabPosY + TabHeight;
+                    allTabWidget->top = tabTop;
+                    allTabWidget->bottom = tabTop + TabHeight;
                 }
             }
 
@@ -1067,7 +1068,9 @@ namespace OpenRCT2::Ui::Windows
             _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), MaxTabsPerRow) * TabWidth + 5;
 
             PrepareWidgets();
-            WindowInvalidateByClass(WindowClass::Scenery);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::Scenery);
         }
 
         int32_t GetRequiredWidth() const
@@ -1246,7 +1249,7 @@ namespace OpenRCT2::Ui::Windows
 
         void InitSceneryEntry(const ScenerySelection& selection, const ObjectEntryIndex sceneryGroupIndex)
         {
-            Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, OBJECT_ENTRY_INDEX_NULL);
+            Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, kObjectEntryIndexNull);
 
             if (IsSceneryAvailableToBuild(selection))
             {
@@ -1258,7 +1261,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Add scenery to primary group (usually trees or path additions)
-                if (sceneryGroupIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (sceneryGroupIndex != kObjectEntryIndexNull)
                 {
                     auto* tabInfo = GetSceneryTabInfoForGroup(sceneryGroupIndex);
                     if (tabInfo != nullptr)
@@ -1339,9 +1342,9 @@ namespace OpenRCT2::Ui::Windows
                 if (a.SceneryGroupIndex == b.SceneryGroupIndex)
                     return false;
 
-                if (a.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (a.SceneryGroupIndex == kObjectEntryIndexNull)
                     return false;
-                if (b.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (b.SceneryGroupIndex == kObjectEntryIndexNull)
                     return true;
 
                 const auto* entryA = a.GetSceneryGroupEntry();
@@ -3296,7 +3299,7 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             auto* toolWindow = ContextOpenWindow(WindowClass::Scenery);
-            ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::Arrow);
+            ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::arrow);
             InputSetFlag(INPUT_FLAG_6, true);
         }
     }

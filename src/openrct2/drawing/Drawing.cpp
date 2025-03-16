@@ -14,13 +14,13 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
-#include "../sprites.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
@@ -1011,7 +1011,7 @@ void UpdatePaletteEffects()
         uint32_t shade = 0;
         if (Config::Get().general.RenderWeatherGloom)
         {
-            auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().WeatherCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;

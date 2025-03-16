@@ -8,11 +8,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../Paint.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -74,7 +74,7 @@ static void PaintBoatHireStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const auto* stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.getStationObject();
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     TrackPaintUtilDrawPier(

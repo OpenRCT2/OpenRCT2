@@ -87,14 +87,14 @@ namespace OpenRCT2::RCT2
         }
     }
 
-    uint8_t Ride::GetMinCarsPerTrain() const
+    uint8_t Ride::getMinCarsPerTrain() const
     {
-        return MinMaxCarsPerTrain >> 4;
+        return minMaxCarsPerTrain >> 4;
     }
 
-    uint8_t Ride::GetMaxCarsPerTrain() const
+    uint8_t Ride::getMaxCarsPerTrain() const
     {
-        return MinMaxCarsPerTrain & 0xF;
+        return minMaxCarsPerTrain & 0xF;
     }
 
     OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
@@ -236,7 +236,7 @@ namespace OpenRCT2::RCT2
         RCTObjectEntry result;
         std::memset(&result, 0, sizeof(result));
 
-        result.SetType(ObjectType::Paths);
+        result.SetType(ObjectType::paths);
 
         auto foundMapping = false;
         for (const auto& mapping : _footpathMappings)

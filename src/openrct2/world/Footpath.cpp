@@ -432,7 +432,7 @@ static bool FootpathReconnectQueueToPath(
     }
 
     int32_t z = tileElement->GetBaseZ();
-    TileElement* targetFootpathElement = FootpathGetElement({ targetQueuePos, z - LAND_HEIGHT_STEP, z }, direction);
+    TileElement* targetFootpathElement = FootpathGetElement({ targetQueuePos, z - kLandHeightStep, z }, direction);
     if (targetFootpathElement != nullptr && !targetFootpathElement->AsPath()->IsQueue())
     {
         auto targetQueueElement = targetFootpathElement->AsPath();
@@ -561,7 +561,7 @@ static void Loc6A6D7E(
     FootpathNeighbourList* neighbourList)
 {
     auto targetPos = CoordsXY{ initialTileElementPos } + CoordsDirectionDelta[direction];
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode) && MapIsEdge(targetPos))
+    if ((gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode) && MapIsEdge(targetPos))
     {
         if (query)
         {
@@ -589,7 +589,7 @@ static void Loc6A6D7E(
                         }
                         return;
                     }
-                    if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
+                    if (tileElement->GetBaseZ() == initialTileElementPos.z - kLandHeightStep)
                     {
                         if (tileElement->AsPath()->IsSloped()
                             && tileElement->AsPath()->GetSlopeDirection() == DirectionReverse(direction))
@@ -610,7 +610,7 @@ static void Loc6A6D7E(
                             continue;
                         }
 
-                        if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+                        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
                         {
                             continue;
                         }
@@ -696,7 +696,7 @@ static void Loc6A6C85(
             return;
         }
 
-        if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
         {
             return;
         }
@@ -726,7 +726,7 @@ static void Loc6A6C85(
             }
             if (tileElementPos.element->AsPath()->GetSlopeDirection() == direction)
             {
-                pos.z += LAND_HEIGHT_STEP;
+                pos.z += kLandHeightStep;
             }
         }
     }
@@ -823,7 +823,7 @@ void FootpathChainRideQueue(
             {
                 if (tileElement->AsPath()->GetSlopeDirection() == direction)
                 {
-                    baseZ += LAND_HEIGHT_STEP;
+                    baseZ += kLandHeightStep;
                 }
             }
         }
@@ -849,7 +849,7 @@ void FootpathChainRideQueue(
                     foundQueue = true;
                     break;
                 }
-                if (tileElement->GetBaseZ() == baseZ - LAND_HEIGHT_STEP)
+                if (tileElement->GetBaseZ() == baseZ - kLandHeightStep)
                 {
                     if (!tileElement->AsPath()->IsSloped())
                         break;
@@ -857,7 +857,7 @@ void FootpathChainRideQueue(
                     if (DirectionReverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
                         break;
 
-                    baseZ -= LAND_HEIGHT_STEP;
+                    baseZ -= kLandHeightStep;
                     foundQueue = true;
                     break;
                 }
@@ -954,7 +954,7 @@ void FootpathUpdateQueueChains()
         if (ride == nullptr)
             continue;
 
-        for (const auto& station : ride->GetStations())
+        for (const auto& station : ride->getStations())
         {
             if (station.Entrance.IsNull())
                 continue;
@@ -973,7 +973,7 @@ void FootpathUpdateQueueChains()
 
                     Direction direction = DirectionReverse(tileElement->GetDirection());
                     FootpathChainRideQueue(
-                        rideIndex, ride->GetStationIndex(&station), station.Entrance.ToCoordsXY(), tileElement, direction);
+                        rideIndex, ride->getStationIndex(&station), station.Entrance.ToCoordsXY(), tileElement, direction);
                 } while (!(tileElement++)->IsLastForTile());
             }
         }
@@ -1661,7 +1661,7 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                     if (ride == nullptr)
                         continue;
 
-                    if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+                    if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
                         break;
 
                     const auto trackType = tileElement->AsTrack()->GetTrackType();
@@ -1754,7 +1754,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
         if (ride == nullptr)
             return;
 
-        if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
             return;
     }
 
@@ -1808,7 +1808,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
 
 static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
 {
-    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode);
+    bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode);
     for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
     {
         auto pathEntry = GetPathSurfaceEntry(i);
@@ -1824,7 +1824,7 @@ static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
             }
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
@@ -1832,7 +1832,7 @@ static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
     auto pathEntry = GetPathSurfaceEntry(index);
     if (pathEntry != nullptr)
     {
-        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode);
+        bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode);
         if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
         {
             return false;
@@ -1855,12 +1855,12 @@ static ObjectEntryIndex FootpathGetDefaultRailings()
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
 {
-    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode);
+    bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode);
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto footpathObj = objManager.GetLoadedObject<FootpathObject>(index);
     if (footpathObj != nullptr)
@@ -1880,7 +1880,7 @@ static ObjectEntryIndex FootpathGetDefaultLegacyPath()
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 bool FootpathSelectDefault()
@@ -1909,7 +1909,7 @@ bool FootpathSelectDefault()
 
     // Select default legacy path
     auto legacyPathIndex = FootpathGetDefaultLegacyPath();
-    if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
+    if (gFootpathSelection.LegacyPath != kObjectEntryIndexNull)
     {
         if (FootpathIsLegacyPathEntryOkay(gFootpathSelection.LegacyPath))
         {
@@ -1919,13 +1919,13 @@ bool FootpathSelectDefault()
         else
         {
             // Reset legacy path, we default to a surface (if there are any)
-            gFootpathSelection.LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+            gFootpathSelection.LegacyPath = kObjectEntryIndexNull;
         }
     }
 
-    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (surfaceIndex == kObjectEntryIndexNull)
     {
-        if (legacyPathIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (legacyPathIndex == kObjectEntryIndexNull)
         {
             // No surfaces or legacy paths available
             return false;
@@ -1944,7 +1944,7 @@ bool FootpathSelectDefault()
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::paths, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
@@ -1955,7 +1955,7 @@ const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::footpathSurface, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
@@ -1965,7 +1965,7 @@ const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::footpathRailings, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
@@ -2043,7 +2043,7 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    return ride->GetRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings);
+    return ride->getRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings);
 }
 
 bool FootpathIsZAndDirectionValid(const PathElement& pathElement, int32_t currentZ, int32_t currentDirection)

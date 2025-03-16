@@ -14,7 +14,7 @@
 
 #include <string>
 
-constexpr auto MAX_ENTRANCE_FEE = 999.00_GBP;
+constexpr auto kMaxEntranceFee = 999.00_GBP;
 
 constexpr uint16_t kParkRatingHistoryUndefined = std::numeric_limits<uint16_t>::max();
 constexpr uint32_t kGuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();

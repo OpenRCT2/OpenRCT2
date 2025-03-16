@@ -12,13 +12,13 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2;
@@ -101,25 +101,27 @@ GameActions::Result RideSetPriceAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, kStringIdEmpty);
     }
 
-    if (!ride->overall_view.IsNull())
+    if (!ride->overallView.IsNull())
     {
-        auto location = ride->overall_view.ToTileCentre();
+        auto location = ride->overallView.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
+
+    auto* windowMgr = Ui::GetWindowManager();
 
     ShopItem shopItem;
     if (_primaryPrice)
     {
         shopItem = ShopItem::Admission;
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType != RtdSpecialType::toilet)
         {
             shopItem = rideEntry->shop_item[0];
             if (shopItem == ShopItem::None)
             {
                 ride->price[0] = _price;
-                WindowInvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::Ride);
                 return res;
             }
         }
@@ -127,7 +129,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         if (!ShopItemHasCommonPrice(shopItem))
         {
             ride->price[0] = _price;
-            WindowInvalidateByClass(WindowClass::Ride);
+            windowMgr->InvalidateByClass(WindowClass::Ride);
             return res;
         }
     }
@@ -136,11 +138,11 @@ GameActions::Result RideSetPriceAction::Execute() const
         shopItem = rideEntry->shop_item[1];
         if (shopItem == ShopItem::None)
         {
-            shopItem = ride->GetRideTypeDescriptor().PhotoItem;
-            if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
+            shopItem = ride->getRideTypeDescriptor().PhotoItem;
+            if ((ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
             {
                 ride->price[1] = _price;
-                WindowInvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::Ride);
                 return res;
             }
         }
@@ -148,7 +150,7 @@ GameActions::Result RideSetPriceAction::Execute() const
         if (!ShopItemHasCommonPrice(shopItem))
         {
             ride->price[1] = _price;
-            WindowInvalidateByClass(WindowClass::Ride);
+            windowMgr->InvalidateByClass(WindowClass::Ride);
             return res;
         }
     }
@@ -165,7 +167,7 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
     {
         auto invalidate = false;
         auto rideEntry = GetRideEntryByIndex(ride.subtype);
-        const auto& rtd = ride.GetRideTypeDescriptor();
+        const auto& rtd = ride.getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::toilet && shopItem == ShopItem::Admission)
         {
             if (ride.price[0] != _price)
@@ -197,7 +199,8 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
         }
         if (invalidate)
         {
-            WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
         }
     }
 }

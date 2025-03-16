@@ -7,9 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../tile_element/Paint.Tunnel.h"
 #include "../../tile_element/Segment.h"
 #include "WoodenRollerCoaster.hpp"

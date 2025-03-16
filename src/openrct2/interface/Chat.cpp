@@ -10,14 +10,14 @@
 #include "Chat.h"
 
 #include "../Context.h"
+#include "../audio/Audio.h"
 #include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
 #include "../core/UTF8.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "../world/Location.hpp"
 

@@ -14,7 +14,7 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../localisation/LocalisationService.h"
+#include "../localisation/Language.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 
 using namespace OpenRCT2;

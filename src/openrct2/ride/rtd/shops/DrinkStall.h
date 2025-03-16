@@ -16,7 +16,7 @@
 // clang-format off
 constexpr RideTypeDescriptor DrinkStallRTD =
 {
-    .Category = RIDE_CATEGORY_SHOP,
+    .Category = RideCategory::shop,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::shop,
@@ -28,22 +28,22 @@ constexpr RideTypeDescriptor DrinkStallRTD =
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::sellsDrinks, RtdFlag::listVehiclesSeparately,
                      RtdFlag::hasTrackColourMain),
-    .RideModes = EnumsToFlags(RideMode::ShopStall),
-    .DefaultMode = RideMode::ShopStall,
+    .RideModes = EnumsToFlags(RideMode::shopStall),
+    .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_DRINK_STALL, STR_RIDE_DESCRIPTION_DRINK_STALL },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .AvailableBreakdowns = 0,
-    .Heights = { 12, DefaultDrinksStallHeight, 0, 0, },
+    .Heights = { 12, kDefaultDrinksStallHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 0, 0, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 250.00_GBP, 0.00_GBP, 1, },
     .DefaultPrices = { 0, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 15,
-    .ColourPresets = DEFAULT_STALL_COLOUR_PRESET,
+    .ColourPresets = kDefaultStallColourPreset,
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Drink,
     .Name = "drink_stall",
@@ -61,6 +61,6 @@ constexpr RideTypeDescriptor DrinkStallRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::ShopOrStall,
+    .Classification = RideClassification::shopOrStall,
 };
 // clang-format on

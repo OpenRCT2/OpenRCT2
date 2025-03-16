@@ -13,10 +13,10 @@
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Language.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenes/intro/IntroScene.h"
@@ -96,7 +96,7 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
 
 static bool ShouldShowFPS()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return true;
 
     auto* windowMgr = Ui::GetWindowManager();
@@ -119,7 +119,7 @@ void Painter::PaintFPS(DrawPixelInfo& dpi)
     screenCoords.x = screenCoords.x - (stringWidth / 2);
 
     // Move counter below toolbar if buttons are centred
-    const bool isTitle = gScreenFlags == SCREEN_FLAGS_TITLE_DEMO;
+    const bool isTitle = gLegacyScene == LegacyScene::titleSequence;
     if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
     {
         screenCoords.y = kTopToolbarHeight + 3;

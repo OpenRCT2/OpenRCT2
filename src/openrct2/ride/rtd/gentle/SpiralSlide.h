@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor SpiralSlideRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::spiralSlide,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission),
-    .DefaultMode = RideMode::SingleRidePerAdmission,
+    .RideModes = EnumsToFlags(RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission),
+    .DefaultMode = RideMode::singleRidePerAdmission,
     .OperatingSettings = { 1, 5 },
     .Naming = { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Building, RideComponentType::Station },
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 82.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -58,12 +58,12 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 50), RIDE_RATING(1, 40), RIDE_RATING(0, 90) },
+        { MakeRideRating(1, 50), MakeRideRating(1, 40), MakeRideRating(0, 90) },
         8,
         2,
         false,
         {
-            { RatingsModifierType::BonusSlideUnlimitedRides, 0, RIDE_RATING(0, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 25) },
+            { RatingsModifierType::BonusSlideUnlimitedRides, 0, MakeRideRating(0, 40), MakeRideRating(0, 20), MakeRideRating(0, 25) },
             { RatingsModifierType::BonusScenery,             0, 25098, 0, 0 },
         },
     },
@@ -72,12 +72,12 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceSpiralSlide,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
-    .RideUpdate = UpdateSpiralSlide,
+    .RideUpdate = updateSpiralSlide,
     .specialType = RtdSpecialType::spiralSlide,
 };
 // clang-format on

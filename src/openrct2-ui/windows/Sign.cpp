@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LargeSceneryRemoveAction.h>
 #include <openrct2/actions/SignSetNameAction.h>
 #include <openrct2/actions/SignSetStyleAction.h>
@@ -22,7 +23,6 @@
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/WallSceneryEntry.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         bool _isSmall = false;
-        ObjectEntryIndex _sceneryEntry = OBJECT_ENTRY_INDEX_NULL;
+        ObjectEntryIndex _sceneryEntry = kObjectEntryIndexNull;
         colour_t _mainColour = {};
         colour_t _textColour = {};
 

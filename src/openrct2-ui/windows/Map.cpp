@@ -18,10 +18,11 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/MapChangeSizeAction.h>
 #include <openrct2/actions/PeepSpawnPlaceAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
@@ -30,7 +31,6 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
@@ -74,7 +74,7 @@ namespace OpenRCT2::Ui::Windows
 
     static bool isEditorOrSandbox()
     {
-        return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode;
+        return gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode;
     }
 
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
@@ -239,9 +239,8 @@ namespace OpenRCT2::Ui::Windows
                 | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
 
             flags |= WF_RESIZABLE;
-            min_width = WW;
-            min_height = WH;
 
+            WindowSetResize(*this, { WW, WH }, { WW, WH });
             SetInitialWindowDimensions();
             ResetMaxWindowDimensions();
             ResizeMiniMap();
@@ -298,7 +297,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_PEOPLE_STARTING_POSITION:
-                    if (ToolSet(*this, widgetIndex, Tool::UpArrow))
+                    if (ToolSet(*this, widgetIndex, Tool::upArrow))
                         break;
 
                     ShowGridlines();
@@ -927,7 +926,7 @@ namespace OpenRCT2::Ui::Windows
                         Ride* targetRide = GetRide(tileElement->AsEntrance()->GetRideIndex());
                         if (targetRide != nullptr)
                         {
-                            const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;
+                            const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
                             colourA = RideKeyColours[EnumValue(colourKey)];
                         }
                         break;
@@ -937,7 +936,7 @@ namespace OpenRCT2::Ui::Windows
                         Ride* targetRide = GetRide(tileElement->AsTrack()->GetRideIndex());
                         if (targetRide != nullptr)
                         {
-                            const auto& colourKey = targetRide->GetRideTypeDescriptor().ColourKey;
+                            const auto& colourKey = targetRide->getRideTypeDescriptor().ColourKey;
                             colourA = RideKeyColours[EnumValue(colourKey)];
                         }
 
@@ -1101,7 +1100,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PEOPLE_STARTING_POSITION].type = WindowWidgetType::FlatBtn;
 
             // Only show this in the scenario editor, even when in sandbox mode.
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            if (gLegacyScene == LegacyScene::scenarioEditor)
                 widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::FlatBtn;
 
             widgets[WIDX_MAP_SIZE_SPINNER_Y].type = WindowWidgetType::Spinner;

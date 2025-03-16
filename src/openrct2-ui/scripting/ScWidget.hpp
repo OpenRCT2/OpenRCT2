@@ -12,7 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../interface/Widget.h"
-    #include "../interface/Window.h"
     #include "CustomListView.h"
     #include "CustomWindow.h"
     #include "ScViewport.hpp"
@@ -22,7 +21,6 @@
     #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/IconNames.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
-    #include <openrct2/ui/UiContext.h>
     #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Scripting
@@ -421,14 +419,15 @@ namespace OpenRCT2::Scripting
         {
             if (widget != nullptr)
             {
+                auto* windowMgr = Ui::GetWindowManager();
                 if (widget->type == WindowWidgetType::DropdownMenu)
                 {
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
+                    windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex + 1);
                 }
                 else if (widget->type == WindowWidgetType::Spinner)
                 {
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 2);
+                    windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex + 1);
+                    windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex + 2);
                 }
             }
             Invalidate();
@@ -436,7 +435,8 @@ namespace OpenRCT2::Scripting
 
         void Invalidate()
         {
-            WidgetInvalidateByNumber(_class, _number, _widgetIndex);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex);
         }
     };
 

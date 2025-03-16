@@ -10,11 +10,12 @@
 #include "SawyerCoding.h"
 
 #include "../platform/Platform.h"
-#include "../scenario/Scenario.h"
 #include "Numerics.hpp"
 
 #include <cassert>
+#include <cstdint>
 #include <cstring>
+#include <memory>
 #include <stdexcept>
 
 namespace OpenRCT2::SawyerCoding

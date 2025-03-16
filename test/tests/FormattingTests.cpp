@@ -15,6 +15,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/RideStringIds.h>
 #include <sstream>

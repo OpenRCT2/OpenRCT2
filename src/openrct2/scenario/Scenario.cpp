@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Scenario.h"
-
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Date.h"
@@ -18,7 +16,7 @@
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/EnumUtils.hpp"
@@ -31,13 +29,12 @@
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/Object.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectLimits.h"
@@ -69,7 +66,7 @@
 
 using namespace OpenRCT2;
 
-const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
+const StringId kScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
     STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS, STR_COMPETITIONS, STR_UCES_TM,    STR_UCES_KD,
 };
@@ -115,7 +112,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.Cash = gameState.InitialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
-    if (auto* object = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); object != nullptr)
+    if (auto* object = objManager.GetLoadedObject(ObjectType::scenarioText, 0); object != nullptr)
     {
         auto* textObject = reinterpret_cast<ScenarioTextObject*>(object);
 
@@ -151,7 +148,7 @@ void ScenarioReset(GameState_t& gameState)
     Staff::ResetStats();
 
     gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-    if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+    if (gameState.LastEntranceStyle == kObjectEntryIndexNull)
     {
         // Fall back to first entrance object
         gameState.LastEntranceStyle = 0;
@@ -188,7 +185,7 @@ static void ScenarioEnd()
  */
 void ScenarioFailure(GameState_t& gameState)
 {
-    gameState.ScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+    gameState.ScenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
     ScenarioEnd();
 }
 
@@ -358,7 +355,7 @@ static void ScenarioUpdateDayNightCycle()
     float currentDayNightCycle = gDayNightCycle;
     gDayNightCycle = 0;
 
-    if (gScreenFlags == SCREEN_FLAGS_PLAYING && Config::Get().general.DayNightCycle)
+    if (gLegacyScene == LegacyScene::playing && Config::Get().general.DayNightCycle)
     {
         float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kTicksPerMonth);
         if (monthFraction < (1 / 8.0f))
@@ -398,7 +395,7 @@ void ScenarioUpdate(GameState_t& gameState)
 {
     PROFILED_FUNCTION();
 
-    if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+    if (gLegacyScene == LegacyScene::playing)
     {
         auto& date = GetDate();
         if (date.IsDayStart())
@@ -538,18 +535,18 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
 
     for (auto& ride : GetRideManager())
     {
-        const auto* rideEntry = ride.GetRideEntry();
+        const auto* rideEntry = ride.getRideEntry();
         if (rideEntry != nullptr)
         {
             // If there are more than 5 roller coasters, only mark the first five.
-            if (isFiveCoasterObjective && (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+            if (isFiveCoasterObjective && (RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster) && rcs < 5))
             {
-                ride.lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+                ride.lifecycleFlags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
                 rcs++;
             }
             else
             {
-                ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+                ride.lifecycleFlags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
             }
         }
     }
@@ -573,7 +570,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
                 auto ride = GetRide(it.element->AsTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
-                if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+                if (ride != nullptr && ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
                 {
                     markTrackAsIndestructible = true;
                 }
@@ -661,13 +658,13 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
     BitSet<kMaxRideObjects> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(6, 00)
-            && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::open && ride.ratings.excitement >= MakeRideRating(6, 00)
+            && ride.subtype != kObjectEntryIndexNull)
         {
-            auto rideEntry = ride.GetRideEntry();
+            auto rideEntry = ride.getRideEntry();
             if (rideEntry != nullptr)
             {
-                if (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                if (RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster) && !type_already_counted[ride.subtype])
                 {
                     type_already_counted[ride.subtype] = true;
                     rcs++;
@@ -729,7 +726,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
             return ObjectiveStatus::Failure;
         }
     }
-    else if (gameState.ScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+    else if (gameState.ScenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
     {
         gameState.ScenarioParkRatingWarningDays = 0;
     }
@@ -763,15 +760,15 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(7, 00)
-            && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::open && ride.ratings.excitement >= MakeRideRating(7, 00)
+            && ride.subtype != kObjectEntryIndexNull)
         {
-            auto rideEntry = ride.GetRideEntry();
+            auto rideEntry = ride.getRideEntry();
             if (rideEntry != nullptr)
             {
-                if (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                if (RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster) && !type_already_counted[ride.subtype])
                 {
-                    if (ToHumanReadableRideLength(ride.GetTotalLength()) >= MinimumLength)
+                    if (ToHumanReadableRideLength(ride.getTotalLength()) >= MinimumLength)
                     {
                         type_already_counted[ride.subtype] = true;
                         rcs++;
@@ -795,13 +792,13 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status != RideStatus::Closed && ride.ratings.excitement >= MinimumExcitement)
+        if (ride.status != RideStatus::closed && ride.ratings.excitement >= MinimumExcitement)
         {
-            auto rideEntry = ride.GetRideEntry();
+            auto rideEntry = ride.getRideEntry();
             if (rideEntry != nullptr)
             {
-                if ((ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                    && RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+                if ((ride.lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+                    && RideEntryHasCategory(*rideEntry, RideCategory::rollerCoaster))
                 {
                     rcs++;
                 }

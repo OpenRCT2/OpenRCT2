@@ -26,7 +26,7 @@ enum EDITOR_INPUT_FLAGS
 
 extern std::optional<StringId> _gSceneryGroupPartialSelectError;
 extern std::vector<uint8_t> _objectSelectionFlags;
-extern uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
+extern uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
 
 bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType);
 bool EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType);

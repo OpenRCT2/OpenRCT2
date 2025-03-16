@@ -34,10 +34,10 @@
 #include <openrct2/scenes/title/TitleSequence.h>
 #include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
+#include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Scenery.h>
 #include <stdexcept>
 

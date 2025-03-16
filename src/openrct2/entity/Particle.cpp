@@ -8,7 +8,7 @@
  *****************************************************************************/
 #include "Particle.h"
 
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
@@ -19,7 +19,7 @@
 
 #include <iterator>
 
-// TODO: Create constants in sprites.h
+// TODO: Create constants in SpriteIds.h
 static constexpr uint32_t kVehicleCrashParticleSprites[kCrashedVehicleParticleNumberTypes] = {
     22577, 22589, 22601, 22613, 22625,
 };
@@ -223,7 +223,7 @@ void CrashSplashParticle::Paint(PaintSession& session, int32_t imageDirection) c
 {
     PROFILED_FUNCTION();
 
-    // TODO: Create constant in sprites.h
+    // TODO: Create constant in SpriteIds.h
     uint32_t imageId = 22927 + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
@@ -282,7 +282,7 @@ void SteamParticle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    // TODO: Create constant in sprites.h
+    // TODO: Create constant in SpriteIds.h
     uint32_t imageId = 22637 + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
@@ -373,7 +373,7 @@ void ExplosionFlare::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    // TODO: Create constant in sprites.h
+    // TODO: Create constant in SpriteIds.h
     uint32_t imageId = 22896 + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }

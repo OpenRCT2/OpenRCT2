@@ -10,9 +10,9 @@
 #include "Balloon.h"
 
 #include "../Game.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"

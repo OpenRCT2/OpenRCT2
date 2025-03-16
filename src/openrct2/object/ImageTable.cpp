@@ -13,6 +13,7 @@
 #include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../SpriteIds.h"
 #include "../core/File.h"
 #include "../core/FileScanner.h"
 #include "../core/Guard.hpp"
@@ -21,7 +22,6 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/ImageImporter.h"
-#include "../sprites.h"
 #include "Object.h"
 #include "ObjectFactory.h"
 

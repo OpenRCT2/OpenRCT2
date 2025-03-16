@@ -62,7 +62,7 @@ namespace OpenRCT2
     int32_t ToHumanReadableSpeed(int32_t baseSpeed)
     {
         // Divide this value by 29127 to get the human-readable max speed
-        // (in RCT2, display_speed = (max_speed * 9) >> 18)
+        // (in RCT2, display_speed = (maxSpeed * 9) >> 18)
         return (baseSpeed * 9) >> 18;
     }
 

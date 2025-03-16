@@ -21,6 +21,7 @@
     #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/Input.h>
+    #include <openrct2/scenario/Scenario.h>
     #include <openrct2/scenario/ScenarioRepository.h>
     #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
@@ -271,23 +272,24 @@ namespace OpenRCT2::Scripting
                 auto defaultPath = AsOrDefault(desc["defaultPath"], "");
                 auto callback = desc["callback"];
 
-                int32_t loadSaveType{};
+                auto loadSaveAction = LoadSaveAction::load;
                 if (type == "load")
-                    loadSaveType = LOADSAVETYPE_LOAD;
+                    loadSaveAction = LoadSaveAction::load;
                 else
                     throw DukException();
 
+                LoadSaveType loadSaveType;
                 if (fileType == "game")
-                    loadSaveType |= LOADSAVETYPE_GAME;
+                    loadSaveType = LoadSaveType::park;
                 else if (fileType == "heightmap")
-                    loadSaveType |= LOADSAVETYPE_HEIGHTMAP;
+                    loadSaveType = LoadSaveType::heightmap;
                 else
                     throw DukException();
 
                 LoadsaveOpen(
-                    loadSaveType, defaultPath,
-                    [this, plugin, callback](int32_t result, std::string_view path) {
-                        if (result == MODAL_RESULT_OK)
+                    loadSaveAction, loadSaveType, defaultPath,
+                    [this, plugin, callback](ModalResult result, std::string_view path) {
+                        if (result == ModalResult::ok)
                         {
                             auto dukValue = ToDuk(_scriptEngine.GetContext(), path);
                             _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);

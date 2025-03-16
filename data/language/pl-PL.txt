@@ -1924,9 +1924,6 @@ STR_2706    :Nigdy
 STR_2707    :Otwórz nowe okno
 STR_2708    :{WINDOW_COLOUR_1}Jesteś pewien, że chcesz nadpisać {STRINGID}?
 STR_2709    :Nadpisz
-STR_2710    :Wprowadź nazwę pliku:
-STR_2718    :W górę
-STR_2719    :Nowy plik
 STR_2720    :{UINT16}sek
 STR_2721    :{UINT16}sek
 STR_2722    :{UINT16}min:{UINT16}sek
@@ -2263,10 +2260,6 @@ STR_3252    :Nie można bardziej zwiększyć maksymalnego zadłużenia!
 STR_3253    :Nie można bardziej zmniejszyć maksymalnego zadłużenia!
 STR_3254    :Nie można bardziej zwiększyć oprocentowania pożyczek!
 STR_3255    :Nie można bardziej zmniejszyć oprocentowania pożyczek!
-STR_3256    :Goście preferują mniej intensywne atrakcje
-STR_3257    :Wybierz czy goście powinni preferować tylko mniej intensywne atrakcje
-STR_3258    :Goście preferują bardziej intensywne atrakcje
-STR_3259    :Wybierz czy goście powinni preferować tylko bardziej intensywne atrakcje
 STR_3260    :{WINDOW_COLOUR_2}Gotówka na gościa (średnia):
 STR_3261    :{WINDOW_COLOUR_2}Początkowe zadowolenie gości:
 STR_3262    :{WINDOW_COLOUR_2}Początkowy głód gości:
@@ -2622,8 +2615,8 @@ STR_5454    :Odblokuj FPS
 STR_5455    :Włącz tryb piaskownicy
 STR_5456    :Wyłącz sprawdzanie kolizji
 STR_5457    :Wyłącz limity wsporników
-STR_5458    :Obróć zgodnie ze wskazówką zegara
-STR_5459    :Obróć odwrotnie względem wskazówki zegara
+STR_5458    :Obróć w prawo
+STR_5459    :Obróć w lewo
 STR_5460    :Widok odwrotny względem wskazówki zegara
 STR_5461    :Ustaw parametry dla wszystkich gości
 STR_5462    :{CURRENCY}
@@ -3004,8 +2997,7 @@ STR_5887    :Prefiks
 STR_5888    :Sufiks
 STR_5889    :Własny symbol waluty
 STR_5890    :Wprowadź własny symbol waluty:
-STR_5891    :Domyślny
-STR_5892    :Idź do domyślnego katalogu
+STR_5892    :Idź do katalogu domyślnego
 STR_5893    :Kurs wymiany
 STR_5894    :Wprowadź kurs wymiany:
 STR_5895    :Zapisz trasę
@@ -3790,3 +3782,16 @@ STR_6726    :Y:
 STR_6727    :Pętla nurkująca (w lewo)
 STR_6728    :Pętla nurkująca (w prawo)
 STR_6729    :Wyciągarka linowa musi znajdować się bezpośrednio po stacji lub hamulcu blokowym
+STR_6730    :Eksportuj dane emscripten
+STR_6731    :Importuj dane emscripten
+STR_6732    :Pokaż przycisk na pasku narzędzi do obracania widoku w kierunku przeciwnym do ruchu wskazówek zegara
+STR_6733    :Półprzezroczystość
+STR_6734    :Elementy mapy, które znajdują się na lub powyżej wysokości cięcia, są wyświetlane jako półprzezroczyste
+STR_6735    :Idź do katalogu nadrzędnego
+STR_6736    :Podgląd
+STR_6737    :Brak podglądu
+STR_6738    :{WINDOW_COLOUR_2}Atrakcyjność parku: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Data: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Gotówka: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Liczba atrakcji: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Liczba gości: {BLACK}{UINT16}

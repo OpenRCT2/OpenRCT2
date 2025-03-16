@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor SwingingInverterShipRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4B,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::swingingInverterShip,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::Swing),
-    .DefaultMode = RideMode::Swing,
+    .RideModes = EnumsToFlags(RideMode::swing),
+    .DefaultMode = RideMode::swing,
     .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_SWINGING_INVERTER_SHIP, STR_RIDE_DESCRIPTION_SWINGING_INVERTER_SHIP },
     .NameConvention = { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station },
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 106.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(2, 50), RIDE_RATING(2, 70), RIDE_RATING(2, 74) },
+        { MakeRideRating(2, 50), MakeRideRating(2, 70), MakeRideRating(2, 74) },
         16,
         0,
         false,

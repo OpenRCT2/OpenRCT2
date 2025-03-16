@@ -38,7 +38,7 @@ namespace OpenRCT2::Profiling
         virtual std::vector<double> GetTimeSamples() const = 0;
 
         // Returns all time accumulated in microseconds.
-        virtual double GetTotalTime() const = 0;
+        virtual double getTotalTime() const = 0;
 
         // Returns the min. time in microseconds.
         virtual double GetMinTime() const = 0;
@@ -118,7 +118,7 @@ namespace OpenRCT2::Profiling
                 return { Children.begin(), Children.end() };
             }
 
-            double GetTotalTime() const override
+            double getTotalTime() const override
             {
                 std::scoped_lock lock(Mutex);
                 return TotalTimeUs;

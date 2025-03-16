@@ -24,7 +24,7 @@ using money64 = fixed64_1dp;
 // really tries to use a gigantic constant that can't fit in a double, they are
 // probably going to be breaking other things anyways.
 // For more details, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=26374
-constexpr money64 operator"" _GBP(long double money) noexcept
+constexpr money64 operator""_GBP(long double money) noexcept
 {
     return static_cast<double>(money) * 10;
 }

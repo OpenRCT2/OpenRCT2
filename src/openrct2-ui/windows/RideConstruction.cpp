@@ -23,6 +23,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/MazeSetTrackAction.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
@@ -30,12 +31,12 @@
 #include <openrct2/actions/TrackPlaceAction.h>
 #include <openrct2/actions/TrackRemoveAction.h>
 #include <openrct2/actions/TrackSetBrakeSpeedAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Numerics.hpp>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
@@ -45,7 +46,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/ConstructionClearance.h>
@@ -59,6 +59,8 @@
 
 constexpr int8_t kDefaultSpeedIncrement = 2;
 constexpr int8_t kDefaultMinimumSpeed = 2;
+
+constexpr uint8_t kVerticalDropButtonStart = 6;
 
 using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
@@ -77,11 +79,11 @@ namespace OpenRCT2::Ui::Windows
         SelectedLiftAndInverted liftHillAndAlternativeState, const CoordsXYZ& trackPos);
     static std::pair<bool, OpenRCT2::TrackElemType> WindowRideConstructionUpdateStateGetTrackElement();
 
-    static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+    static constexpr StringId kWindowTitle = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
     static constexpr int32_t WH = 394;
     static constexpr int32_t WW = 210;
 
-    static constexpr uint16_t ARROW_PULSE_DURATION = 200;
+    static constexpr uint16_t kArrowPulseDuration = 200;
     // Width of the group boxes, e.g. “Banking”
     static constexpr int32_t GW = WW - 6;
 
@@ -105,11 +107,13 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RIGHT_CURVE_SMALL,
         WIDX_RIGHT_CURVE_VERY_SMALL,
         WIDX_SPECIAL_TRACK_DROPDOWN,
+        WIDX_SLOPE_DOWN_VERTICAL,
         WIDX_SLOPE_DOWN_STEEP,
         WIDX_SLOPE_DOWN,
         WIDX_LEVEL,
         WIDX_SLOPE_UP,
         WIDX_SLOPE_UP_STEEP,
+        WIDX_SLOPE_UP_VERTICAL,
         WIDX_CHAIN_LIFT,
         WIDX_BANK_LEFT,
         WIDX_BANK_STRAIGHT,
@@ -141,8 +145,8 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
 
     // clang-format off
-    static constexpr Widget _rideConstructionWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr Widget kRideConstructionWidgets[] = {
+        WINDOW_SHIM(kWindowTitle, WW, WH),
         MakeWidget        ({  3,  17}, {     GW,  57}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
         MakeWidget        ({  3,  76}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
         MakeWidget        ({  3, 120}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                                    ),
@@ -156,11 +160,13 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({160,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_RIGHT),          STR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL_TIP         ),
         MakeWidget        ({182,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_VERY_SMALL_TIP    ),
         MakeWidget        ({  6,  55}, { GW - 6,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_YELLOW_STRING,                                STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
-        MakeWidget        ({ 45,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP),  STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP          ),
-        MakeWidget        ({ 69,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),        STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                ),
-        MakeWidget        ({ 93,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL),       STR_RIDE_CONSTRUCTION_LEVEL_TIP                     ),
-        MakeWidget        ({117,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP),          STR_RIDE_CONSTRUCTION_SLOPE_UP_TIP                  ),
-        MakeWidget        ({141,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP),    STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP            ),
+        MakeWidget        ({  6,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_DROP),     STR_RIDE_CONSTRUCTION_VERTICAL_DROP_TIP          ),
+        MakeWidget        ({ 30,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP),  STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP          ),
+        MakeWidget        ({ 54,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),        STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                ),
+        MakeWidget        ({ 78,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL),       STR_RIDE_CONSTRUCTION_LEVEL_TIP                     ),
+        MakeWidget        ({102,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP),          STR_RIDE_CONSTRUCTION_SLOPE_UP_TIP                  ),
+        MakeWidget        ({126,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP),    STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP            ),
+        MakeWidget        ({150,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_RISE),     STR_RIDE_CONSTRUCTION_VERTICAL_RISE_TIP            ),
         MakeWidget        ({178,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CHAIN_LIFT),                          STR_RIDE_CONSTRUCTION_CHAIN_LIFT_TIP                ),
         MakeWidget        ({ 69, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK),         STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP       ),
         MakeWidget        ({ 93, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK),           STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                   ),
@@ -194,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
     static bool _autoRotatingShop;
     static bool _gotoStartPlacementMode = false;
 
-    static constexpr StringId RideConstructionSeatAngleRotationStrings[] = {
+    static constexpr StringId kSeatAngleRotationStrings[] = {
         STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
         STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_90,  STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_45,
         STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_0,       STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_45,
@@ -237,7 +243,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            SetWidgets(_rideConstructionWidgets);
+            SetWidgets(kRideConstructionWidgets);
             number = _currentRideIndex.ToUnderlying();
 
             InitScrollWidgets();
@@ -247,15 +253,16 @@ namespace OpenRCT2::Ui::Windows
 
             _currentTrackPrice = kMoney64Undefined;
             _currentBrakeSpeed = 8;
+            _currentColourScheme = RideColourScheme::main;
             _currentSeatRotationAngle = 4;
 
-            _currentlySelectedTrack = currentRide->GetRideTypeDescriptor().StartTrackPiece;
+            _currentlySelectedTrack = currentRide->getRideTypeDescriptor().StartTrackPiece;
             _currentTrackPitchEnd = TrackPitch::None;
             _currentTrackRollEnd = TrackRoll::None;
             _currentTrackHasLiftHill = false;
             _currentTrackAlternative.clearAll();
 
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
+            if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
                 _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
             _previousTrackRollEnd = TrackRoll::None;
@@ -298,27 +305,27 @@ namespace OpenRCT2::Ui::Windows
             if (RideTryGetOriginElement(*currentRide, nullptr))
             {
                 // Auto open shops if required.
-                if (currentRide->mode == RideMode::ShopStall && Config::Get().general.AutoOpenShops)
+                if (currentRide->mode == RideMode::shopStall && Config::Get().general.AutoOpenShops)
                 {
                     // HACK: Until we find a good a way to defer the game command for opening the shop, stop this
                     //       from getting stuck in an infinite loop as opening the currentRide will try to close this window
                     if (!_autoOpeningShop)
                     {
                         _autoOpeningShop = true;
-                        auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::Open);
+                        auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::open);
                         GameActions::Execute(&gameAction);
                         _autoOpeningShop = false;
                     }
                 }
 
-                currentRide->SetToDefaultInspectionInterval();
+                currentRide->setToDefaultInspectionInterval();
                 auto intent = Intent(WindowClass::Ride);
                 intent.PutExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
                 ContextOpenIntent(&intent);
             }
             else
             {
-                auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+                auto gameAction = RideDemolishAction(currentRide->id, RideModifyType::demolish);
                 gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
                 GameActions::Execute(&gameAction);
             }
@@ -334,7 +341,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            const auto& rtd = currentRide->GetRideTypeDescriptor();
+            const auto& rtd = currentRide->getRideTypeDescriptor();
             const auto currentTrackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
 
             uint64_t disabledWidgets = 0;
@@ -406,7 +413,7 @@ namespace OpenRCT2::Ui::Windows
             if (!IsTrackEnabled(TrackGroup::slope) && !IsTrackEnabled(TrackGroup::slopeSteepDown)
                 && !IsTrackEnabled(TrackGroup::slopeSteepUp))
             {
-                if (!currentRide->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
+                if (!currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                 {
                     // Disable all slopes
                     disabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_SLOPE_DOWN_STEEP)
@@ -427,7 +434,7 @@ namespace OpenRCT2::Ui::Windows
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
                 }
             }
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
+            if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && !GetGameState().Cheats.enableAllDrawableTrackPieces)
             {
                 // Disable lift hill toggle and banking if current track piece is uphill
@@ -562,8 +569,12 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case TrackPitch::Down90:
+                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP)
+                        | (1uLL << WIDX_SLOPE_UP_STEEP);
+                    break;
                 case TrackPitch::Up90:
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP);
+                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL)
+                        | (1uLL << WIDX_SLOPE_UP);
                     break;
             }
             if (_previousTrackPitchEnd == TrackPitch::None)
@@ -578,15 +589,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (_previousTrackPitchEnd == TrackPitch::Up60 && _currentTrackPieceDirection < 4)
                 {
-                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
                 }
                 if (_previousTrackPitchEnd == TrackPitch::Up90)
                 {
-                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
                 }
                 if (_previousTrackPitchEnd == TrackPitch::Down60 && _currentTrackPieceDirection < 4)
                 {
-                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_VERTICAL);
                 }
             }
             if (_previousTrackRollEnd == TrackRoll::Left)
@@ -657,6 +668,12 @@ namespace OpenRCT2::Ui::Windows
                 if (_currentTrackPitchEnd == TrackPitch::Down60)
                 {
                     disabledWidgets |= (1uLL << WIDX_CHAIN_LIFT);
+                }
+                // Ensures that you can build an "unbanking turn", but not select a turn that start banked and
+                // turns to level (as that does not exist).
+                if (_currentTrackRollEnd != TrackRoll::None && _currentTrackPitchEnd != TrackPitch::None)
+                {
+                    disabledWidgets |= (1uLL << WIDX_LEVEL);
                 }
             }
             if (_currentTrackPitchEnd == TrackPitch::Up90 || _previousTrackPitchEnd == TrackPitch::Up90)
@@ -786,8 +803,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     disabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
                 }
-                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
-                if (currentRide->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
+                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
+                    | (1uLL << WIDX_SLOPE_DOWN_STEEP);
+                if (currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                 {
                     disabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
                         | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
@@ -799,8 +817,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
                 }
-                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
-                if (currentRide->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
+                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE)
+                    | (1uLL << WIDX_SLOPE_UP_STEEP);
+                if (currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                 {
                     disabledWidgets |= (1uLL << WIDX_STRAIGHT) | (1uLL << WIDX_RIGHT_CURVE) | (1uLL << WIDX_RIGHT_CURVE_SMALL)
                         | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
@@ -848,7 +867,7 @@ namespace OpenRCT2::Ui::Windows
                     if (_currentlySelectedTrack == TrackCurve::LeftSmall || _currentlySelectedTrack == TrackCurve::RightSmall)
                     {
                         if (_currentTrackPitchEnd == TrackPitch::None && _previousTrackRollEnd != TrackRoll::None
-                            && (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
+                            && (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                                 || GetGameState().Cheats.enableAllDrawableTrackPieces))
                         {
                             disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
@@ -927,7 +946,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
                 {
-                    WidgetInvalidate(*this, i);
+                    InvalidateWidget(i);
                 }
             }
             disabled_widgets = disabledWidgets;
@@ -943,7 +962,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Close construction window if currentRide is not closed,
             // editing currentRide while open will cause many issues until properly handled
-            if (currentRide->status != RideStatus::Closed && currentRide->status != RideStatus::Simulating)
+            if (currentRide->status != RideStatus::closed && currentRide->status != RideStatus::simulating)
             {
                 Close();
                 return;
@@ -957,7 +976,7 @@ namespace OpenRCT2::Ui::Windows
                     case TrackElemType::Whirlpool:
                     case TrackElemType::Rapids:
                     case TrackElemType::Waterfall:
-                        WidgetInvalidate(*this, WIDX_CONSTRUCT);
+                        InvalidateWidget(WIDX_CONSTRUCT);
                         break;
                     default:
                         break;
@@ -1021,8 +1040,8 @@ namespace OpenRCT2::Ui::Windows
                     auto currentRide = GetRide(_currentRideIndex);
                     if (currentRide != nullptr)
                     {
-                        auto status = currentRide->status == RideStatus::Simulating ? RideStatus::Closed
-                                                                                    : RideStatus::Simulating;
+                        auto status = currentRide->status == RideStatus::simulating ? RideStatus::closed
+                                                                                    : RideStatus::simulating;
                         auto gameAction = RideSetStatusAction(currentRide->id, status);
                         GameActions::Execute(&gameAction);
                     }
@@ -1120,6 +1139,10 @@ namespace OpenRCT2::Ui::Windows
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                     break;
+                case WIDX_SLOPE_DOWN_VERTICAL:
+                    RideConstructionInvalidateCurrentTrack();
+                    UpdateLiftHillSelected(TrackPitch::Down90);
+                    break;
                 case WIDX_SLOPE_DOWN_STEEP:
                     RideConstructionInvalidateCurrentTrack();
                     if (IsTrackEnabled(TrackGroup::helixDownBankedHalf) || IsTrackEnabled(TrackGroup::helixUpBankedHalf))
@@ -1191,14 +1214,8 @@ namespace OpenRCT2::Ui::Windows
                             }
                         }
                     }
-                    if (widgets[WIDX_SLOPE_DOWN_STEEP].tooltip == STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP)
-                    {
-                        UpdateLiftHillSelected(TrackPitch::Down60);
-                    }
-                    else
-                    {
-                        UpdateLiftHillSelected(TrackPitch::Up90);
-                    }
+
+                    UpdateLiftHillSelected(TrackPitch::Down60);
                     break;
                 case WIDX_SLOPE_DOWN:
                     RideConstructionInvalidateCurrentTrack();
@@ -1241,7 +1258,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _currentTrackRollEnd = TrackRoll::None;
                     }
-                    if (currentRide->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
+                    if (currentRide->getRideTypeDescriptor().SupportsTrackGroup(TrackGroup::reverseFreefall))
                     {
                         if (_rideConstructionState == RideConstructionState::Front
                             && _currentlySelectedTrack == TrackCurve::None)
@@ -1326,14 +1343,12 @@ namespace OpenRCT2::Ui::Windows
                             }
                         }
                     }
-                    if (widgets[WIDX_SLOPE_UP_STEEP].tooltip == STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP)
-                    {
-                        UpdateLiftHillSelected(TrackPitch::Up60);
-                    }
-                    else
-                    {
-                        UpdateLiftHillSelected(TrackPitch::Down90);
-                    }
+
+                    UpdateLiftHillSelected(TrackPitch::Up60);
+                    break;
+                case WIDX_SLOPE_UP_VERTICAL:
+                    RideConstructionInvalidateCurrentTrack();
+                    UpdateLiftHillSelected(TrackPitch::Up90);
                     break;
                 case WIDX_CHAIN_LIFT:
                     RideConstructionInvalidateCurrentTrack();
@@ -1529,10 +1544,10 @@ namespace OpenRCT2::Ui::Windows
             StringId stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
             if (_currentlySelectedTrack.isTrackType)
             {
-                const auto& rtd = currentRide->GetRideTypeDescriptor();
+                const auto& rtd = currentRide->getRideTypeDescriptor();
                 const auto& ted = GetTrackElementDescriptor(_currentlySelectedTrack.trackType);
                 stringId = ted.description;
-                if (stringId == STR_RAPIDS && rtd.Category != RIDE_CATEGORY_WATER)
+                if (stringId == STR_RAPIDS && rtd.Category != RideCategory::water)
                 {
                     stringId = STR_LOG_BUMPS;
                 }
@@ -1554,16 +1569,15 @@ namespace OpenRCT2::Ui::Windows
                 ft.Increment(2);
             }
 
-            widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings
-                [_currentSeatRotationAngle];
+            widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = kSeatAngleRotationStrings[_currentSeatRotationAngle];
 
             // Simulate button
             auto& simulateWidget = widgets[WIDX_SIMULATE];
             simulateWidget.type = WindowWidgetType::Empty;
-            if (currentRide->SupportsStatus(RideStatus::Simulating))
+            if (currentRide->supportsStatus(RideStatus::simulating))
             {
                 simulateWidget.type = WindowWidgetType::FlatBtn;
-                if (currentRide->status == RideStatus::Simulating)
+                if (currentRide->status == RideStatus::simulating)
                 {
                     pressed_widgets |= (1uLL << WIDX_SIMULATE);
                 }
@@ -1574,7 +1588,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Set window title arguments
-            currentRide->FormatNameTo(ft);
+            currentRide->formatNameTo(ft);
         }
 
         static void OnDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets)
@@ -1663,7 +1677,7 @@ namespace OpenRCT2::Ui::Windows
 
             hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
                 | (1u << WIDX_PREVIOUS_SECTION);
-            if (rtd.HasFlag(RtdFlag::isShopOrFacility) || !currentRide->HasStation())
+            if (rtd.HasFlag(RtdFlag::isShopOrFacility) || !currentRide->hasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
                 widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
@@ -1781,7 +1795,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& gameState = GetGameState();
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
+            if (currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && (_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
                 && !gameState.Cheats.enableAllDrawableTrackPieces)
             {
@@ -1790,7 +1804,7 @@ namespace OpenRCT2::Ui::Windows
 
             if ((IsTrackEnabled(TrackGroup::liftHill) && !_currentlySelectedTrack.isTrackType)
                 || (gameState.Cheats.enableChainLiftOnAllTrack
-                    && currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
+                    && currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
             {
                 widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
             }
@@ -1799,47 +1813,25 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::Empty;
             }
 
-            int32_t x = 45;
-            for (int32_t i = WIDX_SLOPE_DOWN_STEEP; i <= WIDX_SLOPE_UP_STEEP; i++)
+            int32_t x = kVerticalDropButtonStart;
+            for (int32_t i = WIDX_SLOPE_DOWN_VERTICAL; i <= WIDX_SLOPE_UP_VERTICAL; i++)
             {
-                widgets[i].left = x;
-                widgets[i].right = x + 23;
+                widgets[i].moveToX(x);
                 x += 24;
             }
 
-            widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP);
-            widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
-            widgets[WIDX_SLOPE_DOWN_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP);
-            widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
-            if (IsTrackEnabled(TrackGroup::slopeVertical))
+            widgets[WIDX_SLOPE_DOWN_VERTICAL].type = WindowWidgetType::Empty;
+            widgets[WIDX_SLOPE_UP_VERTICAL].type = WindowWidgetType::Empty;
+
+            if (IsTrackEnabled(TrackGroup::slopeVertical) && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection))
             {
                 if (_previousTrackPitchEnd == TrackPitch::Up60 || _previousTrackPitchEnd == TrackPitch::Up90)
                 {
-                    int32_t originalSlopeUpSteepLeft = widgets[WIDX_SLOPE_UP_STEEP].left;
-                    int32_t originalSlopeUpSteepRight = widgets[WIDX_SLOPE_UP_STEEP].right;
-                    for (int32_t i = WIDX_SLOPE_UP_STEEP; i > WIDX_SLOPE_DOWN_STEEP; i--)
-                    {
-                        widgets[i].left = widgets[i - 1].left;
-                        widgets[i].right = widgets[i - 1].right;
-                    }
-                    widgets[WIDX_SLOPE_DOWN_STEEP].left = originalSlopeUpSteepLeft;
-                    widgets[WIDX_SLOPE_DOWN_STEEP].right = originalSlopeUpSteepRight;
-                    widgets[WIDX_SLOPE_DOWN_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_RISE);
-                    widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_VERTICAL_RISE_TIP;
+                    widgets[WIDX_SLOPE_UP_VERTICAL].type = WindowWidgetType::FlatBtn;
                 }
                 else if (_previousTrackPitchEnd == TrackPitch::Down60 || _previousTrackPitchEnd == TrackPitch::Down90)
                 {
-                    int32_t originalSlopeDownSteepLeft = widgets[WIDX_SLOPE_DOWN_STEEP].left;
-                    int32_t originalSlopeDownSteepRight = widgets[WIDX_SLOPE_DOWN_STEEP].right;
-                    for (int32_t i = WIDX_SLOPE_DOWN_STEEP; i < WIDX_SLOPE_UP_STEEP; i++)
-                    {
-                        widgets[i].left = widgets[i + 1].left;
-                        widgets[i].right = widgets[i + 1].right;
-                    }
-                    widgets[WIDX_SLOPE_UP_STEEP].left = originalSlopeDownSteepLeft;
-                    widgets[WIDX_SLOPE_UP_STEEP].right = originalSlopeDownSteepRight;
-                    widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_VERTICAL_DROP);
-                    widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_VERTICAL_DROP_TIP;
+                    widgets[WIDX_SLOPE_DOWN_VERTICAL].type = WindowWidgetType::FlatBtn;
                 }
             }
 
@@ -1901,25 +1893,27 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
+            auto top = 118 + widgets[WIDX_TITLE].bottom;
+            auto bottom = top + 23;
             widgets[WIDX_BANKING_GROUPBOX].image = ImageId(STR_RIDE_CONSTRUCTION_ROLL_BANKING);
             widgets[WIDX_BANK_LEFT].image = ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK);
             widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP;
             widgets[WIDX_BANK_LEFT].left = 69;
             widgets[WIDX_BANK_LEFT].right = 92;
-            widgets[WIDX_BANK_LEFT].top = 132;
-            widgets[WIDX_BANK_LEFT].bottom = 155;
+            widgets[WIDX_BANK_LEFT].top = top;
+            widgets[WIDX_BANK_LEFT].bottom = bottom;
             widgets[WIDX_BANK_STRAIGHT].image = ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK);
             widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_NO_ROLL_TIP;
             widgets[WIDX_BANK_STRAIGHT].left = 93;
             widgets[WIDX_BANK_STRAIGHT].right = 116;
-            widgets[WIDX_BANK_STRAIGHT].top = 132;
-            widgets[WIDX_BANK_STRAIGHT].bottom = 155;
+            widgets[WIDX_BANK_STRAIGHT].top = top;
+            widgets[WIDX_BANK_STRAIGHT].bottom = bottom;
             widgets[WIDX_BANK_RIGHT].image = ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK);
             widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP;
             widgets[WIDX_BANK_RIGHT].left = 117;
             widgets[WIDX_BANK_RIGHT].right = 140;
-            widgets[WIDX_BANK_RIGHT].top = 132;
-            widgets[WIDX_BANK_RIGHT].bottom = 155;
+            widgets[WIDX_BANK_RIGHT].top = top;
+            widgets[WIDX_BANK_RIGHT].bottom = bottom;
             widgets[WIDX_BANK_LEFT].type = WindowWidgetType::Empty;
             widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::Empty;
             widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::Empty;
@@ -1974,7 +1968,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].type = WindowWidgetType::Button;
                 widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].text = STR_NUMERIC_DOWN;
 
-                ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, 138 }, { 85, kSpinnerHeight });
+                auto spinnerStart = 124 + widgets[WIDX_TITLE].bottom;
+                ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, spinnerStart }, { 85, kSpinnerHeight });
 
                 hold_down_widgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
             }
@@ -2106,8 +2101,10 @@ namespace OpenRCT2::Ui::Windows
 
             switch (_currentTrackPitchEnd)
             {
+                case TrackPitch::Down90:
+                    widgetIndex = WIDX_SLOPE_DOWN_VERTICAL;
+                    break;
                 case TrackPitch::Down60:
-                case TrackPitch::Up90:
                     widgetIndex = WIDX_SLOPE_DOWN_STEEP;
                     break;
                 case TrackPitch::Down25:
@@ -2117,8 +2114,10 @@ namespace OpenRCT2::Ui::Windows
                     widgetIndex = WIDX_SLOPE_UP;
                     break;
                 case TrackPitch::Up60:
-                case TrackPitch::Down90:
                     widgetIndex = WIDX_SLOPE_UP_STEEP;
+                    break;
+                case TrackPitch::Up90:
+                    widgetIndex = WIDX_SLOPE_UP_VERTICAL;
                     break;
                 default:
                     widgetIndex = WIDX_LEVEL;
@@ -2408,7 +2407,7 @@ namespace OpenRCT2::Ui::Windows
                     if (currentRide != nullptr)
                     {
                         // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
-                        const auto& rtd = currentRide->GetRideTypeDescriptor();
+                        const auto& rtd = currentRide->getRideTypeDescriptor();
                         if (rtd.HasFlag(RtdFlag::isFlatRide) && !rtd.HasFlag(RtdFlag::isShopOrFacility))
                         {
                             RideInitialiseConstructionWindow(*currentRide);
@@ -2433,7 +2432,7 @@ namespace OpenRCT2::Ui::Windows
 
         void EntranceClick()
         {
-            if (ToolSet(*this, WIDX_ENTRANCE, Tool::Crosshair))
+            if (ToolSet(*this, WIDX_ENTRANCE, Tool::crosshair))
             {
                 auto currentRide = GetRide(_currentRideIndex);
                 if (currentRide != nullptr && !RideTryGetOriginElement(*currentRide, nullptr))
@@ -2459,7 +2458,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ExitClick()
         {
-            if (ToolSet(*this, WIDX_EXIT, Tool::Crosshair))
+            if (ToolSet(*this, WIDX_EXIT, Tool::crosshair))
             {
                 auto currentRide = GetRide(_currentRideIndex);
                 if (!RideTryGetOriginElement(*currentRide, nullptr))
@@ -2525,37 +2524,56 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowSpecialTrackDropdown(Widget* widget)
         {
+            auto& elements = _specialElementDropdownState.Elements;
+
             int32_t defaultIndex = -1;
-            for (size_t i = 0; i < _specialElementDropdownState.Elements.size(); i++)
+            int32_t i = 0;
+            for (auto& element : elements)
             {
-                OpenRCT2::TrackElemType trackPiece = _specialElementDropdownState.Elements[i].TrackType;
+                TrackElemType trackPiece = element.TrackType;
+
+                // Separate elements logically
+                if (trackPiece == TrackElemType::None)
+                {
+                    gDropdownItems[i++].Format = kStringIdEmpty;
+                    continue;
+                }
 
                 const auto& ted = GetTrackElementDescriptor(trackPiece);
                 StringId trackPieceStringId = ted.description;
+
+                // TODO: this should probably be done elsewhere
                 if (trackPieceStringId == STR_RAPIDS)
                 {
                     auto currentRide = GetRide(_currentRideIndex);
                     if (currentRide != nullptr)
                     {
-                        const auto& rtd = currentRide->GetRideTypeDescriptor();
-                        if (rtd.Category != RIDE_CATEGORY_WATER)
+                        const auto& rtd = currentRide->getRideTypeDescriptor();
+                        if (rtd.Category != RideCategory::water)
                             trackPieceStringId = STR_LOG_BUMPS;
                     }
                 }
+
                 gDropdownItems[i].Format = trackPieceStringId;
                 if (_currentlySelectedTrack == trackPiece)
-                {
-                    defaultIndex = static_cast<int32_t>(i);
-                }
+                    defaultIndex = i;
+
+                i++;
             }
+
+            // Tune dropdown to the elements it contains
+            auto ddWidth = widget->width();
+            auto targetColumnSize = _specialElementDropdownState.PreferredNumRows;
+            if (targetColumnSize < _specialElementDropdownState.Elements.size())
+                ddWidth -= 30;
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,
-                _specialElementDropdownState.Elements.size(), widget->width());
+                elements.size(), ddWidth, targetColumnSize);
 
-            for (size_t i = 0; i < _specialElementDropdownState.Elements.size(); i++)
+            for (size_t j = 0; j < elements.size(); j++)
             {
-                Dropdown::SetDisabled(static_cast<int32_t>(i), _specialElementDropdownState.Elements[i].Disabled);
+                Dropdown::SetDisabled(static_cast<int32_t>(j), _specialElementDropdownState.Elements[j].Disabled);
             }
             gDropdownDefaultIndex = defaultIndex;
         }
@@ -2589,27 +2607,28 @@ namespace OpenRCT2::Ui::Windows
 
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
+                auto* windowMgr = GetWindowManager();
+
                 auto currentRide = GetRide(gRideEntranceExitPlaceRideIndex);
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                 {
                     ToolCancel();
-                    if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                    if (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     {
-                        auto* windowMgr = Ui::GetWindowManager();
                         windowMgr->CloseByClass(WindowClass::RideConstruction);
                     }
                 }
                 else
                 {
                     gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                    WindowInvalidateByClass(WindowClass::RideConstruction);
+                    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
 
                     auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
                         ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                         : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
 
                     ToolCancel();
-                    ToolSet(*this, newToolWidgetIndex, Tool::Crosshair);
+                    ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
                 }
             });
             auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
@@ -2681,14 +2700,14 @@ namespace OpenRCT2::Ui::Windows
             tempTrackTileElement.AsTrack()->SetRideType(currentRide->type);
             tempTrackTileElement.AsTrack()->SetHasCableLift(false);
             tempTrackTileElement.AsTrack()->SetInverted(liftHillAndInvertedState.has(LiftHillAndInverted::inverted));
-            tempTrackTileElement.AsTrack()->SetColourScheme(RideColourScheme::main);
+            tempTrackTileElement.AsTrack()->SetColourScheme(_currentColourScheme);
             // Skipping seat rotation, should not be necessary for a temporary piece.
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* rideEntry = currentRide->GetRideEntry();
+            const auto* rideEntry = currentRide->getRideEntry();
             auto clearanceHeight = (rideEntry != nullptr) ? rideEntry->Clearance
-                                                          : currentRide->GetRideTypeDescriptor().Heights.ClearanceHeight;
+                                                          : currentRide->getRideTypeDescriptor().Heights.ClearanceHeight;
 
             for (uint8_t i = 0; i < ted.numSequences; i++)
             {
@@ -2805,7 +2824,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
 
-        const auto& rtd = currentRide->GetRideTypeDescriptor();
+        const auto& rtd = currentRide->getRideTypeDescriptor();
         switch (rtd.ConstructionWindowContext)
         {
             case RideConstructionWindowContext::Maze:
@@ -3074,7 +3093,7 @@ namespace OpenRCT2::Ui::Windows
     {
         WindowRideConstructionUpdateEnabledTrackPieces();
         if (auto currentRide = GetRide(_currentRideIndex);
-            !currentRide || currentRide->GetRideTypeDescriptor().specialType == RtdSpecialType::maze)
+            !currentRide || currentRide->getRideTypeDescriptor().specialType == RtdSpecialType::maze)
         {
             return;
         }
@@ -3099,6 +3118,7 @@ namespace OpenRCT2::Ui::Windows
                 _selectedTrackType = tileElement->AsTrack()->GetTrackType();
                 if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
                     _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+                _currentColourScheme = static_cast<RideColourScheme>(tileElement->AsTrack()->GetColourScheme());
                 _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
             }
         }
@@ -3117,11 +3137,11 @@ namespace OpenRCT2::Ui::Windows
         if (ride == nullptr)
             return;
 
-        auto rideEntry = ride->GetRideEntry();
+        auto rideEntry = ride->getRideEntry();
         if (rideEntry == nullptr)
             return;
 
-        auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(ride->GetRideTypeDescriptor());
+        auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(ride->getRideTypeDescriptor());
         UpdateEnabledRideGroups(trackDrawerDescriptor);
     }
 
@@ -3183,7 +3203,7 @@ namespace OpenRCT2::Ui::Windows
                 auto curTime = Platform::GetTicks();
                 if (_rideConstructionNextArrowPulse >= curTime)
                     break;
-                _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+                _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
                 _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
                 trackPos = _currentTrackBegin;
@@ -3207,7 +3227,7 @@ namespace OpenRCT2::Ui::Windows
                 auto curTime = Platform::GetTicks();
                 if (_rideConstructionNextArrowPulse >= curTime)
                     break;
-                _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+                _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
                 _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
                 direction = _currentTrackPieceDirection & 3;
@@ -3230,7 +3250,7 @@ namespace OpenRCT2::Ui::Windows
                 auto curTime = Platform::GetTicks();
                 if (_rideConstructionNextArrowPulse >= curTime)
                     break;
-                _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+                _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
                 _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
                 trackPos = CoordsXYZ{ _currentTrackBegin.x & 0xFFE0, _currentTrackBegin.y & 0xFFE0, _currentTrackBegin.z + 15 };
@@ -3307,7 +3327,7 @@ namespace OpenRCT2::Ui::Windows
             return;
         }
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType != RtdSpecialType::maze)
         {
             auto* windowMgr = GetWindowManager();
@@ -3410,7 +3430,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
-            && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+            && ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         {
             PathElement* pathsByDir[kNumOrthogonalDirections];
 
@@ -3590,7 +3610,7 @@ namespace OpenRCT2::Ui::Windows
             // clearance
             if (!GetGameState().Cheats.disableClearanceChecks && z > kMinimumLandZ)
             {
-                z -= LAND_HEIGHT_STEP;
+                z -= kLandHeightStep;
             }
         }
         else
@@ -3601,7 +3621,7 @@ namespace OpenRCT2::Ui::Windows
         // search for z value to build at, up to max ride height
         int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
         {
             for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
@@ -3651,7 +3671,7 @@ namespace OpenRCT2::Ui::Windows
                         w = windowMgr->FindByClass(WindowClass::RideConstruction);
                         if (w != nullptr)
                         {
-                            ToolSet(*w, WIDX_CONSTRUCT, Tool::Crosshair);
+                            ToolSet(*w, WIDX_CONSTRUCT, Tool::crosshair);
                             InputSetFlag(INPUT_FLAG_6, true);
                             _trackPlaceCtrlState = false;
                             _trackPlaceShiftState = false;
@@ -4281,11 +4301,10 @@ namespace OpenRCT2::Ui::Windows
         switch (_currentTrackPitchEnd)
         {
             case TrackPitch::Down60:
-                if (IsTrackEnabled(TrackGroup::slopeVertical) && !WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP)
-                    && w->widgets[WIDX_SLOPE_UP_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
-                    && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
+                if (IsTrackEnabled(TrackGroup::slopeVertical) && !WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_VERTICAL)
+                    && w->widgets[WIDX_SLOPE_DOWN_VERTICAL].type != WindowWidgetType::Empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
+                    w->OnMouseDown(WIDX_SLOPE_DOWN_VERTICAL);
                 }
                 break;
             case TrackPitch::Down25:
@@ -4300,9 +4319,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     w->OnMouseDown(WIDX_SLOPE_DOWN);
                 }
-                else if (
-                    IsTrackEnabled(TrackGroup::slopeVertical)
-                    && w->widgets[WIDX_SLOPE_DOWN_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+                else if (IsTrackEnabled(TrackGroup::slopeVertical))
                 {
                     return;
                 }
@@ -4350,9 +4367,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     w->OnMouseDown(WIDX_SLOPE_DOWN);
                 }
-                else if (
-                    IsTrackEnabled(TrackGroup::slopeVertical)
-                    && w->widgets[WIDX_SLOPE_DOWN_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+                else if (IsTrackEnabled(TrackGroup::slopeVertical))
                 {
                     return;
                 }
@@ -4369,8 +4384,7 @@ namespace OpenRCT2::Ui::Windows
                 break;
             case TrackPitch::Up90:
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !WidgetIsDisabled(*w, WIDX_SLOPE_UP_STEEP)
-                    && w->widgets[WIDX_SLOPE_DOWN_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
-                    && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+                    && w->widgets[WIDX_SLOPE_UP_VERTICAL].type != WindowWidgetType::Empty)
                 {
                     w->OnMouseDown(WIDX_SLOPE_UP_STEEP);
                 }
@@ -4392,11 +4406,10 @@ namespace OpenRCT2::Ui::Windows
         switch (_currentTrackPitchEnd)
         {
             case TrackPitch::Up60:
-                if (IsTrackEnabled(TrackGroup::slopeVertical) && !WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
-                    && w->widgets[WIDX_SLOPE_DOWN_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
-                    && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+                if (IsTrackEnabled(TrackGroup::slopeVertical) && !WidgetIsDisabled(*w, WIDX_SLOPE_UP_VERTICAL)
+                    && w->widgets[WIDX_SLOPE_UP_VERTICAL].type != WindowWidgetType::Empty)
                 {
-                    w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
+                    w->OnMouseDown(WIDX_SLOPE_UP_VERTICAL);
                 }
                 break;
             case TrackPitch::Up25:
@@ -4411,9 +4424,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     w->OnMouseDown(WIDX_SLOPE_UP);
                 }
-                else if (
-                    IsTrackEnabled(TrackGroup::slopeVertical)
-                    && w->widgets[WIDX_SLOPE_UP_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+                else if (IsTrackEnabled(TrackGroup::slopeVertical))
                 {
                     return;
                 }
@@ -4461,9 +4472,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     w->OnMouseDown(WIDX_SLOPE_UP);
                 }
-                else if (
-                    IsTrackEnabled(TrackGroup::slopeVertical)
-                    && w->widgets[WIDX_SLOPE_UP_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+                else if (IsTrackEnabled(TrackGroup::slopeVertical))
                 {
                     return;
                 }
@@ -4480,7 +4489,6 @@ namespace OpenRCT2::Ui::Windows
                 break;
             case TrackPitch::Down90:
                 if (IsTrackEnabled(TrackGroup::slopeVertical) && !WidgetIsDisabled(*w, WIDX_SLOPE_DOWN_STEEP)
-                    && w->widgets[WIDX_SLOPE_UP_STEEP].image.GetIndex() == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
                     && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
                 {
                     w->OnMouseDown(WIDX_SLOPE_DOWN_STEEP);
@@ -4720,7 +4728,7 @@ namespace OpenRCT2::Ui::Windows
             return kMoney64Undefined;
 
         RideConstructionRemoveGhosts();
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
         {
             int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
@@ -4752,7 +4760,7 @@ namespace OpenRCT2::Ui::Windows
         int16_t zBegin{}, zEnd{};
         const auto& ted = GetTrackElementDescriptor(trackType);
         const TrackCoordinates& coords = ted.coordinates;
-        if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
         {
             zBegin = coords.zBegin;
             zEnd = coords.zEnd;
@@ -4967,7 +4975,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         const auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
         if (trackDrawerDescriptor.HasCoveredPieces() && _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
         {
@@ -5049,6 +5057,8 @@ namespace OpenRCT2::Ui::Windows
             properties = _currentSeatRotationAngle << 12;
         }
 
+        properties |= static_cast<uint8_t>(_currentColourScheme) << 8;
+
         if (_trackType != nullptr)
             *_trackType = trackType;
         if (_trackDirection != nullptr)
@@ -5101,7 +5111,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t y = _unkF440C5.y;
         int32_t z = _unkF440C5.z;
 
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::maze)
         {
             const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;

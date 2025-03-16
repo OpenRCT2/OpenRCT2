@@ -16,7 +16,7 @@
 // clang-format off
 constexpr RideTypeDescriptor TwistRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::twist,
@@ -28,8 +28,8 @@ constexpr RideTypeDescriptor TwistRTD =
                      RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide,
                      RtdFlag::hasVehicleColours, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::singleSession, RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::Rotation),
-    .DefaultMode = RideMode::Rotation,
+    .RideModes = EnumsToFlags(RideMode::rotation),
+    .DefaultMode = RideMode::rotation,
     .OperatingSettings = { 3, 6, 3 },
     .Naming = { STR_RIDE_NAME_TWIST, STR_RIDE_DESCRIPTION_TWIST },
     .NameConvention = { RideComponentType::Structure, RideComponentType::Structure, RideComponentType::Station },
@@ -41,17 +41,17 @@ constexpr RideTypeDescriptor TwistRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 45.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 40,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Ride,
     .Name = "twist",
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 13), RIDE_RATING(0, 97), RIDE_RATING(1, 90) },
+        { MakeRideRating(1, 13), MakeRideRating(0, 97), MakeRideRating(1, 90) },
         16,
         0,
         false,

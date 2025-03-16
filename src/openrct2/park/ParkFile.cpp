@@ -36,8 +36,6 @@
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
@@ -49,7 +47,6 @@
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ride/Vehicle.h"
-#include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
@@ -62,6 +59,7 @@
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Legacy.h"
+#include "ParkPreview.h"
 
 #include <cassert>
 #include <cstdint>
@@ -97,6 +95,7 @@ namespace OpenRCT2
         constexpr uint32_t CHEATS               = 0x36;
         constexpr uint32_t RESTRICTED_OBJECTS   = 0x37;
         constexpr uint32_t PLUGIN_STORAGE       = 0x38;
+        constexpr uint32_t PREVIEW              = 0x39;
         constexpr uint32_t PACKED_OBJECTS       = 0x80;
         // clang-format on
     }; // namespace ParkFileChunkType
@@ -199,6 +198,7 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
+            ReadWritePreviewChunk(gameState, os);
             ReadWritePackedObjectsChunk(os);
         }
 
@@ -217,24 +217,53 @@ namespace OpenRCT2
 
                 std::string name;
                 ReadWriteStringTable(cs, name, "en-GB");
-                String::set(entry.Name, sizeof(entry.Name), name.c_str());
-                String::set(entry.InternalName, sizeof(entry.InternalName), name.c_str());
+                entry.Name = name;
+                entry.InternalName = name;
 
                 std::string parkName;
                 ReadWriteStringTable(cs, parkName, "en-GB");
 
                 std::string scenarioDetails;
                 ReadWriteStringTable(cs, scenarioDetails, "en-GB");
-                String::set(entry.Details, sizeof(entry.Details), scenarioDetails.c_str());
+                entry.Details = scenarioDetails;
 
+                // wrong order is intentional here due to ReadWriteScenarioChunk writing guests first
                 entry.ObjectiveType = cs.Read<uint8_t>();
                 entry.ObjectiveArg1 = cs.Read<uint8_t>();
-                entry.ObjectiveArg3 = cs.Read<int16_t>();
+                entry.ObjectiveArg3 = cs.Read<uint16_t>();
                 entry.ObjectiveArg2 = cs.Read<int32_t>();
 
                 entry.SourceGame = ScenarioSource::Other;
             });
             return entry;
+        }
+
+        ParkPreview ReadPreviewChunk()
+        {
+            ParkPreview preview{};
+            auto& os = *_os;
+            os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&preview](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(preview.parkName);
+                cs.ReadWrite(preview.parkRating);
+                cs.ReadWrite(preview.year);
+                cs.ReadWrite(preview.month);
+                cs.ReadWrite(preview.day);
+                cs.ReadWrite(preview.parkUsesMoney);
+                cs.ReadWrite(preview.cash);
+                cs.ReadWrite(preview.numRides);
+                cs.ReadWrite(preview.numGuests);
+
+                cs.ReadWriteVector(preview.images, [&cs](PreviewImage& image) {
+                    cs.ReadWrite(image.type);
+                    cs.ReadWrite(image.width);
+                    cs.ReadWrite(image.height);
+                    cs.ReadWriteArray(image.pixels, [&cs](uint8_t& pixel) {
+                        cs.ReadWrite(pixel);
+                        return true;
+                    });
+                });
+            });
+            return preview;
         }
 
     private:
@@ -272,9 +301,9 @@ namespace OpenRCT2
 
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
-                std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-                std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
-                std::fill(std::begin(_pathToRailingsMap), std::end(_pathToRailingsMap), OBJECT_ENTRY_INDEX_NULL);
+                std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), kObjectEntryIndexNull);
+                std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), kObjectEntryIndexNull);
+                std::fill(std::begin(_pathToRailingsMap), std::end(_pathToRailingsMap), kObjectEntryIndexNull);
                 auto* pathToSurfaceMap = _pathToSurfaceMap;
                 auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
                 auto* pathToRailingsMap = _pathToRailingsMap;
@@ -305,7 +334,7 @@ namespace OpenRCT2
                                         RCTObjectEntry datEntry;
                                         cs.Read(&datEntry, sizeof(datEntry));
                                         ObjectEntryDescriptor desc(datEntry);
-                                        if (version <= 2 && datEntry.GetType() == ObjectType::Paths)
+                                        if (version <= 2 && datEntry.GetType() == ObjectType::paths)
                                         {
                                             auto footpathMapping = GetFootpathMapping(desc);
                                             if (footpathMapping != nullptr)
@@ -382,13 +411,24 @@ namespace OpenRCT2
                 if (version < kPeepNamesObjectsVersion)
                 {
                     AppendRequiredObjects(
-                        requiredObjects, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
+                        requiredObjects, ObjectType::peepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
                 }
 
                 if (version < kPeepAnimationObjectsVersion)
                 {
-                    auto animObjects = GetLegacyPeepAnimationObjects(requiredObjects);
-                    AppendRequiredObjects(requiredObjects, ObjectType::PeepAnimations, animObjects);
+                    auto animObjects = GetLegacyPeepAnimationObjects();
+                    AppendRequiredObjects(requiredObjects, ObjectType::peepAnimations, animObjects);
+                }
+
+                if (version < kClimateObjectsVersion)
+                {
+                    RCT12::ClimateType legacyClimate{};
+                    os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&legacyClimate](OrcaStream::ChunkStream& cs) {
+                        cs.ReadWrite(legacyClimate);
+                    });
+
+                    auto climateObjId = GetClimateObjectIdFromLegacyClimateType(legacyClimate);
+                    AppendRequiredObjects(requiredObjects, ObjectType::climate, std::vector({ climateObjId }));
                 }
 
                 RequiredObjects = std::move(requiredObjects);
@@ -450,7 +490,7 @@ namespace OpenRCT2
 
                 cs.ReadWrite(gameState.ScenarioCompletedCompanyValue);
                 if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined
-                    || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                    || gameState.ScenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
                 {
                     cs.Write("");
                 }
@@ -476,6 +516,33 @@ namespace OpenRCT2
                 {
                     cs.ReadWrite(gameState.ScenarioFileName);
                 }
+            });
+        }
+
+        void ReadWritePreviewChunk(GameState_t& gameState, OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&gameState](OrcaStream::ChunkStream& cs) {
+                auto preview = OpenRCT2::generatePreviewFromGameState(gameState);
+
+                cs.ReadWrite(preview.parkName);
+                cs.ReadWrite(preview.parkRating);
+                cs.ReadWrite(preview.year);
+                cs.ReadWrite(preview.month);
+                cs.ReadWrite(preview.day);
+                cs.ReadWrite(preview.parkUsesMoney);
+                cs.ReadWrite(preview.cash);
+                cs.ReadWrite(preview.numRides);
+                cs.ReadWrite(preview.numGuests);
+
+                cs.ReadWriteVector(preview.images, [&cs](PreviewImage& image) {
+                    cs.ReadWrite(image.type);
+                    cs.ReadWrite(image.width);
+                    cs.ReadWrite(image.height);
+                    cs.ReadWriteArray(image.pixels, [&cs](uint8_t& pixel) {
+                        cs.ReadWrite(pixel);
+                        return true;
+                    });
+                });
             });
         }
 
@@ -792,17 +859,23 @@ namespace OpenRCT2
 
         void ReadWriteClimateChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&gameState](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gameState.Climate);
-                cs.ReadWrite(gameState.ClimateUpdateTimer);
-
-                for (auto* cl : { &gameState.ClimateCurrent, &gameState.ClimateNext })
+            os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&os, &gameState](OrcaStream::ChunkStream& cs) {
+                auto version = os.GetHeader().TargetVersion;
+                if (version < kClimateObjectsVersion)
                 {
-                    cs.ReadWrite(cl->Weather);
-                    cs.ReadWrite(cl->Temperature);
-                    cs.ReadWrite(cl->WeatherEffect);
-                    cs.ReadWrite(cl->WeatherGloom);
-                    cs.ReadWrite(cl->Level);
+                    // Legacy climate is converted elsewhere, so we can skip it here.
+                    cs.Ignore<RCT12::ClimateType>();
+                }
+
+                cs.ReadWrite(gameState.WeatherUpdateTimer);
+
+                for (auto* cl : { &gameState.WeatherCurrent, &gameState.WeatherNext })
+                {
+                    cs.ReadWrite(cl->weatherType);
+                    cs.ReadWrite(cl->temperature);
+                    cs.ReadWrite(cl->weatherEffect);
+                    cs.ReadWrite(cl->weatherGloom);
+                    cs.ReadWrite(cl->level);
                 }
             });
         }
@@ -1142,7 +1215,7 @@ namespace OpenRCT2
                                     if (pathElement->HasLegacyPathEntry())
                                     {
                                         auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
-                                        if (pathToRailingsMap[pathEntryIndex] != OBJECT_ENTRY_INDEX_NULL)
+                                        if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
                                         {
                                             if (pathElement->IsQueue())
                                                 pathElement->SetSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
@@ -1355,12 +1428,12 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.subtype);
                     cs.ReadWrite(ride.mode);
                     cs.ReadWrite(ride.status);
-                    cs.ReadWrite(ride.depart_flags);
-                    cs.ReadWrite(ride.lifecycle_flags);
+                    cs.ReadWrite(ride.departFlags);
+                    cs.ReadWrite(ride.lifecycleFlags);
 
                     // Meta
-                    cs.ReadWrite(ride.custom_name);
-                    cs.ReadWrite(ride.default_name_number);
+                    cs.ReadWrite(ride.customName);
+                    cs.ReadWrite(ride.defaultNameNumber);
 
                     if (version <= 18)
                     {
@@ -1381,16 +1454,16 @@ namespace OpenRCT2
                     }
 
                     // Colours
-                    cs.ReadWrite(ride.entrance_style);
+                    cs.ReadWrite(ride.entranceStyle);
                     cs.ReadWrite(ride.vehicleColourSettings);
-                    cs.ReadWriteArray(ride.track_colour, [&cs](TrackColour& tc) {
+                    cs.ReadWriteArray(ride.trackColours, [&cs](TrackColour& tc) {
                         cs.ReadWrite(tc.main);
                         cs.ReadWrite(tc.additional);
                         cs.ReadWrite(tc.supports);
                         return true;
                     });
 
-                    cs.ReadWriteArray(ride.vehicle_colours, [&cs](VehicleColour& vc) {
+                    cs.ReadWriteArray(ride.vehicleColours, [&cs](VehicleColour& vc) {
                         cs.ReadWrite(vc.Body);
                         cs.ReadWrite(vc.Trim);
                         cs.ReadWrite(vc.Tertiary);
@@ -1398,8 +1471,8 @@ namespace OpenRCT2
                     });
 
                     // Stations
-                    cs.ReadWrite(ride.num_stations);
-                    cs.ReadWriteArray(ride.GetStations(), [&cs](RideStation& station) {
+                    cs.ReadWrite(ride.numStations);
+                    cs.ReadWriteArray(ride.getStations(), [&cs](RideStation& station) {
                         cs.ReadWrite(station.Start);
                         cs.ReadWrite(station.Height);
                         cs.ReadWrite(station.Length);
@@ -1415,53 +1488,53 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWrite(ride.overall_view.x);
-                    cs.ReadWrite(ride.overall_view.y);
+                    cs.ReadWrite(ride.overallView.x);
+                    cs.ReadWrite(ride.overallView.y);
 
                     // Vehicles
-                    cs.ReadWrite(ride.NumTrains);
-                    cs.ReadWrite(ride.num_cars_per_train);
-                    cs.ReadWrite(ride.ProposedNumTrains);
-                    cs.ReadWrite(ride.proposed_num_cars_per_train);
-                    cs.ReadWrite(ride.max_trains);
+                    cs.ReadWrite(ride.numTrains);
+                    cs.ReadWrite(ride.numCarsPerTrain);
+                    cs.ReadWrite(ride.proposedNumTrains);
+                    cs.ReadWrite(ride.proposedNumCarsPerTrain);
+                    cs.ReadWrite(ride.maxTrains);
                     if (version < 0x5)
                     {
                         uint8_t value;
                         cs.ReadWrite(value);
-                        ride.MinCarsPerTrain = GetMinCarsPerTrain(value);
-                        ride.MaxCarsPerTrain = GetMaxCarsPerTrain(value);
+                        ride.minCarsPerTrain = GetMinCarsPerTrain(value);
+                        ride.maxCarsPerTrain = GetMaxCarsPerTrain(value);
                     }
                     else
                     {
-                        cs.ReadWrite(ride.MinCarsPerTrain);
-                        cs.ReadWrite(ride.MaxCarsPerTrain);
+                        cs.ReadWrite(ride.minCarsPerTrain);
+                        cs.ReadWrite(ride.maxCarsPerTrain);
                     }
 
-                    cs.ReadWrite(ride.min_waiting_time);
-                    cs.ReadWrite(ride.max_waiting_time);
+                    cs.ReadWrite(ride.minWaitingTime);
+                    cs.ReadWrite(ride.maxWaitingTime);
                     cs.ReadWriteArray(ride.vehicles, [&cs](EntityId& v) {
                         cs.ReadWrite(v);
                         return true;
                     });
 
                     // Operation
-                    cs.ReadWrite(ride.operation_option);
-                    cs.ReadWrite(ride.lift_hill_speed);
-                    cs.ReadWrite(ride.num_circuits);
+                    cs.ReadWrite(ride.operationOption);
+                    cs.ReadWrite(ride.liftHillSpeed);
+                    cs.ReadWrite(ride.numCircuits);
 
                     // Special
-                    cs.ReadWrite(ride.boat_hire_return_direction);
-                    cs.ReadWrite(ride.boat_hire_return_position);
-                    cs.ReadWrite(ride.ChairliftBullwheelLocation[0]);
-                    cs.ReadWrite(ride.ChairliftBullwheelLocation[1]);
-                    cs.ReadWrite(ride.chairlift_bullwheel_rotation);
-                    cs.ReadWrite(ride.slide_in_use);
-                    cs.ReadWrite(ride.slide_peep);
-                    cs.ReadWrite(ride.slide_peep_t_shirt_colour);
-                    cs.ReadWrite(ride.spiral_slide_progress);
-                    cs.ReadWrite(ride.race_winner);
-                    cs.ReadWrite(ride.cable_lift);
-                    cs.ReadWrite(ride.CableLiftLoc);
+                    cs.ReadWrite(ride.boatHireReturnDirection);
+                    cs.ReadWrite(ride.boatHireReturnPosition);
+                    cs.ReadWrite(ride.chairliftBullwheelLocation[0]);
+                    cs.ReadWrite(ride.chairliftBullwheelLocation[1]);
+                    cs.ReadWrite(ride.chairliftBullwheelRotation);
+                    cs.ReadWrite(ride.slideInUse);
+                    cs.ReadWrite(ride.slidePeep);
+                    cs.ReadWrite(ride.slidePeepTShirtColour);
+                    cs.ReadWrite(ride.spiralSlideProgress);
+                    cs.ReadWrite(ride.raceWinner);
+                    cs.ReadWrite(ride.cableLift);
+                    cs.ReadWrite(ride.cableLiftLoc);
 
                     // Stats
                     if (cs.GetMode() == OrcaStream::Mode::READING)
@@ -1486,39 +1559,39 @@ namespace OpenRCT2
                         }
                     }
 
-                    cs.ReadWrite(ride.special_track_elements);
-                    cs.ReadWrite(ride.max_speed);
-                    cs.ReadWrite(ride.average_speed);
-                    cs.ReadWrite(ride.current_test_segment);
-                    cs.ReadWrite(ride.average_speed_test_timeout);
+                    cs.ReadWrite(ride.specialTrackElements);
+                    cs.ReadWrite(ride.maxSpeed);
+                    cs.ReadWrite(ride.averageSpeed);
+                    cs.ReadWrite(ride.currentTestSegment);
+                    cs.ReadWrite(ride.averageSpeedTestTimeout);
 
-                    cs.ReadWrite(ride.max_positive_vertical_g);
-                    cs.ReadWrite(ride.max_negative_vertical_g);
-                    cs.ReadWrite(ride.max_lateral_g);
-                    cs.ReadWrite(ride.previous_vertical_g);
-                    cs.ReadWrite(ride.previous_lateral_g);
+                    cs.ReadWrite(ride.maxPositiveVerticalG);
+                    cs.ReadWrite(ride.maxNegativeVerticalG);
+                    cs.ReadWrite(ride.maxLateralG);
+                    cs.ReadWrite(ride.previousVerticalG);
+                    cs.ReadWrite(ride.previousLateralG);
 
-                    cs.ReadWrite(ride.testing_flags);
-                    cs.ReadWrite(ride.CurTestTrackLocation);
+                    cs.ReadWrite(ride.testingFlags);
+                    cs.ReadWrite(ride.curTestTrackLocation);
 
-                    cs.ReadWrite(ride.turn_count_default);
-                    cs.ReadWrite(ride.turn_count_banked);
-                    cs.ReadWrite(ride.turn_count_sloped);
+                    cs.ReadWrite(ride.turnCountDefault);
+                    cs.ReadWrite(ride.turnCountBanked);
+                    cs.ReadWrite(ride.turnCountSloped);
 
                     cs.ReadWrite(ride.inversions);
                     cs.ReadWrite(ride.dropsPoweredLifts);
-                    cs.ReadWrite(ride.start_drop_height);
-                    cs.ReadWrite(ride.highest_drop_height);
-                    cs.ReadWrite(ride.sheltered_length);
-                    cs.ReadWrite(ride.var_11C);
-                    cs.ReadWrite(ride.num_sheltered_sections);
+                    cs.ReadWrite(ride.startDropHeight);
+                    cs.ReadWrite(ride.highestDropHeight);
+                    cs.ReadWrite(ride.shelteredLength);
+                    cs.ReadWrite(ride.var11C);
+                    cs.ReadWrite(ride.numShelteredSections);
                     if (version > 5)
                     {
-                        cs.ReadWrite(ride.sheltered_eighths);
+                        cs.ReadWrite(ride.shelteredEighths);
                         cs.ReadWrite(ride.holes);
                     }
-                    cs.ReadWrite(ride.current_test_station);
-                    cs.ReadWrite(ride.num_block_brakes);
+                    cs.ReadWrite(ride.currentTestStation);
+                    cs.ReadWrite(ride.numBlockBrakes);
                     cs.ReadWrite(ride.totalAirTime);
 
                     cs.ReadWrite(ride.ratings.excitement);
@@ -1531,7 +1604,7 @@ namespace OpenRCT2
                         cs.ReadWrite(tempRideValue);
                         if (tempRideValue == 0xFFFFu)
                         {
-                            ride.value = RIDE_VALUE_UNDEFINED;
+                            ride.value = kRideValueUndefined;
                         }
                         else
                         {
@@ -1544,7 +1617,7 @@ namespace OpenRCT2
                         cs.ReadWrite(tempRideValue);
                         if (tempRideValue == 0xFFFFu)
                         {
-                            ride.value = RIDE_VALUE_UNDEFINED;
+                            ride.value = kRideValueUndefined;
                         }
                         else
                         {
@@ -1556,76 +1629,76 @@ namespace OpenRCT2
                         cs.ReadWrite(ride.value);
                     }
 
-                    cs.ReadWrite(ride.num_riders);
-                    cs.ReadWrite(ride.build_date);
+                    cs.ReadWrite(ride.numRiders);
+                    cs.ReadWrite(ride.buildDate);
 
                     if (version <= 18)
                     {
                         money16 tempUpkeepCost{};
                         cs.ReadWrite(tempUpkeepCost);
-                        ride.upkeep_cost = ToMoney64(tempUpkeepCost);
+                        ride.upkeepCost = ToMoney64(tempUpkeepCost);
                     }
                     else
                     {
-                        cs.ReadWrite(ride.upkeep_cost);
+                        cs.ReadWrite(ride.upkeepCost);
                     }
 
-                    cs.ReadWrite(ride.cur_num_customers);
-                    cs.ReadWrite(ride.num_customers_timeout);
+                    cs.ReadWrite(ride.curNumCustomers);
+                    cs.ReadWrite(ride.numCustomersTimeout);
 
-                    cs.ReadWriteArray(ride.num_customers, [&cs](uint16_t& v) {
+                    cs.ReadWriteArray(ride.numCustomers, [&cs](uint16_t& v) {
                         cs.ReadWrite(v);
                         return true;
                     });
 
-                    cs.ReadWrite(ride.total_customers);
-                    cs.ReadWrite(ride.total_profit);
+                    cs.ReadWrite(ride.totalCustomers);
+                    cs.ReadWrite(ride.totalProfit);
                     cs.ReadWrite(ride.popularity);
-                    cs.ReadWrite(ride.popularity_time_out);
-                    cs.ReadWrite(ride.popularity_next);
-                    cs.ReadWrite(ride.guests_favourite);
-                    cs.ReadWrite(ride.no_primary_items_sold);
-                    cs.ReadWrite(ride.no_secondary_items_sold);
-                    cs.ReadWrite(ride.income_per_hour);
+                    cs.ReadWrite(ride.popularityTimeout);
+                    cs.ReadWrite(ride.popularityNext);
+                    cs.ReadWrite(ride.guestsFavourite);
+                    cs.ReadWrite(ride.numPrimaryItemsSold);
+                    cs.ReadWrite(ride.numSecondaryItemsSold);
+                    cs.ReadWrite(ride.incomePerHour);
                     cs.ReadWrite(ride.profit);
                     cs.ReadWrite(ride.satisfaction);
-                    cs.ReadWrite(ride.satisfaction_time_out);
-                    cs.ReadWrite(ride.satisfaction_next);
+                    cs.ReadWrite(ride.satisfactionTimeout);
+                    cs.ReadWrite(ride.satisfactionNext);
 
                     // Breakdown
-                    cs.ReadWrite(ride.breakdown_reason_pending);
-                    cs.ReadWrite(ride.mechanic_status);
+                    cs.ReadWrite(ride.breakdownReasonPending);
+                    cs.ReadWrite(ride.mechanicStatus);
                     cs.ReadWrite(ride.mechanic);
-                    cs.ReadWrite(ride.inspection_station);
-                    cs.ReadWrite(ride.broken_vehicle);
-                    cs.ReadWrite(ride.broken_car);
-                    cs.ReadWrite(ride.breakdown_reason);
-                    cs.ReadWrite(ride.reliability_subvalue);
-                    cs.ReadWrite(ride.reliability_percentage);
-                    cs.ReadWrite(ride.unreliability_factor);
+                    cs.ReadWrite(ride.inspectionStation);
+                    cs.ReadWrite(ride.brokenTrain);
+                    cs.ReadWrite(ride.brokenCar);
+                    cs.ReadWrite(ride.breakdownReason);
+                    cs.ReadWrite(ride.reliabilitySubvalue);
+                    cs.ReadWrite(ride.reliabilityPercentage);
+                    cs.ReadWrite(ride.unreliabilityFactor);
                     cs.ReadWrite(ride.downtime);
-                    cs.ReadWrite(ride.inspection_interval);
-                    cs.ReadWrite(ride.last_inspection);
+                    cs.ReadWrite(ride.inspectionInterval);
+                    cs.ReadWrite(ride.lastInspection);
 
-                    cs.ReadWriteArray(ride.downtime_history, [&cs](uint8_t& v) {
+                    cs.ReadWriteArray(ride.downtimeHistory, [&cs](uint8_t& v) {
                         cs.ReadWrite(v);
                         return true;
                     });
 
-                    cs.ReadWrite(ride.breakdown_sound_modifier);
-                    cs.ReadWrite(ride.not_fixed_timeout);
-                    cs.ReadWrite(ride.last_crash_type);
-                    cs.ReadWrite(ride.connected_message_throttle);
+                    cs.ReadWrite(ride.breakdownSoundModifier);
+                    cs.ReadWrite(ride.notFixedTimeout);
+                    cs.ReadWrite(ride.lastCrashType);
+                    cs.ReadWrite(ride.connectedMessageThrottle);
 
-                    cs.ReadWrite(ride.vehicle_change_timeout);
+                    cs.ReadWrite(ride.vehicleChangeTimeout);
 
-                    cs.ReadWrite(ride.current_issues);
-                    cs.ReadWrite(ride.last_issue_time);
+                    cs.ReadWrite(ride.currentIssues);
+                    cs.ReadWrite(ride.lastIssueTime);
 
                     // Music
                     cs.ReadWrite(ride.music);
-                    cs.ReadWrite(ride.music_tune_id);
-                    cs.ReadWrite(ride.music_position);
+                    cs.ReadWrite(ride.musicTuneId);
+                    cs.ReadWrite(ride.musicPosition);
                     return true;
                 });
             });
@@ -1728,7 +1801,7 @@ namespace OpenRCT2
             if (version >= kPeepAnimationObjectsVersion)
                 cs.ReadWrite(entity.AnimationObjectIndex);
             else
-                entity.AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
+                entity.AnimationObjectIndex = kObjectEntryIndexNull;
 
             cs.ReadWrite(entity.AnimationGroup);
 
@@ -2742,10 +2815,15 @@ public:
         GameFixSaveVars();
     }
 
-    bool GetDetails(ScenarioIndexEntry* dst) override
+    bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
     {
         *dst = _parkFile->ReadScenarioChunk();
         return true;
+    }
+
+    ParkPreview GetParkPreview() override
+    {
+        return _parkFile->ReadPreviewChunk();
     }
 };
 

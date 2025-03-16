@@ -44,7 +44,7 @@ static void PaintLaunchedFreefallBase(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetal, stationObject);
 

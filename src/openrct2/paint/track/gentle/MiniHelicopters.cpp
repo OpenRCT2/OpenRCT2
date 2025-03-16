@@ -297,7 +297,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-static constexpr uint8_t MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[] = {
+static constexpr uint8_t kMiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[] = {
     3,
     1,
     2,
@@ -309,7 +309,7 @@ static void PaintMiniHelicoptersTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackSequence = MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[trackSequence];
+    trackSequence = kMiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[trackSequence];
     PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
         session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }

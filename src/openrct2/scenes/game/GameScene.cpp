@@ -14,7 +14,7 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
-#include "../../audio/audio.h"
+#include "../../audio/Audio.h"
 
 using namespace OpenRCT2;
 
@@ -22,7 +22,7 @@ void GameScene::Load()
 {
     LOG_VERBOSE("GameScene::Load()");
 
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
+    gLegacyScene = LegacyScene::playing;
 
     LOG_VERBOSE("GameScene::Load() finished");
 }

@@ -14,10 +14,8 @@
 #include "../ParkImporter.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
-#include "../interface/Window.h"
 #include "../object/ObjectManager.h"
 #include "../park/ParkFile.h"
-#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "CommandLine.hpp"
 

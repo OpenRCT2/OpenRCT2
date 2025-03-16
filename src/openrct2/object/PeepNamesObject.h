@@ -22,7 +22,7 @@ private:
     std::vector<std::string> _surnames;
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::PeepNames;
+    static constexpr ObjectType kObjectType = ObjectType::peepNames;
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;

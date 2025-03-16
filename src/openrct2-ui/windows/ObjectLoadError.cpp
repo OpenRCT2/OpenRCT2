@@ -303,25 +303,25 @@ namespace OpenRCT2::Ui::Windows
     {
         switch (type)
         {
-            case ObjectType::Ride:
+            case ObjectType::ride:
                 return STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
-            case ObjectType::SmallScenery:
+            case ObjectType::smallScenery:
                 return STR_OBJECT_SELECTION_SMALL_SCENERY;
-            case ObjectType::LargeScenery:
+            case ObjectType::largeScenery:
                 return STR_OBJECT_SELECTION_LARGE_SCENERY;
-            case ObjectType::Walls:
+            case ObjectType::walls:
                 return STR_OBJECT_SELECTION_WALLS_FENCES;
-            case ObjectType::Banners:
+            case ObjectType::banners:
                 return STR_OBJECT_SELECTION_PATH_SIGNS;
-            case ObjectType::Paths:
+            case ObjectType::paths:
                 return STR_OBJECT_SELECTION_FOOTPATHS;
-            case ObjectType::PathAdditions:
+            case ObjectType::pathAdditions:
                 return STR_OBJECT_SELECTION_PATH_EXTRAS;
-            case ObjectType::SceneryGroup:
+            case ObjectType::sceneryGroup:
                 return STR_OBJECT_SELECTION_SCENERY_GROUPS;
-            case ObjectType::ParkEntrance:
+            case ObjectType::parkEntrance:
                 return STR_OBJECT_SELECTION_PARK_ENTRANCE;
-            case ObjectType::Water:
+            case ObjectType::water:
                 return STR_OBJECT_SELECTION_WATER;
             default:
                 return STR_UNKNOWN_OBJECT_TYPE;
@@ -390,7 +390,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 selected_list_item = index;
             }
-            WidgetInvalidate(*this, WIDX_SCROLL);
+            InvalidateWidget(WIDX_SCROLL);
         }
 
     public:
@@ -443,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
             if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
             {
                 _highlightedIndex = -1;
-                WidgetInvalidate(*this, WIDX_SCROLL);
+                InvalidateWidget(WIDX_SCROLL);
             }
 
 #ifndef DISABLE_HTTP
@@ -486,7 +486,7 @@ namespace OpenRCT2::Ui::Windows
             else
                 _highlightedIndex = selectedItem;
 
-            WidgetInvalidate(*this, WIDX_SCROLL);
+            InvalidateWidget(WIDX_SCROLL);
         }
 
         void OnDraw(DrawPixelInfo& dpi) override

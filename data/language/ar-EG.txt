@@ -1921,9 +1921,6 @@ STR_2706    :أبداً
 STR_2707    :إستخدم متصفح ملف النظام
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
-STR_2718    :Up
-STR_2719    :New file
 STR_2720    :{UINT16}sec
 STR_2721    :{UINT16}secs
 STR_2722    :{UINT16}min:{UINT16}sec
@@ -2261,10 +2258,6 @@ STR_3252    :Can’t increase maximum loan size any further!
 STR_3253    :Can’t reduce maximum loan size any further!
 STR_3254    :Can’t increase interest rate any further!
 STR_3255    :Can’t reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
-STR_3257    :Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
-STR_3259    :Select whether guests should generally prefer more intense rides only
 STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
 STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
 STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
@@ -3004,7 +2997,6 @@ STR_5887    :السابقة
 STR_5888    :اللاحقة
 STR_5889    :رمز العملة المخصص
 STR_5890    :أدخل رمز العملة لعرضها
-STR_5891    :الإفتراضي
 STR_5892    :اذهب إلى الوجهة الافتراضية
 STR_5893    :سعر الصرف
 STR_5894    :أدخل سعر الصرف

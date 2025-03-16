@@ -11,9 +11,9 @@
 
 #include "../Diagnostic.h"
 #include "../OpenRCT2.h"
+#include "../SpriteIds.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
-#include "../sprites.h"
 #include "Drawing.h"
 
 #include <algorithm>

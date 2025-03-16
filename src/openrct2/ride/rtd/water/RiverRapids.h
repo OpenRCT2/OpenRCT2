@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor RiverRapidsRTD =
 {
-    .Category = RIDE_CATEGORY_WATER,
+    .Category = RideCategory::water,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::riverRapids,
@@ -33,8 +33,8 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
                      RtdFlag::hasVehicleColours, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::hasAirTime, RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_RIVER_RAPIDS, STR_RIDE_DESCRIPTION_RIVER_RAPIDS },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
     .UpkeepCosts = { 82, 20, 0, 10, 0, 10 },
     .BuildCosts = { 31.00_GBP, 3.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo4,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -57,13 +57,13 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 20), RIDE_RATING(0, 70), RIDE_RATING(0, 50) },
+        { MakeRideRating(1, 20), MakeRideRating(0, 70), MakeRideRating(0, 50) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           2000,             6225, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 30), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 30), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                115130, 159411, 106274 },
             { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
             { RatingsModifierType::BonusTurns,            0,                29721, 22598, 5718 },
@@ -80,7 +80,7 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
 };
 // clang-format on

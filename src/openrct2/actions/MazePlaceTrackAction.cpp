@@ -87,7 +87,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     }
 
     auto baseHeight = _loc.z;
-    auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
+    auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
     auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
     if (heightDifference >= 0 && !gameState.Cheats.disableSupportLimits)
@@ -95,7 +95,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
         heightDifference /= kCoordsZPerTinyZ;
 
         auto* ride = GetRide(_rideIndex);
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
             res.Error = GameActions::Status::TooHigh;
@@ -128,7 +128,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     }
 
     auto ride = GetRide(_rideIndex);
-    if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+    if (ride == nullptr || ride->type == kRideTypeNull)
     {
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
         res.Error = GameActions::Status::InvalidParameters;
@@ -166,7 +166,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     }
 
     auto baseHeight = _loc.z;
-    auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
+    auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
     auto canBuild = MapCanConstructWithClearAt(
         { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
@@ -193,13 +193,13 @@ GameActions::Result MazePlaceTrackAction::Execute() const
 
     MapInvalidateTileFull(startLoc);
 
-    ride->maze_tiles++;
-    ride->GetStation().SetBaseZ(trackElement->GetBaseZ());
-    ride->GetStation().Start = { 0, 0 };
+    ride->mazeTiles++;
+    ride->getStation().SetBaseZ(trackElement->GetBaseZ());
+    ride->getStation().Start = { 0, 0 };
 
-    if (ride->maze_tiles == 1)
+    if (ride->mazeTiles == 1)
     {
-        ride->overall_view = startLoc;
+        ride->overallView = startLoc;
     }
 
     return res;

@@ -12,8 +12,8 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/EnumUtils.hpp"
-#include "../interface/Window.h"
 #include "../ride/ShopItem.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2;
@@ -58,25 +58,27 @@ GameActions::Result ParkSetParameterAction::Query() const
 GameActions::Result ParkSetParameterAction::Execute() const
 {
     auto& gameState = GetGameState();
+    auto* windowMgr = Ui::GetWindowManager();
+
     switch (_parameter)
     {
         case ParkParameter::Close:
             if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
             {
                 gameState.Park.Flags &= ~PARK_FLAGS_PARK_OPEN;
-                WindowInvalidateByClass(WindowClass::ParkInformation);
+                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
             }
             break;
         case ParkParameter::Open:
             if (!(gameState.Park.Flags & PARK_FLAGS_PARK_OPEN))
             {
                 gameState.Park.Flags |= PARK_FLAGS_PARK_OPEN;
-                WindowInvalidateByClass(WindowClass::ParkInformation);
+                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
             }
             break;
         case ParkParameter::SamePriceInPark:
             gameState.SamePriceThroughoutPark = _value;
-            WindowInvalidateByClass(WindowClass::Ride);
+            windowMgr->InvalidateByClass(WindowClass::Ride);
             break;
         default:
             LOG_ERROR("Invalid park parameter %d", _parameter);

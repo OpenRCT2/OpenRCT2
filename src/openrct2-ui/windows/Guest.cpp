@@ -18,6 +18,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GuestSetFlagsAction.h>
 #include <openrct2/actions/GuestSetNameAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
@@ -29,15 +30,13 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/management/Marketing.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
-#include <openrct2/scenario/Scenario.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -196,10 +195,9 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             _marqueePosition = 0;
             picked_peep_frame = 0;
-            min_width = width;
-            min_height = 157;
-            max_width = 500;
-            max_height = 450;
+
+            WindowSetResize(*this, { WW, WH }, { 500, 450 });
+
             selected_list_item = -1;
         }
 
@@ -435,7 +433,7 @@ namespace OpenRCT2::Ui::Windows
             }
             maxWidth = std::max(minWidth, maxWidth);
 
-            WindowSetResize(*this, minWidth, minHeight, maxWidth, maxHeight);
+            WindowSetResize(*this, { minWidth, minHeight }, { maxWidth, maxHeight });
         }
 
         void OnPrepareDrawCommon()
@@ -497,6 +495,10 @@ namespace OpenRCT2::Ui::Windows
                 if (!(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
                     listen = 1;
             }
+
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
 
             page = newPage;
             frame_no = 0;
@@ -596,15 +598,15 @@ namespace OpenRCT2::Ui::Windows
         {
             DisableWidgets();
             OnPrepareDraw();
-
-            WidgetInvalidate(*this, WIDX_MARQUEE);
-
+            InvalidateWidget(WIDX_MARQUEE);
             OnResizeCommon();
 
             if (viewport != nullptr)
             {
-                auto reqViewportWidth = width - 30;
-                auto reqViewportHeight = height - 72;
+                auto widget = widgets[WIDX_VIEWPORT];
+                auto reqViewportWidth = widget.width() - 1;
+                auto reqViewportHeight = widget.height() - 1;
+                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
                 if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
                 {
                     viewport->width = reqViewportWidth;
@@ -642,7 +644,7 @@ namespace OpenRCT2::Ui::Windows
                         WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
-                            ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
+                            ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::picker);
                         }
                     });
                     GameActions::Execute(&pickupAction);
@@ -886,13 +888,13 @@ namespace OpenRCT2::Ui::Windows
             picked_peep_frame++;
             picked_peep_frame %= pickAnimLength * 4;
 
-            WidgetInvalidate(*this, WIDX_TAB_1);
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_2);
 
             if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
             {
                 peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
-                WidgetInvalidate(*this, WIDX_ACTION_LBL);
+                InvalidateWidget(WIDX_ACTION_LBL);
             }
 
             _marqueePosition += 2;
@@ -1215,8 +1217,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_3);
 
             const auto guest = GetGuest();
             if (guest == nullptr)
@@ -1233,7 +1235,7 @@ namespace OpenRCT2::Ui::Windows
             _riddenRides.clear();
             for (const auto& r : GetRideManager())
             {
-                if (r.IsRide() && guest->HasRidden(r))
+                if (r.isRide() && guest->HasRidden(r))
                 {
                     _riddenRides.push_back(r.id);
                 }
@@ -1329,7 +1331,7 @@ namespace OpenRCT2::Ui::Windows
             auto* r = GetRide(peep->FavouriteRide);
             if (r != nullptr)
             {
-                r->FormatNameTo(ft);
+                r->formatNameTo(ft);
             }
             else
             {
@@ -1358,7 +1360,7 @@ namespace OpenRCT2::Ui::Windows
                 if (r != nullptr)
                 {
                     auto ft = Formatter();
-                    r->FormatNameTo(ft);
+                    r->formatNameTo(ft);
                     DrawTextBasic(dpi, { 0, y - 1 }, stringId, ft);
                 }
             }
@@ -1388,8 +1390,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_4);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_4);
         }
 
         void OnDrawFinance(DrawPixelInfo& dpi)
@@ -1526,8 +1528,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_5);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_5);
 
             auto peep = GetGuest();
             if (peep == nullptr)
@@ -1601,8 +1603,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_6);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_6);
 
             auto peep = GetGuest();
             if (peep == nullptr)
@@ -1643,7 +1645,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ft.Rewind();
                         ft.Increment(2);
-                        invRide->FormatNameTo(ft);
+                        invRide->formatNameTo(ft);
                     }
 
                     break;
@@ -1667,7 +1669,7 @@ namespace OpenRCT2::Ui::Windows
                                 ft.Rewind();
                                 ft.Increment(2);
                                 ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-                                invRide->FormatNameTo(ft);
+                                invRide->formatNameTo(ft);
                             }
                             break;
                         case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
@@ -1697,7 +1699,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ft.Rewind();
                         ft.Increment(2);
-                        invRide->FormatNameTo(ft);
+                        invRide->formatNameTo(ft);
                     }
                     break;
                 case ShopItem::Photo3:
@@ -1706,7 +1708,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ft.Rewind();
                         ft.Increment(2);
-                        invRide->FormatNameTo(ft);
+                        invRide->formatNameTo(ft);
                     }
                     break;
                 case ShopItem::Photo4:
@@ -1715,7 +1717,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         ft.Rewind();
                         ft.Increment(2);
-                        invRide->FormatNameTo(ft);
+                        invRide->formatNameTo(ft);
                     }
                     break;
                 default:

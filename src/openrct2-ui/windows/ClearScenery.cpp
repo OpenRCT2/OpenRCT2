@@ -15,9 +15,9 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -308,7 +308,8 @@ namespace OpenRCT2::Ui::Windows
             if (_clearSceneryCost != cost)
             {
                 _clearSceneryCost = cost;
-                WindowInvalidateByClass(WindowClass::ClearScenery);
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateByClass(WindowClass::ClearScenery);
             }
         }
 
@@ -331,7 +332,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Bulldozer;
+                        gCurrentToolId = Tool::bulldozer;
                     }
                     break;
             }
@@ -348,7 +349,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Bulldozer;
+                        gCurrentToolId = Tool::bulldozer;
                     }
                     break;
                 }
@@ -362,7 +363,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::Bulldozer;
+                    gCurrentToolId = Tool::bulldozer;
                     break;
             }
         }
@@ -399,7 +400,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ShowGridlines();
             auto* toolWindow = ContextOpenWindow(WindowClass::ClearScenery);
-            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::Bulldozer);
+            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::bulldozer);
             InputSetFlag(INPUT_FLAG_6, true);
         }
     }

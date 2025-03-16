@@ -9,9 +9,9 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleLogoWindow>(
-                WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT);
+                WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
         }
         return window;
     }

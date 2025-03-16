@@ -17,6 +17,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/actions/StaffSetCostumeAction.h>
 #include <openrct2/actions/StaffSetNameAction.h>
@@ -28,11 +29,10 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepAnimations.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -137,8 +137,11 @@ namespace OpenRCT2::Ui::Windows
         void Initialise(EntityId entityId)
         {
             number = entityId.ToUnderlying();
+            auto* staff = GetStaff();
+            if (staff == nullptr)
+                return;
 
-            if (GetStaff()->AssignedStaffType == StaffType::Entertainer)
+            if (staff->AssignedStaffType == StaffType::Entertainer)
                 _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
@@ -154,7 +157,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnLanguageChange() override
         {
-            if (GetStaff()->AssignedStaffType == StaffType::Entertainer)
+            auto* staff = GetStaff();
+            if (staff == nullptr)
+                return;
+
+            if (staff->AssignedStaffType == StaffType::Entertainer)
                 _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
@@ -384,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
                         WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
                         }
                     });
                     GameActions::Execute(&pickupAction);
@@ -598,36 +605,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OverviewResize()
         {
-            min_width = WW;
-            max_width = 500;
-            min_height = WH;
-            max_height = 450;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { WW, WH }, { 500, 450 });
 
             if (viewport != nullptr)
             {
-                int32_t newWidth = width - 30;
-                int32_t newHeight = height - 62;
+                auto widget = widgets[WIDX_VIEWPORT];
+                auto newWidth = widget.width() - 1;
+                auto newHeight = widget.height() - 1;
+                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
 
                 // Update the viewport size
                 if (viewport->width != newWidth || viewport->height != newHeight)
@@ -643,6 +628,8 @@ namespace OpenRCT2::Ui::Windows
         void OverviewUpdate()
         {
             auto* staff = GetStaff();
+            if (staff == nullptr)
+                return;
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
@@ -923,31 +910,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OptionsResize()
         {
-            min_width = 190;
-            max_width = 190;
-            min_height = 126;
-            max_height = 126;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { 190, 126 }, { 190, 126 });
         }
 
         void OptionsUpdate()
@@ -1026,31 +989,7 @@ namespace OpenRCT2::Ui::Windows
 
         void StatsResize()
         {
-            min_width = 190;
-            max_width = 190;
-            min_height = 126;
-            max_height = 126;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { 190, 126 }, { 190, 126 });
         }
 
         void StatsUpdate()
@@ -1120,6 +1059,10 @@ namespace OpenRCT2::Ui::Windows
                 if (!(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
                     listen = 1;
             }
+
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (pageNum == page && !widgets.empty())
+                return;
 
             page = pageNum;
             frame_no = 0;

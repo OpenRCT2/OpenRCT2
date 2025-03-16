@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
@@ -5646,10 +5646,10 @@ static void CorkscrewRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5933,7 +5933,7 @@ static void CorkscrewRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(16734), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 3 } });
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -11550,22 +11550,22 @@ static void CorkscrewRCTrack90DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(26607), { 0, 0, height + 8 },
-                        { { 4, 6, height }, { 2, 20, 31 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(26608), { 0, 0, height + 8 },
-                        { { 24, 6, height }, { 2, 20, 31 } });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(26605), { 0, 0, height + 8 },
-                        { { 24, 6, height }, { 2, 20, 31 } });
+                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(26606), { 0, 0, height + 8 },
-                        { { 4, 6, height }, { 2, 20, 31 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 32);
@@ -11597,7 +11597,7 @@ static void CorkscrewRCTrack60DegUpTo90DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 0),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 13, 20, 55 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -11612,7 +11612,7 @@ static void CorkscrewRCTrack60DegUpTo90DegUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 3),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 13, 20, 55 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -11645,7 +11645,7 @@ static void CorkscrewRCTrack90DegUpTo60DegUp(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 4), { 0, 0, height },
-                { { 0, 6, height + 2 }, { 6, 20, 3 } });
+                { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -11660,7 +11660,7 @@ static void CorkscrewRCTrack90DegUpTo60DegUp(
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 7), { 0, 0, height },
-                { { 0, 6, height + 2 }, { 6, 20, 3 } });
+                { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
     }
     switch (direction)

@@ -14,6 +14,7 @@
 #include "Editor.h"
 #include "Limits.h"
 #include "core/EnumUtils.hpp"
+#include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
 #include "management/Award.h"
 #include "management/Finance.h"
@@ -47,10 +48,9 @@ namespace OpenRCT2
         money64 CurrentExpenditure;
         money64 CurrentProfit;
         uint32_t GuestsInParkHistory[kGuestsInParkHistorySize];
-        ClimateType Climate;
-        ClimateState ClimateCurrent;
-        ClimateState ClimateNext;
-        uint16_t ClimateUpdateTimer;
+        WeatherState WeatherCurrent;
+        WeatherState WeatherNext;
+        uint16_t WeatherUpdateTimer;
         money64 Cash;
         money64 CashHistory[kFinanceHistorySize];
         money64 InitialCash;

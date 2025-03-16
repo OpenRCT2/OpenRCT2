@@ -204,8 +204,9 @@ namespace OpenRCT2::World::MapGenerator
         resetSurfaces(settings);
 
         // Create the temporary height map and initialise
-        auto& mapSize = settings->mapSize;
-        auto heightMap = HeightMap(mapSize.x * 2, mapSize.y * 2);
+        const auto& mapSize = settings->mapSize;
+        const auto density = 2;
+        auto heightMap = HeightMap(mapSize.x, mapSize.y, density);
 
         generateSimplexNoise(settings, heightMap);
         smoothHeightMap(2 + (UtilRand() % 6), heightMap);

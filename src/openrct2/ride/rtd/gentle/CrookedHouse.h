@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor CrookedHouseRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::crookedHouse,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession, 
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::CrookedHouse),
-    .DefaultMode = RideMode::CrookedHouse,
+    .RideModes = EnumsToFlags(RideMode::crookedHouse),
+    .DefaultMode = RideMode::crookedHouse,
     .Naming = { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .AvailableBreakdowns = 0,
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .UpkeepCosts = { 30, 1, 0, 0, 0, 0 },
     .BuildCosts = { 32.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 6, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 22,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(2, 15), RIDE_RATING(0, 62), RIDE_RATING(0, 34) },
+        { MakeRideRating(2, 15), MakeRideRating(0, 62), MakeRideRating(0, 34) },
         5,
         7,
         false,

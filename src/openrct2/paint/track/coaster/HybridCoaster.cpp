@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
@@ -499,16 +499,16 @@ namespace OpenRCT2::HybridRC
         const TrackElement& trackElement, SupportType supportType)
     {
         const CoordsXYZ boundBoxOffsets[4] = {
-            { 0, 6, height },
+            { 4, 6, height + 8 },
             { 24, 6, height },
             { 24, 6, height },
-            { 0, 6, height },
+            { 4, 6, height + 8 },
         };
         static constexpr CoordsXYZ boundBoxLengths[4] = {
-            { 32, 20, 3 },
+            { 13, 20, 55 },
             { 2, 20, 55 },
             { 2, 20, 55 },
-            { 32, 20, 3 },
+            { 13, 20, 55 },
         };
         static constexpr uint32_t imageIds[4] = {
             SPR_G2_HYBRID_TRACK_VERTICAL + 0,
@@ -551,16 +551,16 @@ namespace OpenRCT2::HybridRC
         const TrackElement& trackElement, SupportType supportType)
     {
         const CoordsXYZ boundBoxOffsets[4] = {
-            { 0, 6, height + 8 },
+            { 4, 6, height + 8 },
             { 24, 6, height + 8 },
             { 24, 6, height + 8 },
-            { 0, 6, height + 8 },
+            { 4, 6, height + 8 },
         };
         static constexpr CoordsXYZ boundBoxLengths[4] = {
-            { 32, 20, 3 },
+            { 2, 20, 48 },
             { 2, 20, 31 },
             { 2, 20, 31 },
-            { 32, 20, 3 },
+            { 2, 20, 48 },
         };
         static constexpr uint32_t imageIds[4] = {
             SPR_G2_HYBRID_TRACK_VERTICAL + 4,
@@ -1111,7 +1111,7 @@ namespace OpenRCT2::HybridRC
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_LARGE_CURVE + 6),
-                            { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                            { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         WoodenASupportsPaintSetup(
                             session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
                         break;
@@ -1286,7 +1286,7 @@ namespace OpenRCT2::HybridRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_LARGE_CURVE + 26),
-                            { 0, 0, height }, { { 4, 4, height }, { 28, 28, 3 } });
+                            { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         WoodenASupportsPaintSetup(
                             session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
                         break;
@@ -11291,10 +11291,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -14086,7 +14086,7 @@ namespace OpenRCT2::HybridRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             GetTrackColour(session).WithIndex((SPR_G2_HYBRID_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
-                            { 0, 0, height }, { { 0, 0, height }, { 34, 34, 16 } });
+                            { 0, 0, height }, { { 0, 16, height }, { 34, 18, 3 } });
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -14123,7 +14123,7 @@ namespace OpenRCT2::HybridRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             GetTrackColour(session).WithIndex((SPR_G2_HYBRID_TRACK_GENTLE_LARGE_CURVE_BANKED + 121)),
-                            { 0, 0, height }, { { 0, 0, height }, { 32, 1, 32 } });
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -14230,7 +14230,7 @@ namespace OpenRCT2::HybridRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             GetTrackColour(session).WithIndex((SPR_G2_HYBRID_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
-                            { 0, 0, height }, { { 16, 0, height }, { 18, 32, 3 } });
+                            { 0, 0, height }, { { 0, 0, height }, { 34, 32, 3 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -14363,6 +14363,67 @@ namespace OpenRCT2::HybridRC
         }
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
+    }
+
+    static void TrackDiag25DegDownBrakes(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_GENTLE_DIAG_BRAKE + 1),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_GENTLE_DIAG_BRAKE + 2),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::Corner0, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_GENTLE_DIAG_BRAKE),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, supportType.wooden, WoodenSupportSubType::Corner2, direction, height + 16, session.SupportColours);
+                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_GENTLE_DIAG_BRAKE + 3),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
+                break;
+        }
     }
 
     TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
@@ -14799,6 +14860,8 @@ namespace OpenRCT2::HybridRC
                 return Trackbooster;
             case TrackElemType::Down25Brakes:
                 return Track25DegDownBrakes;
+            case TrackElemType::DiagDown25Brakes:
+                return TrackDiag25DegDownBrakes;
 
             default:
                 return TrackPaintFunctionDummy;

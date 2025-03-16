@@ -102,6 +102,14 @@ namespace OpenRCT2::Ui
         virtual WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) = 0;
         virtual WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) = 0;
 
+        virtual void InvalidateByClass(WindowClass cls) = 0;
+        virtual void InvalidateByNumber(WindowClass cls, rct_windownumber number) = 0;
+        virtual void InvalidateByNumber(WindowClass cls, EntityId id) = 0;
+        virtual void InvalidateAll() = 0;
+        virtual void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) = 0;
+        virtual void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) = 0;
+        virtual void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) = 0;
+
         virtual WindowBase* BringToFront(WindowBase& w) = 0;
         virtual WindowBase* BringToFrontByClass(WindowClass cls) = 0;
         virtual WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) = 0;

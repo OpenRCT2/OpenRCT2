@@ -39,10 +39,8 @@
     #include "../core/String.hpp"
     #include "../drawing/IDrawingEngine.h"
     #include "../interface/Screenshot.h"
-    #include "../localisation/Language.h"
     #include "../object/ObjectManager.h"
     #include "../park/ParkFile.h"
-    #include "../scenario/Scenario.h"
     #include "Platform.h"
 
     #define WSZ(x) L"" x
@@ -57,7 +55,7 @@ static const wchar_t* _wszCommitSha1Short = WSZ("");
 static const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static std::map<std::wstring, std::wstring> _uploadFiles;
 
-    #define BACKTRACE_TOKEN "164d73675f52d093fe24de22fa205b2f30cf8cfc1ed1c6f043df301b59e16d1d"
+    #define BACKTRACE_TOKEN "ae764b66a394eea00f6722360a37c06ddb6f006866bca49fcf4b9afeb86c7146"
 
 using namespace OpenRCT2;
 

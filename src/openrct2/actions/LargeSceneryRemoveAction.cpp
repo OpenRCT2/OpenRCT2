@@ -14,7 +14,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
@@ -89,7 +88,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
         {
             if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
@@ -169,7 +168,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
         {
             if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {

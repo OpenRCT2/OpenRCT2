@@ -136,7 +136,7 @@ namespace OpenRCT2
             if (animObj != nullptr && animObj->GetPeepType() == type)
                 return i;
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     PeepAnimationsObject* findPeepAnimationsObjectForType(const AnimationPeepType type)
@@ -198,11 +198,11 @@ namespace OpenRCT2
 
         // Still no costumes available? Bail out
         if (costumes.empty())
-            return OBJECT_ENTRY_INDEX_NULL;
+            return kObjectEntryIndexNull;
 
         std::vector<ObjectEntryIndex> out{};
         std::sample(costumes.begin(), costumes.end(), std::back_inserter(out), 1, std::mt19937{ std::random_device{}() });
-        return !out.empty() ? out[0] : OBJECT_ENTRY_INDEX_NULL;
+        return !out.empty() ? out[0] : kObjectEntryIndexNull;
     }
 
     std::vector<AnimationGroupResult> getAnimationGroupsByPeepType(const AnimationPeepType type)

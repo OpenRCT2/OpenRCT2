@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor ClassicMiniRollerCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::juniorRollerCoaster,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor ClassicMiniRollerCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::allowDoorsOnTrack, 
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle),
+    .DefaultMode = RideMode::continuousCircuit,
     .BoosterSettings = { 17, 16 },
     .LegacyBoosterSettings = { 17, 16, 1 },
     .Naming = { STR_RIDE_NAME_CLASSIC_MINI_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_MINI_COASTER },
@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor ClassicMiniRollerCoasterRTD =
     .UpkeepCosts = { 40, 20, 80, 8, 3, 5 },
     .BuildCosts = { 22.50_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -59,13 +59,13 @@ constexpr RideTypeDescriptor ClassicMiniRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 40), RIDE_RATING(2, 80), RIDE_RATING(1, 90) },
+        { MakeRideRating(2, 40), MakeRideRating(2, 80), MakeRideRating(1, 90) },
         13,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

@@ -20,7 +20,7 @@ private:
     WaterObjectEntry _legacyType = {};
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::Water;
+    static constexpr ObjectType kObjectType = ObjectType::water;
 
     void* GetLegacyData() override
     {

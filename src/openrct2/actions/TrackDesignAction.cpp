@@ -68,13 +68,13 @@ GameActions::Result TrackDesignAction::Query() const
     auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
-    if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex == kObjectEntryIndexNull)
     {
         // Force a fallback if the entry is not invented yet a track design of it is selected,
         // which can happen in select-by-track-type mode
         if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
         {
-            entryIndex = OBJECT_ENTRY_INDEX_NULL;
+            entryIndex = kObjectEntryIndexNull;
         }
     }
 
@@ -111,7 +111,7 @@ GameActions::Result TrackDesignAction::Query() const
         queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     }
 
-    auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+    auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
     gameAction.SetFlags(GetFlags());
 
     GameActions::ExecuteNested(&gameAction);
@@ -142,13 +142,13 @@ GameActions::Result TrackDesignAction::Execute() const
     auto& gameState = GetGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
-    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex != kObjectEntryIndexNull)
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
         // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
         if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
         {
-            entryIndex = OBJECT_ENTRY_INDEX_NULL;
+            entryIndex = kObjectEntryIndexNull;
         }
     }
 
@@ -184,7 +184,7 @@ GameActions::Result TrackDesignAction::Execute() const
 
     if (queryRes.Error != GameActions::Status::Ok)
     {
-        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
         gameAction.SetFlags(GetFlags());
         GameActions::ExecuteNested(&gameAction);
 
@@ -202,7 +202,7 @@ GameActions::Result TrackDesignAction::Execute() const
     auto execRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     if (execRes.Error != GameActions::Status::Ok)
     {
-        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
         gameAction.SetFlags(GetFlags());
         GameActions::ExecuteNested(&gameAction);
 
@@ -214,7 +214,7 @@ GameActions::Result TrackDesignAction::Execute() const
         return res;
     }
 
-    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex != kObjectEntryIndexNull)
     {
         auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
         auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
@@ -238,24 +238,24 @@ GameActions::Result TrackDesignAction::Execute() const
 
     auto numCircuits = std::max<uint8_t>(1, _td.operation.numCircuits);
     SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, numCircuits, flags);
-    ride->SetToDefaultInspectionInterval();
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
+    ride->setToDefaultInspectionInterval();
+    ride->lifecycleFlags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->vehicleColourSettings = _td.appearance.vehicleColourSettings;
 
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(_td.appearance.stationObjectIdentifier);
-    if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
+    ride->entranceStyle = objManager.GetLoadedObjectEntryIndex(_td.appearance.stationObjectIdentifier);
+    if (ride->entranceStyle == kObjectEntryIndexNull)
     {
-        ride->entrance_style = gameState.LastEntranceStyle;
+        ride->entranceStyle = gameState.LastEntranceStyle;
     }
 
-    for (size_t i = 0; i < std::min(std::size(ride->track_colour), std::size(_td.appearance.trackColours)); i++)
+    for (size_t i = 0; i < std::min(std::size(ride->trackColours), std::size(_td.appearance.trackColours)); i++)
     {
-        ride->track_colour[i] = _td.appearance.trackColours[i];
+        ride->trackColours[i] = _td.appearance.trackColours[i];
     }
 
     for (size_t i = 0; i < Limits::kMaxVehicleColours; i++)
     {
-        ride->vehicle_colours[i] = _td.appearance.vehicleColours[i];
+        ride->vehicleColours[i] = _td.appearance.vehicleColours[i];
     }
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)

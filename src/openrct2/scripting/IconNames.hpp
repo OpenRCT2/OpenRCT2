@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../SpriteIds.h"
 #include "../core/EnumMap.hpp"
-#include "../sprites.h"
 
 #include <map>
 #include <string>

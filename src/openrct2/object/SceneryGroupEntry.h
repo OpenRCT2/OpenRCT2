@@ -17,7 +17,7 @@
 
 struct SceneryGroupEntry
 {
-    static constexpr auto kObjectType = ObjectType::SceneryGroup;
+    static constexpr auto kObjectType = ObjectType::sceneryGroup;
 
     StringId name;
     uint32_t image;

@@ -1206,7 +1206,7 @@ declare global {
     interface StaffHireArgs extends GameActionArgs {
         autoPosition: boolean;
         staffType: number; // 0: handyman, 1: mechanic, 2: security, 3: entertainer
-        entertainerType: number; // see EntertainerCostume in openrct2/entity/Staff.h
+        costumeIndex: number; // peep animation object id to use as costume
         staffOrders: number; // bit mask. See STAFF_ORDERS in openrct2/entity/Staff.h
     }
 
@@ -4250,7 +4250,7 @@ declare global {
         "heavySnow" |
         "blizzard";
 
-    interface ClimateState {
+    interface WeatherState {
         readonly weather: WeatherType;
         readonly temperature: number;
     }
@@ -4264,12 +4264,12 @@ declare global {
         /**
          * The current weather in the park.
          */
-        readonly current: ClimateState;
+        readonly current: WeatherState;
 
         /**
          * The next weather the park will experience.
          */
-        readonly future: ClimateState;
+        readonly future: WeatherState;
     }
 
     interface Cheats {

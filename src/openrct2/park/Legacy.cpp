@@ -18,6 +18,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
+#include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
@@ -2249,26 +2250,26 @@ void UpdateFootpathsFromMapping(
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
     const RCT2::FootpathMapping* footpathMapping)
 {
-    auto surfaceIndex = requiredObjects.Find(ObjectType::FootpathSurface, footpathMapping->NormalSurface);
-    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    auto surfaceIndex = requiredObjects.Find(ObjectType::footpathSurface, footpathMapping->NormalSurface);
+    if (surfaceIndex == kObjectEntryIndexNull)
     {
-        requiredObjects.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->NormalSurface);
+        requiredObjects.SetObject(ObjectType::footpathSurface, surfaceCount, footpathMapping->NormalSurface);
         surfaceIndex = surfaceCount++;
     }
     pathToSurfaceMap[entryIndex] = surfaceIndex;
 
-    surfaceIndex = requiredObjects.Find(ObjectType::FootpathSurface, footpathMapping->QueueSurface);
-    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    surfaceIndex = requiredObjects.Find(ObjectType::footpathSurface, footpathMapping->QueueSurface);
+    if (surfaceIndex == kObjectEntryIndexNull)
     {
-        requiredObjects.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->QueueSurface);
+        requiredObjects.SetObject(ObjectType::footpathSurface, surfaceCount, footpathMapping->QueueSurface);
         surfaceIndex = surfaceCount++;
     }
     pathToQueueSurfaceMap[entryIndex] = surfaceIndex;
 
-    auto railingIndex = requiredObjects.Find(ObjectType::FootpathRailings, footpathMapping->Railing);
-    if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
+    auto railingIndex = requiredObjects.Find(ObjectType::footpathRailings, footpathMapping->Railing);
+    if (railingIndex == kObjectEntryIndexNull)
     {
-        requiredObjects.SetObject(ObjectType::FootpathRailings, railingCount, footpathMapping->Railing);
+        requiredObjects.SetObject(ObjectType::footpathRailings, railingCount, footpathMapping->Railing);
         railingIndex = railingCount++;
     }
     pathToRailingsMap[entryIndex] = railingIndex;
@@ -2292,7 +2293,7 @@ const std::vector<std::string_view> peepAnimObjects = {
     "rct2.peep_animations.entertainer_snowman",
 };
 
-const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList)
+const std::vector<std::string_view>& GetLegacyPeepAnimationObjects()
 {
     return peepAnimObjects;
 }
@@ -2327,7 +2328,7 @@ static AnimObjectConversionTable BuildPeepAnimObjectConversionTable()
 template<typename TPeepType>
 static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable& table)
 {
-    if (peep->AnimationObjectIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (peep->AnimationObjectIndex != kObjectEntryIndexNull)
         return false;
 
     // TODO: catch missings
@@ -2375,6 +2376,18 @@ void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState)
     }
 
     LOG_INFO("Converted %d peep entities", numConverted);
+}
+
+static constexpr std::array kClimateObjectIdsByLegacyClimateType = {
+    "rct2.climate.cool_and_wet",
+    "rct2.climate.warm",
+    "rct2.climate.hot_and_dry",
+    "rct2.climate.cold",
+};
+
+std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::ClimateType climate)
+{
+    return kClimateObjectIdsByLegacyClimateType[EnumValue(climate)];
 }
 
 bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)

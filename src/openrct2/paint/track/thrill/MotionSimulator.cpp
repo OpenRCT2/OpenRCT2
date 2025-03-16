@@ -38,14 +38,14 @@ static void PaintMotionSimulatorVehicle(
     PaintSession& session, const Ride& ride, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height,
     ImageId stationColour)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
     CoordsXYZ offset(offsetX, offsetY, height + 2);
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
         vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
@@ -68,7 +68,7 @@ static void PaintMotionSimulatorVehicle(
         }
     }
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         imageTemplate = stationColour;
@@ -116,7 +116,7 @@ static void PaintMotionSimulator(
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 

@@ -328,9 +328,43 @@
         "path": "icons/folder.png"
     },
     {
+        "path": "icons/folder_new.png",
+        "x": 2
+    },
+    {
+        "path": "icons/folder_parent.png",
+        "x": 2,
+        "y": 2
+    },
+    {
+        "path": "icons/folder_default.png",
+        "x": 2,
+        "y": 1
+    },
+    {
+        "path": "icons/system_browser.png",
+        "x": 1,
+        "y": 2
+    },
+    {
         "path": "icons/peep_animations.png",
         "x": 2,
         "y": 1
+    },
+    {
+        "path": "icons/weather_snow.png",
+        "x": 3
+    },
+    {
+        "path": "icons/weather_heavy_snow.png",
+        "x": 1
+    },
+    {
+        "path": "icons/weather_blizzard.png",
+        "x": 1
+    },
+    {
+        "path": "logo_mono_dithered.png"
     },
     {
         "path": "loader/loader_hybrid_supports.png",
@@ -2665,8 +2699,8 @@
     },
     {
         "path": "track/junior/booster_1.png",
-        "x": -21,
-        "y": 0
+        "x": -22,
+        "y": 1
     },
     {
         "path": "track/junior/booster_2.png",
@@ -3018,7 +3052,7 @@
     {
         "path": "track/lattice_triangle/liftbooster_alt_2.png",
         "x": -21,
-        "y": -4,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -9485,6 +9519,146 @@
         "x": -14,
         "y": -2,
         "palette": "keep"
+    },
+    {
+        "path": "track/wooden/left_bank_front_swne.png",
+        "x": -2,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/left_bank_front_nwse.png",
+        "x": -31,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/left_bank_rails_front_swne.png",
+        "x": -3,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/left_bank_rails_front_nwse.png",
+        "x": -31,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/24225_front.png",
+        "x": 9,
+        "y": -15
+    },
+    {
+        "path": "track/wooden/24232_front.png",
+        "x": -30,
+        "y": -15
+    },
+    {
+        "path": "track/wooden/24249_front.png",
+        "x": -4,
+        "y": -24
+    },
+    {
+        "path": "track/wooden/24256_front.png",
+        "x": -30,
+        "y": -24
+    },
+    {
+        "path": "track/wooden/24261_front.png",
+        "x": 9,
+        "y": -23
+    },
+    {
+        "path": "track/wooden/24262_front.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/24267_front.png",
+        "x": -3,
+        "y": -8
+    },
+    {
+        "path": "track/wooden/24268_front.png",
+        "x": -30,
+        "y": -23
+    },
+    {
+        "path": "track/wooden/24277_front.png",
+        "x": -2,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/24284_front.png",
+        "x": -32,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/24285_front.png",
+        "x": -2,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/24292_front.png",
+        "x": -31,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/25091_front.png",
+        "x": 0,
+        "y": -15
+    },
+    {
+        "path": "track/wooden/25098_front.png",
+        "x": -30,
+        "y": -15
+    },
+    {
+        "path": "track/wooden/25115_front.png",
+        "x": -4,
+        "y": -24
+    },
+    {
+        "path": "track/wooden/25122_front.png",
+        "x": -30,
+        "y": -24
+    },
+    {
+        "path": "track/wooden/25127_front.png",
+        "x": -1,
+        "y": -23
+    },
+    {
+        "path": "track/wooden/25128_front.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/wooden/25133_front.png",
+        "x": -4,
+        "y": -8
+    },
+    {
+        "path": "track/wooden/25134_front.png",
+        "x": -30,
+        "y": -23
+    },
+    {
+        "path": "track/wooden/25143_front.png",
+        "x": -2,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/25150_front.png",
+        "x": -32,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/25151_front.png",
+        "x": -2,
+        "y": -16
+    },
+    {
+        "path": "track/wooden/25158_front.png",
+        "x": -31,
+        "y": -16
     },
     {
         "path": "track/wooden/booster_1.png",
@@ -23368,6 +23542,11 @@
         "x": -20,
         "y": 7,
         "palette": "keep"
+    },
+    {
+        "path": "track/mine_ride/19471.png",
+        "x": -32,
+        "y": -4
     },
     {
         "path": "support/flat_to_steep_1_1.png",
@@ -47948,5 +48127,48 @@
         "x": -32,
         "y": 15,
         "palette": "keep"
+    },
+    {
+        "path": "track/rmc/brake_gentle_diag_1.png",
+        "x": -54,
+        "y": -23
+    },
+    {
+        "path": "track/rmc/brake_gentle_diag_2.png",
+        "x": -24,
+        "y": -14
+    },
+    {
+        "path": "track/rmc/brake_gentle_diag_3.png",
+        "x": -34,
+        "y": -23
+    },
+    {
+        "path": "track/rmc/brake_gentle_diag_4.png",
+        "x": -24,
+        "y": -30
+    },
+    {
+        "path": "track/raptor/brake_gentle_diag_1.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/raptor/brake_gentle_diag_2.png",
+        "x": -3,
+        "y": -6
+    },
+    {
+        "path": "track/raptor/brake_gentle_diag_3.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/raptor/brake_gentle_diag_4.png",
+        "x": -3,
+        "y": -22
+    },
+    {
+        "path": "icons/rotate_view_anti-clockwise.png"
     }
 ]

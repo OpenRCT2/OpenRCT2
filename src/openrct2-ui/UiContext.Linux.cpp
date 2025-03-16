@@ -27,6 +27,10 @@
     #include <stdexcept>
     #include <unistd.h>
 
+    #ifdef __EMSCRIPTEN__
+        #include <emscripten.h>
+    #endif
+
 namespace OpenRCT2::Ui
 {
     enum class DIALOG_TYPE
@@ -129,8 +133,12 @@ namespace OpenRCT2::Ui
 
         void OpenURL(const std::string& url) override
         {
+    #ifndef __EMSCRIPTEN__
             std::string cmd = String::stdFormat("xdg-open %s", url.c_str());
             Platform::Execute(cmd);
+    #else
+            MAIN_THREAD_EM_ASM({ window.open(UTF8ToString($0)); }, url.c_str());
+    #endif
         }
 
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override

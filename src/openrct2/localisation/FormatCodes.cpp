@@ -11,8 +11,6 @@
 
 #include "../core/EnumMap.hpp"
 
-#include <string>
-
 // clang-format off
 static const EnumMap<FormatToken> FormatTokenMap = {
     { "MOVE_X",               FormatToken::Move,                },

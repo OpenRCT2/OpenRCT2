@@ -116,12 +116,12 @@ namespace OpenRCT2::CommandLine
 
     void PrintHelp(bool allCommands)
     {
-        PrintHelpFor(RootCommands);
-        PrintExamples(RootExamples);
+        PrintHelpFor(kRootCommands);
+        PrintExamples(kRootExamples);
 
         if (allCommands)
         {
-            for (const CommandLineCommand* command = RootCommands; command->Name != nullptr; command++)
+            for (const CommandLineCommand* command = kRootCommands; command->Name != nullptr; command++)
             {
                 if (command->SubCommands != nullptr)
                 {
@@ -533,7 +533,7 @@ int32_t CommandLineRun(const char** argv, int32_t argc)
     // Pop process path
     argEnumerator.TryPop();
 
-    const CommandLineCommand* command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
+    const CommandLineCommand* command = CommandLine::FindCommandFor(CommandLine::kRootCommands, &argEnumerator);
 
     if (command == nullptr)
     {
@@ -549,7 +549,7 @@ int32_t CommandLineRun(const char** argv, int32_t argc)
         }
     }
 
-    if (command == CommandLine::RootCommands && command->Func == nullptr)
+    if (command == CommandLine::kRootCommands && command->Func == nullptr)
     {
         return CommandLine::HandleCommandDefault();
     }

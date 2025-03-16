@@ -14,7 +14,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/ObjectEntryManager.h"
@@ -75,7 +74,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = _loc;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
         && !GetGameState().Cheats.sandboxMode)
     {
         // Check if allowed to remove item

@@ -23,14 +23,14 @@
 
 using namespace OpenRCT2;
 
-static constexpr uint8_t Edges1X4NeSw[] = {
+static constexpr uint8_t kEdges1X4NeSw[] = {
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_NE,
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_SW,
 };
 
-static constexpr uint8_t Edges1X4NwSe[] = {
+static constexpr uint8_t kEdges1X4NwSe[] = {
     EDGE_NE | EDGE_SW,
     EDGE_NE | EDGE_SW | EDGE_NW,
     EDGE_NE | EDGE_SW,
@@ -38,7 +38,7 @@ static constexpr uint8_t Edges1X4NwSe[] = {
 };
 
 /** rct2: 0x008A8CA8 */
-static constexpr BoundBoxXY FerrisWheelData[] = {
+static constexpr BoundBoxXY kFerrisWheelData[] = {
     { { 1, 8 }, { 31, 16 } },
     { { 8, 1 }, { 16, 31 } },
     { { 1, 8 }, { 31, 16 } },
@@ -65,23 +65,23 @@ static void PaintFerrisWheelRiders(
 static void PaintFerrisWheelStructure(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height, ImageId stationColour)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
     auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
     }
 
-    auto boundBox = FerrisWheelData[direction];
+    auto boundBox = kFerrisWheelData[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
     BoundBoxXYZ bb = { { boundBox.offset, height + 7 }, { boundBox.length, 127 } };
 
     auto supportsImageTemplate = session.TrackColours;
-    auto wheelImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto wheelImageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         wheelImageTemplate = stationColour;
@@ -113,18 +113,18 @@ static void PaintFerrisWheel(
     int32_t edges;
     if (direction & 1)
     {
-        edges = Edges1X4NwSe[relativeTrackSequence];
+        edges = kEdges1X4NwSe[relativeTrackSequence];
     }
     else
     {
-        edges = Edges1X4NeSw[relativeTrackSequence];
+        edges = kEdges1X4NeSw[relativeTrackSequence];
     }
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 

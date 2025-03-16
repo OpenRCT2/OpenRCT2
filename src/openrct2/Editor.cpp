@@ -19,7 +19,7 @@
 #include "actions/LandBuyRightsAction.h"
 #include "actions/LandSetRightsAction.h"
 #include "actions/ResultWithMessage.h"
-#include "audio/audio.h"
+#include "audio/Audio.h"
 #include "core/EnumUtils.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
@@ -38,8 +38,6 @@
 #include "object/ObjectRepository.h"
 #include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
-#include "scenario/Scenario.h"
-#include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
@@ -56,9 +54,9 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::Editor
 {
-    static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
+    static std::array<std::vector<uint8_t>, EnumValue(ObjectType::count)> _editorSelectedObjectFlags;
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
+    static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path);
     static void SetAllLandOwned();
     static void FinaliseMainView();
     static void ClearMapForEditing(bool fromSave);
@@ -107,8 +105,8 @@ namespace OpenRCT2::Editor
         auto& gameState = GetGameState();
         Audio::StopAll();
         ObjectListLoad();
-        gameStateInitAll(gameState, DEFAULT_MAP_SIZE);
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+        gameStateInitAll(gameState, kDefaultMapSize);
+        gLegacyScene = LegacyScene::scenarioEditor;
         gameState.EditorStep = EditorStep::ObjectSelection;
         gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
@@ -128,14 +126,15 @@ namespace OpenRCT2::Editor
     {
         ToolCancel();
         auto intent = Intent(WindowClass::Loadsave);
-        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+        intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+        intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
         intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(ConvertSaveToScenarioCallback));
         ContextOpenIntent(&intent);
     }
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path)
+    static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path)
     {
-        if (result != MODAL_RESULT_OK)
+        if (result != ModalResult::ok)
         {
             return;
         }
@@ -148,7 +147,7 @@ namespace OpenRCT2::Editor
         auto& gameState = GetGameState();
         ScenarioReset(gameState);
 
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+        gLegacyScene = LegacyScene::scenarioEditor;
         gameState.EditorStep = EditorStep::ObjectiveSelection;
         gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
@@ -168,12 +167,12 @@ namespace OpenRCT2::Editor
         context->SetActiveScene(context->GetGameScene());
 
         Audio::StopAll();
-        gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
+        gLegacyScene = LegacyScene::trackDesigner;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), kDefaultMapSize);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
@@ -193,12 +192,12 @@ namespace OpenRCT2::Editor
         context->SetActiveScene(context->GetGameScene());
 
         Audio::StopAll();
-        gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
+        gLegacyScene = LegacyScene::trackDesignsManager;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+        gameStateInitAll(GetGameState(), kDefaultMapSize);
         SetAllLandOwned();
         GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
@@ -235,7 +234,7 @@ namespace OpenRCT2::Editor
 
         GetGameState().EditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+        gLegacyScene = LegacyScene::scenarioEditor;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
@@ -298,7 +297,7 @@ namespace OpenRCT2::Editor
 
             gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
+            gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, kMaxEntranceFee);
 
             gameState.InitialCash = std::min<money64>(gameState.InitialCash, 100000);
             FinanceResetCashToInitial();
@@ -310,7 +309,7 @@ namespace OpenRCT2::Editor
             gameState.BankLoanInterestRate = std::clamp<uint8_t>(gameState.BankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
-        ClimateReset(gameState.Climate);
+        ClimateReset();
 
         News::InitQueue();
     }
@@ -321,7 +320,7 @@ namespace OpenRCT2::Editor
      */
     void OpenWindowsForCurrentStep()
     {
-        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+        if (!isInEditorMode())
         {
             return;
         }
@@ -341,7 +340,7 @@ namespace OpenRCT2::Editor
                     return;
                 }
 
-                if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                if (gLegacyScene == LegacyScene::trackDesignsManager)
                 {
                     ObjectManagerUnloadAllObjects();
                 }
@@ -404,10 +403,10 @@ namespace OpenRCT2::Editor
     std::pair<ObjectType, StringId> CheckObjectSelection()
     {
         constexpr std::pair<ObjectType, StringId> kBasicCheckPairs[] = {
-            { ObjectType::Ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED },
-            { ObjectType::Station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED },
-            { ObjectType::TerrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED },
-            { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::terrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::terrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED },
         };
 
         for (auto& pair : kBasicCheckPairs)
@@ -419,26 +418,26 @@ namespace OpenRCT2::Editor
         }
 
         // No checks beyond this point apply to the track designer or track designs manager.
-        const bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+        const bool isTrackDesignerManager = isInTrackDesignerOrManager();
         if (isTrackDesignerManager)
         {
-            return { ObjectType::None, kStringIdNone };
+            return { ObjectType::none, kStringIdNone };
         }
 
         if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
         {
-            return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
+            return { ObjectType::footpathSurface, STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
         if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(true))
         {
-            return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
+            return { ObjectType::footpathSurface, STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
 
         constexpr std::pair<ObjectType, StringId> kParkCheckPairs[] = {
-            { ObjectType::FootpathRailings, STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED },
-            { ObjectType::ParkEntrance, STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED },
-            { ObjectType::Water, STR_WATER_TYPE_MUST_BE_SELECTED },
-            { ObjectType::PeepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::footpathRailings, STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::parkEntrance, STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED },
+            { ObjectType::water, STR_WATER_TYPE_MUST_BE_SELECTED },
+            { ObjectType::peepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED },
         };
 
         for (auto& pair : kParkCheckPairs)
@@ -462,11 +461,11 @@ namespace OpenRCT2::Editor
         {
             if (!EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(EnumValue(pair.first)))
             {
-                return { ObjectType::PeepAnimations, pair.second };
+                return { ObjectType::peepAnimations, pair.second };
             }
         }
 
-        return { ObjectType::None, kStringIdNone };
+        return { ObjectType::none, kStringIdNone };
     }
 
     /**
@@ -536,9 +535,9 @@ namespace OpenRCT2::Editor
 
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
-        if (index != OBJECT_ENTRY_INDEX_NULL)
+        if (index != kObjectEntryIndexNull)
         {
-            assert(static_cast<size_t>(objectType) < getObjectEntryGroupCount(ObjectType::Paths));
+            assert(static_cast<size_t>(objectType) < getObjectEntryGroupCount(ObjectType::paths));
             auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
             if (list.size() <= index)
             {

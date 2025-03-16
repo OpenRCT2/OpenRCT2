@@ -20,7 +20,7 @@ enum
 
 struct BannerSceneryEntry
 {
-    static constexpr auto kObjectType = ObjectType::Banners;
+    static constexpr auto kObjectType = ObjectType::banners;
 
     StringId name;
     uint32_t image;

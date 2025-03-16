@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MiniGolfRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniGolf,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::noTestMode, RtdFlag::hasTrack, RtdFlag::hasOneStation,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF },
     .NameConvention = { RideComponentType::Player, RideComponentType::Course, RideComponentType::Station },
     .AvailableBreakdowns = 0,
@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .UpkeepCosts = { 30, 60, 0, 0, 0, 0 },
     .BuildCosts = { 25.00_GBP, 3.50_GBP, 20, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 23,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 50), RIDE_RATING(0, 90), RIDE_RATING(0, 00) },
+        { MakeRideRating(1, 50), MakeRideRating(0, 90), MakeRideRating(0, 00) },
         0,
         -1,
         false,
@@ -73,7 +73,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,

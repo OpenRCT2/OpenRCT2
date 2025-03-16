@@ -107,13 +107,13 @@ consteval CommandLineCommand DefineSubCommand(const char* name, const CommandLin
 
 namespace OpenRCT2::CommandLine
 {
-    extern const CommandLineCommand RootCommands[];
-    extern const CommandLineCommand ScreenshotCommands[];
-    extern const CommandLineCommand SpriteCommands[];
-    extern const CommandLineCommand SimulateCommands[];
-    extern const CommandLineCommand ParkInfoCommands[];
+    extern const CommandLineCommand kRootCommands[];
+    extern const CommandLineCommand kScreenshotCommands[];
+    extern const CommandLineCommand kSpriteCommands[];
+    extern const CommandLineCommand kSimulateCommands[];
+    extern const CommandLineCommand kParkInfoCommands[];
 
-    extern const CommandLineExample RootExamples[];
+    extern const CommandLineExample kRootExamples[];
 
     void PrintHelp(bool allCommands = false);
     exitcode_t HandleCommandDefault();

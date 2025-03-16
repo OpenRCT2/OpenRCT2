@@ -13,12 +13,12 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkEntrancePlaceAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/object/EntranceObject.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/PathElement.h>
@@ -35,11 +35,11 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kScrollWidth = (kImageSize * kNumColumns) + kScrollBarWidth + 4;
     static constexpr int32_t kScrollHeight = (kImageSize * kNumRows);
     static constexpr int32_t kWindowWidth = kScrollWidth + 28;
-    static constexpr int32_t kWindowHeight = kScrollHeight + 50;
+    static constexpr int32_t kWindowHeight = kScrollHeight + 51;
 
     struct EntranceSelection
     {
-        ObjectEntryIndex entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        ObjectEntryIndex entryIndex = kObjectEntryIndexNull;
         StringId stringId = kStringIdNone;
         ImageIndex imageId = kSpriteIdNull;
     };
@@ -223,16 +223,16 @@ namespace OpenRCT2::Ui::Windows
         ObjectEntryIndex ScrollGetEntranceListItemAt(const ScreenCoordsXY& screenCoords)
         {
             if (screenCoords.x <= 0 || screenCoords.y <= 0)
-                return OBJECT_ENTRY_INDEX_NULL;
+                return kObjectEntryIndexNull;
 
             size_t column = screenCoords.x / kImageSize;
             size_t row = screenCoords.y / kImageSize;
             if (column >= 5)
-                return OBJECT_ENTRY_INDEX_NULL;
+                return kObjectEntryIndexNull;
 
             size_t index = column + (row * kNumColumns);
             if (index >= _entranceTypes.size())
-                return OBJECT_ENTRY_INDEX_NULL;
+                return kObjectEntryIndexNull;
 
             return _entranceTypes[index].entryIndex;
         }
@@ -246,14 +246,13 @@ namespace OpenRCT2::Ui::Windows
             InitParkEntranceItems();
 
             list_information_type = 0;
-            min_width = kWindowWidth;
-            min_height = kWindowHeight;
-            max_width = kWindowWidth;
-            max_height = static_cast<int16_t>(43 + kImageSize * GetNumRows());
+
+            auto maxHeight = static_cast<int16_t>(kWindowHeight + kImageSize * (GetNumRows() - 1));
+            WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, maxHeight });
 
             pressed_widgets |= 1LL << WIDX_TAB;
 
-            ToolSet(*this, WIDX_LIST, Tool::EntranceDown);
+            ToolSet(*this, WIDX_LIST, Tool::entranceDown);
             InputSetFlag(INPUT_FLAG_6, true);
         }
 
@@ -368,7 +367,7 @@ namespace OpenRCT2::Ui::Windows
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto highlighted = ScrollGetEntranceListItemAt(screenCoords);
-            if (highlighted != OBJECT_ENTRY_INDEX_NULL)
+            if (highlighted != kObjectEntryIndexNull)
             {
                 _highlightedEntranceType = highlighted;
                 Invalidate();
@@ -378,7 +377,7 @@ namespace OpenRCT2::Ui::Windows
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto selected = ScrollGetEntranceListItemAt(screenCoords);
-            if (selected == OBJECT_ENTRY_INDEX_NULL)
+            if (selected == kObjectEntryIndexNull)
             {
                 return;
             }

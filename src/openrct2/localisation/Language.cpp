@@ -8,17 +8,11 @@
  *****************************************************************************/
 
 #include "../Context.h"
-#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../interface/FontFamilies.h"
-#include "../interface/Fonts.h"
 #include "../interface/Window.h"
 #include "../object/ObjectManager.h"
-#include "../platform/Platform.h"
-#include "LanguagePack.h"
 #include "LocalisationService.h"
-
-#include <stack>
 
 using namespace OpenRCT2;
 

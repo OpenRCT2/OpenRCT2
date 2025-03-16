@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MonsterTrucksRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::carRide,
@@ -33,8 +33,8 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::showInTrackDesigner, 
                      RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = (1uLL << static_cast<uint8_t>(RideMode::ContinuousCircuit)),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = (1uLL << static_cast<uint8_t>(RideMode::continuousCircuit)),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MONSTER_TRUCKS, STR_RIDE_DESCRIPTION_MONSTER_TRUCKS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
     .UpkeepCosts = { 70, 20, 0, 8, 3, 5 },
     .BuildCosts = { 12.50_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -60,13 +60,13 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
         .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 00), RIDE_RATING(0, 50), RIDE_RATING(0, 00) },
+        { MakeRideRating(2, 00), MakeRideRating(0, 50), MakeRideRating(0, 00) },
         12,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 15), RIDE_RATING(0, 00), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 15), MakeRideRating(0, 00), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

@@ -14,14 +14,13 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/EnumUtils.hpp"
+#include "../entity/EntityList.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
-#include "../interface/Window.h"
-#include "../localisation/Localisation.Date.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideManager.hpp"
-#include "../scenario/Scenario.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
@@ -50,7 +49,7 @@ bool FinanceCheckMoneyRequired(uint32_t flags)
 {
     if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
         return false;
-    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    if (isInEditorMode())
         return false;
     if (flags & GAME_COMMAND_FLAG_NO_SPEND)
         return false;
@@ -161,25 +160,25 @@ void FinancePayRideUpkeep()
 
     for (auto& ride : GetRideManager())
     {
-        if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
+        if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
         {
-            ride.Renew();
+            ride.renew();
         }
 
-        if (ride.status != RideStatus::Closed && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RideStatus::closed && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            auto upkeep = ride.upkeep_cost;
+            auto upkeep = ride.upkeepCost;
             if (upkeep != kMoney64Undefined)
             {
-                ride.total_profit -= upkeep;
-                ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+                ride.totalProfit -= upkeep;
+                ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
                 FinancePayment(upkeep, ExpenditureType::RideRunningCosts);
             }
         }
 
-        if (ride.last_crash_type != RIDE_CRASH_TYPE_NONE)
+        if (ride.lastCrashType != RIDE_CRASH_TYPE_NONE)
         {
-            ride.last_crash_type--;
+            ride.lastCrashType--;
         }
     }
 }
@@ -272,9 +271,9 @@ void FinanceUpdateDailyProfit()
         // Ride costs
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Closed && ride.upkeep_cost != kMoney64Undefined)
+            if (ride.status != RideStatus::closed && ride.upkeepCost != kMoney64Undefined)
             {
-                current_profit -= 2 * ride.upkeep_cost;
+                current_profit -= 2 * ride.upkeepCost;
             }
         }
     }
@@ -288,7 +287,8 @@ void FinanceUpdateDailyProfit()
     gameState.WeeklyProfitAverageDividend += gameState.CurrentProfit;
     gameState.WeeklyProfitAverageDivisor += 1;
 
-    WindowInvalidateByClass(WindowClass::Finances);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Finances);
 }
 
 money64 FinanceGetInitialCash()
@@ -344,7 +344,8 @@ void FinanceShiftExpenditureTable()
         gameState.ExpenditureTable[0][i] = 0;
     }
 
-    WindowInvalidateByClass(WindowClass::Finances);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Finances);
 }
 
 /**

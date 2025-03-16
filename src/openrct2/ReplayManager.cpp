@@ -34,7 +34,6 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "park/ParkFile.h"
-#include "scenario/Scenario.h"
 #include "world/Park.h"
 #include "zlib.h"
 

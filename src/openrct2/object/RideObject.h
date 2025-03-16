@@ -17,6 +17,8 @@
 
 #include <vector>
 
+enum class RideCategory : uint8_t;
+
 class RideObject final : public Object
 {
 private:
@@ -26,7 +28,7 @@ private:
     std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[OpenRCT2::RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::Ride;
+    static constexpr ObjectType kObjectType = ObjectType::ride;
 
     void* GetLegacyData() override
     {
@@ -64,8 +66,8 @@ private:
     static uint8_t CalculateNumVerticalFrames(const CarEntry& carEntry);
     static uint8_t CalculateNumHorizontalFrames(const CarEntry& carEntry);
 
-    static bool IsRideTypeShopOrFacility(ride_type_t rideType);
-    static uint8_t ParseRideCategory(const std::string& s);
+    static bool isRideTypeShopOrFacility(ride_type_t rideType);
+    static RideCategory ParseRideCategory(const std::string& s);
     static ShopItem ParseShopItem(const std::string& s);
     static colour_t ParseColour(const std::string& s);
 

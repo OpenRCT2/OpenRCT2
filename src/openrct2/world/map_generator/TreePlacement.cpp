@@ -122,10 +122,10 @@ namespace OpenRCT2::World::MapGenerator
         std::vector<int32_t> desertTreeIds;
         std::vector<int32_t> snowTreeIds;
 
-        for (auto i = 0u; i < getObjectEntryGroupCount(ObjectType::SmallScenery); i++)
+        for (auto i = 0u; i < getObjectEntryGroupCount(ObjectType::smallScenery); i++)
         {
             auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
-            auto entry = ObjectEntryGetObject(ObjectType::SmallScenery, i);
+            auto entry = ObjectEntryGetObject(ObjectType::smallScenery, i);
 
             if (sceneryEntry == nullptr)
                 continue;
@@ -171,7 +171,7 @@ namespace OpenRCT2::World::MapGenerator
                 // On sand surfaces, give the tile a score based on nearby water, to be used to determine whether to spawn
                 // vegetation
                 float oasisScore = 0.0f;
-                ObjectEntryIndex treeObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+                ObjectEntryIndex treeObjectEntryIndex = kObjectEntryIndexNull;
                 const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceObjectIndex());
                 if (surfaceTakesSandTrees(surfaceStyleObject))
                 {
@@ -224,7 +224,7 @@ namespace OpenRCT2::World::MapGenerator
                     treeObjectEntryIndex = snowTreeIds[UtilRand() % snowTreeIds.size()];
                 }
 
-                if (treeObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (treeObjectEntryIndex != kObjectEntryIndexNull)
                     placeTree(treeObjectEntryIndex, pos);
             }
         }

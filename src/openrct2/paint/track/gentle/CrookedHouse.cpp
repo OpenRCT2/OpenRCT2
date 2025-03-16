@@ -24,7 +24,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr BoundBoxXY CrookedHouseData[] = {
+static constexpr BoundBoxXY kCrookedHouseData[] = {
     {
         { 6, 0 },
         { 42, 24 },
@@ -63,11 +63,11 @@ static void PaintCrookedHouseStructure(
     if (ride == nullptr)
         return;
 
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride->getRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
         auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr)
@@ -77,7 +77,7 @@ static void PaintCrookedHouseStructure(
         }
     }
 
-    const auto& boundBox = CrookedHouseData[segment];
+    const auto& boundBox = kCrookedHouseData[segment];
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsParent(
         session, stationColour.WithIndex(imageIndex), { x_offset, y_offset, height + 3 },
@@ -97,7 +97,7 @@ static void PaintCrookedHouse(
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 

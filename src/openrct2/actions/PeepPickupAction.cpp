@@ -13,7 +13,7 @@
 #include "../Input.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 
 using namespace OpenRCT2;
 

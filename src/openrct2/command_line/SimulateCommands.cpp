@@ -14,7 +14,7 @@
 #include "../config/ConfigTypes.h"
 #include "../core/Console.hpp"
 #include "../entity/EntityRegistry.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "CommandLine.hpp"
 
@@ -25,9 +25,9 @@ using namespace OpenRCT2;
 
 static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator);
 
-const CommandLineCommand CommandLine::SimulateCommands[]{ // Main commands
-                                                          DefineCommand("", "<ticks>", nullptr, HandleSimulate),
-                                                          kCommandTableEnd
+const CommandLineCommand CommandLine::kSimulateCommands[]{ // Main commands
+                                                           DefineCommand("", "<ticks>", nullptr, HandleSimulate),
+                                                           kCommandTableEnd
 };
 
 static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)

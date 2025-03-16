@@ -10,15 +10,11 @@
 #pragma once
 
 #include <openrct2/Context.h>
-#include <openrct2/ui/UiContext.h>
 
 union SDL_Event;
 
 namespace OpenRCT2::Ui
 {
-    /**
-     * Represents a
-     */
     class TextComposition
     {
     private:

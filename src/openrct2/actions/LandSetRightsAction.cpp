@@ -14,9 +14,8 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/Numerics.hpp"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
@@ -85,7 +84,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
     res.Position = centre;
     res.Expenditure = ExpenditureType::LandPurchase;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
+    if (!isInEditorMode() && !GetGameState().Cheats.sandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, kStringIdNone, STR_LAND_NOT_FOR_SALE);
     }

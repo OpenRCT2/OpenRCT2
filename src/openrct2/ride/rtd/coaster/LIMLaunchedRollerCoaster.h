@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::limLaunchedRollerCoaster,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch, RideMode::PoweredLaunchBlockSectioned),
-    .DefaultMode = RideMode::PoweredLaunchPasstrough,
+    .RideModes = EnumsToFlags(RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch, RideMode::poweredLaunchBlockSectioned),
+    .DefaultMode = RideMode::poweredLaunchPasstrough,
     .OperatingSettings = { 10, 31 },
     .BoosterSettings = { 18, 52 },
     .LegacyBoosterSettings = { 18, 52 },
@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     .UpkeepCosts = { 42, 20, 80, 9, 3, 10 },
     .BuildCosts = { 47.50_GBP, 2.50_GBP, 50, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -61,13 +61,13 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 90), RIDE_RATING(1, 50), RIDE_RATING(2, 20) },
+        { MakeRideRating(2, 90), MakeRideRating(1, 50), MakeRideRating(2, 20) },
         25,
         -1,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

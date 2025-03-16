@@ -78,25 +78,25 @@ static void PathAdditionLightsPaint(
     {
         auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_NE, isBroken);
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { 2, 16, height }, { { 6, 8, height + 2 }, { 0, 16, 23 } });
+            session, imageTemplate.WithIndex(imageIndex), { 2, 16, height }, { { 3, 8, height + 2 }, { 0, 16, 23 } });
     }
     if (edges & EDGE_SE)
     {
         auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_SE, isBroken);
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { 16, 30, height }, { { 8, 23, height + 2 }, { 16, 0, 23 } });
+            session, imageTemplate.WithIndex(imageIndex), { 16, 30, height }, { { 2, 29, height + 2 }, { 22, 0, 23 } });
     }
     if (edges & EDGE_SW)
     {
         auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_SW, isBroken);
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { 30, 16, height }, { { 23, 8, height + 2 }, { 0, 16, 23 } });
+            session, imageTemplate.WithIndex(imageIndex), { 30, 16, height }, { { 29, 2, height + 2 }, { 0, 22, 23 } });
     }
     if (edges & EDGE_NW)
     {
         auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_NW, isBroken);
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageIndex), { 16, 2, height }, { { 8, 6, height + 2 }, { 16, 0, 23 } });
+            session, imageTemplate.WithIndex(imageIndex), { 16, 2, height }, { { 8, 3, height + 2 }, { 16, 0, 23 } });
     }
 }
 

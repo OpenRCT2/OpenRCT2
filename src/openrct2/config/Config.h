@@ -121,6 +121,7 @@ namespace OpenRCT2::Config
         int16_t FileBrowserHeight;
         bool FileBrowserShowSizeColumn;
         bool FileBrowserShowDateColumn;
+        bool FileBrowserShowPreviews;
     };
 
     struct Interface
@@ -133,6 +134,7 @@ namespace OpenRCT2::Config
         bool ToolbarShowMute;
         bool ToolbarShowChat;
         bool ToolbarShowZoom;
+        bool ToolbarShowRotateAnticlockwise;
         bool ConsoleSmallFont;
         bool RandomTitleSequence;
         u8string CurrentThemePreset;

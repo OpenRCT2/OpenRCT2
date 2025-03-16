@@ -17,7 +17,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Formatting.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../world/Map.h"
@@ -177,7 +177,7 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
     {
         // Don't render any money in the title screen.
         return;

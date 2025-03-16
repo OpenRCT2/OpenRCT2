@@ -9,14 +9,14 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../Track.h"
 
 // clang-format off
 constexpr RideTypeDescriptor AlpineCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::alpineCoaster,
@@ -31,8 +31,8 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
                           RtdFlag::allowMusic, RtdFlag::interestingToLookAt, RtdFlag::supportsMultipleColourSchemes,
                           RtdFlag::canSynchroniseWithAdjacentStations, RtdFlag::hasEntranceAndExit,
                           RtdFlag::noTestMode, RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::upInclineRequiresLift),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .TrackSpeedSettings = { 10, 10 },
     .Naming = { STR_RIDE_NAME_ALPINE_COASTER, STR_RIDE_DESCRIPTION_ALPINE_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .UpkeepCosts = { 35, 20, 80, 8, 3, 10 },
     .BuildCosts = { 22.50_GBP, 2.50_GBP, 50},
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -56,13 +56,13 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 30), RIDE_RATING(2, 10), RIDE_RATING(1, 4) },
+        { MakeRideRating(2, 30), MakeRideRating(2, 10), MakeRideRating(1, 4) },
         7,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 75), RIDE_RATING(0, 5), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 75), MakeRideRating(0, 5), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

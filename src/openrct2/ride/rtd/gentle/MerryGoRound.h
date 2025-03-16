@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MerryGoRoundRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::merryGoRound,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::hasMusicByDefault,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::Rotation),
-    .DefaultMode = RideMode::Rotation,
+    .RideModes = EnumsToFlags(RideMode::rotation),
+    .DefaultMode = RideMode::rotation,
     .OperatingSettings = { 4, 25 },
     .Naming = { STR_RIDE_NAME_MERRY_GO_ROUND, STR_RIDE_DESCRIPTION_MERRY_GO_ROUND },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
@@ -43,17 +43,17 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 57.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_FAIRGROUND,
+    .DefaultMusic = kMusicObjectFairground,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Ride,
     .Name = "merry_go_round",
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(0, 60), RIDE_RATING(0, 15), RIDE_RATING(0, 30) },
+        { MakeRideRating(0, 60), MakeRideRating(0, 15), MakeRideRating(0, 30) },
         16,
         7,
         false,

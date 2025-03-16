@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor CircusRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::circus,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor CircusRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::hasVehicleColours,
                      RtdFlag::hasMusicByDefault, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::Circus),
-    .DefaultMode = RideMode::Circus,
+    .RideModes = EnumsToFlags(RideMode::circus),
+    .DefaultMode = RideMode::circus,
     .Naming = { STR_RIDE_NAME_CIRCUS, STR_RIDE_DESCRIPTION_CIRCUS },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
@@ -45,14 +45,14 @@ constexpr RideTypeDescriptor CircusRTD =
     .DefaultMusic = {},
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 39,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Ride,
     .Name = "circus",
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(2, 10), RIDE_RATING(0, 30), RIDE_RATING(0, 0) },
+        { MakeRideRating(2, 10), MakeRideRating(0, 30), MakeRideRating(0, 0) },
         9,
         7,
         false,
@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor CircusRTD =
     .StartRideMusic = OpenRCT2::RideAudio::CircusStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = CircusMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,

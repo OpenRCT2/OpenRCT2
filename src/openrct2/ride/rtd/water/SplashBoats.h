@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor SplashBoatsRTD =
 {
-    .Category = RIDE_CATEGORY_WATER,
+    .Category = RideCategory::water,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::splashBoats,
@@ -33,8 +33,8 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
                      RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::hasAirTime,
                      RtdFlag::showInTrackDesigner, RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_SPLASH_BOATS, STR_RIDE_DESCRIPTION_SPLASH_BOATS },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
     .UpkeepCosts = { 70, 20, 0, 9, 0, 10 },
     .BuildCosts = { 28.50_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo4,
     .BonusValue = 65,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -58,13 +58,13 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 46), RIDE_RATING(0, 35), RIDE_RATING(0, 30) },
+        { MakeRideRating(1, 46), MakeRideRating(0, 35), MakeRideRating(0, 30) },
         15,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                797059, 655360, 301111 },
             { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
             { RatingsModifierType::BonusTurns,            0,                22291, 20860, 4574 },

@@ -33,7 +33,7 @@ static constexpr CommandLineOptionDefinition kSpriteOptions[]
 
 static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator);
 
-const CommandLineCommand CommandLine::SpriteCommands[]
+const CommandLineCommand CommandLine::kSpriteCommands[]
 {
     // Main commands
     DefineCommand("append",       "<spritefile> <input> [x_offset y_offset]", kSpriteOptions, HandleSprite),

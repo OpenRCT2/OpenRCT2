@@ -13,8 +13,8 @@
 
     #include "../../../Context.h"
     #include "../../../actions/PlayerSetGroupAction.h"
+    #include "../../../network/Network.h"
     #include "../../../network/NetworkAction.h"
-    #include "../../../network/network.h"
 
 namespace OpenRCT2::Scripting
 {

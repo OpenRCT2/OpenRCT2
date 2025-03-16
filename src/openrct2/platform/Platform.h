@@ -13,6 +13,7 @@
 #include "../core/DateTime.h"
 #include "../core/StringTypes.h"
 
+#include <bit>
 #include <ctime>
 #include <vector>
 
@@ -30,6 +31,9 @@
 #ifndef MAX_PATH
     #define MAX_PATH 260
 #endif
+
+static_assert(
+    std::endian::native == std::endian::little, "OpenRCT2 is known to be broken on big endian. Proceed with caution!");
 
 enum class SPECIAL_FOLDER
 {
@@ -82,7 +86,7 @@ namespace OpenRCT2::Platform
     std::string GetUsername();
 
     std::string GetSteamPath();
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__NetBSD__)
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();
 #endif

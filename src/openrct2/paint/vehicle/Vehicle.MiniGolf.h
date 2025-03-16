@@ -13,5 +13,5 @@
 
 namespace OpenRCT2
 {
-    extern const size_t MiniGolfPeepAnimationLengths[];
+    extern const size_t kMiniGolfPeepAnimationLengths[];
 }

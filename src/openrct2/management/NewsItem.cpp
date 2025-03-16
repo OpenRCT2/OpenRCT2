@@ -14,18 +14,16 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
-#include "../interface/Window.h"
-#include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Research.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
+#include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"
 
@@ -131,7 +129,7 @@ static void TickCurrent()
 {
     int32_t ticks = GetGameState().NewsItems.IncrementTicks();
     // Only play news item sound when in normal playing mode
-    if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
+    if (ticks == 1 && (gLegacyScene == LegacyScene::playing))
     {
         // Play sound
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, ContextGetWidth() / 2);
@@ -194,7 +192,8 @@ void News::ItemQueues::ArchiveCurrent()
     Archived.push_back(Current());
 
     // Invalidate the news window
-    WindowInvalidateByClass(WindowClass::RecentNews);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::RecentNews);
 
     // Dequeue the current news item, shift news up
     Recent.pop_front();
@@ -219,11 +218,11 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
         case News::ItemType::Ride:
         {
             Ride* ride = GetRide(RideId::FromUnderlying(subject));
-            if (ride == nullptr || ride->overall_view.IsNull())
+            if (ride == nullptr || ride->overallView.IsNull())
             {
                 break;
             }
-            auto rideViewCentre = ride->overall_view.ToTileCentre();
+            auto rideViewCentre = ride->overallView.ToTileCentre();
             subjectLoc = CoordsXYZ{ rideViewCentre, TileElementHeight(rideViewCentre) };
             break;
         }
@@ -245,7 +244,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
 
             // Find which ride peep is on
             Ride* ride = GetRide(peep->CurrentRide);
-            if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+            if (ride == nullptr || !(ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 subjectLoc = std::nullopt;
                 break;
@@ -414,7 +413,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         case News::ItemType::Peeps:
         {
             auto intent = Intent(WindowClass::GuestList);
-            intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
+            intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::guestsThinkingX));
             intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
             ContextOpenIntent(&intent);
             break;
@@ -456,7 +455,8 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
         if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
             newsItem.SetFlags(News::ItemFlags::HasButton);
-            WindowInvalidateByClass(WindowClass::RecentNews);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::RecentNews);
         }
     });
 }

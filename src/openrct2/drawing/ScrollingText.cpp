@@ -9,6 +9,7 @@
 
 #include "ScrollingText.h"
 
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/CodepointView.hpp"
 #include "../core/EnumUtils.hpp"
@@ -18,7 +19,6 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
-#include "../sprites.h"
 #include "Drawing.h"
 #include "TTF.h"
 

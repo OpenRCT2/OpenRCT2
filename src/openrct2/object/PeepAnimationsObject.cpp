@@ -114,7 +114,7 @@ PeepAnimations PeepAnimationsObject::ReadAnimations(const EnumMap<PeepAnimationT
                 auto& referenceAnim = _animationGroups[0][typeEnum];
                 if (referenceAnim.imageTableOffset != 0)
                 {
-                    LOG_VERBOSE("Copying animation '%s' from primary group", typeStr);
+                    LOG_VERBOSE("Copying animation '%s' from primary group", std::string(typeStr).c_str());
                     std::vector<uint8_t> sequence = referenceAnim.frame_offsets;
                     group[typeEnum] = {
                         .imageTableOffset = referenceAnim.imageTableOffset,
@@ -125,7 +125,7 @@ PeepAnimations PeepAnimationsObject::ReadAnimations(const EnumMap<PeepAnimationT
             }
 
             // No primary animation bail us out -- error here!
-            LOG_ERROR("Required animation does not exist: %s", typeStr);
+            LOG_ERROR("Required animation does not exist: %s", std::string(typeStr).c_str());
             continue;
         }
 

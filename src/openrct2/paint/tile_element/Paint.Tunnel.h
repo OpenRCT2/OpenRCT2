@@ -45,6 +45,14 @@ enum class TunnelType : uint8_t
     Doors5 = 21,
     Doors6 = 22,
 
+    DoorsFlatTo25Deg0 = 23,
+    DoorsFlatTo25Deg1 = 24,
+    DoorsFlatTo25Deg2 = 25,
+    DoorsFlatTo25Deg3 = 26,
+    DoorsFlatTo25Deg4 = 27,
+    DoorsFlatTo25Deg5 = 28,
+    DoorsFlatTo25Deg6 = 29,
+
     Count,
 
     Null = 255,

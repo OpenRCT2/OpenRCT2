@@ -23,7 +23,7 @@
 #include "ReplayManager.h"
 #include "actions/GameSetSpeedAction.h"
 #include "actions/LoadOrQuitAction.h"
-#include "audio/audio.h"
+#include "audio/Audio.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/File.h"
@@ -32,6 +32,7 @@
 #include "core/Path.hpp"
 #include "core/SawyerCoding.h"
 #include "core/String.hpp"
+#include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
@@ -43,7 +44,7 @@
 #include "management/Finance.h"
 #include "management/Marketing.h"
 #include "management/Research.h"
-#include "network/network.h"
+#include "network/Network.h"
 #include "object/Object.h"
 #include "object/ObjectEntryManager.h"
 #include "object/ObjectList.h"
@@ -56,7 +57,6 @@
 #include "ride/Track.h"
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
-#include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
@@ -140,7 +140,10 @@ void GameCreateWindows()
 void PauseToggle()
 {
     gGamePaused ^= GAME_PAUSED_NORMAL;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
         OpenRCT2::Audio::StopAll();
@@ -164,7 +167,8 @@ bool GameIsNotPaused()
 static void LoadLandscape()
 {
     auto intent = Intent(WindowClass::Loadsave);
-    intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
+    intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+    intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
     ContextOpenIntent(&intent);
 }
 
@@ -495,7 +499,8 @@ std::unique_ptr<Intent> CreateSaveGameAsIntent()
     auto name = Path::GetFileNameWithoutExtension(gScenarioSavePath);
 
     auto intent = std::make_unique<Intent>(WindowClass::Loadsave);
-    intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
+    intent->PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
+    intent->PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
     intent->PutExtra(INTENT_EXTRA_PATH, name);
 
     return intent;
@@ -571,7 +576,7 @@ void GameAutosave()
     auto subDirectory = DIRID::SAVE;
     const char* fileExtension = ".park";
     uint32_t saveFlags = 0x80000000;
-    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    if (isInEditorMode())
     {
         subDirectory = DIRID::LANDSCAPE;
         fileExtension = ".park";
@@ -588,7 +593,7 @@ void GameAutosave()
         currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
     int32_t autosavesToKeep = Config::Get().general.AutosaveAmount;
-    LimitAutosaveCount(autosavesToKeep - 1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
+    LimitAutosaveCount(autosavesToKeep - 1, isInEditorMode());
 
     auto env = GetContext()->GetPlatformEnvironment();
     auto autosaveDir = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, subDirectory), u8"autosave");
@@ -609,9 +614,9 @@ void GameAutosave()
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 
-static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)
+static void GameLoadOrQuitNoSavePromptCallback(ModalResult result, const utf8* path)
 {
-    if (result == MODAL_RESULT_OK)
+    if (result == ModalResult::ok)
     {
         GameNotifyMapChange();
         GameUnloadScripts();
@@ -648,25 +653,26 @@ void GameLoadOrQuitNoSavePrompt()
 {
     switch (gSavePromptMode)
     {
-        case PromptMode::SaveBeforeLoad:
+        case PromptMode::saveBeforeLoad:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            if (gLegacyScene == LegacyScene::scenarioEditor)
             {
                 LoadLandscape();
             }
             else
             {
                 auto intent = Intent(WindowClass::Loadsave);
-                intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+                intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+                intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
                 intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(GameLoadOrQuitNoSavePromptCallback));
                 ContextOpenIntent(&intent);
             }
             break;
         }
-        case PromptMode::SaveBeforeQuit:
+        case PromptMode::saveBeforeQuit:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
@@ -684,7 +690,7 @@ void GameLoadOrQuitNoSavePrompt()
             context->SetActiveScene(context->GetTitleScene());
             break;
         }
-        case PromptMode::SaveBeforeNewGame:
+        case PromptMode::saveBeforeNewGame:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);

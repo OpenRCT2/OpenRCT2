@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor ObservationTowerRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::observationTower,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
                      RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::showInTrackDesigner, RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::RotatingLift),
-    .DefaultMode = RideMode::RotatingLift,
+    .RideModes = EnumsToFlags(RideMode::rotatingLift),
+    .DefaultMode = RideMode::rotatingLift,
     .Naming = { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER },
     .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 18.50_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 10) },
+        { MakeRideRating(1, 50), MakeRideRating(0, 00), MakeRideRating(0, 10) },
         15,
         7,
         false,

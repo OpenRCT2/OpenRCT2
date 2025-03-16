@@ -13,10 +13,10 @@
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -190,10 +190,7 @@ namespace OpenRCT2::Ui::Windows
             InitialiseWidgets();
             InitialiseList();
 
-            min_width = WW;
-            min_height = WH;
-            max_width = WW_SC_MAX;
-            max_height = WH_SC_MAX;
+            WindowSetResize(*this, { WW, WH }, { WW_SC_MAX, WH_SC_MAX });
         }
 
         void OnClose() override
@@ -204,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, min_width, min_height, max_width, max_height);
+            WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
         }
 
         void OnUpdate() override
@@ -248,7 +245,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCROLL].bottom = height - 19;
             widgets[WIDX_RESET].top = height - 16;
             widgets[WIDX_RESET].bottom = height - 5;
-            WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
+            WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size() - 1));
 
             // Set selected tab
             for (size_t i = 0; i < _tabs.size(); i++)
@@ -450,7 +447,7 @@ namespace OpenRCT2::Ui::Windows
         void InitialiseWidgets()
         {
             widgets.clear();
-            widgets.insert(widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets) - 1);
+            widgets.insert(widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets));
 
             int32_t x = 3;
             for (size_t i = 0; i < _tabs.size(); i++)

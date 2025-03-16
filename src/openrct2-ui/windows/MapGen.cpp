@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/UnitConversion.h>
@@ -22,7 +23,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
         Y,
     };
 
-    static void HeightmapLoadsaveCallback(int32_t result, const utf8* path);
+    static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path);
 
     class MapGenWindow final : public Window
     {
@@ -274,6 +274,10 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t newPage)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
+
             page = newPage;
             frame_no = 0;
             RemoveViewport();
@@ -929,7 +933,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_HEIGHTMAP_BROWSE:
                 {
                     auto intent = Intent(WindowClass::Loadsave);
-                    intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
+                    intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+                    intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::heightmap);
                     intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(HeightmapLoadsaveCallback));
                     ContextOpenIntent(&intent);
                     return;
@@ -1126,7 +1131,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainSurface == type)
                     {
-                        gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainSurface = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -1143,7 +1148,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (gLandToolTerrainEdge == type)
                     {
-                        gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
+                        gLandToolTerrainEdge = kObjectEntryIndexNull;
                     }
                     else
                     {
@@ -1181,7 +1186,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainSurface, _settings.landTexture));
+                objManager.GetLoadedObject(ObjectType::terrainSurface, _settings.landTexture));
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -1194,7 +1199,7 @@ namespace OpenRCT2::Ui::Windows
 
             ImageId edgeImage;
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainEdge, _settings.edgeTexture));
+                objManager.GetLoadedObject(ObjectType::terrainEdge, _settings.edgeTexture));
             if (edgeObj != nullptr)
             {
                 edgeImage = ImageId(edgeObj->IconImageId);
@@ -1504,9 +1509,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void AfterLoadingHeightMap(int32_t result, const utf8* path)
+        void AfterLoadingHeightMap(ModalResult result, const utf8* path)
         {
-            if (result == MODAL_RESULT_OK)
+            if (result == ModalResult::ok)
             {
                 if (!MapGenerator::LoadHeightmapImage(path))
                 {
@@ -1534,7 +1539,7 @@ namespace OpenRCT2::Ui::Windows
         return windowMgr->FocusOrCreate<MapGenWindow>(WindowClass::Mapgen, WW, WH, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
     }
 
-    static void HeightmapLoadsaveCallback(int32_t result, const utf8* path)
+    static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path)
     {
         auto* w = static_cast<MapGenWindow*>(MapgenOpen());
         w->AfterLoadingHeightMap(result, path);

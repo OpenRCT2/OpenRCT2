@@ -14,13 +14,13 @@
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../entity/Guest.h"
-#include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "Finance.h"
 #include "NewsItem.h"
@@ -92,7 +92,7 @@ static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign
             auto ride = GetRide(campaign.RideId);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
             }
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
@@ -142,7 +142,8 @@ void MarketingUpdate()
         }
     }
 
-    WindowInvalidateByClass(WindowClass::Finances);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Finances);
 }
 
 void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
@@ -201,7 +202,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
             // Check if any rides exist
             for (auto& ride : GetRideManager())
             {
-                if (ride.IsRide())
+                if (ride.isRide())
                 {
                     return true;
                 }
@@ -212,7 +213,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
             // Check if any food or drink stalls exist
             for (auto& ride : GetRideManager())
             {
-                auto rideEntry = ride.GetRideEntry();
+                auto rideEntry = ride.getRideEntry();
                 if (rideEntry != nullptr)
                 {
                     for (auto& item : rideEntry->shop_item)

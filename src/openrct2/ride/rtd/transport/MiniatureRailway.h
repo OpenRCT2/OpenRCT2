@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MiniatureRailwayRTD =
 {
-    .Category = RIDE_CATEGORY_TRANSPORT,
+    .Category = RideCategory::transport,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniatureRailway,
@@ -33,8 +33,8 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::allowMultipleCircuits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
                      RtdFlag::supportsLevelCrossings),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::shuttle),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MINIATURE_RAILWAY, STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .UpkeepCosts = { 60, 20, 0, 10, 3, 5 },
     .BuildCosts = { 17.50_GBP, 3.00_GBP, 50, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 00) },
+        { MakeRideRating(2, 50), MakeRideRating(0, 00), MakeRideRating(0, 00) },
         11,
         -1,
         false,

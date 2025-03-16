@@ -19,7 +19,6 @@
 #include "../ReplayManager.h"
 #include "../Version.h"
 #include "../actions/CheatSetAction.h"
-#include "../actions/ClimateSetAction.h"
 #include "../actions/GameSetSpeedAction.h"
 #include "../actions/ParkSetDateAction.h"
 #include "../actions/ParkSetParameterAction.h"
@@ -43,13 +42,14 @@
 #include "../entity/Staff.h"
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
+#include "../interface/Viewport.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
@@ -64,7 +64,6 @@
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/Climate.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "Viewport.h"
@@ -87,13 +86,6 @@ using namespace OpenRCT2;
 
 using arguments_t = std::vector<std::string>;
 using OpenRCT2::Date;
-
-static constexpr const char* kClimateNames[] = {
-    "cool_and_wet",
-    "warm",
-    "hot_and_dry",
-    "cold",
-};
 
 static int32_t ConsoleParseInt(const std::string& src, bool* valid);
 static double ConsoleParseDouble(const std::string& src, bool* valid);
@@ -160,7 +152,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
         {
             for (const auto& ride : GetRideManager())
             {
-                auto name = ride.GetName();
+                auto name = ride.getName();
                 console.WriteFormatLine(
                     "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", ride.id, ride.type, ride.subtype,
                     ride.mode, name.c_str());
@@ -173,10 +165,10 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                 if (argv.size() > 1 && argv[1] == "mode")
                 {
                     console.WriteFormatLine("Ride modes are specified using integer IDs as given below:");
-                    for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::Count); i++)
+                    for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::count); i++)
                     {
                         char mode_name[128] = { 0 };
-                        StringId mode_string_id = RideModeNames[i];
+                        StringId mode_string_id = kRideModeNames[i];
                         OpenRCT2::FormatStringLegacy(mode_name, 128, mode_string_id, nullptr);
                         console.WriteFormatLine("%02d - %s", i, mode_name);
                     }
@@ -239,7 +231,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                 else
                 {
                     auto ride = GetRide(RideId::FromUnderlying(ride_index));
-                    if (mode >= static_cast<uint8_t>(RideMode::Count))
+                    if (mode >= static_cast<uint8_t>(RideMode::count))
                     {
                         console.WriteFormatLine("Invalid ride mode.");
                     }
@@ -281,7 +273,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        for (int32_t i = 0; i < ride->NumTrains; ++i)
+                        for (int32_t i = 0; i < ride->numTrains; ++i)
                         {
                             for (Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
                                  vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
@@ -673,11 +665,6 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         {
             console.WriteFormatLine("park_open %d", (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) != 0);
         }
-        else if (argv[0] == "climate")
-        {
-            console.WriteFormatLine(
-                "climate %s  (%d)", kClimateNames[EnumValue(gameState.Climate)], EnumValue(gameState.Climate));
-        }
         else if (argv[0] == "game_speed")
         {
             console.WriteFormatLine("game_speed %d", gGameSpeed);
@@ -912,37 +899,6 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
                 console, varName, ScenarioSetSetting::CostToBuyConstructionRights,
                 std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
         }
-        else if (varName == "climate")
-        {
-            uint8_t newClimate = static_cast<uint8_t>(ClimateType::Count);
-            invalidArgs = true;
-
-            if (int_valid[0])
-            {
-                newClimate = static_cast<uint8_t>(int_val[0]);
-                invalidArgs = false;
-            }
-            else
-            {
-                for (newClimate = 0; newClimate < static_cast<uint8_t>(ClimateType::Count); newClimate++)
-                {
-                    if (argv[1] == kClimateNames[newClimate])
-                    {
-                        invalidArgs = false;
-                        break;
-                    }
-                }
-            }
-
-            if (invalidArgs)
-            {
-                console.WriteLine(LanguageGetString(STR_INVALID_CLIMATE_ID));
-            }
-            else
-            {
-                ConsoleSetVariableAction<ClimateSetAction>(console, varName, ClimateType{ newClimate });
-            }
-        }
         else if (varName == "game_speed" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             ConsoleSetVariableAction<GameSetSpeedAction>(console, varName, std::clamp(int_val[0], 1, 8));
@@ -1109,7 +1065,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
         auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
 
         ObjectType objectType = entry->GetType();
-        if (objectType == ObjectType::Ride)
+        if (objectType == ObjectType::ride)
         {
             // Automatically research the ride so it's supported by the game.
             const auto* rideEntry = GetRideEntryByIndex(groupIndex);
@@ -1117,7 +1073,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
             for (int32_t j = 0; j < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; j++)
             {
                 auto rideType = rideEntry->ride_type[j];
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != kRideTypeNull)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                     ResearchInsertRideEntry(rideType, groupIndex, category, true);
@@ -1128,7 +1084,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
             ResearchResetCurrentItem();
             gSilentResearch = false;
         }
-        else if (objectType == ObjectType::SceneryGroup)
+        else if (objectType == ObjectType::sceneryGroup)
         {
             ResearchInsertSceneryGroupEntry(groupIndex, true);
 
@@ -1170,8 +1126,9 @@ constexpr auto _objectTypeNames = std::to_array<StringId>({
     STR_OBJECT_SELECTION_MUSIC,
     STR_OBJECT_SELECTION_PEEP_NAMES,
     STR_OBJECT_SELECTION_PEEP_ANIMATIONS,
+    STR_OBJECT_SELECTION_CLIMATE,
 });
-static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
+static_assert(_objectTypeNames.size() == EnumValue(ObjectType::count));
 
 static void ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
@@ -1197,7 +1154,7 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
 {
     if (!argv.empty())
     {
-        bool title = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0;
+        bool title = gLegacyScene == LegacyScene::titleSequence;
         bool invalidTitle = false;
         if (argv[0] == "object_selection" && InvalidArguments(&invalidTitle, !title))
         {
@@ -1285,7 +1242,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
     auto bannerCount = GetNumBanners();
 
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, kMaxEntities);
-    console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
+    console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, kMaxTileElements);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, OpenRCT2::Limits::kMaxRidesInPark);
     console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());
@@ -1343,7 +1300,9 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
 
     auto setDateAction = ParkSetDateAction(year - 1, month - 1, day - 1);
     GameActions::Execute(&setDateAction);
-    WindowInvalidateByClass(WindowClass::BottomToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
 }
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
@@ -1790,7 +1749,6 @@ static constexpr const utf8* console_variable_table[] = {
     "land_rights_cost",
     "construction_rights_cost",
     "park_open",
-    "climate",
     "game_speed",
     "console_small_font",
     "location",

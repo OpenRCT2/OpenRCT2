@@ -64,7 +64,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_DEMOLISH:
                 {
-                    auto gameAction = RideDemolishAction(rideId, RIDE_MODIFY_DEMOLISH);
+                    auto gameAction = RideDemolishAction(rideId, RideModifyType::demolish);
                     GameActions::Execute(&gameAction);
                     break;
                 }
@@ -85,7 +85,7 @@ namespace OpenRCT2::Ui::Windows
                 auto stringId = (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID
                                                                                   : STR_DEMOLISH_RIDE_ID_MONEY;
                 auto ft = Formatter();
-                currentRide->FormatNameTo(ft);
+                currentRide->formatNameTo(ft);
                 ft.Add<money64>(_demolishRideCost);
 
                 ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);

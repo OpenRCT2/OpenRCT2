@@ -15,6 +15,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
@@ -24,7 +25,6 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
 
@@ -96,7 +96,7 @@ namespace OpenRCT2::Ui::Windows
         for (const auto& ride : GetRideManager())
         {
             Editor::SetSelectedObject(
-                ObjectType::Ride, ride.subtype, ObjectSelectionFlags::Selected | ObjectSelectionFlags::InUse);
+                ObjectType::ride, ride.subtype, ObjectSelectionFlags::Selected | ObjectSelectionFlags::InUse);
         }
     }
 
@@ -155,10 +155,7 @@ namespace OpenRCT2::Ui::Windows
             selected_tab = 0;
             _selectedResearchItem = nullptr;
 
-            min_width = WW;
-            min_height = WH;
-            max_width = WW * 2;
-            max_height = WH * 2;
+            WindowSetResize(*this, { WW, WH }, { WW * 2, WH * 2 });
         }
 
         void OnClose() override
@@ -166,7 +163,7 @@ namespace OpenRCT2::Ui::Windows
             ResearchRemoveFlags();
 
             // When used in-game (as a cheat)
-            if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+            if (!isInEditorMode())
             {
                 gSilentResearch = true;
                 ResearchResetCurrentItem();
@@ -216,7 +213,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             OnPrepareDraw();
-            WidgetInvalidate(*this, WIDX_TAB_1);
+
+            InvalidateWidget(WIDX_TAB_1);
 
             if (WindowEditorInventionsListDragGetItem() != nullptr)
                 return;
@@ -389,9 +387,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Preview image
-            ObjectType objectEntryType = ObjectType::SceneryGroup;
+            ObjectType objectEntryType = ObjectType::sceneryGroup;
             if (researchItem->type == Research::EntryType::Ride)
-                objectEntryType = ObjectType::Ride;
+                objectEntryType = ObjectType::ride;
 
             auto chunk = ObjectEntryGetChunk(objectEntryType, researchItem->entryIndex);
             if (chunk == nullptr)
@@ -449,7 +447,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets |= 1uLL << WIDX_PREVIEW;
             pressed_widgets |= 1uLL << WIDX_TAB_1;
 
-            widgets[WIDX_CLOSE].type = gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WindowWidgetType::Empty
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
 
             ResizeFrameWithPage();
@@ -655,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
                 inventionListWindow->MoveResearchItem(_draggedItem, res->research, res->isInvented);
             }
 
-            WindowInvalidateByClass(WindowClass::EditorInventionList);
+            windowMgr->InvalidateByClass(WindowClass::EditorInventionList);
             Close();
         }
 

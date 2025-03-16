@@ -16,7 +16,7 @@
 // clang-format off
 constexpr RideTypeDescriptor CashMachineRTD =
 {
-    .Category = RIDE_CATEGORY_SHOP,
+    .Category = RideCategory::shop,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::shop,
@@ -27,22 +27,22 @@ constexpr RideTypeDescriptor CashMachineRTD =
     .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::ShopStall),
-    .DefaultMode = RideMode::ShopStall,
+    .RideModes = EnumsToFlags(RideMode::shopStall),
+    .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_CASH_MACHINE, STR_RIDE_DESCRIPTION_CASH_MACHINE },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .AvailableBreakdowns = 0,
-    .Heights = { 12, DefaultCashMachineHeight, 0, 0, },
+    .Heights = { 12, kDefaultCashMachineHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 0, 0, 0 },
     .UpkeepCosts = { 40, 1, 0, 0, 0, 0 },
     .BuildCosts = { 200.00_GBP, 0.00_GBP, 1, },
     .DefaultPrices = { 0, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 5,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::CashMachine,
     .Name = "cash_machine",
@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor CashMachineRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::KioskOrFacility,
+    .Classification = RideClassification::kioskOrFacility,
     .specialType = RtdSpecialType::cashMachine,
 };
 // clang-format on

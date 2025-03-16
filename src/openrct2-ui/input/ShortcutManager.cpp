@@ -20,7 +20,6 @@
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/localisation/Language.h>
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;

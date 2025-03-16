@@ -12,6 +12,7 @@
 #include "../../Context.h"
 #include "../../Game.h"
 #include "../../GameState.h"
+#include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
@@ -23,7 +24,6 @@
 #include "../../profiling/Profiling.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
-#include "../../sprites.h"
 #include "../../world/Banner.h"
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
@@ -57,9 +57,9 @@ static void PaintRideEntranceExitScrollingText(
 
     auto ft = Formatter();
     ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
-    if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (ride->status == RideStatus::open && !(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        ride->FormatNameTo(ft);
+        ride->formatNameTo(ft);
     }
     else
     {
@@ -129,7 +129,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         return;
     }
 
-    auto stationObj = ride->GetStationObject();
+    auto stationObj = ride->getStationObject();
     if (stationObj == nullptr || stationObj->BaseImageId == kImageIndexUndefined)
     {
         return;
@@ -140,8 +140,8 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     PaintRideEntranceExitLightEffects(session, height, entranceEl);
 
     auto hasGlass = (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT) != 0;
-    auto colourPrimary = ride->track_colour[0].main;
-    auto colourSecondary = ride->track_colour[0].additional;
+    auto colourPrimary = ride->trackColours[0].main;
+    auto colourSecondary = ride->trackColours[0].additional;
     auto imageTemplate = ImageId(0, colourPrimary, colourSecondary);
     ImageId glassImageTemplate;
     if (hasGlass)
@@ -165,33 +165,30 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     // Certain entrance styles have another 2 images to draw for coloured windows
 
     auto isExit = entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
-    CoordsXYZ boundBoxLength = {
-        (direction & 1) ? 2 : 28,
-        (direction & 1) ? 28 : 2,
-        isExit ? 32 : 48,
-    };
 
     // Back
     ImageIndex imageIndex = isExit ? stationObj->BaseImageId + direction + 8 : stationObj->BaseImageId + direction;
     ImageIndex glassImageIndex = isExit ? stationObj->BaseImageId + direction + 24 : stationObj->BaseImageId + direction + 16;
-    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height }, boundBoxLength });
+    PaintAddImageAsParentRotated(
+        session, direction, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height }, { 28, 8, 30 } });
     if (hasGlass)
     {
-        PaintAddImageAsChild(
-            session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height }, { { 2, 2, height }, boundBoxLength });
+        PaintAddImageAsChildRotated(
+            session, direction, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height },
+            { { 2, 2, height }, { 28, 8, 30 } });
     }
 
     // Front
+    const auto frontBoundBoxZ = isExit ? 1 : 17;
     imageIndex += 4;
     PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { 0, 0, height },
-        { { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height }, boundBoxLength });
+        session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     if (hasGlass)
     {
         glassImageIndex += 4;
         PaintAddImageAsChild(
             session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height },
-            { { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height }, boundBoxLength });
+            { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
@@ -291,7 +288,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
 
     auto& objManager = GetContext()->GetObjectManager();
     auto entrance = reinterpret_cast<EntranceObject*>(
-        objManager.GetLoadedObject(ObjectType::ParkEntrance, entranceEl.getEntryIndex()));
+        objManager.GetLoadedObject(ObjectType::parkEntrance, entranceEl.getEntryIndex()));
     auto sequence = entranceEl.GetSequenceIndex();
     switch (sequence)
     {
@@ -323,9 +320,8 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
             if (entrance != nullptr)
             {
                 auto imageIndex = entrance->GetImage(sequence, direction);
-                auto y = ((direction / 2 + sequence / 2) & 1) ? 26 : 32;
                 PaintAddImageAsParent(
-                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 3, 3, height }, { 26, y, 79 } });
+                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 3, 3, height }, { 26, 26, 79 } });
             }
             break;
     }

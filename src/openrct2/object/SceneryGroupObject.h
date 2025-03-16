@@ -23,7 +23,7 @@ private:
     std::vector<ObjectEntryDescriptor> _items;
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::SceneryGroup;
+    static constexpr ObjectType kObjectType = ObjectType::sceneryGroup;
 
     void* GetLegacyData() override
     {

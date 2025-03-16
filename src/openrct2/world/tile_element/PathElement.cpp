@@ -184,7 +184,7 @@ ObjectEntryIndex PathElement::GetLegacyPathEntryIndex() const
     if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
         return SurfaceIndex;
 
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 const FootpathObject* PathElement::GetLegacyPathEntry() const
@@ -195,7 +195,7 @@ const FootpathObject* PathElement::GetLegacyPathEntry() const
 void PathElement::SetLegacyPathEntryIndex(ObjectEntryIndex newIndex)
 {
     SurfaceIndex = newIndex;
-    RailingsIndex = OBJECT_ENTRY_INDEX_NULL;
+    RailingsIndex = kObjectEntryIndexNull;
     Flags2 |= FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
@@ -246,7 +246,7 @@ const PathRailingsDescriptor* PathElement::GetRailingsDescriptor() const
 ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 {
     if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
 
     return SurfaceIndex;
 }
@@ -266,7 +266,7 @@ void PathElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
 ObjectEntryIndex PathElement::GetRailingsEntryIndex() const
 {
     if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
 
     return RailingsIndex;
 }

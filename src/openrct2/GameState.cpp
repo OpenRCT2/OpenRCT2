@@ -27,6 +27,7 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "windows/Intent.h"
+#include "world/MapAnimation.h"
 #include "world/Scenery.h"
 
 using namespace OpenRCT2::Scripting;
@@ -63,7 +64,7 @@ namespace OpenRCT2
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
         ResetDate();
-        ClimateReset(ClimateType::CoolAndWet);
+        ClimateReset();
         News::InitQueue();
 
         gInMapInitCode = false;
@@ -214,13 +215,13 @@ namespace OpenRCT2
         }
 
         // Always perform autosave check, even when paused
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-            && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+        if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::trackDesigner
+            && gLegacyScene != LegacyScene::trackDesignsManager)
         {
             ScenarioAutosaveCheck();
         }
 
-        if (didRunSingleFrame && GameIsNotPaused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (didRunSingleFrame && GameIsNotPaused() && gLegacyScene != LegacyScene::titleSequence)
         {
             PauseToggle();
         }
@@ -312,9 +313,9 @@ namespace OpenRCT2
         ContextBroadcastIntent(&restoreProvisionalIntent);
         VehicleUpdateAll();
         UpdateAllMiscEntities();
-        Ride::UpdateAll();
+        Ride::updateAll();
 
-        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+        if (!isInEditorMode())
         {
             Park::Update(gameState, gameState.Date);
         }

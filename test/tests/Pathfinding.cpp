@@ -59,7 +59,7 @@ protected:
     {
         for (auto& ride : GetRideManager())
         {
-            auto thisName = ride.GetName();
+            auto thisName = ride.getName();
             if (String::startsWith(thisName, u8string{ name }, true))
             {
                 return &ride;
@@ -201,7 +201,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
-    auto entrancePos = ride->GetStation().Entrance;
+    auto entrancePos = ride->getStation().Entrance;
     TileCoordsXYZ goal = TileCoordsXYZ(
         entrancePos.x - TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y - TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
@@ -239,7 +239,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
-    auto entrancePos = ride->GetStation().Entrance;
+    auto entrancePos = ride->getStation().Entrance;
     TileCoordsXYZ goal = TileCoordsXYZ(
         entrancePos.x + TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y + TileDirectionDelta[entrancePos.direction].y, entrancePos.z);

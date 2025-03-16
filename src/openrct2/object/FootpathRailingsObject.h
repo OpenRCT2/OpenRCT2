@@ -26,7 +26,7 @@ public:
     PathRailingsDescriptor _descriptor = {};
 
 public:
-    static constexpr ObjectType kObjectType = ObjectType::FootpathRailings;
+    static constexpr ObjectType kObjectType = ObjectType::footpathRailings;
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;

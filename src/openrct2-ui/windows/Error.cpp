@@ -13,7 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Screenshot.h>
@@ -142,7 +142,8 @@ namespace OpenRCT2::Ui::Windows
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
 
         return windowMgr->Create(
-            std::move(errorWindow), WindowClass::Error, windowPosition, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT);
+            std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
     }
 
     WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args, bool autoClose)

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniSuspendedCoaster,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     .Flags = kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
         EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, 
                      RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, RtdFlag::isSuspended),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MINI_SUSPENDED_COASTER, STR_RIDE_DESCRIPTION_MINI_SUSPENDED_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 30.00_GBP, 2.50_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WILD_WEST,
+    .DefaultMusic = kMusicObjectWildWest,
     .PhotoItem = ShopItem::Photo2,
     .BonusValue = 50,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -54,13 +54,13 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 80), RIDE_RATING(2, 50), RIDE_RATING(2, 70) },
+        { MakeRideRating(2, 80), MakeRideRating(2, 50), MakeRideRating(2, 70) },
         15,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 45), RIDE_RATING(0, 15), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 45), MakeRideRating(0, 15), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -73,7 +73,7 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                13943, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 6,                2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0x80000,          2, 2, 2 },
-            { RatingsModifierType::RequirementLateralGs,  FIXED_2DP(1, 30), 2, 2, 2 },
+            { RatingsModifierType::RequirementLateralGs,  MakeFixed16_2dp(1, 30), 2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0xC80000,         2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 49648 },
         },

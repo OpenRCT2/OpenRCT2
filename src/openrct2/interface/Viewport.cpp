@@ -25,6 +25,7 @@
 #include "../entity/Guest.h"
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
+#include "../interface/Cursors.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
@@ -34,7 +35,6 @@
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
@@ -708,7 +708,7 @@ namespace OpenRCT2
                 return;
             }
 
-            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+            if (gLegacyScene != LegacyScene::titleSequence)
             {
                 int32_t height = (TileElementHeight({ sprite->x, sprite->y }))-16;
                 int32_t underground = sprite->z < height;
@@ -785,7 +785,7 @@ namespace OpenRCT2
             || (peep.State == PeepState::LeavingRide && peep.x == kLocationNull))
         {
             auto ride = GetRide(peep.CurrentRide);
-            if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+            if (ride != nullptr && (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 auto train = GetEntity<Vehicle>(ride->vehicles[peep.CurrentTrain]);
                 if (train != nullptr)
@@ -806,7 +806,7 @@ namespace OpenRCT2
             auto ride = GetRide(peep.CurrentRide);
             if (ride != nullptr)
             {
-                auto xy = ride->overall_view.ToTileCentre();
+                auto xy = ride->overallView.ToTileCentre();
                 CoordsXYZ coordFocus;
                 coordFocus.x = xy.x;
                 coordFocus.y = xy.y;
@@ -1084,7 +1084,7 @@ namespace OpenRCT2
 
     static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
     {
-        auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
+        auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().WeatherCurrent);
         if (paletteId != FilterPaletteID::PaletteNull)
         {
             auto x = dpi.x;
@@ -1403,6 +1403,18 @@ namespace OpenRCT2
 
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
     {
+        // the cut-away view is active and see-through is activated
+        auto cutAwayViewWithTransparency = (viewFlags & VIEWPORT_FLAG_CLIP_VIEW)
+            && (viewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
+
+        // the element is above the cut-off height
+        auto clipped = cutAwayViewWithTransparency && ps->Element == nullptr && ps->Entity != nullptr
+            && ps->Entity->GetLocation().z > (gClipHeight * kCoordsZStep);
+
+        // the entity is above the cut-off height
+        clipped |= cutAwayViewWithTransparency && ps->Element != nullptr
+            && (ps->Element->GetBaseZ() > gClipHeight * kCoordsZStep);
+
         switch (ps->InteractionItem)
         {
             case ViewportInteractionItem::Entity:
@@ -1412,21 +1424,21 @@ namespace OpenRCT2
                     {
                         case EntityType::Vehicle:
                         {
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES)
+                            if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || clipped)
                             {
                                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::Hidden
                                                                                       : VisibilityKind::Partial;
                             }
                             // Rides without track can technically have a 'vehicle':
                             // these should be hidden if 'hide rides' is enabled
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES)
+                            if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || clipped)
                             {
                                 auto vehicle = ps->Entity->As<Vehicle>();
                                 if (vehicle == nullptr)
                                     break;
 
                                 auto ride = vehicle->GetRide();
-                                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                                if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                                 {
                                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden
                                                                                        : VisibilityKind::Partial;
@@ -1439,20 +1451,32 @@ namespace OpenRCT2
                             {
                                 return VisibilityKind::Hidden;
                             }
+                            else if (clipped)
+                            {
+                                return VisibilityKind::Partial;
+                            }
                             break;
                         case EntityType::Staff:
                             if (viewFlags & VIEWPORT_FLAG_HIDE_STAFF)
                             {
                                 return VisibilityKind::Hidden;
                             }
+                            else if (clipped)
+                            {
+                                return VisibilityKind::Partial;
+                            }
                             break;
                         default:
+                            if (clipped)
+                            {
+                                return VisibilityKind::Partial;
+                            }
                             break;
                     }
                 }
                 break;
             case ViewportInteractionItem::Ride:
-                if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES)
+                if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || clipped)
                 {
                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
                 }
@@ -1460,7 +1484,7 @@ namespace OpenRCT2
             case ViewportInteractionItem::Footpath:
             case ViewportInteractionItem::PathAddition:
             case ViewportInteractionItem::Banner:
-                if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS)
+                if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS || clipped)
                 {
                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? VisibilityKind::Hidden : VisibilityKind::Partial;
                 }
@@ -1472,7 +1496,7 @@ namespace OpenRCT2
                 {
                     if (IsTileElementVegetation(ps->Element))
                     {
-                        if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION)
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION || clipped)
                         {
                             return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEGETATION) ? VisibilityKind::Hidden
                                                                                     : VisibilityKind::Partial;
@@ -1480,19 +1504,24 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY || clipped)
                         {
                             return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden
                                                                                  : VisibilityKind::Partial;
                         }
                     }
                 }
-                if (ps->InteractionItem == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+                if (ps->InteractionItem == ViewportInteractionItem::Wall
+                    && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE || clipped))
                 {
                     return VisibilityKind::Partial;
                 }
                 break;
             default:
+                if (clipped)
+                {
+                    return VisibilityKind::Partial;
+                }
                 break;
         }
         return VisibilityKind::Visible;
@@ -1781,7 +1810,7 @@ namespace OpenRCT2
         PROFILED_FUNCTION();
 
         // if unknown viewport visibility, use the containing window to discover the status
-        if (viewport->visibility == VisibilityCache::Unknown)
+        if (viewport->visibility == VisibilityCache::unknown)
         {
             auto windowManager = Ui::GetWindowManager();
             auto owner = windowManager->GetOwner(viewport);
@@ -1795,7 +1824,7 @@ namespace OpenRCT2
             }
         }
 
-        if (viewport->visibility == VisibilityCache::Covered)
+        if (viewport->visibility == VisibilityCache::covered)
             return;
 
         auto zoom = viewport->zoom;
