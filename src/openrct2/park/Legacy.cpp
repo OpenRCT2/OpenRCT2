@@ -3236,7 +3236,6 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, TrackElemType trackType,
                 break;
         }
     }
-
     return false;
 }
 
