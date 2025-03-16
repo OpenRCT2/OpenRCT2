@@ -29,6 +29,15 @@ namespace OpenRCT2::BlockedSegments
         count = 5,
     };
 
+    static constexpr bool kBlockedSegmentsTypeIsInverted[] = {
+        false, // narrow
+        true,  // inverted
+        false, // wide
+        true,  // suspendedSwingingTrain
+        false, // wideTrain
+    };
+    static_assert(std::size(kBlockedSegmentsTypeIsInverted) == EnumValue(BlockedSegmentsType::count));
+
     static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsNarrow =
         []() consteval {
             std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
@@ -67,10 +76,4 @@ namespace OpenRCT2::BlockedSegments
             array.fill(BlockedSegmentsType::wideTrain);
             return array;
         }();
-
-    bool IsTypeInverted(const BlockedSegmentsType blockedSegmentsType);
-
-    void BlockSegmentsForTrackSequence(
-        PaintSession& session, const uint8_t trackSequence, const Direction direction, const uint16_t height,
-        const TrackElemType trackElemType, const BlockedSegmentsType blockedSegmentsType);
 } // namespace OpenRCT2::BlockedSegments

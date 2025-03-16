@@ -931,7 +931,6 @@
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Wall.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Tunnel.cpp" />
-    <ClCompile Include="paint\track\Segment.cpp" />
     <ClCompile Include="paint\track\coaster\AirPoweredVerticalCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\AlpineCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\BobsleighCoaster.cpp" />

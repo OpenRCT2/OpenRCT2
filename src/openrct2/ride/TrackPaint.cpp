@@ -1987,18 +1987,19 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         {
             const auto& ted = GetTrackElementDescriptor(trackType);
             const auto blockedSegmentsType = trackDrawerEntry.trackGroupBlockedSegmentTypes[EnumValue(ted.definition.group)];
+            const auto blockedSegments = PaintUtilRotateSegments(
+                ted.sequences[trackSequence].blockedSegments[EnumValue(blockedSegmentsType)], direction);
 
-            if (BlockedSegments::IsTypeInverted(blockedSegmentsType) != ted.sequences[trackSequence].invertSegmentBlocking)
+            if (OpenRCT2::BlockedSegments::kBlockedSegmentsTypeIsInverted[EnumValue(blockedSegmentsType)]
+                != ted.sequences[trackSequence].invertSegmentBlocking)
             {
-                BlockedSegments::BlockSegmentsForTrackSequence(
-                    session, trackSequence, direction, height, trackType, blockedSegmentsType);
+                PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
                 paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
             }
             else
             {
                 paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
-                BlockedSegments::BlockSegmentsForTrackSequence(
-                    session, trackSequence, direction, height, trackType, blockedSegmentsType);
+                PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
             }
         }
     }
