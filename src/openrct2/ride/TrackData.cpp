@@ -7600,7 +7600,7 @@ namespace OpenRCT2::TrackMetaData
             kSegmentsUnimplemented,                                                                // inverted
             kSegmentsAll,                                                                          // wide
             kSegmentsUnimplemented,                                                                // suspendedSwingingTrain
-            EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft, Seg::bottomRight), // wideTrain
+            kSegmentsAll,                                                                          // wideTrain
         } },
     };
 
@@ -9040,13 +9040,7 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::NeSw },
-        .blockedSegments = { {
-            kSegmentsUnimplemented, // narrow
-            kSegmentsUnimplemented, // inverted
-            kSegmentsAll,           // wide
-            kSegmentsUnimplemented, // suspendedSwingingTrain
-            kSegmentsUnimplemented, // wideTrain
-        } },
+        .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kOnRidePhotoSeq0 = {
@@ -11434,7 +11428,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // inverted
             kSegmentsAll,                                                     // wide
             EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // suspendedSwingingTrain
-            kSegmentsUnimplemented,                                           // wideTrain
+            EnumsToFlags(Seg::top, Seg::centre, Seg::topLeft, Seg::topRight), // wideTrain
         } },
     };
 
@@ -11447,7 +11441,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // inverted
             kSegmentsAll,                                                              // wide
             EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // suspendedSwingingTrain
-            kSegmentsUnimplemented,                                                    // wideTrain
+            EnumsToFlags(Seg::bottom, Seg::centre, Seg::bottomLeft, Seg::bottomRight), // wideTrain
         } },
     };
 
@@ -11458,7 +11452,7 @@ namespace OpenRCT2::TrackMetaData
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // inverted
             kSegmentsAll,                                                                  // wide
             EnumsToFlags(Seg::top, Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft), // suspendedSwingingTrain
-            kSegmentsUnimplemented,                                                        // wideTrain
+            EnumsToFlags(Seg::left, Seg::centre, Seg::topLeft, Seg::bottomLeft),           // wideTrain
         } },
     };
 
@@ -14536,6 +14530,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kMultiDimUp90ToInvertedFlatQuarterLoopSeq2 = {
         .clearance = { 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
         .allowedWallEdges = 0b1010,
+        .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq0 = {
@@ -14558,7 +14553,6 @@ namespace OpenRCT2::TrackMetaData
 
     static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq3 = {
         .clearance = { -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        .blockedSegments = kFlatSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kMultiDimInvertedUp90ToFlatQuarterLoopSeq0 = {
