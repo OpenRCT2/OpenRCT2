@@ -76,4 +76,22 @@ namespace OpenRCT2::BlockedSegments
             array.fill(BlockedSegmentsType::wideTrain);
             return array;
         }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)>
+        kTrackGroupBlockedSegmentsWoodenRollerCoaster = []() consteval {
+            std::array<OpenRCT2::BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(OpenRCT2::BlockedSegments::BlockedSegmentsType::wide);
+            array[EnumValue(TrackGroup::verticalLoop)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopMedium)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopLarge)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow;
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)>
+        kTrackGroupBlockedSegmentsCarRideGhostTrain = []() consteval {
+            std::array<OpenRCT2::BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow);
+            array[EnumValue(TrackGroup::curveVerySmall)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::wide;
+            return array;
+        }();
 } // namespace OpenRCT2::BlockedSegments
