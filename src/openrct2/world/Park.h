@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../management/Finance.h"
-#include "Map.h"
+#include "Location.hpp"
 
 #include <string>
 

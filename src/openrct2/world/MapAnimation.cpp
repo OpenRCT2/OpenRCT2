@@ -26,7 +26,6 @@
 #include "../ride/Track.h"
 #include "Banner.h"
 #include "Footpath.h"
-#include "Map.h"
 #include "Scenery.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/LargeSceneryElement.h"

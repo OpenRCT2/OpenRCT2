@@ -34,7 +34,6 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "Location.hpp"
-#include "Map.h"
 #include "MapAnimation.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"

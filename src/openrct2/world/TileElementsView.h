@@ -10,7 +10,6 @@
 #pragma once
 
 #include "Location.hpp"
-#include "Map.h"
 
 #include <iterator>
 

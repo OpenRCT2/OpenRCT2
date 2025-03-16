@@ -34,7 +34,6 @@
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "Footpath.h"
-#include "Map.h"
 #include "Park.h"
 #include "tile_element/PathElement.h"
 #include "tile_element/SmallSceneryElement.h"
