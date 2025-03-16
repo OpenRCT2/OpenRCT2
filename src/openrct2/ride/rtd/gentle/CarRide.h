@@ -22,12 +22,7 @@ constexpr RideTypeDescriptor CarRideRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::carRide,
-        .trackGroupBlockedSegmentTypes = []() consteval {
-            std::array<OpenRCT2::BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
-            array.fill(OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow);
-            array[EnumValue(TrackGroup::curveVerySmall)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::wide;
-            return array;
-        }(),
+        .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsCarRideGhostTrain,
         .supportType = MetalSupportType::Boxed,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::spinningTunnel},
         .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::rapids},
