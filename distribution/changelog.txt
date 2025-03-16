@@ -8,6 +8,7 @@
 - Fix: [#5281] Missing supports on miniature railways built backwards.
 - Fix: [#10379] Banners outside the park can be renamed and modified (original bug).
 - Fix: [#10582] Low clearance tunnels below water are drawn incorrectly (original bug).
+- Fix: [#18309] Flying and Multi Dimension trains glitch when changing between inverted and uninverted track when uncap fps is on.
 - Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.
 - Fix: [#23743] Parks with guest goals over 32767 do not appear in the scenario list.
 - Fix: [#23844] Sound effects keep playing when loading another save.

@@ -26,6 +26,7 @@
 #include "../core/Speed.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
+#include "../entity/EntityTweener.h"
 #include "../entity/Particle.h"
 #include "../entity/Yaw.hpp"
 #include "../interface/Viewport.h"
@@ -7003,6 +7004,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
         }
 
         // Update VehicleFlags::CarIsInverted flag
+        const auto previousCarIsInverted = HasFlag(VehicleFlags::CarIsInverted);
         ClearFlag(VehicleFlags::CarIsInverted);
         {
             auto rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
@@ -7012,6 +7014,10 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
                 {
                     SetFlag(VehicleFlags::CarIsInverted);
                 }
+            }
+            if (previousCarIsInverted != HasFlag(VehicleFlags::CarIsInverted))
+            {
+                EntityTweener::Get().RemoveEntity(this);
             }
         }
     }
@@ -7392,12 +7398,17 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
         }
 
         // Update VehicleFlags::CarIsInverted
+        const auto previousCarIsInverted = HasFlag(VehicleFlags::CarIsInverted);
         ClearFlag(VehicleFlags::CarIsInverted);
         if (GetRideTypeDescriptor(curRide.type).HasFlag(RtdFlag::hasInvertedVariant))
         {
             if (tileElement->AsTrack()->IsInverted())
             {
                 SetFlag(VehicleFlags::CarIsInverted);
+            }
+            if (previousCarIsInverted != HasFlag(VehicleFlags::CarIsInverted))
+            {
+                EntityTweener::Get().RemoveEntity(this);
             }
         }
 
