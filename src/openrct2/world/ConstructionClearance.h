@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../actions/GameActionResult.h"
-#include "Map.h"
+#include "Location.hpp"
 
 #include <cstdint>
 

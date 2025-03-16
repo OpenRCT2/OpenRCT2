@@ -27,7 +27,6 @@
 #include "../ride/RideManager.hpp"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
-#include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"

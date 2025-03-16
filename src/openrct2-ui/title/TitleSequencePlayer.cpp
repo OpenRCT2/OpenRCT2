@@ -36,7 +36,6 @@
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Map.h>
 #include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Scenery.h>
 #include <stdexcept>

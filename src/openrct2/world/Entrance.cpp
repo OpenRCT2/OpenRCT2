@@ -27,7 +27,6 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "Footpath.h"
-#include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
 #include "tile_element/EntranceElement.h"

@@ -10,9 +10,10 @@
 #pragma once
 
 #include "../management/Finance.h"
-#include "Map.h"
+#include "Location.hpp"
 
 #include <string>
+#include <vector>
 
 constexpr auto kMaxEntranceFee = 999.00_GBP;
 

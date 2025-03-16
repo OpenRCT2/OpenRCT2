@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include "Map.h"
+#include "Location.hpp"
 
 struct Banner;
+struct TileElement;
 
 namespace OpenRCT2::GameActions
 {
