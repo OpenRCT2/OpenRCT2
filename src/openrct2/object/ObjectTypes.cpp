@@ -89,6 +89,7 @@ static const EnumMap<ObjectType> kObjectTypeMap = {
     { "scenery_large", ObjectType::largeScenery },
     { "scenery_wall", ObjectType::walls },
     { "footpath_banner", ObjectType::banners },
+    { "footpath_legacy", ObjectType::paths },
     { "footpath_item", ObjectType::pathAdditions },
     { "scenery_group", ObjectType::sceneryGroup },
     { "park_entrance", ObjectType::parkEntrance },
