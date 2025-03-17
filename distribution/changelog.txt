@@ -21,6 +21,7 @@
 - Fix: [#23960] Corner path fences can draw over adjacent sloped land (original bug).
 - Fix: [#23961] Lamps and queue line tvs draw incorrectly on paths with fences.
 - Fix: [#23983] Ordering files by size does not work and occasionally crashes the game.
+- Fix: [#24009] [Plugin] The object manager API does not identify recently introduced object types.
 
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------
