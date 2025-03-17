@@ -98,7 +98,12 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOILET_LABEL,
         WIDX_TOILET_BAR,
 
-        WIDX_RIDE_SCROLL = WIDX_TAB_CONTENT_START,
+        WIDX_RIDES_BEEN_ON_LABEL = WIDX_TAB_CONTENT_START,
+        WIDX_RIDE_SCROLL,
+
+        WIDX_RECENT_THOUGHTS_LABEL = WIDX_TAB_CONTENT_START,
+
+        WIDX_CARRYING_LABEL = WIDX_TAB_CONTENT_START,
     };
 
     validate_global_widx(WC_PEEP, WIDX_PICKUP);
@@ -143,11 +148,11 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10}, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_TOILET_LABEL),
         MakeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100),
     };
-    // clang-format on
 
     static constexpr Widget _guestWindowWidgetsRides[] = {
         MAIN_GUEST_WIDGETS,
-        MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_GUEST_LABEL_RIDES_BEEN_ON),
+        MakeWidget({ 3, 57  }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     };
 
     static constexpr Widget _guestWindowWidgetsFinance[] = {
@@ -156,17 +161,18 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget _guestWindowWidgetsThoughts[] = {
         MAIN_GUEST_WIDGETS,
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_GUEST_RECENT_THOUGHTS_LABEL),
     };
 
     static constexpr Widget _guestWindowWidgetsInventory[] = {
         MAIN_GUEST_WIDGETS,
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_CARRYING),
     };
 
     static constexpr Widget _guestWindowWidgetsDebug[] = {
         MAIN_GUEST_WIDGETS,
     };
 
-    // clang-format off
     static constexpr std::span<const Widget> _guestWindowPageWidgets[] = {
         _guestWindowWidgetsOverview,
         _guestWindowWidgetsStats,
@@ -1311,8 +1317,6 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 2, widgets[WIDX_PAGE_BACKGROUND].top + 2 };
 
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_LABEL_RIDES_BEEN_ON);
-
             screenCoords.y = windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
             auto ft = Formatter();
@@ -1548,13 +1552,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            // cx dx
             auto screenCoords = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 14 };
 
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
-
-            screenCoords.y += 10;
             for (const auto& thought : peep->Thoughts)
             {
                 if (thought.type == PeepThoughtType::None)
@@ -1734,14 +1734,11 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& widget = widgets[WIDX_PAGE_BACKGROUND];
-            auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 2 };
+            auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 12 };
             int32_t itemNameWidth = widget.width() - 24;
 
             int32_t maxY = windowPos.y + height - 22;
             int32_t numItems = 0;
-
-            DrawTextBasic(dpi, screenCoords, STR_CARRYING);
-            screenCoords.y += 10;
 
             for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item++)
             {
