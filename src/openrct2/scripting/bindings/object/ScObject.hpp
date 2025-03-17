@@ -23,7 +23,6 @@
 
     #include <memory>
     #include <optional>
-    #include <string_view>
 
 namespace OpenRCT2::Scripting
 {
