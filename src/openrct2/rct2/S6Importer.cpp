@@ -852,7 +852,7 @@ namespace OpenRCT2::RCT2
             dst->previousVerticalG = src->previousVerticalG;
             dst->previousLateralG = src->previousLateralG;
             // Pad106[0x2];
-            dst->testingFlags = src->testingFlags;
+            dst->testingFlags.holder = src->testingFlags;
 
             if (src->curTestTrackLocation.IsNull())
             {

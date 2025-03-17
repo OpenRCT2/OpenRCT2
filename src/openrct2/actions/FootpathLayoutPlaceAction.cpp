@@ -114,7 +114,7 @@ GameActions::Result FootpathLayoutPlaceAction::Execute() const
     gFootpathGroundFlags = 0;
 
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     return ElementInsertExecute(std::move(res));
 }

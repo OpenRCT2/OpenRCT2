@@ -126,7 +126,7 @@ GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
         Audio::Play3D(Audio::SoundId::LayingOutWater, res.Position);
     }
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     return res;
 }

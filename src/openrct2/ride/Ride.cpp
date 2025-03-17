@@ -2983,7 +2983,7 @@ static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement
         int32_t direction = trackBeginEnd.begin_direction;
         trackType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
         auto newCoords = GetTrackElementOriginAndApplyChanges(
-            { trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnPos.element, 0);
+            { trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnPos.element, {});
         returnPos = newCoords.has_value() ? CoordsXYE{ newCoords.value(), returnPos.element }
                                           : CoordsXYE{ trackCoords, returnPos.element };
     };
@@ -3055,7 +3055,7 @@ void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLo
         case TrackElemType::DiagBlockBrakes:
             GetTrackElementOriginAndApplyChanges(
                 { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed,
-                nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
+                nullptr, { TrackElementSetFlag::brakeClosed });
             break;
         default:
             trackElement.SetBrakeClosed(isClosed);
@@ -3798,7 +3798,7 @@ static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isA
             TileElement* tileElement = it.current.element;
             GetTrackElementOriginAndApplyChanges(
                 { { it.current, tileElement->GetBaseZ() }, tileElement->GetDirection() },
-                tileElement->AsTrack()->GetTrackType(), 0, &tileElement, TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE);
+                tileElement->AsTrack()->GetTrackType(), 0, &tileElement, { TrackElementSetFlag::cableLiftOff });
         }
     }
 
@@ -3828,7 +3828,7 @@ static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isA
                 {
                     GetTrackElementOriginAndApplyChanges(
                         { { it.current, tileElement->GetBaseZ() }, tileElement->GetDirection() }, trackType, 0, &tileElement,
-                        TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE);
+                        { TrackElementSetFlag::cableLiftOn });
                 }
                 break;
             case TrackElemType::EndStation:

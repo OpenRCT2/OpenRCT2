@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
 
             _currentTrackPieceDirection = 0;
             _rideConstructionState = RideConstructionState::Place;
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             _autoOpeningShop = false;
             _autoRotatingShop = true;
             _trackPlaceCtrlState = false;
@@ -2293,7 +2293,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (NetworkGetMode() != NETWORK_MODE_NONE)
             {
-                _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
+                _currentTrackSelectionFlags.set(TrackSelectionFlag::trackPlaceActionQueued);
             }
 
             const auto resultData = res.GetData<TrackPlaceActionResult>();
@@ -2347,7 +2347,7 @@ namespace OpenRCT2::Ui::Windows
             Direction currentDirection = _currentTrackPieceDirection;
             OpenRCT2::TrackElemType type = _currentTrackPieceType;
             auto newCoords = GetTrackElementOriginAndApplyChanges(
-                { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+                { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, {});
             if (!newCoords.has_value())
             {
                 WindowRideConstructionUpdateActiveElements();
@@ -2378,7 +2378,7 @@ namespace OpenRCT2::Ui::Windows
                 direction = _currentTrackPieceDirection;
                 type = _currentTrackPieceType;
                 newCoords = GetTrackElementOriginAndApplyChanges(
-                    { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+                    { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, {});
 
                 if (!newCoords.has_value())
                 {
@@ -2507,7 +2507,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (GetTrackElementOriginAndApplyChanges(
                     { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
-                    &tileElement, 0)
+                    &tileElement, {})
                 != std::nullopt)
             {
                 auto trackSetBrakeSpeed = TrackSetBrakeSpeedAction(
@@ -2581,7 +2581,7 @@ namespace OpenRCT2::Ui::Windows
         {
             GetTrackElementOriginAndApplyChanges(
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType,
-                seatRotation, nullptr, TRACK_ELEMENT_SET_SEAT_ROTATION);
+                seatRotation, nullptr, { TrackElementSetFlag::seatRotation });
             WindowRideConstructionUpdateActiveElements();
         }
 
@@ -2904,7 +2904,7 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackBegin.z = trackPos.z;
                 _currentTrackPieceDirection = next_track.element->GetDirection();
                 _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
-                _currentTrackSelectionFlags = 0;
+                _currentTrackSelectionFlags.clearAll();
                 _rideConstructionState = RideConstructionState::Selected;
                 _rideConstructionNextArrowPulse = 0;
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -2950,7 +2950,7 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackBegin.z = trackBeginEnd.begin_z;
                 _currentTrackPieceDirection = trackBeginEnd.begin_direction;
                 _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-                _currentTrackSelectionFlags = 0;
+                _currentTrackSelectionFlags.clearAll();
                 _rideConstructionState = RideConstructionState::Selected;
                 _rideConstructionNextArrowPulse = 0;
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3111,7 +3111,7 @@ namespace OpenRCT2::Ui::Windows
             TileElement* tileElement;
             if (GetTrackElementOriginAndApplyChanges(
                     { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
-                    &tileElement, 0)
+                    &tileElement, {})
                 != std::nullopt)
             {
                 _selectedTrackType = tileElement->AsTrack()->GetTrackType();
@@ -3156,17 +3156,17 @@ namespace OpenRCT2::Ui::Windows
         SelectedLiftAndInverted liftHillAndAlternativeState{};
         CoordsXYZ trackPos{};
 
-        if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED)
+        if (_currentTrackSelectionFlags.has(TrackSelectionFlag::trackPlaceActionQueued))
         {
             return;
         }
 
         // Recheck if area is fine for new track.
         // Set by footpath placement
-        if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_RECHECK)
+        if (_currentTrackSelectionFlags.has(TrackSelectionFlag::recheck))
         {
             RideConstructionInvalidateCurrentTrack();
-            _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_RECHECK;
+            _currentTrackSelectionFlags.unset(TrackSelectionFlag::recheck);
         }
 
         switch (_rideConstructionState)
@@ -3175,7 +3175,7 @@ namespace OpenRCT2::Ui::Windows
             case RideConstructionState::Back:
             {
                 // place ghost piece
-                if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
+                if (!_currentTrackSelectionFlags.has(TrackSelectionFlag::track))
                 {
                     if (WindowRideConstructionUpdateState(
                             &type, &direction, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr))
@@ -3204,7 +3204,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
-                _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
+                _currentTrackSelectionFlags.flip(TrackSelectionFlag::arrow);
                 trackPos = _currentTrackBegin;
                 direction = _currentTrackPieceDirection;
                 type = _currentTrackPieceType;
@@ -3216,7 +3216,7 @@ namespace OpenRCT2::Ui::Windows
                 gMapSelectArrowPosition = trackPos;
                 gMapSelectArrowDirection = direction;
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-                if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
+                if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
                     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
                 MapInvalidateTileFull(trackPos);
                 break;
@@ -3228,13 +3228,13 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
-                _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
+                _currentTrackSelectionFlags.flip(TrackSelectionFlag::arrow);
                 direction = _currentTrackPieceDirection & 3;
                 type = _currentTrackPieceType;
-                uint16_t flags = _currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW ? TRACK_ELEMENT_SET_HIGHLIGHT_TRUE
-                                                                                          : TRACK_ELEMENT_SET_HIGHLIGHT_FALSE;
+                auto flag = _currentTrackSelectionFlags.has(TrackSelectionFlag::arrow) ? TrackElementSetFlag::highlightOn
+                                                                                       : TrackElementSetFlag::highlightOff;
                 auto newCoords = GetTrackElementOriginAndApplyChanges(
-                    { _currentTrackBegin, static_cast<Direction>(direction) }, type, 0, nullptr, flags);
+                    { _currentTrackBegin, static_cast<Direction>(direction) }, type, 0, nullptr, { flag });
                 if (!newCoords.has_value())
                 {
                     RideConstructionRemoveGhosts();
@@ -3251,7 +3251,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 _rideConstructionNextArrowPulse = curTime + kArrowPulseDuration;
 
-                _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
+                _currentTrackSelectionFlags.flip(TrackSelectionFlag::arrow);
                 trackPos = CoordsXYZ{ _currentTrackBegin.x & 0xFFE0, _currentTrackBegin.y & 0xFFE0, _currentTrackBegin.z + 15 };
                 gMapSelectArrowPosition = trackPos;
                 gMapSelectArrowDirection = 4;
@@ -3266,7 +3266,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-                if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
+                if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
                     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
                 MapInvalidateTileFull(trackPos);
                 break;
@@ -3374,7 +3374,7 @@ namespace OpenRCT2::Ui::Windows
         _currentTrackBegin.x = mapCoords->x;
         _currentTrackBegin.y = mapCoords->y;
         _currentTrackBegin.z = z;
-        if ((_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) && _currentTrackBegin == _previousTrackPiece)
+        if (_currentTrackSelectionFlags.has(TrackSelectionFlag::track) && _currentTrackBegin == _previousTrackPiece)
         {
             MapInvalidateMapSelectionTiles();
             return;
@@ -3525,7 +3525,7 @@ namespace OpenRCT2::Ui::Windows
 
         entranceOrExitCoords.direction = DirectionReverse(gRideEntranceExitPlaceDirection);
         StationIndex stationNum = gRideEntranceExitPlaceStationIndex;
-        if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
+        if (!_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit)
             || entranceOrExitCoords != gRideEntranceExitGhostPosition || stationNum != gRideEntranceExitGhostStationIndex)
         {
             auto ride = GetRide(_currentRideIndex);
@@ -3629,7 +3629,7 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackBegin.x = mapCoords.x;
                 _currentTrackBegin.y = mapCoords.y;
                 _currentTrackBegin.z = z;
-                _currentTrackSelectionFlags = 0;
+                _currentTrackSelectionFlags.clearAll();
                 auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
                 ContextBroadcastIntent(&intent);
 
@@ -3697,7 +3697,7 @@ namespace OpenRCT2::Ui::Windows
             _currentTrackBegin.x = mapCoords.x;
             _currentTrackBegin.y = mapCoords.y;
             _currentTrackBegin.z = z;
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             WindowRideConstructionUpdateActiveElements();
 
             auto* windowMgr = GetWindowManager();
@@ -4641,7 +4641,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _currentTrackBegin.z = floor2(piecePos.z, kCoordsZStep);
             _rideConstructionState = RideConstructionState::Front;
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             _currentTrackPieceDirection = piecePos.direction & 3;
             auto savedSelectedTrack = _currentlySelectedTrack;
             auto savedPreviousTrackPitchEnd = _previousTrackPitchEnd;
@@ -4695,7 +4695,7 @@ namespace OpenRCT2::Ui::Windows
             _currentTrackBegin = piecePos;
             _currentTrackPieceDirection = piecePos.direction;
             _currentTrackPieceType = type;
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             if (_rideConstructionState2 == RideConstructionState::Front)
             {
                 RideSelectNextSection();
@@ -4739,7 +4739,7 @@ namespace OpenRCT2::Ui::Windows
                 return kMoney64Undefined;
 
             _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
-            _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
+            _currentTrackSelectionFlags.set(TrackSelectionFlag::track);
             ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
             if (_currentTrackPitchEnd != TrackPitch::None)
                 ViewportSetVisibility(ViewportVisibility::TrackHeights);
@@ -4770,7 +4770,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + zBegin, static_cast<Direction>(trackDirection) };
-        _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
+        _currentTrackSelectionFlags.set(TrackSelectionFlag::track);
 
         const auto resultData = res.GetData<TrackPlaceActionResult>();
         const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
@@ -5076,7 +5076,7 @@ namespace OpenRCT2::Ui::Windows
 
     void RideRestoreProvisionalTrackPiece()
     {
-        if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
+        if (_currentTrackSelectionFlags.has(TrackSelectionFlag::track))
         {
             RideId rideIndex;
             int32_t direction;
@@ -5101,7 +5101,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto rideIndex = _currentRideIndex;
         auto ride = GetRide(rideIndex);
-        if (ride == nullptr || !(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
+        if (ride == nullptr || !_currentTrackSelectionFlags.has(TrackSelectionFlag::track))
         {
             return;
         }

@@ -910,9 +910,9 @@ void Vehicle::UpdateMeasurements()
         auto trackElemType = GetTrackType();
         if (trackElemType == TrackElemType::PoweredLift || HasFlag(VehicleFlags::OnLiftHill))
         {
-            if (!(curRide->testingFlags & RIDE_TESTING_POWERED_LIFT))
+            if (!(curRide->testingFlags.has(RideTestingFlag::poweredLift)))
             {
-                curRide->testingFlags |= RIDE_TESTING_POWERED_LIFT;
+                curRide->testingFlags.set(RideTestingFlag::poweredLift);
                 auto numPoweredLifts = curRide->getNumPoweredLifts();
                 if (numPoweredLifts < kRideMaxNumPoweredLiftsCount)
                 {
@@ -923,7 +923,7 @@ void Vehicle::UpdateMeasurements()
         }
         else
         {
-            curRide->testingFlags &= ~RIDE_TESTING_POWERED_LIFT;
+            curRide->testingFlags.unset(RideTestingFlag::poweredLift);
         }
 
         const auto& rtd = curRide->getRideTypeDescriptor();
@@ -953,27 +953,28 @@ void Vehicle::UpdateMeasurements()
 
         const auto& ted = GetTrackElementDescriptor(trackElemType);
         uint16_t trackFlags = ted.flags;
-        uint32_t testingFlags = curRide->testingFlags;
-        if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
+        auto testingFlags = curRide->testingFlags;
+        if (testingFlags.has(RideTestingFlag::turnLeft) && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
         {
             // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turnCountDefault += 0x800;
         }
-        else if (testingFlags & RIDE_TESTING_TURN_RIGHT && trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
+        else if (testingFlags.has(RideTestingFlag::turnRight) && trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
         {
             // 0x800 as this is masked to kCurrentTurnCountMask
             curRide->turnCountDefault += 0x800;
         }
-        else if (testingFlags & RIDE_TESTING_TURN_RIGHT || testingFlags & RIDE_TESTING_TURN_LEFT)
+        else if (testingFlags.has(RideTestingFlag::turnRight) || testingFlags.has(RideTestingFlag::turnLeft))
         {
-            curRide->testingFlags &= ~(
-                RIDE_TESTING_TURN_LEFT | RIDE_TESTING_TURN_RIGHT | RIDE_TESTING_TURN_BANKED | RIDE_TESTING_TURN_SLOPED);
+            curRide->testingFlags.unset(
+                RideTestingFlag::turnLeft, RideTestingFlag::turnRight, RideTestingFlag::turnBanked,
+                RideTestingFlag::turnSloped);
 
             uint8_t turnType = 1;
-            if (!(testingFlags & RIDE_TESTING_TURN_BANKED))
+            if (!(testingFlags.has(RideTestingFlag::turnBanked)))
             {
                 turnType = 2;
-                if (!(testingFlags & RIDE_TESTING_TURN_SLOPED))
+                if (!(testingFlags.has(RideTestingFlag::turnSloped)))
                 {
                     turnType = 0;
                 }
@@ -998,40 +999,40 @@ void Vehicle::UpdateMeasurements()
         {
             if (trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
             {
-                curRide->testingFlags |= RIDE_TESTING_TURN_LEFT;
+                curRide->testingFlags.set(RideTestingFlag::turnLeft);
                 curRide->turnCountDefault &= ~kCurrentTurnCountMask;
 
                 if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
                 {
-                    curRide->testingFlags |= RIDE_TESTING_TURN_BANKED;
+                    curRide->testingFlags.set(RideTestingFlag::turnBanked);
                 }
                 if (trackFlags & TRACK_ELEM_FLAG_TURN_SLOPED)
                 {
-                    curRide->testingFlags |= RIDE_TESTING_TURN_SLOPED;
+                    curRide->testingFlags.set(RideTestingFlag::turnSloped);
                 }
             }
 
             if (trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
             {
-                curRide->testingFlags |= RIDE_TESTING_TURN_RIGHT;
+                curRide->testingFlags.set(RideTestingFlag::turnRight);
                 curRide->turnCountDefault &= ~kCurrentTurnCountMask;
 
                 if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
                 {
-                    curRide->testingFlags |= RIDE_TESTING_TURN_BANKED;
+                    curRide->testingFlags.set(RideTestingFlag::turnBanked);
                 }
                 if (trackFlags & TRACK_ELEM_FLAG_TURN_SLOPED)
                 {
-                    curRide->testingFlags |= RIDE_TESTING_TURN_SLOPED;
+                    curRide->testingFlags.set(RideTestingFlag::turnSloped);
                 }
             }
         }
 
-        if (testingFlags & RIDE_TESTING_DROP_DOWN)
+        if (testingFlags.has(RideTestingFlag::dropDown))
         {
             if (velocity < 0 || !(trackFlags & TRACK_ELEM_FLAG_DOWN))
             {
-                curRide->testingFlags &= ~RIDE_TESTING_DROP_DOWN;
+                curRide->testingFlags.unset(RideTestingFlag::dropDown);
 
                 int16_t curZ = z / kCoordsZStep - curRide->startDropHeight;
                 if (curZ < 0)
@@ -1046,8 +1047,8 @@ void Vehicle::UpdateMeasurements()
         }
         else if (trackFlags & TRACK_ELEM_FLAG_DOWN && velocity >= 0)
         {
-            curRide->testingFlags &= ~RIDE_TESTING_DROP_UP;
-            curRide->testingFlags |= RIDE_TESTING_DROP_DOWN;
+            curRide->testingFlags.unset(RideTestingFlag::dropUp);
+            curRide->testingFlags.set(RideTestingFlag::dropDown);
 
             uint8_t drops = curRide->getNumDrops();
             if (drops < kRideMaxDropsCount)
@@ -1055,14 +1056,14 @@ void Vehicle::UpdateMeasurements()
             curRide->setNumDrops(drops);
 
             curRide->startDropHeight = z / kCoordsZStep;
-            testingFlags &= ~RIDE_TESTING_DROP_UP;
+            testingFlags.unset(RideTestingFlag::dropUp);
         }
 
-        if (testingFlags & RIDE_TESTING_DROP_UP)
+        if (testingFlags.has(RideTestingFlag::dropUp))
         {
             if (velocity > 0 || !(trackFlags & TRACK_ELEM_FLAG_UP))
             {
-                curRide->testingFlags &= ~RIDE_TESTING_DROP_UP;
+                curRide->testingFlags.unset(RideTestingFlag::dropUp);
 
                 int16_t curZ = z / kCoordsZStep - curRide->startDropHeight;
                 if (curZ < 0)
@@ -1077,8 +1078,8 @@ void Vehicle::UpdateMeasurements()
         }
         else if (trackFlags & TRACK_ELEM_FLAG_UP && velocity <= 0)
         {
-            curRide->testingFlags &= ~RIDE_TESTING_DROP_DOWN;
-            curRide->testingFlags |= RIDE_TESTING_DROP_UP;
+            curRide->testingFlags.unset(RideTestingFlag::dropDown);
+            curRide->testingFlags.set(RideTestingFlag::dropUp);
 
             auto drops = curRide->getNumDrops();
             if (drops != kRideMaxDropsCount)
@@ -1104,7 +1105,7 @@ void Vehicle::UpdateMeasurements()
 
     if (x == kLocationNull)
     {
-        curRide->testingFlags &= ~RIDE_TESTING_SHELTERED;
+        curRide->testingFlags.unset(RideTestingFlag::sheltered);
         return;
     }
 
@@ -1154,14 +1155,14 @@ void Vehicle::UpdateMeasurements()
 
         if (!coverFound)
         {
-            curRide->testingFlags &= ~RIDE_TESTING_SHELTERED;
+            curRide->testingFlags.unset(RideTestingFlag::sheltered);
             return;
         }
     }
 
-    if (!(curRide->testingFlags & RIDE_TESTING_SHELTERED))
+    if (!(curRide->testingFlags.has(RideTestingFlag::sheltered)))
     {
-        curRide->testingFlags |= RIDE_TESTING_SHELTERED;
+        curRide->testingFlags.set(RideTestingFlag::sheltered);
 
         curRide->increaseNumShelteredSections();
 
@@ -2366,7 +2367,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.maxLateralG = 0;
     ride.previousVerticalG = 0;
     ride.previousLateralG = 0;
-    ride.testingFlags = 0;
+    ride.testingFlags.clearAll();
     ride.curTestTrackLocation.SetNull();
     ride.turnCountDefault = 0;
     ride.turnCountBanked = 0;

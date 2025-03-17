@@ -62,7 +62,7 @@ CoordsXYZ _currentTrackBegin;
 
 uint8_t _currentTrackPieceDirection;
 OpenRCT2::TrackElemType _currentTrackPieceType;
-uint8_t _currentTrackSelectionFlags;
+TrackSelectionFlags _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
 TrackPitch _currentTrackPitchEnd;
 TrackRoll _currentTrackRollEnd;
@@ -377,7 +377,7 @@ void RideClearBlockedTiles(const Ride& ride)
  */
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
-    uint16_t flags)
+    TrackElementSetFlags flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
     auto trackElement = MapGetTrackElementAtOfTypeSeq(location, type, 0);
@@ -431,15 +431,15 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         {
             *output_element = reinterpret_cast<TileElement*>(trackElement);
         }
-        if (flags & TRACK_ELEMENT_SET_HIGHLIGHT_FALSE)
+        if (flags.has(TrackElementSetFlag::highlightOff))
         {
             trackElement->SetHighlight(false);
         }
-        if (flags & TRACK_ELEMENT_SET_HIGHLIGHT_TRUE)
+        if (flags.has(TrackElementSetFlag::highlightOn))
         {
             trackElement->SetHighlight(true);
         }
-        if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
+        if (flags.has(TrackElementSetFlag::colourScheme))
         {
             auto newScheme = static_cast<RideColourScheme>(extra_params & 0xFF);
             trackElement->SetColourScheme(newScheme);
@@ -449,23 +449,23 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
                 _currentColourScheme = newScheme;
             }
         }
-        if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
+        if (flags.has(TrackElementSetFlag::seatRotation))
         {
             trackElement->SetSeatRotation(static_cast<uint8_t>(extra_params & 0xFF));
         }
-        if (flags & TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE)
+        if (flags.has(TrackElementSetFlag::cableLiftOn))
         {
             trackElement->SetHasCableLift(true);
         }
-        if (flags & TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE)
+        if (flags.has(TrackElementSetFlag::cableLiftOff))
         {
             trackElement->SetHasCableLift(false);
         }
-        if (flags & TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE)
+        if (flags.has(TrackElementSetFlag::brakeClosed))
         {
             trackElement->SetBrakeClosed(extra_params != 0);
         }
-        if (flags & TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED)
+        if (flags.has(TrackElementSetFlag::brakeBoosterSpeed))
         {
             trackElement->SetBrakeBoosterSpeed(static_cast<uint8_t>(extra_params & 0xFF));
         }
@@ -485,16 +485,16 @@ static void WindowRideConstructionUpdateActiveElements()
  */
 void RideConstructionRemoveGhosts()
 {
-    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
+    if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
         RideEntranceExitRemoveGhost();
-        _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
+        _currentTrackSelectionFlags.unset(TrackSelectionFlag::entranceOrExit);
     }
-    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
+    if (_currentTrackSelectionFlags.has(TrackSelectionFlag::track))
     {
         auto intent = Intent(INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE);
         ContextBroadcastIntent(&intent);
-        _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_TRACK;
+        _currentTrackSelectionFlags.unset(TrackSelectionFlag::track);
     }
 }
 
@@ -508,14 +508,14 @@ void RideConstructionInvalidateCurrentTrack()
         case RideConstructionState::Selected:
             GetTrackElementOriginAndApplyChanges(
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
-                nullptr, TRACK_ELEMENT_SET_HIGHLIGHT_FALSE);
+                nullptr, { TrackElementSetFlag::highlightOff });
             break;
         case RideConstructionState::MazeBuild:
         case RideConstructionState::MazeMove:
         case RideConstructionState::MazeFill:
         case RideConstructionState::Front:
         case RideConstructionState::Back:
-            if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
+            if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
             {
                 MapInvalidateTileFull(_currentTrackBegin.ToTileStart());
             }
@@ -524,9 +524,9 @@ void RideConstructionInvalidateCurrentTrack()
         case RideConstructionState::Place:
         case RideConstructionState::EntranceExit:
         default:
-            if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
+            if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
             {
-                _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ARROW;
+                _currentTrackSelectionFlags.unset(TrackSelectionFlag::arrow);
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
                 MapInvalidateTileFull(_currentTrackBegin);
             }
@@ -734,7 +734,7 @@ void RideSelectNextSection()
         auto type = _currentTrackPieceType;
         TileElement* tileElement;
         auto newCoords = GetTrackElementOriginAndApplyChanges(
-            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, {});
         if (!newCoords.has_value())
         {
             _rideConstructionState = RideConstructionState::State0;
@@ -754,7 +754,7 @@ void RideSelectNextSection()
             _currentTrackBegin = *newCoords;
             _currentTrackPieceDirection = tileElement->GetDirection();
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             WindowRideConstructionUpdateActiveElements();
         }
         else
@@ -763,7 +763,7 @@ void RideSelectNextSection()
             _currentTrackBegin = { outputElement, newCoords->z };
             _currentTrackPieceDirection = direction;
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             RideConstructionSetDefaultNextPiece();
             WindowRideConstructionUpdateActiveElements();
         }
@@ -792,7 +792,7 @@ void RideSelectPreviousSection()
         auto type = _currentTrackPieceType;
         TileElement* tileElement;
         auto newCoords = GetTrackElementOriginAndApplyChanges(
-            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, {});
         if (newCoords == std::nullopt)
         {
             _rideConstructionState = RideConstructionState::State0;
@@ -808,7 +808,7 @@ void RideSelectPreviousSection()
             _currentTrackBegin.z = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             WindowRideConstructionUpdateActiveElements();
         }
         else
@@ -819,7 +819,7 @@ void RideSelectPreviousSection()
             _currentTrackBegin.z = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.end_direction;
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             RideConstructionSetDefaultNextPiece();
             WindowRideConstructionUpdateActiveElements();
         }
@@ -933,7 +933,7 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
             _currentTrackBegin.x = tileElement.x;
             _currentTrackBegin.y = tileElement.y;
             _currentTrackBegin.z = trackElement->GetBaseZ();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
@@ -1007,7 +1007,7 @@ bool RideModify(const CoordsXYE& input)
     auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->GetBaseZ() };
     auto direction = tileElement.element->GetDirection();
     auto type = tileElement.element->AsTrack()->GetTrackType();
-    auto newCoords = GetTrackElementOriginAndApplyChanges({ tileCoords, direction }, type, 0, nullptr, 0);
+    auto newCoords = GetTrackElementOriginAndApplyChanges({ tileCoords, direction }, type, 0, nullptr, {});
     if (!newCoords.has_value())
         return false;
 
@@ -1016,7 +1016,7 @@ bool RideModify(const CoordsXYE& input)
     _currentTrackBegin = newCoords.value();
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
-    _currentTrackSelectionFlags = 0;
+    _currentTrackSelectionFlags.clearAll();
     _rideConstructionNextArrowPulse = 0;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
@@ -1037,7 +1037,7 @@ bool RideModify(const CoordsXYE& input)
     _currentTrackBegin = *newCoords;
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
-    _currentTrackSelectionFlags = 0;
+    _currentTrackSelectionFlags.clearAll();
 
     RideSelectPreviousSection();
 
@@ -1047,7 +1047,7 @@ bool RideModify(const CoordsXYE& input)
         _currentTrackBegin = *newCoords;
         _currentTrackPieceDirection = direction;
         _currentTrackPieceType = type;
-        _currentTrackSelectionFlags = 0;
+        _currentTrackSelectionFlags.clearAll();
     }
 
     WindowRideConstructionUpdateActiveElements();
@@ -1089,7 +1089,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
 
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RideConstructionState::Place;
-    _currentTrackSelectionFlags = 0;
+    _currentTrackSelectionFlags.clearAll();
 
     WindowRideConstructionUpdateActiveElements();
     return 1;
@@ -1435,7 +1435,7 @@ bool RideSelectBackwardsFromFront()
             _currentTrackBegin.z = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             return true;
         }
     }
@@ -1460,7 +1460,7 @@ bool RideSelectForwardsFromBack()
             _currentTrackBegin.z = z;
             _currentTrackPieceDirection = next_track.element->GetDirection();
             _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             return true;
         }
     }

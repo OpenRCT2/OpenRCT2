@@ -26,6 +26,29 @@ struct RideTypeDescriptor;
 struct TrackDrawerDescriptor;
 struct TrackDrawerEntry;
 
+enum class TrackElementSetFlag : uint8_t
+{
+    highlightOff,
+    highlightOn,
+    colourScheme,
+    cableLiftOn,
+    cableLiftOff,
+    seatRotation,
+    brakeClosed,
+    brakeBoosterSpeed,
+};
+using TrackElementSetFlags = FlagHolder<uint16_t, TrackElementSetFlag>;
+
+enum class TrackSelectionFlag : uint8_t
+{
+    arrow,
+    track,
+    entranceOrExit,
+    recheck,
+    trackPlaceActionQueued,
+};
+using TrackSelectionFlags = FlagHolder<uint8_t, TrackSelectionFlag>;
+
 namespace OpenRCT2
 {
     enum class RideConstructionState : uint8_t
@@ -66,7 +89,7 @@ extern CoordsXYZ _currentTrackBegin;
 
 extern uint8_t _currentTrackPieceDirection;
 extern OpenRCT2::TrackElemType _currentTrackPieceType;
-extern uint8_t _currentTrackSelectionFlags;
+extern TrackSelectionFlags _currentTrackSelectionFlags;
 extern uint32_t _rideConstructionNextArrowPulse;
 extern TrackPitch _currentTrackPitchEnd;
 extern TrackRoll _currentTrackRollEnd;
@@ -114,3 +137,7 @@ TrackDrawerDescriptor getCurrentTrackDrawerDescriptor(const RideTypeDescriptor& 
 TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd);
 OpenRCT2::TrackElemType GetTrackTypeFromCurve(
     TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank);
+
+std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
+    const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
+    TrackElementSetFlags flags);

@@ -13,6 +13,7 @@
 #include "../actions/ResultWithMessage.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
+#include "../core/FlagHolder.hpp"
 #include "../localisation/Formatter.h"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
@@ -61,6 +62,19 @@ constexpr money64 kRideMinPrice = 0.00_GBP;
 constexpr money64 kRideMaxPrice = 20.00_GBP;
 
 extern const StringId kRideInspectionIntervalNames[];
+
+enum class RideTestingFlag : uint8_t
+{
+    sheltered,
+    turnLeft,
+    turnRight,
+    turnBanked,
+    turnSloped,
+    dropDown,
+    poweredLift,
+    dropUp,
+};
+using RideTestingFlags = FlagHolder<uint32_t, RideTestingFlag>;
 
 struct RideStation
 {
@@ -179,7 +193,7 @@ struct Ride
     fixed16_2dp maxLateralG{};
     fixed16_2dp previousVerticalG{};
     fixed16_2dp previousLateralG{};
-    uint32_t testingFlags{};
+    RideTestingFlags testingFlags{};
     // x y z map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
     TileCoordsXYZ curTestTrackLocation;
@@ -507,18 +521,6 @@ enum
 
 enum
 {
-    RIDE_TESTING_SHELTERED = (1 << 0),
-    RIDE_TESTING_TURN_LEFT = (1 << 1),
-    RIDE_TESTING_TURN_RIGHT = (1 << 2),
-    RIDE_TESTING_TURN_BANKED = (1 << 3),
-    RIDE_TESTING_TURN_SLOPED = (1 << 4),
-    RIDE_TESTING_DROP_DOWN = (1 << 5),
-    RIDE_TESTING_POWERED_LIFT = (1 << 6),
-    RIDE_TESTING_DROP_UP = (1 << 7),
-};
-
-enum
-{
     RIDE_TYPE_SPIRAL_ROLLER_COASTER = 0,
     RIDE_TYPE_STAND_UP_ROLLER_COASTER,
     RIDE_TYPE_SUSPENDED_SWINGING_COASTER,
@@ -821,39 +823,18 @@ enum
     RIDE_CRASH_TYPE_FATALITIES = 8
 };
 
-enum
+enum MazeWallType : uint8_t
 {
-    MAZE_WALL_TYPE_BRICK,
-    MAZE_WALL_TYPE_HEDGE,
-    MAZE_WALL_TYPE_ICE,
-    MAZE_WALL_TYPE_WOOD,
-};
-
-enum
-{
-    TRACK_SELECTION_FLAG_ARROW = 1 << 0,
-    TRACK_SELECTION_FLAG_TRACK = 1 << 1,
-    TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT = 1 << 2,
-    TRACK_SELECTION_FLAG_RECHECK = 1 << 3,
-    TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED = 1 << 4,
+    brick,
+    hedges,
+    ice,
+    wooden,
 };
 
 enum
 {
     RIDE_ISSUE_NONE = 0,
     RIDE_ISSUE_GUESTS_STUCK = (1 << 0),
-};
-
-enum
-{
-    TRACK_ELEMENT_SET_HIGHLIGHT_FALSE = (1 << 0),
-    TRACK_ELEMENT_SET_HIGHLIGHT_TRUE = (1 << 1),
-    TRACK_ELEMENT_SET_COLOUR_SCHEME = (1 << 2),
-    TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE = (1 << 3),
-    TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE = (1 << 4),
-    TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5),
-    TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE = (1 << 6),
-    TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED = (1 << 7)
 };
 
 constexpr uint8_t kMaxRideMeasurements = 8;
