@@ -14,7 +14,6 @@
 #include <cstdint>
 #include <limits>
 #include <span>
-#include <string_view>
 
 using ObjectEntryIndex = uint16_t;
 constexpr ObjectEntryIndex kObjectEntryIndexNull = std::numeric_limits<ObjectEntryIndex>::max();
@@ -57,6 +56,3 @@ bool ObjectTypeIsIntransient(ObjectType type);
 std::span<const ObjectType> getAllObjectTypes();
 std::span<const ObjectType> getTransientObjectTypes();
 std::span<const ObjectType> getIntransientObjectTypes();
-
-std::string_view objectTypeToString(ObjectType type);
-ObjectType objectTypeFromString(std::string_view string);

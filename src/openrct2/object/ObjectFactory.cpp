@@ -15,6 +15,7 @@
 #include "../PlatformEnvironment.h"
 #include "../audio/Audio.h"
 #include "../core/Console.hpp"
+#include "../core/EnumMap.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/Json.hpp"
@@ -404,6 +405,30 @@ namespace OpenRCT2::ObjectFactory
         return result;
     }
 
+    static const EnumMap<ObjectType> kObjectTypeMap = {
+        { "ride", ObjectType::ride },
+        { "scenery_small", ObjectType::smallScenery },
+        { "scenery_large", ObjectType::largeScenery },
+        { "scenery_wall", ObjectType::walls },
+        { "footpath_banner", ObjectType::banners },
+        { "footpath_legacy", ObjectType::paths },
+        { "footpath_item", ObjectType::pathAdditions },
+        { "scenery_group", ObjectType::sceneryGroup },
+        { "park_entrance", ObjectType::parkEntrance },
+        { "water", ObjectType::water },
+        { "scenario_text", ObjectType::scenarioText },
+        { "terrain_surface", ObjectType::terrainSurface },
+        { "terrain_edge", ObjectType::terrainEdge },
+        { "station", ObjectType::station },
+        { "music", ObjectType::music },
+        { "footpath_surface", ObjectType::footpathSurface },
+        { "footpath_railings", ObjectType::footpathRailings },
+        { "audio", ObjectType::audio },
+        { "peep_names", ObjectType::peepNames },
+        { "peep_animations", ObjectType::peepAnimations },
+        { "climate", ObjectType::climate },
+    };
+
     std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path, bool loadImages)
     {
         try
@@ -499,9 +524,10 @@ namespace OpenRCT2::ObjectFactory
 
         std::unique_ptr<Object> result;
 
-        auto objectType = objectTypeFromString(Json::GetString(jRoot["objectType"]));
-        if (objectType != ObjectType::none)
+        auto lookup = kObjectTypeMap.find(Json::GetString(jRoot["objectType"]));
+        if (lookup != kObjectTypeMap.end())
         {
+            auto objectType = lookup->second;
             auto id = Json::GetString(jRoot["id"]);
 
             // Base audio files are renamed to a common, virtual name so asset packs can override it correctly.

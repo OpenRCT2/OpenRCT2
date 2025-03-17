@@ -620,6 +620,7 @@ declare global {
         "scenery_group" |
         "park_entrance" |
         "water" |
+        "scenario_text" |
         "terrain_surface" |
         "terrain_edge" |
         "station" |

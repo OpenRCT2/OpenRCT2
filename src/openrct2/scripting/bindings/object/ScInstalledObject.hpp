@@ -20,6 +20,9 @@
 
 namespace OpenRCT2::Scripting
 {
+    std::string_view objectTypeToString(ObjectType type);
+    ObjectType objectTypeFromString(std::string_view string);
+
     inline std::string_view ObjectSourceGameToString(ObjectSourceGame sourceGame)
     {
         static constexpr std::string_view values[] = { "custom", "wacky_worlds",      "time_twister",     "openrct2_official",
