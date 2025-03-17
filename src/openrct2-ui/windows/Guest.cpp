@@ -97,6 +97,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_NAUSEA_BAR,
         WIDX_TOILET_LABEL,
         WIDX_TOILET_BAR,
+        WIDX_SEPARATOR,
 
         WIDX_RIDES_BEEN_ON_LABEL = WIDX_TAB_CONTENT_START,
         WIDX_RIDE_SCROLL,
@@ -135,18 +136,19 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget _guestWindowWidgetsStats[] = {
         MAIN_GUEST_WIDGETS,
-        MakeWidget     ({  3, (kListRowHeight * 0) + 4 + 43 }, { 62,  10}, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_HAPPINESS_LABEL),
+        MakeWidget     ({  3, (kListRowHeight * 0) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_HAPPINESS_LABEL),
         MakeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19),
-        MakeWidget     ({  3, (kListRowHeight * 1) + 4 + 43 }, { 62,  10}, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_ENERGY_LABEL),
+        MakeWidget     ({  3, (kListRowHeight * 1) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_ENERGY_LABEL),
         MakeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19),
-        MakeWidget     ({  3, (kListRowHeight * 2) + 4 + 43 }, { 62,  10}, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_HUNGER_LABEL),
+        MakeWidget     ({  3, (kListRowHeight * 2) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_HUNGER_LABEL),
         MakeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100),
-        MakeWidget     ({  3, (kListRowHeight * 3) + 4 + 43 }, { 62,  10}, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_THIRST_LABEL),
+        MakeWidget     ({  3, (kListRowHeight * 3) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_THIRST_LABEL),
         MakeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100),
-        MakeWidget     ({  3, (kListRowHeight * 4) + 4 + 43 }, { 62,  10}, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_NAUSEA_LABEL),
+        MakeWidget     ({  3, (kListRowHeight * 4) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_NAUSEA_LABEL),
         MakeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 47, 100),
-        MakeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10}, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_TOILET_LABEL),
+        MakeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_TOILET_LABEL),
         MakeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100),
+        MakeWidget     ({  3, (kListRowHeight * 7) + 9 + 43 }, { 180, 2  }, WindowWidgetType::HorizontalSeparator, WindowColour::Secondary),
     };
 
     static constexpr Widget _guestWindowWidgetsRides[] = {
@@ -1139,11 +1141,7 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
             }
 
-            // Horizontal separator
             screenCoords.y += kListRowHeight + 9;
-            GfxFillRectInset(
-                dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
 
             // Preferred Ride
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_PREFERRED_RIDE);

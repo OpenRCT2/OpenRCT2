@@ -1106,6 +1106,7 @@ namespace OpenRCT2
             case WindowWidgetType::Groupbox:
             case WindowWidgetType::ProgressBar:
             case WindowWidgetType::Placeholder:
+            case WindowWidgetType::HorizontalSeparator:
                 // Non-interactive widget type
                 break;
             case WindowWidgetType::ImgBtn:

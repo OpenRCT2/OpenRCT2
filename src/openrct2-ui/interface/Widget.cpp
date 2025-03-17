@@ -39,6 +39,7 @@ namespace OpenRCT2::Ui
     static void WidgetTextInset(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetProgressBarDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetHorizontalSeparatorDraw(DrawPixelInfo& dpi, WindowBase& w, const Widget& widget);
     static void WidgetGroupboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
@@ -117,6 +118,9 @@ namespace OpenRCT2::Ui
                 break;
             case WindowWidgetType::ProgressBar:
                 WidgetProgressBarDraw(dpi, w, widgetIndex);
+                break;
+            case WindowWidgetType::HorizontalSeparator:
+                WidgetHorizontalSeparatorDraw(dpi, w, *widget);
                 break;
             default:
                 break;
@@ -1208,6 +1212,14 @@ namespace OpenRCT2::Ui
                 dpi, { topLeft + ScreenCoordsXY{ 1, 1 }, topLeft + ScreenCoordsXY{ fillSize + 1, widget.height() - 1 } },
                 { widget.colour }, 0);
         }
+    }
+
+    static void WidgetHorizontalSeparatorDraw(DrawPixelInfo& dpi, WindowBase& w, const Widget& widget)
+    {
+        ScreenCoordsXY topLeft{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top } };
+        ScreenCoordsXY bottomRight{ w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
+
+        GfxFillRectInset(dpi, { topLeft, bottomRight }, w.colours[1], INSET_RECT_FLAG_BORDER_INSET);
     }
 
     ImageId GetColourButtonImage(colour_t colour)

@@ -47,6 +47,7 @@ namespace OpenRCT2
         ProgressBar = 29,
         Custom = 28,
         TextBox = 27,
+        HorizontalSeparator = 30,
     };
 
     using WidgetFlags = uint32_t;
