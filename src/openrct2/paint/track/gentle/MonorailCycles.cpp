@@ -182,7 +182,7 @@ static void PaintMonorailCyclesTrackFlat(
     }
 
     MetalASupportsPaintSetupRotated(
-        session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
+        session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, true, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
         session,
@@ -237,7 +237,8 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height, true, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -258,7 +259,8 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
                 0xFFFF, 0);
             break;
         case 3:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height, true, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -319,23 +321,23 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     {
         case 0:
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, supportSpecial, supportHeight,
+                session, supportType.metal, MetalSupportPlace::Centre, direction, supportSpecial, supportHeight, true,
                 session.SupportColours);
             break;
         case 2:
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, supportSpecial, supportHeight,
+                session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, supportSpecial, supportHeight, true,
                 session.SupportColours);
             break;
         case 5:
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::BottomRightSide, DirectionNext(direction), supportSpecial,
-                supportHeight, session.SupportColours);
+                supportHeight, true, session.SupportColours);
             break;
         case 6:
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), supportSpecial, supportHeight,
-                session.SupportColours);
+                true, session.SupportColours);
             break;
     }
 

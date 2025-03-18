@@ -73,7 +73,7 @@ static void MiniSuspendedRCTrackFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, false, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -169,7 +169,8 @@ static void MiniSuspendedRCTrack25DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 46, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 46, false,
+            session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -245,7 +246,8 @@ static void MiniSuspendedRCTrackFlatTo25DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 38, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 38, false,
+            session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -321,7 +323,8 @@ static void MiniSuspendedRCTrack25DegUpToFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 38, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 38, false,
+            session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -396,7 +399,8 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -530,7 +534,7 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height + 30,
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height + 30, false,
                 session.SupportColours);
 
             switch (direction)
@@ -696,7 +700,8 @@ static void MiniSuspendedRCTrackSBendLeft(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, false,
+                session.SupportColours);
 
             switch (direction)
             {
@@ -904,7 +909,8 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -975,7 +981,7 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height + 30,
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height + 30, false,
                 session.SupportColours);
 
             switch (direction)
@@ -1042,7 +1048,8 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1163,7 +1170,8 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 0, height + 30, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 0, height + 30, false,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -1211,7 +1219,8 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, false,
+                session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1332,7 +1341,8 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 30, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 30, false,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -1371,7 +1381,8 @@ static void MiniSuspendedRCTrackDiagFlat(
 
     if (trackSequence == 3)
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 30, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 30, false,
+            session.SupportColours);
 
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -1514,7 +1525,8 @@ static void MiniSuspendedRCTrackDiag25DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 42, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 42, false,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
@@ -1659,7 +1671,8 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 34, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 34, false,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
@@ -1804,7 +1817,8 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
                     direction),
                 0xFFFF, 0);
             MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 36, false,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
@@ -1949,7 +1963,8 @@ static void MiniSuspendedRCTrackDiag25DegDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 42, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 42, false,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
@@ -2091,7 +2106,8 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 36, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 36, false,
+                session.SupportColours);
             break;
     }
 
@@ -2236,7 +2252,8 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 34, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 34, false,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;

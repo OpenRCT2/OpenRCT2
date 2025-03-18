@@ -17,12 +17,14 @@
 - Fix: [#23892] Gentle banked Wooden Roller Coaster track glitches as trains pass (original bug).
 - Fix: [#23897] Reverse Freefall Coaster slope up to vertical track piece does not draw a vertical tunnel.
 - Fix: [#23910] Heartline Twister Coaster track can draw over things above it (original bug).
+- Fix: [#23938] Metal support bases at the sides of paths draw below the path (original bug).
 - Fix: [#23939] Incorrect assertion when trying to load heightmap.
 - Fix: [#23941] Underflow in “Repay loan and achieve a certain park value” objective when using Japanese.
 - Fix: [#23949] Walls draw over sloped rear water edges and those edge sprites are misaligned (original bug).
 - Fix: [#23960] Corner path fences can draw over adjacent sloped land (original bug).
 - Fix: [#23961] Lamps and queue line tvs draw incorrectly on paths with fences.
 - Fix: [#23983] Ordering files by size does not work and occasionally crashes the game.
+- Fix: [#24001] Sloped diagonal metal supports that are offset do not draw the full support beam.
 
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------
