@@ -556,6 +556,7 @@
     <ClInclude Include="scenes\title\Command\SetSpeed.h" />
     <ClInclude Include="scenes\title\Command\SetZoom.h" />
     <ClInclude Include="scenes\title\Command\Wait.h" />
+    <ClInclude Include="scenes\title\DummyTitleSequencePlayer.h" />
     <ClInclude Include="scenes\title\TitleScene.h" />
     <ClInclude Include="scenes\title\TitleSequence.h" />
     <ClInclude Include="scenes\title\TitleSequenceManager.h" />
@@ -1084,6 +1085,7 @@
     <ClCompile Include="scenes\title\Command\SetSpeed.cpp" />
     <ClCompile Include="scenes\title\Command\SetZoom.cpp" />
     <ClCompile Include="scenes\title\Command\Wait.cpp" />
+    <ClCompile Include="scenes\title\DummyTitleSequencePlayer.cpp" />
     <ClCompile Include="scenes\title\TitleScene.cpp" />
     <ClCompile Include="scenes\title\TitleSequence.cpp" />
     <ClCompile Include="scenes\title\TitleSequenceManager.cpp" />
