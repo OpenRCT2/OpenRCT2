@@ -154,7 +154,11 @@ void TitleScene::Tick()
         {
             gameStateUpdateLogic();
         }
-        UpdatePaletteEffects();
+
+        if (!gOpenRCT2Headless)
+        {
+            UpdatePaletteEffects();
+        }
         // update_weather_animation();
     }
 
