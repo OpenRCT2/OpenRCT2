@@ -990,7 +990,8 @@ namespace OpenRCT2::RCT2
         uint8_t NextWeatherGloom;
         uint8_t CurrentWeatherLevel;
         uint8_t NextWeatherLevel;
-        RCT12NewsItem NewsItems[Limits::MaxNewsItems];
+        RCT12NewsItem recentMessages[Limits::kMaxRecentNewsItems];
+        RCT12NewsItem archivedMessages[Limits::kMaxArchivedNewsItems];
         char RCT1ScenarioName[62];      // Unused in RCT2
         uint16_t RCT1ScenarioSlotIndex; // Unused in RCT2
         uint32_t RCT1ScenarioFlags;     // Unused in RCT2
