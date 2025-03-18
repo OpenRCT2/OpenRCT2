@@ -241,7 +241,10 @@ namespace OpenRCT2::News
 
         void clear() noexcept
         {
-            front().Type = News::ItemType::Null;
+            for (size_t i = 0; i < N; i++)
+            {
+                Queue[i].Type = News::ItemType::Null;
+            }
         }
 
     private:

@@ -104,9 +104,8 @@ void News::ItemQueues::Clear()
     Archived.clear();
 }
 
-void News::InitQueue()
+void News::InitQueue(GameState_t& gameState)
 {
-    auto& gameState = GetGameState();
     gameState.NewsItems.Clear();
     assert(gameState.NewsItems.IsEmpty());
 
@@ -494,13 +493,8 @@ void News::importNewsItems(
     {
         gameState.NewsItems[i] = recent[i];
     }
-    size_t offset = News::ItemHistoryStart;
     for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
     {
-        gameState.NewsItems[offset + i] = archived[i];
+        gameState.NewsItems[News::ItemHistoryStart + i] = archived[i];
     }
-
-    // Still need to set the correct type to properly terminate the queue
-    if (archived.size() < News::MaxItemsArchive)
-        gameState.NewsItems[offset + archived.size()].Type = News::ItemType::Null;
 }
