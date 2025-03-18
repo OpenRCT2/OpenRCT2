@@ -85,14 +85,26 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LOCATE,
         WIDX_TRACK,
 
-        WIDX_HAPPINESS_BAR = WIDX_TAB_CONTENT_START,
+        WIDX_HAPPINESS_LABEL = WIDX_TAB_CONTENT_START,
+        WIDX_HAPPINESS_BAR,
+        WIDX_ENERGY_LABEL,
         WIDX_ENERGY_BAR,
+        WIDX_HUNGER_LABEL,
         WIDX_HUNGER_BAR,
+        WIDX_THIRST_LABEL,
         WIDX_THIRST_BAR,
+        WIDX_NAUSEA_LABEL,
         WIDX_NAUSEA_BAR,
+        WIDX_TOILET_LABEL,
         WIDX_TOILET_BAR,
+        WIDX_SEPARATOR,
 
-        WIDX_RIDE_SCROLL = WIDX_TAB_CONTENT_START,
+        WIDX_RIDES_BEEN_ON_LABEL = WIDX_TAB_CONTENT_START,
+        WIDX_RIDE_SCROLL,
+
+        WIDX_RECENT_THOUGHTS_LABEL = WIDX_TAB_CONTENT_START,
+
+        WIDX_CARRYING_LABEL = WIDX_TAB_CONTENT_START,
     };
 
     validate_global_widx(WC_PEEP, WIDX_PICKUP);
@@ -121,21 +133,28 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
         MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_TRACK_PEEP), STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
     };
-    // clang-format on
 
     static constexpr Widget _guestWindowWidgetsStats[] = {
         MAIN_GUEST_WIDGETS,
-        MakeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19), // Happiness
-        MakeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19), // Energy
-        MakeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100), // Hunger
-        MakeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100), // Thirst
-        MakeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 47, 100), // Nausea
-        MakeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100), // Toilet
+        MakeWidget     ({  3, (kListRowHeight * 0) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_HAPPINESS_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19),
+        MakeWidget     ({  3, (kListRowHeight * 1) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_ENERGY_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19),
+        MakeWidget     ({  3, (kListRowHeight * 2) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_HUNGER_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100),
+        MakeWidget     ({  3, (kListRowHeight * 3) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_THIRST_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100),
+        MakeWidget     ({  3, (kListRowHeight * 4) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_NAUSEA_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 47, 100),
+        MakeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_TOILET_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100),
+        MakeWidget     ({  3, (kListRowHeight * 7) + 9 + 43 }, { 180, 2  }, WindowWidgetType::HorizontalSeparator, WindowColour::Secondary),
     };
 
     static constexpr Widget _guestWindowWidgetsRides[] = {
         MAIN_GUEST_WIDGETS,
-        MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_GUEST_LABEL_RIDES_BEEN_ON),
+        MakeWidget({ 3, 57  }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     };
 
     static constexpr Widget _guestWindowWidgetsFinance[] = {
@@ -144,17 +163,18 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget _guestWindowWidgetsThoughts[] = {
         MAIN_GUEST_WIDGETS,
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_GUEST_RECENT_THOUGHTS_LABEL),
     };
 
     static constexpr Widget _guestWindowWidgetsInventory[] = {
         MAIN_GUEST_WIDGETS,
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_CARRYING),
     };
 
     static constexpr Widget _guestWindowWidgetsDebug[] = {
         MAIN_GUEST_WIDGETS,
     };
 
-    // clang-format off
     static constexpr std::span<const Widget> _guestWindowPageWidgets[] = {
         _guestWindowWidgetsOverview,
         _guestWindowWidgetsStats,
@@ -1107,36 +1127,11 @@ namespace OpenRCT2::Ui::Windows
             InventoryTabDraw(dpi);
             DebugTabDraw(dpi);
 
-            // Not sure why this is not stats widgets
-            // cx dx
             auto screenCoords = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
-
-            // Happiness
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
-
-            // Energy
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_ENERGY_LABEL);
-
-            // Hunger
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HUNGER_LABEL);
-
-            // Thirst
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_THIRST_LABEL);
-
-            // Nausea
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_LABEL);
-
-            // Toilet
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TOILET_LABEL);
+                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4,
+                                  widgets[WIDX_PAGE_BACKGROUND].top + (kListRowHeight * 6) + 5 };
 
             // Time in park
-            screenCoords.y += kListRowHeight + 1;
             int32_t guestEntryTime = peep->GetParkEntryTime();
             if (guestEntryTime != -1)
             {
@@ -1147,9 +1142,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             screenCoords.y += kListRowHeight + 9;
-            GfxFillRectInset(
-                dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
 
             // Preferred Ride
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_PREFERRED_RIDE);
@@ -1322,8 +1314,6 @@ namespace OpenRCT2::Ui::Windows
             // cx dx
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 2, widgets[WIDX_PAGE_BACKGROUND].top + 2 };
-
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_LABEL_RIDES_BEEN_ON);
 
             screenCoords.y = windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
@@ -1560,13 +1550,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            // cx dx
             auto screenCoords = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 14 };
 
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
-
-            screenCoords.y += 10;
             for (const auto& thought : peep->Thoughts)
             {
                 if (thought.type == PeepThoughtType::None)
@@ -1746,14 +1732,11 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& widget = widgets[WIDX_PAGE_BACKGROUND];
-            auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 2 };
+            auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 12 };
             int32_t itemNameWidth = widget.width() - 24;
 
             int32_t maxY = windowPos.y + height - 22;
             int32_t numItems = 0;
-
-            DrawTextBasic(dpi, screenCoords, STR_CARRYING);
-            screenCoords.y += 10;
 
             for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item++)
             {
