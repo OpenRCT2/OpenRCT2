@@ -18,9 +18,15 @@
 #include <iterator>
 #include <optional>
 #include <string>
+#include <vector>
 
 struct CoordsXYZ;
 class Formatter;
+
+namespace OpenRCT2
+{
+    struct GameState_t;
+}
 
 namespace OpenRCT2::News
 {
@@ -315,4 +321,7 @@ namespace OpenRCT2::News
 
     void AddItemToQueue(News::Item* newNewsItem);
     void RemoveItem(int32_t index);
+
+    void importNewsItems(
+        GameState_t& gameState, const std::vector<News::Item>& recent, const std::vector<News::Item>& archived);
 } // namespace OpenRCT2::News

@@ -484,3 +484,23 @@ void News::RemoveItem(int32_t index)
     }
     gameState.NewsItems[newsBoundary - 1].Type = News::ItemType::Null;
 }
+
+void News::importNewsItems(
+    GameState_t& gameState, const std::vector<News::Item>& recent, const std::vector<News::Item>& archived)
+{
+    gameState.NewsItems.Clear();
+
+    for (size_t i = 0; i < std::min<size_t>(recent.size(), News::ItemHistoryStart); i++)
+    {
+        gameState.NewsItems[i] = recent[i];
+    }
+    size_t offset = News::ItemHistoryStart;
+    for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
+    {
+        gameState.NewsItems[offset + i] = archived[i];
+    }
+
+    // Still need to set the correct type to properly terminate the queue
+    if (archived.size() < News::MaxItemsArchive)
+        gameState.NewsItems[offset + archived.size()].Type = News::ItemType::Null;
+}
