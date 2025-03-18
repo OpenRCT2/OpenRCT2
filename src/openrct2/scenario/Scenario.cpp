@@ -103,7 +103,7 @@ void ScenarioReset(GameState_t& gameState)
     auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
     ContextBroadcastIntent(&intent);
 
-    News::InitQueue();
+    News::InitQueue(gameState);
 
     gameState.Park.Rating = Park::CalculateParkRating();
     gameState.Park.Value = Park::CalculateParkValue();

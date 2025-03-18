@@ -299,7 +299,7 @@ namespace OpenRCT2::News
         News::ItemQueue<News::MaxItemsArchive> Archived;
     };
 
-    void InitQueue();
+    void InitQueue(GameState_t& gameState);
 
     void UpdateCurrentItem();
     void CloseCurrentItem();

@@ -311,7 +311,7 @@ namespace OpenRCT2::Editor
 
         ClimateReset();
 
-        News::InitQueue();
+        News::InitQueue(gameState);
     }
 
     /**
