@@ -485,7 +485,7 @@ void News::RemoveItem(int32_t index)
 }
 
 void News::importNewsItems(
-    GameState_t& gameState, const std::vector<News::Item>& recent, const std::vector<News::Item>& archived)
+    GameState_t& gameState, const std::span<const News::Item> recent, const std::span<const News::Item> archived)
 {
     gameState.NewsItems.Clear();
 

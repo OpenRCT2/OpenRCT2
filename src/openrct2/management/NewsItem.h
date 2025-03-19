@@ -17,8 +17,8 @@
 #include <array>
 #include <iterator>
 #include <optional>
+#include <span>
 #include <string>
-#include <vector>
 
 struct CoordsXYZ;
 class Formatter;
@@ -64,13 +64,13 @@ namespace OpenRCT2::News
      */
     struct Item
     {
-        News::ItemType Type;
-        uint8_t Flags;
-        uint32_t Assoc;
-        uint16_t Ticks;
-        uint16_t MonthYear;
-        uint8_t Day;
-        std::string Text;
+        News::ItemType Type = News::ItemType::Null;
+        uint8_t Flags{};
+        uint32_t Assoc{};
+        uint16_t Ticks{};
+        uint16_t MonthYear{};
+        uint8_t Day{};
+        std::string Text{};
 
         constexpr bool IsEmpty() const noexcept
         {
@@ -241,10 +241,7 @@ namespace OpenRCT2::News
 
         void clear() noexcept
         {
-            for (size_t i = 0; i < N; i++)
-            {
-                Queue[i].Type = News::ItemType::Null;
-            }
+            std::fill(Queue.begin(), Queue.end(), News::Item{});
         }
 
     private:
@@ -326,5 +323,5 @@ namespace OpenRCT2::News
     void RemoveItem(int32_t index);
 
     void importNewsItems(
-        GameState_t& gameState, const std::vector<News::Item>& recent, const std::vector<News::Item>& archived);
+        GameState_t& gameState, const std::span<const News::Item> recent, const std::span<const News::Item> archived);
 } // namespace OpenRCT2::News
