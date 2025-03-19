@@ -194,7 +194,6 @@ include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/freetype")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/SDL2")
 
 # now build app's shared lib
-#add_definitions(-DDISABLE_DISCORD_RPC -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
 add_definitions(-DDISABLE_DISCORD_RPC -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DSDL_MAIN_HANDLED)
 
 # Enable scripting

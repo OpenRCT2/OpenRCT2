@@ -12,6 +12,7 @@
     #include "Platform.h"
 
     #include "../Diagnostic.h"
+    #include "../core/File.h"
     #include "../core/Guard.hpp"
     #include "../localisation/Language.h"
 
@@ -165,7 +166,13 @@ namespace OpenRCT2::Platform
     #ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
-        return "/sdcard/openrct2/rct2.ttf";
+        auto expectedPath = std::string("/system/fonts/") + std::string(font.filename);
+        if (File::Exists(expectedPath))
+        {
+            return expectedPath;
+        }
+
+        return "";
     }
     #endif
 
