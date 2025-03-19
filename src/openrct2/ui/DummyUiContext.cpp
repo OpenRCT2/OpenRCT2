@@ -10,7 +10,6 @@
 #include "../drawing/X8DrawingEngine.h"
 #include "UiContext.h"
 #include "WindowManager.h"
-#include "../scenes/title/DummyTitleSequencePlayer.h"
 
 using namespace OpenRCT2::Drawing;
 
@@ -23,7 +22,6 @@ namespace OpenRCT2::Ui
     {
     private:
         std::unique_ptr<IWindowManager> const _windowManager = CreateDummyWindowManager();
-        std::unique_ptr<ITitleSequencePlayer> const _titleSequencePlayer = std::make_unique<DummyTitleSequencePlayer>();
 
     public:
         void InitialiseScriptExtensions() override
@@ -206,7 +204,7 @@ namespace OpenRCT2::Ui
 
         ITitleSequencePlayer* GetTitleSequencePlayer() override
         {
-            return _titleSequencePlayer.get();
+            return nullptr;
         }
 
         bool HasFilePicker() const override
