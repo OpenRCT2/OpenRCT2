@@ -10,10 +10,10 @@
 #pragma once
 
 #include <cstdint>
+#include <ctime>
 #include <functional>
 #include <openrct2/core/StringTypes.h>
 #include <openrct2/localisation/StringIdType.h>
-#include <ctime>
 #include <string>
 
 enum class LoadSaveAction : uint8_t;
