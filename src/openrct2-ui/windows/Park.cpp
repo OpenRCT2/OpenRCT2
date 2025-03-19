@@ -1180,8 +1180,11 @@ namespace OpenRCT2::Ui::Windows
 
             // Set listen only to viewport
             bool listen = false;
-            if (newPage == WINDOW_PARK_PAGE_ENTRANCE && viewport != nullptr && !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-                listen = true;
+            if (newPage == WINDOW_PARK_PAGE_ENTRANCE && page == WINDOW_PARK_PAGE_ENTRANCE && viewport != nullptr)
+            {
+                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
+                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
+            }
 
             // Skip setting page if we're already on this page, unless we're initialising the window
             if (page == newPage && !widgets.empty())

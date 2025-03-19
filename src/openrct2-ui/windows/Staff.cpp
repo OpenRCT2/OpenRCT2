@@ -1049,22 +1049,22 @@ namespace OpenRCT2::Ui::Windows
                 ToolCancel();
         }
 
-        void SetPage(int32_t pageNum)
+        void SetPage(int32_t newPage)
         {
             CancelTools();
 
-            int32_t listen = 0;
-            if (page == WINDOW_STAFF_OVERVIEW && viewport != nullptr)
+            bool listen = false;
+            if (page == WINDOW_STAFF_OVERVIEW && newPage == WINDOW_STAFF_OVERVIEW && viewport != nullptr)
             {
-                if (!(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-                    listen = 1;
+                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
+                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
             }
 
             // Skip setting page if we're already on this page, unless we're initialising the window
-            if (pageNum == page && !widgets.empty())
+            if (newPage == page && !widgets.empty())
                 return;
 
-            page = pageNum;
+            page = newPage;
             frame_no = 0;
             pressed_widgets = 0;
             hold_down_widgets = 0;

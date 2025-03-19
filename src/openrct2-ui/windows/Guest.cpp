@@ -509,11 +509,11 @@ namespace OpenRCT2::Ui::Windows
             if (isToolActive(classification, number))
                 ToolCancel();
 
-            int32_t listen = 0;
+            bool listen = false;
             if (newPage == WINDOW_GUEST_OVERVIEW && page == WINDOW_GUEST_OVERVIEW && viewport != nullptr)
             {
-                if (!(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-                    listen = 1;
+                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
+                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
             }
 
             // Skip setting page if we're already on this page, unless we're initialising the window
