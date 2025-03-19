@@ -105,10 +105,22 @@ TTFFontSetDescriptor TTFFontMicroHei = { {
     { "wqy-microhei.ttc", "WenQuanYi Micro Hei", 10, -1, -1,  10, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
+TTFFontSetDescriptor TTFFontRoboto = { {
+    { "Roboto-Regular.ttf", "Roboto", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "Roboto-Regular.ttf", "Roboto", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "Roboto-Regular.ttf", "Roboto", 10, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
+} };
+
 TTFFontSetDescriptor TTFFontNotoSansCJK = { {
-     { "NotoSansCJK-Regular.ttc", "Noto Sans CJK", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
-     { "NotoSansCJK-Regular.ttc", "Noto Sans CJK", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
-     { "NotoSansCJK-Regular.ttc", "Noto Sans CJK",  9, 1, -2,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "NotoSansCJK-Regular.ttc", "Noto Sans CJK", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "NotoSansCJK-Regular.ttc", "Noto Sans CJK", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "NotoSansCJK-Regular.ttc", "Noto Sans CJK",  9, 1, -2,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
+} };
+
+TTFFontSetDescriptor TTFFontNotoNaskhArabic = { {
+    { "NotoNaskhArabic-Regular.ttf", "Noto Naskh Arabic", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "NotoNaskhArabic-Regular.ttf", "Noto Naskh Arabic", 12, 1, -3, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "NotoNaskhArabic-Regular.ttf", "Noto Naskh Arabic",  9, 1, -2,  9, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 // clang-format on
 #endif // NO_TTF

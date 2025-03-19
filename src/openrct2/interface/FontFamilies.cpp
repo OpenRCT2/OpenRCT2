@@ -41,10 +41,16 @@ TTFontFamily const TTFFamilyKorean = {
     &TTFFontNotoSansCJK,
 };
 
+TTFontFamily const TTFFamilyArabic = {
+    &TTFFontArialUnicode,
+    &TTFFontArial,
+    &TTFFontNotoNaskhArabic,
+};
+
 TTFontFamily const TTFFamilySansSerif = {
     &TTFFontArialUnicode,
     &TTFFontArial,
-    &TTFFontNotoSansCJK,
+    &TTFFontRoboto,
 };
 
 #endif // NO_TTF
