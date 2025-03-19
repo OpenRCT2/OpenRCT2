@@ -233,10 +233,10 @@ namespace OpenRCT2::Scripting
     bool ScResearch::isObjectResearched(const std::string& typez, ObjectEntryIndex index)
     {
         auto result = false;
-        auto type = ScObject::StringToObjectType(typez);
-        if (type)
+        auto type = objectTypeFromString(typez);
+        if (type != ObjectType::none)
         {
-            result = ResearchIsInvented(*type, index);
+            result = ResearchIsInvented(type, index);
         }
         else
         {

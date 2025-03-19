@@ -51,19 +51,6 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScObject::numImages_get, nullptr, "numImages");
         }
 
-        static std::optional<ObjectType> StringToObjectType(std::string_view type)
-        {
-            for (uint8_t i = 0; i < EnumValue(ObjectType::count); i++)
-            {
-                auto s = ObjectTypeToString(i);
-                if (s == type)
-                {
-                    return static_cast<ObjectType>(i);
-                }
-            }
-            return std::nullopt;
-        }
-
     private:
         std::shared_ptr<ScInstalledObject> installedObject_get() const
         {
@@ -82,7 +69,7 @@ namespace OpenRCT2::Scripting
 
         std::string type_get() const
         {
-            return std::string(ObjectTypeToString(EnumValue(_type)));
+            return std::string(objectTypeToString(_type));
         }
 
         int32_t index_get() const
