@@ -2074,9 +2074,11 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
  */
 static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool vandalism)
 {
-    auto tile_element = coords.element;
-    peep->NextLoc = { coords.ToTileStart(), tile_element->GetBaseZ() };
-    peep->SetNextFlags(tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped(), false);
+    const auto* pathElement = coords.element->AsPath();
+    assert(pathElement != nullptr);
+
+    peep->NextLoc = { coords.ToTileStart(), pathElement->GetBaseZ() };
+    peep->SetNextFlags(pathElement->GetSlopeDirection(), pathElement->IsSloped(), false);
 
     int16_t z = peep->GetZOnSlope(coords.x, coords.y);
 
@@ -2113,9 +2115,11 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
     }
 
     guest->VandalismSeen = (vandalThoughtTimeout << 6) | vandalisedTiles;
+
     uint16_t crowded = 0;
-    uint8_t litter_count = 0;
-    uint8_t sick_count = 0;
+    uint8_t litterCount = 0;
+    uint8_t vomitCount = 0;
+
     auto quad = EntityTileList(coords);
     for (auto entity : quad)
     {
@@ -2135,12 +2139,12 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
             if (abs(litter->z - guest->NextLoc.z) > 16)
                 continue;
 
-            litter_count++;
+            litterCount++;
             if (litter->SubType != Litter::Type::Vomit && litter->SubType != Litter::Type::VomitAlt)
                 continue;
 
-            litter_count--;
-            sick_count++;
+            litterCount--;
+            vomitCount++;
         }
     }
 
@@ -2150,27 +2154,27 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
         guest->HappinessTarget = std::max(0, guest->HappinessTarget - 14);
     }
 
-    litter_count = std::min(static_cast<uint8_t>(3), litter_count);
-    sick_count = std::min(static_cast<uint8_t>(3), sick_count);
+    litterCount = std::min(static_cast<uint8_t>(3), litterCount);
+    vomitCount = std::min(static_cast<uint8_t>(3), vomitCount);
 
-    uint8_t disgusting_time = guest->DisgustingCount & 0xC0;
-    uint8_t disgusting_count = ((guest->DisgustingCount & 0xF) << 2) | sick_count;
-    guest->DisgustingCount = disgusting_count | disgusting_time;
+    uint8_t disgustingTime = guest->DisgustingCount & 0xC0;
+    uint8_t disgustingCount = ((guest->DisgustingCount & 0xF) << 2) | vomitCount;
+    guest->DisgustingCount = disgustingCount | disgustingTime;
 
-    if (disgusting_time & 0xC0 && (ScenarioRand() & 0xFFFF) <= 4369)
+    if (disgustingTime & 0xC0 && (ScenarioRand() & 0xFFFF) <= 4369)
     {
         // Reduce the disgusting time
         guest->DisgustingCount -= 0x40;
     }
     else
     {
-        uint8_t total_sick = 0;
+        uint8_t totalSick = 0;
         for (uint8_t time = 0; time < 3; time++)
         {
-            total_sick += (disgusting_count >> (2 * time)) & 0x3;
+            totalSick += (disgustingCount >> (2 * time)) & 0x3;
         }
 
-        if (total_sick >= 3 && (ScenarioRand() & 0xFFFF) <= 10922)
+        if (totalSick >= 3 && (ScenarioRand() & 0xFFFF) <= 10922)
         {
             guest->InsertNewThought(PeepThoughtType::PathDisgusting);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
@@ -2179,24 +2183,24 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
         }
     }
 
-    uint8_t litter_time = guest->LitterCount & 0xC0;
-    litter_count = ((guest->LitterCount & 0xF) << 2) | litter_count;
-    guest->LitterCount = litter_count | litter_time;
+    uint8_t litterTime = guest->LitterCount & 0xC0;
+    litterCount = ((guest->LitterCount & 0xF) << 2) | litterCount;
+    guest->LitterCount = litterCount | litterTime;
 
-    if (litter_time & 0xC0 && (ScenarioRand() & 0xFFFF) <= 4369)
+    if (litterTime & 0xC0 && (ScenarioRand() & 0xFFFF) <= 4369)
     {
         // Reduce the litter time
         guest->LitterCount -= 0x40;
     }
     else
     {
-        uint8_t total_litter = 0;
+        uint8_t totalLitter = 0;
         for (uint8_t time = 0; time < 3; time++)
         {
-            total_litter += (litter_count >> (2 * time)) & 0x3;
+            totalLitter += (litterCount >> (2 * time)) & 0x3;
         }
 
-        if (total_litter >= 3 && (ScenarioRand() & 0xFFFF) <= 10922)
+        if (totalLitter >= 3 && (ScenarioRand() & 0xFFFF) <= 10922)
         {
             guest->InsertNewThought(PeepThoughtType::BadLitter);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
