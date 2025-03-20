@@ -29,22 +29,44 @@ namespace OpenRCT2
 
 constexpr uint16_t kMaxEntities = 65535;
 
-EntityBase* GetEntity(EntityId sprite_idx);
+EntityBase* GetEntity(EntityId entityId);
 
 template<typename T>
-T* GetEntity(EntityId sprite_idx)
+T* GetEntity(EntityId entityId)
 {
-    auto spr = GetEntity(sprite_idx);
-    return spr != nullptr ? spr->As<T>() : nullptr;
+    auto* ent = GetEntity(entityId);
+    if (ent == nullptr)
+    {
+        return nullptr;
+    }
+    if constexpr (std::is_same_v<T, EntityBase>)
+    {
+        return ent;
+    }
+    else
+    {
+        return ent->As<T>();
+    }
 }
 
 EntityBase* TryGetEntity(EntityId spriteIndex);
 
 template<typename T>
-T* TryGetEntity(EntityId sprite_idx)
+T* TryGetEntity(EntityId entityId)
 {
-    auto spr = TryGetEntity(sprite_idx);
-    return spr != nullptr ? spr->As<T>() : nullptr;
+    auto* ent = TryGetEntity(entityId);
+    if (ent == nullptr)
+    {
+        return nullptr;
+    }
+    if constexpr (std::is_same_v<T, EntityBase>)
+    {
+        return ent;
+    }
+    else
+    {
+        return ent->As<T>();
+    }
 }
 
 EntityBase* CreateEntity(EntityType type);
