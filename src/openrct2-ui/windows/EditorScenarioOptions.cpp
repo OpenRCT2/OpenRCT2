@@ -413,6 +413,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
+            HideUnavailableTabs();
+
             switch (page)
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
@@ -507,6 +509,27 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
+        void HideUnavailableTabs()
+        {
+            if (gLegacyScene != LegacyScene::scenarioEditor)
+                return;
+
+            // Disable tabs based on current editor step
+            auto step = getGameState().editorStep;
+            SetWidgetDisabled(WIDX_TAB_1, step == EditorStep::ObjectiveSelection);
+            for (auto i = 1; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
+                SetWidgetDisabled(WIDX_TAB_1 + i, step == EditorStep::SaveScenario);
+
+            // Reposition tabs based on availability so there are no gaps
+            WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_6);
+
+            // Switch tabs if our current tab has become unavailable
+            if (WidgetIsDisabled(*this, WIDX_TAB_1) && page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE)
+                SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO);
+            else if (!WidgetIsDisabled(*this, WIDX_TAB_1) && page != WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE)
+                SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE);
+        }
+
         void SetPressedTab()
         {
             int32_t i;
@@ -582,6 +605,7 @@ namespace OpenRCT2::Ui::Windows
 
             page = newPage;
             frame_no = 0;
+            disabled_widgets = 0;
             hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
             pressed_widgets = 0;
 
