@@ -509,25 +509,51 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
+        /**
+         *
+         *  rct2: 0x00672609
+         */
+        bool AnyRidesExist()
+        {
+            // Check if there are any rides (not shops or facilities)
+            const auto& rideManager = GetRideManager();
+            return std::any_of(
+                rideManager.begin(), rideManager.end(), [](const Ride& rideToCheck) { return rideToCheck.isRide(); });
+        }
+
         void HideUnavailableTabs()
         {
             if (gLegacyScene != LegacyScene::scenarioEditor)
                 return;
 
-            // Disable tabs based on current editor step
             auto step = getGameState().editorStep;
-            SetWidgetDisabled(WIDX_TAB_1, step == EditorStep::ObjectiveSelection);
-            for (auto i = 1; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
-                SetWidgetDisabled(WIDX_TAB_1 + i, step == EditorStep::SaveScenario);
+            bool isObjectiveSelection = step == EditorStep::ObjectiveSelection;
+            bool isScenarioDetails = step == EditorStep::ScenarioDetails;
+            bool isOtherTab = !isObjectiveSelection && !isScenarioDetails;
+
+            // Disable tabs based on current editor step
+            SetWidgetDisabled(WIDX_TAB_1, !isObjectiveSelection);
+            SetWidgetDisabled(WIDX_TAB_2, !isScenarioDetails);
+            for (auto i = 2; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
+                SetWidgetDisabled(WIDX_TAB_1 + i, !isOtherTab);
+
+            SetWidgetDisabled(WIDX_TAB_6, !(isOtherTab && AnyRidesExist()));
 
             // Reposition tabs based on availability so there are no gaps
+            widgets[WIDX_TAB_1].left = 3;
+            widgets[WIDX_TAB_1].right = widgets[WIDX_TAB_1].left + 30;
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_6);
 
             // Switch tabs if our current tab has become unavailable
-            if (WidgetIsDisabled(*this, WIDX_TAB_1) && page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE)
-                SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO);
-            else if (!WidgetIsDisabled(*this, WIDX_TAB_1) && page != WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE)
-                SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE);
+            if (IsWidgetDisabled(WIDX_TAB_1 + page))
+            {
+                if (isObjectiveSelection)
+                    SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE);
+                else if (isScenarioDetails)
+                    SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS);
+                else
+                    SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL);
+            }
         }
 
         void SetPressedTab()
@@ -549,41 +575,56 @@ namespace OpenRCT2::Ui::Windows
             int32_t spriteIndex;
 
             // Tab 1
-            widget = &widgets[WIDX_TAB_1];
-            spriteIndex = SPR_TAB_OBJECTIVE_0;
-            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE)
-                spriteIndex += (frame_no / 4) % 16;
+            if (!IsWidgetDisabled(WIDX_TAB_1))
+            {
+                widget = &widgets[WIDX_TAB_1];
+                spriteIndex = SPR_TAB_OBJECTIVE_0;
+                if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE)
+                    spriteIndex += (frame_no / 4) % 16;
 
-            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+            }
 
             // Tab 2
-            widget = &widgets[WIDX_TAB_2];
-            spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
-            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS)
-                spriteIndex += (frame_no / 4) % 8;
+            if (!IsWidgetDisabled(WIDX_TAB_2))
+            {
+                widget = &widgets[WIDX_TAB_2];
+                spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
+                if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS)
+                    spriteIndex += (frame_no / 4) % 8;
 
-            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+            }
 
             // Tab 3
-            widget = &widgets[WIDX_TAB_3];
-            spriteIndex = SPR_TAB_FINANCES_SUMMARY_0;
-            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
-                spriteIndex += (frame_no / 2) % 8;
+            if (!IsWidgetDisabled(WIDX_TAB_3))
+            {
+                widget = &widgets[WIDX_TAB_3];
+                spriteIndex = SPR_TAB_FINANCES_SUMMARY_0;
+                if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
+                    spriteIndex += (frame_no / 2) % 8;
 
-            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+            }
 
             // Tab 4
-            widget = &widgets[WIDX_TAB_4];
-            spriteIndex = SPR_TAB_GUESTS_0;
-            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
-                spriteIndex += (frame_no / 4) % 8;
+            if (!IsWidgetDisabled(WIDX_TAB_4))
+            {
+                widget = &widgets[WIDX_TAB_4];
+                spriteIndex = SPR_TAB_GUESTS_0;
+                if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
+                    spriteIndex += (frame_no / 4) % 8;
 
-            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+            }
 
             // Tab 5
-            widget = &widgets[WIDX_TAB_5];
-            spriteIndex = SPR_G2_MAP_GEN_TERRAIN_TAB;
-            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+            if (!IsWidgetDisabled(WIDX_TAB_5))
+            {
+                widget = &widgets[WIDX_TAB_5];
+                spriteIndex = SPR_G2_MAP_GEN_TERRAIN_TAB;
+                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+            }
 
             // Tab 6
             if (!IsWidgetDisabled(WIDX_TAB_6))
@@ -611,30 +652,10 @@ namespace OpenRCT2::Ui::Windows
 
             SetWidgets(window_editor_scenario_options_widgets[page]);
             Invalidate();
-            UpdateDisabledWidgets();
             OnResize();
             OnPrepareDraw();
             InitScrollWidgets();
             Invalidate();
-        }
-
-        /**
-         *
-         *  rct2: 0x00672609
-         */
-        void UpdateDisabledWidgets()
-        {
-            // Check if there are any rides (not shops or facilities)
-            const auto& rideManager = GetRideManager();
-            if (std::any_of(
-                    rideManager.begin(), rideManager.end(), [](const Ride& rideToCheck) { return rideToCheck.isRide(); }))
-            {
-                disabled_widgets &= ~(1uLL << WIDX_TAB_6);
-            }
-            else
-            {
-                disabled_widgets |= (1uLL << WIDX_TAB_6);
-            }
         }
 
 #pragma region Objective

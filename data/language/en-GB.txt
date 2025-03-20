@@ -3805,3 +3805,4 @@ STR_6757    :Show land restriction options
 STR_6758    :Loan options
 STR_6759    :Business model
 STR_6760    :Earnings:
+STR_6761    :Scenario Details

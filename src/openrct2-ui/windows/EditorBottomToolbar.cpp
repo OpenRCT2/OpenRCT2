@@ -53,10 +53,15 @@ namespace OpenRCT2::Ui::Windows
         using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
 
         static constexpr StringId kEditorStepNames[] = {
-            STR_EDITOR_STEP_OBJECT_SELECTION,       STR_EDITOR_STEP_LANDSCAPE_EDITOR,
-            STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP, STR_EDITOR_STEP_OPTIONS_SELECTION,
-            STR_EDITOR_STEP_OBJECTIVE_SELECTION,    STR_EDITOR_STEP_SAVE_SCENARIO,
-            STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,
+            STR_EDITOR_STEP_OBJECT_SELECTION,       // EditorStep::ObjectSelection
+            STR_EDITOR_STEP_LANDSCAPE_EDITOR,       // EditorStep::LandscapeEditor
+            STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP, // EditorStep::InventionsListSetUp
+            STR_EDITOR_STEP_OPTIONS_SELECTION,      // EditorStep::OptionsSelection
+            STR_EDITOR_STEP_OBJECTIVE_SELECTION,    // EditorStep::ObjectiveSelection
+            STR_EDITOR_STEP_SCENARIO_DETAILS,       // EditorStep::ScenarioDetails
+            STR_EDITOR_STEP_SAVE_SCENARIO,          // EditorStep::SaveScenario
+            STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, // EditorStep::RollercoasterDesigner
+            STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,  // EditorStep::DesignsManager
         };
 
     public:
@@ -178,6 +183,16 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
+        void JumpBackToObjectiveSelection() const
+        {
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
+            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            getGameState().editorStep = EditorStep::ObjectiveSelection;
+            GfxInvalidateScreen();
+        }
+
         void JumpBackToOptionsSelection() const
         {
             auto* windowMgr = Ui::GetWindowManager();
@@ -226,6 +241,16 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
+        void JumpForwardToObjectiveSelection() const
+        {
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
+            ContextOpenWindow(WindowClass::EditorScenarioOptions);
+            getGameState().editorStep = EditorStep::ObjectiveSelection;
+            GfxInvalidateScreen();
+        }
+
         void JumpForwardToOptionsSelection() const
         {
             auto* windowMgr = Ui::GetWindowManager();
@@ -236,13 +261,13 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
-        void JumpForwardToObjectiveSelection() const
+        void JumpForwardToScenarioDetails() const
         {
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
             ContextOpenWindow(WindowClass::EditorScenarioOptions);
-            getGameState().editorStep = EditorStep::ObjectiveSelection;
+            getGameState().editorStep = EditorStep::ScenarioDetails;
             GfxInvalidateScreen();
         }
 
@@ -377,25 +402,27 @@ namespace OpenRCT2::Ui::Windows
         }
 
         static constexpr FuncPtr kPreviousButtonMouseUp[] = {
-            nullptr,
-            &EditorBottomToolbarWindow::JumpBackToObjectSelection,
-            &EditorBottomToolbarWindow::JumpBackToLandscapeEditor,
-            &EditorBottomToolbarWindow::JumpBackToInventionListSetUp,
-            &EditorBottomToolbarWindow::JumpBackToOptionsSelection,
-            nullptr,
-            &EditorBottomToolbarWindow::JumpBackToObjectSelection,
-            nullptr,
+            /* ObjectSelection       */ nullptr,
+            /* LandscapeEditor       */ &EditorBottomToolbarWindow::JumpBackToObjectSelection,
+            /* InventionsListSetUp   */ &EditorBottomToolbarWindow::JumpBackToLandscapeEditor,
+            /* OptionsSelection      */ &EditorBottomToolbarWindow::JumpBackToInventionListSetUp,
+            /* ObjectiveSelection    */ &EditorBottomToolbarWindow::JumpBackToOptionsSelection,
+            /* ScenarioDetails       */ &EditorBottomToolbarWindow::JumpBackToObjectiveSelection,
+            /* SaveScenario          */ nullptr,
+            /* RollercoasterDesigner */ &EditorBottomToolbarWindow::JumpBackToObjectSelection,
+            /* DesignsManager        */ nullptr,
         };
 
         static constexpr FuncPtr kNextButtonMouseUp[] = {
-            &EditorBottomToolbarWindow::JumpForwardFromObjectSelection,
-            &EditorBottomToolbarWindow::JumpForwardToInventionListSetUp,
-            &EditorBottomToolbarWindow::JumpForwardToOptionsSelection,
-            &EditorBottomToolbarWindow::JumpForwardToObjectiveSelection,
-            &EditorBottomToolbarWindow::JumpForwardToSaveScenario,
-            nullptr,
-            nullptr,
-            nullptr,
+            /* ObjectSelection       */ &EditorBottomToolbarWindow::JumpForwardFromObjectSelection,
+            /* LandscapeEditor       */ &EditorBottomToolbarWindow::JumpForwardToInventionListSetUp,
+            /* InventionsListSetUp   */ &EditorBottomToolbarWindow::JumpForwardToOptionsSelection,
+            /* OptionsSelection      */ &EditorBottomToolbarWindow::JumpForwardToObjectiveSelection,
+            /* ObjectiveSelection    */ &EditorBottomToolbarWindow::JumpForwardToScenarioDetails,
+            /* ScenarioDetails       */ &EditorBottomToolbarWindow::JumpForwardToSaveScenario,
+            /* SaveScenario          */ nullptr,
+            /* RollercoasterDesigner */ nullptr,
+            /* DesignsManager        */ nullptr,
         };
     };
 

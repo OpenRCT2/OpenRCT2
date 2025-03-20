@@ -151,7 +151,7 @@ namespace OpenRCT2::Editor
         ScenarioReset(gameState);
 
         gLegacyScene = LegacyScene::scenarioEditor;
-        gameState.editorStep = EditorStep::ObjectiveSelection;
+        gameState.editorStep = EditorStep::OptionsSelection;
         gameState.scenarioCategory = ScenarioCategory::other;
         ViewportInitAll();
         OpenEditorWindows();
@@ -372,6 +372,7 @@ namespace OpenRCT2::Editor
                 break;
             case EditorStep::OptionsSelection:
             case EditorStep::ObjectiveSelection:
+            case EditorStep::ScenarioDetails:
                 if (windowMgr->FindByClass(WindowClass::EditorScenarioOptions) != nullptr)
                 {
                     return;
