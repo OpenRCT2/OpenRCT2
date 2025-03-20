@@ -201,24 +201,20 @@ static void AirPoweredVerticalRCTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
-        { SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
-        { SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
-        { SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
+    static constexpr ImageIndex imageIds[4] = {
+        SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE,
+        SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE,
+        SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE,
+        SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE,
     };
-
     PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
-        { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
-    PaintAddImageAsChildRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
-        { { 0, 6, height }, { 32, 20, 1 } });
+        session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
+        { { 0, 6, height + 1 }, { 32, 20, 1 } });
 
     DrawSupportForSequenceA<TrackElemType::EndStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement, StationBaseType::b, -2);
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 

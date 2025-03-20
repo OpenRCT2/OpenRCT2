@@ -32,11 +32,11 @@ static void FlyingRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][3] = {
-        { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
-        { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
-        { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
-        { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
+    static constexpr ImageIndex imageIds[4][2] = {
+        { 17154, 17150 },
+        { 17155, 17151 },
+        { 17154, 17150 },
+        { 17155, 17151 },
     };
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
@@ -51,11 +51,15 @@ static void FlyingRCTrackStation(
             session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
-    PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][2]), { 0, 0, height },
-        { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
+    if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+    }
+    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+    }
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);

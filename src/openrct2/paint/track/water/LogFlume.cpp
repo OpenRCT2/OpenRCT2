@@ -192,23 +192,18 @@ static void PaintLogFlumeTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(kLogFlumeTrackFlatImageIds[direction][0]);
+    const ImageId imageId = session.TrackColours.WithIndex(kLogFlumeTrackFlatImageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
-    if (direction & 1)
+    if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::b, 0, 7, 9))
     {
-        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_NW_SE);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     }
-    else
+    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_SW_NE);
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
     }
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
-
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-
-    TrackPaintUtilDrawStation3(session, ride, direction, height + 2, height, trackElement);
-    // Covers shouldn't be offset by +2
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 

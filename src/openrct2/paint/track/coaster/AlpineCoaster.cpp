@@ -114,11 +114,15 @@ namespace OpenRCT2::AlpineRC
                 session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
-        PaintAddImageAsParentRotated(
-            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][2]),
-            { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
-        TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
+        if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::b, -2, 4, 7))
+        {
+            DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+        }
+        else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        {
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+        }
         TrackPaintUtilDrawStationTunnel(session, direction, height);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

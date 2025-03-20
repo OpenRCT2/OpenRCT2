@@ -132,31 +132,34 @@ static void MineTrainRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { 20064, SPR_STATION_BASE_B_SW_NE },
-        { 20065, SPR_STATION_BASE_B_NW_SE },
-        { 20064, SPR_STATION_BASE_B_SW_NE },
-        { 20065, SPR_STATION_BASE_B_NW_SE },
+    static constexpr ImageIndex imageIds[4] = {
+        20064,
+        20065,
+        20064,
+        20065,
     };
-
-    PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
-        { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
-        PaintAddImageAsChildRotated(
+        PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(kMineTrainBlockBrakeImages[direction][isClosed]),
-            { 0, 0, height }, { { 0, 0, height }, { 32, 20, 1 } });
+            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
     }
     else
     {
-        PaintAddImageAsChildRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
-            { { 0, 0, height }, { 32, 20, 1 } });
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
+            { { 0, 6, height }, { 32, 20, 1 } });
     }
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+    }
+    else
+    {
+        DrawSupportForSequenceA<TrackElemType::Flat>(
+            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+    }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

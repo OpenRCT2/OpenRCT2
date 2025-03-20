@@ -218,7 +218,7 @@ static void PaintRiverRapidsStation(
     const TrackElement& trackElement, SupportType supportType)
 {
     PaintRiverRapidsTrackFlat(session, ride, trackSequence, direction, height, trackElement, supportType);
-    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement, StationBaseType::none, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
