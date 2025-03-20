@@ -62,7 +62,7 @@ void DrawWeather(DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer)
     if (viewport != nullptr)
         viewFlags = viewport->flags;
 
-    auto weatherLevel = GetGameState().WeatherCurrent.level;
+    auto weatherLevel = getGameState().weatherCurrent.level;
     if (weatherLevel == WeatherLevel::None || gTrackDesignSaveMode || (viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
@@ -84,7 +84,7 @@ void DrawWeather(DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer)
 static void DrawLightRain(
     DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     int32_t x_start = -static_cast<int32_t>(currentTicks) + 8;
     int32_t y_start = (currentTicks * 3) + 7;
@@ -108,7 +108,7 @@ static void DrawLightRain(
 static void DrawHeavyRain(
     DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     int32_t x_start = -static_cast<int32_t>(currentTicks);
     int32_t y_start = currentTicks * 5;
@@ -142,7 +142,7 @@ static void DrawHeavyRain(
 static void DrawLightSnow(
     DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     const uint32_t t = currentTicks / 2;
     const int32_t negT = -static_cast<int32_t>(t);
@@ -166,7 +166,7 @@ static void DrawLightSnow(
 static void DrawHeavySnow(
     DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     int32_t x_start = -static_cast<int32_t>(currentTicks * 3) + 1;
     int32_t y_start = currentTicks + 23;

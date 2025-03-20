@@ -800,7 +800,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsRefreshOfGroupsRequired()
         {
-            uint32_t tick256 = floor2(GetGameState().CurrentTicks, 256);
+            uint32_t tick256 = floor2(getGameState().currentTicks, 256);
             if (_selectedView == _lastFindGroupsSelectedView)
             {
                 if (_lastFindGroupsWait != 0 || _lastFindGroupsTick == tick256)
@@ -828,7 +828,7 @@ namespace OpenRCT2::Ui::Windows
 
         void RefreshGroups()
         {
-            _lastFindGroupsTick = floor2(GetGameState().CurrentTicks, 256);
+            _lastFindGroupsTick = floor2(getGameState().currentTicks, 256);
             _lastFindGroupsSelectedView = _selectedView;
             _lastFindGroupsWait = 320;
             _groups.clear();
@@ -946,7 +946,7 @@ namespace OpenRCT2::Ui::Windows
 
         static GuestItem::CompareFunc GetGuestCompareFunc()
         {
-            return GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
+            return getGameState().park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
                                                                                 : CompareGuestItem<false>;
         }
     };

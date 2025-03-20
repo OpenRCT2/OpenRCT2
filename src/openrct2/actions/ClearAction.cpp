@@ -220,11 +220,11 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
 
 void ClearAction::ResetClearLargeSceneryFlag()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // TODO: Improve efficiency of this
-    for (int32_t y = 0; y < gameState.MapSize.y; y++)
+    for (int32_t y = 0; y < gameState.mapSize.y; y++)
     {
-        for (int32_t x = 0; x < gameState.MapSize.x; x++)
+        for (int32_t x = 0; x < gameState.mapSize.x; x++)
         {
             auto tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
             do
@@ -242,6 +242,6 @@ void ClearAction::ResetClearLargeSceneryFlag()
 
 bool ClearAction::MapCanClearAt(const CoordsXY& location)
 {
-    return gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode
+    return gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode
         || MapIsLocationOwnedOrHasRights(location);
 }

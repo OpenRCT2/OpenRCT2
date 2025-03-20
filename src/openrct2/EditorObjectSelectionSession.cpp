@@ -510,20 +510,20 @@ void ResetSelectedObjectCountAndSize()
 
 void FinishObjectSelection()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     if (gLegacyScene == LegacyScene::trackDesigner)
     {
         SetEveryRideTypeInvented();
         SetEveryRideEntryInvented();
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-        if (gameState.LastEntranceStyle == kObjectEntryIndexNull)
+        gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+        if (gameState.lastEntranceStyle == kObjectEntryIndexNull)
         {
-            gameState.LastEntranceStyle = 0;
+            gameState.lastEntranceStyle = 0;
         }
 
-        gameState.EditorStep = EditorStep::RollercoasterDesigner;
+        gameState.editorStep = EditorStep::RollercoasterDesigner;
         GfxInvalidateScreen();
     }
     else
@@ -533,7 +533,7 @@ void FinishObjectSelection()
         auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
         ContextBroadcastIntent(&intent);
 
-        gameState.EditorStep = EditorStep::LandscapeEditor;
+        gameState.editorStep = EditorStep::LandscapeEditor;
         GfxInvalidateScreen();
     }
 }

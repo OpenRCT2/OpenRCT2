@@ -303,20 +303,20 @@ private:
             { "players", numPlayers },
         };
 
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         const auto& date = GetDate();
-        json_t mapSize = { { "x", gameState.MapSize.x - 2 }, { "y", gameState.MapSize.y - 2 } };
+        json_t mapSize = { { "x", gameState.mapSize.x - 2 }, { "y", gameState.mapSize.y - 2 } };
         json_t gameInfo = {
             { "mapSize", mapSize },
             { "day", date.GetMonthTicks() },
             { "month", date.GetMonthsElapsed() },
-            { "guests", gameState.NumGuestsInPark },
-            { "parkValue", gameState.Park.Value },
+            { "guests", gameState.numGuestsInPark },
+            { "parkValue", gameState.park.Value },
         };
 
-        if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
+        if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            gameInfo["cash"] = gameState.Cash;
+            gameInfo["cash"] = gameState.cash;
         }
 
         root["gameInfo"] = gameInfo;

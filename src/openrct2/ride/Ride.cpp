@@ -133,10 +133,10 @@ static void RideShopConnected(const Ride& ride);
 
 RideId GetNextFreeRideId()
 {
-    auto& gameState = GetGameState();
-    for (RideId::UnderlyingType i = 0; i < gameState.Rides.size(); i++)
+    auto& gameState = getGameState();
+    for (RideId::UnderlyingType i = 0; i < gameState.rides.size(); i++)
     {
-        if (gameState.Rides[i].id.IsNull())
+        if (gameState.rides[i].id.IsNull())
         {
             return RideId::FromUnderlying(i);
         }
@@ -148,10 +148,10 @@ Ride* RideAllocateAtIndex(RideId index)
 {
     const auto idx = index.ToUnderlying();
 
-    auto& gs = GetGameState();
-    gs.RidesEndOfUsedRange = std::max<size_t>(idx + 1, gs.RidesEndOfUsedRange);
+    auto& gameState = getGameState();
+    gameState.ridesEndOfUsedRange = std::max<size_t>(idx + 1, gameState.ridesEndOfUsedRange);
 
-    auto result = &gs.Rides[idx];
+    auto result = &gameState.rides[idx];
     assert(result->id == RideId::GetNull());
 
     // Initialize the ride to all the defaults.
@@ -179,19 +179,19 @@ static void RideReset(Ride& ride)
 
 void RideDelete(RideId id)
 {
-    auto& gs = GetGameState();
+    auto& gameState = getGameState();
     const auto idx = id.ToUnderlying();
 
-    assert(idx < gs.Rides.size());
-    assert(gs.Rides[idx].type != kRideTypeNull);
+    assert(idx < gameState.rides.size());
+    assert(gameState.rides[idx].type != kRideTypeNull);
 
-    auto& ride = gs.Rides[idx];
+    auto& ride = gameState.rides[idx];
     RideReset(ride);
 
     // Shrink maximum ride size.
-    while (gs.RidesEndOfUsedRange > 0 && gs.Rides[gs.RidesEndOfUsedRange - 1].id.IsNull())
+    while (gameState.ridesEndOfUsedRange > 0 && gameState.rides[gameState.ridesEndOfUsedRange - 1].id.IsNull())
     {
-        gs.RidesEndOfUsedRange--;
+        gameState.ridesEndOfUsedRange--;
     }
 }
 
@@ -202,15 +202,15 @@ Ride* GetRide(RideId index)
         return nullptr;
     }
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     const auto idx = index.ToUnderlying();
-    assert(idx < gameState.Rides.size());
-    if (idx >= gameState.Rides.size())
+    assert(idx < gameState.rides.size());
+    if (idx >= gameState.rides.size())
     {
         return nullptr;
     }
 
-    auto& ride = gameState.Rides[idx];
+    auto& ride = gameState.rides[idx];
     if (ride.type != kRideTypeNull)
     {
         assert(ride.id == index);
@@ -927,9 +927,9 @@ bool Ride::supportsStatus(RideStatus s) const
  */
 void RideInitAll()
 {
-    auto& gameState = GetGameState();
-    std::for_each(std::begin(gameState.Rides), std::end(gameState.Rides), RideReset);
-    gameState.RidesEndOfUsedRange = 0;
+    auto& gameState = getGameState();
+    std::for_each(std::begin(gameState.rides), std::end(gameState.rides), RideReset);
+    gameState.ridesEndOfUsedRange = 0;
 }
 
 /**
@@ -963,7 +963,7 @@ void Ride::updateAll()
     // Remove all rides if scenario editor
     if (gLegacyScene == LegacyScene::scenarioEditor)
     {
-        switch (GetGameState().EditorStep)
+        switch (getGameState().editorStep)
         {
             case EditorStep::ObjectSelection:
             case EditorStep::LandscapeEditor:
@@ -1115,7 +1115,7 @@ void Ride::update()
         // Breakdown updates originally were performed when (id == (gCurrentTicks / 2) & 0xFF)
         // with the increased MAX_RIDES the update is tied to the first byte of the id this allows
         // for identical balance with vanilla.
-        const auto updatingRideByte = static_cast<uint8_t>((GetGameState().CurrentTicks / 2) & 0xFF);
+        const auto updatingRideByte = static_cast<uint8_t>((getGameState().currentTicks / 2) & 0xFF);
         if (updatingRideByte == static_cast<uint8_t>(id.ToUnderlying()))
             RideBreakdownStatusUpdate(*this);
     }
@@ -1239,7 +1239,7 @@ static constexpr CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
 
 void updateSpiralSlide(Ride& ride)
 {
-    if (GetGameState().CurrentTicks & 3)
+    if (getGameState().currentTicks & 3)
         return;
     if (ride.slideInUse == 0)
         return;
@@ -1299,7 +1299,7 @@ static uint8_t _breakdownProblemProbabilities[] = {
  */
 static void RideInspectionUpdate(Ride& ride)
 {
-    if (GetGameState().CurrentTicks & 2047)
+    if (getGameState().currentTicks & 2047)
         return;
     if (gLegacyScene == LegacyScene::trackDesigner)
         return;
@@ -1364,8 +1364,8 @@ static int32_t getAgePenalty(const Ride& ride)
  */
 static void RideBreakdownUpdate(Ride& ride)
 {
-    auto& gameState = GetGameState();
-    const auto currentTicks = gameState.CurrentTicks;
+    auto& gameState = getGameState();
+    const auto currentTicks = gameState.currentTicks;
     if (currentTicks & 255)
         return;
 
@@ -1419,7 +1419,7 @@ static void RideBreakdownUpdate(Ride& ride)
     // continues.
     if ((ride.reliability == 0
          || static_cast<uint32_t>(ScenarioRand() & 0x2FFFFF) <= 1u + kRideInitialReliability - ride.reliability)
-        && !gameState.Cheats.disableAllBreakdowns)
+        && !gameState.cheats.disableAllBreakdowns)
     {
         int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
         if (breakdownReason != -1)
@@ -1477,7 +1477,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
             return -1;
 
     // If brakes failure is disabled, also take it out of the equation (see above comment why)
-    if (GetGameState().Cheats.disableBrakesFailure)
+    if (getGameState().cheats.disableBrakesFailure)
         return -1;
 
     auto monthsOld = ride.getAge();
@@ -1877,7 +1877,7 @@ static bool RideMusicBreakdownEffect(Ride& ride)
     {
         if (ride.breakdownReasonPending == BREAKDOWN_CONTROL_FAILURE)
         {
-            if (!(GetGameState().CurrentTicks & 7))
+            if (!(getGameState().currentTicks & 7))
                 if (ride.breakdownSoundModifier != 255)
                     ride.breakdownSoundModifier++;
         }
@@ -2017,7 +2017,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     if (measurement.current_item >= RideMeasurement::kMaxItems)
         return;
 
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     if (measurement.flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
     {
@@ -2152,7 +2152,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::getMeasurement()
         assert(measurement != nullptr);
     }
 
-    measurement->last_use_tick = GetGameState().CurrentTicks;
+    measurement->last_use_tick = getGameState().currentTicks;
     if (measurement->flags & 1)
     {
         return { measurement.get(), { kStringIdEmpty, {} } };
@@ -5105,7 +5105,7 @@ void Ride::updateMaxVehicles()
         }
         int32_t newCarsPerTrain = std::max(proposedNumCarsPerTrain, rideEntry->min_cars_in_train);
         newMaxCarsPerTrain = std::max(newMaxCarsPerTrain, static_cast<int32_t>(rideEntry->min_cars_in_train));
-        if (!GetGameState().Cheats.disableTrainLengthLimit)
+        if (!getGameState().cheats.disableTrainLengthLimit)
         {
             newCarsPerTrain = std::min(newMaxCarsPerTrain, newCarsPerTrain);
         }
@@ -5194,7 +5194,7 @@ void Ride::updateMaxVehicles()
         maxNumTrains = rideEntry->cars_per_flat_ride;
     }
 
-    if (GetGameState().Cheats.disableTrainLengthLimit)
+    if (getGameState().cheats.disableTrainLengthLimit)
     {
         maxNumTrains = OpenRCT2::Limits::kMaxTrainsPerRide;
     }
@@ -5345,7 +5345,7 @@ bool Ride::isRide() const
 
 money64 RideGetPrice(const Ride& ride)
 {
-    if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
+    if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
         return 0;
     if (ride.isRide())
     {
@@ -5530,7 +5530,7 @@ ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSu
                 }
 
                 // Can happen in select-by-track-type mode
-                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.ignoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !getGameState().cheats.ignoreResearchStatus)
                 {
                     continue;
                 }
@@ -5619,10 +5619,10 @@ void DetermineRideEntranceAndExitLocations()
             // Search the map to find it. Skip the outer ring of invisible tiles.
             bool alreadyFoundEntrance = false;
             bool alreadyFoundExit = false;
-            auto& gameState = GetGameState();
-            for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
+            auto& gameState = getGameState();
+            for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
             {
-                for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
+                for (int32_t x = 1; x < gameState.mapSize.x - 1; x++)
                 {
                     TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
 
@@ -5706,10 +5706,10 @@ void DetermineRideEntranceAndExitLocations()
 
 void RideClearLeftoverEntrances(const Ride& ride)
 {
-    auto& gameState = GetGameState();
-    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
+    auto& gameState = getGameState();
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.mapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.mapSize.y; ++tilePos.y)
         {
             for (auto* entrance : TileElementsView<EntranceElement>(tilePos.ToCoordsXY()))
             {
@@ -5759,7 +5759,7 @@ void Ride::formatNameTo(Formatter& ft) const
 
 uint64_t Ride::getAvailableModes() const
 {
-    if (GetGameState().Cheats.showAllOperatingModes)
+    if (getGameState().cheats.showAllOperatingModes)
         return kAllRideModesAvailable;
 
     return getRideTypeDescriptor().RideModes;
@@ -5786,10 +5786,10 @@ void Ride::increaseNumShelteredSections()
 
 void Ride::updateRideTypeForAllPieces()
 {
-    auto& gameState = GetGameState();
-    for (int32_t y = 0; y < gameState.MapSize.y; y++)
+    auto& gameState = getGameState();
+    for (int32_t y = 0; y < gameState.mapSize.y; y++)
     {
-        for (int32_t x = 0; x < gameState.MapSize.x; x++)
+        for (int32_t x = 0; x < gameState.mapSize.x; x++)
         {
             auto* tileElement = MapGetFirstElementAt(TileCoordsXY(x, y));
             if (tileElement == nullptr)
@@ -5941,7 +5941,7 @@ ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackEle
         }
     }
 
-    if (subtype != kObjectEntryIndexNull && !GetGameState().Cheats.enableAllDrawableTrackPieces)
+    if (subtype != kObjectEntryIndexNull && !getGameState().cheats.enableAllDrawableTrackPieces)
     {
         const auto* rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry == nullptr)

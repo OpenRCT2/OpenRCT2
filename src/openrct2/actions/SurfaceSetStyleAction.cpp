@@ -85,11 +85,11 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     res.Position.y = yMid;
     res.Position.z = heightMid;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Do nothing if not in editor, sandbox mode or landscaping is forbidden
-    if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.Cheats.sandboxMode
-        && (gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
+    if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
+        && (gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
@@ -105,7 +105,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
             if (!LocationValid(coords))
                 continue;
 
-            if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.Cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(coords))
                     continue;
@@ -173,7 +173,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
             if (!LocationValid(coords))
                 continue;
 
-            if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(coords))
                     continue;

@@ -176,13 +176,13 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    auto& gameState = GetGameState();
-    if (gameState.Cheats.disablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+    auto& gameState = getGameState();
+    if (gameState.cheats.disablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
     {
         return;
     }
 
-    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gameState.WeatherCurrent.weatherType)
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gameState.weatherCurrent.weatherType)
         || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);
@@ -307,8 +307,8 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         return true;
     }
 
-    auto& gameState = GetGameState();
-    if (!gameState.Cheats.ignoreResearchStatus)
+    auto& gameState = getGameState();
+    if (!gameState.cheats.ignoreResearchStatus)
     {
         if (!SceneryIsInvented(item))
         {
@@ -316,7 +316,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         }
     }
 
-    if (!gameState.Cheats.sandboxMode && !isInEditorMode())
+    if (!gameState.cheats.sandboxMode && !isInEditorMode())
     {
         if (IsSceneryItemRestricted(item))
         {
@@ -367,38 +367,38 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
 
 bool IsSceneryItemRestricted(const ScenerySelection& item)
 {
-    auto& gameState = GetGameState();
-    return std::find(std::begin(gameState.RestrictedScenery), std::end(gameState.RestrictedScenery), item)
-        != std::end(gameState.RestrictedScenery);
+    auto& gameState = getGameState();
+    return std::find(std::begin(gameState.restrictedScenery), std::end(gameState.restrictedScenery), item)
+        != std::end(gameState.restrictedScenery);
 }
 
 void ClearRestrictedScenery()
 {
-    GetGameState().RestrictedScenery.clear();
+    getGameState().restrictedScenery.clear();
 }
 
 std::vector<ScenerySelection>& GetRestrictedScenery()
 {
-    return GetGameState().RestrictedScenery;
+    return getGameState().restrictedScenery;
 }
 
 void SetSceneryItemRestricted(const ScenerySelection& item, bool on)
 {
-    auto& gameState = GetGameState();
-    auto existingItem = std::find(std::begin(gameState.RestrictedScenery), std::end(gameState.RestrictedScenery), item);
-    const bool existingItemIsPresent = existingItem != std::end(gameState.RestrictedScenery);
+    auto& gameState = getGameState();
+    auto existingItem = std::find(std::begin(gameState.restrictedScenery), std::end(gameState.restrictedScenery), item);
+    const bool existingItemIsPresent = existingItem != std::end(gameState.restrictedScenery);
     if (on)
     {
         if (!existingItemIsPresent)
         {
-            gameState.RestrictedScenery.push_back(item);
+            gameState.restrictedScenery.push_back(item);
         }
     }
     else
     {
         if (existingItemIsPresent)
         {
-            gameState.RestrictedScenery.erase(existingItem);
+            gameState.restrictedScenery.erase(existingItem);
         }
     }
 }
@@ -522,14 +522,14 @@ static MiscScenery GetAllMiscScenery()
 
 void RestrictAllMiscScenery()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto miscScenery = GetAllMiscScenery().miscScenery;
-    gameState.RestrictedScenery.insert(gameState.RestrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
+    gameState.restrictedScenery.insert(gameState.restrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
 }
 
 static void MarkAllUnrestrictedSceneryInVectorInvented(const std::vector<ScenerySelection>& vector)
 {
-    auto& restrictedScenery = GetGameState().RestrictedScenery;
+    auto& restrictedScenery = getGameState().restrictedScenery;
 
     for (const auto& sceneryItem : vector)
     {

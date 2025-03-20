@@ -809,7 +809,7 @@ namespace OpenRCT2
                 SetProgress(90, 100, STR_STRING_M_PERCENT);
 
                 // TODO: Have a separate GameState and exchange once loaded.
-                auto& gameState = ::GetGameState();
+                auto& gameState = ::getGameState();
                 parkImporter->Import(gameState);
                 SetProgress(100, 100, STR_STRING_M_PERCENT);
 

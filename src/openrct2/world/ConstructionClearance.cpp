@@ -44,14 +44,14 @@ static int32_t MapPlaceClearFunc(
 
     auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
 
-    auto& gameState = GetGameState();
-    if (gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+    auto& gameState = getGameState();
+    if (gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
         if (scenery != nullptr && scenery->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
-    if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
+    if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
         *price += scenery->removal_price;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -146,7 +146,7 @@ GameActions::Result MapCanConstructWithClearAt(
         return res;
     }
 
-    if (GetGameState().Cheats.disableClearanceChecks)
+    if (getGameState().cheats.disableClearanceChecks)
     {
         res.SetData(ConstructClearResult{ groundFlags });
         return res;
@@ -198,7 +198,7 @@ GameActions::Result MapCanConstructWithClearAt(
             }
         }
 
-        if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
+        if (getGameState().park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             const auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 

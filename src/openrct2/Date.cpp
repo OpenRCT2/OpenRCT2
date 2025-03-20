@@ -108,15 +108,15 @@ int32_t Date::GetDaysInMonth(int32_t month)
 
 void OpenRCT2::DateUpdate(GameState_t& gameState)
 {
-    int32_t monthTicks = gameState.Date.monthTicks + kMonthTicksIncrement;
+    int32_t monthTicks = gameState.date.monthTicks + kMonthTicksIncrement;
     if (monthTicks > kMaskMonthTicks)
     {
-        gameState.Date.monthTicks = 0;
-        gameState.Date.monthsElapsed++;
+        gameState.date.monthTicks = 0;
+        gameState.date.monthsElapsed++;
     }
     else
     {
-        gameState.Date.monthTicks = static_cast<uint16_t>(monthTicks);
+        gameState.date.monthTicks = static_cast<uint16_t>(monthTicks);
     }
 }
 
@@ -147,7 +147,7 @@ void DateUpdateRealTimeOfDay()
 
 Date& GetDate()
 {
-    return GetGameState().Date;
+    return getGameState().date;
 }
 
 /**
@@ -156,7 +156,7 @@ Date& GetDate()
  */
 void ResetDate()
 {
-    auto& gameState = GetGameState();
-    gameState.Date = {};
+    auto& gameState = getGameState();
+    gameState.date = {};
     gCurrentRealTimeTicks = 0;
 }

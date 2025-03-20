@@ -108,7 +108,7 @@ namespace OpenRCT2::Audio
         if (gLegacyScene == LegacyScene::scenarioEditor)
             return false;
 
-        if (gLegacyScene == LegacyScene::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
             return false;
 
         if (vehicle.sound1_id == SoundId::Null && vehicle.sound2_id == SoundId::Null)
@@ -516,7 +516,7 @@ namespace OpenRCT2::Audio
             sound.Pan = sound_params->pan_x;
             sound.Channel->SetPan(DStoMixerPan(sound_params->pan_x));
         }
-        if (!(GetGameState().CurrentTicks & 3) && sound_params->frequency != sound.Frequency)
+        if (!(getGameState().currentTicks & 3) && sound_params->frequency != sound.Frequency)
         {
             sound.Frequency = sound_params->frequency;
             if (ShouldUpdateChannelRate<type>(id))

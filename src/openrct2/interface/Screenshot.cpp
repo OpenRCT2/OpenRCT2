@@ -112,7 +112,7 @@ void ScreenshotCheck()
 
 static std::string ScreenshotGetParkName()
 {
-    return GetGameState().Park.Name;
+    return getGameState().park.Name;
 }
 
 static std::string ScreenshotGetDirectory()
@@ -257,25 +257,25 @@ static void ReleaseDPI(DrawPixelInfo& dpi)
 
 static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // Get the tile coordinates of each corner
     const TileCoordsXY cornerCoords[2][4] = {
         {
             // Map corners
             { 1, 1 },
-            { gameState.MapSize.x - 2, gameState.MapSize.y - 2 },
-            { 1, gameState.MapSize.y - 2 },
-            { gameState.MapSize.x - 2, 1 },
+            { gameState.mapSize.x - 2, gameState.mapSize.y - 2 },
+            { 1, gameState.mapSize.y - 2 },
+            { gameState.mapSize.x - 2, 1 },
         },
         {
             // Horizontal view clipping corners
             TileCoordsXY{ CoordsXY{ std::max(gClipSelectionA.x, 32), std::max(gClipSelectionA.y, 32) } },
-            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gameState.MapSize.x - 2) * 32),
-                                    std::min(gClipSelectionB.y, (gameState.MapSize.y - 2) * 32) } },
+            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gameState.mapSize.x - 2) * 32),
+                                    std::min(gClipSelectionB.y, (gameState.mapSize.y - 2) * 32) } },
             TileCoordsXY{
-                CoordsXY{ std::max(gClipSelectionA.x, 32), std::min(gClipSelectionB.y, (gameState.MapSize.y - 2) * 32) } },
+                CoordsXY{ std::max(gClipSelectionA.x, 32), std::min(gClipSelectionB.y, (gameState.mapSize.y - 2) * 32) } },
             TileCoordsXY{
-                CoordsXY{ std::min(gClipSelectionB.x, (gameState.MapSize.x - 2) * 32), std::max(gClipSelectionA.y, 32) } },
+                CoordsXY{ std::min(gClipSelectionB.x, (gameState.mapSize.x - 2) * 32), std::max(gClipSelectionA.y, 32) } },
         },
     };
 
@@ -500,7 +500,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
                 customRotation = std::atoi(argv[7]) & 3;
             }
 
-            const auto& mapSize = GetGameState().MapSize;
+            const auto& mapSize = getGameState().mapSize;
             if (resolutionWidth == 0 || resolutionHeight == 0)
             {
                 resolutionWidth = (mapSize.x * kCoordsXYStep * 2) >> customZoom;
@@ -531,11 +531,11 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             }
             else
             {
-                auto& gameState = GetGameState();
-                viewport.viewPos = { gameState.SavedView
+                auto& gameState = getGameState();
+                viewport.viewPos = { gameState.savedView
                                      - ScreenCoordsXY{ (viewport.ViewWidth() / 2), (viewport.ViewHeight() / 2) } };
-                viewport.zoom = gameState.SavedViewZoom;
-                viewport.rotation = gameState.SavedViewRotation;
+                viewport.zoom = gameState.savedViewZoom;
+                viewport.rotation = gameState.savedViewRotation;
             }
         }
 

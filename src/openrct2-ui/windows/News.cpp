@@ -94,14 +94,14 @@ namespace OpenRCT2::Ui::Windows
 
             size_t j = _pressedNewsItemIndex;
             _pressedNewsItemIndex = -1;
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
 
-            if (j >= gameState.NewsItems.GetArchived().size())
+            if (j >= gameState.newsItems.GetArchived().size())
             {
                 return;
             }
 
-            const auto& newsItem = gameState.NewsItems.GetArchived()[j];
+            const auto& newsItem = gameState.newsItems.GetArchived()[j];
             if (newsItem.HasButton())
             {
                 return;
@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            int32_t scrollHeight = static_cast<int32_t>(GetGameState().NewsItems.GetArchived().size()) * CalculateItemHeight();
+            int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.GetArchived().size()) * CalculateItemHeight();
             return { WW, scrollHeight };
         }
 
@@ -134,7 +134,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t i = 0;
             int32_t buttonIndex = 0;
             auto mutableScreenCoords = screenCoords;
-            for (const auto& newsItem : GetGameState().NewsItems.GetArchived())
+            for (const auto& newsItem : getGameState().newsItems.GetArchived())
             {
                 if (mutableScreenCoords.y < itemHeight)
                 {
@@ -181,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t y = 0;
             int32_t i = 0;
 
-            for (const auto& newsItem : GetGameState().NewsItems.GetArchived())
+            for (const auto& newsItem : getGameState().newsItems.GetArchived())
             {
                 if (y >= dpi.y + dpi.height)
                     break;

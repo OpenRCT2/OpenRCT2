@@ -143,7 +143,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 surfaceElement->SetOwnership(OWNERSHIP_OWNED);
                 Park::UpdateFencesAroundTile(loc);
             }
-            res.Cost = GetGameState().LandPrice;
+            res.Cost = getGameState().landPrice;
             return res;
 
         case LandBuyRightSetting::BuyConstructionRights: // 2
@@ -165,7 +165,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 uint16_t baseZ = surfaceElement->GetBaseZ();
                 MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
-            res.Cost = GetGameState().ConstructionRightsPrice;
+            res.Cost = getGameState().constructionRightsPrice;
             return res;
 
         default:

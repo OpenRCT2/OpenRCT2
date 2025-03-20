@@ -727,7 +727,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
         {
             result.Type = obj->GetObjectType();
             result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
-            if (!GetGameState().Cheats.ignoreResearchStatus)
+            if (!getGameState().cheats.ignoreResearchStatus)
             {
                 objectUnavailable = !ResearchIsInvented(result.Type, result.Index);
             }
@@ -1849,7 +1849,7 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const Coords
 static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
-    auto gameAction = RideCreateAction(type, subType, 0, 0, GetGameState().LastEntranceStyle);
+    auto gameAction = RideCreateAction(type, subType, 0, 0, getGameState().lastEntranceStyle);
     gameAction.SetFlags(flags);
 
     auto res = GameActions::ExecuteNested(&gameAction);
@@ -1877,7 +1877,7 @@ static bool TrackDesignPlacePreview(
     *outRide = nullptr;
     gameStateData.flags = 0;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entry_index = objManager.GetLoadedObjectEntryIndex(td.trackAndVehicle.vehicleObject);
 
@@ -1897,7 +1897,7 @@ static bool TrackDesignPlacePreview(
     ride->entranceStyle = objManager.GetLoadedObjectEntryIndex(td.appearance.stationObjectIdentifier);
     if (ride->entranceStyle == kObjectEntryIndexNull)
     {
-        ride->entranceStyle = gameState.LastEntranceStyle;
+        ride->entranceStyle = gameState.lastEntranceStyle;
     }
 
     for (size_t i = 0; i < std::min(std::size(ride->trackColours), std::size(td.appearance.trackColours)); i++)
@@ -1917,9 +1917,9 @@ static bool TrackDesignPlacePreview(
 
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
-    uint32_t backup_park_flags = gameState.Park.Flags;
-    gameState.Park.Flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-    auto mapSize = TileCoordsXY{ gameState.MapSize.x * 16, gameState.MapSize.y * 16 };
+    uint32_t backup_park_flags = gameState.park.Flags;
+    gameState.park.Flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+    auto mapSize = TileCoordsXY{ gameState.mapSize.x * 16, gameState.mapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
     int32_t z = TrackDesignGetZPlacement(
@@ -1942,7 +1942,7 @@ static bool TrackDesignPlacePreview(
     auto res = TrackDesignPlaceVirtual(
         tds, td, TrackPlaceOperation::placeTrackPreview, placeScenery, *ride,
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
-    gameState.Park.Flags = backup_park_flags;
+    gameState.park.Flags = backup_park_flags;
 
     if (res.Error == GameActions::Status::Ok)
     {
@@ -1950,7 +1950,7 @@ static bool TrackDesignPlacePreview(
         {
             gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
         }
-        else if (!RideEntryIsInvented(entry_index) && !GetGameState().Cheats.ignoreResearchStatus)
+        else if (!RideEntryIsInvented(entry_index) && !getGameState().cheats.ignoreResearchStatus)
         {
             gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
         }
@@ -2153,8 +2153,8 @@ static void TrackDesignPreviewClearMap()
 {
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
-    auto& gameState = GetGameState();
-    gameState.MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
+    auto& gameState = getGameState();
+    gameState.mapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 
     // Reserve ~8 elements per tile
     std::vector<TileElement> tileElements;

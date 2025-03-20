@@ -37,103 +37,103 @@ namespace OpenRCT2
 {
     struct GameState_t
     {
-        ::OpenRCT2::Park::ParkData Park{};
-        std::string PluginStorage;
-        uint32_t CurrentTicks{};
-        ::OpenRCT2::Date Date;
-        money64 CompanyValue;
+        Park::ParkData park{};
+        std::string pluginStorage;
+        uint32_t currentTicks{};
+        Date date;
+        money64 companyValue;
         // The total profit for the entire scenario that precedes the current financial table.
-        money64 HistoricalProfit;
-        money64 ConstructionRightsPrice;
-        money64 CurrentExpenditure;
-        money64 CurrentProfit;
-        uint32_t GuestsInParkHistory[kGuestsInParkHistorySize];
-        WeatherState WeatherCurrent;
-        WeatherState WeatherNext;
-        uint16_t WeatherUpdateTimer;
-        money64 Cash;
-        money64 CashHistory[kFinanceHistorySize];
-        money64 InitialCash;
-        money64 GuestInitialCash;
-        uint8_t GuestInitialHappiness;
-        uint8_t GuestInitialHunger;
-        uint8_t GuestInitialThirst;
-        uint8_t GuestChangeModifier;
-        uint32_t NextGuestNumber;
-        uint32_t NumGuestsInPark;
-        uint32_t NumGuestsHeadingForPark;
-        uint32_t NumGuestsInParkLastWeek;
-        money64 WeeklyProfitAverageDividend;
-        uint64_t TotalAdmissions;
-        money64 TotalIncomeFromAdmissions;
-        money64 TotalRideValueForMoney;
-        uint16_t WeeklyProfitAverageDivisor;
-        money64 WeeklyProfitHistory[kFinanceHistorySize];
-        Objective ScenarioObjective;
-        uint16_t ScenarioParkRatingWarningDays;
-        money64 ScenarioCompletedCompanyValue;
-        money64 ScenarioCompanyValueRecord;
-        money64 BankLoan;
-        uint8_t BankLoanInterestRate;
-        money64 MaxBankLoan;
-        money64 ExpenditureTable[kExpenditureTableMonthCount][EnumValue(ExpenditureType::Count)];
-        random_engine_t ScenarioRand;
-        TileCoordsXY MapSize;
-        money64 LandPrice;
+        money64 historicalProfit;
+        money64 constructionRightsPrice;
+        money64 currentExpenditure;
+        money64 currentProfit;
+        uint32_t guestsInParkHistory[kGuestsInParkHistorySize];
+        WeatherState weatherCurrent;
+        WeatherState weatherNext;
+        uint16_t weatherUpdateTimer;
+        money64 cash;
+        money64 cashHistory[kFinanceHistorySize];
+        money64 initialCash;
+        money64 guestInitialCash;
+        uint8_t guestInitialHappiness;
+        uint8_t guestInitialHunger;
+        uint8_t guestInitialThirst;
+        uint8_t guestChangeModifier;
+        uint32_t nextGuestNumber;
+        uint32_t numGuestsInPark;
+        uint32_t numGuestsHeadingForPark;
+        uint32_t numGuestsInParkLastWeek;
+        money64 weeklyProfitAverageDividend;
+        uint64_t totalAdmissions;
+        money64 totalIncomeFromAdmissions;
+        money64 totalRideValueForMoney;
+        uint16_t weeklyProfitAverageDivisor;
+        money64 weeklyProfitHistory[kFinanceHistorySize];
+        Objective scenarioObjective;
+        uint16_t scenarioParkRatingWarningDays;
+        money64 scenarioCompletedCompanyValue;
+        money64 scenarioCompanyValueRecord;
+        money64 bankLoan;
+        uint8_t bankLoanInterestRate;
+        money64 maxBankLoan;
+        money64 expenditureTable[kExpenditureTableMonthCount][EnumValue(ExpenditureType::Count)];
+        random_engine_t scenarioRand;
+        TileCoordsXY mapSize;
+        money64 landPrice;
 
-        ::EditorStep EditorStep;
+        EditorStep editorStep;
 
-        SCENARIO_CATEGORY ScenarioCategory;
-        std::string ScenarioName;
-        std::string ScenarioDetails;
-        std::string ScenarioCompletedBy;
-        std::string ScenarioFileName;
+        SCENARIO_CATEGORY scenarioCategory;
+        std::string scenarioName;
+        std::string scenarioDetails;
+        std::string scenarioCompletedBy;
+        std::string scenarioFileName;
 
-        std::vector<Banner> Banners;
-        Entity_t Entities[kMaxEntities]{};
+        std::vector<Banner> banners;
+        Entity_t entities[kMaxEntities]{};
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-        std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> Rides{};
-        size_t RidesEndOfUsedRange{};
-        ::RideRatingUpdateStates RideRatingUpdateStates;
-        std::vector<TileElement> TileElements;
+        std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> rides{};
+        size_t ridesEndOfUsedRange{};
+        RideRatingUpdateStates rideRatingUpdateStates;
+        std::vector<TileElement> tileElements;
 
-        std::vector<ScenerySelection> RestrictedScenery;
+        std::vector<ScenerySelection> restrictedScenery;
 
-        std::vector<PeepSpawn> PeepSpawns;
-        uint8_t PeepWarningThrottle[16];
+        std::vector<PeepSpawn> peepSpawns;
+        uint8_t peepWarningThrottle[16];
 
-        News::ItemQueues NewsItems;
+        News::ItemQueues newsItems;
 
-        uint16_t GrassSceneryTileLoopPosition;
-        CoordsXY WidePathTileLoopPosition;
+        uint16_t grassSceneryTileLoopPosition;
+        CoordsXY widePathTileLoopPosition;
 
-        colour_t StaffHandymanColour;
-        colour_t StaffMechanicColour;
-        colour_t StaffSecurityColour;
-        uint64_t SamePriceThroughoutPark{};
+        colour_t staffHandymanColour;
+        colour_t staffMechanicColour;
+        colour_t staffSecurityColour;
+        uint64_t samePriceThroughoutPark{};
 
-        uint8_t ResearchFundingLevel;
-        uint8_t ResearchPriorities;
-        uint16_t ResearchProgress;
-        uint8_t ResearchProgressStage;
-        uint8_t ResearchExpectedMonth;
-        uint8_t ResearchExpectedDay;
-        std::optional<ResearchItem> ResearchLastItem;
-        std::optional<ResearchItem> ResearchNextItem;
+        uint8_t researchFundingLevel;
+        uint8_t researchPriorities;
+        uint16_t researchProgress;
+        uint8_t researchProgressStage;
+        uint8_t researchExpectedMonth;
+        uint8_t researchExpectedDay;
+        std::optional<ResearchItem> researchLastItem;
+        std::optional<ResearchItem> researchNextItem;
 
-        std::vector<ResearchItem> ResearchItemsUninvented;
-        std::vector<ResearchItem> ResearchItemsInvented;
-        uint8_t ResearchUncompletedCategories;
+        std::vector<ResearchItem> researchItemsUninvented;
+        std::vector<ResearchItem> researchItemsInvented;
+        uint8_t researchUncompletedCategories;
 
-        ScreenCoordsXY SavedView;
-        uint8_t SavedViewRotation;
-        ZoomLevel SavedViewZoom;
+        ScreenCoordsXY savedView;
+        uint8_t savedViewRotation;
+        ZoomLevel savedViewZoom;
 
-        ObjectEntryIndex LastEntranceStyle;
+        ObjectEntryIndex lastEntranceStyle;
 
-        std::vector<Award> CurrentAwards;
+        std::vector<Award> currentAwards;
 
-        std::vector<MarketingCampaign> MarketingCampaigns;
+        std::vector<MarketingCampaign> marketingCampaigns;
 
         /**
          * Probability out of 65535, of gaining a new guest per game tick.
@@ -141,17 +141,17 @@ namespace OpenRCT2
          * With a full park rating, non-overpriced entrance fee, less guests than the suggested maximum and four positive
          * awards, approximately 1 guest per second can be generated (+60 guests in one minute).
          */
-        int32_t GuestGenerationProbability;
+        int32_t guestGenerationProbability;
         /**
          * In a difficult guest generation scenario, no guests will be generated if over this value.
          */
-        uint32_t SuggestedGuestMaximum;
+        uint32_t suggestedGuestMaximum;
 
-        CheatsState Cheats;
+        CheatsState cheats;
     };
 
-    GameState_t& GetGameState();
-    void SwapGameState(std::unique_ptr<GameState_t>& otherState);
+    GameState_t& getGameState();
+    void swapGameState(std::unique_ptr<GameState_t>& otherState);
 
     void gameStateInitAll(GameState_t& gameState, const TileCoordsXY& mapSize);
     void gameStateTick();

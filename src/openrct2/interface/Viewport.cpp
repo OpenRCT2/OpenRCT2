@@ -1084,7 +1084,7 @@ namespace OpenRCT2
 
     static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
     {
-        auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().WeatherCurrent);
+        auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
         if (paletteId != FilterPaletteID::PaletteNull)
         {
             auto x = dpi.x;
@@ -2044,12 +2044,12 @@ namespace OpenRCT2
         if (w != nullptr)
         {
             Viewport* viewport = w->viewport;
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
 
-            gameState.SavedView = ScreenCoordsXY{ viewport->ViewWidth() / 2, viewport->ViewHeight() / 2 } + viewport->viewPos;
+            gameState.savedView = ScreenCoordsXY{ viewport->ViewWidth() / 2, viewport->ViewHeight() / 2 } + viewport->viewPos;
 
-            gameState.SavedViewZoom = viewport->zoom;
-            gameState.SavedViewRotation = viewport->rotation;
+            gameState.savedViewZoom = viewport->zoom;
+            gameState.savedViewRotation = viewport->rotation;
         }
     }
 } // namespace OpenRCT2

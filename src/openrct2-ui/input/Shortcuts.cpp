@@ -197,7 +197,7 @@ static void ShortcutAdjustLand()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -211,7 +211,7 @@ static void ShortcutAdjustWater()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -225,7 +225,7 @@ static void ShortcutBuildScenery()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -239,7 +239,7 @@ static void ShortcutBuildPaths()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -268,7 +268,7 @@ static void ShortcutShowFinancialInformation()
         return;
 
     if (!(isInTrackDesignerOrManager()))
-        if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+        if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             ContextOpenWindow(WindowClass::Finances);
 }
 
@@ -341,7 +341,7 @@ static void ShortcutShowMap()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene != LegacyScene::scenarioEditor || GetGameState().EditorStep == EditorStep::LandscapeEditor)
+    if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == EditorStep::LandscapeEditor)
         if (!(isInTrackDesignerOrManager()))
             ContextOpenWindow(WindowClass::Map);
 }
@@ -398,7 +398,7 @@ static void ShortcutClearScenery()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -420,7 +420,7 @@ static void ShortcutQuickSaveGame()
         auto intent = Intent(WindowClass::Loadsave);
         intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
         intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
-        intent.PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
+        intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioName);
         ContextOpenIntent(&intent);
     }
 }
@@ -438,7 +438,7 @@ static void ShortcutOpenSceneryPicker()
 {
     if ((gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
          || gLegacyScene == LegacyScene::trackDesignsManager)
-        || (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor))
+        || (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor))
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -610,7 +610,7 @@ static void ShortcutDecreaseElementHeight()
 static void ShortcutToggleClearanceChecks()
 {
     auto cheatSetAction = CheatSetAction(
-        CheatType::DisableClearanceChecks, GetGameState().Cheats.disableClearanceChecks ? 0 : 1);
+        CheatType::DisableClearanceChecks, getGameState().cheats.disableClearanceChecks ? 0 : 1);
     GameActions::Execute(&cheatSetAction);
 }
 
@@ -758,7 +758,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
         {
             windowMgr->CloseAll();
         }
-        else if (GetGameState().EditorStep == EditorStep::LandscapeEditor)
+        else if (getGameState().editorStep == EditorStep::LandscapeEditor)
         {
             windowMgr->CloseTop();
         }

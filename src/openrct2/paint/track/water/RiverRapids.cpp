@@ -526,7 +526,7 @@ static void PaintRiverRapidsTrackWaterfall(
 {
     ImageId imageId;
 
-    uint16_t frameNum = (GetGameState().CurrentTicks / 2) & 7;
+    uint16_t frameNum = (getGameState().currentTicks / 2) & 7;
 
     if (direction & 1)
     {
@@ -597,7 +597,7 @@ static void PaintRiverRapidsTrackRapids(
 {
     ImageId imageId;
 
-    uint16_t frameNum = (GetGameState().CurrentTicks / 2) & 7;
+    uint16_t frameNum = (getGameState().currentTicks / 2) & 7;
 
     if (direction & 1)
     {
@@ -649,7 +649,7 @@ static void PaintRiverRapidsTrackWhirlpool(
 {
     ImageId imageId;
 
-    uint8_t frameNum = (GetGameState().CurrentTicks / 4) % 16;
+    uint8_t frameNum = (getGameState().currentTicks / 4) % 16;
 
     if (direction & 1)
     {

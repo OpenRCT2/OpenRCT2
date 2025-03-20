@@ -24,9 +24,9 @@ IContext& Scene::GetContext()
     return _context;
 }
 
-GameState_t& Scene::GetGameState()
+GameState_t& Scene::getGameState()
 {
-    return OpenRCT2::GetGameState();
+    return OpenRCT2::getGameState();
 }
 
 void Scene::FinishScene()

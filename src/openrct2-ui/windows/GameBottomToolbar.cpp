@@ -97,19 +97,19 @@ namespace OpenRCT2::Ui::Windows
             // Figure out how much line height we have to work with.
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
 
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
 
             // Draw money
-            if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 const auto& widget = widgets[WIDX_MONEY];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
                                                     windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
                 auto colour = GetHoverWidgetColour(WIDX_MONEY);
-                StringId stringId = gameState.Cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
+                StringId stringId = gameState.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.Cash);
+                ft.Add<money64>(gameState.cash);
                 DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
             }
 
@@ -130,11 +130,11 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[WIDX_GUESTS];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
-                StringId stringId = gameState.NumGuestsInPark == 1 ? _guestCountFormatsSingular[gameState.GuestChangeModifier]
-                                                                   : _guestCountFormats[gameState.GuestChangeModifier];
+                StringId stringId = gameState.numGuestsInPark == 1 ? _guestCountFormatsSingular[gameState.guestChangeModifier]
+                                                                   : _guestCountFormats[gameState.guestChangeModifier];
                 auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
-                ft.Add<uint32_t>(gameState.NumGuestsInPark);
+                ft.Add<uint32_t>(gameState.numGuestsInPark);
                 DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
             }
 
@@ -143,7 +143,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[WIDX_PARK_RATING];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
-                DrawParkRating(dpi, colours[3].colour, screenCoords, std::max(10, ((gameState.Park.Rating / 4) * 263) / 256));
+                DrawParkRating(dpi, colours[3].colour, screenCoords, std::max(10, ((gameState.park.Rating / 4) * 263) / 256));
             }
         }
 
@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
             // Temperature
             screenCoords = { windowPos.x + rightPanelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
-            int32_t temperature = GetGameState().WeatherCurrent.temperature;
+            int32_t temperature = getGameState().weatherCurrent.temperature;
             StringId format = STR_CELSIUS_VALUE;
             if (Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit)
             {
@@ -212,14 +212,14 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.x += 30;
 
             // Current weather
-            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherCurrent.weatherType);
+            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(getGameState().weatherCurrent.weatherType);
             GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
             // Next weather
-            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().WeatherNext.weatherType);
+            auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(getGameState().weatherNext.weatherType);
             if (currentWeatherSpriteId != nextWeatherSpriteId)
             {
-                if (GetGameState().WeatherUpdateTimer < 960)
+                if (getGameState().weatherUpdateTimer < 960)
                 {
                     GfxDrawSprite(dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
                     GfxDrawSprite(dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
@@ -432,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_LEFT_OUTSET:
                 case WIDX_MONEY:
-                    if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+                    if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
                         ContextOpenWindow(WindowClass::Finances);
                     break;
                 case WIDX_GUESTS:
@@ -481,17 +481,17 @@ namespace OpenRCT2::Ui::Windows
 
         OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
-            const auto& gameState = GetGameState();
+            const auto& gameState = getGameState();
             auto ft = Formatter();
 
             switch (widgetIndex)
             {
                 case WIDX_MONEY:
-                    ft.Add<money64>(gameState.CurrentProfit);
-                    ft.Add<money64>(gameState.Park.Value);
+                    ft.Add<money64>(gameState.currentProfit);
+                    ft.Add<money64>(gameState.park.Value);
                     break;
                 case WIDX_PARK_RATING:
-                    ft.Add<int16_t>(gameState.Park.Rating);
+                    ft.Add<int16_t>(gameState.park.Rating);
                     break;
             }
             return { fallback, ft };
@@ -514,7 +514,7 @@ namespace OpenRCT2::Ui::Windows
                 + 1;
 
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
-            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
+            if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 widgets[WIDX_MONEY].type = WindowWidgetType::Empty;
                 widgets[WIDX_GUESTS].top = 1;

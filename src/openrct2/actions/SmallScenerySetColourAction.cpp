@@ -83,7 +83,7 @@ GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) 
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
     {
         if (!MapIsLocationOwned(_loc))
         {

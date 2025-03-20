@@ -86,7 +86,7 @@ GameActions::Result FootpathPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!(gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode) && !MapIsLocationOwned(_loc))
+    if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -143,7 +143,7 @@ GameActions::Result FootpathPlaceAction::Execute() const
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        if (_direction != INVALID_DIRECTION && !GetGameState().Cheats.disableClearanceChecks)
+        if (_direction != INVALID_DIRECTION && !getGameState().cheats.disableClearanceChecks)
         {
             // It is possible, let's remove walls between the old and new piece of path
             auto zLow = _loc.z;
@@ -323,7 +323,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertQuery(GameActions::Result 
     const auto clearanceData = canBuild.GetData<ConstructClearResult>();
 
     gFootpathGroundFlags = clearanceData.GroundFlags;
-    if (!GetGameState().Cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
+    if (!getGameState().cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
@@ -484,12 +484,12 @@ void FootpathPlaceAction::AutomaticallySetPeepSpawn() const
         }
     }
 
-    auto& gameState = GetGameState();
-    if (gameState.PeepSpawns.empty())
+    auto& gameState = getGameState();
+    if (gameState.peepSpawns.empty())
     {
-        gameState.PeepSpawns.emplace_back();
+        gameState.peepSpawns.emplace_back();
     }
-    PeepSpawn* peepSpawn = &gameState.PeepSpawns[0];
+    PeepSpawn* peepSpawn = &gameState.peepSpawns[0];
     peepSpawn->x = _loc.x + (DirectionOffsets[direction].x * 15) + 16;
     peepSpawn->y = _loc.y + (DirectionOffsets[direction].y * 15) + 16;
     peepSpawn->direction = direction;

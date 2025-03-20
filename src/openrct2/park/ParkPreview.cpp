@@ -31,15 +31,15 @@ namespace OpenRCT2
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
     {
         ParkPreview preview{
-            .parkName = gameState.Park.Name,
-            .parkRating = gameState.Park.Rating,
-            .year = gameState.Date.GetYear(),
-            .month = gameState.Date.GetMonth(),
-            .day = gameState.Date.GetDay(),
-            .parkUsesMoney = !(gameState.Park.Flags & PARK_FLAGS_NO_MONEY),
-            .cash = gameState.Cash,
+            .parkName = gameState.park.Name,
+            .parkRating = gameState.park.Rating,
+            .year = gameState.date.GetYear(),
+            .month = gameState.date.GetMonth(),
+            .day = gameState.date.GetDay(),
+            .parkUsesMoney = !(gameState.park.Flags & PARK_FLAGS_NO_MONEY),
+            .cash = gameState.cash,
             .numRides = static_cast<uint16_t>(RideManager().size()),
-            .numGuests = static_cast<uint16_t>(gameState.NumGuestsInPark),
+            .numGuests = static_cast<uint16_t>(gameState.numGuestsInPark),
         };
 
         if (auto image = generatePreviewMap(); image != std::nullopt)
@@ -114,9 +114,9 @@ namespace OpenRCT2
     // 0x0046DB4C
     static std::optional<PreviewImage> generatePreviewMap()
     {
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         const auto previewSize = 128;
-        const auto longEdgeSize = std::max(gameState.MapSize.x, gameState.MapSize.y);
+        const auto longEdgeSize = std::max(gameState.mapSize.x, gameState.mapSize.y);
         const auto nearestPower = Numerics::ceil2(longEdgeSize, previewSize);
         const auto mapSkipFactor = nearestPower / previewSize;
         const auto offset = mapSkipFactor > 0 ? (nearestPower - longEdgeSize) / mapSkipFactor : 1;
@@ -131,7 +131,7 @@ namespace OpenRCT2
         {
             for (auto x = 0u; x < image.width; x++)
             {
-                auto pos = TileCoordsXY(gameState.MapSize.x - (x + 1) * mapSkipFactor + 1, y * mapSkipFactor + 1);
+                auto pos = TileCoordsXY(gameState.mapSize.x - (x + 1) * mapSkipFactor + 1, y * mapSkipFactor + 1);
 
                 image.pixels[(y + offset) * previewSize + (x + offset)] = getPreviewColourByTilePos(pos);
             }
@@ -145,7 +145,7 @@ namespace OpenRCT2
         if (gOpenRCT2NoGraphics)
             return std::nullopt;
 
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         const auto mainWindow = WindowGetMain();
         const auto mainViewport = WindowGetViewport(mainWindow);
 
@@ -157,9 +157,9 @@ namespace OpenRCT2
             const auto mapPos = ViewportPosToMapPos(centre, 24, mainViewport->rotation);
             mapPosXYZ = CoordsXYZ(mapPos.x, mapPos.y, int32_t{ TileElementHeight(mapPos) });
         }
-        else if (!gameState.Park.Entrances.empty())
+        else if (!gameState.park.Entrances.empty())
         {
-            const auto& entrance = gameState.Park.Entrances[0];
+            const auto& entrance = gameState.park.Entrances[0];
             mapPosXYZ = CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 };
         }
         else

@@ -230,7 +230,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetDisabledTabs()
         {
-            disabled_widgets = (GetGameState().Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+            disabled_widgets = (getGameState().park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
         }
 
     public:
@@ -333,17 +333,17 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = false;
-                    _graphProps.series = GetGameState().Park.ValueHistory;
+                    _graphProps.series = getGameState().park.ValueHistory;
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = true;
-                    _graphProps.series = GetGameState().WeeklyProfitHistory;
+                    _graphProps.series = getGameState().weeklyProfitHistory;
                     break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = true;
-                    _graphProps.series = GetGameState().CashHistory;
+                    _graphProps.series = getGameState().cashHistory;
                     break;
             }
             OnPrepareDrawGraph(graphPageWidget, centredGraph);
@@ -361,22 +361,22 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                 {
-                    auto& gameState = GetGameState();
-                    const auto cashLessLoan = gameState.Cash - gameState.BankLoan;
+                    auto& gameState = getGameState();
+                    const auto cashLessLoan = gameState.cash - gameState.bankLoan;
                     const auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                                                        : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
                     OnDrawGraph(dpi, cashLessLoan, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                    OnDrawGraph(dpi, GetGameState().Park.Value, STR_FINANCES_PARK_VALUE);
+                    OnDrawGraph(dpi, getGameState().park.Value, STR_FINANCES_PARK_VALUE);
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                 {
-                    auto& gameState = GetGameState();
-                    const auto fmt = gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
+                    auto& gameState = getGameState();
+                    const auto fmt = gameState.currentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
                                                                   : STR_FINANCES_WEEKLY_PROFIT_LOSS;
-                    OnDrawGraph(dpi, gameState.CurrentProfit, fmt);
+                    OnDrawGraph(dpi, gameState.currentProfit, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_MARKETING:
@@ -422,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += kTableCellHeight;
             }
 
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             // Expenditure / Income values for each month
             auto currentMonthYear = GetDate().GetMonthsElapsed();
             for (int32_t i = SummaryMaxAvailableMonth(); i >= 0; i--)
@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
                 money64 profit = 0;
                 for (int32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
                 {
-                    auto expenditure = gameState.ExpenditureTable[i][j];
+                    auto expenditure = gameState.expenditureTable[i][j];
                     if (expenditure != 0)
                     {
                         profit += expenditure;
@@ -536,17 +536,17 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseDownSummary(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_LOAN_INCREASE:
                 {
                     // If loan can be increased, do so.
                     // If not, action shows error message.
-                    auto newLoan = gameState.BankLoan + 1000.00_GBP;
-                    if (gameState.BankLoan < gameState.MaxBankLoan)
+                    auto newLoan = gameState.bankLoan + 1000.00_GBP;
+                    if (gameState.bankLoan < gameState.maxBankLoan)
                     {
-                        newLoan = std::min(gameState.MaxBankLoan, newLoan);
+                        newLoan = std::min(gameState.maxBankLoan, newLoan);
                     }
                     auto gameAction = ParkSetLoanAction(newLoan);
                     GameActions::Execute(&gameAction);
@@ -557,10 +557,10 @@ namespace OpenRCT2::Ui::Windows
                     // If loan is positive, decrease it.
                     // If loan is negative, action shows error message.
                     // If loan is exactly 0, prevent error message.
-                    if (gameState.BankLoan != 0)
+                    if (gameState.bankLoan != 0)
                     {
-                        auto newLoan = gameState.BankLoan - 1000.00_GBP;
-                        if (gameState.BankLoan > 0)
+                        auto newLoan = gameState.bankLoan - 1000.00_GBP;
+                        if (gameState.bankLoan > 0)
                         {
                             newLoan = std::max(static_cast<money64>(0LL), newLoan);
                         }
@@ -579,7 +579,7 @@ namespace OpenRCT2::Ui::Windows
             // drawing has completed.
             auto ft = Formatter::Common();
             ft.Increment(6);
-            ft.Add<money64>(GetGameState().BankLoan);
+            ft.Add<money64>(getGameState().bankLoan);
 
             // Keep up with new months being added in the first two years.
             if (GetDate().GetMonthsElapsed() != _lastPaintedMonth)
@@ -590,7 +590,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto titleBarBottom = widgets[WIDX_TITLE].bottom;
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, titleBarBottom + 37 };
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
 
             // Expenditure / Income heading
             DrawTextBasic(
@@ -621,22 +621,22 @@ namespace OpenRCT2::Ui::Windows
 
             // Loan and interest rate
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
-            if (!(gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST))
+            if (!(gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST))
             {
                 auto ft = Formatter();
-                ft.Add<uint16_t>(gameState.BankLoanInterestRate);
+                ft.Add<uint16_t>(gameState.bankLoanInterestRate);
                 DrawTextBasic(
                     dpi, windowPos + ScreenCoordsXY{ 167, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
             }
 
             // Current cash
             auto ft = Formatter();
-            ft.Add<money64>(gameState.Cash);
-            StringId stringId = gameState.Cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
+            ft.Add<money64>(gameState.cash);
+            StringId stringId = gameState.cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 280 }, stringId, ft);
 
             // Objective related financial information
-            if (gameState.ScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
+            if (gameState.scenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
             {
                 auto lastMonthProfit = FinanceGetLastMonthShopProfit();
                 ft = Formatter();
@@ -649,10 +649,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Park value and company value
                 ft = Formatter();
-                ft.Add<money64>(gameState.Park.Value);
+                ft.Add<money64>(gameState.park.Value);
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 }, STR_PARK_VALUE_LABEL, ft);
                 ft = Formatter();
-                ft.Add<money64>(gameState.CompanyValue);
+                ft.Add<money64>(gameState.companyValue);
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 280 }, STR_COMPANY_VALUE_LABEL, ft);
             }
         }
@@ -677,7 +677,7 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDrawMarketing()
         {
             // Count number of active campaigns
-            int32_t numActiveCampaigns = static_cast<int32_t>(GetGameState().MarketingCampaigns.size());
+            int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().marketingCampaigns.size());
             int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
 
             // Update group box positions
@@ -739,7 +739,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     default:
                     {
-                        auto parkName = GetGameState().Park.Name.c_str();
+                        auto parkName = getGameState().park.Name.c_str();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                     }

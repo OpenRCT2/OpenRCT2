@@ -70,7 +70,7 @@ GameActions::Result RideSetSettingAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
             }
 
-            if (!RideIsModeValid(*ride) && !GetGameState().Cheats.showAllOperatingModes)
+            if (!RideIsModeValid(*ride) && !getGameState().cheats.showAllOperatingModes)
             {
                 LOG_ERROR("Invalid ride mode: %u", _value);
                 return GameActions::Result(
@@ -149,7 +149,7 @@ GameActions::Result RideSetSettingAction::Query() const
             }
             break;
         case RideSetSetting::RideType:
-            if (!GetGameState().Cheats.allowArbitraryRideTypeChanges)
+            if (!getGameState().cheats.allowArbitraryRideTypeChanges)
             {
                 LOG_ERROR("Arbitrary ride type changes not allowed.");
                 return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
@@ -263,16 +263,16 @@ bool RideSetSettingAction::RideIsModeValid(const Ride& ride) const
 
 bool RideSetSettingAction::RideIsValidLiftHillSpeed(const Ride& ride) const
 {
-    auto& gameState = GetGameState();
-    int32_t minSpeed = gameState.Cheats.unlockOperatingLimits ? 0 : ride.getRideTypeDescriptor().LiftData.minimum_speed;
-    int32_t maxSpeed = gameState.Cheats.unlockOperatingLimits ? 255 : ride.getRideTypeDescriptor().LiftData.maximum_speed;
+    auto& gameState = getGameState();
+    int32_t minSpeed = gameState.cheats.unlockOperatingLimits ? 0 : ride.getRideTypeDescriptor().LiftData.minimum_speed;
+    int32_t maxSpeed = gameState.cheats.unlockOperatingLimits ? 255 : ride.getRideTypeDescriptor().LiftData.maximum_speed;
     return _value >= minSpeed && _value <= maxSpeed;
 }
 
 bool RideSetSettingAction::RideIsValidNumCircuits() const
 {
     int32_t minNumCircuits = 1;
-    int32_t maxNumCircuits = GetGameState().Cheats.unlockOperatingLimits ? 255 : Limits::kMaxCircuitsPerRide;
+    int32_t maxNumCircuits = getGameState().cheats.unlockOperatingLimits ? 255 : Limits::kMaxCircuitsPerRide;
     return _value >= minNumCircuits && _value <= maxNumCircuits;
 }
 
@@ -281,7 +281,7 @@ bool RideSetSettingAction::RideIsValidOperationOption(const Ride& ride) const
     const auto& operatingSettings = ride.getRideTypeDescriptor().OperatingSettings;
     uint8_t minValue = operatingSettings.MinValue;
     uint8_t maxValue = operatingSettings.MaxValue;
-    if (GetGameState().Cheats.unlockOperatingLimits)
+    if (getGameState().cheats.unlockOperatingLimits)
     {
         minValue = 0;
         maxValue = 255;

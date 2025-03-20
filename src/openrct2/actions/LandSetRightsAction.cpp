@@ -84,7 +84,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
     res.Position = centre;
     res.Expenditure = ExpenditureType::LandPurchase;
 
-    if (!isInEditorMode() && !GetGameState().Cheats.sandboxMode)
+    if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, kStringIdNone, STR_LAND_NOT_FOR_SALE);
     }
@@ -185,7 +185,7 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 }
             }
 
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             const uint8_t currentOwnership = surfaceElement->GetOwnership();
 
             // Are land rights or construction rights currently owned?
@@ -193,36 +193,36 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
             {
                 // Buying land
                 if (!(currentOwnership & OWNERSHIP_OWNED) && (_ownership & OWNERSHIP_OWNED))
-                    res.Cost = gameState.LandPrice;
+                    res.Cost = gameState.landPrice;
 
                 // Buying construction rights
                 if (!(currentOwnership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                     && (_ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED))
-                    res.Cost = gameState.ConstructionRightsPrice;
+                    res.Cost = gameState.constructionRightsPrice;
             }
             else
             {
                 // Selling land
                 if ((currentOwnership & OWNERSHIP_OWNED) && !(_ownership & OWNERSHIP_OWNED))
-                    res.Cost = -gameState.LandPrice;
+                    res.Cost = -gameState.landPrice;
 
                 // Selling construction rights
                 if ((currentOwnership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                     && !(_ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED))
-                    res.Cost = -gameState.ConstructionRightsPrice;
+                    res.Cost = -gameState.constructionRightsPrice;
             }
 
             if (isExecuting)
             {
                 if (_ownership != OWNERSHIP_UNOWNED)
                 {
-                    gameState.PeepSpawns.erase(
+                    gameState.peepSpawns.erase(
                         std::remove_if(
-                            gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
+                            gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
                             [x = loc.x, y = loc.y](const auto& spawn) {
                                 return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y;
                             }),
-                        gameState.PeepSpawns.end());
+                        gameState.peepSpawns.end());
                 }
                 surfaceElement->SetOwnership(_ownership);
                 Park::UpdateFencesAroundTile(loc);

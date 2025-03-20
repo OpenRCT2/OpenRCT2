@@ -98,7 +98,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsOwnershipMode() const
         {
-            return isInEditorMode() != 0 || GetGameState().Cheats.sandboxMode;
+            return isInEditorMode() != 0 || getGameState().cheats.sandboxMode;
         }
 
         void SwitchToMode(LandRightsMode mode)
@@ -408,7 +408,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw cost amount
             if (_landRightsCost != kMoney64Undefined && _landRightsCost != 0
-                && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+                && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_landRightsCost);

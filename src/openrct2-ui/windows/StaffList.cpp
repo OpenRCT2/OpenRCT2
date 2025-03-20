@@ -281,7 +281,7 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));
@@ -594,10 +594,10 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawTabImages(DrawPixelInfo& dpi) const
         {
-            const auto& gameState = GetGameState();
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.StaffHandymanColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.StaffMechanicColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.StaffSecurityColour);
+            const auto& gameState = getGameState();
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.staffHandymanColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.staffMechanicColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.staffSecurityColour);
             DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
         }
 

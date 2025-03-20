@@ -1126,13 +1126,13 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     PaintPatrolArea(session, tileElement, height, surfaceShape);
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // Draw Peep Spawns
-    if ((gLegacyScene == LegacyScene::scenarioEditor || gameState.Cheats.sandboxMode)
+    if ((gLegacyScene == LegacyScene::scenarioEditor || gameState.cheats.sandboxMode)
         && session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         const CoordsXY& pos = session.MapPosition;
-        for (auto& spawn : gameState.PeepSpawns)
+        for (auto& spawn : gameState.peepSpawns)
         {
             if ((spawn.x & 0xFFE0) == pos.x && (spawn.y & 0xFFE0) == pos.y)
             {

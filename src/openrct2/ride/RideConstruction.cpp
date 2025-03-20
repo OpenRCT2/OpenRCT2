@@ -342,10 +342,10 @@ void Ride::removePeeps()
 
 void RideClearBlockedTiles(const Ride& ride)
 {
-    auto& gameState = GetGameState();
-    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
+    auto& gameState = getGameState();
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.mapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.mapSize.y; ++tilePos.y)
         {
             for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
             {
@@ -644,7 +644,7 @@ void RideConstructionSetDefaultNextPiece()
             _previousTrackPitchEnd = slope;
             _currentTrackHasLiftHill = trackElement->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
-                    || GetGameState().Cheats.enableChainLiftOnAllTrack);
+                    || getGameState().cheats.enableChainLiftOnAllTrack);
 
             if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
                 _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
@@ -701,7 +701,7 @@ void RideConstructionSetDefaultNextPiece()
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
+            if (!getGameState().cheats.enableChainLiftOnAllTrack)
             {
                 _currentTrackHasLiftHill = trackElement->HasChain();
             }
@@ -966,7 +966,7 @@ bool RideModify(const CoordsXYE& input)
     if (rideEntry == nullptr || !ride_check_if_construction_allowed(*ride))
         return false;
 
-    if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE && !GetGameState().Cheats.makeAllDestructible)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE && !getGameState().cheats.makeAllDestructible)
     {
         Formatter ft;
         ride->formatNameTo(ft);

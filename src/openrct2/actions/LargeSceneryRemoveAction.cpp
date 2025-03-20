@@ -88,9 +88,9 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
-        if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
         {
-            if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (getGameState().park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
                 {
@@ -168,7 +168,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 
-        if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
         {
             if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {

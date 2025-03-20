@@ -92,7 +92,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     context->Initialise();
 
     auto& objManager = context->GetObjectManager();
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     try
     {

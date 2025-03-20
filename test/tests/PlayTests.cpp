@@ -52,7 +52,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     context->GetObjectManager().LoadObjects(loadResult.RequiredObjects);
 
     // TODO: Have a separate GameState and exchange once loaded.
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     importer->Import(gameState);
 
     ResetEntitySpatialIndices();
@@ -98,12 +98,12 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     auto context = localStartGame(initStateFile);
     ASSERT_NE(context.get(), nullptr);
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
     auto rideManager = GetRideManager();
@@ -117,7 +117,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     execute<RideSetPriceAction>(ferrisWheel.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into ferris wheel
-    gameState.Cheats.ignoreRideIntensity = true;
+    gameState.cheats.ignoreRideIntensity = true;
 
     // Insert a rich guest
     auto richGuest = Park::GenerateGuest();
@@ -158,12 +158,12 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     auto context = localStartGame(initStateFile);
     ASSERT_NE(context.get(), nullptr);
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride
     auto rideManager = GetRideManager();
@@ -176,7 +176,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     execute<RideSetPriceAction>(carRide.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into the ride
-    gameState.Cheats.ignoreRideIntensity = true;
+    gameState.cheats.ignoreRideIntensity = true;
 
     // Create some guests
     std::vector<Peep*> guests;

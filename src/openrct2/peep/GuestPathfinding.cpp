@@ -1572,7 +1572,7 @@ namespace OpenRCT2::PathFinding
     {
         std::optional<CoordsXYZ> chosenEntrance = std::nullopt;
         uint16_t nearestDist = 0xFFFF;
-        for (const auto& parkEntrance : GetGameState().Park.Entrances)
+        for (const auto& parkEntrance : getGameState().park.Entrances)
         {
             auto dist = abs(parkEntrance.x - loc.x) + abs(parkEntrance.y - loc.y);
             if (dist < nearestDist)
@@ -1610,14 +1610,14 @@ namespace OpenRCT2::PathFinding
      * Gets the nearest peep spawn relative to point, by using Manhattan distance.
      * @param x x coordinate of location
      * @param y y coordinate of location
-     * @return Index of gameState.PeepSpawns (or 0xFF if no peep spawns exist).
+     * @return Index of gameState.peepSpawns (or 0xFF if no peep spawns exist).
      */
     static uint8_t GetNearestPeepSpawnIndex(uint16_t x, uint16_t y)
     {
         uint8_t chosenSpawn = 0xFF;
         uint16_t nearestDist = 0xFFFF;
         uint8_t i = 0;
-        for (const auto& spawn : GetGameState().PeepSpawns)
+        for (const auto& spawn : getGameState().peepSpawns)
         {
             uint16_t dist = abs(spawn.x - x) + abs(spawn.y - y);
             if (dist < nearestDist)
@@ -1643,7 +1643,7 @@ namespace OpenRCT2::PathFinding
         if (chosenSpawn == 0xFF)
             return GuestPathfindAimless(peep, edges);
 
-        const auto peepSpawnLoc = GetGameState().PeepSpawns[chosenSpawn].ToTileStart();
+        const auto peepSpawnLoc = getGameState().peepSpawns[chosenSpawn].ToTileStart();
         Direction direction = peepSpawnLoc.direction;
 
         if (peepSpawnLoc.x == peep.NextLoc.x && peepSpawnLoc.y == peep.NextLoc.y)

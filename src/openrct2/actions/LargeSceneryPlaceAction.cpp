@@ -74,7 +74,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     auto resultData = LargeSceneryPlaceActionResult{};
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     money64 supportsCost = 0;
 
@@ -152,7 +152,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         int32_t tempSceneryGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        if (!gameState.Cheats.disableClearanceChecks)
+        if (!gameState.cheats.disableClearanceChecks)
         {
             if ((clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER) || (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND))
             {
@@ -175,7 +175,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         }
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationOwned({ curTile, zLow })
-            && !gameState.Cheats.sandboxMode)
+            && !gameState.cheats.sandboxMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -297,7 +297,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             FootpathRemoveLitter({ curTile, zLow });
-            if (!GetGameState().Cheats.disableClearanceChecks)
+            if (!getGameState().cheats.disableClearanceChecks)
             {
                 WallRemoveAt({ curTile, zLow, zHigh });
             }

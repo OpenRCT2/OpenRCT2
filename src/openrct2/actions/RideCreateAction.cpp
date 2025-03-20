@@ -158,8 +158,8 @@ GameActions::Result RideCreateAction::Execute() const
     ride->status = RideStatus::closed;
     ride->numTrains = 1;
 
-    auto& gameState = GetGameState();
-    if (gameState.Cheats.disableTrainLengthLimit)
+    auto& gameState = getGameState();
+    if (gameState.cheats.disableTrainLengthLimit)
     {
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
         if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
@@ -203,7 +203,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->ratings.setNull();
 
-    if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
+    if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
     {
         for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
         {
@@ -212,7 +212,7 @@ GameActions::Result RideCreateAction::Execute() const
 
         if (rideEntry->shop_item[0] == ShopItem::None)
         {
-            if (!Park::RidePricesUnlocked() || gameState.Park.EntranceFee > 0)
+            if (!Park::RidePricesUnlocked() || gameState.park.EntranceFee > 0)
             {
                 ride->price[0] = 0;
             }
@@ -226,7 +226,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[1] = GetShopItemDescriptor(rideEntry->shop_item[1]).DefaultPrice;
         }
 
-        if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+        if (gameState.scenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
         {
             ride->price[0] = 0;
         }

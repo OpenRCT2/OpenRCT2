@@ -76,7 +76,7 @@ static void PaintRideEntranceExitScrollingText(
         FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
         session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
@@ -222,10 +222,10 @@ static void PaintParkEntranceScrollingText(
         return;
 
     auto ft = Formatter();
-    auto& gameState = GetGameState();
-    if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
+    auto& gameState = getGameState();
+    if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
     {
-        const auto& park = gameState.Park;
+        const auto& park = gameState.park;
         auto name = park.Name.c_str();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);
@@ -247,7 +247,7 @@ static void PaintParkEntranceScrollingText(
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (gameState.CurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (gameState.currentTicks / 2) % stringWidth : 0;
     auto imageIndex = ScrollingTextSetup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
     auto textHeight = height + entrance.GetTextHeight();

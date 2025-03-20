@@ -206,7 +206,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             money64 cost = kMoney64Undefined;
-            if (GameIsNotPaused() || GetGameState().Cheats.buildInPauseMode)
+            if (GameIsNotPaused() || getGameState().cheats.buildInPauseMode)
             {
                 ClearProvisional();
                 auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
@@ -355,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Price
-            if (_placementCost != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (_placementCost != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 ft = Formatter();
                 ft.Add<money64>(_placementCost);

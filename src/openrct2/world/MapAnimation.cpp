@@ -201,7 +201,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
         {
             // Peep, looking at scenery
-            if (!(GetGameState().CurrentTicks & 0x3FF) && GameIsNotPaused())
+            if (!(getGameState().currentTicks & 0x3FF) && GameIsNotPaused())
             {
                 int32_t direction = tileElement->GetDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
@@ -489,7 +489,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    if (GetGameState().CurrentTicks & 1)
+    if (getGameState().currentTicks & 1)
         return false;
 
     bool removeAnimation = true;

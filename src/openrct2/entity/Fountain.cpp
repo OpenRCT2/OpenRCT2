@@ -90,7 +90,7 @@ bool EntityBase::Is<JumpingFountain>() const
 
 void JumpingFountain::StartAnimation(const JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement)
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     int32_t randomIndex;
     auto newZ = tileElement->GetBaseZ();

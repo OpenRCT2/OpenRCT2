@@ -203,7 +203,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     auto res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
                     if (res == kMoney64Undefined)
                     {
-                        if (!GetGameState().Cheats.allowArbitraryRideTypeChanges)
+                        if (!getGameState().cheats.allowArbitraryRideTypeChanges)
                         {
                             console.WriteFormatLine(
                                 "That didn't work. Try enabling the 'Allow arbitrary ride type changes' cheat");
@@ -543,62 +543,62 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
 
 static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& argv)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     if (!argv.empty())
     {
         if (argv[0] == "park_rating")
         {
-            console.WriteFormatLine("park_rating %d", gameState.Park.Rating);
+            console.WriteFormatLine("park_rating %d", gameState.park.Rating);
         }
         else if (argv[0] == "park_value")
         {
-            console.WriteLine(FormatString("park_value {CURRENCY2DP}", gameState.Park.Value));
+            console.WriteLine(FormatString("park_value {CURRENCY2DP}", gameState.park.Value));
         }
         else if (argv[0] == "company_value")
         {
-            console.WriteLine(FormatString("company_value {CURRENCY2DP}", gameState.CompanyValue));
+            console.WriteLine(FormatString("company_value {CURRENCY2DP}", gameState.companyValue));
         }
         else if (argv[0] == "money")
         {
-            console.WriteLine(FormatString("money {CURRENCY2DP}", gameState.Cash));
+            console.WriteLine(FormatString("money {CURRENCY2DP}", gameState.cash));
         }
         else if (argv[0] == "scenario_initial_cash")
         {
-            console.WriteLine(FormatString("scenario_initial_cash {CURRENCY2DP}", gameState.InitialCash));
+            console.WriteLine(FormatString("scenario_initial_cash {CURRENCY2DP}", gameState.initialCash));
         }
         else if (argv[0] == "current_loan")
         {
-            console.WriteLine(FormatString("current_loan {CURRENCY2DP}", gameState.BankLoan));
+            console.WriteLine(FormatString("current_loan {CURRENCY2DP}", gameState.bankLoan));
         }
         else if (argv[0] == "max_loan")
         {
-            console.WriteLine(FormatString("max_loan {CURRENCY2DP}", gameState.MaxBankLoan));
+            console.WriteLine(FormatString("max_loan {CURRENCY2DP}", gameState.maxBankLoan));
         }
         else if (argv[0] == "guest_initial_cash")
         {
-            console.WriteLine(FormatString("guest_initial_cash {CURRENCY2DP}", gameState.GuestInitialCash));
+            console.WriteLine(FormatString("guest_initial_cash {CURRENCY2DP}", gameState.guestInitialCash));
         }
         else if (argv[0] == "land_rights_cost")
         {
-            console.WriteLine(FormatString("land_rights_cost {CURRENCY2DP}", gameState.LandPrice));
+            console.WriteLine(FormatString("land_rights_cost {CURRENCY2DP}", gameState.landPrice));
         }
         else if (argv[0] == "construction_rights_cost")
         {
-            console.WriteLine(FormatString("construction_rights_cost {CURRENCY2DP}", gameState.ConstructionRightsPrice));
+            console.WriteLine(FormatString("construction_rights_cost {CURRENCY2DP}", gameState.constructionRightsPrice));
         }
         else if (argv[0] == "guest_initial_happiness")
         {
-            uint32_t current_happiness = gameState.GuestInitialHappiness;
+            uint32_t current_happiness = gameState.guestInitialHappiness;
             for (int32_t i = 15; i <= 99; i++)
             {
                 if (i == 99)
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gameState.GuestInitialHappiness);
+                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gameState.guestInitialHappiness);
                 }
                 else if (current_happiness == Park::CalculateGuestInitialHappiness(i))
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gameState.GuestInitialHappiness);
+                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gameState.guestInitialHappiness);
                     break;
                 }
             }
@@ -606,64 +606,64 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         else if (argv[0] == "guest_initial_hunger")
         {
             console.WriteFormatLine(
-                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.GuestInitialHunger) * 100) / 255,
-                gameState.GuestInitialHunger);
+                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.guestInitialHunger) * 100) / 255,
+                gameState.guestInitialHunger);
         }
         else if (argv[0] == "guest_initial_thirst")
         {
             console.WriteFormatLine(
-                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.GuestInitialThirst) * 100) / 255,
-                gameState.GuestInitialThirst);
+                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.guestInitialThirst) * 100) / 255,
+                gameState.guestInitialThirst);
         }
         else if (argv[0] == "guest_prefer_less_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_less_intense_rides %d", (gameState.Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
+                "guest_prefer_less_intense_rides %d", (gameState.park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "guest_prefer_more_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_more_intense_rides %d", (gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
+                "guest_prefer_more_intense_rides %d", (gameState.park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "forbid_marketing_campaigns")
         {
             console.WriteFormatLine(
-                "forbid_marketing_campaigns %d", (gameState.Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
+                "forbid_marketing_campaigns %d", (gameState.park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
         }
         else if (argv[0] == "forbid_landscape_changes")
         {
             console.WriteFormatLine(
-                "forbid_landscape_changes %d", (gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
+                "forbid_landscape_changes %d", (gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
         }
         else if (argv[0] == "forbid_tree_removal")
         {
-            console.WriteFormatLine("forbid_tree_removal %d", (gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
+            console.WriteFormatLine("forbid_tree_removal %d", (gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
         }
         else if (argv[0] == "forbid_high_construction")
         {
             console.WriteFormatLine(
-                "forbid_high_construction %d", (gameState.Park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
+                "forbid_high_construction %d", (gameState.park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
         }
         else if (argv[0] == "pay_for_rides")
         {
-            console.WriteFormatLine("pay_for_rides %d", (gameState.Park.Flags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
+            console.WriteFormatLine("pay_for_rides %d", (gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
         }
         else if (argv[0] == "no_money")
         {
-            console.WriteFormatLine("no_money %d", (gameState.Park.Flags & PARK_FLAGS_NO_MONEY) != 0);
+            console.WriteFormatLine("no_money %d", (gameState.park.Flags & PARK_FLAGS_NO_MONEY) != 0);
         }
         else if (argv[0] == "difficult_park_rating")
         {
-            console.WriteFormatLine("difficult_park_rating %d", (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
+            console.WriteFormatLine("difficult_park_rating %d", (gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
         }
         else if (argv[0] == "difficult_guest_generation")
         {
             console.WriteFormatLine(
-                "difficult_guest_generation %d", (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
+                "difficult_guest_generation %d", (gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
         }
         else if (argv[0] == "park_open")
         {
-            console.WriteFormatLine("park_open %d", (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) != 0);
+            console.WriteFormatLine("park_open %d", (gameState.park.Flags & PARK_FLAGS_PARK_OPEN) != 0);
         }
         else if (argv[0] == "game_speed")
         {
@@ -704,15 +704,15 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "cheat_sandbox_mode")
         {
-            console.WriteFormatLine("cheat_sandbox_mode %d", GetGameState().Cheats.sandboxMode);
+            console.WriteFormatLine("cheat_sandbox_mode %d", getGameState().cheats.sandboxMode);
         }
         else if (argv[0] == "cheat_disable_clearance_checks")
         {
-            console.WriteFormatLine("cheat_disable_clearance_checks %d", GetGameState().Cheats.disableClearanceChecks);
+            console.WriteFormatLine("cheat_disable_clearance_checks %d", getGameState().cheats.disableClearanceChecks);
         }
         else if (argv[0] == "cheat_disable_support_limits")
         {
-            console.WriteFormatLine("cheat_disable_support_limits %d", GetGameState().Cheats.disableSupportLimits);
+            console.WriteFormatLine("cheat_disable_support_limits %d", getGameState().cheats.disableSupportLimits);
         }
         else if (argv[0] == "current_rotation")
         {
@@ -778,11 +778,11 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
 
         std::string varName = argv[0];
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         if (varName == "money" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             money64 money = ToMoney64FromGBP(double_val[0]);
-            if (gameState.Cash != money)
+            if (gameState.cash != money)
             {
                 ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::SetMoney, money);
             }
@@ -800,7 +800,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         else if (varName == "current_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             auto amount = std::clamp(
-                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.MaxBankLoan);
+                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.maxBankLoan);
             ConsoleSetVariableAction<ScenarioSetSettingAction>(console, varName, ScenarioSetSetting::InitialLoan, amount);
         }
         else if (varName == "max_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
@@ -865,7 +865,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "pay_for_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            SET_FLAG(gameState.Park.Flags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
+            SET_FLAG(gameState.park.Flags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
             console.Execute("get pay_for_rides");
         }
         else if (varName == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))
@@ -950,7 +950,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "cheat_sandbox_mode" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            if (GetGameState().Cheats.sandboxMode != (int_val[0] != 0))
+            if (getGameState().cheats.sandboxMode != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::SandboxMode, int_val[0] != 0);
             }
@@ -961,7 +961,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "cheat_disable_clearance_checks" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            if (GetGameState().Cheats.disableClearanceChecks != (int_val[0] != 0))
+            if (getGameState().cheats.disableClearanceChecks != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::DisableClearanceChecks, int_val[0] != 0);
             }
@@ -972,7 +972,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "cheat_disable_support_limits" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            if (GetGameState().Cheats.disableSupportLimits != (int_val[0] != 0))
+            if (getGameState().cheats.disableSupportLimits != (int_val[0] != 0))
             {
                 ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::DisableSupportLimits, int_val[0] != 0);
             }

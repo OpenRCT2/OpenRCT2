@@ -97,13 +97,13 @@ namespace OpenRCT2::Scripting
 
     uint8_t ScResearch::funding_get() const
     {
-        return GetGameState().ResearchFundingLevel;
+        return getGameState().researchFundingLevel;
     }
 
     void ScResearch::funding_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        GetGameState().ResearchFundingLevel = std::clamp<uint8_t>(value, RESEARCH_FUNDING_NONE, RESEARCH_FUNDING_MAXIMUM);
+        getGameState().researchFundingLevel = std::clamp<uint8_t>(value, RESEARCH_FUNDING_NONE, RESEARCH_FUNDING_MAXIMUM);
     }
 
     std::vector<std::string> ScResearch::priorities_get() const
@@ -112,7 +112,7 @@ namespace OpenRCT2::Scripting
         for (auto i = EnumValue(ResearchCategory::Transport); i <= EnumValue(ResearchCategory::SceneryGroup); i++)
         {
             auto category = static_cast<ResearchCategory>(i);
-            if (GetGameState().ResearchPriorities & EnumToFlag(category))
+            if (getGameState().researchPriorities & EnumToFlag(category))
             {
                 result.emplace_back(ResearchCategoryMap[category]);
             }
@@ -133,12 +133,12 @@ namespace OpenRCT2::Scripting
                 priorities |= EnumToFlag(*category);
             }
         }
-        GetGameState().ResearchPriorities = priorities;
+        getGameState().researchPriorities = priorities;
     }
 
     std::string ScResearch::stage_get() const
     {
-        return std::string(ResearchStageMap[GetGameState().ResearchProgressStage]);
+        return std::string(ResearchStageMap[getGameState().researchProgressStage]);
     }
 
     void ScResearch::stage_set(const std::string& value)
@@ -147,57 +147,57 @@ namespace OpenRCT2::Scripting
         auto it = ResearchStageMap.find(value);
         if (it != ResearchStageMap.end())
         {
-            GetGameState().ResearchProgressStage = it->second;
+            getGameState().researchProgressStage = it->second;
         }
     }
 
     uint16_t ScResearch::progress_get() const
     {
-        return GetGameState().ResearchProgress;
+        return getGameState().researchProgress;
     }
 
     void ScResearch::progress_set(uint16_t value)
     {
         ThrowIfGameStateNotMutable();
-        GetGameState().ResearchProgress = value;
+        getGameState().researchProgress = value;
     }
 
     DukValue ScResearch::expectedMonth_get() const
     {
-        const auto& gameState = GetGameState();
-        if (gameState.ResearchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || gameState.ResearchExpectedDay == 255)
+        const auto& gameState = getGameState();
+        if (gameState.researchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || gameState.researchExpectedDay == 255)
             return ToDuk(_context, nullptr);
-        return ToDuk(_context, gameState.ResearchExpectedMonth);
+        return ToDuk(_context, gameState.researchExpectedMonth);
     }
 
     DukValue ScResearch::expectedDay_get() const
     {
-        const auto& gameState = GetGameState();
-        if (gameState.ResearchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || gameState.ResearchExpectedDay == 255)
+        const auto& gameState = getGameState();
+        if (gameState.researchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || gameState.researchExpectedDay == 255)
             return ToDuk(_context, nullptr);
-        return ToDuk(_context, gameState.ResearchExpectedDay + 1);
+        return ToDuk(_context, gameState.researchExpectedDay + 1);
     }
 
     DukValue ScResearch::lastResearchedItem_get() const
     {
-        const auto& gameState = GetGameState();
-        if (!gameState.ResearchLastItem)
+        const auto& gameState = getGameState();
+        if (!gameState.researchLastItem)
             return ToDuk(_context, nullptr);
-        return ToDuk(_context, *gameState.ResearchLastItem);
+        return ToDuk(_context, *gameState.researchLastItem);
     }
 
     DukValue ScResearch::expectedItem_get() const
     {
-        const auto& gameState = GetGameState();
-        if (gameState.ResearchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || !gameState.ResearchNextItem)
+        const auto& gameState = getGameState();
+        if (gameState.researchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || !gameState.researchNextItem)
             return ToDuk(_context, nullptr);
-        return ToDuk(_context, *gameState.ResearchNextItem);
+        return ToDuk(_context, *gameState.researchNextItem);
     }
 
     std::vector<DukValue> ScResearch::inventedItems_get() const
     {
         std::vector<DukValue> result;
-        for (auto& item : GetGameState().ResearchItemsInvented)
+        for (auto& item : getGameState().researchItemsInvented)
         {
             result.push_back(ToDuk(_context, item));
         }
@@ -208,14 +208,14 @@ namespace OpenRCT2::Scripting
     {
         ThrowIfGameStateNotMutable();
         auto list = ConvertResearchList(value);
-        GetGameState().ResearchItemsInvented = std::move(list);
+        getGameState().researchItemsInvented = std::move(list);
         ResearchFix();
     }
 
     std::vector<DukValue> ScResearch::uninventedItems_get() const
     {
         std::vector<DukValue> result;
-        for (auto& item : GetGameState().ResearchItemsUninvented)
+        for (auto& item : getGameState().researchItemsUninvented)
         {
             result.push_back(ToDuk(_context, item));
         }
@@ -226,7 +226,7 @@ namespace OpenRCT2::Scripting
     {
         ThrowIfGameStateNotMutable();
         auto list = ConvertResearchList(value);
-        GetGameState().ResearchItemsUninvented = std::move(list);
+        getGameState().researchItemsUninvented = std::move(list);
         ResearchFix();
     }
 

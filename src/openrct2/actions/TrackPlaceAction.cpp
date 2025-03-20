@@ -99,8 +99,8 @@ GameActions::Result TrackPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    auto& gameState = GetGameState();
-    if (_rideType != ride->type && !gameState.Cheats.allowArbitraryRideTypeChanges)
+    auto& gameState = getGameState();
+    if (_rideType != ride->type && !gameState.cheats.allowArbitraryRideTypeChanges)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, kStringIdNone);
@@ -138,7 +138,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if (!(GetActionFlags() & GameActions::Flags::AllowWhilePaused))
     {
-        if (GameIsPaused() && !gameState.Cheats.buildInPauseMode)
+        if (GameIsPaused() && !gameState.cheats.buildInPauseMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -168,7 +168,7 @@ GameActions::Result TrackPlaceAction::Query() const
         }
         // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
         if (_trackPlaceFlags.has(LiftHillAndInverted::liftHill) && !rtd.SupportsTrackGroup(TrackGroup::liftHillSteep)
-            && !gameState.Cheats.enableChainLiftOnAllTrack)
+            && !gameState.cheats.enableChainLiftOnAllTrack)
         {
             const auto& ted = GetTrackElementDescriptor(_trackType);
             if (ted.flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
@@ -194,7 +194,7 @@ GameActions::Result TrackPlaceAction::Query() const
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
-        if (!MapIsLocationOwned(tileCoords) && !gameState.Cheats.sandboxMode)
+        if (!MapIsLocationOwned(tileCoords) && !gameState.cheats.sandboxMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -210,7 +210,7 @@ GameActions::Result TrackPlaceAction::Query() const
             STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    if (!gameState.Cheats.allowTrackPlaceInvalidHeights)
+    if (!gameState.cheats.allowTrackPlaceInvalidHeights)
     {
         if (ted.flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
         {
@@ -313,7 +313,7 @@ GameActions::Result TrackPlaceAction::Query() const
             }
         }
 
-        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !gameState.Cheats.disableClearanceChecks)
+        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !gameState.cheats.disableClearanceChecks)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -379,7 +379,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        if (!gameState.Cheats.disableSupportLimits)
+        if (!gameState.cheats.disableSupportLimits)
         {
             int32_t ride_height = clearanceZ - surfaceElement->GetBaseZ();
             if (ride_height >= 0)
@@ -504,8 +504,8 @@ GameActions::Result TrackPlaceAction::Execute() const
             }
         }
 
-        auto& gameState = GetGameState();
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.Cheats.disableClearanceChecks)
+        auto& gameState = getGameState();
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.cheats.disableClearanceChecks)
         {
             FootpathRemoveLitter(mapLoc);
             if (rtd.HasFlag(RtdFlag::noWallsAroundTrack))
@@ -639,7 +639,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             uint32_t availableDirections = entranceDirections & 0x0F;
             if (availableDirections != 0)
             {
-                if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.Cheats.disableClearanceChecks)
+                if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.cheats.disableClearanceChecks)
                 {
                     for (int32_t chosenDirection = Numerics::bitScanForward(availableDirections); chosenDirection != -1;
                          chosenDirection = Numerics::bitScanForward(availableDirections))
@@ -681,7 +681,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             }
         }
 
-        if (!gameState.Cheats.disableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!gameState.cheats.disableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             FootpathConnectEdges(mapLoc, tileElement, GetFlags());
         }
@@ -712,7 +712,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                 if (ride->mode == RideMode::poweredLaunch)
                 {
                     if (rtd.SupportsRideMode(RideMode::poweredLaunchBlockSectioned)
-                        || GetGameState().Cheats.showAllOperatingModes)
+                        || getGameState().cheats.showAllOperatingModes)
                         newMode = RideMode::poweredLaunchBlockSectioned;
                     else
                         newMode = RideMode::poweredLaunch;

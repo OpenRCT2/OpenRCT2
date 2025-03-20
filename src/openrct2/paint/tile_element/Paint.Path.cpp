@@ -176,7 +176,7 @@ static void PathPaintQueueBanner(
         }
 
         uint16_t stringWidth = GfxGetStringWidth(bannerBuffer, FontStyle::Tiny);
-        uint16_t scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
+        uint16_t scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
         PaintAddImageAsChild(
             session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),

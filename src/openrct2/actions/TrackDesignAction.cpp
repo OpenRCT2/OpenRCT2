@@ -65,21 +65,21 @@ GameActions::Result TrackDesignAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
     if (entryIndex == kObjectEntryIndexNull)
     {
         // Force a fallback if the entry is not invented yet a track design of it is selected,
         // which can happen in select-by-track-type mode
-        if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !gameState.cheats.ignoreResearchStatus)
         {
             entryIndex = kObjectEntryIndexNull;
         }
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.LastEntranceStyle);
+    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -139,21 +139,21 @@ GameActions::Result TrackDesignAction::Execute() const
     res.Position.z = _loc.z;
     res.Expenditure = ExpenditureType::RideConstruction;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
     if (entryIndex != kObjectEntryIndexNull)
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
         // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
-        if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !gameState.cheats.ignoreResearchStatus)
         {
             entryIndex = kObjectEntryIndexNull;
         }
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.LastEntranceStyle);
+    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -245,7 +245,7 @@ GameActions::Result TrackDesignAction::Execute() const
     ride->entranceStyle = objManager.GetLoadedObjectEntryIndex(_td.appearance.stationObjectIdentifier);
     if (ride->entranceStyle == kObjectEntryIndexNull)
     {
-        ride->entranceStyle = gameState.LastEntranceStyle;
+        ride->entranceStyle = gameState.lastEntranceStyle;
     }
 
     for (size_t i = 0; i < std::min(std::size(ride->trackColours), std::size(_td.appearance.trackColours)); i++)

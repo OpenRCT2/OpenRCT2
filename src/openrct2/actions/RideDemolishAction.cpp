@@ -65,7 +65,7 @@ GameActions::Result RideDemolishAction::Query() const
 
     if ((ride->lifecycleFlags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
          && _modifyType == RideModifyType::demolish)
-        && !GetGameState().Cheats.makeAllDestructible)
+        && !getGameState().cheats.makeAllDestructible)
     {
         return GameActions::Result(
             GameActions::Status::NoClearance, STR_CANT_DEMOLISH_RIDE,
@@ -154,7 +154,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     }
 
     ride.remove();
-    GetGameState().Park.Value = Park::CalculateParkValue();
+    getGameState().park.Value = Park::CalculateParkValue();
 
     // Close windows related to the demolished ride
     auto* windowMgr = Ui::GetWindowManager();
@@ -195,11 +195,11 @@ money64 RideDemolishAction::DemolishTracks() const
 
     uint8_t oldpaused = gGamePaused;
     gGamePaused = 0;
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
-    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.mapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.mapSize.y; ++tilePos.y)
         {
             const auto tileCoords = tilePos.ToCoordsXY();
             // Loop over all elements of the tile until there are no more items to remove

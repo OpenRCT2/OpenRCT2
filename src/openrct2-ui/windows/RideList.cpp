@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t selectedIndex = -1;
                 for (int32_t type = INFORMATION_TYPE_STATUS; type <= lastType; type++)
                 {
-                    if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+                    if ((getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
                     {
                         if (ride_info_type_money_mapping[type])
                         {

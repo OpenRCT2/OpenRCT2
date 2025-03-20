@@ -326,26 +326,26 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowResearchDevelopmentMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
     {
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
 
         if (widgetIndex == (WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset))
         {
-            News::OpenSubject(News::ItemType::Research, gameState.ResearchLastItem->rawValue);
+            News::OpenSubject(News::ItemType::Research, gameState.researchLastItem->rawValue);
         }
     }
 
     void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex)
     {
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         // Offset the widget index to allow reuse from other windows
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
         w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].type = WindowWidgetType::Empty;
 
         // Display button to link to the last development, if there is one
-        if (gameState.ResearchLastItem.has_value())
+        if (gameState.researchLastItem.has_value())
         {
-            auto type = gameState.ResearchLastItem->type;
+            auto type = gameState.researchLastItem->type;
             w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].type = WindowWidgetType::FlatBtn;
             const auto image = type == Research::EntryType::Ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
             w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].image = ImageId(image);
@@ -354,13 +354,13 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex)
     {
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
 
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
         auto screenCoords = w->windowPos
             + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + widgetOffset].top + 12 };
 
-        if (gameState.ResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+        if (gameState.researchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
         {
             // Research type
             auto ft = Formatter();
@@ -384,53 +384,53 @@ namespace OpenRCT2::Ui::Windows
             // Research type
             auto ft = Formatter();
             StringId label = STR_RESEARCH_TYPE_LABEL;
-            if (gameState.ResearchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH)
+            if (gameState.researchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH)
             {
                 ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
             }
-            else if (gameState.ResearchProgressStage == RESEARCH_STAGE_DESIGNING)
+            else if (gameState.researchProgressStage == RESEARCH_STAGE_DESIGNING)
             {
-                ft.Add<StringId>(gameState.ResearchNextItem->GetCategoryName());
+                ft.Add<StringId>(gameState.researchNextItem->GetCategoryName());
             }
-            else if (gameState.ResearchNextItem->type == Research::EntryType::Ride)
+            else if (gameState.researchNextItem->type == Research::EntryType::Ride)
             {
-                const auto& rtd = GetRideTypeDescriptor(gameState.ResearchNextItem->baseRideType);
+                const auto& rtd = GetRideTypeDescriptor(gameState.researchNextItem->baseRideType);
                 if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
                 {
-                    ft.Add<StringId>(gameState.ResearchNextItem->GetName());
+                    ft.Add<StringId>(gameState.researchNextItem->GetName());
                 }
-                else if (gameState.ResearchNextItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                else if (gameState.researchNextItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
                 {
                     ft.Add<StringId>(rtd.Naming.Name);
                 }
                 else
                 {
-                    ft.Add<StringId>(gameState.ResearchNextItem->GetName());
+                    ft.Add<StringId>(gameState.researchNextItem->GetName());
                     ft.Add<StringId>(rtd.Naming.Name);
                     label = STR_RESEARCH_TYPE_LABEL_VEHICLE;
                 }
             }
             else
             {
-                ft.Add<StringId>(gameState.ResearchNextItem->GetName());
+                ft.Add<StringId>(gameState.researchNextItem->GetName());
             }
             DrawTextWrapped(dpi, screenCoords, 296, label, ft);
             screenCoords.y += 25;
 
             // Progress
             ft = Formatter();
-            ft.Add<StringId>(ResearchStageNames[gameState.ResearchProgressStage]);
+            ft.Add<StringId>(ResearchStageNames[gameState.researchProgressStage]);
             DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
             screenCoords.y += 15;
 
             // Expected
             ft = Formatter();
-            if (gameState.ResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH && gameState.ResearchExpectedDay != 255)
+            if (gameState.researchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH && gameState.researchExpectedDay != 255)
             {
                 // TODO: Should probably use game date format setting
                 ft.Add<StringId>(STR_RESEARCH_EXPECTED_FORMAT);
-                ft.Add<StringId>(DateDayNames[gameState.ResearchExpectedDay]);
-                ft.Add<StringId>(DateGameMonthNames[gameState.ResearchExpectedMonth]);
+                ft.Add<StringId>(DateDayNames[gameState.researchExpectedDay]);
+                ft.Add<StringId>(DateGameMonthNames[gameState.researchExpectedMonth]);
             }
             else
             {
@@ -442,30 +442,30 @@ namespace OpenRCT2::Ui::Windows
         // Last development
         screenCoords = w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + widgetOffset].top + 12 };
 
-        if (gameState.ResearchLastItem.has_value())
+        if (gameState.researchLastItem.has_value())
         {
             StringId lastDevelopmentFormat = kStringIdEmpty;
             auto ft = Formatter();
-            if (gameState.ResearchLastItem->type == Research::EntryType::Scenery)
+            if (gameState.researchLastItem->type == Research::EntryType::Scenery)
             {
                 lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
-                ft.Add<StringId>(gameState.ResearchLastItem->GetName());
+                ft.Add<StringId>(gameState.researchLastItem->GetName());
             }
             else
             {
                 lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
-                const auto& rtd = GetRideTypeDescriptor(gameState.ResearchLastItem->baseRideType);
+                const auto& rtd = GetRideTypeDescriptor(gameState.researchLastItem->baseRideType);
                 if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
                 {
-                    ft.Add<StringId>(gameState.ResearchLastItem->GetName());
+                    ft.Add<StringId>(gameState.researchLastItem->GetName());
                 }
-                else if (gameState.ResearchLastItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                else if (gameState.researchLastItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
                 {
                     ft.Add<StringId>(rtd.Naming.Name);
                 }
                 else
                 {
-                    ft.Add<StringId>(gameState.ResearchLastItem->GetName());
+                    ft.Add<StringId>(gameState.researchLastItem->GetName());
                     ft.Add<StringId>(rtd.Naming.Name);
                     lastDevelopmentFormat = STR_RESEARCH_VEHICLE_LABEL;
                 }
@@ -481,7 +481,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
     {
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
         if (widgetIndex != (WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset))
@@ -498,13 +498,13 @@ namespace OpenRCT2::Ui::Windows
             { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
             w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
 
-        int32_t currentResearchLevel = gameState.ResearchFundingLevel;
+        int32_t currentResearchLevel = gameState.researchFundingLevel;
         Dropdown::SetChecked(currentResearchLevel, true);
     }
 
     void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)
     {
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
         switch (widgetIndex - widgetOffset)
@@ -517,9 +517,9 @@ namespace OpenRCT2::Ui::Windows
             case WIDX_SHOPS_AND_STALLS:
             case WIDX_SCENERY_AND_THEMING:
             {
-                auto activeResearchTypes = gameState.ResearchPriorities;
+                auto activeResearchTypes = gameState.researchPriorities;
                 activeResearchTypes ^= 1uLL << (widgetIndex - (WIDX_TRANSPORT_RIDES + widgetOffset));
-                auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gameState.ResearchFundingLevel);
+                auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gameState.researchFundingLevel);
                 GameActions::Execute(&gameAction);
                 break;
             }
@@ -528,22 +528,22 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedIndex, WidgetIndex baseWidgetIndex)
     {
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
         if (widgetIndex != (WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset) || selectedIndex == -1)
             return;
 
-        auto gameAction = ParkSetResearchFundingAction(gameState.ResearchPriorities, selectedIndex);
+        auto gameAction = ParkSetResearchFundingAction(gameState.researchPriorities, selectedIndex);
         GameActions::Execute(&gameAction);
     }
 
     void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex)
     {
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-        if ((gameState.Park.Flags & PARK_FLAGS_NO_MONEY) || gameState.ResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+        if ((gameState.park.Flags & PARK_FLAGS_NO_MONEY) || gameState.researchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
         {
             w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WindowWidgetType::Empty;
             w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WindowWidgetType::Empty;
@@ -555,12 +555,12 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // Current funding
-        int32_t currentResearchLevel = gameState.ResearchFundingLevel;
+        int32_t currentResearchLevel = gameState.researchFundingLevel;
         w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].text = kResearchFundingLevelNames[currentResearchLevel];
 
         // Checkboxes
-        uint8_t activeResearchTypes = gameState.ResearchPriorities;
-        int32_t uncompletedResearchTypes = gameState.ResearchUncompletedCategories;
+        uint8_t activeResearchTypes = gameState.researchPriorities;
+        int32_t uncompletedResearchTypes = gameState.researchUncompletedCategories;
         for (int32_t i = 0; i < 7; i++)
         {
             int32_t mask = 1 << i;
@@ -587,11 +587,11 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi)
     {
-        const auto& gameState = GetGameState();
-        if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
+        const auto& gameState = getGameState();
+        if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
             return;
 
-        int32_t currentResearchLevel = gameState.ResearchFundingLevel;
+        int32_t currentResearchLevel = gameState.researchFundingLevel;
         auto ft = Formatter();
         ft.Add<money64>(research_cost_table[currentResearchLevel]);
         DrawTextBasic(
