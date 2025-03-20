@@ -68,6 +68,11 @@ namespace OpenRCT2::Ui::Windows
             SetAllSceneryItemsInvented();
         }
 
+        bool GameHasEntities() const
+        {
+            return GetNumFreeEntities() != kMaxEntities || getGameState().park.Flags & PARK_FLAGS_SPRITES_INITIALISED;
+        }
+
         void OnPrepareDraw() override
         {
             ColourSchemeUpdateByClass(
@@ -86,29 +91,22 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::ImgBtn;
             widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::ImgBtn;
 
-            if (gLegacyScene == LegacyScene::trackDesignsManager)
+            auto& gameState = getGameState();
+            if (gLegacyScene == LegacyScene::trackDesignsManager || gameState.editorStep == EditorStep::SaveScenario)
             {
                 HidePreviousStepButton();
                 HideNextStepButton();
             }
             else
             {
-                auto& gameState = getGameState();
-
-                if (gameState.editorStep == EditorStep::ObjectSelection)
+                if (gameState.editorStep == EditorStep::ObjectSelection
+                    || (GameHasEntities() && gameState.editorStep == EditorStep::OptionsSelection))
                 {
                     HidePreviousStepButton();
                 }
                 else if (gameState.editorStep == EditorStep::RollercoasterDesigner)
                 {
                     HideNextStepButton();
-                }
-                else if (gLegacyScene != LegacyScene::trackDesigner)
-                {
-                    if (GetNumFreeEntities() != kMaxEntities || getGameState().park.Flags & PARK_FLAGS_SPRITES_INITIALISED)
-                    {
-                        HidePreviousStepButton();
-                    }
                 }
             }
         }
@@ -140,11 +138,7 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
             if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
-                if (gLegacyScene == LegacyScene::trackDesigner
-                    || (GetNumFreeEntities() == kMaxEntities && !(gameState.park.Flags & PARK_FLAGS_SPRITES_INITIALISED)))
-                {
-                    ((this)->*(kPreviousButtonMouseUp[EnumValue(gameState.editorStep)]))();
-                }
+                ((this)->*(kPreviousButtonMouseUp[EnumValue(gameState.editorStep)]))();
             }
             else if (widgetIndex == WIDX_NEXT_STEP_BUTTON)
             {
