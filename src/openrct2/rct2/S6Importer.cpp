@@ -320,6 +320,38 @@ namespace OpenRCT2::RCT2
             return {};
         }
 
+        std::vector<OpenRCT2::News::Item> convertNewsQueue(const RCT12NewsItem* queue, uint8_t size)
+        {
+            std::vector<OpenRCT2::News::Item> output{};
+            const RCT12NewsItem* src = queue;
+
+            for (uint8_t i = 0; i < size; i++)
+            {
+                if (src->Type == 0)
+                    break;
+
+                if (src->Type >= News::ItemTypeCount)
+                {
+                    LOG_ERROR("Invalid news type 0x%x for news item %d, ignoring remaining news items", src->Type, i);
+                    break;
+                }
+
+                News::Item dst{};
+                dst.Type = static_cast<News::ItemType>(src->Type);
+                dst.Flags = src->Flags;
+                dst.Assoc = src->Assoc;
+                dst.Ticks = src->Ticks;
+                dst.MonthYear = src->MonthYear;
+                dst.Day = src->Day;
+                dst.Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
+
+                output.emplace_back(dst);
+                src++;
+            }
+
+            return output;
+        }
+
         void Import(GameState_t& gameState) override
         {
             Initialise(gameState);
@@ -573,30 +605,9 @@ namespace OpenRCT2::RCT2
             };
 
             // News items
-            News::InitQueue();
-            for (size_t i = 0; i < Limits::MaxNewsItems; i++)
-            {
-                const RCT12NewsItem* src = &_s6.NewsItems[i];
-                News::Item* dst = &gameState.NewsItems[i];
-                if (src->Type < News::ItemTypeCount)
-                {
-                    dst->Type = static_cast<News::ItemType>(src->Type);
-                    dst->Flags = src->Flags;
-                    dst->Assoc = src->Assoc;
-                    dst->Ticks = src->Ticks;
-                    dst->MonthYear = src->MonthYear;
-                    dst->Day = src->Day;
-                    dst->Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
-                }
-                else
-                {
-                    // In case where news item type is broken, consider all remaining news items invalid.
-                    LOG_ERROR("Invalid news type 0x%x for news item %d, ignoring remaining news items", src->Type, i);
-                    // Still need to set the correct type to properly terminate the queue
-                    dst->Type = News::ItemType::Null;
-                    break;
-                }
-            }
+            auto recentMessages = convertNewsQueue(_s6.recentMessages, std::size(_s6.recentMessages));
+            auto archivedMessages = convertNewsQueue(_s6.archivedMessages, std::size(_s6.archivedMessages));
+            News::importNewsItems(gameState, recentMessages, archivedMessages);
 
             // Pad13CE730
             // rct1_scenario_flags

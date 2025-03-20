@@ -889,7 +889,8 @@ namespace OpenRCT2::RCT1
         uint8_t TargetWeatherGloom;
         uint8_t Rain;
         uint8_t TargetRain;
-        RCT12NewsItem Messages[Limits::MaxNewsItems];
+        RCT12NewsItem recentMessages[Limits::kMaxRecentNewsItems];
+        RCT12NewsItem archivedMessages[Limits::kMaxArchivedNewsItems];
         char ScenarioName[62];
         uint16_t ScenarioSlotIndex;
         uint32_t ScenarioFlags;

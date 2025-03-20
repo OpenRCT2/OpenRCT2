@@ -1129,26 +1129,13 @@ namespace OpenRCT2
             os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [&gameState](OrcaStream::ChunkStream& cs) {
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    gameState.NewsItems.Clear();
-
                     std::vector<News::Item> recent;
                     cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
-                    for (size_t i = 0; i < std::min<size_t>(recent.size(), News::ItemHistoryStart); i++)
-                    {
-                        gameState.NewsItems[i] = recent[i];
-                    }
 
                     std::vector<News::Item> archived;
                     cs.ReadWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
-                    size_t offset = News::ItemHistoryStart;
-                    for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
-                    {
-                        gameState.NewsItems[offset + i] = archived[i];
-                    }
 
-                    // Still need to set the correct type to properly terminate the queue
-                    if (archived.size() < News::MaxItemsArchive)
-                        gameState.NewsItems[offset + archived.size()].Type = News::ItemType::Null;
+                    News::importNewsItems(gameState, recent, archived);
                 }
                 else
                 {

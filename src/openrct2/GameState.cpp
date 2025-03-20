@@ -65,7 +65,7 @@ namespace OpenRCT2
         UpdateConsolidatedPatrolAreas();
         ResetDate();
         ClimateReset();
-        News::InitQueue();
+        News::InitQueue(gameState);
 
         gInMapInitCode = false;
 

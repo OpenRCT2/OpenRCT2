@@ -438,7 +438,7 @@ namespace OpenRCT2::Title
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
             Ui::Windows::WindowScenerySetDefaultPlacementConfiguration();
-            News::InitQueue();
+            News::InitQueue(gameState);
             LoadPalette();
             gScreenAge = 0;
             gGamePaused = false;

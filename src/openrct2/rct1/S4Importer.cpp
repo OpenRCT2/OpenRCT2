@@ -2192,6 +2192,46 @@ namespace OpenRCT2::RCT1
             park.Name = std::move(parkName);
         }
 
+        std::vector<OpenRCT2::News::Item> convertNewsQueue(const RCT12NewsItem* queue, uint8_t size)
+        {
+            std::vector<OpenRCT2::News::Item> output{};
+            const RCT12NewsItem* src = queue;
+
+            for (uint8_t i = 0; i < size; i++)
+            {
+                News::Item dst{};
+
+                if (src->Type == 0)
+                    break;
+
+                dst.Type = static_cast<News::ItemType>(src->Type);
+                dst.Flags = src->Flags;
+                dst.Ticks = src->Ticks;
+                dst.MonthYear = src->MonthYear;
+                dst.Day = src->Day;
+                dst.Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
+
+                if (dst.Type == News::ItemType::Research)
+                {
+                    uint8_t researchItem = src->Assoc & 0x000000FF;
+                    uint8_t researchType = (src->Assoc & 0x00FF0000) >> 16;
+
+                    ::ResearchItem tmpResearchItem = {};
+                    ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
+                    dst.Assoc = tmpResearchItem.rawValue;
+                }
+                else
+                {
+                    dst.Assoc = src->Assoc;
+                }
+
+                output.emplace_back(dst);
+                src++;
+            }
+
+            return output;
+        }
+
         void ImportParkFlags(GameState_t& gameState)
         {
             // Date and srand
@@ -2241,32 +2281,9 @@ namespace OpenRCT2::RCT1
             }
 
             // News items
-            for (size_t i = 0; i < Limits::MaxNewsItems; i++)
-            {
-                const RCT12NewsItem* src = &_s4.Messages[i];
-                News::Item* dst = &gameState.NewsItems[i];
-
-                dst->Type = static_cast<News::ItemType>(src->Type);
-                dst->Flags = src->Flags;
-                dst->Ticks = src->Ticks;
-                dst->MonthYear = src->MonthYear;
-                dst->Day = src->Day;
-                dst->Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
-
-                if (dst->Type == News::ItemType::Research)
-                {
-                    uint8_t researchItem = src->Assoc & 0x000000FF;
-                    uint8_t researchType = (src->Assoc & 0x00FF0000) >> 16;
-
-                    ::ResearchItem tmpResearchItem = {};
-                    ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
-                    dst->Assoc = tmpResearchItem.rawValue;
-                }
-                else
-                {
-                    dst->Assoc = src->Assoc;
-                }
-            }
+            auto recentMessages = convertNewsQueue(_s4.recentMessages, std::size(_s4.recentMessages));
+            auto archivedMessages = convertNewsQueue(_s4.archivedMessages, std::size(_s4.archivedMessages));
+            News::importNewsItems(gameState, recentMessages, archivedMessages);
 
             // Initial guest status
             gameState.GuestInitialCash = ToMoney64(_s4.GuestInitialCash);

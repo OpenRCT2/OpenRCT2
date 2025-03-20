@@ -104,9 +104,8 @@ void News::ItemQueues::Clear()
     Archived.clear();
 }
 
-void News::InitQueue()
+void News::InitQueue(GameState_t& gameState)
 {
-    auto& gameState = GetGameState();
     gameState.NewsItems.Clear();
     assert(gameState.NewsItems.IsEmpty());
 
@@ -483,4 +482,19 @@ void News::RemoveItem(int32_t index)
         gameState.NewsItems[i] = gameState.NewsItems[i + 1];
     }
     gameState.NewsItems[newsBoundary - 1].Type = News::ItemType::Null;
+}
+
+void News::importNewsItems(
+    GameState_t& gameState, const std::span<const News::Item> recent, const std::span<const News::Item> archived)
+{
+    gameState.NewsItems.Clear();
+
+    for (size_t i = 0; i < std::min<size_t>(recent.size(), News::ItemHistoryStart); i++)
+    {
+        gameState.NewsItems[i] = recent[i];
+    }
+    for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
+    {
+        gameState.NewsItems[News::ItemHistoryStart + i] = archived[i];
+    }
 }
