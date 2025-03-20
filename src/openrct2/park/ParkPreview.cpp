@@ -51,14 +51,18 @@ namespace OpenRCT2
         return preview;
     }
 
+    static uint8_t _tileColourIndex = 0;
+
     static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
     {
-        PaletteIndex colour = PALETTE_INDEX_0;
+        PaletteIndex paletteIndex = PALETTE_INDEX_0;
 
         auto tileElement = MapGetFirstElementAt(pos);
         if (tileElement == nullptr)
-            return colour;
+            return paletteIndex;
 
+        PaletteIndex surfaceColour = paletteIndex;
+        bool isOutsidePark = false;
         do
         {
             switch (tileElement->GetType())
@@ -68,39 +72,42 @@ namespace OpenRCT2
                     auto* surfaceElement = tileElement->AsSurface();
                     if (surfaceElement == nullptr)
                     {
-                        colour = PALETTE_INDEX_0;
+                        surfaceColour = paletteIndex = PALETTE_INDEX_0;
                         break;
                     }
 
                     if (surfaceElement->GetWaterHeight() > 0)
                     {
-                        colour = PALETTE_INDEX_195;
-                        break;
+                        surfaceColour = paletteIndex = PALETTE_INDEX_195;
+                    }
+                    else
+                    {
+                        const auto* surfaceObject = surfaceElement->GetSurfaceObject();
+                        if (surfaceObject != nullptr)
+                        {
+                            surfaceColour = paletteIndex = surfaceObject->MapColours[_tileColourIndex];
+                        }
                     }
 
-                    const auto* surfaceObject = surfaceElement->GetSurfaceObject();
-                    if (surfaceObject != nullptr)
-                    {
-                        colour = surfaceObject->MapColours[1];
-                    }
+                    isOutsidePark |= !(surfaceElement->GetOwnership() & OWNERSHIP_OWNED);
                     break;
                 }
 
                 case TileElementType::Path:
-                    colour = PALETTE_INDEX_17;
+                    paletteIndex = PALETTE_INDEX_17;
                     break;
 
                 case TileElementType::Track:
-                    colour = PALETTE_INDEX_183;
+                    paletteIndex = PALETTE_INDEX_183;
                     break;
 
                 case TileElementType::SmallScenery:
                 case TileElementType::LargeScenery:
-                    colour = PALETTE_INDEX_99; // 64
+                    paletteIndex = PALETTE_INDEX_99; // 64
                     break;
 
                 case TileElementType::Entrance:
-                    colour = PALETTE_INDEX_186;
+                    paletteIndex = PALETTE_INDEX_186;
                     break;
 
                 default:
@@ -108,7 +115,16 @@ namespace OpenRCT2
             }
         } while (!(tileElement++)->IsLastForTile());
 
-        return colour;
+        // Darken every other tile that's outside of the park, unless it's a path
+        if (isOutsidePark && _tileColourIndex == 1 && paletteIndex != PALETTE_INDEX_17)
+            paletteIndex = PALETTE_INDEX_10;
+        // For rides, every other tile should use the surface colour
+        else if (_tileColourIndex == 1 && paletteIndex == PALETTE_INDEX_183)
+            paletteIndex = surfaceColour;
+
+        _tileColourIndex = (_tileColourIndex + 1) % 2;
+
+        return paletteIndex;
     }
 
     // 0x0046DB4C
@@ -141,6 +157,8 @@ namespace OpenRCT2
             int32_t mapY = 1 + (y * mapSkipFactor);
             if (mapY >= drawableMapSize.y)
                 break;
+
+            _tileColourIndex = y % 2;
 
             for (auto x = 0u; x < image.width; x++)
             {
