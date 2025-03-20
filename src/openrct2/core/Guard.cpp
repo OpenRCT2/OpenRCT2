@@ -23,7 +23,7 @@
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
-#include <format>
+#include <sstream>
 
 namespace OpenRCT2::Guard
 {
@@ -60,7 +60,11 @@ namespace OpenRCT2::Guard
         if (expression)
             return;
 
-        std::string message = std::format("Assertion failed in {}:{}", location.function_name(), location.line());
+        std::stringstream messageStream;
+        messageStream << "Assertion failed in " << location.function_name() << ":" << location.line();
+
+        std::string message = messageStream.str();
+
         Assert(expression, message.c_str());
     }
 
