@@ -1053,8 +1053,7 @@ void Staff::UpdateWatering()
         if (!CheckForPath())
             return;
 
-        uint8_t pathingResult;
-        PerformNextAction(pathingResult);
+        const auto [pathingResult, _] = PerformNextAction();
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
@@ -1117,8 +1116,7 @@ void Staff::UpdateEmptyingBin()
         if (!CheckForPath())
             return;
 
-        uint8_t pathingResult;
-        PerformNextAction(pathingResult);
+        const auto [pathingResult, _] = PerformNextAction();
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
@@ -1273,10 +1271,7 @@ void Staff::UpdateHeadingToInspect()
         if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
-        uint8_t pathingResult;
-        TileElement* rideEntranceExitElement;
-        PerformNextAction(pathingResult, rideEntranceExitElement);
-
+        const auto [pathingResult, rideEntranceExitElement] = PerformNextAction();
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
         {
             return;
@@ -1381,10 +1376,7 @@ void Staff::UpdateAnswering()
         if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
-        uint8_t pathingResult;
-        TileElement* rideEntranceExitElement;
-        PerformNextAction(pathingResult, rideEntranceExitElement);
-
+        const auto [pathingResult, rideEntranceExitElement] = PerformNextAction();
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
         {
             return;
@@ -1719,8 +1711,7 @@ void Staff::UpdatePatrolling()
     if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
         return;
 
-    uint8_t pathingResult;
-    PerformNextAction(pathingResult);
+    const auto [pathingResult, _] = PerformNextAction();
     if (!(pathingResult & PATHING_DESTINATION_REACHED))
         return;
 

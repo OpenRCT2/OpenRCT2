@@ -2442,19 +2442,15 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
     return true;
 }
 
-void Peep::PerformNextAction(uint8_t& pathing_result)
-{
-    TileElement* tmpTile;
-    PerformNextAction(pathing_result, tmpTile);
-}
-
 /**
  *
  *  rct2: 0x00693C9E
  */
-void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
+std::pair<uint8_t, TileElement*> Peep::PerformNextAction()
 {
-    pathing_result = 0;
+    uint8_t pathingResult = 0;
+    TileElement* tileResult = nullptr;
+
     PeepActionType previousAction = Action;
 
     if (Action == PeepActionType::Idle)
@@ -2464,13 +2460,15 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     if (State == PeepState::Queuing && guest != nullptr)
     {
         if (guest->UpdateQueuePosition(previousAction))
-            return;
+        {
+            return { pathingResult, tileResult };
+        }
     }
 
     std::optional<CoordsXY> loc;
     if (loc = UpdateAction(); !loc.has_value())
     {
-        pathing_result |= PATHING_DESTINATION_REACHED;
+        pathingResult |= PATHING_DESTINATION_REACHED;
         uint8_t result = 0;
 
         if (guest != nullptr)
@@ -2484,10 +2482,10 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         }
 
         if (result != 0)
-            return;
+            return { pathingResult, tileResult };
 
         if (loc = UpdateAction(); !loc.has_value())
-            return;
+            return { pathingResult, tileResult };
     }
 
     auto newLoc = *loc;
@@ -2496,22 +2494,23 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     {
         int16_t height = GetZOnSlope(newLoc.x, newLoc.y);
         MoveTo({ newLoc.x, newLoc.y, height });
-        return;
+        return { pathingResult, tileResult };
     }
 
     if (MapIsEdge(newLoc))
     {
         if (guest != nullptr && guest->OutsideOfPark)
         {
-            pathing_result |= PATHING_OUTSIDE_PARK;
+            pathingResult |= PATHING_OUTSIDE_PARK;
         }
         PeepReturnToCentreOfTile(this);
-        return;
+        return { pathingResult, tileResult };
     }
 
     TileElement* tileElement = MapGetFirstElementAt(newLoc);
     if (tileElement == nullptr)
-        return;
+        return { pathingResult, tileResult };
+
     int16_t base_z = std::max(0, (z / 8) - 2);
     int16_t top_z = (z / 8) + 1;
 
@@ -2527,24 +2526,25 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         if (tileElement->GetType() == TileElementType::Path)
         {
             PeepInteractWithPath(this, { newLoc, tileElement });
-            tile_result = tileElement;
-            return;
+            tileResult = tileElement;
+
+            return { pathingResult, tileResult };
         }
 
         if (tileElement->GetType() == TileElementType::Track)
         {
             if (PeepInteractWithShop(this, { newLoc, tileElement }))
             {
-                tile_result = tileElement;
-                return;
+                tileResult = tileElement;
+                return { pathingResult, tileResult };
             }
         }
         else if (tileElement->GetType() == TileElementType::Entrance)
         {
-            if (PeepInteractWithEntrance(this, { newLoc, tileElement }, pathing_result))
+            if (PeepInteractWithEntrance(this, { newLoc, tileElement }, pathingResult))
             {
-                tile_result = tileElement;
-                return;
+                tileResult = tileElement;
+                return { pathingResult, tileResult };
             }
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -2564,21 +2564,21 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             if (!MapIsLocationInPark(newLoc))
             {
                 PeepReturnToCentreOfTile(this);
-                return;
+                return { pathingResult, tileResult };
             }
 
             auto surfaceElement = MapGetSurfaceElementAt(newLoc);
             if (surfaceElement == nullptr)
             {
                 PeepReturnToCentreOfTile(this);
-                return;
+                return { pathingResult, tileResult };
             }
 
             int16_t water_height = surfaceElement->GetWaterHeight();
             if (water_height > 0)
             {
                 PeepReturnToCentreOfTile(this);
-                return;
+                return { pathingResult, tileResult };
             }
 
             auto* staff = As<Staff>();
@@ -2588,7 +2588,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
                 if (!((staff->StaffOrders & STAFF_ORDERS_MOWING) && staff->StaffMowingTimeout >= 12))
                 {
                     PeepReturnToCentreOfTile(staff);
-                    return;
+                    return { pathingResult, tileResult };
                 }
             }
 
@@ -2598,11 +2598,12 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
             height = GetZOnSlope(newLoc.x, newLoc.y);
             MoveTo({ newLoc.x, newLoc.y, height });
-            return;
+            return { pathingResult, tileResult };
         }
     }
 
     PeepReturnToCentreOfTile(this);
+    return { pathingResult, tileResult };
 }
 
 /**

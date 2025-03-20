@@ -1281,8 +1281,7 @@ void Guest::UpdateSitting()
             return;
         // 691541
 
-        uint8_t pathingResult;
-        PerformNextAction(pathingResult);
+        const auto [pathingResult, _] = PerformNextAction();
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
@@ -5425,8 +5424,7 @@ void Guest::UpdateWalking()
         return;
     }
 
-    uint8_t pathingResult;
-    PerformNextAction(pathingResult);
+    const auto [pathingResult, _] = PerformNextAction();
     if (!(pathingResult & PATHING_DESTINATION_REACHED))
         return;
 
@@ -5660,8 +5658,7 @@ void Guest::UpdateQueuing()
         return;
     }
 
-    uint8_t pathingResult;
-    PerformNextAction(pathingResult);
+    PerformNextAction();
     if (!IsActionInterruptable())
         return;
     if (AnimationGroup == PeepAnimationGroup::Normal)
@@ -5739,8 +5736,7 @@ void Guest::UpdateEnteringPark()
 {
     if (Var37 != 1)
     {
-        uint8_t pathingResult;
-        PerformNextAction(pathingResult);
+        const auto [pathingResult, _] = PerformNextAction();
         if ((pathingResult & PATHING_OUTSIDE_PARK))
         {
             DecrementGuestsHeadingForPark();
@@ -5771,8 +5767,7 @@ void Guest::UpdateLeavingPark()
 {
     if (Var37 != 0)
     {
-        uint8_t pathingResult;
-        PerformNextAction(pathingResult);
+        const auto [pathingResult, _] = PerformNextAction();
         if (!(pathingResult & PATHING_OUTSIDE_PARK))
             return;
         PeepEntityRemove(this);
@@ -5795,8 +5790,7 @@ void Guest::UpdateLeavingPark()
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::GuestList);
 
-    uint8_t pathingResult;
-    PerformNextAction(pathingResult);
+    const auto [pathingResult, _] = PerformNextAction();
     if (!(pathingResult & PATHING_OUTSIDE_PARK))
         return;
     Remove();
@@ -5812,8 +5806,8 @@ void Guest::UpdateWatching()
     {
         if (!CheckForPath())
             return;
-        uint8_t pathingResult;
-        PerformNextAction(pathingResult);
+
+        const auto [pathingResult, _] = PerformNextAction();
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
@@ -5909,8 +5903,7 @@ void Guest::UpdateUsingBin()
             if (!CheckForPath())
                 return;
 
-            uint8_t pathingResult;
-            PerformNextAction(pathingResult);
+            const auto [pathingResult, _] = PerformNextAction();
             if (pathingResult & PATHING_DESTINATION_REACHED)
             {
                 UsingBinSubState = PeepUsingBinSubState::GoingBack;

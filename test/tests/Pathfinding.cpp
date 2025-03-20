@@ -108,8 +108,7 @@ protected:
         int step = 0;
         while (!(*pos == goal) && step < expectedSteps)
         {
-            uint8_t pathingResult = 0;
-            peep->PerformNextAction(pathingResult);
+            peep->PerformNextAction();
             ++step;
 
             *pos = TileCoordsXYZ(peep->GetLocation());

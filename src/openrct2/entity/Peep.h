@@ -20,6 +20,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 
 constexpr uint8_t kPeepMinEnergy = 32;
 constexpr uint8_t kPeepMaxEnergy = 128;
@@ -402,8 +403,7 @@ public: // Peep
     bool ShouldWaitForLevelCrossing();
     bool IsOnLevelCrossing();
     bool IsOnPathBlockedByVehicle();
-    void PerformNextAction(uint8_t& pathing_result);
-    void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
+    std::pair<uint8_t, TileElement*> PerformNextAction();
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextAnimationType();
     [[nodiscard]] PeepAnimationType GetAnimationType();
