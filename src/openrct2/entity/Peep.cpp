@@ -2215,15 +2215,16 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
 static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
 {
     // 0x00F1AEE2
-    auto tile_element = coords.element;
-    bool vandalism_present = false;
-    if (tile_element->AsPath()->HasAddition() && (tile_element->AsPath()->IsBroken())
-        && (tile_element->AsPath()->GetEdges()) != 0xF)
+    const auto* pathElement = coords.element->AsPath();
+    assert(pathElement != nullptr);
+
+    bool vandalismPresent = false;
+    if (pathElement->HasAddition() && pathElement->IsBroken() && (pathElement->GetEdges()) != 0xF)
     {
-        vandalism_present = true;
+        vandalismPresent = true;
     }
 
-    int16_t z = tile_element->GetBaseZ();
+    int16_t z = pathElement->GetBaseZ();
     auto* guest = peep->As<Guest>();
     if (MapIsLocationOwned({ coords, z }))
     {
@@ -2242,9 +2243,9 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
         }
     }
 
-    if (guest != nullptr && tile_element->AsPath()->IsQueue())
+    if (guest != nullptr && pathElement->IsQueue())
     {
-        auto rideIndex = tile_element->AsPath()->GetRideIndex();
+        auto rideIndex = pathElement->GetRideIndex();
         if (guest->State == PeepState::Queuing)
         {
             // Check if this queue is connected to the ride the
@@ -2252,7 +2253,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
             // the queue, rebuilt the ride, etc.
             if (guest->CurrentRide == rideIndex)
             {
-                PeepFootpathMoveForward(guest, { coords, tile_element }, vandalism_present);
+                PeepFootpathMoveForward(guest, coords, vandalismPresent);
             }
             else
             {
@@ -2260,23 +2261,23 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                 guest->InteractionRideIndex = RideId::GetNull();
                 guest->RemoveFromQueue();
                 guest->SetState(PeepState::One);
-                PeepFootpathMoveForward(guest, { coords, tile_element }, vandalism_present);
+                PeepFootpathMoveForward(guest, coords, vandalismPresent);
             }
         }
         else
         {
             // Peep is not queuing.
             guest->TimeLost = 0;
-            auto stationNum = tile_element->AsPath()->GetStationIndex();
+            auto stationNum = pathElement->GetStationIndex();
 
-            if ((tile_element->AsPath()->HasQueueBanner())
-                && (tile_element->AsPath()->GetQueueBannerDirection()
-                    == DirectionReverse(guest->PeepDirection)) // Ride sign is facing the direction the peep is walking
+            if (pathElement->HasQueueBanner()
+                && pathElement->GetQueueBannerDirection()
+                    == DirectionReverse(guest->PeepDirection) // Ride sign is facing the direction the peep is walking
             )
             {
                 /* Peep is approaching the entrance of a ride queue.
                  * Decide whether to go on the ride. */
-                auto ride = GetRide(rideIndex);
+                auto* ride = GetRide(rideIndex);
                 if (ride != nullptr && guest->ShouldGoOnRide(*ride, stationNum, true, false))
                 {
                     // Peep has decided to go on the ride at the queue.
@@ -2316,7 +2317,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                                                .ToTileCentre();
                     guest->SetDestination(queueTileCentre);
 
-                    PeepFootpathMoveForward(guest, { coords, tile_element }, vandalism_present);
+                    PeepFootpathMoveForward(guest, coords, vandalismPresent);
                 }
                 else
                 {
@@ -2328,7 +2329,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
             {
                 /* Peep is approaching a queue tile without a ride
                  * sign facing the peep. */
-                PeepFootpathMoveForward(guest, { coords, tile_element }, vandalism_present);
+                PeepFootpathMoveForward(guest, coords, vandalismPresent);
             }
         }
     }
@@ -2340,7 +2341,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
             guest->RemoveFromQueue();
             guest->SetState(PeepState::One);
         }
-        PeepFootpathMoveForward(peep, { coords, tile_element }, vandalism_present);
+        PeepFootpathMoveForward(peep, coords, vandalismPresent);
     }
 }
 
