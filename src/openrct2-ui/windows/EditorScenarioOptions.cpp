@@ -1576,7 +1576,6 @@ namespace OpenRCT2::Ui::Windows
         void FinancialUpdate()
         {
             frame_no++;
-            FinancialPrepareDraw();
             InvalidateWidget(WIDX_TAB_1);
         }
 
@@ -1925,7 +1924,6 @@ namespace OpenRCT2::Ui::Windows
         void GuestsUpdate()
         {
             frame_no++;
-            GuestsPrepareDraw();
             InvalidateWidget(WIDX_TAB_2);
         }
 
@@ -2138,7 +2136,6 @@ namespace OpenRCT2::Ui::Windows
         void ParkUpdate()
         {
             frame_no++;
-            ParkPrepareDraw();
             InvalidateWidget(WIDX_TAB_3);
         }
 
