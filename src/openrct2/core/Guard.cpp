@@ -61,7 +61,7 @@ namespace OpenRCT2::Guard
             return;
 
         std::stringstream messageStream;
-        messageStream << "Assertion failed in " << location.function_name() << ":" << location.line();
+        messageStream << "Assertion failed in " << location.file_name() << ":" << location.line();
 
         std::string message = messageStream.str();
 
