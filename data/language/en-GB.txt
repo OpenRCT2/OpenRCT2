@@ -3797,7 +3797,7 @@ STR_6749    :Only more intense rides
 STR_6750    :Select what kind of ride intensity newly spawned guests prefer.
 STR_6751    :Queue paths cannot be used for level crossings!
 STR_6752    :Scenario options - Objective
-STR_6753    :Scenario options - Scenario Info
+STR_6753    :Scenario options - Scenario Details
 STR_6754    :Scenario options - Land Restrictions
 STR_6755    :Show objective options
 STR_6756    :Show scenario info options
@@ -3805,3 +3805,4 @@ STR_6757    :Show land restriction options
 STR_6758    :Loan options
 STR_6759    :Business model
 STR_6760    :Earnings:
+STR_6761    :Scenario Details

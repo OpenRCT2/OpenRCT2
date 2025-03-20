@@ -973,6 +973,7 @@ void Ride::updateAll()
                 break;
             case EditorStep::OptionsSelection:
             case EditorStep::ObjectiveSelection:
+            case EditorStep::ScenarioDetails:
             case EditorStep::SaveScenario:
             case EditorStep::RollercoasterDesigner:
             case EditorStep::DesignsManager:
