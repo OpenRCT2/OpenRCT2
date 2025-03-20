@@ -149,8 +149,8 @@ static void WoodenWildMouseTrackFlat(
         session,
         PaintUtilRotateSegments(
             EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::bottomCorner,
-                PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
+                PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::topLeft,
+                PaintSegment::bottomRight),
             direction),
         height, 0x20);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -542,7 +542,7 @@ static void WoodenWildMouseTrackRightQuarterTurn3(
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide);
+                PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight);
             break;
         case 3:
             blockedSegments = kSegmentsAll;

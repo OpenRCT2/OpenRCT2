@@ -91,7 +91,7 @@ static void SetSupportHeights(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide), direction),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
                 height, 0x20);
         }
     }
@@ -108,8 +108,7 @@ static void SetSupportHeights(
         auto direction = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) % 4;
         PaintUtilSetSegmentSupportHeight(
             session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide), direction),
+            PaintUtilRotateSegments(EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
             0xFFFF, 0);
     }
 }

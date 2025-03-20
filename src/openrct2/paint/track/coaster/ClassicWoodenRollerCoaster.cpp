@@ -903,17 +903,17 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
 
     static constexpr int blockedSegments[7] = {
         kSegmentsAll,
-        EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
         EnumsToFlags(
-            PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+            PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+            PaintSegment::bottomRight),
         EnumsToFlags(
-            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::centre,
-            PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-        EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+            PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
+            PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
         EnumsToFlags(
-            PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-            PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+            PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
+            PaintSegment::bottomRight),
         kSegmentsAll,
     };
 
@@ -1072,10 +1072,10 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
     static constexpr int blockedSegments[4] = {
         kSegmentsAll,
         0,
-        EnumsToFlags(PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomLeftSide),
+        EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
         EnumsToFlags(
-            PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::centre,
-            PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+            PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
+            PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
     };
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
