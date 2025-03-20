@@ -17,29 +17,40 @@ TTFontFamily const TTFFamilyChineseSimplified = {
     &TTFFontSimSun,
     &TTFFontHeiti,
     &TTFFontMicroHei,
+    &TTFFontNotoSansCJK,
 };
 
 TTFontFamily const TTFFamilyChineseTraditional = {
     &TTFFontMingLiu,
     &TTFFontLiHeiPro,
     &TTFFontMicroHei,
+    &TTFFontNotoSansCJK,
 };
 
 TTFontFamily const TTFFamilyJapanese = {
     &TTFFontHiragano,
     &TTFFontNotoSansMono,
     &TTFFontMSGothic,
+    &TTFFontNotoSansCJK,
 };
 
 TTFontFamily const TTFFamilyKorean = {
     &TTFFontGulim,
     &TTFFontNanum,
     &TTFFontMalgun,
+    &TTFFontNotoSansCJK,
+};
+
+TTFontFamily const TTFFamilyArabic = {
+    &TTFFontArialUnicode,
+    &TTFFontArial,
+    &TTFFontNotoNaskhArabic,
 };
 
 TTFontFamily const TTFFamilySansSerif = {
     &TTFFontArialUnicode,
     &TTFFontArial,
+    &TTFFontRoboto,
 };
 
 #endif // NO_TTF

@@ -30,6 +30,9 @@ extern TTFFontSetDescriptor TTFFontNanum;
 extern TTFFontSetDescriptor TTFFontArial;
 extern TTFFontSetDescriptor TTFFontArialUnicode;
 extern TTFFontSetDescriptor TTFFontMicroHei;
+extern TTFFontSetDescriptor TTFFontRoboto;
+extern TTFFontSetDescriptor TTFFontNotoSansCJK;
+extern TTFFontSetDescriptor TTFFontNotoNaskhArabic;
 #endif // NO_TTF
 
 void TryLoadFonts(OpenRCT2::Localisation::LocalisationService& localisationService);
