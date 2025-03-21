@@ -452,7 +452,7 @@ void UpdateEntitiesSpatialIndex()
     {
         for (auto& entityId : entityList)
         {
-            auto* entity = GetEntity(entityId);
+            auto* entity = TryGetEntity(entityId);
             if (entity == nullptr || entity->Type == EntityType::Null)
                 continue;
 
@@ -475,9 +475,29 @@ CoordsXYZ EntityBase::GetLocation() const
 
 void EntityBase::SetLocation(const CoordsXYZ& newLocation)
 {
+    if (GetLocation() == newLocation)
+    {
+        // No change, this can happen quite often when the entity is interpolated.
+        return;
+    }
+
     x = newLocation.x;
     y = newLocation.y;
     z = newLocation.z;
+
+    if (SpatialIndex & kSpatialIndexDirtyMask)
+    {
+        // Already marked as dirty.
+        return;
+    }
+
+    const auto newSpatialIndex = ComputeSpatialIndex({ x, y });
+    if (newSpatialIndex == GetSpatialIndex(this))
+    {
+        // Avoid marking it dirty when we don't leave the current tile.
+        return;
+    }
+
     SpatialIndex |= kSpatialIndexDirtyMask;
 }
 
