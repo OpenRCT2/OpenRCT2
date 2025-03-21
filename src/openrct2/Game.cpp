@@ -183,7 +183,7 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
 
 static void FixGuestsHeadingToParkCount()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     uint32_t guestsHeadingToPark = 0;
 
@@ -195,13 +195,13 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
-    if (gameState.NumGuestsHeadingForPark != guestsHeadingToPark)
+    if (gameState.numGuestsHeadingForPark != guestsHeadingToPark)
     {
         LOG_WARNING(
-            "Corrected bad amount of guests heading to park: %u -> %u", gameState.NumGuestsHeadingForPark, guestsHeadingToPark);
+            "Corrected bad amount of guests heading to park: %u -> %u", gameState.numGuestsHeadingForPark, guestsHeadingToPark);
     }
 
-    gameState.NumGuestsHeadingForPark = guestsHeadingToPark;
+    gameState.numGuestsHeadingForPark = guestsHeadingToPark;
 }
 
 static void FixGuestCount()
@@ -217,13 +217,13 @@ static void FixGuestCount()
         }
     }
 
-    auto& gameState = GetGameState();
-    if (gameState.NumGuestsInPark != guestCount)
+    auto& gameState = getGameState();
+    if (gameState.numGuestsInPark != guestCount)
     {
-        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.NumGuestsInPark, guestCount);
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.numGuestsInPark, guestCount);
     }
 
-    gameState.NumGuestsInPark = guestCount;
+    gameState.numGuestsInPark = guestCount;
 }
 
 static void FixPeepsWithInvalidRideReference()
@@ -303,8 +303,8 @@ static void FixInvalidSurfaces()
 
             // Fix the invisible border tiles.
             // At this point, we can be sure that surfaceElement is not NULL.
-            auto& gameState = GetGameState();
-            if (x == 0 || x == gameState.MapSize.x - 1 || y == 0 || y == gameState.MapSize.y - 1)
+            auto& gameState = getGameState();
+            if (x == 0 || x == gameState.mapSize.x - 1 || y == 0 || y == gameState.mapSize.y - 1)
             {
                 surfaceElement->SetBaseZ(kMinimumLandZ);
                 surfaceElement->SetClearanceZ(kMinimumLandZ);
@@ -367,8 +367,8 @@ void GameLoadInit()
     }
 
     auto windowManager = context->GetUiContext()->GetWindowManager();
-    auto& gameState = GetGameState();
-    windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
+    auto& gameState = getGameState();
+    windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
 
     if (NetworkGetMode() != NETWORK_MODE_CLIENT)
     {
@@ -484,7 +484,7 @@ void SaveGameWithName(u8string_view name)
 {
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     if (ScenarioSave(gameState, name, Config::Get().general.SavePluginData ? 1 : 0))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
@@ -608,7 +608,7 @@ void GameAutosave()
         File::Copy(path, backupPath, true);
     }
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     if (!ScenarioSave(gameState, path, saveFlags))
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");

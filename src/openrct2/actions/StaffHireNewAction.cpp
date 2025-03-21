@@ -193,7 +193,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->TrousersColour = colour;
 
         // Staff energy determines their walking speed
-        switch (GetGameState().Cheats.selectedStaffSpeed)
+        switch (getGameState().cheats.selectedStaffSpeed)
         {
             case StaffSpeedCheat::None:
                 newPeep->Energy = kCheatsStaffNormalSpeed;
@@ -280,11 +280,11 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     else
     {
         // No walking guests; pick random park entrance
-        const auto& gameState = GetGameState();
-        if (!gameState.Park.Entrances.empty())
+        const auto& gameState = getGameState();
+        if (!gameState.park.Entrances.empty())
         {
-            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.Park.Entrances.size()));
-            const auto& entrance = gameState.Park.Entrances[rand];
+            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.park.Entrances.size()));
+            const auto& entrance = gameState.park.Entrances[rand];
             auto dir = entrance.direction;
             newLocation = entrance;
             // TODO: Replace with CoordsDirectionDelta

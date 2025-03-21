@@ -259,7 +259,7 @@ namespace OpenRCT2::Scripting
                         objectMgr.LoadObjects(result.RequiredObjects);
 
                         // TODO: Have a separate GameState and exchange once loaded.
-                        auto& gameState = GetGameState();
+                        auto& gameState = getGameState();
                         parkImporter->Import(gameState);
 
                         auto old = gLoadKeepWindowsOpen;

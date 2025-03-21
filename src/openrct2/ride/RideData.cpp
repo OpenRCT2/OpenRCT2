@@ -411,7 +411,7 @@ void UpdateEnabledRideGroups(TrackDrawerDescriptor trackDrawerDescriptor)
 {
     trackDrawerDescriptor.Regular.GetAvailableTrackGroups(_enabledRideGroups);
 
-    if (!GetGameState().Cheats.enableAllDrawableTrackPieces)
+    if (!getGameState().cheats.enableAllDrawableTrackPieces)
     {
         _enabledRideGroups &= ~_disabledRideGroups;
     }
@@ -425,14 +425,14 @@ void UpdateDisabledRideGroups(const RideTrackGroups& res)
 void TrackDrawerEntry::GetAvailableTrackGroups(RideTrackGroups& res) const
 {
     res = enabledTrackGroups;
-    if (GetGameState().Cheats.enableAllDrawableTrackPieces)
+    if (getGameState().cheats.enableAllDrawableTrackPieces)
         res |= extraTrackGroups;
 }
 
 bool TrackDrawerEntry::SupportsTrackGroup(const TrackGroup trackGroup) const
 {
     return enabledTrackGroups.get(EnumValue(trackGroup))
-        || (GetGameState().Cheats.enableAllDrawableTrackPieces && extraTrackGroups.get(EnumValue(trackGroup)));
+        || (getGameState().cheats.enableAllDrawableTrackPieces && extraTrackGroups.get(EnumValue(trackGroup)));
 }
 
 bool TrackDrawerDescriptor::HasCoveredPieces() const

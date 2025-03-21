@@ -56,7 +56,7 @@ void ParkEntrancePlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkEntrancePlaceAction::Query() const
 {
-    if (!isInEditorMode() && !GetGameState().Cheats.sandboxMode)
+    if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
     }
@@ -79,8 +79,8 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
             GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
     }
 
-    const auto& gameState = GetGameState();
-    if (gameState.Park.Entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
+    const auto& gameState = getGameState();
+    if (gameState.park.Entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
@@ -126,7 +126,7 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
 
     uint32_t flags = GetFlags();
 
-    GetGameState().Park.Entrances.push_back(_loc);
+    getGameState().park.Entrances.push_back(_loc);
 
     auto zLow = _loc.z;
     auto zHigh = zLow + ParkEntranceHeight;

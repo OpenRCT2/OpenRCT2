@@ -59,16 +59,16 @@ GameActions::Result MapChangeSizeAction::Query() const
 
 GameActions::Result MapChangeSizeAction::Execute() const
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // Expand map
-    while (_targetSize.x > gameState.MapSize.x)
+    while (_targetSize.x > gameState.mapSize.x)
     {
-        gameState.MapSize.x++;
+        gameState.mapSize.x++;
         MapExtendBoundarySurfaceX();
     }
-    while (_targetSize.y > gameState.MapSize.y)
+    while (_targetSize.y > gameState.mapSize.y)
     {
-        gameState.MapSize.y++;
+        gameState.mapSize.y++;
         MapExtendBoundarySurfaceY();
     }
 
@@ -76,9 +76,9 @@ GameActions::Result MapChangeSizeAction::Execute() const
     ShiftMap(_shift);
 
     // Shrink map
-    if (_targetSize.x < gameState.MapSize.x || _targetSize.y < gameState.MapSize.y)
+    if (_targetSize.x < gameState.mapSize.x || _targetSize.y < gameState.mapSize.y)
     {
-        gameState.MapSize = _targetSize;
+        gameState.mapSize = _targetSize;
         MapRemoveOutOfRangeElements();
     }
 

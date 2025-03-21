@@ -157,7 +157,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             }
             uint8_t clampValue = _value;
             static_assert(sizeof(clampValue) == sizeof(ride->proposedNumCarsPerTrain));
-            if (!GetGameState().Cheats.disableTrainLengthLimit)
+            if (!getGameState().cheats.disableTrainLengthLimit)
             {
                 clampValue = std::clamp(clampValue, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
@@ -180,7 +180,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             }
 
             RideSetVehicleColoursToRandomPreset(*ride, _colour);
-            if (!GetGameState().Cheats.disableTrainLengthLimit)
+            if (!getGameState().cheats.disableTrainLengthLimit)
             {
                 ride->proposedNumCarsPerTrain = std::clamp(
                     ride->proposedNumCarsPerTrain, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
@@ -224,11 +224,11 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
 {
     bool selectionShouldBeExpanded;
     ride_type_t rideTypeIterator, rideTypeIteratorMax;
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     {
         const auto& rtd = ride.getRideTypeDescriptor();
-        if (gameState.Cheats.showVehiclesFromOtherTrackTypes
+        if (gameState.cheats.showVehiclesFromOtherTrackTypes
             && !(
                 ride.getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide) || rtd.specialType == RtdSpecialType::maze
                 || rtd.specialType == RtdSpecialType::miniGolf))
@@ -263,7 +263,7 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
         {
             if (rideEntryIndex == _value)
             {
-                if (!RideEntryIsInvented(rideEntryIndex) && !gameState.Cheats.ignoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !gameState.cheats.ignoreResearchStatus)
                 {
                     return false;
                 }

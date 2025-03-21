@@ -99,7 +99,7 @@ namespace OpenRCT2::GameActions
             return;
         }
 
-        const uint32_t currentTick = GetGameState().CurrentTicks;
+        const uint32_t currentTick = getGameState().currentTicks;
 
         while (_actionQueue.begin() != _actionQueue.end())
         {
@@ -181,7 +181,7 @@ namespace OpenRCT2::GameActions
     {
         if (gGamePaused == 0)
             return true;
-        if (GetGameState().Cheats.buildInPauseMode)
+        if (getGameState().cheats.buildInPauseMode)
             return true;
         if (actionFlags & GameActions::Flags::AllowWhilePaused)
             return true;
@@ -249,7 +249,7 @@ namespace OpenRCT2::GameActions
 
         char temp[128] = {};
         snprintf(
-            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), GetGameState().CurrentTicks, action->GetName(),
+            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), getGameState().currentTicks, action->GetName(),
             EnumValue(action->GetType()));
 
         output.Write(temp, strlen(temp));
@@ -343,7 +343,7 @@ namespace OpenRCT2::GameActions
                     if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
-                        Enqueue(action, GetGameState().CurrentTicks);
+                        Enqueue(action, getGameState().currentTicks);
 
                         return result;
                     }
@@ -413,7 +413,7 @@ namespace OpenRCT2::GameActions
                     }
                     if (recordAction)
                     {
-                        replayManager->AddGameAction(GetGameState().CurrentTicks, action);
+                        replayManager->AddGameAction(getGameState().currentTicks, action);
                     }
                 }
             }

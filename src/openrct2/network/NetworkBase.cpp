@@ -841,7 +841,7 @@ bool NetworkBase::IsDesynchronised() const noexcept
 
 bool NetworkBase::CheckDesynchronizaton()
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     // Check synchronisation
     if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerStatus::Desynced
@@ -1556,7 +1556,7 @@ void NetworkBase::Client_Send_GAME_ACTION(const GameAction* action)
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-    packet << GetGameState().CurrentTicks << action->GetType() << stream;
+    packet << getGameState().currentTicks << action->GetType() << stream;
     _serverConnection->QueuePacket(std::move(packet));
 }
 
@@ -1567,7 +1567,7 @@ void NetworkBase::ServerSendGameAction(const GameAction* action)
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-    packet << GetGameState().CurrentTicks << action->GetType() << stream;
+    packet << getGameState().currentTicks << action->GetType() << stream;
 
     SendPacketToClients(packet);
 }
@@ -1575,7 +1575,7 @@ void NetworkBase::ServerSendGameAction(const GameAction* action)
 void NetworkBase::ServerSendTick()
 {
     NetworkPacket packet(NetworkCommand::Tick);
-    packet << GetGameState().CurrentTicks << ScenarioRandState().s0;
+    packet << getGameState().currentTicks << ScenarioRandState().s0;
     uint32_t flags = 0;
     // Simple counter which limits how often a sprite checksum gets sent.
     // This can get somewhat expensive, so we don't want to push it every tick in release,
@@ -1602,7 +1602,7 @@ void NetworkBase::ServerSendTick()
 void NetworkBase::ServerSendPlayerInfo(int32_t playerId)
 {
     NetworkPacket packet(NetworkCommand::PlayerInfo);
-    packet << GetGameState().CurrentTicks;
+    packet << getGameState().currentTicks;
 
     auto* player = GetPlayerByID(playerId);
     if (player == nullptr)
@@ -1615,7 +1615,7 @@ void NetworkBase::ServerSendPlayerInfo(int32_t playerId)
 void NetworkBase::ServerSendPlayerList()
 {
     NetworkPacket packet(NetworkCommand::PlayerList);
-    packet << GetGameState().CurrentTicks << static_cast<uint8_t>(player_list.size());
+    packet << getGameState().currentTicks << static_cast<uint8_t>(player_list.size());
     for (auto& player : player_list)
     {
         player->Write(packet);
@@ -1909,7 +1909,7 @@ void NetworkBase::ProcessPlayerList()
         auto itPending = _pendingPlayerLists.begin();
         while (itPending != _pendingPlayerLists.end())
         {
-            if (itPending->first > GetGameState().CurrentTicks)
+            if (itPending->first > getGameState().currentTicks)
                 break;
 
             // List of active players found in the list.
@@ -1981,7 +1981,7 @@ void NetworkBase::ProcessPlayerList()
 
 void NetworkBase::ProcessPlayerInfo()
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     auto range = _pendingPlayerInfo.equal_range(currentTicks);
     for (auto it = range.first; it != range.second; it++)
@@ -2807,7 +2807,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
             GameLoadInit();
             GameLoadScripts();
             GameNotifyMapChanged();
-            _serverState.tick = GetGameState().CurrentTicks;
+            _serverState.tick = getGameState().currentTicks;
             // NetworkStatusOpen("Loaded new map from network");
             _serverState.state = NetworkServerStatus::Ok;
             _clientMapLoaded = true;
@@ -2849,7 +2849,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         objManager.LoadObjects(loadResult.RequiredObjects);
 
         // TODO: Have a separate GameState and exchange once loaded.
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         importer->Import(gameState);
 
         EntityTweener::Get().Reset();
@@ -2874,7 +2874,7 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
         auto exporter = std::make_unique<ParkFileExporter>();
         exporter->ExportObjectsList = objects;
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         exporter->Export(gameState, *stream);
         result = true;
     }
@@ -4098,7 +4098,7 @@ NetworkAuth NetworkGetAuthstatus()
 }
 uint32_t NetworkGetServerTick()
 {
-    return GetGameState().CurrentTicks;
+    return getGameState().currentTicks;
 }
 void NetworkFlush()
 {

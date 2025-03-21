@@ -155,7 +155,7 @@ static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.getStation(stationIndex);
     int32_t time = station.Depart & kStationDepartMask;
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
     if ((ride.lifecycleFlags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         || (ride.status == RideStatus::closed && ride.numRiders == 0))
     {

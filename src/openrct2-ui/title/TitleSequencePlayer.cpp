@@ -324,7 +324,7 @@ namespace OpenRCT2::Title
                     ReportProgress(90);
 
                     // TODO: Have a separate GameState and exchange once loaded.
-                    auto& gameState = GetGameState();
+                    auto& gameState = getGameState();
                     parkImporter->Import(gameState);
                     ReportProgress(100);
 
@@ -380,7 +380,7 @@ namespace OpenRCT2::Title
                     ReportProgress(70);
 
                     // TODO: Have a separate GameState and exchange once loaded.
-                    auto& gameState = GetGameState();
+                    auto& gameState = getGameState();
                     parkImporter->Import(gameState);
                     ReportProgress(100);
 
@@ -431,8 +431,8 @@ namespace OpenRCT2::Title
         void PrepareParkForPlayback()
         {
             auto windowManager = Ui::GetWindowManager();
-            auto& gameState = GetGameState();
-            windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
+            auto& gameState = getGameState();
+            windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
             ResetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);

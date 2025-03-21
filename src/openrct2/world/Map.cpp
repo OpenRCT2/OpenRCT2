@@ -114,32 +114,32 @@ static TileCoordsXY _mapSizeStash;
 
 void StashMap()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     _tileIndexStash = std::move(_tileIndex);
-    _tileElementsStash = std::move(gameState.TileElements);
-    _mapSizeStash = gameState.MapSize;
+    _tileElementsStash = std::move(gameState.tileElements);
+    _mapSizeStash = gameState.mapSize;
     _tileElementsInUseStash = _tileElementsInUse;
 }
 
 void UnstashMap()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     _tileIndex = std::move(_tileIndexStash);
-    gameState.TileElements = std::move(_tileElementsStash);
-    gameState.MapSize = _mapSizeStash;
+    gameState.tileElements = std::move(_tileElementsStash);
+    gameState.mapSize = _mapSizeStash;
     _tileElementsInUse = _tileElementsInUseStash;
 }
 
 CoordsXY GetMapSizeUnits()
 {
-    auto& gameState = GetGameState();
-    return { (gameState.MapSize.x - 1) * kCoordsXYStep, (gameState.MapSize.y - 1) * kCoordsXYStep };
+    auto& gameState = getGameState();
+    return { (gameState.mapSize.x - 1) * kCoordsXYStep, (gameState.mapSize.y - 1) * kCoordsXYStep };
 }
 CoordsXY GetMapSizeMinus2()
 {
-    auto& gameState = GetGameState();
-    return { (gameState.MapSize.x * kCoordsXYStep) + (8 * kCoordsXYStep - 2),
-             (gameState.MapSize.y * kCoordsXYStep) + (8 * kCoordsXYStep - 2) };
+    auto& gameState = getGameState();
+    return { (gameState.mapSize.x * kCoordsXYStep) + (8 * kCoordsXYStep - 2),
+             (gameState.mapSize.y * kCoordsXYStep) + (8 * kCoordsXYStep - 2) };
 }
 CoordsXY GetMapSizeMaxXY()
 {
@@ -148,15 +148,15 @@ CoordsXY GetMapSizeMaxXY()
 
 const std::vector<TileElement>& GetTileElements()
 {
-    return GetGameState().TileElements;
+    return getGameState().tileElements;
 }
 
 void SetTileElements(GameState_t& gameState, std::vector<TileElement>&& tileElements)
 {
-    gameState.TileElements = std::move(tileElements);
+    gameState.tileElements = std::move(tileElements);
     _tileIndex = TilePointerIndex<TileElement>(
-        kMaximumMapSizeTechnical, gameState.TileElements.data(), gameState.TileElements.size());
-    _tileElementsInUse = gameState.TileElements.size();
+        kMaximumMapSizeTechnical, gameState.tileElements.data(), gameState.tileElements.size());
+    _tileElementsInUse = gameState.tileElements.size();
 }
 
 static TileElement GetDefaultSurfaceElement()
@@ -179,7 +179,7 @@ static TileElement GetDefaultSurfaceElement()
 std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
 {
     std::vector<TileElement> newElements;
-    newElements.reserve(std::max(MIN_TILE_ELEMENTS, GetGameState().TileElements.size()));
+    newElements.reserve(std::max(MIN_TILE_ELEMENTS, getGameState().tileElements.size()));
     for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
     {
         for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
@@ -244,14 +244,14 @@ static void ReorganiseTileElements(GameState_t& gameState, size_t capacity)
 
 static void ReorganiseTileElements(size_t capacity)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     ReorganiseTileElements(gameState, capacity);
 }
 
 void ReorganiseTileElements()
 {
-    auto& gameState = GetGameState();
-    ReorganiseTileElements(gameState, gameState.TileElements.size());
+    auto& gameState = getGameState();
+    ReorganiseTileElements(gameState, gameState.tileElements.size());
 }
 
 static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t numNewElements)
@@ -262,20 +262,20 @@ static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t n
         return false;
     }
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto totalElementsRequired = numElementsOnTile + numNewElements;
-    auto freeElements = gameState.TileElements.capacity() - gameState.TileElements.size();
+    auto freeElements = gameState.tileElements.capacity() - gameState.tileElements.size();
     if (freeElements >= totalElementsRequired)
     {
         return true;
     }
 
     // if space issue is due to fragmentation then Reorg Tiles without increasing capacity
-    if (gameState.TileElements.size() > totalElementsRequired + _tileElementsInUse)
+    if (gameState.tileElements.size() > totalElementsRequired + _tileElementsInUse)
     {
         ReorganiseTileElements();
         // This check is not expected to fail
-        freeElements = gameState.TileElements.capacity() - gameState.TileElements.size();
+        freeElements = gameState.tileElements.capacity() - gameState.tileElements.size();
         if (freeElements >= totalElementsRequired)
         {
             return true;
@@ -283,7 +283,7 @@ static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t n
     }
 
     // Capacity must increase to handle the space (Note capacity can go above kMaxTileElements)
-    auto newCapacity = gameState.TileElements.capacity() * 2;
+    auto newCapacity = gameState.tileElements.capacity() * 2;
     ReorganiseTileElements(newCapacity);
     return true;
 }
@@ -319,15 +319,15 @@ int32_t TileElementIteratorNext(TileElementIterator* it)
         return 1;
     }
 
-    auto& gameState = GetGameState();
-    if (it->y < (gameState.MapSize.y - 2))
+    auto& gameState = getGameState();
+    if (it->y < (gameState.mapSize.y - 2))
     {
         it->y++;
         it->element = MapGetFirstElementAt(TileCoordsXY{ it->x, it->y });
         return it->element == nullptr ? 0 : 1;
     }
 
-    if (it->x < (gameState.MapSize.x - 2))
+    if (it->x < (gameState.mapSize.x - 2))
     {
         it->y = 1;
         it->x++;
@@ -465,12 +465,12 @@ void MapInit(const TileCoordsXY& size)
 {
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     SetTileElements(gameState, std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
-    gameState.GrassSceneryTileLoopPosition = 0;
-    gameState.WidePathTileLoopPosition = {};
-    gameState.MapSize = size;
+    gameState.grassSceneryTileLoopPosition = 0;
+    gameState.widePathTileLoopPosition = {};
+    gameState.mapSize = size;
     MapRemoveOutOfRangeElements();
     ClearMapAnimations();
 
@@ -487,11 +487,11 @@ void MapCountRemainingLandRights()
 {
     gLandRemainingOwnershipSales = 0;
     gLandRemainingConstructionSales = 0;
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
-    for (int32_t y = 0; y < gameState.MapSize.y; y++)
+    for (int32_t y = 0; y < gameState.mapSize.y; y++)
     {
-        for (int32_t x = 0; x < gameState.MapSize.x; x++)
+        for (int32_t x = 0; x < gameState.mapSize.x; x++)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             // Surface elements are sometimes hacked out to save some space for other map elements
@@ -531,8 +531,8 @@ void MapCountRemainingLandRights()
  */
 void MapStripGhostFlagFromElements()
 {
-    auto& gameState = GetGameState();
-    for (auto& element : gameState.TileElements)
+    auto& gameState = getGameState();
+    for (auto& element : gameState.tileElements)
     {
         element.SetGhost(false);
     }
@@ -764,13 +764,13 @@ void MapUpdatePathWideFlags()
         return;
     }
 
-    const int32_t kPracticalMapSizeBigX = GetGameState().MapSize.x * kCoordsXYStep;
-    const int32_t kPracticalMapSizeBigY = GetGameState().MapSize.y * kCoordsXYStep;
+    const int32_t kPracticalMapSizeBigX = getGameState().mapSize.x * kCoordsXYStep;
+    const int32_t kPracticalMapSizeBigY = getGameState().mapSize.y * kCoordsXYStep;
 
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
-    CoordsXY& loopPosition = GetGameState().WidePathTileLoopPosition;
+    CoordsXY& loopPosition = getGameState().widePathTileLoopPosition;
     for (int32_t i = 0; i < 128; i++)
     {
         FootpathUpdatePathWideFlags(loopPosition);
@@ -829,7 +829,7 @@ bool MapCanBuildAt(const CoordsXYZ& loc)
 {
     if (gLegacyScene == LegacyScene::scenarioEditor)
         return true;
-    if (GetGameState().Cheats.sandboxMode)
+    if (getGameState().cheats.sandboxMode)
         return true;
     if (MapIsLocationOwned(loc))
         return true;
@@ -965,7 +965,7 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
 
             if (surfaceElement != nullptr && min_height > surfaceElement->BaseHeight)
             {
-                if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {
@@ -994,7 +994,7 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
             {
-                if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {
@@ -1041,10 +1041,10 @@ void TileElementRemove(TileElement* tileElement)
     (tileElement - 1)->SetLastForTile(true);
     tileElement->BaseHeight = kMaxTileElementHeight;
     _tileElementsInUse--;
-    auto& gameState = GetGameState();
-    if (tileElement == &gameState.TileElements.back())
+    auto& gameState = getGameState();
+    if (tileElement == &gameState.tileElements.back())
     {
-        gameState.TileElements.pop_back();
+        gameState.tileElements.pop_back();
     }
 }
 
@@ -1169,11 +1169,11 @@ static TileElement* AllocateTileElements(size_t numElementsOnTile, size_t numNew
         return nullptr;
     }
 
-    auto& gameState = GetGameState();
-    auto oldSize = gameState.TileElements.size();
-    gameState.TileElements.resize(gameState.TileElements.size() + numElementsOnTile + numNewElements);
+    auto& gameState = getGameState();
+    auto oldSize = gameState.tileElements.size();
+    gameState.tileElements.resize(gameState.tileElements.size() + numElementsOnTile + numNewElements);
     _tileElementsInUse += numNewElements;
-    return &gameState.TileElements[oldSize];
+    return &gameState.tileElements[oldSize];
 }
 
 /**
@@ -1263,7 +1263,7 @@ void MapUpdateTiles()
     if (isInEditorMode())
         return;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Update 43 more tiles (for each 256x256 block)
     for (int32_t j = 0; j < 43; j++)
@@ -1271,7 +1271,7 @@ void MapUpdateTiles()
         int32_t x = 0;
         int32_t y = 0;
 
-        uint16_t interleaved_xy = gameState.GrassSceneryTileLoopPosition;
+        uint16_t interleaved_xy = gameState.grassSceneryTileLoopPosition;
         for (int32_t i = 0; i < 8; i++)
         {
             x = (x << 1) | (interleaved_xy & 1);
@@ -1281,9 +1281,9 @@ void MapUpdateTiles()
         }
 
         // Repeat for each 256x256 block on the map
-        for (int32_t blockY = 0; blockY < gameState.MapSize.y; blockY += 256)
+        for (int32_t blockY = 0; blockY < gameState.mapSize.y; blockY += 256)
         {
-            for (int32_t blockX = 0; blockX < gameState.MapSize.x; blockX += 256)
+            for (int32_t blockX = 0; blockX < gameState.mapSize.x; blockX += 256)
             {
                 auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
                 if (MapIsEdge(mapPos))
@@ -1298,7 +1298,7 @@ void MapUpdateTiles()
             }
         }
 
-        gameState.GrassSceneryTileLoopPosition++;
+        gameState.grassSceneryTileLoopPosition++;
     }
 }
 
@@ -1315,9 +1315,9 @@ void MapRemoveOutOfRangeElements()
     // NOTE: This is only a workaround for non-networked games.
     // Map resize has to become its own Game Action to properly solve this issue.
     //
-    auto& gameState = GetGameState();
-    bool buildState = gameState.Cheats.buildInPauseMode;
-    gameState.Cheats.buildInPauseMode = true;
+    auto& gameState = getGameState();
+    bool buildState = gameState.cheats.buildInPauseMode;
+    gameState.cheats.buildInPauseMode = true;
 
     for (int32_t y = kMaximumMapSizeBig - kCoordsXYStep; y >= 0; y -= kCoordsXYStep)
     {
@@ -1338,7 +1338,7 @@ void MapRemoveOutOfRangeElements()
     }
 
     // Reset cheat state
-    gameState.Cheats.buildInPauseMode = buildState;
+    gameState.cheats.buildInPauseMode = buildState;
 }
 
 static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile, SurfaceElement& destTile)
@@ -1383,7 +1383,7 @@ static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile,
  */
 void MapExtendBoundarySurfaceY()
 {
-    auto y = GetGameState().MapSize.y - 2;
+    auto y = getGameState().mapSize.y - 2;
     for (auto x = 0; x < kMaximumMapSizeTechnical; x++)
     {
         auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y - 1 });
@@ -1403,7 +1403,7 @@ void MapExtendBoundarySurfaceY()
  */
 void MapExtendBoundarySurfaceX()
 {
-    auto x = GetGameState().MapSize.x - 2;
+    auto x = getGameState().mapSize.x - 2;
     for (auto y = 0; y < kMaximumMapSizeTechnical; y++)
     {
         auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y });
@@ -1510,13 +1510,13 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
  */
 static void ClearElementsAt(const CoordsXY& loc)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // Remove the spawn point (if there is one in the current tile)
-    gameState.PeepSpawns.erase(
+    gameState.peepSpawns.erase(
         std::remove_if(
-            gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
+            gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
             [loc](const CoordsXY& spawn) { return spawn.ToTileStart() == loc.ToTileStart(); }),
-        gameState.PeepSpawns.end());
+        gameState.peepSpawns.end());
 
     TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
@@ -2202,7 +2202,7 @@ void ShiftMap(const TileCoordsXY& amount)
         return;
 
     auto amountToMove = amount.ToCoordsXY();
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Tile elements
     auto newElements = std::vector<TileElement>();
@@ -2212,8 +2212,8 @@ void ShiftMap(const TileCoordsXY& amount)
         {
             auto srcX = x - amount.x;
             auto srcY = y - amount.y;
-            if (x > 0 && y > 0 && x < gameState.MapSize.x - 1 && y < gameState.MapSize.y - 1 && srcX > 0 && srcY > 0
-                && srcX < gameState.MapSize.x - 1 && srcY < gameState.MapSize.y - 1)
+            if (x > 0 && y > 0 && x < gameState.mapSize.x - 1 && y < gameState.mapSize.y - 1 && srcX > 0 && srcY > 0
+                && srcX < gameState.mapSize.x - 1 && srcY < gameState.mapSize.y - 1)
             {
                 auto srcTile = _tileIndex.GetFirstElementAt(TileCoordsXY(srcX, srcY));
                 do
@@ -2221,7 +2221,7 @@ void ShiftMap(const TileCoordsXY& amount)
                     newElements.push_back(*srcTile);
                 } while (!(srcTile++)->IsLastForTile());
             }
-            else if (x == 0 || y == 0 || x == gameState.MapSize.x - 1 || y == gameState.MapSize.y - 1)
+            else if (x == 0 || y == 0 || x == gameState.mapSize.x - 1 || y == gameState.mapSize.y - 1)
             {
                 auto surface = GetDefaultSurfaceElement();
                 surface.SetBaseZ(kMinimumLandZ);
@@ -2232,8 +2232,8 @@ void ShiftMap(const TileCoordsXY& amount)
             }
             else
             {
-                auto copyX = std::clamp(srcX, 1, gameState.MapSize.x - 2);
-                auto copyY = std::clamp(srcY, 1, gameState.MapSize.y - 2);
+                auto copyX = std::clamp(srcX, 1, gameState.mapSize.x - 2);
+                auto copyY = std::clamp(srcY, 1, gameState.mapSize.y - 2);
                 auto srcTile = MapGetSurfaceElementAt(TileCoordsXY(copyX, copyY));
                 if (srcTile != nullptr)
                 {
@@ -2254,10 +2254,10 @@ void ShiftMap(const TileCoordsXY& amount)
     SetTileElements(gameState, std::move(newElements));
     MapRemoveOutOfRangeElements();
 
-    for (auto& spawn : gameState.PeepSpawns)
+    for (auto& spawn : gameState.peepSpawns)
         shiftIfNotNull(spawn, amountToMove);
 
-    for (auto& entrance : gameState.Park.Entrances)
+    for (auto& entrance : gameState.park.Entrances)
         shiftIfNotNull(entrance, amountToMove);
 
     // Entities

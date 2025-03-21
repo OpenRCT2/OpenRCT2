@@ -105,7 +105,7 @@ void TitleScene::Load()
 #ifndef DISABLE_NETWORK
     GetContext().GetNetwork().Close();
 #endif
-    gameStateInitAll(GetGameState(), kDefaultMapSize);
+    gameStateInitAll(getGameState(), kDefaultMapSize);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
 
@@ -319,7 +319,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
         {
-            gameStateInitAll(GetGameState(), kDefaultMapSize);
+            gameStateInitAll(getGameState(), kDefaultMapSize);
             GameNotifyMapChanged();
         }
         return false;

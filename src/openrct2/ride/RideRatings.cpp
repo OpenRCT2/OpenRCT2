@@ -160,7 +160,7 @@ void RideRatingResetUpdateStates()
     RideRatingUpdateState nullState{};
     nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 
-    auto& updateStates = GetGameState().RideRatingUpdateStates;
+    auto& updateStates = getGameState().rideRatingUpdateStates;
     std::fill(updateStates.begin(), updateStates.end(), nullState);
 }
 
@@ -195,7 +195,7 @@ void RideRatingsUpdateAll()
     if (gLegacyScene == LegacyScene::scenarioEditor)
         return;
 
-    for (auto& updateState : GetGameState().RideRatingUpdateStates)
+    for (auto& updateState : getGameState().rideRatingUpdateStates)
     {
         for (size_t i = 0; i < MaxRideRatingUpdateSubSteps; ++i)
         {
@@ -235,7 +235,7 @@ static void ride_ratings_update_state(RideRatingUpdateState& state)
 
 static bool RideRatingIsUpdatingRide(RideId id)
 {
-    const auto& updateStates = GetGameState().RideRatingUpdateStates;
+    const auto& updateStates = getGameState().rideRatingUpdateStates;
     return std::any_of(updateStates.begin(), updateStates.end(), [id](auto& state) {
         return state.CurrentRide == id && state.State != RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
     });
@@ -1143,7 +1143,7 @@ static void RideRatingsCalculateValue(Ride& ride)
         + (((ride.ratings.nausea * ratingsMultipliers.nausea) * 32) >> 15);
 
     int32_t monthsOld = 0;
-    if (!GetGameState().Cheats.disableRideValueAging)
+    if (!getGameState().cheats.disableRideValueAging)
     {
         monthsOld = ride.getAge();
     }
@@ -1791,10 +1791,10 @@ static int32_t ride_ratings_get_scenery_score(const Ride& ride)
     // Count surrounding scenery items
     int32_t numSceneryItems = 0;
     auto tileLocation = TileCoordsXY(location);
-    auto& gameState = GetGameState();
-    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, gameState.MapSize.y - 1); yy++)
+    auto& gameState = getGameState();
+    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, gameState.mapSize.y - 1); yy++)
     {
-        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, gameState.MapSize.x - 1); xx++)
+        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, gameState.mapSize.x - 1); xx++)
         {
             // Count scenery items on this tile
             TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ xx, yy });

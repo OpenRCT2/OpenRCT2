@@ -99,8 +99,8 @@ GameActions::Result MazeSetTrackAction::Query() const
         res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
-    auto& gameState = GetGameState();
-    if (!MapIsLocationOwned(_loc) && !gameState.Cheats.sandboxMode)
+    auto& gameState = getGameState();
+    if (!MapIsLocationOwned(_loc) && !gameState.cheats.sandboxMode)
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -125,7 +125,7 @@ GameActions::Result MazeSetTrackAction::Query() const
     auto clearanceHeight = _loc.z + 32;
 
     auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
-    if (heightDifference >= 0 && !gameState.Cheats.disableSupportLimits)
+    if (heightDifference >= 0 && !gameState.cheats.disableSupportLimits)
     {
         heightDifference /= kCoordsZPerTinyZ;
 

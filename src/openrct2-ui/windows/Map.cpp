@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
     static int32_t getPracticalMapSize()
     {
         // Take non-square maps into account
-        return std::max(GetGameState().MapSize.x, GetGameState().MapSize.y) - 2;
+        return std::max(getGameState().mapSize.x, getGameState().mapSize.y) - 2;
     }
     static int32_t getPracticalMapSizeBig()
     {
@@ -74,7 +74,7 @@ namespace OpenRCT2::Ui::Windows
 
     static bool isEditorOrSandbox()
     {
-        return gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode;
+        return gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode;
     }
 
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
@@ -254,8 +254,8 @@ namespace OpenRCT2::Ui::Windows
             CentreMapOnViewPoint();
             FootpathSelectDefault();
 
-            auto& gameState = GetGameState();
-            _mapWidthAndHeightLinked = gameState.MapSize.x == gameState.MapSize.y;
+            auto& gameState = getGameState();
+            _mapWidthAndHeightLinked = gameState.mapSize.x == gameState.mapSize.y;
 
             // Reset land rights tool size
             _landRightsToolSize = 1;
@@ -511,7 +511,7 @@ namespace OpenRCT2::Ui::Windows
                         size = std::clamp(
                             size, static_cast<int>(kMinimumMapSizeTechnical), static_cast<int>(kMaximumMapSizeTechnical));
 
-                        TileCoordsXY newMapSize = GetGameState().MapSize;
+                        TileCoordsXY newMapSize = getGameState().mapSize;
                         if (_resizeDirection != ResizeDirection::X)
                             newMapSize.y = size;
                         if (_resizeDirection != ResizeDirection::Y)
@@ -615,8 +615,8 @@ namespace OpenRCT2::Ui::Windows
                 pressed_widgets |= (1uLL << WIDX_MAP_GENERATOR);
 
             // Set disabled widgets
-            auto& gameState = GetGameState();
-            SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.MapSize.x != gameState.MapSize.y);
+            auto& gameState = getGameState();
+            SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.mapSize.x != gameState.mapSize.y);
 
             // Resize widgets to window size
             ResizeFrameWithPage();
@@ -764,7 +764,7 @@ namespace OpenRCT2::Ui::Windows
 
         void IncreaseMapSize()
         {
-            auto newMapSize = GetGameState().MapSize;
+            auto newMapSize = getGameState().mapSize;
             if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
                 newMapSize.y++;
             if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
@@ -776,7 +776,7 @@ namespace OpenRCT2::Ui::Windows
 
         void DecreaseMapSize()
         {
-            auto newMapSize = GetGameState().MapSize;
+            auto newMapSize = getGameState().mapSize;
             if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
                 newMapSize.y--;
             if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
@@ -1112,10 +1112,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].type = WindowWidgetType::Button;
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             auto ft = Formatter::Common();
-            ft.Add<uint16_t>(gameState.MapSize.y - 2);
-            ft.Add<uint16_t>(gameState.MapSize.x - 2);
+            ft.Add<uint16_t>(gameState.mapSize.y - 2);
+            ft.Add<uint16_t>(gameState.mapSize.x - 2);
         }
 
         void InputMapSize(WidgetIndex callingWidget)

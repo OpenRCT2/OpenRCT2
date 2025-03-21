@@ -224,15 +224,15 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            const auto& gameState = GetGameState();
+            const auto& gameState = getGameState();
             ScreenSize size{};
             if (scrollIndex == 0)
             {
-                size.height = static_cast<int32_t>(gameState.ResearchItemsInvented.size()) * kScrollableRowHeight;
+                size.height = static_cast<int32_t>(gameState.researchItemsInvented.size()) * kScrollableRowHeight;
             }
             else
             {
-                size.height = static_cast<int32_t>(gameState.ResearchItemsUninvented.size()) * kScrollableRowHeight;
+                size.height = static_cast<int32_t>(gameState.researchItemsUninvented.size()) * kScrollableRowHeight;
             }
             return size;
         }
@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            const auto& gameState = GetGameState();
+            const auto& gameState = getGameState();
 
             // Draw background
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
@@ -280,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t itemY = -kScrollableRowHeight;
             auto* dragItem = WindowEditorInventionsListDragGetItem();
 
-            const auto& researchList = scrollIndex == 0 ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
+            const auto& researchList = scrollIndex == 0 ? gameState.researchItemsInvented : gameState.researchItemsUninvented;
             for (const auto& researchItem : researchList)
             {
                 itemY += kScrollableRowHeight;
@@ -522,7 +522,7 @@ namespace OpenRCT2::Ui::Windows
 
         void MoveResearchItem(const ResearchItem& item, ResearchItem* beforeItem, bool isInvented)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             _selectedResearchItem = nullptr;
             Invalidate();
 
@@ -535,7 +535,7 @@ namespace OpenRCT2::Ui::Windows
 
             ResearchRemove(item);
 
-            auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
+            auto& researchList = isInvented ? gameState.researchItemsInvented : gameState.researchItemsUninvented;
             if (beforeItem != nullptr)
             {
                 for (size_t i = 0; i < researchList.size(); i++)
@@ -555,8 +555,8 @@ namespace OpenRCT2::Ui::Windows
     private:
         ResearchItem* GetItemFromScrollY(bool isInvented, int32_t y) const
         {
-            auto& gameState = GetGameState();
-            auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
+            auto& gameState = getGameState();
+            auto& researchList = isInvented ? gameState.researchItemsInvented : gameState.researchItemsUninvented;
             for (auto& researchItem : researchList)
             {
                 y -= kScrollableRowHeight;
@@ -571,8 +571,8 @@ namespace OpenRCT2::Ui::Windows
 
         ResearchItem* GetItemFromScrollYIncludeSeps(bool isInvented, int32_t y) const
         {
-            auto& gameState = GetGameState();
-            auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
+            auto& gameState = getGameState();
+            auto& researchList = isInvented ? gameState.researchItemsInvented : gameState.researchItemsUninvented;
             for (auto& researchItem : researchList)
             {
                 y -= kScrollableRowHeight;

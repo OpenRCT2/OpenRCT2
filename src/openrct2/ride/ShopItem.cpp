@@ -147,7 +147,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
 
 bool ShopItemHasCommonPrice(const ShopItem shopItem)
 {
-    return (GetGameState().SamePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
+    return (getGameState().samePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
 }
 
 bool ShopItemDescriptor::IsFood() const

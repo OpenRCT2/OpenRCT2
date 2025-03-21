@@ -1726,7 +1726,7 @@ void TrackPaintUtilLeftQuarterTurn1TilePaint(
 
 void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, int16_t height, Direction direction)
 {
-    int32_t frame = (GetGameState().CurrentTicks >> 2) & 3;
+    int32_t frame = (getGameState().currentTicks >> 2) & 3;
     auto colourFlags = session.SupportColours;
 
     auto colourFlags2 = session.TrackColours;

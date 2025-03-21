@@ -1124,7 +1124,7 @@ namespace OpenRCT2::Ui::Windows
         if (gLegacyScene == LegacyScene::titleSequence)
             return;
 
-        if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
             return;
 
         if (gLegacyScene == LegacyScene::trackDesignsManager)

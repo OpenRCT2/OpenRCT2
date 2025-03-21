@@ -59,7 +59,7 @@ GameActions::Result FootpathRemoveAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!(gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode) && !MapIsLocationOwned(_loc))
+    if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(
             GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -104,17 +104,17 @@ GameActions::Result FootpathRemoveAction::Execute() const
         TileElementRemove(footpathElement);
         FootpathUpdateQueueChains();
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         // Remove the spawn point (if there is one in the current tile)
-        gameState.PeepSpawns.erase(
+        gameState.peepSpawns.erase(
             std::remove_if(
-                gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
+                gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
                 [this](const CoordsXYZ& spawn) {
                     {
                         return spawn.ToTileStart() == _loc.ToTileStart();
                     }
                 }),
-            gameState.PeepSpawns.end());
+            gameState.peepSpawns.end());
     }
     else
     {

@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScMap::size_get() const
     {
-        return ToDuk(_context, GetGameState().MapSize);
+        return ToDuk(_context, getGameState().mapSize);
     }
 
     int32_t ScMap::numRides_get() const

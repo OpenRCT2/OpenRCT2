@@ -466,7 +466,7 @@ namespace OpenRCT2::Ui::Windows
                                 auto intent = Intent(WindowClass::Loadsave);
                                 intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
                                 intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
-                                intent.PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
+                                intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioName);
                                 ContextOpenIntent(&intent);
                             }
                             else
@@ -650,7 +650,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
             }
 
-            if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
+            if ((getGameState().park.Flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
         }
 
@@ -669,22 +669,22 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
             widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
 
-            auto& gameState = GetGameState();
-            if (gameState.EditorStep != EditorStep::LandscapeEditor)
+            auto& gameState = getGameState();
+            if (gameState.editorStep != EditorStep::LandscapeEditor)
             {
                 widgets[WIDX_LAND].type = WindowWidgetType::Empty;
                 widgets[WIDX_WATER].type = WindowWidgetType::Empty;
             }
 
-            if (gameState.EditorStep != EditorStep::RollercoasterDesigner)
+            if (gameState.editorStep != EditorStep::RollercoasterDesigner)
             {
                 widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
                 widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
                 widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
             }
 
-            if (gameState.EditorStep != EditorStep::LandscapeEditor
-                && gameState.EditorStep != EditorStep::RollercoasterDesigner)
+            if (gameState.editorStep != EditorStep::LandscapeEditor
+                && gameState.editorStep != EditorStep::RollercoasterDesigner)
             {
                 widgets[WIDX_MAP].type = WindowWidgetType::Empty;
                 widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
@@ -878,7 +878,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            const auto& gameState = GetGameState();
+            const auto& gameState = getGameState();
             int32_t imgId;
 
             WindowDrawWidgets(*this, dpi);
@@ -891,7 +891,7 @@ namespace OpenRCT2::Ui::Windows
                 imgId = SPR_TOOLBAR_STAFF;
                 if (WidgetIsPressed(*this, WIDX_STAFF))
                     imgId++;
-                GfxDrawSprite(dpi, ImageId(imgId, gameState.StaffHandymanColour, gameState.StaffMechanicColour), screenPos);
+                GfxDrawSprite(dpi, ImageId(imgId, gameState.staffHandymanColour, gameState.staffMechanicColour), screenPos);
             }
 
             // Draw fast forward button
@@ -922,7 +922,7 @@ namespace OpenRCT2::Ui::Windows
                 GfxDrawSprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
 
                 // Draw an overlay if clearance checks are disabled
-                if (GetGameState().Cheats.disableClearanceChecks)
+                if (getGameState().cheats.disableClearanceChecks)
                 {
                     auto colour = ColourWithFlags{ COLOUR_DARK_ORANGE }.withFlag(ColourFlag::withOutline, true);
                     DrawTextBasic(
@@ -1185,7 +1185,7 @@ namespace OpenRCT2::Ui::Windows
         auto i = 0;
         gDropdownItems[i++].Format = STR_SHORTCUT_SHOW_MAP;
         gDropdownItems[i++].Format = STR_EXTRA_VIEWPORT;
-        if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep == EditorStep::LandscapeEditor)
+        if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep == EditorStep::LandscapeEditor)
         {
             gDropdownItems[i++].Format = STR_MAPGEN_MENU_ITEM;
         }
@@ -1217,7 +1217,7 @@ namespace OpenRCT2::Ui::Windows
     void TopToolbar::MapMenuDropdown(int16_t dropdownIndex)
     {
         int32_t customStartIndex = 3;
-        if (gLegacyScene == LegacyScene::scenarioEditor && GetGameState().EditorStep == EditorStep::LandscapeEditor)
+        if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep == EditorStep::LandscapeEditor)
         {
             customStartIndex++;
         }
@@ -1437,16 +1437,16 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::SetDisabled(DDIDX_ENABLE_SANDBOX_MODE, true);
         }
 
-        auto& gameState = GetGameState();
-        if (gameState.Cheats.sandboxMode)
+        auto& gameState = getGameState();
+        if (gameState.cheats.sandboxMode)
         {
             Dropdown::SetChecked(DDIDX_ENABLE_SANDBOX_MODE, true);
         }
-        if (gameState.Cheats.disableClearanceChecks)
+        if (gameState.cheats.disableClearanceChecks)
         {
             Dropdown::SetChecked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
         }
-        if (gameState.Cheats.disableSupportLimits)
+        if (gameState.cheats.disableSupportLimits)
         {
             Dropdown::SetChecked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
         }
@@ -1481,13 +1481,13 @@ namespace OpenRCT2::Ui::Windows
                 ContextOpenWindow(WindowClass::EditorObjectiveOptions);
                 break;
             case DDIDX_ENABLE_SANDBOX_MODE:
-                CheatsSet(CheatType::SandboxMode, !GetGameState().Cheats.sandboxMode);
+                CheatsSet(CheatType::SandboxMode, !getGameState().cheats.sandboxMode);
                 break;
             case DDIDX_DISABLE_CLEARANCE_CHECKS:
-                CheatsSet(CheatType::DisableClearanceChecks, !GetGameState().Cheats.disableClearanceChecks);
+                CheatsSet(CheatType::DisableClearanceChecks, !getGameState().cheats.disableClearanceChecks);
                 break;
             case DDIDX_DISABLE_SUPPORT_LIMITS:
-                CheatsSet(CheatType::DisableSupportLimits, !GetGameState().Cheats.disableSupportLimits);
+                CheatsSet(CheatType::DisableSupportLimits, !getGameState().cheats.disableSupportLimits);
                 break;
         }
     }

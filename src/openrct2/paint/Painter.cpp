@@ -87,7 +87,7 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
     auto stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
     screenCoords.x = screenCoords.x - stringWidth;
 
-    if (((GetGameState().CurrentTicks >> 1) & 0xF) > 4)
+    if (((getGameState().currentTicks >> 1) & 0xF) > 4)
         DrawText(dpi, screenCoords, { COLOUR_SATURATED_RED }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last

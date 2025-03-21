@@ -230,7 +230,7 @@ namespace OpenRCT2
         int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
 
         auto gameAction = RideCreateAction(
-            listItem.Type, listItem.EntryIndex, colour1, colour2, GetGameState().LastEntranceStyle);
+            listItem.Type, listItem.EntryIndex, colour1, colour2, getGameState().lastEntranceStyle);
 
         gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)

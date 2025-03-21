@@ -493,7 +493,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                     Invalidate();
             }
-            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
+            if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
@@ -1135,7 +1135,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t guestEntryTime = peep->GetParkEntryTime();
             if (guestEntryTime != -1)
             {
-                int32_t timeInPark = (GetGameState().CurrentTicks - guestEntryTime) >> 11;
+                int32_t timeInPark = (getGameState().currentTicks - guestEntryTime) >> 11;
                 auto ft = Formatter();
                 ft.Add<uint16_t>(timeInPark & 0xFFFF);
                 DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
@@ -1219,7 +1219,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Every 2048 ticks do a full window_invalidate
-            int32_t numTicks = GetGameState().CurrentTicks - guest->GetParkEntryTime();
+            int32_t numTicks = getGameState().currentTicks - guest->GetParkEntryTime();
             if (!(numTicks & 0x7FF))
                 Invalidate();
 
@@ -1606,7 +1606,7 @@ namespace OpenRCT2::Ui::Windows
 
         std::pair<ImageId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
         {
-            auto parkName = GetGameState().Park.Name.c_str();
+            auto parkName = getGameState().park.Name.c_str();
 
             // Default item image
             auto& itemDesc = GetShopItemDescriptor(item);

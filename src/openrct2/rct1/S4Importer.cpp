@@ -355,13 +355,13 @@ namespace OpenRCT2::RCT1
 
             uint16_t mapSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
 
-            gameState.ScenarioFileName = GetRCT1ScenarioName();
+            gameState.scenarioFileName = GetRCT1ScenarioName();
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
             gameStateInitAll(gameState, { mapSize, mapSize });
-            gameState.EditorStep = EditorStep::ObjectSelection;
-            gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-            gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
+            gameState.editorStep = EditorStep::ObjectSelection;
+            gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.scenarioCategory = SCENARIO_CATEGORY_OTHER;
         }
 
         std::string GetRCT1ScenarioName()
@@ -1461,54 +1461,54 @@ namespace OpenRCT2::RCT1
 
         void ImportPeepSpawns(GameState_t& gameState)
         {
-            gameState.PeepSpawns.clear();
+            gameState.peepSpawns.clear();
             for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
                 if (_s4.PeepSpawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
                     PeepSpawn spawn = { _s4.PeepSpawn[i].x, _s4.PeepSpawn[i].y, _s4.PeepSpawn[i].z * 16,
                                         _s4.PeepSpawn[i].direction };
-                    gameState.PeepSpawns.push_back(spawn);
+                    gameState.peepSpawns.push_back(spawn);
                 }
             }
         }
 
         void ImportFinance(GameState_t& gameState)
         {
-            gameState.Park.EntranceFee = _s4.ParkEntranceFee;
-            gameState.LandPrice = ToMoney64(_s4.LandPrice);
-            gameState.ConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
+            gameState.park.EntranceFee = _s4.ParkEntranceFee;
+            gameState.landPrice = ToMoney64(_s4.LandPrice);
+            gameState.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
-            gameState.Cash = ToMoney64(_s4.Cash);
-            gameState.BankLoan = ToMoney64(_s4.Loan);
-            gameState.MaxBankLoan = ToMoney64(_s4.MaxLoan);
+            gameState.cash = ToMoney64(_s4.Cash);
+            gameState.bankLoan = ToMoney64(_s4.Loan);
+            gameState.maxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
-            gameState.BankLoanInterestRate = 1;
-            gameState.InitialCash = ToMoney64(_s4.Cash);
+            gameState.bankLoanInterestRate = 1;
+            gameState.initialCash = ToMoney64(_s4.Cash);
 
-            gameState.CompanyValue = ToMoney64(_s4.CompanyValue);
-            gameState.Park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
-            gameState.CurrentProfit = ToMoney64(_s4.Profit);
+            gameState.companyValue = ToMoney64(_s4.CompanyValue);
+            gameState.park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
+            gameState.currentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
-                gameState.CashHistory[i] = ToMoney64(_s4.CashHistory[i]);
-                gameState.Park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
-                gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
+                gameState.cashHistory[i] = ToMoney64(_s4.CashHistory[i]);
+                gameState.park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
+                gameState.weeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
             for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
                 for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
-                    gameState.ExpenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
+                    gameState.expenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
             }
-            gameState.CurrentExpenditure = ToMoney64(_s4.TotalExpenditure);
+            gameState.currentExpenditure = ToMoney64(_s4.TotalExpenditure);
 
-            gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
-            gameState.TotalAdmissions = _s4.NumAdmissions;
-            gameState.TotalIncomeFromAdmissions = ToMoney64(_s4.AdmissionTotalIncome);
+            gameState.scenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
+            gameState.totalAdmissions = _s4.NumAdmissions;
+            gameState.totalIncomeFromAdmissions = ToMoney64(_s4.AdmissionTotalIncome);
 
             // TODO marketing campaigns not working
             static_assert(
@@ -1529,7 +1529,7 @@ namespace OpenRCT2::RCT1
                     {
                         campaign.ShopItemType = ShopItem(_s4.MarketingAssoc[i]);
                     }
-                    gameState.MarketingCampaigns.push_back(campaign);
+                    gameState.marketingCampaigns.push_back(campaign);
                 }
             }
         }
@@ -2095,41 +2095,41 @@ namespace OpenRCT2::RCT1
             {
                 activeResearchTypes |= EnumToFlag(ResearchCategory::SceneryGroup);
             }
-            gameState.ResearchPriorities = activeResearchTypes;
-            gameState.ResearchFundingLevel = _s4.ResearchLevel;
+            gameState.researchPriorities = activeResearchTypes;
+            gameState.researchFundingLevel = _s4.ResearchLevel;
 
             // This will mark items as researched/unresearched according to the research list.
             // This needs to be called before importing progress, as it will reset it.
             ResearchResetCurrentItem();
 
             // Research history
-            gameState.ResearchProgress = _s4.ResearchProgress;
-            gameState.ResearchProgressStage = _s4.ResearchProgressStage;
-            gameState.ResearchExpectedDay = _s4.NextResearchExpectedDay;
-            gameState.ResearchExpectedMonth = _s4.NextResearchExpectedMonth;
+            gameState.researchProgress = _s4.ResearchProgress;
+            gameState.researchProgressStage = _s4.ResearchProgressStage;
+            gameState.researchExpectedDay = _s4.NextResearchExpectedDay;
+            gameState.researchExpectedMonth = _s4.NextResearchExpectedMonth;
 
             if (_s4.LastResearchFlags == 0xFF)
             {
-                gameState.ResearchLastItem = std::nullopt;
+                gameState.researchLastItem = std::nullopt;
             }
             else
             {
                 ::ResearchItem researchItem = {};
                 ConvertResearchEntry(&researchItem, _s4.LastResearchItem, _s4.LastResearchType);
-                gameState.ResearchLastItem = researchItem;
+                gameState.researchLastItem = researchItem;
             }
 
             if (_s4.NextResearchFlags == 0xFF)
             {
-                gameState.ResearchNextItem = std::nullopt;
-                gameState.ResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
-                gameState.ResearchProgress = 0;
+                gameState.researchNextItem = std::nullopt;
+                gameState.researchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
+                gameState.researchProgress = 0;
             }
             else
             {
                 ::ResearchItem researchItem = {};
                 ConvertResearchEntry(&researchItem, _s4.NextResearchItem, _s4.NextResearchType);
-                gameState.ResearchNextItem = researchItem;
+                gameState.researchNextItem = researchItem;
             }
         }
 
@@ -2188,7 +2188,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            auto& park = gameState.Park;
+            auto& park = gameState.park;
             park.Name = std::move(parkName);
         }
 
@@ -2235,31 +2235,31 @@ namespace OpenRCT2::RCT1
         void ImportParkFlags(GameState_t& gameState)
         {
             // Date and srand
-            gameState.CurrentTicks = _s4.Ticks;
+            gameState.currentTicks = _s4.Ticks;
             ScenarioRandSeed(_s4.RandomA, _s4.RandomB);
-            gameState.Date = Date{ _s4.Month, _s4.Day };
+            gameState.date = Date{ _s4.Month, _s4.Day };
 
             // Park rating
-            gameState.Park.Rating = _s4.ParkRating;
+            gameState.park.Rating = _s4.ParkRating;
 
             Park::ResetHistories(gameState);
             for (size_t i = 0; i < std::size(_s4.ParkRatingHistory); i++)
             {
                 if (_s4.ParkRatingHistory[i] != RCT12ParkHistoryUndefined)
                 {
-                    gameState.Park.RatingHistory[i] = _s4.ParkRatingHistory[i] * RCT12ParkRatingHistoryFactor;
+                    gameState.park.RatingHistory[i] = _s4.ParkRatingHistory[i] * RCT12ParkRatingHistoryFactor;
                 }
             }
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
                 if (_s4.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
                 {
-                    gameState.GuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
+                    gameState.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
                 }
             }
 
             // Awards
-            auto& currentAwards = gameState.CurrentAwards;
+            auto& currentAwards = gameState.currentAwards;
             for (auto& src : _s4.Awards)
             {
                 if (src.Time != 0)
@@ -2270,13 +2270,13 @@ namespace OpenRCT2::RCT1
 
             // Number of guests history
             std::fill(
-                std::begin(gameState.GuestsInParkHistory), std::end(gameState.GuestsInParkHistory),
+                std::begin(gameState.guestsInParkHistory), std::end(gameState.guestsInParkHistory),
                 std::numeric_limits<uint32_t>::max());
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
                 if (_s4.GuestsInParkHistory[i] != std::numeric_limits<uint8_t>::max())
                 {
-                    gameState.GuestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
+                    gameState.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
                 }
             }
 
@@ -2286,35 +2286,35 @@ namespace OpenRCT2::RCT1
             News::importNewsItems(gameState, recentMessages, archivedMessages);
 
             // Initial guest status
-            gameState.GuestInitialCash = ToMoney64(_s4.GuestInitialCash);
-            gameState.GuestInitialHunger = _s4.GuestInitialHunger;
-            gameState.GuestInitialThirst = _s4.GuestInitialThirst;
-            gameState.GuestInitialHappiness = _s4.GuestInitialHappiness;
+            gameState.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
+            gameState.guestInitialHunger = _s4.GuestInitialHunger;
+            gameState.guestInitialThirst = _s4.GuestInitialThirst;
+            gameState.guestInitialHappiness = _s4.GuestInitialHappiness;
 
-            gameState.GuestGenerationProbability = _s4.GuestGenerationProbability;
+            gameState.guestGenerationProbability = _s4.GuestGenerationProbability;
 
             // Staff colours
-            gameState.StaffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
-            gameState.StaffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
-            gameState.StaffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
+            gameState.staffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
+            gameState.staffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
+            gameState.staffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
-            gameState.Park.Flags = _s4.ParkFlags;
-            gameState.Park.Flags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
-            gameState.Park.Flags |= PARK_FLAGS_RCT1_INTEREST;
+            gameState.park.Flags = _s4.ParkFlags;
+            gameState.park.Flags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+            gameState.park.Flags |= PARK_FLAGS_RCT1_INTEREST;
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
             if (!(_s4.ParkFlags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
             {
-                gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            gameState.Park.Size = _s4.ParkSize;
-            gameState.TotalRideValueForMoney = _s4.TotalRideValueForMoney;
-            gameState.SamePriceThroughoutPark = 0;
+            gameState.park.Size = _s4.ParkSize;
+            gameState.totalRideValueForMoney = _s4.TotalRideValueForMoney;
+            gameState.samePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
             {
-                gameState.SamePriceThroughoutPark = _s4.SamePriceThroughout;
+                gameState.samePriceThroughoutPark = _s4.SamePriceThroughout;
             }
         }
 
@@ -2376,15 +2376,15 @@ namespace OpenRCT2::RCT1
 
         void ImportClimate(GameState_t& gameState)
         {
-            gameState.WeatherUpdateTimer = _s4.WeatherUpdateTimer;
-            gameState.WeatherCurrent = {
+            gameState.weatherUpdateTimer = _s4.WeatherUpdateTimer;
+            gameState.weatherCurrent = {
                 .weatherType = WeatherType{ _s4.Weather },
                 .temperature = static_cast<int8_t>(_s4.Temperature),
                 .weatherEffect = WeatherEffectType::None,
                 .weatherGloom = _s4.WeatherGloom,
                 .level = static_cast<WeatherLevel>(_s4.Rain),
             };
-            gameState.WeatherNext = {
+            gameState.weatherNext = {
                 .weatherType = WeatherType{ _s4.TargetWeather },
                 .temperature = static_cast<int8_t>(_s4.TargetTemperature),
                 .weatherEffect = WeatherEffectType::None,
@@ -2425,39 +2425,39 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            gameState.ScenarioName = std::move(name);
-            gameState.ScenarioDetails = std::move(details);
+            gameState.scenarioName = std::move(name);
+            gameState.scenarioDetails = std::move(details);
             if (_isScenario && !parkName.empty())
             {
-                auto& park = GetGameState().Park;
+                auto& park = getGameState().park;
                 park.Name = std::move(parkName);
             }
         }
 
         void ImportScenarioObjective(GameState_t& gameState)
         {
-            gameState.ScenarioObjective.Type = _s4.ScenarioObjectiveType;
-            gameState.ScenarioObjective.Year = _s4.ScenarioObjectiveYears;
-            gameState.ScenarioObjective.NumGuests = _s4.ScenarioObjectiveNumGuests;
+            gameState.scenarioObjective.Type = _s4.ScenarioObjectiveType;
+            gameState.scenarioObjective.Year = _s4.ScenarioObjectiveYears;
+            gameState.scenarioObjective.NumGuests = _s4.ScenarioObjectiveNumGuests;
 
             // RCT1 used a different way of calculating the park value.
             // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
             // we need to check the goal to avoid affecting scenarios like Volcania.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
-                gameState.ScenarioObjective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
+                gameState.scenarioObjective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
-                gameState.ScenarioObjective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
+                gameState.scenarioObjective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
 
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-                gameState.ScenarioObjective.RideId = GetBuildTheBestRideId();
+                gameState.scenarioObjective.RideId = GetBuildTheBestRideId();
         }
 
         void ImportSavedView(GameState_t& gameState)
         {
-            gameState.SavedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
-            gameState.SavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.ViewZoom) };
-            gameState.SavedViewRotation = _s4.ViewRotation;
+            gameState.savedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
+            gameState.savedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.ViewZoom) };
+            gameState.savedViewRotation = _s4.ViewRotation;
         }
 
         void ConvertWall(const int32_t& type, colour_t* colourA, colour_t* colourB)
@@ -2523,10 +2523,10 @@ namespace OpenRCT2::RCT1
 
         void FixEntrancePositions(GameState_t& gameState)
         {
-            gameState.Park.Entrances.clear();
+            gameState.park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.Park.Entrances.size() < Limits::kMaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.park.Entrances.size() < Limits::kMaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2538,7 +2538,7 @@ namespace OpenRCT2::RCT1
                     continue;
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->GetBaseZ(), element->GetDirection() };
-                gameState.Park.Entrances.push_back(entrance);
+                gameState.park.Entrances.push_back(entrance);
             }
         }
 
@@ -2607,7 +2607,7 @@ namespace OpenRCT2::RCT1
                 nextGuestNumber = std::max(nextGuestNumber, peep->PeepId);
             }
 
-            gameState.NextGuestNumber = nextGuestNumber + 1;
+            gameState.nextGuestNumber = nextGuestNumber + 1;
         }
 
         /**

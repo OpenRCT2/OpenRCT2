@@ -81,7 +81,7 @@ namespace OpenRCT2::Ui::Windows
             auto currentRide = GetRide(rideId);
             if (currentRide != nullptr)
             {
-                auto stringId = (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY
+                auto stringId = (getGameState().park.Flags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY
                                                                                   : STR_REFURBISH_RIDE_ID_MONEY;
                 auto ft = Formatter();
                 currentRide->formatNameTo(ft);

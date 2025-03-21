@@ -560,7 +560,7 @@ static void Loc6A6D7E(
     FootpathNeighbourList* neighbourList)
 {
     auto targetPos = CoordsXY{ initialTileElementPos } + CoordsDirectionDelta[direction];
-    if ((gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode) && MapIsEdge(targetPos))
+    if ((gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && MapIsEdge(targetPos))
     {
         if (query)
         {
@@ -1807,7 +1807,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
 
 static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
 {
-    bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode);
+    bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
     for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
     {
         auto pathEntry = GetPathSurfaceEntry(i);
@@ -1831,7 +1831,7 @@ static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
     auto pathEntry = GetPathSurfaceEntry(index);
     if (pathEntry != nullptr)
     {
-        bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode);
+        bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
         if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
         {
             return false;
@@ -1859,7 +1859,7 @@ static ObjectEntryIndex FootpathGetDefaultRailings()
 
 static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
 {
-    bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode);
+    bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto footpathObj = objManager.GetLoadedObject<FootpathObject>(index);
     if (footpathObj != nullptr)

@@ -101,7 +101,7 @@ static bool AwardIsDeservedMostUntidy(int32_t activeAwardTypes)
         }
     }
 
-    return (negativeCount > GetGameState().NumGuestsInPark / 16);
+    return (negativeCount > getGameState().numGuestsInPark / 16);
 }
 
 /** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
@@ -133,7 +133,7 @@ static bool AwardIsDeservedMostTidy(int32_t activeAwardTypes)
         }
     }
 
-    return (negativeCount <= 5 && positiveCount > GetGameState().NumGuestsInPark / 64);
+    return (negativeCount <= 5 && positiveCount > getGameState().numGuestsInPark / 64);
 }
 
 /** At least 6 open roller coasters. */
@@ -166,7 +166,7 @@ static bool AwardIsDeservedBestRollercoasters([[maybe_unused]] int32_t activeAwa
 /** Entrance fee is 0.10 less than half of the total ride value. */
 static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     if (activeAwardTypes & EnumToFlag(AwardType::WorstValue))
         return false;
@@ -174,13 +174,13 @@ static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
-    if ((gameState.Park.Flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
+    if ((gameState.park.Flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
         return false;
 
-    if (gameState.TotalRideValueForMoney < 10.00_GBP)
+    if (gameState.totalRideValueForMoney < 10.00_GBP)
         return false;
 
-    if (Park::GetEntranceFee() + 0.10_GBP >= gameState.TotalRideValueForMoney / 2)
+    if (Park::GetEntranceFee() + 0.10_GBP >= gameState.totalRideValueForMoney / 2)
         return false;
 
     return true;
@@ -216,23 +216,23 @@ static bool AwardIsDeservedMostBeautiful(int32_t activeAwardTypes)
         }
     }
 
-    return (negativeCount <= 15 && positiveCount > GetGameState().NumGuestsInPark / 128);
+    return (negativeCount <= 15 && positiveCount > getGameState().numGuestsInPark / 128);
 }
 
 /** Entrance fee is more than total ride value. */
 static bool AwardIsDeservedWorstValue(int32_t activeAwardTypes)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
+    if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
         return false;
 
     const auto parkEntranceFee = Park::GetEntranceFee();
     if (parkEntranceFee == 0.00_GBP)
         return false;
-    if (parkEntranceFee <= gameState.TotalRideValueForMoney)
+    if (parkEntranceFee <= gameState.totalRideValueForMoney)
         return false;
     return true;
 }
@@ -306,7 +306,7 @@ static bool AwardIsDeservedBestFood(int32_t activeAwardTypes)
         }
     }
 
-    if (shops < 7 || uniqueShops < 4 || shops < GetGameState().NumGuestsInPark / 128)
+    if (shops < 7 || uniqueShops < 4 || shops < getGameState().numGuestsInPark / 128)
         return false;
 
     // Count hungry peeps
@@ -351,7 +351,7 @@ static bool AwardIsDeservedWorstFood(int32_t activeAwardTypes)
         }
     }
 
-    if (uniqueShops > 2 || shops > GetGameState().NumGuestsInPark / 256)
+    if (uniqueShops > 2 || shops > getGameState().numGuestsInPark / 256)
         return false;
 
     // Count hungry peeps
@@ -383,7 +383,7 @@ static bool AwardIsDeservedBestToilets([[maybe_unused]] int32_t activeAwardTypes
         return false;
 
     // At least one open toilet for every 128 guests
-    if (numToilets < GetGameState().NumGuestsInPark / 128u)
+    if (numToilets < getGameState().numGuestsInPark / 128u)
         return false;
 
     // Count number of guests who are thinking they need the toilet
@@ -405,7 +405,7 @@ static bool AwardIsDeservedMostDisappointing(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (GetGameState().Park.Rating > 650)
+    if (getGameState().park.Rating > 650)
         return false;
 
     // Count the number of disappointing rides
@@ -593,7 +593,7 @@ static bool AwardIsDeserved(AwardType awardType, int32_t activeAwardTypes)
 
 void AwardReset()
 {
-    GetGameState().CurrentAwards.clear();
+    getGameState().currentAwards.clear();
 }
 
 /**
@@ -604,8 +604,8 @@ void AwardUpdateAll()
 {
     PROFILED_FUNCTION();
 
-    auto& gameState = GetGameState();
-    auto& currentAwards = gameState.CurrentAwards;
+    auto& gameState = getGameState();
+    auto& currentAwards = gameState.currentAwards;
     auto* windowMgr = Ui::GetWindowManager();
 
     // Decrease award times
@@ -624,7 +624,7 @@ void AwardUpdateAll()
     }
 
     // Only add new awards if park is open
-    if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
+    if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;

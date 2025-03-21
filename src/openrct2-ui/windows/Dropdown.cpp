@@ -505,7 +505,7 @@ namespace OpenRCT2::Ui::Windows
     {
         int32_t defaultIndex = -1;
 
-        const bool specialColoursEnabled = !alwaysHideSpecialColours && GetGameState().Cheats.allowSpecialColourSchemes;
+        const bool specialColoursEnabled = !alwaysHideSpecialColours && getGameState().cheats.allowSpecialColourSchemes;
         auto numColours = specialColoursEnabled ? static_cast<uint8_t>(COLOUR_COUNT) : kColourNumNormal;
         // Set items
         for (uint64_t i = 0; i < numColours; i++)

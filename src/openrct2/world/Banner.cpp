@@ -121,19 +121,19 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
 
 static BannerIndex BannerGetNewIndex()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     for (BannerIndex::UnderlyingType bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
-        if (bannerIndex < gameState.Banners.size())
+        if (bannerIndex < gameState.banners.size())
         {
-            if (gameState.Banners[bannerIndex].IsNull())
+            if (gameState.banners[bannerIndex].IsNull())
             {
                 return BannerIndex::FromUnderlying(bannerIndex);
             }
         }
         else
         {
-            gameState.Banners.emplace_back();
+            gameState.banners.emplace_back();
             return BannerIndex::FromUnderlying(bannerIndex);
         }
     }
@@ -146,7 +146,7 @@ static BannerIndex BannerGetNewIndex()
  */
 void BannerInit(GameState_t& gameState)
 {
-    gameState.Banners.clear();
+    gameState.banners.clear();
 }
 
 TileElement* BannerGetTileElement(BannerIndex bannerIndex)
@@ -254,11 +254,11 @@ struct BannerElementWithPos
 // Returns a list of BannerElement's with the tile position.
 static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     std::vector<BannerElementWithPos> banners;
-    for (int y = 0; y < gameState.MapSize.y; y++)
+    for (int y = 0; y < gameState.mapSize.y; y++)
     {
-        for (int x = 0; x < gameState.MapSize.x; x++)
+        for (int x = 0; x < gameState.mapSize.x; x++)
         {
             const auto tilePos = TileCoordsXY{ x, y };
             for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(tilePos.ToCoordsXY()))
@@ -278,8 +278,8 @@ static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
 // has a tile with the banner index, if no tile is found then the banner element will be released.
 static void BannerDeallocateUnlinked()
 {
-    auto& gameState = GetGameState();
-    for (BannerIndex::UnderlyingType index = 0; index < gameState.Banners.size(); index++)
+    auto& gameState = getGameState();
+    for (BannerIndex::UnderlyingType index = 0; index < gameState.banners.size(); index++)
     {
         const auto bannerId = BannerIndex::FromUnderlying(index);
         auto* tileElement = BannerGetTileElement(bannerId);
@@ -373,8 +373,8 @@ void BannerApplyFixes()
 
 void UnlinkAllRideBanners()
 {
-    auto& gameState = GetGameState();
-    for (auto& banner : gameState.Banners)
+    auto& gameState = getGameState();
+    for (auto& banner : gameState.banners)
     {
         if (!banner.IsNull())
         {
@@ -386,8 +386,8 @@ void UnlinkAllRideBanners()
 
 void UnlinkAllBannersForRide(RideId rideId)
 {
-    auto& gameState = GetGameState();
-    for (auto& banner : gameState.Banners)
+    auto& gameState = getGameState();
+    for (auto& banner : gameState.banners)
     {
         if (!banner.IsNull() && (banner.flags & BANNER_FLAG_LINKED_TO_RIDE) && banner.ride_index == rideId)
         {
@@ -400,11 +400,11 @@ void UnlinkAllBannersForRide(RideId rideId)
 
 Banner* GetBanner(BannerIndex id)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     const auto index = id.ToUnderlying();
-    if (index < gameState.Banners.size())
+    if (index < gameState.banners.size())
     {
-        auto banner = &gameState.Banners[index];
+        auto banner = &gameState.banners[index];
         if (banner != nullptr && !banner->IsNull())
         {
             return banner;
@@ -415,16 +415,16 @@ Banner* GetBanner(BannerIndex id)
 
 Banner* GetOrCreateBanner(BannerIndex id)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     const auto index = id.ToUnderlying();
     if (index < MAX_BANNERS)
     {
-        if (index >= gameState.Banners.size())
+        if (index >= gameState.banners.size())
         {
-            gameState.Banners.resize(index + 1);
+            gameState.banners.resize(index + 1);
         }
         // Create the banner
-        auto& banner = gameState.Banners[index];
+        auto& banner = gameState.banners[index];
         banner.id = id;
         return &banner;
     }
@@ -458,24 +458,24 @@ void DeleteBanner(BannerIndex id)
 
 void TrimBanners()
 {
-    auto& gameState = GetGameState();
-    if (gameState.Banners.size() > 0)
+    auto& gameState = getGameState();
+    if (gameState.banners.size() > 0)
     {
-        auto lastBannerId = gameState.Banners.size() - 1;
-        while (lastBannerId != std::numeric_limits<size_t>::max() && gameState.Banners[lastBannerId].IsNull())
+        auto lastBannerId = gameState.banners.size() - 1;
+        while (lastBannerId != std::numeric_limits<size_t>::max() && gameState.banners[lastBannerId].IsNull())
         {
             lastBannerId--;
         }
-        gameState.Banners.resize(lastBannerId + 1);
-        gameState.Banners.shrink_to_fit();
+        gameState.banners.resize(lastBannerId + 1);
+        gameState.banners.shrink_to_fit();
     }
 }
 
 size_t GetNumBanners()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     size_t count = 0;
-    for (const auto& banner : gameState.Banners)
+    for (const auto& banner : gameState.banners)
     {
         if (!banner.IsNull())
         {

@@ -478,7 +478,7 @@ bool Staff::DoHandymanPathFinding()
     Direction litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((GetGameState().CurrentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
+    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
     {
         litterDirection = HandymanDirectionToNearestLitter();
     }
@@ -950,15 +950,15 @@ int32_t Staff::GetHireDate() const
 
 colour_t StaffGetColour(StaffType staffType)
 {
-    const auto& gameState = GetGameState();
+    const auto& gameState = getGameState();
     switch (staffType)
     {
         case StaffType::Handyman:
-            return gameState.StaffHandymanColour;
+            return gameState.staffHandymanColour;
         case StaffType::Mechanic:
-            return gameState.StaffMechanicColour;
+            return gameState.staffMechanicColour;
         case StaffType::Security:
-            return gameState.StaffSecurityColour;
+            return gameState.staffSecurityColour;
         case StaffType::Entertainer:
             return 0;
         default:
@@ -969,17 +969,17 @@ colour_t StaffGetColour(StaffType staffType)
 
 GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     switch (staffType)
     {
         case StaffType::Handyman:
-            gameState.StaffHandymanColour = value;
+            gameState.staffHandymanColour = value;
             break;
         case StaffType::Mechanic:
-            gameState.StaffMechanicColour = value;
+            gameState.staffMechanicColour = value;
             break;
         case StaffType::Security:
-            gameState.StaffSecurityColour = value;
+            gameState.staffSecurityColour = value;
             break;
         default:
             return GameActions::Result(

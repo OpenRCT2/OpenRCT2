@@ -182,7 +182,7 @@ static bool OnCrash(
         auto& objManager = ctx->GetObjectManager();
         exporter->ExportObjectsList = objManager.GetPackableObjects();
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         exporter->Export(gameState, saveFilePathUTF8.c_str());
         savedGameDumped = true;
     }

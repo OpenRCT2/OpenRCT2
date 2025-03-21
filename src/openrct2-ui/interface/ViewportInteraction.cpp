@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui
             return info;
 
         //
-        if (gLegacyScene == LegacyScene::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
             return info;
 
         info = GetMapCoordinatesFromPos(
@@ -146,8 +146,8 @@ namespace OpenRCT2::Ui
                 break;
             case ViewportInteractionItem::ParkEntrance:
             {
-                auto& gameState = GetGameState();
-                auto parkName = gameState.Park.Name.c_str();
+                auto& gameState = getGameState();
+                auto parkName = gameState.park.Name.c_str();
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
@@ -273,7 +273,7 @@ namespace OpenRCT2::Ui
             return info;
 
         //
-        if (gLegacyScene == LegacyScene::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
             return info;
 
         constexpr auto flags = static_cast<int32_t>(
@@ -377,7 +377,7 @@ namespace OpenRCT2::Ui
                 else
                 {
                     // FIXME: Why does it *2 the value?
-                    if (!GetGameState().Cheats.sandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
+                    if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                     {
                         info.interactionType = ViewportInteractionItem::None;
                         return info;
@@ -509,7 +509,7 @@ namespace OpenRCT2::Ui
                 return info;
             }
             case ViewportInteractionItem::ParkEntrance:
-                if (gLegacyScene != LegacyScene::scenarioEditor && !GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                     break;
 
                 if (tileElement->GetType() != TileElementType::Entrance)

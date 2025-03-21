@@ -691,7 +691,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
                 }
 
-                if (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode)
                 {
                     widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
                     if (IsSceneryItemRestricted(tabSelectedScenery))
@@ -842,7 +842,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            if (price != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (price != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
@@ -2366,7 +2366,7 @@ namespace OpenRCT2::Ui::Windows
 
         void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, ScreenCoordsXY& screenPos)
         {
-            if (!canRaiseItem && !GetGameState().Cheats.disableSupportLimits)
+            if (!canRaiseItem && !getGameState().cheats.disableSupportLimits)
             {
                 gSceneryCtrlPressed = false;
                 gSceneryShiftPressed = false;

@@ -67,7 +67,7 @@ GameActions::Result WallSetColourAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationInPark(_loc) && !GetGameState().Cheats.sandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationInPark(_loc) && !getGameState().cheats.sandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }

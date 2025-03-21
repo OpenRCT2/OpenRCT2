@@ -532,7 +532,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 12 };
             if (_windowFootpathCost != kMoney64Undefined)
             {
-                if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+                if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_windowFootpathCost);
@@ -670,7 +670,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint32_t numPathTypes = 0;
             // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
-            bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || GetGameState().Cheats.sandboxMode);
+            bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
 
             _dropdownEntries.clear();
             std::optional<size_t> defaultIndex;
@@ -688,14 +688,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 // If regular paths can be used as queue, only hide the path if we’re _not_ looking at a queue,
                 // but the path surface is one.
-                if (GetGameState().Cheats.allowRegularPathAsQueue && !showQueues
+                if (getGameState().cheats.allowRegularPathAsQueue && !showQueues
                     && ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
                 {
                     continue;
                 }
                 // If the cheat is disabled, hide queues from the regular path view and vice versa.
                 else if (
-                    !GetGameState().Cheats.allowRegularPathAsQueue
+                    !getGameState().cheats.allowRegularPathAsQueue
                     && showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
                 {
                     continue;
@@ -821,7 +821,7 @@ namespace OpenRCT2::Ui::Windows
                     auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                     if (info.interactionType != ViewportInteractionItem::None)
                     {
-                        const bool allowInvalidHeights = GetGameState().Cheats.allowTrackPlaceInvalidHeights;
+                        const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
                         const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
 
                         _footpathPlaceCtrlZ = floor2(info.Element->GetBaseZ(), heightStep);
@@ -854,7 +854,7 @@ namespace OpenRCT2::Ui::Windows
                     _footpathPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_footpathPlaceShiftZ);
                 }
 
-                const bool allowInvalidHeights = GetGameState().Cheats.allowTrackPlaceInvalidHeights;
+                const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
                 const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
                 _footpathPlaceShiftZ = floor2(_footpathPlaceShiftZ, heightStep);
 
@@ -1592,7 +1592,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutDemolishCurrent()
         {
             if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
-                || (!GetGameState().Cheats.buildInPauseMode && GameIsPaused()))
+                || (!getGameState().cheats.buildInPauseMode && GameIsPaused()))
             {
                 return;
             }

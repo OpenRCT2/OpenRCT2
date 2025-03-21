@@ -610,7 +610,7 @@ void VehicleUpdateAll()
     if (gLegacyScene == LegacyScene::scenarioEditor)
         return;
 
-    if (gLegacyScene == LegacyScene::trackDesigner && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+    if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
         return;
 
     for (auto vehicle : TrainManager::View())
@@ -4354,7 +4354,7 @@ void Vehicle::UpdateHauntedHouseOperating()
 
     if (Pitch != 0)
     {
-        if (GetGameState().CurrentTicks & 1)
+        if (getGameState().currentTicks & 1)
         {
             Pitch++;
             Invalidate();
@@ -4556,10 +4556,10 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
                 ride.id.ToUnderlying(), ft);
         }
 
-        auto& gameState = GetGameState();
-        if (gameState.Park.RatingCasualtyPenalty < 500)
+        auto& gameState = getGameState();
+        if (gameState.park.RatingCasualtyPenalty < 500)
         {
-            gameState.Park.RatingCasualtyPenalty += 200;
+            gameState.park.RatingCasualtyPenalty += 200;
         }
     }
 }
@@ -4868,7 +4868,7 @@ void Vehicle::UpdateSound()
         frictionSound.volume = std::min(208 + (ecx & 0xFF), 255);
     }
 
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
     switch (carEntry.sound_range)
     {
         case SOUND_RANGE_WHISTLE:
@@ -5173,7 +5173,7 @@ int32_t Vehicle::UpdateMotionDodgems()
     if (!(curRide->lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
         || curRide->breakdownReasonPending != BREAKDOWN_SAFETY_CUT_OUT)
     {
-        if ((GetGameState().CurrentTicks & 1) && var_34 != 0)
+        if ((getGameState().currentTicks & 1) && var_34 != 0)
         {
             if (var_34 > 0)
             {
@@ -7129,7 +7129,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                 {
                     acceleration = -_vehicleVelocityF64E08 * 16;
                 }
-                else if (!(GetGameState().CurrentTicks & 0x0F))
+                else if (!(getGameState().currentTicks & 0x0F))
                 {
                     if (_vehicleF64E2C == 0)
                     {

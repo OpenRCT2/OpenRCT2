@@ -226,7 +226,7 @@ namespace OpenRCT2::Ui::FileBrowser
         windowMgr->CloseByClass(WindowClass::RideConstruction);
         windowMgr->CloseAllExceptClass(WindowClass::Loadsave);
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
         switch (action)
         {
@@ -275,12 +275,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     case (LoadSaveType::scenario):
                     {
                         SetAndSaveConfigPath(Config::Get().general.LastSaveScenarioDirectory, pathBuffer);
-                        int32_t parkFlagsBackup = gameState.Park.Flags;
-                        gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-                        gameState.EditorStep = EditorStep::Invalid;
-                        gameState.ScenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
+                        int32_t parkFlagsBackup = gameState.park.Flags;
+                        gameState.park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                        gameState.editorStep = EditorStep::Invalid;
+                        gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
-                        gameState.Park.Flags = parkFlagsBackup;
+                        gameState.park.Flags = parkFlagsBackup;
 
                         if (success)
                         {
@@ -293,7 +293,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         else
                         {
                             ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
-                            gameState.EditorStep = EditorStep::ObjectiveSelection;
+                            gameState.editorStep = EditorStep::ObjectiveSelection;
                             InvokeCallback(ModalResult::fail, pathBuffer);
                         }
                         break;
@@ -346,7 +346,7 @@ namespace OpenRCT2::Ui::FileBrowser
                     case LoadSaveType::landscape:
                     {
                         SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
-                        gameState.ScenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
+                        gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
                         {
                             gCurrentLoadedPath = pathBuffer;
@@ -364,12 +364,12 @@ namespace OpenRCT2::Ui::FileBrowser
                     case LoadSaveType::scenario:
                     {
                         SetAndSaveConfigPath(Config::Get().general.LastSaveScenarioDirectory, pathBuffer);
-                        int32_t parkFlagsBackup = gameState.Park.Flags;
-                        gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-                        gameState.EditorStep = EditorStep::Invalid;
-                        gameState.ScenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
+                        int32_t parkFlagsBackup = gameState.park.Flags;
+                        gameState.park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+                        gameState.editorStep = EditorStep::Invalid;
+                        gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                         int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
-                        gameState.Park.Flags = parkFlagsBackup;
+                        gameState.park.Flags = parkFlagsBackup;
 
                         if (success)
                         {
@@ -382,7 +382,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         else
                         {
                             ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
-                            gameState.EditorStep = EditorStep::ObjectiveSelection;
+                            gameState.editorStep = EditorStep::ObjectiveSelection;
                             InvokeCallback(ModalResult::fail, pathBuffer);
                         }
                         break;
@@ -503,7 +503,7 @@ namespace OpenRCT2::Ui::FileBrowser
             }
             else
             {
-                auto buffer = GetGameState().Park.Name;
+                auto buffer = getGameState().park.Name;
                 if (buffer.empty())
                 {
                     buffer = LanguageGetString(STR_UNNAMED_PARK);

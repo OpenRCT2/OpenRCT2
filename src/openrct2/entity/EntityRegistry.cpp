@@ -112,9 +112,9 @@ std::string EntitiesChecksum::ToString() const
 
 EntityBase* TryGetEntity(EntityId entityIndex)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     const auto idx = entityIndex.ToUnderlying();
-    return idx >= kMaxEntities ? nullptr : &gameState.Entities[idx].base;
+    return idx >= kMaxEntities ? nullptr : &gameState.entities[idx].base;
 }
 
 EntityBase* GetEntity(EntityId entityIndex)
@@ -175,8 +175,8 @@ void ResetAllEntities()
         FreeEntity(*spr);
     }
 
-    auto& gameState = GetGameState();
-    std::fill(std::begin(gameState.Entities), std::end(gameState.Entities), Entity_t());
+    auto& gameState = getGameState();
+    std::fill(std::begin(gameState.entities), std::end(gameState.entities), Entity_t());
     OpenRCT2::RideUse::GetHistory().Clear();
     OpenRCT2::RideUse::GetTypeHistory().Clear();
     for (int32_t i = 0; i < kMaxEntities; ++i)
