@@ -107,14 +107,14 @@ static void HeartlineTwisterRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr ImageIndex imageIds[4] = {
-        19732,
-        19733,
-        19732,
-        19733,
+    static constexpr ImageIndex imageIds[4][2] = {
+        { 19732, 19734 },
+        { 19733, 19735 },
+        { 19732, 19734 },
+        { 19733, 19735 },
     };
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
         { { 0, 6, height + 3 }, { 32, 20, 1 } });
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, 0))
     {
@@ -122,6 +122,9 @@ static void HeartlineTwisterRCTrackStation(
     }
     else
     {
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
+            { { 0, 27, height }, { 32, 1, 26 } });
         DrawSupportForSequenceA<TrackElemType::Flat>(
             session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     }
