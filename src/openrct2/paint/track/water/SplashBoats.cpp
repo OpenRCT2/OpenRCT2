@@ -229,6 +229,13 @@ enum
     SPR_SPLASH_BOATS_S_BEND_TOP_NW_NE_NW_SEQ_0 = 20995,
 };
 
+static constexpr ImageIndex kSplashBoatsFlatImageIndexes[kNumOrthogonalDirections][2] = {
+    { SPR_SPLASH_BOATS_FLAT_TOP_SW_NE, SPR_SPLASH_BOATS_FLAT_SIDE_SW_NE },
+    { SPR_SPLASH_BOATS_FLAT_TOP_NW_SE, SPR_SPLASH_BOATS_FLAT_SIDE_NW_SE },
+    { SPR_SPLASH_BOATS_FLAT_TOP_NE_SW, SPR_SPLASH_BOATS_FLAT_SIDE_NE_SW },
+    { SPR_SPLASH_BOATS_FLAT_TOP_SE_NW, SPR_SPLASH_BOATS_FLAT_SIDE_SE_NW },
+};
+
 static constexpr uint32_t kSplashBoats25DegUpImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_NW_SE,
@@ -734,28 +741,10 @@ static void PaintSplashBoatsTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    ImageId imageId;
-
-    if (direction & 1)
-    {
-        imageId = session.TrackColours.WithIndex(
-            (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 2 } });
-
-        imageId = session.TrackColours.WithIndex(
-            (direction == 1 ? SPR_SPLASH_BOATS_FLAT_SIDE_NW_SE : SPR_SPLASH_BOATS_FLAT_SIDE_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
-    }
-    else
-    {
-        imageId = session.TrackColours.WithIndex(
-            (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-
-        imageId = session.TrackColours.WithIndex(
-            (direction == 0 ? SPR_SPLASH_BOATS_FLAT_SIDE_SW_NE : SPR_SPLASH_BOATS_FLAT_SIDE_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
-    }
+    const ImageId trackId = session.TrackColours.WithIndex(kSplashBoatsFlatImageIndexes[direction][0]);
+    PaintAddImageAsParentRotated(session, direction, trackId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
+    const ImageId frontId = session.TrackColours.WithIndex(kSplashBoatsFlatImageIndexes[direction][1]);
+    PaintAddImageAsParentRotated(session, direction, frontId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
 
     DrawSupportForSequenceA<TrackElemType::Flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -778,23 +767,17 @@ static void PaintSplashBoatsStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (direction & 1)
-    {
-        auto imageId = session.TrackColours.WithIndex(
-            (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 3 }, { 20, 32, 1 } });
-    }
-    else
-    {
-        auto imageId = session.TrackColours.WithIndex(
-            (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW));
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
-    }
+    const ImageId trackId = session.TrackColours.WithIndex(kSplashBoatsFlatImageIndexes[direction][0]);
+    PaintAddImageAsParentRotated(session, direction, trackId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
     DrawSupportForSequenceA<TrackElemType::EndStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 7, trackElement, StationBaseType::b, 0);
+    if (!TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 7, trackElement, StationBaseType::b, 0))
+    {
+        const ImageId frontId = session.TrackColours.WithIndex(kSplashBoatsFlatImageIndexes[direction][1]);
+        PaintAddImageAsParentRotated(session, direction, frontId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
+    }
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
