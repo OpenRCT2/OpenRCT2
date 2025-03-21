@@ -2116,46 +2116,60 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
 
     guest->VandalismSeen = (vandalThoughtTimeout << 6) | vandalisedTiles;
 
-    uint16_t crowded = 0;
+    constexpr uint16_t kThresholdCrowdCount = 10;
+    constexpr uint8_t kThresholdLitterCount = 3;
+    constexpr uint8_t kThresholdVomitCount = 3;
+
+    // Don't allow this loop to become too expensive, lets just have enough to potentially satisfy
+    // all the conditions.
+    constexpr uint32_t kMaxIterations = kThresholdCrowdCount + kThresholdLitterCount + kThresholdVomitCount;
+
+    uint16_t crowdCount = 0;
     uint8_t litterCount = 0;
     uint8_t vomitCount = 0;
+    uint32_t iterations = 0;
 
     auto quad = EntityTileList(coords);
-    for (auto entity : quad)
+    for (auto* otherEnt : quad)
     {
-        if (auto other_peep = entity->As<Peep>(); other_peep != nullptr)
+        if (iterations++ >= kMaxIterations)
         {
-            if (other_peep->State != PeepState::Walking)
+            break;
+        }
+
+        if (std::abs(otherEnt->z - guest->NextLoc.z) > 16)
+            continue;
+
+        if (const auto* otherPeep = otherEnt->As<Peep>(); otherPeep != nullptr)
+        {
+            if (otherPeep->State != PeepState::Walking)
                 continue;
 
-            if (abs(other_peep->z - guest->NextLoc.z) > 16)
-                continue;
-            crowded++;
+            crowdCount++;
             continue;
         }
 
-        if (auto litter = entity->As<Litter>(); litter != nullptr)
+        if (const auto* litter = otherEnt->As<Litter>(); litter != nullptr)
         {
-            if (abs(litter->z - guest->NextLoc.z) > 16)
-                continue;
-
-            litterCount++;
             if (litter->SubType != Litter::Type::Vomit && litter->SubType != Litter::Type::VomitAlt)
-                continue;
-
-            litterCount--;
-            vomitCount++;
+            {
+                litterCount++;
+            }
+            else
+            {
+                vomitCount++;
+            }
         }
     }
 
-    if (crowded >= 10 && guest->State == PeepState::Walking && (ScenarioRand() & 0xFFFF) <= 21845)
+    if (crowdCount >= kThresholdCrowdCount && guest->State == PeepState::Walking && (ScenarioRand() & 0xFFFF) <= 21845)
     {
         guest->InsertNewThought(PeepThoughtType::Crowded);
         guest->HappinessTarget = std::max(0, guest->HappinessTarget - 14);
     }
 
-    litterCount = std::min(static_cast<uint8_t>(3), litterCount);
-    vomitCount = std::min(static_cast<uint8_t>(3), vomitCount);
+    litterCount = std::min(kThresholdLitterCount, litterCount);
+    vomitCount = std::min(kThresholdVomitCount, vomitCount);
 
     uint8_t disgustingTime = guest->DisgustingCount & 0xC0;
     uint8_t disgustingCount = ((guest->DisgustingCount & 0xF) << 2) | vomitCount;
@@ -2168,13 +2182,13 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
     }
     else
     {
-        uint8_t totalSick = 0;
+        uint8_t totalDisgustingCount = 0;
         for (uint8_t time = 0; time < 3; time++)
         {
-            totalSick += (disgustingCount >> (2 * time)) & 0x3;
+            totalDisgustingCount += (disgustingCount >> (2 * time)) & 0x3;
         }
 
-        if (totalSick >= 3 && (ScenarioRand() & 0xFFFF) <= 10922)
+        if (totalDisgustingCount >= kThresholdVomitCount && (ScenarioRand() & 0xFFFF) <= 10922)
         {
             guest->InsertNewThought(PeepThoughtType::PathDisgusting);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
@@ -2200,7 +2214,7 @@ static void PeepFootpathMoveForward(Peep* peep, const CoordsXYE& coords, bool va
             totalLitter += (litterCount >> (2 * time)) & 0x3;
         }
 
-        if (totalLitter >= 3 && (ScenarioRand() & 0xFFFF) <= 10922)
+        if (totalLitter >= kThresholdLitterCount && (ScenarioRand() & 0xFFFF) <= 10922)
         {
             guest->InsertNewThought(PeepThoughtType::BadLitter);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
