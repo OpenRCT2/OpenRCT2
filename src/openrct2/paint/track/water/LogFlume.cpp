@@ -199,10 +199,16 @@ static void PaintLogFlumeTrackStation(
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     }
-    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    else
     {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+        const ImageId frontImageId = session.TrackColours.WithIndex(kLogFlumeTrackFlatImageIds[direction][1]);
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
+
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        {
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+        }
     }
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
