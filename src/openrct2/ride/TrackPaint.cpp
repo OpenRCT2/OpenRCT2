@@ -1841,27 +1841,27 @@ void TrackPaintUtilOnridePhotoPaint(
 
 static constexpr uint16_t RightVerticalLoopSegments[] = {
     EnumsToFlags(
-        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+        PaintSegment::bottomRight),
     EnumsToFlags(
-        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
-    EnumsToFlags(PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+        PaintSegment::bottomRight),
+    EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
     EnumsToFlags(
-        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+        PaintSegment::bottomRight),
     0,
     0,
     EnumsToFlags(
-        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
-    EnumsToFlags(PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+        PaintSegment::bottomLeft),
+    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
     EnumsToFlags(
-        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+        PaintSegment::bottomLeft),
     EnumsToFlags(
-        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+        PaintSegment::bottomLeft),
 };
 
 void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence)
@@ -1885,8 +1885,8 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
             session,
             PaintUtilRotateSegments(
                 EnumsToFlags(
-                    PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                    PaintSegment::bottomLeftSide),
+                    PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                    PaintSegment::bottomLeft),
                 direction),
             0xFFFF, 0);
     }
@@ -1898,8 +1898,8 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
             session,
             PaintUtilRotateSegments(
                 EnumsToFlags(
-                    PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                    PaintSegment::bottomLeftSide),
+                    PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                    PaintSegment::bottomLeft),
                 direction),
             0xFFFF, 0);
     }

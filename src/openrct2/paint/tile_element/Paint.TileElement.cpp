@@ -360,9 +360,9 @@ void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height
 }
 
 const uint16_t kSegmentOffsets[9] = {
-    EnumToFlag(PaintSegment::topCorner),    EnumToFlag(PaintSegment::leftCorner),     EnumToFlag(PaintSegment::rightCorner),
-    EnumToFlag(PaintSegment::bottomCorner), EnumToFlag(PaintSegment::centre),         EnumToFlag(PaintSegment::topLeftSide),
-    EnumToFlag(PaintSegment::topRightSide), EnumToFlag(PaintSegment::bottomLeftSide), EnumToFlag(PaintSegment::bottomRightSide),
+    EnumToFlag(PaintSegment::top),      EnumToFlag(PaintSegment::left),       EnumToFlag(PaintSegment::right),
+    EnumToFlag(PaintSegment::bottom),   EnumToFlag(PaintSegment::centre),     EnumToFlag(PaintSegment::topLeft),
+    EnumToFlag(PaintSegment::topRight), EnumToFlag(PaintSegment::bottomLeft), EnumToFlag(PaintSegment::bottomRight),
 };
 
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
