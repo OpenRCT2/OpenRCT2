@@ -462,6 +462,10 @@ bool TrackPaintUtilDrawStationInverted(
 
     if (direction == 0 || direction == 2)
     {
+        PaintAddImageAsParent(
+            session, colour.WithIndex(kStationBaseTypeSpriteIndexes[EnumValue(StationBaseType::c)][0]), { 0, 0, height },
+            { { 0, 2, height }, { 32, 28, 1 } });
+
         // height += 5 (height + 5);
         hasFence = TrackPaintUtilHasFence(EDGE_NW, position, trackElement, ride, session.CurrentRotation);
 
@@ -555,6 +559,10 @@ bool TrackPaintUtilDrawStationInverted(
     }
     else if (direction == 1 || direction == 3)
     {
+        PaintAddImageAsParent(
+            session, colour.WithIndex(kStationBaseTypeSpriteIndexes[EnumValue(StationBaseType::c)][1]), { 0, 0, height },
+            { { 2, 0, height }, { 28, 32, 1 } });
+
         // height += 5 (height + 5);
         hasFence = TrackPaintUtilHasFence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
 
