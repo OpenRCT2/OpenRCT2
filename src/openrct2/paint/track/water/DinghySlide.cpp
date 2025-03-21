@@ -37,6 +37,8 @@ enum
     SPR_DINGHY_SLIDE_FLAT_CHAIN_FRONT_SE_NW = 19731,
     SPR_DINGHY_SLIDE_STATION_SW_NE = 19732,
     SPR_DINGHY_SLIDE_STATION_NW_SE = 19733,
+    SPR_DINGHY_SLIDE_STATION_FRONT_SW_NE = 19734,
+    SPR_DINGHY_SLIDE_STATION_FRONT_NW_SE = 19735,
 
     SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_SW_NE = 19740,
     SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_NW_SE = 19741,
@@ -256,25 +258,31 @@ static void DinghySlideTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr ImageIndex imageIds[4] = {
-        SPR_DINGHY_SLIDE_STATION_SW_NE,
-        SPR_DINGHY_SLIDE_STATION_NW_SE,
-        SPR_DINGHY_SLIDE_STATION_SW_NE,
-        SPR_DINGHY_SLIDE_STATION_NW_SE,
+    static constexpr ImageIndex imageIds[4][2] = {
+        { SPR_DINGHY_SLIDE_STATION_SW_NE, SPR_DINGHY_SLIDE_STATION_FRONT_SW_NE },
+        { SPR_DINGHY_SLIDE_STATION_NW_SE, SPR_DINGHY_SLIDE_STATION_FRONT_NW_SE },
+        { SPR_DINGHY_SLIDE_STATION_SW_NE, SPR_DINGHY_SLIDE_STATION_FRONT_SW_NE },
+        { SPR_DINGHY_SLIDE_STATION_NW_SE, SPR_DINGHY_SLIDE_STATION_FRONT_NW_SE },
     };
 
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
         { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, 0))
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     }
-    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    else
     {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
+            { { 0, 27, height }, { 32, 1, 26 } });
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        {
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+        }
     }
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
