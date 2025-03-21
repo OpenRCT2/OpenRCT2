@@ -222,14 +222,6 @@ bool TrackPaintUtilDrawStation2(
         session, ride, direction, height, height, trackElement, baseType, baseOffsetZ, fenceOffsetA, fenceOffsetB);
 }
 
-bool TrackPaintUtilDrawStation3(
-    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
-    const TrackElement& trackElement, const StationBaseType baseType, const int32_t baseOffsetZ)
-{
-    return TrackPaintUtilDrawStationImpl(
-        session, ride, direction, height, coverHeight, trackElement, baseType, baseOffsetZ, 5, 7);
-}
-
 static bool TrackPaintUtilDrawStationImpl(
     PaintSession& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement, const StationBaseType baseType, const int32_t baseOffsetZ, int32_t fenceOffsetA,
