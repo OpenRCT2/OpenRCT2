@@ -118,13 +118,6 @@ declare global {
     }
 
     /**
-     * A track piece coordinate and type within the game.
-     */
-    interface CarTrackLocation extends CoordsXYZD {
-        trackType: number;
-    }
-
-    /**
      * A rectangular area specified using two coordinates.
      */
     interface MapRange {
@@ -2930,7 +2923,7 @@ declare global {
         /**
          * The location and direction of where the car is on the track.
          */
-        trackLocation: CarTrackLocation;
+        trackLocation: CoordsXYZD;
 
         /**
          * The current g-forces of this car.
