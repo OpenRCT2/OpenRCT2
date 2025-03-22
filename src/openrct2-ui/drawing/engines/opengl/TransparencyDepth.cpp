@@ -60,8 +60,8 @@ namespace OpenRCT2::Ui
             if (top == bottom)
                 continue;
 
-            x_sweep.emplace_back(left, top, bottom, true);
-            x_sweep.emplace_back(right, top, bottom, false);
+            x_sweep.push_back({ left, top, bottom, true });
+            x_sweep.push_back({ right, top, bottom, false });
         }
 
         std::sort(x_sweep.begin(), x_sweep.end(), [](const XData& a, const XData& b) -> bool {
