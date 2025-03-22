@@ -21,7 +21,14 @@
 #ifndef SFL_STATIC_VECTOR_HPP_INCLUDED
 #define SFL_STATIC_VECTOR_HPP_INCLUDED
 
-#include "private.hpp"
+#include <sfl/detail/container_compatible_range.hpp>
+#include <sfl/detail/cpp.hpp>
+#include <sfl/detail/exceptions.hpp>
+#include <sfl/detail/initialized_memory_algorithms.hpp>
+#include <sfl/detail/normal_iterator.hpp>
+#include <sfl/detail/tags.hpp>
+#include <sfl/detail/type_traits.hpp>
+#include <sfl/detail/uninitialized_memory_algorithms.hpp>
 
 #include <algorithm>        // copy, move, swap, swap_ranges
 #include <cstddef>          // size_t
@@ -123,36 +130,10 @@ public:
     }
 
     template <typename InputIt,
-              sfl::dtl::enable_if_t<sfl::dtl::is_exactly_input_iterator<InputIt>::value>* = nullptr>
+              sfl::dtl::enable_if_t<sfl::dtl::is_input_iterator<InputIt>::value>* = nullptr>
     static_vector(InputIt first, InputIt last)
     {
-        SFL_TRY
-        {
-            while (first != last)
-            {
-                emplace_back(*first);
-                ++first;
-            }
-        }
-        SFL_CATCH (...)
-        {
-            sfl::dtl::destroy(data_.first_, data_.last_);
-            SFL_RETHROW;
-        }
-    }
-
-    template <typename ForwardIt,
-              sfl::dtl::enable_if_t<sfl::dtl::is_forward_iterator<ForwardIt>::value>* = nullptr>
-    static_vector(ForwardIt first, ForwardIt last)
-    {
-        SFL_ASSERT(size_type(std::distance(first, last)) <= capacity());
-
-        data_.last_ = sfl::dtl::uninitialized_copy
-        (
-            first,
-            last,
-            data_.first_
-        );
+        initialize_range(first, last);
     }
 
     static_vector(std::initializer_list<T> ilist)
@@ -178,6 +159,26 @@ public:
             data_.first_
         );
     }
+
+#if SFL_CPP_VERSION >= SFL_CPP_20
+
+    template <sfl::dtl::container_compatible_range<value_type> Range>
+    static_vector(sfl::from_range_t, Range&& range)
+        : data_()
+    {
+        initialize_range(std::forward<Range>(range));
+    }
+
+#else // before C++20
+
+    template <typename Range>
+    static_vector(sfl::from_range_t, Range&& range)
+        : data_()
+    {
+        initialize_range(std::forward<Range>(range));
+    }
+
+#endif // before C++20
 
     ~static_vector() noexcept
     {
@@ -232,85 +233,43 @@ public:
     }
 
     template <typename InputIt,
-              sfl::dtl::enable_if_t<sfl::dtl::is_exactly_input_iterator<InputIt>::value>* = nullptr>
+              sfl::dtl::enable_if_t<sfl::dtl::is_input_iterator<InputIt>::value>* = nullptr>
     void assign(InputIt first, InputIt last)
     {
-        pointer curr = data_.first_;
-
-        while (first != last && curr != data_.last_)
-        {
-            *curr = *first;
-            ++curr;
-            ++first;
-        }
-
-        if (first != last)
-        {
-            do
-            {
-                emplace_back(*first);
-                ++first;
-            }
-            while (first != last);
-        }
-        else if (curr < data_.last_)
-        {
-            sfl::dtl::destroy(curr, data_.last_);
-            data_.last_ = curr;
-        }
-    }
-
-    template <typename ForwardIt,
-              sfl::dtl::enable_if_t<sfl::dtl::is_forward_iterator<ForwardIt>::value>* = nullptr>
-    void assign(ForwardIt first, ForwardIt last)
-    {
-        SFL_ASSERT(size_type(std::distance(first, last)) <= capacity());
-
-        const size_type n = std::distance(first, last);
-
-        const size_type size = this->size();
-
-        if (n <= size)
-        {
-            const pointer new_last = sfl::dtl::copy
-            (
-                first,
-                last,
-                data_.first_
-            );
-
-            sfl::dtl::destroy
-            (
-                new_last,
-                data_.last_
-            );
-
-            data_.last_ = new_last;
-        }
-        else
-        {
-            const ForwardIt mid = std::next(first, size);
-
-            sfl::dtl::copy
-            (
-                first,
-                mid,
-                data_.first_
-            );
-
-            data_.last_ = sfl::dtl::uninitialized_copy
-            (
-                mid,
-                last,
-                data_.last_
-            );
-        }
+        assign_range(first, last);
     }
 
     void assign(std::initializer_list<T> ilist)
     {
-        assign(ilist.begin(), ilist.end());
+        assign_range(ilist.begin(), ilist.end());
     }
+
+#if SFL_CPP_VERSION >= SFL_CPP_20
+
+    template <sfl::dtl::container_compatible_range<value_type> Range>
+    void assign_range(Range&& range)
+    {
+        if constexpr (std::ranges::forward_range<Range>)
+        {
+            assign_range(std::ranges::begin(range), std::ranges::end(range), std::forward_iterator_tag());
+        }
+        else
+        {
+            assign_range(std::ranges::begin(range), std::ranges::end(range), std::input_iterator_tag());
+        }
+    }
+
+#else // before C++20
+
+    template <typename Range>
+    void assign_range(Range&& range)
+    {
+        using std::begin;
+        using std::end;
+        assign_range(begin(range), end(range));
+    }
+
+#endif // before C++20
 
     static_vector& operator=(const static_vector& other)
     {
@@ -701,100 +660,47 @@ public:
     }
 
     template <typename InputIt,
-              sfl::dtl::enable_if_t<sfl::dtl::is_exactly_input_iterator<InputIt>::value>* = nullptr>
+              sfl::dtl::enable_if_t<sfl::dtl::is_input_iterator<InputIt>::value>* = nullptr>
     iterator insert(const_iterator pos, InputIt first, InputIt last)
     {
-        const difference_type offset = std::distance(cbegin(), pos);
-
-        while (first != last)
-        {
-            pos = emplace(pos, *first);
-            ++pos;
-            ++first;
-        }
-
-        return begin() + offset;
-    }
-
-    template <typename ForwardIt,
-              sfl::dtl::enable_if_t<sfl::dtl::is_forward_iterator<ForwardIt>::value>* = nullptr>
-    iterator insert(const_iterator pos, ForwardIt first, ForwardIt last)
-    {
-        SFL_ASSERT(size_type(std::distance(first, last)) <= available());
         SFL_ASSERT(cbegin() <= pos && pos <= cend());
-
-        if (first == last)
-        {
-            return begin() + std::distance(cbegin(), pos);
-        }
-
-        const size_type n = std::distance(first, last);
-
-        const pointer p1 = data_.first_ + std::distance(cbegin(), pos);
-        const pointer p2 = p1 + n;
-
-        if (p2 <= data_.last_)
-        {
-            const pointer p3 = data_.last_ - n;
-
-            const pointer old_last = data_.last_;
-
-            data_.last_ = sfl::dtl::uninitialized_move
-            (
-                p3,
-                data_.last_,
-                data_.last_
-            );
-
-            sfl::dtl::move_backward
-            (
-                p1,
-                p3,
-                old_last
-            );
-
-            sfl::dtl::copy
-            (
-                first,
-                last,
-                p1
-            );
-        }
-        else
-        {
-            const pointer old_last = data_.last_;
-
-            const ForwardIt mid = std::next(first, std::distance(pos, cend()));
-
-            data_.last_ = sfl::dtl::uninitialized_copy
-            (
-                mid,
-                last,
-                data_.last_
-            );
-
-            data_.last_ = sfl::dtl::uninitialized_move
-            (
-                p1,
-                old_last,
-                data_.last_
-            );
-
-            sfl::dtl::copy
-            (
-                first,
-                mid,
-                p1
-            );
-        }
-
-        return iterator(p1);
+        return insert_range(pos, first, last);
     }
 
     iterator insert(const_iterator pos, std::initializer_list<T> ilist)
     {
-        return insert(pos, ilist.begin(), ilist.end());
+        SFL_ASSERT(cbegin() <= pos && pos <= cend());
+        return insert_range(pos, ilist.begin(), ilist.end());
     }
+
+#if SFL_CPP_VERSION >= SFL_CPP_20
+
+    template <sfl::dtl::container_compatible_range<value_type> Range>
+    iterator insert_range(const_iterator pos, Range&& range)
+    {
+        SFL_ASSERT(cbegin() <= pos && pos <= cend());
+        if constexpr (std::ranges::forward_range<Range>)
+        {
+            return insert_range(pos, std::ranges::begin(range), std::ranges::end(range), std::forward_iterator_tag());
+        }
+        else
+        {
+            return insert_range(pos, std::ranges::begin(range), std::ranges::end(range), std::input_iterator_tag());
+        }
+    }
+
+#else // before C++20
+
+    template <typename Range>
+    iterator insert_range(const_iterator pos, Range&& range)
+    {
+        SFL_ASSERT(cbegin() <= pos && pos <= cend());
+        using std::begin;
+        using std::end;
+        return insert_range(pos, begin(range), end(range));
+    }
+
+#endif // before C++20
 
     template <typename... Args>
     reference emplace_back(Args&&... args)
@@ -819,6 +725,24 @@ public:
     {
         emplace_back(std::move(value));
     }
+
+#if SFL_CPP_VERSION >= SFL_CPP_20
+
+    template <sfl::dtl::container_compatible_range<value_type> Range>
+    void append_range(Range&& range)
+    {
+        insert_range(end(), std::forward<Range>(range));
+    }
+
+#else // before C++20
+
+    template <typename Range>
+    void append_range(Range&& range)
+    {
+        insert_range(end(), std::forward<Range>(range));
+    }
+
+#endif // before C++20
 
     void pop_back()
     {
@@ -1011,6 +935,246 @@ public:
 
         this->data_.last_ = this->data_.first_ + other_size;
         other.data_.last_ = other.data_.first_ + this_size;
+    }
+
+private:
+
+    template <typename InputIt>
+    void initialize_range(InputIt first, InputIt last)
+    {
+        initialize_range(first, last, typename std::iterator_traits<InputIt>::iterator_category());
+    }
+
+    template <typename InputIt, typename Sentinel>
+    void initialize_range(InputIt first, Sentinel last, std::input_iterator_tag)
+    {
+        SFL_TRY
+        {
+            while (first != last)
+            {
+                emplace_back(*first);
+                ++first;
+            }
+        }
+        SFL_CATCH (...)
+        {
+            sfl::dtl::destroy(data_.first_, data_.last_);
+            SFL_RETHROW;
+        }
+    }
+
+    template <typename ForwardIt, typename Sentinel>
+    void initialize_range(ForwardIt first, Sentinel last, std::forward_iterator_tag)
+    {
+        SFL_ASSERT(size_type(std::distance(first, last)) <= capacity());
+
+        data_.last_ = sfl::dtl::uninitialized_copy
+        (
+            first,
+            last,
+            data_.first_
+        );
+    }
+
+#if SFL_CPP_VERSION >= SFL_CPP_20
+
+    template <sfl::dtl::container_compatible_range<value_type> Range>
+    void initialize_range(Range&& range)
+    {
+        if constexpr (std::ranges::forward_range<Range>)
+        {
+            initialize_range(std::ranges::begin(range), std::ranges::end(range), std::forward_iterator_tag());
+        }
+        else
+        {
+            initialize_range(std::ranges::begin(range), std::ranges::end(range), std::input_iterator_tag());
+        }
+    }
+
+#else // before C++20
+
+    template <typename Range>
+    void initialize_range(Range&& range)
+    {
+        using std::begin;
+        using std::end;
+        initialize_range(begin(range), end(range));
+    }
+
+#endif // before C++20
+
+    template <typename InputIt>
+    void assign_range(InputIt first, InputIt last)
+    {
+        assign_range(first, last, typename std::iterator_traits<InputIt>::iterator_category());
+    }
+
+    template <typename InputIt, typename Sentinel>
+    void assign_range(InputIt first, Sentinel last, std::input_iterator_tag)
+    {
+        pointer curr = data_.first_;
+
+        while (first != last && curr != data_.last_)
+        {
+            *curr = *first;
+            ++curr;
+            ++first;
+        }
+
+        if (first != last)
+        {
+            do
+            {
+                emplace_back(*first);
+                ++first;
+            }
+            while (first != last);
+        }
+        else if (curr < data_.last_)
+        {
+            sfl::dtl::destroy(curr, data_.last_);
+            data_.last_ = curr;
+        }
+    }
+
+    template <typename ForwardIt, typename Sentinel>
+    void assign_range(ForwardIt first, Sentinel last, std::forward_iterator_tag)
+    {
+        SFL_ASSERT(size_type(std::distance(first, last)) <= capacity());
+
+        const size_type n = std::distance(first, last);
+
+        const size_type size = this->size();
+
+        if (n <= size)
+        {
+            const pointer new_last = sfl::dtl::copy
+            (
+                first,
+                last,
+                data_.first_
+            );
+
+            sfl::dtl::destroy
+            (
+                new_last,
+                data_.last_
+            );
+
+            data_.last_ = new_last;
+        }
+        else
+        {
+            const ForwardIt mid = std::next(first, size);
+
+            sfl::dtl::copy
+            (
+                first,
+                mid,
+                data_.first_
+            );
+
+            data_.last_ = sfl::dtl::uninitialized_copy
+            (
+                mid,
+                last,
+                data_.last_
+            );
+        }
+    }
+
+    template <typename InputIt>
+    iterator insert_range(const_iterator pos, InputIt first, InputIt last)
+    {
+        return insert_range(pos, first, last, typename std::iterator_traits<InputIt>::iterator_category());
+    }
+
+    template <typename InputIt, typename Sentinel>
+    iterator insert_range(const_iterator pos, InputIt first, Sentinel last, std::input_iterator_tag)
+    {
+        const difference_type offset = std::distance(cbegin(), pos);
+
+        while (first != last)
+        {
+            pos = emplace(pos, *first);
+            ++pos;
+            ++first;
+        }
+
+        return begin() + offset;
+    }
+
+    template <typename ForwardIt, typename Sentinel>
+    iterator insert_range(const_iterator pos, ForwardIt first, Sentinel last, std::forward_iterator_tag)
+    {
+        SFL_ASSERT(size_type(std::distance(first, last)) <= available());
+
+        if (first == last)
+        {
+            return begin() + std::distance(cbegin(), pos);
+        }
+
+        const size_type n = std::distance(first, last);
+
+        const pointer p1 = data_.first_ + std::distance(cbegin(), pos);
+        const pointer p2 = p1 + n;
+
+        if (p2 <= data_.last_)
+        {
+            const pointer p3 = data_.last_ - n;
+
+            const pointer old_last = data_.last_;
+
+            data_.last_ = sfl::dtl::uninitialized_move
+            (
+                p3,
+                data_.last_,
+                data_.last_
+            );
+
+            sfl::dtl::move_backward
+            (
+                p1,
+                p3,
+                old_last
+            );
+
+            sfl::dtl::copy
+            (
+                first,
+                last,
+                p1
+            );
+        }
+        else
+        {
+            const pointer old_last = data_.last_;
+
+            const ForwardIt mid = std::next(first, std::distance(pos, cend()));
+
+            data_.last_ = sfl::dtl::uninitialized_copy
+            (
+                mid,
+                last,
+                data_.last_
+            );
+
+            data_.last_ = sfl::dtl::uninitialized_move
+            (
+                p1,
+                old_last,
+                data_.last_
+            );
+
+            sfl::dtl::copy
+            (
+                first,
+                mid,
+                p1
+            );
+        }
+
+        return iterator(p1);
     }
 };
 
