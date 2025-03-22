@@ -306,7 +306,7 @@ namespace OpenRCT2::Ui::Windows
         {
             UnloadUnselectedObjects();
             EditorLoadSelectedObjects();
-            EditorObjectFlagsFree();
+            EditorObjectFlagsClear();
 
             if (_loadedObject != nullptr)
                 _loadedObject->Unload();
@@ -327,7 +327,7 @@ namespace OpenRCT2::Ui::Windows
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
 
-            VisibleListDispose();
+            VisibleListClear();
 
             intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
             ContextBroadcastIntent(&intent);
@@ -1173,7 +1173,7 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
 
-            VisibleListDispose();
+            VisibleListClear();
             selected_list_item = -1;
 
             const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
@@ -1200,7 +1200,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_listItems.empty())
             {
-                VisibleListDispose();
+                VisibleListClear();
             }
             else
             {
@@ -1229,7 +1229,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        void VisibleListDispose()
+        void VisibleListClear()
         {
             _listItems.clear();
             _listItems.shrink_to_fit();

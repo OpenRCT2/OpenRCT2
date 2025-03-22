@@ -33,7 +33,7 @@ extern uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
 bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType);
 bool EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType);
 bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue);
-void EditorObjectFlagsFree();
+void EditorObjectFlagsClear();
 void UnloadUnselectedObjects();
 void Sub6AB211();
 void ResetSelectedObjectCountAndSize();

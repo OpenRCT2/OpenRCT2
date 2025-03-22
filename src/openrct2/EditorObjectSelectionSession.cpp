@@ -355,7 +355,7 @@ void Sub6AB211()
  *
  *  rct2: 0x006AB316
  */
-void EditorObjectFlagsFree()
+void EditorObjectFlagsClear()
 {
     _objectSelectionFlags.clear();
     _objectSelectionFlags.shrink_to_fit();
@@ -771,7 +771,7 @@ int32_t EditorRemoveUnusedObjects()
         }
     }
     UnloadUnselectedObjects();
-    EditorObjectFlagsFree();
+    EditorObjectFlagsClear();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
     ContextBroadcastIntent(&intent);
