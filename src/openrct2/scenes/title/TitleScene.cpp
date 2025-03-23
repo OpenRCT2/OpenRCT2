@@ -143,11 +143,7 @@ void TitleScene::Tick()
     if (GameIsNotPaused())
     {
         TryLoadSequence();
-
-        if (!gOpenRCT2Headless)
-        {
-            _sequencePlayer->Update();
-        }
+        _sequencePlayer->Update();
 
         int32_t numUpdates = 1;
         if (gGameSpeed > 1)
@@ -157,13 +153,8 @@ void TitleScene::Tick()
         for (int32_t i = 0; i < numUpdates; i++)
         {
             gameStateUpdateLogic();
-
         }
-
-        if (!gOpenRCT2Headless)
-        {
-            UpdatePaletteEffects();
-        }
+        UpdatePaletteEffects();
         // update_weather_animation();
     }
 
@@ -306,7 +297,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
             size_t targetSequence = _currentSequence;
             do
             {
-                if (!gOpenRCT2Headless && _sequencePlayer->Begin(targetSequence) && _sequencePlayer->Update())
+                if (_sequencePlayer->Begin(targetSequence) && _sequencePlayer->Update())
                 {
                     _loadedTitleSequenceId = targetSequence;
                     if (targetSequence != _currentSequence && !loadPreview)
@@ -323,10 +314,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
             } while (targetSequence != _currentSequence && !loadPreview);
         }
         Console::Error::WriteLine("Unable to play any title sequences.");
-        if (!gOpenRCT2Headless)
-        {
-            _sequencePlayer->Eject();
-        }
+        _sequencePlayer->Eject();
         _currentSequence = SIZE_MAX;
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
