@@ -261,6 +261,7 @@ namespace OpenRCT2::Ui::Windows
         u8string _filter;
         uint32_t _filterFlags = FILTER_RIDES_ALL;
         uint8_t _selectedSubTab = 0;
+        bool _overrideChecks = false;
 
     public:
         /**
@@ -292,10 +293,15 @@ namespace OpenRCT2::Ui::Windows
             VisibleListRefresh();
         }
 
+        void SetOverrideChecks(bool newState)
+        {
+            _overrideChecks = newState;
+        }
+
         bool CanClose() override
         {
             // Prevent window closure when selection is invalid
-            return EditorObjectSelectionWindowCheck();
+            return _overrideChecks || EditorObjectSelectionWindowCheck();
         }
 
         /**
@@ -1623,6 +1629,20 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
             WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+    }
+
+    // Used for forced closure
+    void EditorObjectSelectionClose()
+    {
+        auto* windowMgr = GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
+        if (window == nullptr)
+        {
+            return;
+        }
+        auto objSelWindow = static_cast<EditorObjectSelectionWindow*>(window);
+        objSelWindow->SetOverrideChecks(true);
+        objSelWindow->Close();
     }
 
     static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b)

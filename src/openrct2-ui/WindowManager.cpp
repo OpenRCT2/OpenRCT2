@@ -586,6 +586,10 @@ public:
     {
         switch (windowClass)
         {
+            case WindowClass::EditorObjectSelection:
+                EditorObjectSelectionClose();
+                break;
+
             case WindowClass::NetworkStatus:
                 WindowNetworkStatusClose();
                 break;

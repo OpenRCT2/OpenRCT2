@@ -81,6 +81,7 @@ namespace OpenRCT2::Ui::Windows
     // EditorObjectSelection
     WindowBase* EditorObjectSelectionOpen();
     bool EditorObjectSelectionWindowCheck();
+    void EditorObjectSelectionClose();
 
     // EditorParkEntrance
     WindowBase* EditorParkEntranceOpen();
