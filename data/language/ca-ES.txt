@@ -337,8 +337,8 @@ STR_0938    :Modifica l’altura i inclinació del terreny
 STR_0939    :Vista subterrània/interior
 STR_0940    :Oculta el terreny de base
 STR_0941    :Oculta les parets verticals
-STR_0942    :Veu a través de les atraccions
-STR_0943    :Veu a través de les decoracions
+STR_0942    :Mostra a través de les atraccions
+STR_0943    :Mostra a través de les decoracions
 STR_0944    :Desa
 STR_0945    :No desis
 STR_0946    :Cancel·la
@@ -746,7 +746,7 @@ STR_1348    :{WINDOW_COLOUR_2}Acceleració màxima vertical positiva: {BLACK}{CO
 STR_1349    :{WINDOW_COLOUR_2}Acceleració màxima vertical positiva: {OUTLINE}{RED}{COMMA2DP32} g
 STR_1350    :{WINDOW_COLOUR_2}Acceleració màxima vertical negativa: {BLACK}{COMMA2DP32} g
 STR_1351    :{WINDOW_COLOUR_2}Acceleració màxima vertical negativa: {OUTLINE}{RED}{COMMA2DP32} g
-STR_1352    :{WINDOW_COLOUR_2}Acceleració màxima lateral: {BLACK}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}Acceleració màxima lateral: {BLACK}{COMMA2DP32} g
 STR_1353    :{WINDOW_COLOUR_2}Acceleració màxima lateral: {OUTLINE}{RED}{COMMA2DP32} g
 STR_1354    :{WINDOW_COLOUR_2}Longitud de la caiguda més gran: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Caigudes: {BLACK}{COMMA16}
@@ -1248,7 +1248,6 @@ STR_1870    :Nombre de voltes completes
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Ingressos: {BLACK}{CURRENCY2DP} per hora
 STR_1874    :{WINDOW_COLOUR_2}Benefici: {BLACK}{CURRENCY2DP} per hora
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspecciona atraccions
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Repara atraccions
 STR_1878    :{WINDOW_COLOUR_2}Inspecciona:
@@ -2169,7 +2168,6 @@ STR_3136    :Avís: Aquest disseny es construirà amb un tipus de vehicle altern
 STR_3137    :Trieu decorat proper
 STR_3138    :Restableix la selecció
 STR_3139    :El cable d’elevació no pot funcionar en aquest mode.
-STR_3140    :El cable d’elevació ha de començar immediatament després de l’andana.
 STR_3141    :No es pot establir un multicircuit si l’atracció té cable d’elevació.
 STR_3142    :{WINDOW_COLOUR_2}Capacitat: {BLACK}{STRINGID}
 STR_3143    :Mostra gent al mapa
@@ -2201,7 +2199,7 @@ STR_3188    :Senyals de camí
 STR_3189    :Camins (versions clàssiques)
 STR_3190    :Extres dels camins
 STR_3191    :Grups de decoracions
-STR_3192    :Entrada al parc
+STR_3192    :Entrades del parc
 STR_3193    :Aigua
 STR_3195    :Llista de recerques
 STR_3196    :{WINDOW_COLOUR_2}Grup de recerca: {BLACK}{STRINGID}
@@ -2604,7 +2602,7 @@ STR_5368    :Esborra historial d’accidents
 STR_5371    :Selecció d’objectes
 STR_5372    :Inverteix el desplaçament amb el ratolí
 STR_5373    :Nom {STRINGID}
-STR_5374    :Data {STRINGID}
+STR_5374    :Data de modificació {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :El nom ja existeix.
@@ -3021,7 +3019,7 @@ STR_5907    :Quan s’activa, l’apropament es farà respecte la posició del c
 STR_5908    :Permet canvis de tipus de via arbitraris
 STR_5909    :Permet canviar el tipus d’atracció lliurement. Pot causar fallades del joc.
 STR_5910    :Aplica
-STR_5911    :Veu a través dels camins
+STR_5911    :Mostra a través dels camins
 STR_5912    :Alterna veure a través dels camins
 STR_5913    :Xat
 STR_5914    :Atracció desconeguda
@@ -3095,7 +3093,7 @@ STR_5981    :No és un cartell
 STR_5982    :Tipus de decoració gran: {BLACK}{COMMA16}
 STR_5983    :Id de peça d’escenari gran: {BLACK}{COMMA16}
 STR_5984    :Camins blocats:
-STR_5985    :Nova carpeta
+STR_5985    :Carpeta nova
 STR_5986    :Escriviu el nom de la carpeta nova
 STR_5987    :La carpeta no s’ha pogut crear.
 STR_5988    :No hi ha més terrenys a la venda.
@@ -3215,7 +3213,7 @@ STR_6102    :El valor de les atraccions no disminuirà amb el pas del temps, de 
 STR_6103    :Aquesta opció està desactivada si es juga en xarxa.
 STR_6105    :Hipermuntanya russa
 STR_6107    :Monster Trucks
-STR_6109    :Hiper-Twister
+STR_6109    :Muntanya russa Hyper-Twister
 STR_6111    :Minimuntanya russa clàssica
 STR_6113    :Una muntanya russa alta sense inversions, amb llargues caigudes, alta velocitat, vagons còmodes i amb només unes barres de subjecció.
 STR_6115    :Camions 4x4 gegants i autopropulsats que poden pujar per pendents empinades.
@@ -3529,9 +3527,9 @@ STR_6467    :Nàusea: {COMMA2DP32}
 STR_6468    :Desconegut/da
 STR_6469    :Ajusta una àrea de treball més petita.
 STR_6470    :Ajusta una àrea de treball més gran.
-STR_6471    :Veu a través de la vegetació
-STR_6472    :Veu a través dels vehicles
-STR_6473    :Veu a través dels suports
+STR_6471    :Mostra a través de la vegetació
+STR_6472    :Mostra a través dels vehicles
+STR_6473    :Mostra a través dels suports
 STR_6474    :Visitants invisibles
 STR_6475    :Empleats invisibles
 STR_6476    :Vegetació invisible
@@ -3769,3 +3767,43 @@ STR_6707    :(cap de seleccionat)
 STR_6708    :Força suau
 STR_6709    :Escriviu una força suau entre {COMMA16} i {COMMA16}
 STR_6710    :Ordre estable
+STR_6711    :Nom de fitxer:
+STR_6712    :Desa
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Nom del fitxer
+STR_6715    :Data de modificació
+STR_6716    :Mida de fitxer
+STR_6717    :Mida de fitxer {STRINGID}
+STR_6718    :Animacions de les persones
+STR_6719    :Cal triar com a mínim una animació de visitant.
+STR_6720    :Cal triar com a mínim una animació de personal de neteja.
+STR_6721    :Cal triar com a mínim una animació de mecànic.
+STR_6722    :Cal triar com a mínim una animació de guarda de seguretat.
+STR_6723    :Cal triar com a mínim una animació d’animador.
+STR_6724    :Textos d’escenari
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Dive loop (esquerra)
+STR_6728    :Dive Loop (dreta)
+STR_6729    :El cable d’elevació ha de començar immediatament després de l’andana o d’un bloc de frens.
+STR_6730    :Exporta dades d’emscripten
+STR_6731    :Importa dades d’emscripten
+STR_6732    :Mostra un botó a la barra d’eines per a girar la vista en sentit antihorari.
+STR_6733    :Mostra a través
+STR_6734    :Els elements del mapa que estiguin a l’alçària de tall o per sobre d’aquesta es mostren translúcids.
+STR_6735    :Vés a la carpeta superior
+STR_6736    :Vista prèvia
+STR_6737    :No hi ha vista prèvia disponible
+STR_6738    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Data: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Efectiu: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Nre. atraccions: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Nre. visitants: {BLACK}{UINT16}
+STR_6743    :Clima
+STR_6744    :{WINDOW_COLOUR_2}{UINT16} %
+STR_6745    :{WINDOW_COLOUR_2}Preferències d’intensitat dels visitants:
+STR_6746    :Sense preferències
+STR_6747    :Les preferències varien (per defecte)
+STR_6748    :Només les atraccions menys intenses
+STR_6749    :Només les atraccions més intenses
+STR_6750    :Trieu quin tipus d’intensitat d’atraccions han de preferir els visitants nous.
