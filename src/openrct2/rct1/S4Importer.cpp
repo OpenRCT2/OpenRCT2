@@ -2192,7 +2192,7 @@ namespace OpenRCT2::RCT1
             park.Name = std::move(parkName);
         }
 
-        std::vector<OpenRCT2::News::Item> convertNewsQueue(const RCT12NewsItem* queue, uint8_t size)
+        std::vector<OpenRCT2::News::Item> convertNewsQueue(const RCT12NewsItem* queue, size_t size)
         {
             std::vector<OpenRCT2::News::Item> output{};
             const RCT12NewsItem* src = queue;
