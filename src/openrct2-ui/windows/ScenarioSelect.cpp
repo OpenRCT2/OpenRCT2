@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 auto ft = Formatter();
-                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
                 {
                     ft.Add<StringId>(kScenarioOriginStringIds[i]);
                 }
@@ -553,7 +553,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Category heading
                 StringId headingStringId = kStringIdNone;
-                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
                 {
                     if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
                     {
@@ -659,7 +659,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
         {
-            if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
             {
                 if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
                 {
@@ -683,7 +683,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsLockingEnabled() const
         {
-            if (Config::Get().general.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.scenarioSelectMode != ScenarioSelectMode::origin)
                 return false;
             if (!Config::Get().general.ScenarioUnlockingEnabled)
                 return false;
@@ -700,7 +700,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
                 {
                     showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
                 }

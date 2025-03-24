@@ -127,10 +127,10 @@ private:
     ObjectiveStatus CheckMonthlyFoodIncome() const;
 };
 
-enum
+enum class ScenarioSelectMode : uint8_t
 {
-    SCENARIO_SELECT_MODE_DIFFICULTY,
-    SCENARIO_SELECT_MODE_ORIGIN,
+    difficulty,
+    origin,
 };
 
 enum
