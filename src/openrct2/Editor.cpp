@@ -109,7 +109,7 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectSelection;
         gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gameState.scenarioCategory = SCENARIO_CATEGORY_OTHER;
+        gameState.scenarioCategory = ScenarioCategory::other;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -149,7 +149,7 @@ namespace OpenRCT2::Editor
 
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectiveSelection;
-        gameState.scenarioCategory = SCENARIO_CATEGORY_OTHER;
+        gameState.scenarioCategory = ScenarioCategory::other;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();

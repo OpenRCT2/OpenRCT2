@@ -83,7 +83,7 @@ namespace OpenRCT2
 
         EditorStep editorStep;
 
-        SCENARIO_CATEGORY scenarioCategory;
+        ScenarioCategory scenarioCategory;
         std::string scenarioName;
         std::string scenarioDetails;
         std::string scenarioCompletedBy;

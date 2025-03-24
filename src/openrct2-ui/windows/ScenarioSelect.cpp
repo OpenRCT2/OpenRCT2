@@ -538,7 +538,12 @@ namespace OpenRCT2::Ui::Windows
             std::optional<size_t> megaParkListItemIndex = std::nullopt;
 
             int32_t numUnlocks = kInitialNumUnlockedScenarios;
-            uint8_t currentHeading = UINT8_MAX;
+            union
+            {
+                uint8_t raw = UINT8_MAX;
+                ScenarioCategory category;
+                ScenarioSource source;
+            } currentHeading{};
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
@@ -550,33 +555,33 @@ namespace OpenRCT2::Ui::Windows
                 StringId headingStringId = kStringIdNone;
                 if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
                 {
-                    if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
+                    if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
                     {
-                        currentHeading = scenario->Category;
-                        headingStringId = kScenarioCategoryStringIds[currentHeading];
+                        currentHeading.category = scenario->Category;
+                        headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
                     }
                 }
                 else
                 {
-                    if (selected_tab <= SCENARIO_CATEGORY_EXPERT)
+                    if (selected_tab <= EnumValue(ScenarioCategory::expert))
                     {
-                        if (currentHeading != static_cast<uint8_t>(scenario->SourceGame))
+                        if (currentHeading.source != scenario->SourceGame)
                         {
-                            currentHeading = static_cast<uint8_t>(scenario->SourceGame);
-                            headingStringId = kScenarioOriginStringIds[currentHeading];
+                            currentHeading.source = scenario->SourceGame;
+                            headingStringId = kScenarioOriginStringIds[currentHeading.raw];
                         }
                     }
-                    else if (selected_tab == SCENARIO_CATEGORY_OTHER)
+                    else if (selected_tab == EnumValue(ScenarioCategory::other))
                     {
-                        int32_t category = scenario->Category;
-                        if (category <= SCENARIO_CATEGORY_REAL)
+                        auto category = scenario->Category;
+                        if (category <= ScenarioCategory::real)
                         {
-                            category = SCENARIO_CATEGORY_OTHER;
+                            category = ScenarioCategory::other;
                         }
-                        if (currentHeading != category)
+                        if (currentHeading.category != category)
                         {
-                            currentHeading = category;
-                            headingStringId = kScenarioCategoryStringIds[category];
+                            currentHeading.category = category;
+                            headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
                         }
                     }
                 }
@@ -663,12 +668,12 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                int32_t category = scenario.Category;
-                if (category > SCENARIO_CATEGORY_OTHER)
+                auto category = scenario.Category;
+                if (category > ScenarioCategory::other)
                 {
-                    category = SCENARIO_CATEGORY_OTHER;
+                    category = ScenarioCategory::other;
                 }
-                if (category != selected_tab)
+                if (EnumValue(category) != selected_tab)
                 {
                     return false;
                 }
@@ -701,12 +706,12 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    int32_t category = scenario->Category;
-                    if (category > SCENARIO_CATEGORY_OTHER)
+                    auto category = scenario->Category;
+                    if (category > ScenarioCategory::other)
                     {
-                        category = SCENARIO_CATEGORY_OTHER;
+                        category = ScenarioCategory::other;
                     }
-                    showPages |= 1 << category;
+                    showPages |= 1 << EnumValue(category);
                 }
             }
 
