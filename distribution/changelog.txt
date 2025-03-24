@@ -9,6 +9,7 @@
 - Fix: [#5281] Missing supports on miniature railways built backwards.
 - Fix: [#10379] Banners outside the park can be renamed and modified (original bug).
 - Fix: [#10582] Low clearance tunnels below water are drawn incorrectly (original bug).
+- Fix: [#17524, #23710] Station bases are drawn on many ride types when the “No entrance, no platform station” style is selected.
 - Fix: [#18169] CJK, Arabic and Vietnamese display all text as ‘???’ on Android.
 - Fix: [#18309] Flying and Multi Dimension trains glitch when changing between inverted and uninverted track when uncap fps is on.
 - Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.

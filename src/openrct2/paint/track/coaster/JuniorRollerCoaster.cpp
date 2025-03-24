@@ -1888,18 +1888,10 @@ static void JuniorRCPaintStation(
 {
     ImageId imageId;
 
-    bool isBraked = trackElement.IsBrakeClosed();
-    auto stationObj = ride.getStationObject();
+    const bool isBraked = trackElement.IsBrakeClosed();
 
     if (direction == 0 || direction == 2)
     {
-        if (stationObj != nullptr && !(stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
-        {
-            // height -= 2 (height - 2)
-            imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_SW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
-        }
-
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && TSubType == JuniorRCSubType::Junior)
         {
@@ -1909,17 +1901,10 @@ static void JuniorRCPaintStation(
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_station[false][direction]);
         }
-        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
     }
     else if (direction == 1 || direction == 3)
     {
-        if (stationObj != nullptr && !(stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
-        {
-            // height -= 2 (height - 2)
-            imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_NW_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
-        }
-
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && TSubType == JuniorRCSubType::Junior)
         {
@@ -1929,13 +1914,19 @@ static void JuniorRCPaintStation(
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_station[false][direction]);
         }
-        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
+        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { { 0, 6, height + 1 }, { 20, 32, 1 } });
     }
-
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+    }
+    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+    }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

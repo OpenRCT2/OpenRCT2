@@ -47,28 +47,24 @@ static void LatticeTriangleTrackAltStation(
     if (ride.mode == RideMode::poweredLaunch || ride.mode == RideMode::poweredLaunchBlockSectioned
         || ride.mode == RideMode::poweredLaunchPasstrough)
     {
-        static constexpr uint32_t imageIds[4][2] = {
-            { SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_NE_SW, SPR_STATION_BASE_A_SW_NE },
-            { SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_NW_SE, SPR_STATION_BASE_A_NW_SE },
-            { SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_SW_NE, SPR_STATION_BASE_A_SW_NE },
-            { SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_SE_NW, SPR_STATION_BASE_A_NW_SE },
+        static constexpr ImageIndex imageIds[4] = {
+            SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_NE_SW,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_NW_SE,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_SW_NE,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_ALT_SE_NW,
         };
 
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
+            session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
-
-        PaintAddImageAsParentRotated(
-            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
-            { 0, 0, height }, { 32, 32, 1 });
     }
     else
     {
-        static constexpr uint32_t imageIds[4][2] = {
-            { SPR_G2_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_NE_SW, SPR_STATION_BASE_A_SW_NE },
-            { SPR_G2_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_NW_SE, SPR_STATION_BASE_A_NW_SE },
-            { SPR_G2_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_SW_NE, SPR_STATION_BASE_A_SW_NE },
-            { SPR_G2_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_SE_NW, SPR_STATION_BASE_A_NW_SE },
+        static constexpr uint32_t imageIds[4] = {
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_NE_SW,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_NW_SE,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_SW_NE,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DRIVE_TYRE_SE_NW,
         };
         if (trackElement.GetTrackType() == TrackElemType::EndStation)
         {
@@ -80,16 +76,19 @@ static void LatticeTriangleTrackAltStation(
         else
         {
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
-
-        PaintAddImageAsParentRotated(
-            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
-            { 0, 0, height }, { 32, 32, 1 });
     }
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
+    if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+    }
+    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+    }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

@@ -95,11 +95,23 @@ namespace OpenRCT2::SingleRailRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        static constexpr uint32_t imageIds[4][3] = {
-            { (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 0), (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 0), SPR_STATION_BASE_B_SW_NE },
-            { (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 1), (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 1), SPR_STATION_BASE_B_NW_SE },
-            { (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 0), (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 0), SPR_STATION_BASE_B_SW_NE },
-            { (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 1), (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 1), SPR_STATION_BASE_B_NW_SE },
+        static constexpr ImageIndex imageIds[4][2] = {
+            {
+                (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 0),
+                (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 0),
+            },
+            {
+                (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 1),
+                (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 1),
+            },
+            {
+                (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 0),
+                (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 0),
+            },
+            {
+                (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 1),
+                (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 1),
+            },
         };
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation)
@@ -114,11 +126,15 @@ namespace OpenRCT2::SingleRailRC
                 session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
-        PaintAddImageAsParentRotated(
-            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][2]),
-            { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-        TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
+        if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::b, -2, 4, 7))
+        {
+            DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+        }
+        else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        {
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+        }
         TrackPaintUtilDrawStationTunnel(session, direction, height);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

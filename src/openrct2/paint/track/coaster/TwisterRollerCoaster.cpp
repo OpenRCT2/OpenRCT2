@@ -110,11 +110,11 @@ static void TwisterRCTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { 17154, SPR_STATION_BASE_A_SW_NE },
-        { 17155, SPR_STATION_BASE_A_NW_SE },
-        { 17154, SPR_STATION_BASE_A_SW_NE },
-        { 17155, SPR_STATION_BASE_A_NW_SE },
+    static constexpr ImageIndex imageIds[4] = {
+        17154,
+        17155,
+        17154,
+        17155,
     };
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
@@ -127,15 +127,19 @@ static void TwisterRCTrackStation(
     else
     {
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
+            session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
-    PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
-        { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 
-    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 9, trackElement);
+    if (TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 9, trackElement, StationBaseType::a, 0))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+    }
+    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+    }
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
