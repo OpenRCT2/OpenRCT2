@@ -1131,7 +1131,7 @@ namespace OpenRCT2
 
                 default:
                 {
-                    nextScene = GetTitleScene();
+                    nextScene = !gOpenRCT2Headless ? GetTitleScene() : GetGameScene();
                 }
             }
 
