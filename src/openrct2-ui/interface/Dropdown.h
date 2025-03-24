@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <array>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/interface/Window.h>
@@ -28,7 +29,7 @@ namespace OpenRCT2::Dropdown
 namespace OpenRCT2::Ui::Windows
 {
     extern int32_t gDropdownNumItems;
-    extern Dropdown::Item gDropdownItems[Dropdown::kItemsMaxSize];
+    extern std::array<Dropdown::Item, Dropdown::kItemsMaxSize> gDropdownItems;
     extern bool gDropdownHasTooltips;
     extern int32_t gDropdownLastTooltipHover;
     extern int32_t gDropdownHighlightedIndex;

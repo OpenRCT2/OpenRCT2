@@ -46,9 +46,10 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     };
 
+    std::array<Dropdown::Item, Dropdown::kItemsMaxSize> gDropdownItems;
+    static std::array<ImageId, Dropdown::kItemsMaxSize> _dropdownItemsImages;
+
     int32_t gDropdownNumItems;
-    Dropdown::Item gDropdownItems[Dropdown::kItemsMaxSize];
-    static ImageId _dropdownItemsImages[Dropdown::kItemsMaxSize];
     bool gDropdownHasTooltips;
     int32_t gDropdownLastTooltipHover;
     int32_t gDropdownHighlightedIndex;
