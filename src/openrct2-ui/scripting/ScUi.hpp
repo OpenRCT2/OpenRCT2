@@ -18,6 +18,7 @@
     #include "ScViewport.hpp"
     #include "ScWindow.hpp"
 
+    #include <algorithm>
     #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/Input.h>
@@ -324,6 +325,7 @@ namespace OpenRCT2::Scripting
             auto& execInfo = _scriptEngine.GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
             CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Standard, text, callback);
+            std::ranges::sort(CustomMenuItems, [](auto&& a, auto&& b) { return a.Text < b.Text; });
         }
 
         void registerToolboxMenuItem(const std::string& text, DukValue callback)
@@ -333,6 +335,7 @@ namespace OpenRCT2::Scripting
             if (owner->GetMetadata().Type == PluginType::Intransient)
             {
                 CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Toolbox, text, callback);
+                std::ranges::sort(CustomMenuItems, [](auto&& a, auto&& b) { return a.Text < b.Text; });
             }
             else
             {

@@ -4,6 +4,7 @@
 - Feature: [#23876] New park save files now contain a preview image, shown in the load/save window.
 - Change: [#23932] The land rights window now checks “Land Owned” by default.
 - Change: [#23936] The ‘guests prefer less/more intense rides’ settings have been turned into a dropdown.
+- Change: [#24067] [Plugin] Registered menu items are now listed alphabetically.
 - Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve (original bug).
 - Fix: [#5281] Missing supports on miniature railways built backwards.
 - Fix: [#10379] Banners outside the park can be renamed and modified (original bug).
