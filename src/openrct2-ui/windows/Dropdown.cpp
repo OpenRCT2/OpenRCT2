@@ -49,7 +49,7 @@ namespace OpenRCT2::Ui::Windows
     int32_t gDropdownNumItems;
     Dropdown::Item gDropdownItems[Dropdown::kItemsMaxSize];
     static ImageId _dropdownItemsImages[Dropdown::kItemsMaxSize];
-    bool gDropdownIsColour;
+    bool gDropdownHasTooltips;
     int32_t gDropdownLastColourHover;
     int32_t gDropdownHighlightedIndex;
     int32_t gDropdownDefaultIndex;
@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
             // Input state
             gDropdownHighlightedIndex = -1;
             ResetDropdownFlags();
-            gDropdownIsColour = false;
+            gDropdownHasTooltips = false;
             gDropdownDefaultIndex = -1;
             InputSetState(InputState::DropdownActive);
         }
@@ -529,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
-        gDropdownIsColour = true;
+        gDropdownHasTooltips = true;
         gDropdownLastColourHover = -1;
         gDropdownDefaultIndex = defaultIndex;
     }

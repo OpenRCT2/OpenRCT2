@@ -1505,7 +1505,7 @@ namespace OpenRCT2
             }
             return;
         }
-        else if (gDropdownIsColour)
+        else if (gDropdownHasTooltips)
         {
             // This is ordinarily covered in InputWidgetOver but the dropdown with colours is a special case.
             InputUpdateTooltip(w, widgetIndex, screenCoords);
@@ -1526,7 +1526,7 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gDropdownIsColour && gDropdownLastColourHover != dropdown_index)
+            if (gDropdownHasTooltips && gDropdownLastColourHover != dropdown_index)
             {
                 gDropdownLastColourHover = dropdown_index;
                 WindowTooltipClose();

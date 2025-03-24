@@ -29,7 +29,7 @@ namespace OpenRCT2::Ui::Windows
 {
     extern int32_t gDropdownNumItems;
     extern Dropdown::Item gDropdownItems[Dropdown::kItemsMaxSize];
-    extern bool gDropdownIsColour;
+    extern bool gDropdownHasTooltips;
     extern int32_t gDropdownLastColourHover;
     extern int32_t gDropdownHighlightedIndex;
     extern int32_t gDropdownDefaultIndex;
