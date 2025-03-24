@@ -1526,9 +1526,9 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gDropdownHasTooltips && gDropdownLastColourHover != dropdown_index)
+            if (gDropdownHasTooltips && gDropdownLastTooltipHover != dropdown_index)
             {
-                gDropdownLastColourHover = dropdown_index;
+                gDropdownLastTooltipHover = dropdown_index;
                 WindowTooltipClose();
 
                 WindowTooltipShow(
@@ -1550,7 +1550,7 @@ namespace OpenRCT2
         }
         else
         {
-            gDropdownLastColourHover = -1;
+            gDropdownLastTooltipHover = -1;
             WindowTooltipClose();
         }
     }
