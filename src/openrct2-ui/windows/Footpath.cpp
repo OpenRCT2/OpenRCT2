@@ -772,6 +772,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 gDropdownItems[numRailingsTypes].Format = kStringIdNone;
+                gDropdownTooltips[numRailingsTypes] = railingsEntry->NameStringId;
                 Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::footpathRailings, i });
                 numRailingsTypes++;
@@ -781,6 +782,9 @@ namespace OpenRCT2::Ui::Windows
             WindowDropdownShowImage(
                 windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numRailingsTypes,
                 47, 36, itemsPerRow);
+
+            gDropdownHasTooltips = true;
+
             if (defaultIndex)
                 gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
         }
