@@ -23,6 +23,7 @@
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
+#include <sstream>
 
 namespace OpenRCT2::Guard
 {
@@ -52,6 +53,19 @@ namespace OpenRCT2::Guard
     void SetAssertBehaviour(ASSERT_BEHAVIOUR behaviour)
     {
         _assertBehaviour = behaviour;
+    }
+
+    void Assert(bool expression, const std::source_location& location)
+    {
+        if (expression)
+            return;
+
+        std::stringstream messageStream;
+        messageStream << "Assertion failed in " << location.file_name() << ":" << location.line();
+
+        std::string message = messageStream.str();
+
+        Assert(expression, message.c_str());
     }
 
     void Assert(bool expression, const char* message, ...)

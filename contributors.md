@@ -249,6 +249,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Brendan Heinonen (staticinvocation)
 * (QuestionableDeer)
 * David Sungaila (sungaila)
+* Garrett Leach (GarrettLeach)
 
 ## Toolchain
 * (Balletie) - macOS
