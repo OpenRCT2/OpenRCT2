@@ -9,12 +9,11 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
-
-    #include "Duktape.hpp"
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include <any>
     #include <memory>
+    #include <quickjs.h>
     #include <string>
     #include <tuple>
     #include <vector>
@@ -53,10 +52,10 @@ namespace OpenRCT2::Scripting
     {
         uint32_t Cookie;
         std::shared_ptr<Plugin> Owner;
-        DukValue Function;
+        JSValue Function;
 
         Hook() = default;
-        Hook(uint32_t cookie, std::shared_ptr<Plugin> owner, const DukValue& function)
+        Hook(uint32_t cookie, std::shared_ptr<Plugin> owner, const JSValue function)
             : Cookie(cookie)
             , Owner(owner)
             , Function(function)
@@ -84,14 +83,14 @@ namespace OpenRCT2::Scripting
     public:
         HookEngine(ScriptEngine& scriptEngine);
         HookEngine(const HookEngine&) = delete;
-        uint32_t Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue& function);
+        uint32_t Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, JSValue function);
         void Unsubscribe(HOOK_TYPE type, uint32_t cookie);
         void UnsubscribeAll(std::shared_ptr<const Plugin> owner);
         void UnsubscribeAll();
         bool HasSubscriptions(HOOK_TYPE type) const;
         bool IsValidHookForPlugin(HOOK_TYPE type, Plugin& plugin) const;
         void Call(HOOK_TYPE type, bool isGameStateMutable);
-        void Call(HOOK_TYPE type, const DukValue& arg, bool isGameStateMutable);
+        void Call(HOOK_TYPE type, JSValue arg, bool isGameStateMutable);
         void Call(
             HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args, bool isGameStateMutable);
 

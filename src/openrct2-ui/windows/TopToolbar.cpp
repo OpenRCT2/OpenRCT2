@@ -536,7 +536,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         // The following are tool events for custom tools set by user scripts.
         // NB: these can't go into CustomWindow.cpp, as tools may be active without a visible window.
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -1190,7 +1190,7 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[i++].Format = STR_MAPGEN_MENU_ITEM;
         }
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
         if (!customMenuItems.empty())
         {
@@ -1239,7 +1239,7 @@ namespace OpenRCT2::Ui::Windows
         }
         else
         {
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
             const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
             auto customIndex = static_cast<size_t>(dropdownIndex - customStartIndex);
             size_t i = 0;
