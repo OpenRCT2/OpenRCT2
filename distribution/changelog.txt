@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#23774] Climates can now be customised using objects.
 - Feature: [#23876] New park save files now contain a preview image, shown in the load/save window.
+- Improved: [#24078] Rails on Wooden Roller Coaster station sprites with no platforms have been removed.
 - Change: [#23932] The land rights window now checks “Land Owned” by default.
 - Change: [#23936] The ‘guests prefer less/more intense rides’ settings have been turned into a dropdown.
 - Change: [#24067] [Plugin] Registered menu items are now listed alphabetically.
