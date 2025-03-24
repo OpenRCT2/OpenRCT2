@@ -499,8 +499,7 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-                    auto* pathObj = static_cast<FootpathObject*>(
-                        objManager.GetLoadedObject(ObjectType::paths, gFootpathSelection.LegacyPath));
+                    const auto* pathObj = objManager.GetLoadedObject<FootpathObject>(gFootpathSelection.LegacyPath);
                     if (pathObj != nullptr)
                     {
                         auto pathEntry = reinterpret_cast<const FootpathEntry*>(pathObj->GetLegacyData());
@@ -640,11 +639,10 @@ namespace OpenRCT2::Ui::Windows
                 // Set footpath and queue type button images
                 auto pathImage = kSpriteIdNull;
                 auto queueImage = kSpriteIdNull;
-                auto pathObj = static_cast<FootpathObject*>(
-                    objManager.GetLoadedObject(ObjectType::paths, gFootpathSelection.LegacyPath));
+                const auto* pathObj = objManager.GetLoadedObject<FootpathObject>(gFootpathSelection.LegacyPath);
                 if (pathObj != nullptr)
                 {
-                    auto pathEntry = reinterpret_cast<FootpathEntry*>(pathObj->GetLegacyData());
+                    auto pathEntry = reinterpret_cast<const FootpathEntry*>(pathObj->GetLegacyData());
                     pathImage = pathEntry->GetPreviewImage();
                     queueImage = pathEntry->GetQueuePreviewImage();
                 }
@@ -676,8 +674,7 @@ namespace OpenRCT2::Ui::Windows
             std::optional<size_t> defaultIndex;
             for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
             {
-                const auto* pathType = static_cast<FootpathSurfaceObject*>(
-                    objManager.GetLoadedObject(ObjectType::footpathSurface, i));
+                const auto* pathType = objManager.GetLoadedObject<FootpathSurfaceObject>(i);
                 if (pathType == nullptr)
                 {
                     continue;

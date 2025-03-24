@@ -300,7 +300,7 @@ namespace OpenRCT2::RCT2
                 std::lock_guard lock(mtx);
 
                 // Unload loaded scenario text object, if any.
-                if (auto* obj = objManager.GetLoadedObject(ObjectType::scenarioText, 0); obj != nullptr)
+                if (auto* obj = objManager.GetLoadedObject<ScenarioTextObject>(0); obj != nullptr)
                     objManager.UnloadObjects({ obj->GetDescriptor() });
 
                 // Load the one specified

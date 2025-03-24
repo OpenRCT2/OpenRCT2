@@ -189,14 +189,12 @@ namespace OpenRCT2::Audio
         uint32_t sampleIndex = EnumValue(id);
         if (id >= SoundId::LiftRMC)
         {
-            audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::audio, _soundsAdditionalAudioObjectEntryIndex));
+            audioObject = objManager.GetLoadedObject<AudioObject>(_soundsAdditionalAudioObjectEntryIndex);
             sampleIndex -= EnumValue(SoundId::LiftRMC);
         }
         else
         {
-            audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::audio, _soundsAudioObjectEntryIndex));
+            audioObject = objManager.GetLoadedObject<AudioObject>(_soundsAudioObjectEntryIndex);
         }
         return std::make_tuple(audioObject, sampleIndex);
     }
@@ -368,7 +366,7 @@ namespace OpenRCT2::Audio
         if (_titleAudioObjectEntryIndex != kObjectEntryIndexNull)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto* obj = objManager.GetLoadedObject(ObjectType::audio, _titleAudioObjectEntryIndex);
+            auto* obj = objManager.GetLoadedObject<AudioObject>(_titleAudioObjectEntryIndex);
             if (obj != nullptr)
             {
                 objManager.UnloadObjects({ obj->GetDescriptor() });

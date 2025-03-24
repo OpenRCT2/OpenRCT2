@@ -306,8 +306,7 @@ namespace OpenRCT2::Ui::Windows
                 if (gLandToolTerrainSurface != kObjectEntryIndexNull)
                 {
                     auto& objManager = GetContext()->GetObjectManager();
-                    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::terrainSurface, gLandToolTerrainSurface));
+                    const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(gLandToolTerrainSurface);
                     if (surfaceObj != nullptr)
                     {
                         price += numTiles * static_cast<money64>(surfaceObj->Price);
@@ -843,8 +842,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawDropdownButtons(DrawPixelInfo& dpi)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::terrainSurface, _selectedFloorTexture));
+            const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_selectedFloorTexture);
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -853,8 +851,7 @@ namespace OpenRCT2::Ui::Windows
                     surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
             }
 
-            const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::terrainEdge, _selectedWallTexture));
+            const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_selectedWallTexture);
             ImageId edgeImage;
             if (edgeObj != nullptr)
             {

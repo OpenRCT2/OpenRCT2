@@ -1943,32 +1943,19 @@ bool FootpathSelectDefault()
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::paths, entryIndex);
-    if (obj == nullptr)
-        return nullptr;
-
-    const FootpathObject* footpathObject = (static_cast<FootpathObject*>(obj));
-    return footpathObject;
+    return objMgr.GetLoadedObject<FootpathObject>(entryIndex);
 }
 
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::footpathSurface, entryIndex);
-    if (obj == nullptr)
-        return nullptr;
-
-    return static_cast<FootpathSurfaceObject*>(obj);
+    return objMgr.GetLoadedObject<FootpathSurfaceObject>(entryIndex);
 }
 
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::footpathRailings, entryIndex);
-    if (obj == nullptr)
-        return nullptr;
-
-    return static_cast<FootpathRailingsObject*>(obj);
+    return objMgr.GetLoadedObject<FootpathRailingsObject>(entryIndex);
 }
 
 RideId PathElement::GetRideIndex() const

@@ -112,10 +112,8 @@ void ScenarioReset(GameState_t& gameState)
     gameState.cash = gameState.initialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
-    if (auto* object = objManager.GetLoadedObject(ObjectType::scenarioText, 0); object != nullptr)
+    if (auto* textObject = objManager.GetLoadedObject<ScenarioTextObject>(0); textObject != nullptr)
     {
-        auto* textObject = reinterpret_cast<ScenarioTextObject*>(object);
-
         gameState.scenarioName = textObject->GetScenarioName();
         gameState.park.Name = textObject->GetParkName();
         gameState.scenarioDetails = textObject->GetScenarioDetails();
