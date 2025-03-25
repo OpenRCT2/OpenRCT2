@@ -279,7 +279,7 @@ namespace OpenRCT2::Scripting
             }
             else
             {
-                auto sceneryGroup = objManager.GetLoadedObject(ObjectType::sceneryGroup, researchItem.entryIndex);
+                auto sceneryGroup = objManager.GetLoadedObject<SceneryGroupObject>(researchItem.entryIndex);
                 if (sceneryGroup != nullptr)
                 {
                     researchItem.baseRideType = 0;

@@ -116,7 +116,7 @@ GameActions::Result RideSetSettingAction::Query() const
         case RideSetSetting::MusicType:
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto musicObj = objManager.GetLoadedObject(ObjectType::music, _value);
+            auto musicObj = objManager.GetLoadedObject<MusicObject>(_value);
             if (musicObj == nullptr)
             {
                 LOG_ERROR("Invalid music style: %u", _value);

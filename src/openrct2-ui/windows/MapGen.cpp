@@ -1185,8 +1185,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawDropdownButtons(DrawPixelInfo& dpi, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::terrainSurface, _settings.landTexture));
+            const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_settings.landTexture);
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -1198,8 +1197,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ImageId edgeImage;
-            const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::terrainEdge, _settings.edgeTexture));
+            const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_settings.edgeTexture);
             if (edgeObj != nullptr)
             {
                 edgeImage = ImageId(edgeObj->IconImageId);

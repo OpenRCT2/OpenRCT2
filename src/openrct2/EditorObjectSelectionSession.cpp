@@ -26,6 +26,7 @@
 #include "object/ObjectList.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "object/WaterObject.h"
 #include "ride/RideData.h"
 #include "ride/RideManager.hpp"
 #include "ride/TrainManager.h"
@@ -466,7 +467,7 @@ static void SelectDesignerObjects()
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto* oldPalette = objectManager.GetLoadedObject(ObjectType::water, 0);
+    auto* oldPalette = objectManager.GetLoadedObject<WaterObject>(0);
 
     if (oldPalette != nullptr)
     {

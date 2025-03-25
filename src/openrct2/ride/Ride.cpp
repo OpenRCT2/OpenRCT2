@@ -224,7 +224,7 @@ const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
 
-    auto obj = objMgr.GetLoadedObject(ObjectType::ride, index);
+    auto obj = objMgr.GetLoadedObject<RideObject>(index);
     if (obj == nullptr)
     {
         return nullptr;
