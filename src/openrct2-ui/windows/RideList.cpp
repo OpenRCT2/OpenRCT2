@@ -708,12 +708,15 @@ namespace OpenRCT2::Ui::Windows
                         formatSecondary = STR_DOWN_TIME_LABEL;
                         break;
                     case INFORMATION_TYPE_LAST_INSPECTION:
-                        ft.Add<uint16_t>(ridePtr->lastInspection);
-                        if (ridePtr->lastInspection <= 1)
+                    {
+                        const auto lastInspection = ridePtr->lastInspection;
+                        ft.Add<uint16_t>(lastInspection);
+
+                        if (lastInspection <= 1)
                         {
                             formatSecondary = STR_LAST_INSPECTION_LABEL_MINUTE;
                         }
-                        else if (ridePtr->lastInspection <= 240)
+                        else if (lastInspection <= 240)
                         {
                             formatSecondary = STR_LAST_INSPECTION_LABEL_MINUTES;
                         }
@@ -722,6 +725,7 @@ namespace OpenRCT2::Ui::Windows
                             formatSecondary = STR_LAST_INSPECTION_LABEL_MORE_THAN_FOUR_HOURS;
                         }
                         break;
+                    }
                     case INFORMATION_TYPE_GUESTS_FAVOURITE:
                         formatSecondary = 0;
                         if (ridePtr->isRide())
