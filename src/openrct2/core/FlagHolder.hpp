@@ -19,7 +19,7 @@ struct FlagHolder
     FlagHolder() = default;
 
     template<typename... TTypes>
-    FlagHolder(TTypes... types)
+    constexpr FlagHolder(TTypes... types)
         : holder(EnumsToFlags(types...))
     {
     }
@@ -84,5 +84,12 @@ struct FlagHolder
     constexpr void flip(TEnumType flag)
     {
         holder ^= EnumToFlag(flag);
+    }
+
+    constexpr FlagHolder operator|(const FlagHolder& other) const noexcept
+    {
+        FlagHolder res = *this;
+        res.holder |= other.holder;
+        return res;
     }
 };

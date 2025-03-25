@@ -525,7 +525,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(JumpingFountain, frame);
         COMPARE_FIELD(JumpingFountain, FountainType);
         COMPARE_FIELD(JumpingFountain, NumTicksAlive);
-        COMPARE_FIELD(JumpingFountain, FountainFlags);
+        COMPARE_FIELD(JumpingFountain, fountainFlags);
         COMPARE_FIELD(JumpingFountain, TargetX);
         COMPARE_FIELD(JumpingFountain, TargetY);
         COMPARE_FIELD(JumpingFountain, Iteration);

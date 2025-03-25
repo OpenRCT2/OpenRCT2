@@ -2557,7 +2557,7 @@ namespace OpenRCT2
         ReadWriteEntityCommon(cs, fountain);
         cs.ReadWrite(fountain.NumTicksAlive);
         cs.ReadWrite(fountain.frame);
-        cs.ReadWrite(fountain.FountainFlags);
+        cs.ReadWrite(fountain.fountainFlags.holder);
         cs.ReadWrite(fountain.TargetX);
         cs.ReadWrite(fountain.TargetY);
         cs.ReadWrite(fountain.TargetY);

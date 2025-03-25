@@ -12,7 +12,9 @@
 // Structures shared between both RCT1 and RCT2.
 
 #include "../core/EnumUtils.hpp"
+#include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
+#include "../entity/Fountain.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"
@@ -1116,9 +1118,9 @@ struct RCT12EntityJumpingFountain : RCT12EntityBase
     uint8_t NumTicksAlive; // 0x26
     uint8_t Frame;         // 0x27
     uint8_t Pad28[0x2F - 0x28];
-    uint8_t FountainFlags; // 0x2F
-    int16_t TargetX;       // 0x30
-    int16_t TargetY;       // 0x32
+    OpenRCT2::FountainFlags fountainFlags{}; // 0x2F
+    int16_t TargetX;                         // 0x30
+    int16_t TargetY;                         // 0x32
     uint8_t Pad34[0x46 - 0x34];
     uint16_t Iteration; // 0x46
 };

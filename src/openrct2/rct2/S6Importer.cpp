@@ -2231,7 +2231,7 @@ namespace OpenRCT2::RCT2
         ImportEntityCommonProperties(dst, src);
         dst->NumTicksAlive = src->NumTicksAlive;
         dst->frame = src->Frame;
-        dst->FountainFlags = src->FountainFlags;
+        dst->fountainFlags = src->fountainFlags;
         dst->TargetX = src->TargetX;
         dst->TargetY = src->TargetY;
         dst->Iteration = src->Iteration;
