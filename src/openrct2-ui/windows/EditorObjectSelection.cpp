@@ -615,7 +615,7 @@ namespace OpenRCT2::Ui::Windows
             if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(
-                    0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem);
+                    0, { EditorInputFlag::select }, listItem->repositoryItem);
                 if (!objectSelectResult.Successful)
                     return;
 
@@ -636,17 +636,17 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            uint32_t inputFlags = INPUT_FLAG_EDITOR_OBJECT_1 | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP;
+            EditorInputFlags inputFlags = { EditorInputFlag::unk1, EditorInputFlag::selectObjectsInSceneryGroup };
             // If already selected
             if (!(object_selection_flags & ObjectSelectionFlags::Selected))
-                inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
+                inputFlags.set(EditorInputFlag::select);
 
             _gSceneryGroupPartialSelectError = std::nullopt;
             const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(0, inputFlags, listItem->repositoryItem);
             if (!objectSelectResult.Successful)
             {
-                StringId error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
-                                                                                      : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+                StringId error_title = (inputFlags.has(EditorInputFlag::select)) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                                                                                 : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
                 ContextShowError(error_title, objectSelectResult.Message, {});
                 return;

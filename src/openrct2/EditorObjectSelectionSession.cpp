@@ -438,17 +438,13 @@ static void selectScenarioEditorObjects()
         for (auto designerSelectedObject : kCommonScenarioAndTrackDesignerObjects)
         {
             WindowEditorObjectSelectionSelectObject(
-                0,
-                INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
-                    | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
+                0, { EditorInputFlag::select, EditorInputFlag::unk1, EditorInputFlag::selectObjectsInSceneryGroup },
                 ObjectEntryDescriptor(designerSelectedObject));
         }
         for (auto defaultSelectedObject : kDefaultScenarioObjects)
         {
             WindowEditorObjectSelectionSelectObject(
-                0,
-                INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
-                    | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
+                0, { EditorInputFlag::select, EditorInputFlag::unk1, EditorInputFlag::selectObjectsInSceneryGroup },
                 ObjectEntryDescriptor(defaultSelectedObject));
         }
     }
@@ -461,9 +457,7 @@ static void selectTrackDesignerObjects()
         for (auto designerSelectedObject : kCommonScenarioAndTrackDesignerObjects)
         {
             WindowEditorObjectSelectionSelectObject(
-                0,
-                INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
-                    | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
+                0, { EditorInputFlag::select, EditorInputFlag::unk1, EditorInputFlag::selectObjectsInSceneryGroup },
                 ObjectEntryDescriptor(designerSelectedObject));
         }
     }
@@ -552,7 +546,7 @@ void FinishObjectSelection()
  *  rct2: 0x006AB54F
  */
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
-    uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item)
+    uint8_t isMasterObject, EditorInputFlags flags, const ObjectRepositoryItem* item)
 {
     if (item == nullptr)
     {
@@ -572,7 +566,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
     }
 
     uint8_t* selectionFlags = &_objectSelectionFlags[index];
-    if (!(flags & INPUT_FLAG_EDITOR_OBJECT_SELECT))
+    if (!flags.has(EditorInputFlag::select))
     {
         if (!(*selectionFlags & ObjectSelectionFlags::Selected))
         {
@@ -590,7 +584,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         }
 
         ObjectType objectType = item->Type;
-        if (objectType == ObjectType::sceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
+        if (objectType == ObjectType::sceneryGroup && flags.has(EditorInputFlag::selectObjectsInSceneryGroup))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
@@ -605,7 +599,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
 
     if (isMasterObject == 0)
     {
-        if (flags & INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED)
+        if (flags.has(EditorInputFlag::objectAlwaysRequired))
         {
             *selectionFlags |= ObjectSelectionFlags::AlwaysRequired;
         }
@@ -629,7 +623,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
     }
 
-    if (objectType == ObjectType::sceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
+    if (objectType == ObjectType::sceneryGroup && flags.has(EditorInputFlag::selectObjectsInSceneryGroup))
     {
         for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
         {
@@ -651,7 +645,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         PeepUpdateNames();
     }
 
-    if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
+    if (isMasterObject != 0 && !flags.has(EditorInputFlag::unk1))
     {
         char objectName[64];
         ObjectCreateIdentifierName(objectName, 64, &item->ObjectEntry);
@@ -672,7 +666,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
 }
 
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
-    uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& descriptor)
+    uint8_t isMasterObject, EditorInputFlags flags, const ObjectEntryDescriptor& descriptor)
 {
     auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
     const auto* item = objectRepository.FindObject(descriptor);
