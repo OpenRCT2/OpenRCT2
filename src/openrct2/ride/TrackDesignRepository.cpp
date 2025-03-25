@@ -16,6 +16,7 @@
 #include "../core/File.h"
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.h"
+#include "../core/FlagHolder.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
@@ -28,18 +29,19 @@
 
 using namespace OpenRCT2;
 
+enum TrackRepoItemFlag : uint8_t
+{
+    readOnly,
+};
+using TrackRepoItemFlags = FlagHolder<uint32_t, TrackRepoItemFlag>;
+
 struct TrackRepositoryItem
 {
     std::string Name;
     std::string Path;
     ride_type_t RideType = kRideTypeNull;
     std::string ObjectEntry;
-    uint32_t Flags = 0;
-};
-
-enum TRACK_REPO_ITEM_FLAGS
-{
-    TRIF_READ_ONLY = (1 << 0),
+    TrackRepoItemFlags flags{};
 };
 
 std::string GetNameFromTrackPath(const std::string& path)
@@ -75,15 +77,14 @@ public:
         auto td = TrackDesignImport(path.c_str());
         if (td != nullptr)
         {
-            TrackRepositoryItem item;
+            TrackRepositoryItem item{};
             item.Name = GetNameFromTrackPath(path);
             item.Path = path;
             item.RideType = td->trackAndVehicle.rtdIndex;
             item.ObjectEntry = std::string(td->trackAndVehicle.vehicleObject.Entry.name, 8);
-            item.Flags = 0;
             if (IsTrackReadOnly(path))
             {
-                item.Flags |= TRIF_READ_ONLY;
+                item.flags.set(TrackRepoItemFlag::readOnly);
             }
             return item;
         }
@@ -98,7 +99,7 @@ protected:
         ds << item.Path;
         ds << item.RideType;
         ds << item.ObjectEntry;
-        ds << item.Flags;
+        ds << item.flags.holder;
     }
 
 private:
@@ -219,7 +220,7 @@ public:
         if (index != SIZE_MAX)
         {
             const TrackRepositoryItem* item = &_items[index];
-            if (!(item->Flags & TRIF_READ_ONLY))
+            if (!item->flags.has(TrackRepoItemFlag::readOnly))
             {
                 if (File::Delete(path))
                 {
@@ -238,7 +239,7 @@ public:
         if (index != SIZE_MAX)
         {
             TrackRepositoryItem* item = &_items[index];
-            if (!(item->Flags & TRIF_READ_ONLY))
+            if (!item->flags.has(TrackRepoItemFlag::readOnly))
             {
                 std::string directory = Path::GetDirectory(path);
                 std::string newPath = Path::Combine(directory, newName + Path::GetExtension(path));
