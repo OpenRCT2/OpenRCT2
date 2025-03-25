@@ -1573,7 +1573,7 @@ void ScriptEngine::LoadSharedStorage()
 {
     InitSharedStorage();
 
-    auto path = _env.GetFilePath(PATHID::PLUGIN_STORE);
+    auto path = _env.GetFilePath(PathId::pluginStore);
     try
     {
         if (File::Exists(path))
@@ -1595,7 +1595,7 @@ void ScriptEngine::LoadSharedStorage()
 
 void ScriptEngine::SaveSharedStorage()
 {
-    auto path = _env.GetFilePath(PATHID::PLUGIN_STORE);
+    auto path = _env.GetFilePath(PathId::pluginStore);
     try
     {
         _sharedStorage.push();

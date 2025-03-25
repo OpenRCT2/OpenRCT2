@@ -123,7 +123,7 @@ public:
         return Path::Combine(basePath, directoryName);
     }
 
-    u8string GetFilePath(PATHID pathid) const override
+    u8string GetFilePath(PathId pathid) const override
     {
         auto dirbase = GetDefaultBaseDirectory(pathid);
         auto basePath = GetDirectoryPath(dirbase);
@@ -178,28 +178,28 @@ public:
     }
 
 private:
-    static DirBase GetDefaultBaseDirectory(PATHID pathid)
+    static DirBase GetDefaultBaseDirectory(PathId pathid)
     {
         switch (pathid)
         {
-            case PATHID::CONFIG:
-            case PATHID::CONFIG_SHORTCUTS_LEGACY:
-            case PATHID::CONFIG_SHORTCUTS:
+            case PathId::config:
+            case PathId::configShortcutsLegacy:
+            case PathId::configShortcuts:
                 return DirBase::config;
-            case PATHID::CACHE_OBJECTS:
-            case PATHID::CACHE_TRACKS:
-            case PATHID::CACHE_SCENARIOS:
+            case PathId::cacheObjects:
+            case PathId::cacheTracks:
+            case PathId::cacheScenarios:
                 return DirBase::cache;
-            case PATHID::SCORES_RCT2:
+            case PathId::scoresRCT2:
                 return DirBase::rct2;
-            case PATHID::CHANGELOG:
-            case PATHID::CONTRIBUTORS:
+            case PathId::changelog:
+            case PathId::contributors:
                 return DirBase::documentation;
-            case PATHID::NETWORK_GROUPS:
-            case PATHID::NETWORK_SERVERS:
-            case PATHID::NETWORK_USERS:
-            case PATHID::SCORES:
-            case PATHID::SCORES_LEGACY:
+            case PathId::networkGroups:
+            case PathId::networkServers:
+            case PathId::networkUsers:
+            case PathId::scores:
+            case PathId::scoresLegacy:
             default:
                 return DirBase::user;
         }
@@ -260,7 +260,7 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);
 
     // Now load the config so we can get the RCT1 and RCT2 paths
-    auto configPath = env->GetFilePath(PATHID::CONFIG);
+    auto configPath = env->GetFilePath(PathId::config);
     Config::SetDefaults();
     if (!Config::OpenFromPath(configPath))
     {

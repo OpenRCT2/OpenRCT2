@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
         /**
          * @brief Retrieves the changelog contents.
          */
-        const std::string GetText(PATHID pathId)
+        const std::string GetText(PathId pathId)
         {
             auto env = GetContext()->GetPlatformEnvironment();
             auto path = env->GetFilePath(pathId);
@@ -99,7 +99,7 @@ namespace OpenRCT2::Ui::Windows
                     return true;
 
                 case WV_CHANGELOG:
-                    if (!ReadFile(PATHID::CHANGELOG))
+                    if (!ReadFile(PathId::changelog))
                     {
                         return false;
                     }
@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
                     return true;
 
                 case WV_CONTRIBUTORS:
-                    if (!ReadFile(PATHID::CONTRIBUTORS))
+                    if (!ReadFile(PathId::contributors))
                     {
                         return false;
                     }
@@ -246,14 +246,14 @@ namespace OpenRCT2::Ui::Windows
         std::string GetChangelogPath()
         {
             auto env = GetContext()->GetPlatformEnvironment();
-            return env->GetFilePath(PATHID::CHANGELOG);
+            return env->GetFilePath(PathId::changelog);
         }
 
         /**
          * @brief Attempts to read the changelog file, returns true on success
          *
          */
-        bool ReadFile(PATHID pathId)
+        bool ReadFile(PathId pathId)
         {
             std::string _text;
             try

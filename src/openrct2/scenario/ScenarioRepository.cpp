@@ -130,7 +130,7 @@ private:
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
         : FileIndex(
-              "scenario index", kMagicNumber, kVersion, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(kPattern),
+              "scenario index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheScenarios), std::string(kPattern),
               std::vector<std::string>({
                   env.GetDirectoryPath(DirBase::rct1, DirId::scenarios),
                   env.GetDirectoryPath(DirBase::rct2, DirId::scenarios),
@@ -526,7 +526,7 @@ private:
 
     void LoadScores()
     {
-        std::string path = _env->GetFilePath(PATHID::SCORES);
+        std::string path = _env->GetFilePath(PathId::scores);
         if (!File::Exists(path))
         {
             return;
@@ -566,8 +566,8 @@ private:
      */
     void LoadLegacyScores()
     {
-        std::string rct2Path = _env->GetFilePath(PATHID::SCORES_RCT2);
-        std::string legacyPath = _env->GetFilePath(PATHID::SCORES_LEGACY);
+        std::string rct2Path = _env->GetFilePath(PathId::scoresRCT2);
+        std::string legacyPath = _env->GetFilePath(PathId::scoresLegacy);
         LoadLegacyScores(legacyPath);
         LoadLegacyScores(rct2Path);
     }
@@ -670,7 +670,7 @@ private:
 
     void SaveHighscores()
     {
-        std::string path = _env->GetFilePath(PATHID::SCORES);
+        std::string path = _env->GetFilePath(PathId::scores);
         try
         {
             auto fs = FileStream(path, FileMode::write);

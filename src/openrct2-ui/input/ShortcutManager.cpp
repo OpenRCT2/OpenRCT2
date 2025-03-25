@@ -196,7 +196,7 @@ void ShortcutManager::LoadUserBindings()
 {
     try
     {
-        auto path = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS));
+        auto path = fs::u8path(_env->GetFilePath(PathId::configShortcuts));
         if (fs::exists(path))
         {
             LoadUserBindings(path);
@@ -206,7 +206,7 @@ void ShortcutManager::LoadUserBindings()
             try
             {
                 Console::WriteLine("Importing legacy shortcuts...");
-                auto legacyPath = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS_LEGACY));
+                auto legacyPath = fs::u8path(_env->GetFilePath(PathId::configShortcutsLegacy));
                 if (fs::exists(legacyPath))
                 {
                     LoadLegacyBindings(legacyPath);
@@ -317,7 +317,7 @@ void ShortcutManager::SaveUserBindings()
 {
     try
     {
-        auto path = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS));
+        auto path = fs::u8path(_env->GetFilePath(PathId::configShortcuts));
         SaveUserBindings(path);
     }
     catch (const std::exception& e)
