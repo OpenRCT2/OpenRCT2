@@ -708,14 +708,22 @@ bool TrackPaintUtilDrawStationCovers2(
         imageOffset += SPR_STATION_COVER_OFFSET_TALL;
     }
 
-    auto imageTemplate = session.TrackColours;
-    auto imageId = imageTemplate.WithIndex(baseImageIndex + imageOffset);
+    auto imageId = session.TrackColours.WithIndex(baseImageIndex + imageOffset);
+    if (!session.TrackColours.IsRemap())
+    {
+        imageId = ImageId(baseImageIndex + imageOffset);
+        if (stationObject->Flags & StationObjectFlags::hasPrimaryColour)
+            imageId = imageId.WithPrimary(session.TrackColours.GetPrimary());
+        if (stationObject->Flags & StationObjectFlags::hasSecondaryColour)
+            imageId = imageId.WithSecondary(session.TrackColours.GetSecondary());
+    }
+
     PaintAddImageAsParent(session, imageId, offset, boundBox);
 
     // Glass
     if (colour == TrackStationColour && (stationObject->Flags & StationObjectFlags::isTransparent))
     {
-        imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparency(imageTemplate.GetPrimary());
+        imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparency(session.TrackColours.GetPrimary());
         PaintAddImageAsChild(session, imageId, offset, boundBox);
     }
     return true;
