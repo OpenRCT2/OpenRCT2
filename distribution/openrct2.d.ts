@@ -1318,8 +1318,8 @@ declare global {
 
     interface RideSetSettingArgs extends GameActionArgs {
         ride: number;
-        /** @see RideSetSetting in
-         * [src/openrct2/actions/RideSetSettingAction.h](../src/openrct2/actions/RideSetSettingAction.h)
+        /** 
+         * @see RideSetSetting in [src/openrct2/actions/RideSetSettingAction.h](../src/openrct2/actions/RideSetSettingAction.h)
          */
         setting: number;
         value: number;
