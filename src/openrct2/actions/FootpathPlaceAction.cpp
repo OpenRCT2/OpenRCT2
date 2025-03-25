@@ -211,6 +211,12 @@ bool FootpathPlaceAction::IsSameAsEntranceElement(const EntranceElement& entranc
 
 GameActions::Result FootpathPlaceAction::ElementUpdateQuery(PathElement* pathElement, GameActions::Result res) const
 {
+    if (_constructFlags & PathConstructFlag::IsQueue && pathElement->IsLevelCrossing(_loc))
+    {
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_QUEUE_PATHS_CANNOT_BE_USED_FOR_LEVEL_CROSSINGS);
+    }
+
     if (!IsSameAsPathElement(pathElement))
     {
         res.Cost += 6.00_GBP;
