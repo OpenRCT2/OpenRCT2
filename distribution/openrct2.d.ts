@@ -1355,8 +1355,8 @@ declare global {
     }
 
     interface ScenarioSetSettingArgs extends GameActionArgs {
-        /** @see ScenarioSetSetting in
-         * [src/openrct2/actions/ScenarioSetSettingAction.h](../src/openrct2/actions/ScenarioSetSettingAction.h)
+        /** 
+         * @see ScenarioSetSetting in [src/openrct2/actions/ScenarioSetSettingAction.h](../src/openrct2/actions/ScenarioSetSettingAction.h)
          */
         setting: number;
         value: number;
