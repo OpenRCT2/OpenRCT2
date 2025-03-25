@@ -148,6 +148,7 @@ namespace OpenRCT2::Ui::Windows
         false, // Queue time
         false, // Reliability
         false, // Down time
+        false, // Last inspection
         false, // Guests favourite
         false, // Excitement
         false, // Intensity
@@ -213,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SORT].right = width - 60 + 54;
 
             auto dropdownStart = widgets[WIDX_CURRENT_INFORMATION_TYPE].top;
-            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, dropdownStart }, { width - 216, kDropdownHeight });
+            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 100, dropdownStart }, { width - 166, kDropdownHeight });
 
             // Refreshing the list can be a very intensive operation
             // owing to its use of ride_has_any_track_elements().
