@@ -2207,7 +2207,7 @@ namespace OpenRCT2::Ui::Windows
         static bool IsRCT1TitleMusicAvailable()
         {
             auto env = GetContext()->GetPlatformEnvironment();
-            auto rct1path = env->GetDirectoryPath(DIRBASE::RCT1);
+            auto rct1path = env->GetDirectoryPath(DirBase::rct1);
             return !rct1path.empty();
         }
 

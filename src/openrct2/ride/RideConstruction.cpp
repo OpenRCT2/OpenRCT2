@@ -253,7 +253,7 @@ void Ride::removePeeps()
     auto stationIndex = RideGetFirstValidStationStart(*this);
 
     // Get exit position and direction
-    auto exitPosition = CoordsXYZD{ 0, 0, 0, INVALID_DIRECTION };
+    auto exitPosition = CoordsXYZD{ 0, 0, 0, kInvalidDirection };
     if (!stationIndex.IsNull())
     {
         auto location = getStation(stationIndex).Exit.ToCoordsXYZD();
@@ -285,7 +285,7 @@ void Ride::removePeeps()
             if (peep->State == PeepState::QueuingFront && peep->RideSubState == PeepRideSubState::AtEntrance)
                 peep->RemoveFromQueue();
 
-            if (exitPosition.direction == INVALID_DIRECTION)
+            if (exitPosition.direction == kInvalidDirection)
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
@@ -315,7 +315,7 @@ void Ride::removePeeps()
             if (peep->CurrentRide != id)
                 continue;
 
-            if (exitPosition.direction == INVALID_DIRECTION)
+            if (exitPosition.direction == kInvalidDirection)
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
@@ -1185,14 +1185,14 @@ void Ride::validateStations()
                 continue;
 
             CoordsXYZ location = station.GetStart();
-            uint8_t direction = INVALID_DIRECTION;
+            uint8_t direction = kInvalidDirection;
 
             bool specialTrack = false;
             TileElement* tileElement = nullptr;
             while (true)
             {
                 // search backwards for the previous station TrackElement (only if the first station TrackElement is found)
-                if (direction != INVALID_DIRECTION)
+                if (direction != kInvalidDirection)
                 {
                     location.x -= CoordsDirectionDelta[direction].x;
                     location.y -= CoordsDirectionDelta[direction].y;

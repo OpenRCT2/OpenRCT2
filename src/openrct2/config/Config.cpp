@@ -647,7 +647,7 @@ namespace OpenRCT2::Config
     {
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             auto reader = CreateIniReader(&fs);
             ReadGeneral(reader.get());
             ReadInterface(reader.get());
@@ -671,7 +671,7 @@ namespace OpenRCT2::Config
             auto directory = Path::GetDirectory(path);
             Path::CreateDirectory(directory);
 
-            auto fs = FileStream(path, FILE_MODE_WRITE);
+            auto fs = FileStream(path, FileMode::write);
             auto writer = CreateIniWriter(&fs);
             WriteGeneral(writer.get());
             WriteInterface(writer.get());
@@ -819,7 +819,7 @@ namespace OpenRCT2::Config
     u8string GetDefaultPath()
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"config.ini");
+        return Path::Combine(env->GetDirectoryPath(DirBase::user), u8"config.ini");
     }
 
     bool SaveToPath(u8string_view path)
@@ -903,7 +903,7 @@ namespace OpenRCT2::Config
                         }
 
                         const std::string dest = Path::Combine(
-                            GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::CONFIG), "rct2");
+                            GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DirBase::config), "rct2");
 
                         while (true)
                         {

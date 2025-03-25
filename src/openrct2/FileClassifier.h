@@ -31,19 +31,19 @@ namespace OpenRCT2
     struct IStream;
 }
 
-enum class FILE_TYPE
+enum class FileType
 {
-    UNDEFINED,
-    OBJECT,
-    SAVED_GAME,
-    SCENARIO,
-    TRACK_DESIGN,
-    PARK,
+    undefined,
+    object,
+    savedGame,
+    scenario,
+    trackDesign,
+    park,
 };
 
 struct ClassifiedFileInfo
 {
-    FILE_TYPE Type = FILE_TYPE::UNDEFINED;
+    FileType Type = FileType::undefined;
     uint32_t Version = 0;
 };
 

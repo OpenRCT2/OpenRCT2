@@ -16,18 +16,18 @@
 
 namespace OpenRCT2
 {
-    enum class DIRBASE : size_t
+    enum class DirBase : size_t
     {
-        RCT1,          // Base directory for original RollerCoaster Tycoon 1 content.
-        RCT2,          // Base directory for original RollerCoaster Tycoon 2 content.
-        OPENRCT2,      // Base directory for OpenRCT2 installation.
-        USER,          // Base directory for OpenRCT2 user content.
-        CONFIG,        // Base directory for OpenRCT2 configuration.
-        CACHE,         // Base directory for OpenRCT2 cache files.
-        DOCUMENTATION, // Base directory for OpenRCT2 doc files.
+        rct1,          // Base directory for original RollerCoaster Tycoon 1 content.
+        rct2,          // Base directory for original RollerCoaster Tycoon 2 content.
+        openrct2,      // Base directory for OpenRCT2 installation.
+        user,          // Base directory for OpenRCT2 user content.
+        config,        // Base directory for OpenRCT2 configuration.
+        cache,         // Base directory for OpenRCT2 cache files.
+        documentation, // Base directory for OpenRCT2 doc files.
     };
     constexpr size_t kDirBaseCount = 7;
-    using DIRBASE_VALUES = u8string[kDirBaseCount];
+    using DirBaseValues = u8string[kDirBaseCount];
 
     enum class DIRID
     {
@@ -80,15 +80,15 @@ namespace OpenRCT2
     {
         virtual ~IPlatformEnvironment() = default;
 
-        virtual u8string GetDirectoryPath(DIRBASE base) const = 0;
-        virtual u8string GetDirectoryPath(DIRBASE base, DIRID did) const = 0;
+        virtual u8string GetDirectoryPath(DirBase base) const = 0;
+        virtual u8string GetDirectoryPath(DirBase base, DIRID did) const = 0;
         virtual u8string GetFilePath(PATHID pathid) const = 0;
-        virtual u8string FindFile(DIRBASE base, DIRID did, u8string_view fileName) const = 0;
-        virtual void SetBasePath(DIRBASE base, u8string_view path) = 0;
+        virtual u8string FindFile(DirBase base, DIRID did, u8string_view fileName) const = 0;
+        virtual void SetBasePath(DirBase base, u8string_view path) = 0;
         virtual bool IsUsingClassic() const = 0;
     };
 
-    [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths);
+    [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DirBaseValues basePaths);
     [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment();
 
 } // namespace OpenRCT2

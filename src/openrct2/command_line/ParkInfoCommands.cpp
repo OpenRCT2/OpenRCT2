@@ -55,7 +55,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
     auto context = OpenRCT2::CreateContext();
     context->Initialise();
 
-    auto stream = OpenRCT2::FileStream(sourcePath, OpenRCT2::FILE_MODE_OPEN);
+    auto stream = OpenRCT2::FileStream(sourcePath, OpenRCT2::FileMode::open);
     ClassifiedFileInfo info;
     if (!TryClassifyFile(&stream, &info))
     {
@@ -63,7 +63,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
         return EXITCODE_FAIL;
     }
 
-    if (info.Type != FILE_TYPE::PARK && info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
+    if (info.Type != FileType::park && info.Type != FileType::savedGame && info.Type != FileType::scenario)
     {
         Console::Error::WriteLine("Invalid file type.");
         return EXITCODE_FAIL;
@@ -71,7 +71,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
 
     auto& objectRepository = context->GetObjectRepository();
     std::unique_ptr<IParkImporter> parkImporter;
-    if (info.Type == FILE_TYPE::PARK)
+    if (info.Type == FileType::park)
     {
         parkImporter = ParkImporter::CreateParkFile(objectRepository);
     }

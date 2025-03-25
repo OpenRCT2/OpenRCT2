@@ -186,7 +186,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->PathfindGoal.x = 0xFF;
         newPeep->PathfindGoal.y = 0xFF;
         newPeep->PathfindGoal.z = 0xFF;
-        newPeep->PathfindGoal.direction = INVALID_DIRECTION;
+        newPeep->PathfindGoal.direction = kInvalidDirection;
 
         uint8_t colour = StaffGetColour(static_cast<StaffType>(_staffType));
         newPeep->TshirtColour = colour;

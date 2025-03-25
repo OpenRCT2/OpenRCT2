@@ -133,7 +133,7 @@ namespace OpenRCT2
 
         void Load(const std::string_view path)
         {
-            FileStream fs(path, FILE_MODE_OPEN);
+            FileStream fs(path, FileMode::open);
             Load(fs);
         }
 
@@ -204,7 +204,7 @@ namespace OpenRCT2
 
         void Save(GameState_t& gameState, const std::string_view path)
         {
-            FileStream fs(path, FILE_MODE_WRITE);
+            FileStream fs(path, FileMode::write);
             Save(gameState, fs);
         }
 

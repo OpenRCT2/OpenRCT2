@@ -27,37 +27,37 @@
 
 namespace OpenRCT2
 {
-    FileStream::FileStream(const fs::path& path, int32_t fileMode)
+    FileStream::FileStream(const fs::path& path, FileMode fileMode)
         : FileStream(path.u8string(), fileMode)
     {
     }
 
-    FileStream::FileStream(const std::string& path, int32_t fileMode)
+    FileStream::FileStream(const std::string& path, FileMode fileMode)
         : FileStream(path.c_str(), fileMode)
     {
     }
 
-    FileStream::FileStream(std::string_view path, int32_t fileMode)
+    FileStream::FileStream(std::string_view path, FileMode fileMode)
         : FileStream(std::string(path), fileMode)
     {
     }
 
-    FileStream::FileStream(const utf8* path, int32_t fileMode)
+    FileStream::FileStream(const utf8* path, FileMode fileMode)
     {
         const char* mode;
         switch (fileMode)
         {
-            case FILE_MODE_OPEN:
+            case FileMode::open:
                 mode = "rb";
                 _canRead = true;
                 _canWrite = false;
                 break;
-            case FILE_MODE_WRITE:
+            case FileMode::write:
                 mode = "w+b";
                 _canRead = true;
                 _canWrite = true;
                 break;
-            case FILE_MODE_APPEND:
+            case FileMode::append:
                 mode = "a";
                 _canRead = false;
                 _canWrite = true;
@@ -81,7 +81,7 @@ namespace OpenRCT2
         auto modeW = String::toWideChar(mode);
         _file = _wfopen(pathW.c_str(), modeW.c_str());
 #else
-        if (fileMode == FILE_MODE_OPEN)
+        if (fileMode == FileMode::open)
         {
             struct stat fileStat;
             // Only allow regular files to be opened as its possible to open directories.

@@ -334,10 +334,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto path = _listItems[selected_list_item].path;
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
 
             ClassifiedFileInfo info;
-            if (!TryClassifyFile(&fs, &info) || info.Type != FILE_TYPE::PARK)
+            if (!TryClassifyFile(&fs, &info) || info.Type != ::FileType::park)
                 return;
 
             try

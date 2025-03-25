@@ -414,7 +414,7 @@ namespace OpenRCT2
                 if (res != cmpData.spriteChanges.end())
                 {
                     std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
-                        DIRBASE::USER, DIRID::LOG_DESYNCS);
+                        DirBase::user, DIRID::LOG_DESYNCS);
                     char uniqueFileName[128] = {};
                     snprintf(uniqueFileName, sizeof(uniqueFileName), "replay_desync_%u.txt", currentTicks);
 
@@ -624,7 +624,7 @@ namespace OpenRCT2
                 fileName += ".parkrep";
             }
 
-            std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);
+            std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DirBase::user, DIRID::REPLAY);
             std::string outFile = Path::Combine(outPath, fileName);
 
             bool loaded = false;

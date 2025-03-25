@@ -16,7 +16,7 @@ class RideEntranceExitPlaceAction final : public GameActionBase<GameCommand::Pla
 {
 private:
     CoordsXY _loc;
-    Direction _direction{ INVALID_DIRECTION };
+    Direction _direction{ kInvalidDirection };
     RideId _rideIndex{ RideId::GetNull() };
     StationIndex _stationNum{ StationIndex::GetNull() };
     bool _isExit{};

@@ -28,7 +28,7 @@ class WallPlaceAction final : public GameActionBase<GameCommand::PlaceWall>
 private:
     ObjectEntryIndex _wallType{ kObjectEntryIndexNull };
     CoordsXYZ _loc;
-    Direction _edge{ INVALID_DIRECTION };
+    Direction _edge{ kInvalidDirection };
     int32_t _primaryColour{ COLOUR_BLACK };
     int32_t _secondaryColour{ COLOUR_BLACK };
     int32_t _tertiaryColour{ COLOUR_BLACK };

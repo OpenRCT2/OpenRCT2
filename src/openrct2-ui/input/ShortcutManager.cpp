@@ -258,7 +258,7 @@ void ShortcutManager::LoadLegacyBindings(const fs::path& path)
     constexpr int32_t kSupportedFileVersion = 1;
     constexpr int32_t kMaxLegacyShortcuts = 85;
 
-    auto fs = FileStream(path, FILE_MODE_OPEN);
+    auto fs = FileStream(path, FileMode::open);
     auto version = fs.ReadValue<uint16_t>();
     if (version == kSupportedFileVersion)
     {

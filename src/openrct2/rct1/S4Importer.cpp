@@ -162,14 +162,14 @@ namespace OpenRCT2::RCT1
 
         ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             auto result = LoadFromStream(&fs, false, skipObjectCheck, path);
             return result;
         }
 
         ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             auto result = LoadFromStream(&fs, true, skipObjectCheck, path);
             return result;
         }
@@ -1401,7 +1401,7 @@ namespace OpenRCT2::RCT1
             dst->PathfindGoal.x = 0xFF;
             dst->PathfindGoal.y = 0xFF;
             dst->PathfindGoal.z = 0xFF;
-            dst->PathfindGoal.direction = INVALID_DIRECTION;
+            dst->PathfindGoal.direction = kInvalidDirection;
         }
 
         void ImportStaffPatrolArea(Staff* staffmember, uint8_t staffId)

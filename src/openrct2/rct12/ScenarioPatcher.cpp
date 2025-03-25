@@ -170,12 +170,12 @@ static Direction GetDirection(const json_t& parameters)
 {
     if (!parameters.contains(_directionKey))
     {
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
     }
     else if (!parameters[_directionKey].is_number())
     {
         OpenRCT2::Guard::Assert(0, "Fix direction must be a number");
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
     }
 
     Direction direction = OpenRCT2::Json::GetNumber<Direction>(parameters[_directionKey]);
@@ -183,7 +183,7 @@ static Direction GetDirection(const json_t& parameters)
     if (direction > 3)
     {
         OpenRCT2::Guard::Assert(0, "Direction must be between 0 and 3");
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
     }
 
     return direction;
@@ -654,7 +654,7 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
         for (auto coordinate : coordinates)
         {
-            auto slope = direction != INVALID_DIRECTION ? direction + 4 : 0;
+            auto slope = direction != kInvalidDirection ? direction + 4 : 0;
             auto footpathPlaceAction = FootpathPlaceAction(
                 coordinate.ToCoordsXYZ(), slope, surfaceObjIndex, railingsObjIndex, direction, constructionFlags);
             auto result = footpathPlaceAction.Execute();
@@ -683,7 +683,7 @@ static u8string getScenarioSHA256(u8string_view scenarioPath)
 static u8string GetPatchFileName(u8string_view scenarioHash)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DIRBASE::OPENRCT2, OpenRCT2::DIRID::SCENARIO_PATCHES);
+    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DIRID::SCENARIO_PATCHES);
     auto scenarioPatchFile = OpenRCT2::Path::WithExtension(scenarioHash.substr(0, 7), ".parkpatch");
     return OpenRCT2::Path::Combine(scenarioPatches, scenarioPatchFile);
 }

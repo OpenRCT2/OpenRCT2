@@ -100,7 +100,7 @@ bool TrackPaintUtilHasFence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation)
 {
     const auto* stationObject = ride.getStationObject();
-    if (stationObject != nullptr && stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+    if (stationObject != nullptr && stationObject->Flags & StationObjectFlags::noPlatforms)
         return false;
 
     TileCoordsXY offset;
@@ -131,7 +131,7 @@ void TrackPaintUtilPaintFloor(
     PaintSession& session, uint8_t edges, ImageId colourFlags, uint16_t height, const uint32_t floorSprites[4],
     const StationObject* stationStyle)
 {
-    if (stationStyle != nullptr && stationStyle->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+    if (stationStyle != nullptr && stationStyle->Flags & StationObjectFlags::noPlatforms)
         return;
 
     uint32_t imageId;
@@ -231,7 +231,7 @@ static bool TrackPaintUtilDrawStationImpl(
     const auto* stationObj = ride.getStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
-    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+    if (stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms)
         return false;
 
     bool hasFence;
@@ -445,7 +445,7 @@ bool TrackPaintUtilDrawStationInverted(
     const auto* stationObj = ride.getStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
-    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+    if (stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms)
         return false;
 
     auto colour = GetStationColourScheme(session, trackElement);
@@ -713,7 +713,7 @@ bool TrackPaintUtilDrawStationCovers2(
     PaintAddImageAsParent(session, imageId, offset, boundBox);
 
     // Glass
-    if (colour == TrackStationColour && (stationObject->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT))
+    if (colour == TrackStationColour && (stationObject->Flags & StationObjectFlags::isTransparent))
     {
         imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparency(imageTemplate.GetPrimary());
         PaintAddImageAsChild(session, imageId, offset, boundBox);
@@ -727,7 +727,7 @@ bool TrackPaintUtilDrawNarrowStationPlatform(
 {
     CoordsXY position = session.MapPosition;
     const auto* stationObj = ride.getStationObject();
-    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+    if (stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms)
         return false;
     auto colour = GetStationColourScheme(session, trackElement);
     if (direction & 1)
@@ -783,7 +783,7 @@ void TrackPaintUtilDrawPier(
     PaintSession& session, const Ride& ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation)
 {
-    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+    if (stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms)
         return;
     auto colour = GetStationColourScheme(session, trackElement);
     bool hasFence;

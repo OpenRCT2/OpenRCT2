@@ -319,7 +319,7 @@ bool Staff::HasPatrolArea() const
  *
  *  rct2: 0x006BFBE8
  *
- * Returns INVALID_DIRECTION when no nearby litter or unpathable litter
+ * Returns kInvalidDirection when no nearby litter or unpathable litter
  */
 Direction Staff::HandymanDirectionToNearestLitter() const
 {
@@ -338,14 +338,14 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     if (nearestLitterDist > MAX_LITTER_DISTANCE)
     {
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
     }
 
     auto litterTile = CoordsXY{ nearestLitter->x, nearestLitter->y }.ToTileStart();
 
     if (!IsLocationInPatrol(litterTile))
     {
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
     }
 
     Direction nextDirection = DirectionFromTo(CoordsXY(x, y), litterTile.ToTileCentre());
@@ -356,14 +356,14 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     TileElement* tileElement = MapGetFirstElementAt(nextTile);
     if (tileElement == nullptr)
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
     do
     {
         if (tileElement->BaseHeight != nextZ)
             continue;
         if (tileElement->GetType() == TileElementType::Entrance || tileElement->GetType() == TileElementType::Track)
         {
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -371,7 +371,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     tileElement = MapGetFirstElementAt(nextTile);
     if (tileElement == nullptr)
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
 
     do
     {
@@ -379,7 +379,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
             continue;
         if (tileElement->GetType() == TileElementType::Entrance || tileElement->GetType() == TileElementType::Track)
         {
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -396,18 +396,18 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
     {
         auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
         if (surfaceElement == nullptr)
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
 
         if (NextLoc.z != surfaceElement->GetBaseZ())
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
 
         if (GetNextIsSloped())
         {
             if (surfaceElement->GetSlope() != kPathSlopeToLandSlope[GetNextDirection()])
-                return INVALID_DIRECTION;
+                return kInvalidDirection;
         }
         else if (surfaceElement->GetSlope() != kTileSlopeFlat)
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
     }
 
     uint8_t chosenDirection = ScenarioRand() & 0x3;
@@ -437,7 +437,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
             }
         }
     }
-    return INVALID_DIRECTION;
+    return kInvalidDirection;
 }
 
 /**
@@ -475,7 +475,7 @@ bool Staff::DoHandymanPathFinding()
 {
     StaffMowingTimeout++;
 
-    Direction litterDirection = INVALID_DIRECTION;
+    Direction litterDirection = kInvalidDirection;
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
     if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
@@ -483,13 +483,13 @@ bool Staff::DoHandymanPathFinding()
         litterDirection = HandymanDirectionToNearestLitter();
     }
 
-    Direction newDirection = INVALID_DIRECTION;
-    if (litterDirection == INVALID_DIRECTION && (StaffOrders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
+    Direction newDirection = kInvalidDirection;
+    if (litterDirection == kInvalidDirection && (StaffOrders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
     {
         newDirection = HandymanDirectionToUncutGrass(validDirections);
     }
 
-    if (newDirection == INVALID_DIRECTION)
+    if (newDirection == kInvalidDirection)
     {
         if (GetNextIsSurface())
         {
@@ -510,7 +510,7 @@ bool Staff::DoHandymanPathFinding()
             else
             {
                 bool chooseRandom = true;
-                if (litterDirection != INVALID_DIRECTION && pathDirections & (1 << litterDirection))
+                if (litterDirection != kInvalidDirection && pathDirections & (1 << litterDirection))
                 {
                     /// Check whether path is a queue path and connected to a ride
                     bool connectedQueue = (pathElement->IsQueue() && !pathElement->GetRideIndex().IsNull());
@@ -708,7 +708,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         const auto goalPos = TileCoordsXYZ{ location };
         Direction pathfindDirection = PathFinding::ChooseDirection(
             TileCoordsXYZ{ NextLoc }, goalPos, *this, false, RideId::GetNull());
-        if (pathfindDirection == INVALID_DIRECTION)
+        if (pathfindDirection == kInvalidDirection)
         {
             /* Heuristic search failed for all directions.
              * Reset the PathfindGoal - this means that the PathfindHistory
@@ -732,7 +732,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
 bool Staff::DoMechanicPathFinding()
 {
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
-    Direction newDirection = INVALID_DIRECTION;
+    Direction newDirection = kInvalidDirection;
     if (GetNextIsSurface())
     {
         newDirection = MechanicDirectionSurface();
@@ -813,7 +813,7 @@ bool Staff::DoMiscPathFinding()
 {
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-    Direction newDirection = INVALID_DIRECTION;
+    Direction newDirection = kInvalidDirection;
     if (GetNextIsSurface())
     {
         newDirection = DirectionSurface(ScenarioRand() & 3);

@@ -132,9 +132,9 @@ public:
         : FileIndex(
               "scenario index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(PATTERN),
               std::vector<std::string>({
-                  env.GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO),
-                  env.GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO),
-                  env.GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO),
+                  env.GetDirectoryPath(DirBase::rct1, DIRID::SCENARIO),
+                  env.GetDirectoryPath(DirBase::rct2, DIRID::SCENARIO),
+                  env.GetDirectoryPath(DirBase::user, DIRID::SCENARIO),
               }))
     {
     }
@@ -192,7 +192,7 @@ private:
             return ms;
         }
 
-        auto fs = std::make_unique<FileStream>(path, FILE_MODE_OPEN);
+        auto fs = std::make_unique<FileStream>(path, FileMode::open);
         return fs;
     }
 
@@ -437,10 +437,10 @@ private:
      */
     void ImportMegaPark()
     {
-        auto mpdatPath = _env->FindFile(DIRBASE::RCT1, DIRID::DATA, "mp.dat");
+        auto mpdatPath = _env->FindFile(DirBase::rct1, DIRID::DATA, "mp.dat");
         if (File::Exists(mpdatPath))
         {
-            auto scenarioDirectory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
+            auto scenarioDirectory = _env->GetDirectoryPath(DirBase::user, DIRID::SCENARIO);
             auto expectedSc21Path = Path::Combine(scenarioDirectory, "sc21.sc4");
             auto sc21Path = Path::ResolveCasing(expectedSc21Path);
             if (!File::Exists(sc21Path))
@@ -534,7 +534,7 @@ private:
 
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             uint32_t fileVersion = fs.ReadValue<uint32_t>();
             if (fileVersion != 1 && fileVersion != 2)
             {
@@ -582,7 +582,7 @@ private:
         bool highscoresDirty = false;
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             if (fs.GetLength() <= 4)
             {
                 // Initial value of scores for RCT2, just ignore
@@ -673,7 +673,7 @@ private:
         std::string path = _env->GetFilePath(PATHID::SCORES);
         try
         {
-            auto fs = FileStream(path, FILE_MODE_WRITE);
+            auto fs = FileStream(path, FileMode::write);
             fs.WriteValue<uint32_t>(HighscoreFileVersion);
             fs.WriteValue<uint32_t>(static_cast<uint32_t>(_highscores.size()));
             for (size_t i = 0; i < _highscores.size(); i++)

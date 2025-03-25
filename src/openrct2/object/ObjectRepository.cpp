@@ -86,8 +86,8 @@ public:
         : FileIndex(
               "object index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_OBJECTS), std::string(PATTERN),
               std::vector<std::string>{
-                  env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
-                  env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
+                  env.GetDirectoryPath(DirBase::openrct2, DIRID::OBJECT),
+                  env.GetDirectoryPath(DirBase::user, DIRID::OBJECT),
               })
         , _objectRepository(objectRepository)
     {
@@ -540,7 +540,7 @@ private:
         // Save to file
         try
         {
-            auto fs = FileStream(std::string(path), FILE_MODE_WRITE);
+            auto fs = FileStream(std::string(path), FileMode::write);
             fs.Write(entry, sizeof(RCTObjectEntry));
             fs.Write(encodedDataBuffer, encodedDataSize);
 
@@ -586,7 +586,7 @@ private:
     std::string GetPathForNewObject(ObjectGeneration generation, std::string_view name)
     {
         // Get object directory and create it if it doesn't exist
-        auto userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        auto userObjPath = _env->GetDirectoryPath(DirBase::user, DIRID::OBJECT);
         Path::CreateDirectory(userObjPath);
 
         // Find a unique file name
@@ -641,7 +641,7 @@ private:
         }
 
         // Read object data from file
-        auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FileMode::open);
         auto fileEntry = fs.ReadValue<RCTObjectEntry>();
         if (*entry != fileEntry)
         {

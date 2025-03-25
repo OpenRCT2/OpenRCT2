@@ -28,7 +28,7 @@ void StationObject::Load()
     {
         BaseImageId = LoadImages();
 
-        uint32_t shelterOffset = (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT) ? 32 : 16;
+        uint32_t shelterOffset = (Flags & StationObjectFlags::isTransparent) ? 32 : 16;
         if (numImages > shelterOffset)
         {
             ShelterImageId = BaseImageId + shelterOffset;
@@ -56,23 +56,23 @@ void StationObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t heigh
 
     auto imageId = ImageId(BaseImageId);
     auto tImageId = ImageId(BaseImageId + 16).WithTransparency(tcolour0);
-    if (Flags & STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR)
+    if (Flags & StationObjectFlags::hasPrimaryColour)
     {
         imageId = imageId.WithPrimary(colour0);
     }
-    if (Flags & STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR)
+    if (Flags & StationObjectFlags::hasSecondaryColour)
     {
         imageId = imageId.WithSecondary(colour1);
     }
 
     GfxDrawSprite(dpi, imageId, screenCoords);
-    if (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
+    if (Flags & StationObjectFlags::isTransparent)
     {
         GfxDrawSprite(dpi, tImageId, screenCoords);
     }
 
     GfxDrawSprite(dpi, imageId.WithIndexOffset(4), screenCoords);
-    if (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
+    if (Flags & StationObjectFlags::isTransparent)
     {
         GfxDrawSprite(dpi, tImageId.WithIndexOffset(4), screenCoords);
     }
@@ -91,11 +91,11 @@ void StationObject::ReadJson(IReadObjectContext* context, json_t& root)
         Flags = Json::GetFlags<uint32_t>(
             properties,
             {
-                { "hasPrimaryColour", STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR },
-                { "hasSecondaryColour", STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR },
-                { "isTransparent", STATION_OBJECT_FLAGS::IS_TRANSPARENT },
-                { "noPlatforms", STATION_OBJECT_FLAGS::NO_PLATFORMS },
-                { "hasShelter", STATION_OBJECT_FLAGS::HAS_SHELTER },
+                { "hasPrimaryColour", StationObjectFlags::hasPrimaryColour },
+                { "hasSecondaryColour", StationObjectFlags::hasSecondaryColour },
+                { "isTransparent", StationObjectFlags::isTransparent },
+                { "noPlatforms", StationObjectFlags::noPlatforms },
+                { "hasShelter", StationObjectFlags::hasShelter },
             });
     }
 

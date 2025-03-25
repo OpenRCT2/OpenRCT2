@@ -146,9 +146,9 @@ namespace OpenRCT2::Ui::FileBrowser
 
         auto env = GetContext()->GetPlatformEnvironment();
         if (subdir.has_value())
-            return env->GetDirectoryPath(DIRBASE::USER, subdir.value());
+            return env->GetDirectoryPath(DirBase::user, subdir.value());
         else
-            return env->GetDirectoryPath(DIRBASE::USER);
+            return env->GetDirectoryPath(DirBase::user);
     }
 
     const char* GetFilterPatternByType(const LoadSaveType type, const bool isSave)

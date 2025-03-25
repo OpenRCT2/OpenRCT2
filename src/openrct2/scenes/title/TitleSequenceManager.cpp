@@ -255,13 +255,13 @@ namespace OpenRCT2::TitleSequenceManager
     static std::string GetDataSequencesPath()
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        return env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::SEQUENCE);
+        return env->GetDirectoryPath(DirBase::openrct2, DIRID::SEQUENCE);
     }
 
     static std::string GetUserSequencesPath()
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        return env->GetDirectoryPath(DIRBASE::USER, DIRID::SEQUENCE);
+        return env->GetDirectoryPath(DirBase::user, DIRID::SEQUENCE);
     }
 
     static bool IsNameReserved(const std::string& name)

@@ -140,7 +140,7 @@ static void PaintSwingingInverterShip(
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
 
-        if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+        if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
             imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });

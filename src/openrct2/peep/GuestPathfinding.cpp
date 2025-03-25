@@ -1297,7 +1297,7 @@ namespace OpenRCT2::PathFinding
         } while (!(destTileElement++)->IsLastForTile());
         // Peep is not on a path.
         if (!found)
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
 
         permittedEdges &= 0xF;
         uint32_t edges = permittedEdges;
@@ -1373,7 +1373,7 @@ namespace OpenRCT2::PathFinding
 
         // Peep has tried all edges.
         if (edges == 0)
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
 
         int32_t chosenEdge = Numerics::bitScanForward(edges);
 
@@ -1417,7 +1417,7 @@ namespace OpenRCT2::PathFinding
                 for (auto& entry : state.history)
                 {
                     entry.location.SetNull();
-                    entry.direction = INVALID_DIRECTION;
+                    entry.direction = kInvalidDirection;
                 }
 
                 /* The pathfinding will only use elements
@@ -1506,7 +1506,7 @@ namespace OpenRCT2::PathFinding
             if (bestScore == 0xFFFF)
             {
                 LogPathfinding(&peep, "Pathfind heuristic search failed.");
-                return INVALID_DIRECTION;
+                return kInvalidDirection;
             }
 
             if constexpr (kLogPathfinding)
@@ -1600,7 +1600,7 @@ namespace OpenRCT2::PathFinding
         const auto goalPos = TileCoordsXYZ(chosenEntrance.value());
         Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep, true, RideId::GetNull());
 
-        if (chosenDirection == INVALID_DIRECTION)
+        if (chosenDirection == kInvalidDirection)
             return GuestPathfindAimless(peep, edges);
 
         return PeepMoveOneTile(chosenDirection, peep);
@@ -1653,7 +1653,7 @@ namespace OpenRCT2::PathFinding
 
         const auto goalPos = TileCoordsXYZ(peepSpawnLoc);
         direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep, true, RideId::GetNull());
-        if (direction == INVALID_DIRECTION)
+        if (direction == kInvalidDirection)
             return GuestPathfindAimless(peep, edges);
 
         return PeepMoveOneTile(direction, peep);
@@ -1689,7 +1689,7 @@ namespace OpenRCT2::PathFinding
         }
 
         Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, entranceGoal, peep, true, RideId::GetNull());
-        if (chosenDirection == INVALID_DIRECTION)
+        if (chosenDirection == kInvalidDirection)
             return GuestPathfindAimless(peep, edges);
 
         return PeepMoveOneTile(chosenDirection, peep);
@@ -2107,7 +2107,7 @@ namespace OpenRCT2::PathFinding
 
         direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, loc, peep, true, rideIndex);
 
-        if (direction == INVALID_DIRECTION)
+        if (direction == kInvalidDirection)
         {
             /* Heuristic search failed for all directions.
              * Reset the PathfindGoal - this means that the PathfindHistory

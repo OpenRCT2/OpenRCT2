@@ -302,7 +302,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 
         try
         {
-            auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+            auto fs = FileStream(keyPath, FileMode::write);
             _key.SavePrivate(&fs);
         }
         catch (const std::exception&)
@@ -318,7 +318,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 
         try
         {
-            auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+            auto fs = FileStream(keyPath, FileMode::write);
             _key.SavePublic(&fs);
         }
         catch (const std::exception&)
@@ -334,7 +334,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         try
         {
             LOG_VERBOSE("Loading key from %s", keyPath.c_str());
-            auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+            auto fs = FileStream(keyPath, FileMode::open);
             ok = _key.LoadPrivate(&fs);
         }
         catch (const std::exception&)
@@ -1019,7 +1019,7 @@ void NetworkBase::SaveGroups()
     if (GetMode() == NETWORK_MODE_SERVER)
     {
         auto env = GetContext().GetPlatformEnvironment();
-        auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"groups.json");
+        auto path = Path::Combine(env->GetDirectoryPath(DirBase::user), u8"groups.json");
 
         json_t jsonGroups = json_t::array();
         for (auto& group : group_list)
@@ -1079,7 +1079,7 @@ void NetworkBase::LoadGroups()
     group_list.clear();
 
     auto env = GetContext().GetPlatformEnvironment();
-    auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"groups.json");
+    auto path = Path::Combine(env->GetDirectoryPath(DirBase::user), u8"groups.json");
 
     json_t jsonGroupConfig;
     if (File::Exists(path))
@@ -1166,7 +1166,7 @@ void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
 void NetworkBase::BeginChatLog()
 {
     auto env = GetContext().GetPlatformEnvironment();
-    auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
+    auto directory = env->GetDirectoryPath(DirBase::user, DIRID::LOG_CHAT);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
     _chat_log_fs.open(fs::u8path(_chatLogPath), std::ios::out | std::ios::app);
 }
@@ -1187,7 +1187,7 @@ void NetworkBase::CloseChatLog()
 void NetworkBase::BeginServerLog()
 {
     auto env = GetContext().GetPlatformEnvironment();
-    auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
+    auto directory = env->GetDirectoryPath(DirBase::user, DIRID::LOG_SERVER);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
     _server_log_fs.open(fs::u8path(_serverLogPath), std::ios::out | std::ios::app | std::ios::binary);
 
@@ -2212,7 +2212,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
 
     try
     {
-        auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+        auto fs = FileStream(keyPath, FileMode::open);
         if (!_key.LoadPrivate(&fs))
         {
             throw std::runtime_error("Failed to load private key.");
@@ -2556,7 +2556,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
         {
             GameStateCompareData cmpData = snapshots->Compare(serverSnapshot, *desyncSnapshot);
 
-            std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_DESYNCS);
+            std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DirBase::user, DIRID::LOG_DESYNCS);
 
             Path::CreateDirectory(outputPath);
 
@@ -3972,7 +3972,7 @@ void NetworkSendPassword(const std::string& password)
     }
     try
     {
-        auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+        auto fs = FileStream(keyPath, FileMode::open);
         network._key.LoadPrivate(&fs);
     }
     catch (const std::exception&)
@@ -4011,7 +4011,7 @@ void NetworkAppendServerLog(const utf8* text)
 static u8string NetworkGetKeysDirectory()
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"keys");
+    return Path::Combine(env->GetDirectoryPath(DirBase::user), u8"keys");
 }
 
 static u8string NetworkGetPrivateKeyPath(u8string_view playerName)
