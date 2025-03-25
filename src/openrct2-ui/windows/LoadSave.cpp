@@ -337,7 +337,7 @@ namespace OpenRCT2::Ui::Windows
             auto fs = FileStream(path, FILE_MODE_OPEN);
 
             ClassifiedFileInfo info;
-            if (!TryClassifyFile(&fs, &info) || info.Type != FILE_TYPE::PARK)
+            if (!TryClassifyFile(&fs, &info) || info.Type != ::FileType::park)
                 return;
 
             try

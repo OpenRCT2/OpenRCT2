@@ -770,13 +770,13 @@ namespace OpenRCT2
                     throw std::runtime_error("Unable to detect file type");
                 }
 
-                if (info.Type != FILE_TYPE::PARK && info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
+                if (info.Type != FileType::park && info.Type != FileType::savedGame && info.Type != FileType::scenario)
                 {
                     throw std::runtime_error("Invalid file type.");
                 }
 
                 std::unique_ptr<IParkImporter> parkImporter;
-                if (info.Type == FILE_TYPE::PARK)
+                if (info.Type == FileType::park)
                 {
                     parkImporter = ParkImporter::CreateParkFile(*_objectRepository);
                 }
@@ -797,7 +797,7 @@ namespace OpenRCT2
                 OpenProgress(asScenario ? STR_LOADING_SCENARIO : STR_LOADING_SAVED_GAME);
                 SetProgress(0, 100, STR_STRING_M_PERCENT);
 
-                auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                auto result = parkImporter->LoadFromStream(stream, info.Type == FileType::scenario, false, path.c_str());
                 SetProgress(10, 100, STR_STRING_M_PERCENT);
 
                 // From this point onwards the currently loaded park will be corrupted if loading fails
@@ -828,7 +828,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 bool sendMap = false;
 #endif
-                if (!asScenario && (info.Type == FILE_TYPE::PARK || info.Type == FILE_TYPE::SAVED_GAME))
+                if (!asScenario && (info.Type == FileType::park || info.Type == FileType::savedGame))
                 {
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_CLIENT)
