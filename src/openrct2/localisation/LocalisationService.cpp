@@ -70,7 +70,7 @@ const char* LocalisationService::GetString(StringId id) const
 std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
 {
     auto locale = std::string(LanguagesDescriptors[languageId].locale);
-    auto languageDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::LANGUAGE);
+    auto languageDirectory = _env->GetDirectoryPath(DirBase::openrct2, DIRID::LANGUAGE);
     auto languagePath = Path::Combine(languageDirectory, locale + u8".txt");
     return languagePath;
 }

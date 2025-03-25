@@ -459,7 +459,7 @@ namespace OpenRCT2
                 {
                     return false;
                 }
-                _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
+                _env->SetBasePath(DirBase::rct2, rct2InstallPath);
             }
 
             // The repositories are all dependent on the RCT2 path being set,
@@ -1429,7 +1429,7 @@ namespace OpenRCT2
         void EnsureUserContentDirectoriesExist()
         {
             EnsureDirectoriesExist(
-                DIRBASE::USER,
+                DirBase::user,
                 {
                     DIRID::OBJECT,
                     DIRID::SAVE,
@@ -1446,7 +1446,7 @@ namespace OpenRCT2
                 });
         }
 
-        void EnsureDirectoriesExist(const DIRBASE dirBase, const std::initializer_list<DIRID>& dirIds)
+        void EnsureDirectoriesExist(const DirBase dirBase, const std::initializer_list<DIRID>& dirIds)
         {
             for (const auto& dirId : dirIds)
             {
@@ -1467,8 +1467,8 @@ namespace OpenRCT2
 
         void CopyOriginalUserFilesOver(DIRID dirid, const std::string& pattern)
         {
-            auto src = _env->GetDirectoryPath(DIRBASE::RCT2, dirid);
-            auto dst = _env->GetDirectoryPath(DIRBASE::USER, dirid);
+            auto src = _env->GetDirectoryPath(DirBase::rct2, dirid);
+            auto dst = _env->GetDirectoryPath(DirBase::user, dirid);
             CopyOriginalUserFilesOver(src, dst, pattern);
         }
 

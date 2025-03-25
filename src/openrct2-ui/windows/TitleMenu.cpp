@@ -246,7 +246,7 @@ namespace OpenRCT2::Ui::Windows
                         auto context = OpenRCT2::GetContext();
                         auto env = context->GetPlatformEnvironment();
                         auto uiContext = context->GetUiContext();
-                        uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));
+                        uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DirBase::user));
                         break;
                     }
                     default:

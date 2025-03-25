@@ -79,34 +79,34 @@ ResourceTable::SourceInfo ResourceTable::ParseSource(std::string_view source)
     else if (String::startsWith(base, "$G1"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto dataPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
+        auto dataPath = env->GetDirectoryPath(DirBase::rct2, DIRID::DATA);
         info.Kind = SourceKind::G1;
-        // info.Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, "g1.dat");
+        // info.Path = env->FindFile(DirBase::rct2, DIRID::DATA, "g1.dat");
     }
     else if (String::startsWith(base, "$CSG"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto dataPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
+        auto dataPath = env->GetDirectoryPath(DirBase::rct2, DIRID::DATA);
         info.Kind = SourceKind::Csg;
-        // info.Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, "g1.dat");
+        // info.Path = env->FindFile(DirBase::rct2, DIRID::DATA, "g1.dat");
     }
     else if (String::startsWith(base, "$RCT1:DATA/"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
         info.Kind = SourceKind::Data;
-        info.Path = env->FindFile(DIRBASE::RCT1, DIRID::DATA, fileName);
+        info.Path = env->FindFile(DirBase::rct1, DIRID::DATA, fileName);
     }
     else if (String::startsWith(base, "$RCT2:DATA/"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
         info.Kind = SourceKind::Data;
-        info.Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, fileName);
+        info.Path = env->FindFile(DirBase::rct2, DIRID::DATA, fileName);
     }
     else if (String::startsWith(base, "$RCT2:OBJDATA/"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
         info.Kind = SourceKind::ObjData;
-        info.Path = env->FindFile(DIRBASE::RCT2, DIRID::OBJECT, fileName);
+        info.Path = env->FindFile(DirBase::rct2, DIRID::OBJECT, fileName);
     }
     else if (!String::startsWith(base, "$"))
     {

@@ -688,7 +688,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
         {
             auto context = GetContext();
             auto env = context->GetPlatformEnvironment();
-            return env->GetDirectoryPath(DIRBASE::USER, DIRID::THEME);
+            return env->GetDirectoryPath(DirBase::user, DIRID::THEME);
         }
     } // namespace ThemeManager
 

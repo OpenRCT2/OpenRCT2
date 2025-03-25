@@ -683,7 +683,7 @@ static u8string getScenarioSHA256(u8string_view scenarioPath)
 static u8string GetPatchFileName(u8string_view scenarioHash)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DIRBASE::OPENRCT2, OpenRCT2::DIRID::SCENARIO_PATCHES);
+    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DIRID::SCENARIO_PATCHES);
     auto scenarioPatchFile = OpenRCT2::Path::WithExtension(scenarioHash.substr(0, 7), ".parkpatch");
     return OpenRCT2::Path::Combine(scenarioPatches, scenarioPatchFile);
 }

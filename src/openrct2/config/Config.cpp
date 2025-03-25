@@ -819,7 +819,7 @@ namespace OpenRCT2::Config
     u8string GetDefaultPath()
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"config.ini");
+        return Path::Combine(env->GetDirectoryPath(DirBase::user), u8"config.ini");
     }
 
     bool SaveToPath(u8string_view path)
@@ -903,7 +903,7 @@ namespace OpenRCT2::Config
                         }
 
                         const std::string dest = Path::Combine(
-                            GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::CONFIG), "rct2");
+                            GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DirBase::config), "rct2");
 
                         while (true)
                         {
