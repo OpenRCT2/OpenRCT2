@@ -97,6 +97,7 @@ namespace OpenRCT2::Ui::Windows
         INFORMATION_TYPE_QUEUE_TIME,
         INFORMATION_TYPE_RELIABILITY,
         INFORMATION_TYPE_DOWN_TIME,
+        INFORMATION_TYPE_LAST_INSPECTION,
         INFORMATION_TYPE_GUESTS_FAVOURITE,
         INFORMATION_TYPE_EXCITEMENT,
         INFORMATION_TYPE_INTENSITY,
@@ -119,6 +120,7 @@ namespace OpenRCT2::Ui::Windows
         STR_QUEUE_TIME,
         STR_RELIABILITY,
         STR_DOWN_TIME,
+        STR_LAST_INSPECTION,
         STR_GUESTS_FAVOURITE,
         STR_RIDE_LIST_EXCITEMENT,
         STR_RIDE_LIST_INTENSITY,
@@ -704,6 +706,21 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<uint16_t>(ridePtr->downtime);
                         formatSecondary = STR_DOWN_TIME_LABEL;
                         break;
+                    case INFORMATION_TYPE_LAST_INSPECTION:
+                        ft.Add<uint16_t>(ridePtr->lastInspection);
+                        if (ridePtr->lastInspection <= 1)
+                        {
+                            formatSecondary = STR_LAST_INSPECTION_LABEL_MINUTE;
+                        }
+                        else if (ridePtr->lastInspection <= 240)
+                        {
+                            formatSecondary = STR_LAST_INSPECTION_LABEL_MINUTES;
+                        }
+                        else
+                        {
+                            formatSecondary = STR_LAST_INSPECTION_LABEL_MORE_THAN_FOUR_HOURS;
+                        }
+                        break;
                     case INFORMATION_TYPE_GUESTS_FAVOURITE:
                         formatSecondary = 0;
                         if (ridePtr->isRide())
@@ -905,6 +922,11 @@ namespace OpenRCT2::Ui::Windows
                 case INFORMATION_TYPE_DOWN_TIME:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
                         return thisRide.downtime <= otherRide.downtime;
+                    });
+                    break;
+                case INFORMATION_TYPE_LAST_INSPECTION:
+                    SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                        return thisRide.lastInspection <= otherRide.lastInspection;
                     });
                     break;
                 case INFORMATION_TYPE_GUESTS_FAVOURITE:
