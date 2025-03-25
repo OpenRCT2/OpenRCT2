@@ -23,6 +23,7 @@ struct RideObjectEntry;
 class ObjectList;
 enum class EditorStep : uint8_t;
 enum class VehicleColourSettings : uint8_t;
+enum class ScenarioCategory : uint8_t;
 
 namespace OpenRCT2::RCT2
 {
@@ -758,11 +759,11 @@ namespace OpenRCT2::RCT2
     struct S6Info
     {
         ::EditorStep EditorStep;
-        uint8_t Category;       // 0x01
-        uint8_t ObjectiveType;  // 0x02
-        uint8_t ObjectiveArg1;  // 0x03
-        int32_t ObjectiveArg2;  // 0x04
-        uint16_t ObjectiveArg3; // 0x08
+        ScenarioCategory Category; // 0x01
+        uint8_t ObjectiveType;     // 0x02
+        uint8_t ObjectiveArg1;     // 0x03
+        int32_t ObjectiveArg2;     // 0x04
+        uint16_t ObjectiveArg3;    // 0x08
         uint8_t Pad00A[0x3E];
         char Name[64];        // 0x48
         char Details[256];    // 0x88

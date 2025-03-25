@@ -278,7 +278,7 @@ namespace OpenRCT2::RCT2
             {
                 dst->ScenarioId = SC_UNIDENTIFIED;
                 dst->SourceIndex = -1;
-                if (dst->Category == SCENARIO_CATEGORY_REAL)
+                if (dst->Category == ScenarioCategory::real)
                 {
                     dst->SourceGame = ScenarioSource::Real;
                 }
@@ -357,7 +357,7 @@ namespace OpenRCT2::RCT2
             Initialise(gameState);
 
             gameState.editorStep = _s6.Info.EditorStep;
-            gameState.scenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.Info.Category);
+            gameState.scenarioCategory = _s6.Info.Category;
 
             // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
             auto loadMaybeUTF8 = [](std::string_view str) -> std::string {

@@ -361,7 +361,7 @@ namespace OpenRCT2::RCT1
             gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.editorStep = EditorStep::ObjectSelection;
             gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-            gameState.scenarioCategory = SCENARIO_CATEGORY_OTHER;
+            gameState.scenarioCategory = ScenarioCategory::other;
         }
 
         std::string GetRCT1ScenarioName()

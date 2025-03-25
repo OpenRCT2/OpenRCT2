@@ -67,7 +67,7 @@ bool SurfaceElement::CanGrassGrow() const
     const auto* surfaceObject = objMgr.GetLoadedObject<TerrainSurfaceObject>(surfaceStyle);
     if (surfaceObject != nullptr)
     {
-        if (surfaceObject->Flags & TERRAIN_SURFACE_FLAGS::CAN_GROW)
+        if (surfaceObject->Flags & TerrainSurfaceFlags::canGrow)
         {
             return true;
         }

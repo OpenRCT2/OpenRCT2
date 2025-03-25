@@ -474,7 +474,7 @@ namespace OpenRCT2::Ui::Windows
 
             dropdownWidget = &widgets[WIDX_CATEGORY];
 
-            for (i = SCENARIO_CATEGORY_BEGINNER; i <= SCENARIO_CATEGORY_OTHER; i++)
+            for (i = EnumValue(ScenarioCategory::beginner); i <= EnumValue(ScenarioCategory::other); i++)
             {
                 gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItems[i].Args = kScenarioCategoryStringIds[i];
@@ -482,7 +482,7 @@ namespace OpenRCT2::Ui::Windows
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                 colours[1], 0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 3);
-            Dropdown::SetChecked(getGameState().scenarioCategory, true);
+            Dropdown::SetChecked(EnumValue(getGameState().scenarioCategory), true);
         }
 
         void Arg1Increase()
@@ -733,9 +733,9 @@ namespace OpenRCT2::Ui::Windows
                         SetObjective(newObjectiveType);
                     break;
                 case WIDX_CATEGORY_DROPDOWN:
-                    if (gameState.scenarioCategory != static_cast<uint8_t>(dropdownIndex))
+                    if (gameState.scenarioCategory != static_cast<ScenarioCategory>(dropdownIndex))
                     {
-                        gameState.scenarioCategory = static_cast<SCENARIO_CATEGORY>(dropdownIndex);
+                        gameState.scenarioCategory = static_cast<ScenarioCategory>(dropdownIndex);
                         Invalidate();
                     }
                     break;
@@ -995,7 +995,7 @@ namespace OpenRCT2::Ui::Windows
             // Scenario category value
             screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_CATEGORY].left + 1, widgets[WIDX_CATEGORY].top };
             ft = Formatter();
-            ft.Add<StringId>(kScenarioCategoryStringIds[gameState.scenarioCategory]);
+            ft.Add<StringId>(kScenarioCategoryStringIds[EnumValue(gameState.scenarioCategory)]);
             DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 

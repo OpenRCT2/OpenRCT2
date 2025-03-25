@@ -213,7 +213,7 @@ namespace OpenRCT2
             ScenarioIndexEntry entry{};
             auto& os = *_os;
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&entry](OrcaStream::ChunkStream& cs) {
-                entry.Category = cs.Read<uint8_t>();
+                entry.Category = cs.Read<ScenarioCategory>();
 
                 std::string name;
                 ReadWriteStringTable(cs, name, "en-GB");

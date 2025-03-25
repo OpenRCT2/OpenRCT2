@@ -16,6 +16,7 @@
 #include <memory>
 
 struct RCTObjectEntry;
+enum class ScenarioCategory : uint8_t;
 
 struct ScenarioHighscoreEntry
 {
@@ -45,7 +46,7 @@ struct ScenarioIndexEntry
     uint64_t Timestamp;
 
     // Category / sequence
-    uint8_t Category;
+    ScenarioCategory Category;
     ScenarioSource SourceGame;
     int16_t SourceIndex = -1;
     uint16_t ScenarioId;

@@ -40,15 +40,15 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<SCENARIO_CATEGORY> ScenarioCategoryMap({
-        { "beginner", SCENARIO_CATEGORY_BEGINNER },
-        { "challenging", SCENARIO_CATEGORY_CHALLENGING },
-        { "expert", SCENARIO_CATEGORY_EXPERT },
-        { "real", SCENARIO_CATEGORY_REAL },
-        { "other", SCENARIO_CATEGORY_OTHER },
-        { "dlc", SCENARIO_CATEGORY_DLC },
-        { "build_your_own", SCENARIO_CATEGORY_BUILD_YOUR_OWN },
-        { "competitions", SCENARIO_CATEGORY_COMPETITIONS },
+    static const DukEnumMap<ScenarioCategory> ScenarioCategoryMap({
+        { "beginner", ScenarioCategory::beginner },
+        { "challenging", ScenarioCategory::challenging },
+        { "expert", ScenarioCategory::expert },
+        { "real", ScenarioCategory::real },
+        { "other", ScenarioCategory::other },
+        { "dlc", ScenarioCategory::dlc },
+        { "build_your_own", ScenarioCategory::buildYourOwn },
+        { "competitions", ScenarioCategory::competitions },
     });
 
     static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
@@ -64,12 +64,12 @@ namespace OpenRCT2::Scripting
     });
 
     template<>
-    inline DukValue ToDuk(duk_context* ctx, const SCENARIO_CATEGORY& value)
+    inline DukValue ToDuk(duk_context* ctx, const ScenarioCategory& value)
     {
         const auto& entry = ScenarioCategoryMap.find(value);
         if (entry != ScenarioCategoryMap.end())
             return ToDuk(ctx, entry->first);
-        return ToDuk(ctx, ScenarioCategoryMap[SCENARIO_CATEGORY_OTHER]);
+        return ToDuk(ctx, ScenarioCategoryMap[ScenarioCategory::other]);
     }
 
     template<>
@@ -412,7 +412,7 @@ namespace OpenRCT2::Scripting
             if (entry != nullptr)
             {
                 obj.Set("id", entry->ScenarioId);
-                obj.Set("category", ToDuk(ctx, static_cast<SCENARIO_CATEGORY>(entry->Category)));
+                obj.Set("category", ToDuk(ctx, entry->Category));
                 obj.Set("sourceGame", ToDuk(ctx, entry->SourceGame));
                 obj.Set("internalName", entry->InternalName);
                 obj.Set("name", entry->Name);

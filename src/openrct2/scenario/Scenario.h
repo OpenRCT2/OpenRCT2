@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
 #include "../core/Money.hpp"
 #include "../core/Random.hpp"
 #include "../core/String.hpp"
@@ -37,23 +38,23 @@ enum
     S6_TYPE_SCENARIO
 };
 
-enum SCENARIO_CATEGORY
+enum class ScenarioCategory : uint8_t
 {
     // RCT2 categories (keep order)
-    SCENARIO_CATEGORY_BEGINNER,
-    SCENARIO_CATEGORY_CHALLENGING,
-    SCENARIO_CATEGORY_EXPERT,
-    SCENARIO_CATEGORY_REAL,
-    SCENARIO_CATEGORY_OTHER,
+    beginner,
+    challenging,
+    expert,
+    real,
+    other,
 
     // OpenRCT2 categories
-    SCENARIO_CATEGORY_DLC,
-    SCENARIO_CATEGORY_BUILD_YOUR_OWN,
-    SCENARIO_CATEGORY_COMPETITIONS,
-    SCENARIO_CATEGORY_TIME_MACHINE,
-    SCENARIO_CATEGORY_KATYS_DREAMWORLD,
+    dlc,
+    buildYourOwn,
+    competitions,
+    timeMachine,
+    katysDreamworld,
 
-    SCENARIO_CATEGORY_COUNT
+    count,
 };
 
 enum
@@ -126,10 +127,10 @@ private:
     ObjectiveStatus CheckMonthlyFoodIncome() const;
 };
 
-enum
+enum class ScenarioSelectMode : uint8_t
 {
-    SCENARIO_SELECT_MODE_DIFFICULTY,
-    SCENARIO_SELECT_MODE_ORIGIN,
+    difficulty,
+    origin,
 };
 
 enum
@@ -147,7 +148,7 @@ constexpr uint8_t kDefaultNumAutosavesToKeep = 10;
 
 static constexpr money64 kCompanyValueOnFailedObjective = 0x8000000000000001;
 
-extern const StringId kScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
+extern const StringId kScenarioCategoryStringIds[EnumValue(ScenarioCategory::count)];
 
 extern bool gAllowEarlyCompletionInNetworkPlay;
 

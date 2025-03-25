@@ -14,12 +14,11 @@
 
 struct CoordsXY;
 
-enum TERRAIN_SURFACE_FLAGS
+enum TerrainSurfaceFlags
 {
-    NONE = 0,
-    SMOOTH_WITH_SELF = 1 << 0,
-    SMOOTH_WITH_OTHER = 1 << 1,
-    CAN_GROW = 1 << 2,
+    smoothWithSelf = 1 << 0,
+    smoothWithOther = 1 << 1,
+    canGrow = 1 << 2,
 };
 
 class TerrainSurfaceObject final : public Object
@@ -55,7 +54,7 @@ public:
     colour_t Colour{};
     uint8_t Rotations{};
     money64 Price{};
-    TERRAIN_SURFACE_FLAGS Flags{};
+    TerrainSurfaceFlags Flags{};
     PaletteIndex MapColours[2]{};
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
