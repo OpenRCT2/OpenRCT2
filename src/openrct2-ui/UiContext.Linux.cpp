@@ -33,11 +33,11 @@
 
 namespace OpenRCT2::Ui
 {
-    enum class DIALOG_TYPE
+    enum class DialogType
     {
-        NONE,
-        KDIALOG,
-        ZENITY,
+        none,
+        kdialog,
+        zenity,
     };
 
     class LinuxContext final : public IPlatformUiContext
@@ -101,18 +101,18 @@ namespace OpenRCT2::Ui
             LOG_VERBOSE(message.c_str());
 
             std::string executablePath;
-            DIALOG_TYPE dtype = GetDialogApp(&executablePath);
+            DialogType dtype = GetDialogApp(&executablePath);
 
             switch (dtype)
             {
-                case DIALOG_TYPE::KDIALOG:
+                case DialogType::kdialog:
                 {
                     std::string cmd = String::stdFormat(
                         "%s --title \"OpenRCT2\" --msgbox \"%s\"", executablePath.c_str(), message.c_str());
                     Platform::Execute(cmd);
                     break;
                 }
-                case DIALOG_TYPE::ZENITY:
+                case DialogType::zenity:
                 {
                     std::string cmd = String::stdFormat(
                         "%s --title=\"OpenRCT2\" --info --text=\"%s\"", executablePath.c_str(), message.c_str());
@@ -146,10 +146,10 @@ namespace OpenRCT2::Ui
             std::string result;
             std::string executablePath;
             u8string directory = EscapePathForShell(desc.InitialDirectory + '/');
-            DIALOG_TYPE dtype = GetDialogApp(&executablePath);
+            DialogType dtype = GetDialogApp(&executablePath);
             switch (dtype)
             {
-                case DIALOG_TYPE::KDIALOG:
+                case DialogType::kdialog:
                 {
                     std::string action = (desc.Type == FileDialogType::Open) ? "--getopenfilename" : "--getsavefilename";
                     std::string filter = GetKDialogFilterString(desc.Filters);
@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui
                     }
                     break;
                 }
-                case DIALOG_TYPE::ZENITY:
+                case DialogType::zenity:
                 {
                     std::string action = "--file-selection";
                     std::string flags;
@@ -217,7 +217,7 @@ namespace OpenRCT2::Ui
                     ShowMessageBox(window, msg);
                     return ShowFileDialog(window, desc);
                 }
-                if (desc.Type == FileDialogType::Save && access(result.c_str(), F_OK) != -1 && dtype == DIALOG_TYPE::KDIALOG)
+                if (desc.Type == FileDialogType::Save && access(result.c_str(), F_OK) != -1 && dtype == DialogType::kdialog)
                 {
                     std::string cmd = String::stdFormat("%s --yesno \"Overwrite %s?\"", executablePath.c_str(), result.c_str());
                     if (Platform::Execute(cmd) != 0)
@@ -233,10 +233,10 @@ namespace OpenRCT2::Ui
         {
             std::string result;
             std::string executablePath;
-            DIALOG_TYPE dtype = GetDialogApp(&executablePath);
+            DialogType dtype = GetDialogApp(&executablePath);
             switch (dtype)
             {
-                case DIALOG_TYPE::KDIALOG:
+                case DialogType::kdialog:
                 {
                     std::string output;
                     std::string cmd = String::stdFormat(
@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui
                     }
                     break;
                 }
-                case DIALOG_TYPE::ZENITY:
+                case DialogType::zenity:
                 {
                     std::string output;
                     std::string cmd = String::stdFormat(
@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui
             if (!_hasFilePicker.has_value())
             {
                 std::string dummy;
-                _hasFilePicker = (GetDialogApp(&dummy) != DIALOG_TYPE::NONE);
+                _hasFilePicker = (GetDialogApp(&dummy) != DialogType::none);
             }
 
             return _hasFilePicker.value();
@@ -279,15 +279,15 @@ namespace OpenRCT2::Ui
         bool HasMenuSupport() override
         {
             std::string executablePath;
-            DIALOG_TYPE dtype = GetDialogApp(&executablePath);
-            return dtype != DIALOG_TYPE::NONE;
+            DialogType dtype = GetDialogApp(&executablePath);
+            return dtype != DialogType::none;
         }
 
         int32_t ShowMenuDialog(
             const std::vector<std::string>& options, const std::string& title, const std::string& text) override
         {
             std::string executablePath;
-            DIALOG_TYPE dtype = GetDialogApp(&executablePath);
+            DialogType dtype = GetDialogApp(&executablePath);
 
             size_t longest_string = 0;
             for (const auto& option : options)
@@ -304,7 +304,7 @@ namespace OpenRCT2::Ui
 
             switch (dtype)
             {
-                case DIALOG_TYPE::ZENITY:
+                case DialogType::zenity:
                 {
                     auto sb = StringBuilder();
                     sb.Append(String::stdFormat("zenity --list --column '' --width=%d --height=%d", width, height));
@@ -318,7 +318,7 @@ namespace OpenRCT2::Ui
                     Platform::Execute(sb.GetBuffer(), &buff);
                     return std::find(options.begin(), options.end(), buff) - options.begin();
                 }
-                case DIALOG_TYPE::KDIALOG:
+                case DialogType::kdialog:
                 {
                     auto sb = StringBuilder();
                     sb.Append(String::stdFormat("kdialog --geometry %dx%d --title '%s' --menu ", width, height, title.c_str()));
@@ -342,7 +342,7 @@ namespace OpenRCT2::Ui
         }
 
     private:
-        static DIALOG_TYPE GetDialogApp(std::string* executablePath)
+        static DialogType GetDialogApp(std::string* executablePath)
         {
             // Prefer zenity as it offers more required features, e.g., overwrite
             // confirmation and selecting only existing files.
@@ -351,13 +351,13 @@ namespace OpenRCT2::Ui
             // OpenRCT2 will fall back to an SDL pop-up if the user has neither.
             if (Platform::FindApp("zenity", executablePath))
             {
-                return DIALOG_TYPE::ZENITY;
+                return DialogType::zenity;
             }
             if (Platform::FindApp("kdialog", executablePath))
             {
-                return DIALOG_TYPE::KDIALOG;
+                return DialogType::kdialog;
             }
-            return DIALOG_TYPE::NONE;
+            return DialogType::none;
         }
 
         static std::string GetKDialogFilterString(const std::vector<FileDialogDesc::Filter> filters)
