@@ -74,7 +74,7 @@ std::string OpenGLShader::GetPath(const std::string& name)
 
 std::string OpenGLShader::ReadSourceCode(const std::string& path)
 {
-    auto fs = FileStream(path, FILE_MODE_OPEN);
+    auto fs = FileStream(path, FileMode::open);
 
     uint64_t fileLength = fs.GetLength();
     if (fileLength > kMaxSourceSize)

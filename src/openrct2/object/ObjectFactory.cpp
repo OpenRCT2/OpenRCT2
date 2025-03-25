@@ -267,7 +267,7 @@ namespace OpenRCT2::ObjectFactory
         std::unique_ptr<Object> result;
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
             auto chunkReader = SawyerChunkReader(&fs);
 
             RCTObjectEntry entry = fs.ReadValue<RCTObjectEntry>();

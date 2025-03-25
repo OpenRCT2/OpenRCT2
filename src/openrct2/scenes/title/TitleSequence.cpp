@@ -133,7 +133,7 @@ namespace OpenRCT2::Title
                 std::unique_ptr<OpenRCT2::IStream> fileStream = nullptr;
                 try
                 {
-                    fileStream = std::make_unique<OpenRCT2::FileStream>(absolutePath, OpenRCT2::FILE_MODE_OPEN);
+                    fileStream = std::make_unique<OpenRCT2::FileStream>(absolutePath, OpenRCT2::FileMode::open);
                 }
                 catch (const IOException& exception)
                 {
@@ -484,7 +484,7 @@ namespace OpenRCT2::Title
         std::vector<uint8_t> result;
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
             auto size = static_cast<size_t>(fs.GetLength());
             result.resize(size);
             fs.Read(result.data(), size);

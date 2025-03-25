@@ -540,7 +540,7 @@ private:
         // Save to file
         try
         {
-            auto fs = FileStream(std::string(path), FILE_MODE_WRITE);
+            auto fs = FileStream(std::string(path), FileMode::write);
             fs.Write(entry, sizeof(RCTObjectEntry));
             fs.Write(encodedDataBuffer, encodedDataSize);
 
@@ -641,7 +641,7 @@ private:
         }
 
         // Read object data from file
-        auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FileMode::open);
         auto fileEntry = fs.ReadValue<RCTObjectEntry>();
         if (*entry != fileEntry)
         {

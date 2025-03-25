@@ -302,7 +302,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 
         try
         {
-            auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+            auto fs = FileStream(keyPath, FileMode::write);
             _key.SavePrivate(&fs);
         }
         catch (const std::exception&)
@@ -318,7 +318,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 
         try
         {
-            auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+            auto fs = FileStream(keyPath, FileMode::write);
             _key.SavePublic(&fs);
         }
         catch (const std::exception&)
@@ -334,7 +334,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         try
         {
             LOG_VERBOSE("Loading key from %s", keyPath.c_str());
-            auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+            auto fs = FileStream(keyPath, FileMode::open);
             ok = _key.LoadPrivate(&fs);
         }
         catch (const std::exception&)
@@ -2212,7 +2212,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
 
     try
     {
-        auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+        auto fs = FileStream(keyPath, FileMode::open);
         if (!_key.LoadPrivate(&fs))
         {
             throw std::runtime_error("Failed to load private key.");
@@ -3972,7 +3972,7 @@ void NetworkSendPassword(const std::string& password)
     }
     try
     {
-        auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+        auto fs = FileStream(keyPath, FileMode::open);
         network._key.LoadPrivate(&fs);
     }
     catch (const std::exception&)

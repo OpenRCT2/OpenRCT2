@@ -162,14 +162,14 @@ namespace OpenRCT2::RCT1
 
         ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             auto result = LoadFromStream(&fs, false, skipObjectCheck, path);
             return result;
         }
 
         ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             auto result = LoadFromStream(&fs, true, skipObjectCheck, path);
             return result;
         }

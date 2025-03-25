@@ -193,7 +193,7 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
         auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
         if (File::Exists(path))
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             auto numEntries = fs.ReadValue<uint32_t>();
             for (size_t i = 0; i < numEntries; i++)
             {
@@ -247,7 +247,7 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) co
 
     try
     {
-        auto fs = FileStream(path, FILE_MODE_WRITE);
+        auto fs = FileStream(path, FileMode::write);
         fs.WriteValue<uint32_t>(static_cast<uint32_t>(entries.size()));
         for (const auto& entry : entries)
         {

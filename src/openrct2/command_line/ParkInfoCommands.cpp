@@ -55,7 +55,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
     auto context = OpenRCT2::CreateContext();
     context->Initialise();
 
-    auto stream = OpenRCT2::FileStream(sourcePath, OpenRCT2::FILE_MODE_OPEN);
+    auto stream = OpenRCT2::FileStream(sourcePath, OpenRCT2::FileMode::open);
     ClassifiedFileInfo info;
     if (!TryClassifyFile(&stream, &info))
     {

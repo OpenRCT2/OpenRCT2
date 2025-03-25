@@ -140,7 +140,7 @@ namespace OpenRCT2::RCT2
 
         ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
             auto result = LoadFromStream(&fs, false, skipObjectCheck);
             _s6Path = path;
             return result;
@@ -148,7 +148,7 @@ namespace OpenRCT2::RCT2
 
         ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
             auto result = LoadFromStream(&fs, true, skipObjectCheck);
             _s6Path = path;
             return result;

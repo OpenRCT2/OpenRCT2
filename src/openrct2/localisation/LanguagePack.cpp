@@ -45,7 +45,7 @@ public:
 
         try
         {
-            OpenRCT2::FileStream fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            OpenRCT2::FileStream fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
 
             size_t fileLength = static_cast<size_t>(fs.GetLength());
             if (fileLength > MAX_LANGUAGE_SIZE)

@@ -356,7 +356,7 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
     {
         if (_zipPath.empty())
         {
-            return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
+            return std::make_unique<FileStream>(_path, FileMode::open);
         }
 
         auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);

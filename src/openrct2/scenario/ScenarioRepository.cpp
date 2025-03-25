@@ -192,7 +192,7 @@ private:
             return ms;
         }
 
-        auto fs = std::make_unique<FileStream>(path, FILE_MODE_OPEN);
+        auto fs = std::make_unique<FileStream>(path, FileMode::open);
         return fs;
     }
 
@@ -534,7 +534,7 @@ private:
 
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             uint32_t fileVersion = fs.ReadValue<uint32_t>();
             if (fileVersion != 1 && fileVersion != 2)
             {
@@ -582,7 +582,7 @@ private:
         bool highscoresDirty = false;
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             if (fs.GetLength() <= 4)
             {
                 // Initial value of scores for RCT2, just ignore
@@ -673,7 +673,7 @@ private:
         std::string path = _env->GetFilePath(PATHID::SCORES);
         try
         {
-            auto fs = FileStream(path, FILE_MODE_WRITE);
+            auto fs = FileStream(path, FileMode::write);
             fs.WriteValue<uint32_t>(HighscoreFileVersion);
             fs.WriteValue<uint32_t>(static_cast<uint32_t>(_highscores.size()));
             for (size_t i = 0; i < _highscores.size(); i++)

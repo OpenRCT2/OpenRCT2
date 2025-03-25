@@ -738,7 +738,7 @@ namespace OpenRCT2
                     return true;
                 }
 
-                auto fs = FileStream(path, FILE_MODE_OPEN);
+                auto fs = FileStream(path, FileMode::open);
                 if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail, asScenario))
                 {
                     return false;

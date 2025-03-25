@@ -219,7 +219,7 @@ private:
             try
             {
                 LOG_VERBOSE("FileIndex:Loading index: '%s'", _indexPath.c_str());
-                auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FileMode::open);
 
                 // Read header, check if we need to re-scan
                 auto header = fs.ReadValue<FileIndexHeader>();
@@ -260,7 +260,7 @@ private:
         {
             LOG_VERBOSE("FileIndex:Writing index: '%s'", _indexPath.c_str());
             OpenRCT2::Path::CreateDirectory(OpenRCT2::Path::GetDirectory(_indexPath));
-            auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_WRITE);
+            auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FileMode::write);
 
             // Write header
             FileIndexHeader header;

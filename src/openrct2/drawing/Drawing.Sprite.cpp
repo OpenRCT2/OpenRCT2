@@ -452,7 +452,7 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
     try
     {
         auto path = env.FindFile(DIRBASE::RCT2, DIRID::DATA, u8"g1.dat");
-        auto fs = FileStream(path, FILE_MODE_OPEN);
+        auto fs = FileStream(path, FileMode::open);
         _g1.header = fs.ReadValue<RCTG1Header>();
 
         LOG_VERBOSE("g1.dat, number of entries: %u", _g1.header.num_entries);
@@ -532,7 +532,7 @@ bool GfxLoadG2()
 
     try
     {
-        auto fs = FileStream(path, FILE_MODE_OPEN);
+        auto fs = FileStream(path, FileMode::open);
         _g2.header = fs.ReadValue<RCTG1Header>();
 
         // Read element headers
@@ -601,8 +601,8 @@ bool GfxLoadCsg()
     auto pathDataPath = FindCsg1datAtLocation(Config::Get().general.RCT1Path);
     try
     {
-        auto fileHeader = FileStream(pathHeaderPath, FILE_MODE_OPEN);
-        auto fileData = FileStream(pathDataPath, FILE_MODE_OPEN);
+        auto fileHeader = FileStream(pathHeaderPath, FileMode::open);
+        auto fileData = FileStream(pathDataPath, FileMode::open);
         size_t fileHeaderSize = fileHeader.GetLength();
         size_t fileDataSize = fileData.GetLength();
 

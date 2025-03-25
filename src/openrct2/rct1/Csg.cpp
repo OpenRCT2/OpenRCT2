@@ -80,8 +80,8 @@ bool CsgAtLocationIsUsable(u8string_view path)
         return false;
     }
 
-    auto fileHeader = FileStream(csg1HeaderPath, FILE_MODE_OPEN);
-    auto fileData = FileStream(csg1DataPath, FILE_MODE_OPEN);
+    auto fileHeader = FileStream(csg1HeaderPath, FileMode::open);
+    auto fileData = FileStream(csg1DataPath, FileMode::open);
     size_t fileHeaderSize = fileHeader.GetLength();
     size_t fileDataSize = fileData.GetLength();
 
