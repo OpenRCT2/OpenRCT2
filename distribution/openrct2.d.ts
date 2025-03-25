@@ -752,7 +752,8 @@ declare global {
 
 
     interface GameActionArgs {
-        flags?: number; // see GAME_COMMAND in openrct2/Game.h
+        /** @see GAME_COMMAND in [src/openrct2/Game.h](../src/openrct2/Game.h) */
+        flags?: number;
     }
 
     interface BalloonPressArgs extends GameActionArgs {
@@ -790,22 +791,48 @@ declare global {
 
     interface BannerSetStyleArgs extends GameActionArgs {
         id: number;
-        type: number; // 0: primary colour, 1: secondary colour: 2: no entry
-        parameter: number; // primary colour | secondary colour | 0: disable, 1: enable
+        /**
+         * `0`: Primary colour
+         * `1`: Secondary colour
+         * `2`: No entry
+         */
+        type: number;
+        /**
+         * If {@link BannerSetStyleArgs.type} === 0 (primary), or === 1 (secondary):
+         * - `0`: Disable
+         * - `1`: Enable
+         */
+        parameter: number;
     }
 
     interface CheatSetArgs extends GameActionArgs {
-        type: number; // see CheatType in openrct2/Cheats.h
-        param1: number; // see openrct2/actions/CheatSetAction.cpp
-        param2: number; // see openrct2/actions/CheatSetAction.cpp
+        /** @see [src/openrct2/Cheats.h](../src/openrct2/Cheats.h) */
+        type: number;
+        /** @see [src/openrct2/actions/CheatSetAction.h](../src/openrct2/actions/CheatSetAction.h) */
+        param1: number;
+        /** @see [src/openrct2/actions/CheatSetAction.h](../src/openrct2/actions/CheatSetAction.h) */
+        param2: number;
     }
 
     interface ClearSceneryArgs extends GameActionArgs {
-        itemsToClear: number; // Bit mask. 1: small scenery and walls, 2: large scenery, 4: footpaths.
+        /**
+         * Bitmask.
+         *
+         * - `1`: `(001)`: Small scenery and walls
+         * - `2`: `(010)`: Large scenery
+         * - `4`: `(100)`: Footpaths
+         */
+        itemsToClear: number;
     }
 
     interface ClimateSetArgs extends GameActionArgs {
-        climate: number; // 0: cool and wet, 1: warm, 2: hot and dry, 3: cold
+        /**
+         * - `0`: Cool and wet
+         * - `1`: Warm
+         * - `2`: Hot and dry
+         * - `3`: Cold
+         */
+        climate: number;
     }
 
     interface FootpathAdditionPlaceArgs extends GameActionArgs {
@@ -825,22 +852,35 @@ declare global {
         x: number;
         y: number;
         z: number;
-        direction: number; // direction or 0xFF
-        object: number; // surface object
+        /** Direction or `0xFF` */
+        direction: number;
+        /** Surface object */
+        object: number;
         railingsObject: number;
-        slope: number; // 0: flat, 4,5,6,7: slope direction + 4
+        /**
+         * - `0`: Flat
+         * - `4`, `5`, `6`, `7`: Slope direction + 4
+         */
+        slope: number;
         constructFlags: number;
     }
 
-    // see openrct2/actions/FootpathPlaceFromTrackAction
+    /**
+     * @see [src/openrct2/actions/FootpathPlaceAction.h](../src/openrct2/actions/FootpathPlaceAction.h)
+     */
     interface FootpathLayoutPlaceArgs extends GameActionArgs {
         x: number;
         y: number;
         z: number;
-        edges: number; // bit mask
+        /** Bitmask */
+        edges: number;
         object: number;
         railingsObject: number;
-        slope: number; // 0: flat, 4,5,6,7: slope direction + 4
+        /**
+         * - `0`: Flat
+         * - `4`, `5`, `6`, `7`: Slope direction + 4
+         */
+        slope: number;
         constructFlags: number;
     }
 
@@ -854,10 +894,15 @@ declare global {
         speed: number;
     }
 
-    // recommendation: use Peep.setFlag instead of the GuestSetFlag action
+    /**
+     * @todo Recommendation: Use Peep.setFlag instead of the GuestSetFlag action
+     */
     interface GuestSetFlagsArgs extends GameActionArgs {
         peep: number;
-        guestFlags: number; // see PEEP_FLAGS in openrct2/entity/Peep.h
+        /**
+         * @see PEEP_FLAGS in [src/openrct2/entity/Peep.h](../src/openrct2/entity/Peep.h)
+         */
+        guestFlags: number;
     }
 
     interface GuestSetNameArgs extends GameActionArgs {
@@ -870,11 +915,17 @@ declare global {
         y1: number;
         x2: number;
         y2: number;
-        setting: number; // 0: buy land, 1: buy construction rights
+        /**
+         * - `0`: Buy land
+         * - `1`: Buy construction rights
+         */
+        setting: number;
     }
 
-    // x, y specify the centre. Only used for GameActionResult and 3D audio position.
-    // x1, y1, x2, y2 specify a map range
+    /**
+     * x, y specify the centre. Only used for {@link GameActionResult} and 3D audio position.
+     * x1, y1, x2, y2 specify a map range
+     */
     interface LandLowerArgs extends GameActionArgs {
         x: number;
         y: number;
@@ -882,11 +933,14 @@ declare global {
         y1: number;
         x2: number;
         y2: number;
-        selectionType: number; // see MAP_SELECT_TYPE in openrct2/world/Map.h
+        /** @see MAP_SELECT_TYPE in [src/openrct2/world/Map.h](../src/openrct2/world/Map.h) */
+        selectionType: number;
     }
 
-    // x, y specify the centre. Only used for GameActionResult and 3D audio position.
-    // x1, y1, x2, y2 specify a map range
+    /**
+     * x, y specify the centre. Only used for {@link GameActionResult} and 3D audio position.
+     * x1, y1, x2, y2 specify a map range
+     */
     interface LandRaiseArgs extends GameActionArgs {
         x: number;
         y: number;
@@ -894,14 +948,16 @@ declare global {
         y1: number;
         x2: number;
         y2: number;
-        selectionType: number; // see MAP_SELECT_TYPE in openrct2/world/Map.h
+        /** @see MAP_SELECT_TYPE in [src/openrct2/world/Map.h](../src/openrct2/world/Map.h) */
+        selectionType: number;
     }
 
     interface LandSetHeightArgs extends GameActionArgs {
         x: number;
         y: number;
         height: number;
-        style: number; // see openrct2/world/tile_element/Slope.h
+        /** @see [src/openrct2/actions/LandSetHeightAction.h](../src/openrct2/actions/LandSetHeightAction.h) */
+        style: number;
     }
 
     interface LandSetRightsArgs extends GameActionArgs {
@@ -909,12 +965,24 @@ declare global {
         y1: number;
         x2: number;
         y2: number;
-        setting: number; // 0: unown land, 1: unown construction rights, 2: set for sale, 3: set construction rights for sale, 4: set ownership
-        ownership: number; // only used if setting = 4 (set ownership). See OWNERSHIP in openrct2/world/Surface.h
+        /**
+         * - `0`: Unown land
+         * - `1`: Unown construction rights
+         * - `2`: Set for sale
+         * - `3`: Set construction rights for sale
+         * - `4`: Set ownership
+         */
+        setting: number;
+        /**
+         * Only used if {@link LandSetRightsArgs.setting} === 4 (set ownership)
+         */
+        ownership: number;
     }
 
-    // x, y specify the centre. Only used for GameActionResult and 3D audio position.
-    // x1, y1, x2, y2 specify a map range
+    /**
+     * x, y specify the centre. Only used for {@link GameActionResult} and 3D audio position.
+     * x1, y1, x2, y2 specify a map range
+     */
     interface LandSmoothArgs extends GameActionArgs {
         x: number;
         y: number;
@@ -922,7 +990,10 @@ declare global {
         y1: number;
         x2: number;
         y2: number;
-        selectionType: number; // see MAP_SELECT_TYPE in openrct2/world/Map.h
+        /**
+         * @see MAP_SELECT_TYPE in [src/openrct2/world/Map.h](../src/openrct2/world/Map.h)
+         */
+        selectionType: number;
         isLowering: boolean;
     }
 
@@ -957,8 +1028,18 @@ declare global {
     }
 
     interface LoadOrQuitArgs extends GameActionArgs {
-        mode: number; // 0: open save prompt, 1: close save prompt
-        savePromptMode: number; // 0: save before load, 1: save before quit. Only used if mode = 0 (open save prompt).
+        /**
+         * - `0`: Open save prompt
+         * - `1`: Close save prompt
+         */
+        mode: number;
+        /**
+         * - `0`: Save before load
+         * - `1`: Save before quit
+         *
+         * Only used if {@link LoadOrQuitArgs.mode} === 0 (open save prompt)
+         */
+        savePromptMode: number;
     }
 
     interface MapChangeSizeArgs extends GameActionArgs {
@@ -982,16 +1063,46 @@ declare global {
         z: number;
         direction: number;
         ride: number;
-        mode: number; // 0: build, 1: move, 2: fill
+        /**
+         * - `0`: Build
+         * - `1`: Move
+         * - `2`: Fill
+         */
+        mode: number;
         isInitialPlacement: boolean;
     }
 
     interface NetworkModifyGroupArgs extends GameActionArgs {
-        type: number; // 0: add group, 1: remove group, 2: set permissions, 3: set name, 4: set default
-        groupId: number; // ignored if type = 0 (add group)
-        name: string; // only used if type = 3 (set name)
-        permissionIndex: number; // only used if type = 2 (set permissions). See NetworkPermission in openrct2/network/NetworkAction.h
-        permissionState: number; // only used if type = 2 (set permissions). 0: toggle, 1: set all, 2: clear all
+        /**
+         * - `0`: Add group
+         * - `1`: Remove group
+         * - `2`: Set permissions
+         * - `3`: Set name
+         * - `4`: Set default
+         */
+        type: number;
+        /**
+         * Ignored if {@link NetworkModifyGroupArgs.type} === 0 (add group)
+         */
+        groupId: number;
+        /**
+         * Only used if {@link NetworkModifyGroupArgs.type} === 3 (set name)
+         */
+        name: string;
+        /**
+         * Only used if {@link NetworkModifyGroupArgs.type} === 2 (set permissions)
+         *
+         * @see NetworkPermission in [src/openrct2/network/NetworkAction.h](../src/openrct2/network/NetworkAction.h)
+         */
+        permissionIndex: number;
+        /**
+         * - `0`: Toggle
+         * - `1`: Set all
+         * - `2`: Clear all
+         *
+         * Only used if {@link NetworkModifyGroupArgs.type} === 2 (set permissions)
+         */
+        permissionState: number;
     }
 
     interface ParkEntrancePlaceArgs extends GameActionArgs {
@@ -1009,8 +1120,15 @@ declare global {
     }
 
     interface ParkMarketingArgs extends GameActionArgs {
-        type: number; // see ADVERTISING_CAMPAIGN in openrct2/management/Marketing.h
-        item: number; // ride id or shop item. See ShopItem in openrct2/ride/ShopItem.h
+        /**
+         * @see ADVERTISTING_CAMPAIGN in [src/openrct2/management/Marketing.h](../src/openrct2/management/Marketing.h)
+         */
+        type: number;
+        /**
+         * Ride ID or Shop Item
+         * @see ShopItem in [src/openrct2/ride/ShopItem.h](../src/openrct2/ride/ShopItem.h)
+         */
+        item: number;
         numweeks: number;
     }
 
@@ -1033,25 +1151,63 @@ declare global {
     }
 
     interface ParkSetParameterArgs extends GameActionArgs {
-        parameter: number; // 0: close park, 1: open park, 2: set same price in park
-        value: number; // only used if parameter = 2 (set same price in park). Bit mask. See ShopItem in openrct2/ride/ShopItem.h
+        /**
+         * - `0`: Close park
+         * - `1`: Open park
+         * - `2`: Set same price in park
+         */
+        parameter: number;
+        /**
+         * Only used if {@link ParkSetParameterArgs.parameter} === 2 (set same price in park). Bitmask.
+         *
+         * @see ShopItem in [src/openrct2/ride/ShopItem.h](../src/openrct2/ride/ShopItem.h)
+         */
+        value: number;
     }
 
     interface ParkSetResearchFundingArgs extends GameActionArgs {
-        priorities: number; // bit mask. See ResearchCategory in openrct2/management/Research.h
-        fundingAmount: number; // 0: none, 1: minimal, 2: normal, 3: maximum
+        /**
+         * Bitmask.
+         *
+         * @see ResearchCategory in [src/openrct2/management/Research.h](../src/openrct2/management/Research.h)
+         */
+        priorities: number;
+        /**
+         * - `0`: None
+         * - `1`: Minimal
+         * - `2`: Normal
+         * - `3`: Maximum
+         */
+        fundingAmount: number;
     }
 
     interface PauseToggleArgs extends GameActionArgs {
     }
 
     interface PeepPickupArgs extends GameActionArgs {
-        type: number; // 0: pickup, 1: cancel, 2: place
+        /**
+         * - `0`: Pickup
+         * - `1`: Cancel
+         * - `3`: Place
+         */
+        type: number;
         id: number;
-        x: number; // unused if type = 0. If type = 1 (cancel), this needs to be the peep's x position BEFORE pickup
-        y: number; // only used if type = 2 (place)
-        z: number; // only used if type = 2 (place)
-        playerId: number; // 0 in single player
+        /**
+         * Unused if {@link PeepPickupArgs.type} === 0.
+         *
+         * If {@link PeepPickupArgs.type} === 1 (cancel), this needs to be the peep's x position BEFORE pickup.
+         */
+        x: number;
+        /**
+         * Only used if {@link PeepPickupArgs.type} === 2 (place)
+         */
+        y: number;
+        /**
+         * Only used if {@link PeepPickupArgs.type} === 2 (place)
+         */
+        z: number;
+        /** `0` in single player */
+        playerId: number;
     }
 
     interface PeepSpawnPlaceArgs extends GameActionArgs {
@@ -1080,7 +1236,11 @@ declare global {
 
     interface RideDemolishArgs extends GameActionArgs {
         ride: number;
-        modifyType: number; // 0: demolish, 1: renew
+        /**
+         * - `0`: Demolish
+         * - `1`: Renew
+         */
+        modifyType: number;
     }
 
     interface RideEntranceExitPlaceArgs extends GameActionArgs {
@@ -1102,20 +1262,38 @@ declare global {
 
     interface RideFreezeRatingArgs extends GameActionArgs {
         ride: number;
-        type: number; // 0: excitement, 1: intensity, 2: nausea
+        /**
+         * - `0`: Excitement
+         * - `1`: Intensity
+         * - `2`: Nausea
+         */
+        type: number;
         value: number;
     }
 
     interface RideSetAppearanceArgs extends GameActionArgs {
         ride: number;
-        type: number; // see RideSetAppearanceType in openrct2/actions/RideSetAppearanceAction.h
-        // value:
-        // - if type is one of the track or vehicle colours: colour
-        // - if type is VehicleColourScheme: 0: all same, 1: per train, 2: per car
-        // - if type is EntranceStyle: entrance style
-        // - if type is SellingItemColourIsRandom: 0: disabled, 1: enabled
+        /** @see RideSetSetting in
+         * [src/openrct2/actions/RideSetAppearanceAction.h](../src/openrct2/actions/RideSetAppearanceAction.h)
+         */
+        type: number;
+        /**
+         * If {@link RideSetAppearanceArgs.type} is:
+         * - One of the track or vehicle colours: Colour
+         * - VehicleColourScheme:
+         *   - `0`: All same
+         *   - `1`: Per train
+         *   - `2`: Per car
+         * - EntranceStyle: Entrance style
+         * - SellingItemColourIsRandom:
+         *   - `0`: Disabled
+         *   - `1`: Enabled
+         */
         value: number;
-        index: number; // colour scheme index, only used if type is one of the track or vehicle colours
+        /**
+         * Color scheme index, only used if {@link RideSetAppearanceArgs.type} is one of the track or vehicle colours
+         */
+        index: number;
     }
 
     interface RideSetColourSchemeArgs extends GameActionArgs {
@@ -1140,24 +1318,47 @@ declare global {
 
     interface RideSetSettingArgs extends GameActionArgs {
         ride: number;
-        setting: number; // see RideSetSetting in openrct2/actions/RideSetSettingAction.h
+        /** @see RideSetSetting in
+         * [src/openrct2/actions/RideSetSettingAction.h](../src/openrct2/actions/RideSetSettingAction.h)
+         */
+        setting: number;
         value: number;
     }
 
     interface RideSetStatusArgs extends GameActionArgs {
         ride: number;
-        status: number; // 0: closed, 1: open, 2: testing, 3: simulating
+        /**
+         * - `0`: Closed
+         * - `1`: Open
+         * - `2`: Testing
+         * - `3`: Simulating
+         */
+        status: number;
     }
 
     interface RideSetVehicleArgs extends GameActionArgs {
         ride: number;
-        type: number; // 0: number of trains, 1: number of cars per train, 2: ride entry
-        value: number; // number value or sub type
-        colour: number; // only used if type is ride entry
+        /**
+         * - `0`: Number of trains
+         * - `1`: Number of cars per train
+         * - `2`: Ride entry
+         */
+        type: number;
+        /**
+         * Number value or subtype of {@link RideSetVehicleArgs.type}
+         */
+        value: number;
+        /**
+         * Only used if {@link RideSetVehicleArgs.type} === 2 (ride entry)
+         */
+        colour: number;
     }
 
     interface ScenarioSetSettingArgs extends GameActionArgs {
-        setting: number; // see ScenarioSetSetting in openrct2/actions/ScenarioSetSettingAction.h
+        /** @see ScenarioSetSetting in
+         * [src/openrct2/actions/ScenarioSetSettingAction.h](../src/openrct2/actions/ScenarioSetSettingAction.h)
+         */
+        setting: number;
         value: number;
     }
 
@@ -1210,19 +1411,46 @@ declare global {
 
     interface StaffHireArgs extends GameActionArgs {
         autoPosition: boolean;
-        staffType: number; // 0: handyman, 1: mechanic, 2: security, 3: entertainer
-        costumeIndex: number; // peep animation object id to use as costume
-        staffOrders: number; // bit mask. See STAFF_ORDERS in openrct2/entity/Staff.h
+        /**
+         * - `0`: Handyman
+         * - `1`: Mechanic
+         * - `2`: Security
+         * - `3`: Entertainer
+         */
+        staffType: number;
+        /** Peep animation object ID to use as costume */
+        costumeIndex: number;
+        /**
+         * Bitmask. Only applies when {@link StaffHireArgs.staffType} === 0 (Handyman), or === 1 (Mechanic).
+         *
+         * Handyman:
+         * - `1`: `(0001)`: Sweeping
+         * - `2`: `(0010)`: Watering flowers
+         * - `4`: `(0100)`: Empty bins
+         * - `8`: `(1000)`: Mowing
+         *
+         * Mechanic:
+         * - `1`: `(0001)`: Inspect rides
+         * - `2`: `(0010)`: Fix rides
+         */
+        staffOrders: number;
     }
 
     interface StaffSetColourArgs extends GameActionArgs {
-        staffType: number; // 0: handyman, 1: mechanic, 2: security, 3: entertainer
+        /**
+         * - `0`: Handyman
+         * - `1`: Mechanic
+         * - `2`: Security
+         * - `3`: Entertainer
+         */
+        staffType: number;
         colour: number;
     }
 
     interface StaffSetCostumeArgs extends GameActionArgs {
         id: number;
-        costume: number; // see EntertainerCostume in openrct2/entity/Staff.h
+        /** @see EntertainerCostume in [src/openrct2/entity/Staff.h](../src/openrct2/entity/Staff.h) */
+        costume: number;
     }
 
     interface StaffSetNameArgs extends GameActionArgs {
@@ -1232,7 +1460,20 @@ declare global {
 
     interface StaffSetOrdersArgs extends GameActionArgs {
         id: number;
-        staffOrders: number; // bit mask. See STAFF_ORDERS in openrct2/entity/Staff.h
+        /**
+         * Bitmask. Only applies when {@link StaffHireArgs.staffType} === 0 (Handyman), or === 1 (Mechanic).
+         *
+         * Handyman:
+         * - `1`: `(0001)`: Sweeping
+         * - `2`: `(0010)`: Watering flowers
+         * - `4`: `(0100)`: Empty bins
+         * - `8`: `(1000)`: Mowing
+         *
+         * Mechanic:
+         * - `1`: `(0001)`: Inspect rides
+         * - `2`: `(0010)`: Fix rides
+         */
+        staffOrders: number;
     }
 
     interface StaffSetPatrolAreaArgs extends GameActionArgs {
@@ -1241,7 +1482,12 @@ declare global {
         y1: number;
         x2: number;
         y2: number;
-        mode: number; // 0: set, 1: unset, 2: clear all
+        /**
+         * - `0`: Set
+         * - `1`: Unset
+         * - `2`: Clear all
+         */
+        mode: number;
     }
 
     interface SurfaceSetStyleArgs extends GameActionArgs {
@@ -1253,16 +1499,27 @@ declare global {
         edgeStyle: number;
     }
 
-    // does not support TileModifyType::AnyPaste
+    /**
+     * Does not support `TileModifyType::AnyPaste`
+     */
     interface TileModifyArgs extends GameActionArgs {
         x: number;
         y: number;
-        setting: number; // see TileModifyType in openrct2/actions/TileModifyAction.h
+        /**
+         * @see TileModifyType in [src/openrct2/actions/TileModifyAction.h](../src/openrct2/actions/TileModifyAction.h)
+         */
+        setting: number;
         value1: number;
-        value2: number; // see openrct2/actions/TileModifyAction.cpp
+        /**
+         * @see TileModifyType in
+         * [src/openrct2/actions/TileModifyAction.cpp](../src/openrct2/actions/TileModifyAction.cpp)
+         */
+        value2: number;
     }
 
-    // currently unsupported
+    /**
+     * @todo Currently unsupported
+     */
     interface TrackDesignArgs extends GameActionArgs {
         x: number;
         y: number;
@@ -1307,7 +1564,8 @@ declare global {
         y: number;
         z: number;
         object: number;
-        edge: number; // = direction
+        /** Direction */
+        edge: number;
         primaryColour: number;
         secondaryColour: number;
         tertiaryColour: number;
@@ -1519,7 +1777,8 @@ declare global {
         clearanceZ: number;
         occupiedQuadrants: number;
         isGhost: boolean;
-        isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
+        /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
+        isHidden: boolean;
     }
 
     interface SurfaceElement extends BaseTileElement {
@@ -1540,9 +1799,12 @@ declare global {
     interface FootpathElement extends BaseTileElement {
         type: "footpath";
 
-        object: number | null; /** Legacy footpaths, still in use. */
-        surfaceObject: number | null; /** NSF footpaths */
-        railingsObject: number | null; /** NSF footpaths */
+        /** Legacy footpaths, still in use. */
+        object: number | null;
+        /** NSF footpaths */
+        surfaceObject: number | null;
+        /** NSF footpaths */
+        railingsObject: number | null;
 
         edges: number;
         corners: number;
@@ -1787,8 +2049,8 @@ declare global {
     }
 
     /**
-    * Represents the definition of a loaded object that has one or more associated images.
-    */
+     * Represents the definition of a loaded object that has one or more associated images.
+     */
     interface LoadedImageObject extends LoadedObject {
         /**
          * Id of the objects base image. This is also known as the preview image.
@@ -2303,9 +2565,9 @@ declare global {
         readonly endY: number;
 
         /**
-        * The relative starting direction. Usually 0, but will be 4
-        * for diagonal segments.
-        */
+         * The relative starting direction. Usually 0, but will be 4
+         * for diagonal segments.
+         */
         readonly beginDirection: Direction8;
 
         /**
