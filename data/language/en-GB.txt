@@ -3805,3 +3805,4 @@ STR_6747    :Preferences vary (default)
 STR_6748    :Only less intense rides
 STR_6749    :Only more intense rides
 STR_6750    :Select what kind of ride intensity newly spawned guests prefer.
+STR_6751    :Queue paths cannot be used for level crossings!
