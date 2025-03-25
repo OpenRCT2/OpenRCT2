@@ -1273,7 +1273,7 @@ declare global {
 
     interface RideSetAppearanceArgs extends GameActionArgs {
         ride: number;
-        /** @see RideSetSetting in
+        /** @see RideSetAppearanceType in
          * [src/openrct2/actions/RideSetAppearanceAction.h](../src/openrct2/actions/RideSetAppearanceAction.h)
          */
         type: number;
