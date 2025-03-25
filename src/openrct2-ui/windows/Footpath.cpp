@@ -734,7 +734,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 gDropdownItems[numPathTypes].Format = kStringIdNone;
-                gDropdownTooltips[numPathTypes] = kStringIdNone;
+                gDropdownTooltips[numPathTypes] = pathEntry->string_idx;
                 Dropdown::SetImage(
                     numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
                 _dropdownEntries.push_back({ ObjectType::paths, i });
