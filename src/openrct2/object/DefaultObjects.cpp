@@ -121,7 +121,6 @@ constexpr std::array<std::string_view, 82> kCommonScenarioAndTrackDesignerObject
 };
 
 constexpr std::array<std::string_view, 37> kDefaultScenarioObjects = {
-
     "rct2.ride.twist1", // Ride: Twist
     "rct2.ride.ptct1",  // Ride: Wooden Roller Coaster (Wooden Roller Coaster Trains)
     "rct2.ride.zldb",   // Ride: Junior Roller Coaster (Ladybird Trains)
