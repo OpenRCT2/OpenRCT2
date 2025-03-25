@@ -121,7 +121,7 @@ void ScenarioReset(GameState_t& gameState)
 
     // Set the last saved game path
     auto env = GetContext()->GetPlatformEnvironment();
-    auto savePath = env->GetDirectoryPath(DirBase::user, DIRID::SAVE);
+    auto savePath = env->GetDirectoryPath(DirBase::user, DirId::saves);
     gScenarioSavePath = Path::Combine(savePath, gameState.park.Name + u8".park");
 
     gameState.currentExpenditure = 0;

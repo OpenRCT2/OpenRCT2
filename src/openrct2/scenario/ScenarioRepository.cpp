@@ -132,9 +132,9 @@ public:
         : FileIndex(
               "scenario index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(PATTERN),
               std::vector<std::string>({
-                  env.GetDirectoryPath(DirBase::rct1, DIRID::SCENARIO),
-                  env.GetDirectoryPath(DirBase::rct2, DIRID::SCENARIO),
-                  env.GetDirectoryPath(DirBase::user, DIRID::SCENARIO),
+                  env.GetDirectoryPath(DirBase::rct1, DirId::scenarios),
+                  env.GetDirectoryPath(DirBase::rct2, DirId::scenarios),
+                  env.GetDirectoryPath(DirBase::user, DirId::scenarios),
               }))
     {
     }
@@ -437,10 +437,10 @@ private:
      */
     void ImportMegaPark()
     {
-        auto mpdatPath = _env->FindFile(DirBase::rct1, DIRID::DATA, "mp.dat");
+        auto mpdatPath = _env->FindFile(DirBase::rct1, DirId::data, "mp.dat");
         if (File::Exists(mpdatPath))
         {
-            auto scenarioDirectory = _env->GetDirectoryPath(DirBase::user, DIRID::SCENARIO);
+            auto scenarioDirectory = _env->GetDirectoryPath(DirBase::user, DirId::scenarios);
             auto expectedSc21Path = Path::Combine(scenarioDirectory, "sc21.sc4");
             auto sc21Path = Path::ResolveCasing(expectedSc21Path);
             if (!File::Exists(sc21Path))

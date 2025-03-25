@@ -29,29 +29,29 @@ namespace OpenRCT2
     constexpr size_t kDirBaseCount = 7;
     using DirBaseValues = u8string[kDirBaseCount];
 
-    enum class DIRID
+    enum class DirId
     {
-        DATA,             // Contains g1.dat, music etc.
-        LANDSCAPE,        // Contains scenario editor landscapes (SC6).
-        LANGUAGE,         // Contains language packs.
-        LOG_CHAT,         // Contains chat logs.
-        LOG_SERVER,       // Contains server logs.
-        NETWORK_KEY,      // Contains the user's public and private keys.
-        OBJECT,           // Contains objects.
-        PLUGIN,           // Contains plugins (.js).
-        SAVE,             // Contains saved games (SV6).
-        SCENARIO,         // Contains scenarios (SC6).
-        SCREENSHOT,       // Contains screenshots.
-        SEQUENCE,         // Contains title sequences.
-        SHADER,           // Contains OpenGL shaders.
-        THEME,            // Contains interface themes.
-        TRACK,            // Contains track designs.
-        HEIGHTMAP,        // Contains heightmap data.
-        REPLAY,           // Contains recorded replays.
-        LOG_DESYNCS,      // Contains desync reports.
-        CRASH,            // Contains crash dumps.
-        ASSET_PACK,       // Contains asset packs.
-        SCENARIO_PATCHES, // Contains scenario patches.
+        data,             // Contains g1.dat, music etc.
+        landscapes,       // Contains scenario editor landscapes (SC6).
+        languages,        // Contains language packs.
+        chatLogs,         // Contains chat logs.
+        serverLogs,       // Contains server logs.
+        networkKeys,      // Contains the user's public and private keys.
+        objects,          // Contains objects.
+        plugins,          // Contains plugins (.js).
+        saves,            // Contains saved games (SV6).
+        scenarios,        // Contains scenarios (SC6).
+        screenshots,      // Contains screenshots.
+        sequences,        // Contains title sequences.
+        shaders,          // Contains OpenGL shaders.
+        themes,           // Contains interface themes.
+        trackDesigns,     // Contains track designs.
+        heightmaps,       // Contains heightmap data.
+        replayRecordings, // Contains recorded replays.
+        desyncLogs,       // Contains desync reports.
+        crashDumps,       // Contains crash dumps.
+        assetPacks,       // Contains asset packs.
+        scenarioPatches,  // Contains scenario patches.
     };
 
     enum class PATHID
@@ -81,9 +81,9 @@ namespace OpenRCT2
         virtual ~IPlatformEnvironment() = default;
 
         virtual u8string GetDirectoryPath(DirBase base) const = 0;
-        virtual u8string GetDirectoryPath(DirBase base, DIRID did) const = 0;
+        virtual u8string GetDirectoryPath(DirBase base, DirId did) const = 0;
         virtual u8string GetFilePath(PATHID pathid) const = 0;
-        virtual u8string FindFile(DirBase base, DIRID did, u8string_view fileName) const = 0;
+        virtual u8string FindFile(DirBase base, DirId did, u8string_view fileName) const = 0;
         virtual void SetBasePath(DirBase base, u8string_view path) = 0;
         virtual bool IsUsingClassic() const = 0;
     };

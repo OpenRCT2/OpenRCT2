@@ -62,9 +62,9 @@ public:
         : FileIndex(
               "track design index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_TRACKS), std::string(PATTERN),
               std::vector<std::string>({
-                  env.GetDirectoryPath(DirBase::rct1, DIRID::TRACK),
-                  env.GetDirectoryPath(DirBase::rct2, DIRID::TRACK),
-                  env.GetDirectoryPath(DirBase::user, DIRID::TRACK),
+                  env.GetDirectoryPath(DirBase::rct1, DirId::trackDesigns),
+                  env.GetDirectoryPath(DirBase::rct2, DirId::trackDesigns),
+                  env.GetDirectoryPath(DirBase::user, DirId::trackDesigns),
               }))
     {
     }
@@ -257,7 +257,7 @@ public:
     std::string Install(const std::string& path, const std::string& name) override
     {
         std::string result;
-        std::string installDir = _env->GetDirectoryPath(DirBase::user, DIRID::TRACK);
+        std::string installDir = _env->GetDirectoryPath(DirBase::user, DirId::trackDesigns);
 
         std::string newPath = Path::Combine(installDir, name + Path::GetExtension(path));
         if (File::Copy(path, newPath, false))

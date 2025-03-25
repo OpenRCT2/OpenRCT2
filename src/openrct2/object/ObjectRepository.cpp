@@ -86,8 +86,8 @@ public:
         : FileIndex(
               "object index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_OBJECTS), std::string(PATTERN),
               std::vector<std::string>{
-                  env.GetDirectoryPath(DirBase::openrct2, DIRID::OBJECT),
-                  env.GetDirectoryPath(DirBase::user, DIRID::OBJECT),
+                  env.GetDirectoryPath(DirBase::openrct2, DirId::objects),
+                  env.GetDirectoryPath(DirBase::user, DirId::objects),
               })
         , _objectRepository(objectRepository)
     {
@@ -586,7 +586,7 @@ private:
     std::string GetPathForNewObject(ObjectGeneration generation, std::string_view name)
     {
         // Get object directory and create it if it doesn't exist
-        auto userObjPath = _env->GetDirectoryPath(DirBase::user, DIRID::OBJECT);
+        auto userObjPath = _env->GetDirectoryPath(DirBase::user, DirId::objects);
         Path::CreateDirectory(userObjPath);
 
         // Find a unique file name

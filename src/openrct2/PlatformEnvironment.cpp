@@ -100,7 +100,7 @@ public:
         return _basePath[EnumValue(base)];
     }
 
-    u8string GetDirectoryPath(DirBase base, DIRID did) const override
+    u8string GetDirectoryPath(DirBase base, DirId did) const override
     {
         auto basePath = GetDirectoryPath(base);
         u8string_view directoryName;
@@ -131,12 +131,12 @@ public:
         return Path::Combine(basePath, fileName);
     }
 
-    u8string FindFile(DirBase base, DIRID did, u8string_view fileName) const override
+    u8string FindFile(DirBase base, DirId did, u8string_view fileName) const override
     {
         auto dataPath = GetDirectoryPath(base, did);
 
         std::string alternativeFilename;
-        if (_usingRCTClassic && base == DirBase::rct2 && did == DIRID::DATA)
+        if (_usingRCTClassic && base == DirBase::rct2 && did == DirId::data)
         {
             // Special case, handle RCT Classic css ogg files
             if (String::startsWith(fileName, "css", true) && String::endsWith(fileName, ".dat", true))
@@ -148,7 +148,7 @@ public:
         }
 
         auto path = Path::ResolveCasing(Path::Combine(dataPath, fileName));
-        if (base == DirBase::rct1 && did == DIRID::DATA && !File::Exists(path))
+        if (base == DirBase::rct1 && did == DirId::data && !File::Exists(path))
         {
             // Special case, handle RCT1 steam layout where some data files are under a CD root
             auto basePath = GetDirectoryPath(base);

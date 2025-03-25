@@ -1431,22 +1431,22 @@ namespace OpenRCT2
             EnsureDirectoriesExist(
                 DirBase::user,
                 {
-                    DIRID::OBJECT,
-                    DIRID::SAVE,
-                    DIRID::SCENARIO,
-                    DIRID::TRACK,
-                    DIRID::LANDSCAPE,
-                    DIRID::HEIGHTMAP,
-                    DIRID::PLUGIN,
-                    DIRID::THEME,
-                    DIRID::SEQUENCE,
-                    DIRID::REPLAY,
-                    DIRID::LOG_DESYNCS,
-                    DIRID::CRASH,
+                    DirId::objects,
+                    DirId::saves,
+                    DirId::scenarios,
+                    DirId::trackDesigns,
+                    DirId::landscapes,
+                    DirId::heightmaps,
+                    DirId::plugins,
+                    DirId::themes,
+                    DirId::sequences,
+                    DirId::replayRecordings,
+                    DirId::desyncLogs,
+                    DirId::crashDumps,
                 });
         }
 
-        void EnsureDirectoriesExist(const DirBase dirBase, const std::initializer_list<DIRID>& dirIds)
+        void EnsureDirectoriesExist(const DirBase dirBase, const std::initializer_list<DirId>& dirIds)
         {
             for (const auto& dirId : dirIds)
             {
@@ -1461,11 +1461,11 @@ namespace OpenRCT2
          */
         void CopyOriginalUserFilesOver()
         {
-            CopyOriginalUserFilesOver(DIRID::SAVE, "*.sv6");
-            CopyOriginalUserFilesOver(DIRID::LANDSCAPE, "*.sc6");
+            CopyOriginalUserFilesOver(DirId::saves, "*.sv6");
+            CopyOriginalUserFilesOver(DirId::landscapes, "*.sc6");
         }
 
-        void CopyOriginalUserFilesOver(DIRID dirid, const std::string& pattern)
+        void CopyOriginalUserFilesOver(DirId dirid, const std::string& pattern)
         {
             auto src = _env->GetDirectoryPath(DirBase::rct2, dirid);
             auto dst = _env->GetDirectoryPath(DirBase::user, dirid);
