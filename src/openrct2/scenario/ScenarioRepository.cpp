@@ -123,14 +123,14 @@ static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 {
 private:
-    static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
-    static constexpr uint16_t VERSION = 9;
-    static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea;*.park";
+    static constexpr uint32_t kMagicNumber = 0x58444953; // SIDX
+    static constexpr uint16_t kVersion = 9;
+    static constexpr auto kPattern = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
         : FileIndex(
-              "scenario index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(PATTERN),
+              "scenario index", kMagicNumber, kVersion, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(kPattern),
               std::vector<std::string>({
                   env.GetDirectoryPath(DirBase::rct1, DirId::scenarios),
                   env.GetDirectoryPath(DirBase::rct2, DirId::scenarios),

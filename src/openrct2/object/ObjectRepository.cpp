@@ -75,16 +75,16 @@ using ObjectEntryMap = std::unordered_map<RCTObjectEntry, size_t, ObjectEntryHas
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
-    static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 31;
-    static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
+    static constexpr uint32_t kMagicNumber = 0x5844494F; // OIDX
+    static constexpr uint16_t kVersion = 31;
+    static constexpr auto kPattern = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
 
 public:
     explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env)
         : FileIndex(
-              "object index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_OBJECTS), std::string(PATTERN),
+              "object index", kMagicNumber, kVersion, env.GetFilePath(PATHID::CACHE_OBJECTS), std::string(kPattern),
               std::vector<std::string>{
                   env.GetDirectoryPath(DirBase::openrct2, DirId::objects),
                   env.GetDirectoryPath(DirBase::user, DirId::objects),

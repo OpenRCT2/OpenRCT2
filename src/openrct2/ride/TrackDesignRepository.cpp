@@ -53,14 +53,14 @@ std::string GetNameFromTrackPath(const std::string& path)
 class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 {
 private:
-    static constexpr uint32_t MAGIC_NUMBER = 0x58444954; // TIDX
-    static constexpr uint16_t VERSION = 5;
-    static constexpr auto PATTERN = "*.td4;*.td6";
+    static constexpr uint32_t kMagicNumber = 0x58444954; // TIDX
+    static constexpr uint16_t kVersion = 5;
+    static constexpr auto kPattern = "*.td4;*.td6";
 
 public:
     explicit TrackDesignFileIndex(const IPlatformEnvironment& env)
         : FileIndex(
-              "track design index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_TRACKS), std::string(PATTERN),
+              "track design index", kMagicNumber, kVersion, env.GetFilePath(PATHID::CACHE_TRACKS), std::string(kPattern),
               std::vector<std::string>({
                   env.GetDirectoryPath(DirBase::rct1, DirId::trackDesigns),
                   env.GetDirectoryPath(DirBase::rct2, DirId::trackDesigns),
