@@ -78,7 +78,7 @@ namespace OpenRCT2::Editor
 
         // Reset loaded objects to just defaults
         // Load minimum required objects (like surface and edge)
-        for (const auto& entry : MinimumRequiredObjects)
+        for (const auto& entry : kMinimumRequiredObjects)
         {
             objectManager.LoadObject(entry);
         }

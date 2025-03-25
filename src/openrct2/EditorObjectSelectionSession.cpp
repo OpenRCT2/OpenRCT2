@@ -54,8 +54,8 @@ static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::count)];
 static void SetupInUseSelectionFlags();
 static void SetupTrackDesignerObjects();
 static void SetupTrackManagerObjects();
-static void WindowEditorObjectSelectionSelectDefaultObjects();
-static void SelectDesignerObjects();
+static void selectScenarioEditorObjects();
+static void selectTrackDesignerObjects();
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
 
 /**
@@ -105,7 +105,7 @@ static void SetupTrackDesignerObjects()
 {
     int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
     const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
-    SelectDesignerObjects();
+    selectTrackDesignerObjects();
     for (int32_t i = 0; i < numObjects; i++)
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
@@ -344,7 +344,7 @@ void Sub6AB211()
         // To prevent it breaking in scenario mode.
         if (gLegacyScene == LegacyScene::scenarioEditor)
         {
-            WindowEditorObjectSelectionSelectDefaultObjects();
+            selectScenarioEditorObjects();
         }
     }
 
@@ -431,11 +431,19 @@ void UnloadUnselectedObjects()
  *
  *  rct2: 0x006AA805
  */
-static void WindowEditorObjectSelectionSelectDefaultObjects()
+static void selectScenarioEditorObjects()
 {
     if (_numSelectedObjectsForType[0] == 0)
     {
-        for (auto defaultSelectedObject : DefaultSelectedObjects)
+        for (auto designerSelectedObject : kCommonScenarioAndTrackDesignerObjects)
+        {
+            WindowEditorObjectSelectionSelectObject(
+                0,
+                INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
+                    | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
+                ObjectEntryDescriptor(designerSelectedObject));
+        }
+        for (auto defaultSelectedObject : kDefaultScenarioObjects)
         {
             WindowEditorObjectSelectionSelectObject(
                 0,
@@ -446,11 +454,11 @@ static void WindowEditorObjectSelectionSelectDefaultObjects()
     }
 }
 
-static void SelectDesignerObjects()
+static void selectTrackDesignerObjects()
 {
     if (_numSelectedObjectsForType[0] == 0)
     {
-        for (auto designerSelectedObject : DesignerSelectedObjects)
+        for (auto designerSelectedObject : kCommonScenarioAndTrackDesignerObjects)
         {
             WindowEditorObjectSelectionSelectObject(
                 0,
