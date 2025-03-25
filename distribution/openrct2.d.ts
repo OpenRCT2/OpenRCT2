@@ -1500,7 +1500,7 @@ declare global {
     }
 
     /**
-     * Does not support `TileModifyType::AnyPaste`
+     * @todo Does not support `TileModifyType::AnyPaste`
      */
     interface TileModifyArgs extends GameActionArgs {
         x: number;
