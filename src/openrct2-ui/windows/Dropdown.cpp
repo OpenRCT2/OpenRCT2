@@ -596,7 +596,6 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
-        // Set colour tooltips
         std::copy(kColourTooltips.begin(), kColourTooltips.end(), gDropdownTooltips.begin());
 
         gDropdownHasTooltips = true;
