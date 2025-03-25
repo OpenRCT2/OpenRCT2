@@ -46,11 +46,13 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     };
 
+    std::array<Dropdown::Item, Dropdown::kItemsMaxSize> gDropdownItems;
+    std::array<StringId, Dropdown::kItemsMaxSize> gDropdownTooltips;
+    static std::array<ImageId, Dropdown::kItemsMaxSize> _dropdownItemsImages;
+
     int32_t gDropdownNumItems;
-    Dropdown::Item gDropdownItems[Dropdown::kItemsMaxSize];
-    static ImageId _dropdownItemsImages[Dropdown::kItemsMaxSize];
-    bool gDropdownIsColour;
-    int32_t gDropdownLastColourHover;
+    bool gDropdownHasTooltips;
+    int32_t gDropdownLastTooltipHover;
     int32_t gDropdownHighlightedIndex;
     int32_t gDropdownDefaultIndex;
     static bool _dropdownPrepareUseImages;
@@ -80,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
             // Input state
             gDropdownHighlightedIndex = -1;
             ResetDropdownFlags();
-            gDropdownIsColour = false;
+            gDropdownHasTooltips = false;
             gDropdownDefaultIndex = -1;
             InputSetState(InputState::DropdownActive);
         }
@@ -492,6 +494,71 @@ namespace OpenRCT2::Ui::Windows
         COLOUR_VOID,
     };
 
+    constexpr std::array kColourTooltips = {
+        STR_COLOUR_BLACK_TIP,
+        STR_COLOUR_SATURATED_RED_TIP,
+        STR_COLOUR_DARK_ORANGE_TIP,
+        STR_COLOUR_DARK_YELLOW_TIP,
+        STR_COLOUR_GRASS_GREEN_DARK_TIP,
+        STR_COLOUR_SATURATED_GREEN_TIP,
+        STR_COLOUR_AQUA_DARK_TIP,
+        STR_COLOUR_DARK_BLUE_TIP,
+        STR_COLOUR_SATURATED_PURPLE_DARK_TIP,
+
+        STR_COLOUR_GREY_TIP,
+        STR_COLOUR_BRIGHT_RED_TIP,
+        STR_COLOUR_LIGHT_ORANGE_TIP,
+        STR_COLOUR_YELLOW_TIP,
+        STR_COLOUR_MOSS_GREEN_TIP,
+        STR_COLOUR_BRIGHT_GREEN_TIP,
+        STR_COLOUR_TEAL_TIP,
+        STR_COLOUR_LIGHT_BLUE_TIP,
+        STR_COLOUR_BRIGHT_PURPLE_TIP,
+
+        STR_COLOUR_WHITE_TIP,
+        STR_COLOUR_LIGHT_PINK_TIP,
+        STR_COLOUR_ORANGE_LIGHT_TIP,
+        STR_COLOUR_BRIGHT_YELLOW_TIP,
+        STR_COLOUR_GRASS_GREEN_LIGHT_TIP,
+        STR_COLOUR_SATURATED_GREEN_LIGHT_TIP,
+        STR_COLOUR_AQUAMARINE_TIP,
+        STR_COLOUR_ICY_BLUE_TIP,
+        STR_COLOUR_SATURATED_PURPLE_LIGHT_TIP,
+
+        STR_COLOUR_DULL_BROWN_DARK_TIP,
+        STR_COLOUR_BORDEAUX_RED_DARK_TIP,
+        STR_COLOUR_TAN_DARK_TIP,
+        STR_COLOUR_SATURATED_BROWN_TIP,
+        STR_COLOUR_DARK_OLIVE_DARK_TIP,
+        STR_COLOUR_OLIVE_DARK_TIP,
+        STR_COLOUR_DULL_GREEN_DARK_TIP,
+        STR_COLOUR_DARK_PURPLE_TIP,
+        STR_COLOUR_DARK_PINK_TIP,
+
+        STR_COLOUR_DARK_BROWN_TIP,
+        STR_COLOUR_BORDEAUX_RED_TIP,
+        STR_COLOUR_SALMON_PINK_TIP,
+        STR_COLOUR_LIGHT_BROWN_TIP,
+        STR_COLOUR_DARK_OLIVE_GREEN_TIP,
+        STR_COLOUR_OLIVE_GREEN_TIP,
+        STR_COLOUR_DARK_GREEN_TIP,
+        STR_COLOUR_LIGHT_PURPLE_TIP,
+        STR_COLOUR_BRIGHT_PINK_TIP,
+
+        STR_COLOUR_DULL_BROWN_LIGHT_TIP,
+        STR_COLOUR_BORDEAUX_RED_LIGHT_TIP,
+        STR_COLOUR_TAN_LIGHT_TIP,
+        STR_COLOUR_SATURATED_BROWN_LIGHT_TIP,
+        STR_COLOUR_DARK_OLIVE_LIGHT_TIP,
+        STR_COLOUR_OLIVE_LIGHT_TIP,
+        STR_COLOUR_DULL_GREEN_LIGHT_TIP,
+        STR_COLOUR_DULL_PURPLE_LIGHT_TIP,
+        STR_COLOUR_MAGENTA_LIGHT_TIP,
+
+        STR_COLOUR_INVISIBLE_TIP,
+        STR_COLOUR_VOID_TIP,
+    };
+
     colour_t ColourDropDownIndexToColour(uint8_t ddidx)
     {
         return kColoursDropdownOrder[ddidx];
@@ -529,8 +596,10 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
-        gDropdownIsColour = true;
-        gDropdownLastColourHover = -1;
+        std::copy(kColourTooltips.begin(), kColourTooltips.end(), gDropdownTooltips.begin());
+
+        gDropdownHasTooltips = true;
+        gDropdownLastTooltipHover = -1;
         gDropdownDefaultIndex = defaultIndex;
     }
 

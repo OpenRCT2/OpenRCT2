@@ -705,6 +705,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 gDropdownItems[numPathTypes].Format = kStringIdNone;
+                gDropdownTooltips[numPathTypes] = pathType->NameStringId;
                 Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::footpathSurface, i });
                 numPathTypes++;
@@ -730,6 +731,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 gDropdownItems[numPathTypes].Format = kStringIdNone;
+                gDropdownTooltips[numPathTypes] = pathEntry->string_idx;
                 Dropdown::SetImage(
                     numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
                 _dropdownEntries.push_back({ ObjectType::paths, i });
@@ -740,6 +742,9 @@ namespace OpenRCT2::Ui::Windows
             WindowDropdownShowImage(
                 windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numPathTypes, 47,
                 36, itemsPerRow);
+
+            gDropdownHasTooltips = true;
+
             if (defaultIndex)
                 gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
         }
@@ -764,6 +769,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 gDropdownItems[numRailingsTypes].Format = kStringIdNone;
+                gDropdownTooltips[numRailingsTypes] = railingsEntry->NameStringId;
                 Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::footpathRailings, i });
                 numRailingsTypes++;
@@ -773,6 +779,9 @@ namespace OpenRCT2::Ui::Windows
             WindowDropdownShowImage(
                 windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numRailingsTypes,
                 47, 36, itemsPerRow);
+
+            gDropdownHasTooltips = true;
+
             if (defaultIndex)
                 gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
         }
