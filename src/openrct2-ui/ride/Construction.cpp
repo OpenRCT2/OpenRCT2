@@ -365,7 +365,7 @@ namespace OpenRCT2
     CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords)
     {
         CoordsXYZD entranceExitCoords{};
-        gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
+        gRideEntranceExitPlaceDirection = kInvalidDirection;
         // determine if the mouse is hovering over a station - that's the station to add the entrance to
         auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
         if (info.interactionType != ViewportInteractionItem::None)
@@ -407,7 +407,7 @@ namespace OpenRCT2
             return entranceExitCoords;
         }
 
-        entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
+        entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, kInvalidDirection };
 
         if (ride->type == kRideTypeNull)
         {
@@ -482,7 +482,7 @@ namespace OpenRCT2
                 } while (!(tileElement++)->IsLastForTile());
             }
         }
-        gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
+        gRideEntranceExitPlaceDirection = kInvalidDirection;
         return entranceExitCoords;
     }
 

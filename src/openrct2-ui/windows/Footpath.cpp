@@ -1145,7 +1145,7 @@ namespace OpenRCT2::Ui::Windows
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
 
             auto footpathPlaceAction = FootpathPlaceAction(
-                { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, INVALID_DIRECTION, constructFlags);
+                { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, kInvalidDirection, constructFlags);
             footpathPlaceAction.SetCallback([this](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
@@ -1216,7 +1216,7 @@ namespace OpenRCT2::Ui::Windows
             _provisionalFootpath.flags.clearAll();
             gFootpathConstructSlope = 0;
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
-            _footpathConstructValidDirections = INVALID_DIRECTION;
+            _footpathConstructValidDirections = kInvalidDirection;
             WindowFootpathSetEnabledAndPressedWidgets();
         }
 
@@ -1256,7 +1256,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (gFootpathConstructSlope == 0)
                     {
-                        self->_footpathConstructValidDirections = INVALID_DIRECTION;
+                        self->_footpathConstructValidDirections = kInvalidDirection;
                     }
                     else
                     {
@@ -1328,7 +1328,7 @@ namespace OpenRCT2::Ui::Windows
             gFootpathConstructFromPosition.y -= CoordsDirectionDelta[edge].y;
             gFootpathConstructFromPosition.z = z;
             _footpathConstructDirection = edge;
-            _footpathConstructValidDirections = INVALID_DIRECTION;
+            _footpathConstructValidDirections = kInvalidDirection;
         }
 
         /**
@@ -1452,7 +1452,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Enable / disable directional widgets
                 direction = _footpathConstructValidDirections;
-                if (direction != INVALID_DIRECTION)
+                if (direction != kInvalidDirection)
                 {
                     disabledWidgets |= (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE) | (1uLL << WIDX_DIRECTION_SW)
                         | (1uLL << WIDX_DIRECTION_SE);
@@ -1760,7 +1760,7 @@ namespace OpenRCT2::Ui::Windows
         FootpathRemoveProvisional();
 
         auto footpathPlaceAction = FootpathPlaceAction(
-            footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
+            footpathLoc, slope, type, railingsType, kInvalidDirection, constructFlags);
         footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         auto res = GameActions::Execute(&footpathPlaceAction);
         cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;

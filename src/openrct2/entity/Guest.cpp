@@ -4713,7 +4713,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             auto exit = ride->getStation(CurrentRideStation).Exit;
             waypoint = 1;
             auto directionTemp = exit.direction;
-            if (exit.direction == INVALID_DIRECTION)
+            if (exit.direction == kInvalidDirection)
             {
                 directionTemp = 0;
             }

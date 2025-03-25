@@ -2593,7 +2593,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
             CoordsXYZD entranceOrExitCoords = RideGetEntranceOrExitPositionFromScreenPosition(screenCoords);
-            if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
+            if (gRideEntranceExitPlaceDirection == kInvalidDirection)
                 return;
 
             auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
@@ -3509,7 +3509,7 @@ namespace OpenRCT2::Ui::Windows
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         CoordsXYZD entranceOrExitCoords = RideGetEntranceOrExitPositionFromScreenPosition(screenCoords);
-        if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
+        if (gRideEntranceExitPlaceDirection == kInvalidDirection)
         {
             RideConstructionInvalidateCurrentTrack();
             return;

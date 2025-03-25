@@ -1651,7 +1651,7 @@ namespace OpenRCT2::RCT2
         void ImportEntityPeep(::Peep* dst, const Peep* src)
         {
             const auto isNullLocation = [](const RCT12xyzd8& pos) {
-                return pos.x == 0xFF && pos.y == 0xFF && pos.z == 0xFF && pos.direction == INVALID_DIRECTION;
+                return pos.x == 0xFF && pos.y == 0xFF && pos.z == 0xFF && pos.direction == kInvalidDirection;
             };
 
             ImportEntityCommonProperties(static_cast<EntityBase*>(dst), src);
@@ -1697,7 +1697,7 @@ namespace OpenRCT2::RCT2
             if (isNullLocation(src->PathfindGoal))
             {
                 dst->PathfindGoal.SetNull();
-                dst->PathfindGoal.direction = INVALID_DIRECTION;
+                dst->PathfindGoal.direction = kInvalidDirection;
             }
             else
             {
@@ -1709,7 +1709,7 @@ namespace OpenRCT2::RCT2
                 if (isNullLocation(src->PathfindHistory[i]))
                 {
                     dst->PathfindHistory[i].SetNull();
-                    dst->PathfindHistory[i].direction = INVALID_DIRECTION;
+                    dst->PathfindHistory[i].direction = kInvalidDirection;
                 }
                 else
                 {

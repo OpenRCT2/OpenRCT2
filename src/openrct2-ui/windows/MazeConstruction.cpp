@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
             if (entranceOrExitCoords.IsNull())
                 return;
 
-            if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
+            if (gRideEntranceExitPlaceDirection == kInvalidDirection)
                 return;
 
             RideId rideIndex = gRideEntranceExitPlaceRideIndex;

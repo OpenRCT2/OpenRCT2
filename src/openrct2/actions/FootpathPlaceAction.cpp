@@ -106,7 +106,7 @@ GameActions::Result FootpathPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
     }
 
-    if (_direction != INVALID_DIRECTION && !DirectionValid(_direction))
+    if (_direction != kInvalidDirection && !DirectionValid(_direction))
     {
         LOG_ERROR("Direction invalid. direction = %u", _direction);
         return GameActions::Result(
@@ -143,7 +143,7 @@ GameActions::Result FootpathPlaceAction::Execute() const
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        if (_direction != INVALID_DIRECTION && !getGameState().cheats.disableClearanceChecks)
+        if (_direction != kInvalidDirection && !getGameState().cheats.disableClearanceChecks)
         {
             // It is possible, let's remove walls between the old and new piece of path
             auto zLow = _loc.z;

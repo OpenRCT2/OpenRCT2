@@ -1401,7 +1401,7 @@ namespace OpenRCT2::RCT1
             dst->PathfindGoal.x = 0xFF;
             dst->PathfindGoal.y = 0xFF;
             dst->PathfindGoal.z = 0xFF;
-            dst->PathfindGoal.direction = INVALID_DIRECTION;
+            dst->PathfindGoal.direction = kInvalidDirection;
         }
 
         void ImportStaffPatrolArea(Staff* staffmember, uint8_t staffId)

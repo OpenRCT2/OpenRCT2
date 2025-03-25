@@ -2988,5 +2988,5 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 void Peep::ResetPathfindGoal()
 {
     PathfindGoal.SetNull();
-    PathfindGoal.direction = INVALID_DIRECTION;
+    PathfindGoal.direction = kInvalidDirection;
 }

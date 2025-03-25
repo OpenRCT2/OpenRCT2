@@ -129,9 +129,9 @@ namespace OpenRCT2::Ui::Windows
 
         CoordsXYZD PlaceParkEntranceGetMapPosition(const ScreenCoordsXY& screenCoords)
         {
-            CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, INVALID_DIRECTION };
+            CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, kInvalidDirection };
             const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
-            parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, INVALID_DIRECTION };
+            parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, kInvalidDirection };
             if (parkEntranceMapPosition.IsNull())
                 return parkEntranceMapPosition;
 
