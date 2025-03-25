@@ -5459,7 +5459,7 @@ bool RideHasAdjacentStation(const Ride& ride)
 bool RideHasStationShelter(const Ride& ride)
 {
     const auto* stationObj = ride.getStationObject();
-    return stationObj != nullptr && (stationObj->Flags & STATION_OBJECT_FLAGS::HAS_SHELTER);
+    return stationObj != nullptr && (stationObj->Flags & StationObjectFlags::hasShelter);
 }
 
 bool RideHasRatings(const Ride& ride)

@@ -4169,10 +4169,10 @@ namespace OpenRCT2::Ui::Windows
             switch (trackColour)
             {
                 case 0:
-                    return (stationObjFlags & STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR)
+                    return (stationObjFlags & StationObjectFlags::hasPrimaryColour)
                         || ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrackColourMain);
                 case 1:
-                    return (stationObjFlags & STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR)
+                    return (stationObjFlags & StationObjectFlags::hasSecondaryColour)
                         || ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrackColourAdditional);
                 case 2:
                     return ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrackColourSupports);
@@ -4921,7 +4921,7 @@ namespace OpenRCT2::Ui::Windows
                         GfxDrawSprite(clippedDpi, imageId.WithIndexOffset(4), { 34, 20 });
 
                         // Glass
-                        if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
+                        if (stationObj->Flags & StationObjectFlags::isTransparent)
                         {
                             auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparency(trackColour.main);
                             GfxDrawSprite(clippedDpi, glassImageId, { 34, 20 });

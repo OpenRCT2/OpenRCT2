@@ -172,7 +172,7 @@ static void PaintSwingingShip(
     else
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
-        if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+        if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
             ImageIndex base = (direction & 1) ? SPR_STATION_BASE_A_NW_SE : SPR_STATION_BASE_A_SW_NE;
             imageId = session.SupportColours.WithIndex(base);
@@ -182,7 +182,7 @@ static void PaintSwingingShip(
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
-    if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
         if (direction & 1)
         {

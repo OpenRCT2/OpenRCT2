@@ -139,7 +139,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     PaintRideEntranceExitLightEffects(session, height, entranceEl);
 
-    auto hasGlass = (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT) != 0;
+    auto hasGlass = (stationObj->Flags & StationObjectFlags::isTransparent) != 0;
     auto colourPrimary = ride->trackColours[0].main;
     auto colourSecondary = ride->trackColours[0].additional;
     auto imageTemplate = ImageId(0, colourPrimary, colourSecondary);
