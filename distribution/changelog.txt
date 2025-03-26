@@ -1,6 +1,7 @@
 0.4.22 (in development)
 ------------------------------------------------------------------------
 - Change: [#23803] Lightning strikes and thunder happen at the same frequency independently of the game speed.
+- Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
 - Change: [#24135] Compress Emscripten js/wasm files.
 - Fix: [#21919] Non-recolourable cars still show colour picker.
 - Fix: [#23108] Missing pieces on Hypercoaster and Hyper-Twister, even with the ‘all drawable track pieces’ cheat enabled.
