@@ -1012,12 +1012,12 @@ namespace OpenRCT2
                             });
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
-                                if (smallHistory[i] == RCT12ParkHistoryUndefined)
+                                if (smallHistory[i] == kRCT12ParkHistoryUndefined)
                                     gameState.park.RatingHistory[i] = kParkRatingHistoryUndefined;
                                 else
                                 {
                                     gameState.park.RatingHistory[i] = static_cast<uint16_t>(
-                                        smallHistory[i] * RCT12ParkRatingHistoryFactor);
+                                        smallHistory[i] * kRCT12ParkRatingHistoryFactor);
                                 }
                             }
                         }
@@ -1027,11 +1027,11 @@ namespace OpenRCT2
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
                                 if (gameState.park.RatingHistory[i] == kParkRatingHistoryUndefined)
-                                    smallHistory[i] = RCT12ParkHistoryUndefined;
+                                    smallHistory[i] = kRCT12ParkHistoryUndefined;
                                 else
                                 {
                                     smallHistory[i] = static_cast<uint8_t>(
-                                        gameState.park.RatingHistory[i] / RCT12ParkRatingHistoryFactor);
+                                        gameState.park.RatingHistory[i] / kRCT12ParkRatingHistoryFactor);
                                 }
                             }
                             cs.ReadWriteArray(smallHistory, [&cs](uint8_t& value) {
@@ -1237,12 +1237,11 @@ namespace OpenRCT2
                                     // Previous formats stored the needs supports flag in the primary colour
                                     // We have moved it into a flags field to support extended colour sets
                                     bool needsSupports = sceneryElement->GetPrimaryColour()
-                                        & RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG;
+                                        & kRCT12SmallSceneryElementNeedsSupportsFlag;
                                     if (needsSupports)
                                     {
                                         sceneryElement->SetPrimaryColour(
-                                            sceneryElement->GetPrimaryColour()
-                                            & ~RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG);
+                                            sceneryElement->GetPrimaryColour() & ~kRCT12SmallSceneryElementNeedsSupportsFlag);
                                         sceneryElement->SetNeedsSupports();
                                     }
                                 }

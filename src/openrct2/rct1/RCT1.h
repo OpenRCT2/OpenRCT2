@@ -505,7 +505,7 @@ namespace OpenRCT2::RCT1
 
         uint8_t GetTrackDirection() const
         {
-            return TrackTypeAndDirection & RCT12VehicleTrackDirectionMask;
+            return TrackTypeAndDirection & kRCT12VehicleTrackDirectionMask;
         }
     };
 

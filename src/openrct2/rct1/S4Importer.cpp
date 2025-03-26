@@ -1229,7 +1229,7 @@ namespace OpenRCT2::RCT1
         {
             for (const auto& src : _s4.RideMeasurements)
             {
-                if (src.RideIndex != RCT12_RIDE_ID_NULL)
+                if (src.RideIndex != kRCT12RideIdNull)
                 {
                     auto ride = GetRide(RCT12RideIdToOpenRCT2RideId(src.RideIndex));
                     if (ride != nullptr)
@@ -1464,7 +1464,7 @@ namespace OpenRCT2::RCT1
             gameState.peepSpawns.clear();
             for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
-                if (_s4.PeepSpawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
+                if (_s4.PeepSpawn[i].x != kRCT12PeepSpawnUndefined)
                 {
                     PeepSpawn spawn = { _s4.PeepSpawn[i].x, _s4.PeepSpawn[i].y, _s4.PeepSpawn[i].z * 16,
                                         _s4.PeepSpawn[i].direction };
@@ -2245,16 +2245,16 @@ namespace OpenRCT2::RCT1
             Park::ResetHistories(gameState);
             for (size_t i = 0; i < std::size(_s4.ParkRatingHistory); i++)
             {
-                if (_s4.ParkRatingHistory[i] != RCT12ParkHistoryUndefined)
+                if (_s4.ParkRatingHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.park.RatingHistory[i] = _s4.ParkRatingHistory[i] * RCT12ParkRatingHistoryFactor;
+                    gameState.park.RatingHistory[i] = _s4.ParkRatingHistory[i] * kRCT12ParkRatingHistoryFactor;
                 }
             }
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
-                if (_s4.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
+                if (_s4.GuestsInParkHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
+                    gameState.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
                 }
             }
 
@@ -2944,7 +2944,7 @@ namespace OpenRCT2::RCT1
             auto srcThought = &src->Thoughts[i];
             auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->Type);
-            if (srcThought->Item == RCT12PeepThoughtItemNone)
+            if (srcThought->Item == kRCT12PeepThoughtItemNone)
                 dstThought->item = kPeepThoughtItemNone;
             else
                 dstThought->item = srcThought->Item;
