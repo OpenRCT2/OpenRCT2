@@ -894,9 +894,6 @@ declare global {
         speed: number;
     }
 
-    /**
-     * @todo Recommendation: Use Peep.setFlag instead of the GuestSetFlag action
-     */
     interface GuestSetFlagsArgs extends GameActionArgs {
         peep: number;
         /**
@@ -1318,7 +1315,7 @@ declare global {
 
     interface RideSetSettingArgs extends GameActionArgs {
         ride: number;
-        /** 
+        /**
          * @see RideSetSetting in [src/openrct2/actions/RideSetSettingAction.h](../src/openrct2/actions/RideSetSettingAction.h)
          */
         setting: number;
@@ -1355,7 +1352,7 @@ declare global {
     }
 
     interface ScenarioSetSettingArgs extends GameActionArgs {
-        /** 
+        /**
          * @see ScenarioSetSetting in [src/openrct2/actions/ScenarioSetSettingAction.h](../src/openrct2/actions/ScenarioSetSettingAction.h)
          */
         setting: number;
