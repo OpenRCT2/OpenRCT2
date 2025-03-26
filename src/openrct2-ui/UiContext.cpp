@@ -180,7 +180,7 @@ public:
         return _scaleQuality;
     }
 
-    void SetFullscreenMode(FULLSCREEN_MODE mode) override
+    void SetFullscreenMode(FullscreenMode mode) override
     {
         static constexpr int32_t kSDLFullscreenFlags[] = {
             0,
@@ -190,7 +190,7 @@ public:
         uint32_t windowFlags = kSDLFullscreenFlags[EnumValue(mode)];
 
         // HACK Changing window size when in fullscreen usually has no effect
-        if (mode == FULLSCREEN_MODE::FULLSCREEN)
+        if (mode == FullscreenMode::fullscreen)
         {
             SDL_SetWindowFullscreen(_window, 0);
 
@@ -200,7 +200,7 @@ public:
                 Config::Get().general.FullscreenWidth, Config::Get().general.FullscreenHeight);
             SDL_SetWindowSize(_window, resolution.Width, resolution.Height);
         }
-        else if (mode == FULLSCREEN_MODE::WINDOWED)
+        else if (mode == FullscreenMode::windowed)
         {
             SDL_SetWindowSize(_window, Config::Get().general.WindowWidth, Config::Get().general.WindowHeight);
         }
@@ -820,7 +820,7 @@ private:
 
         UpdateFullscreenResolutions();
 
-        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(Config::Get().general.FullscreenMode));
+        SetFullscreenMode(static_cast<FullscreenMode>(Config::Get().general.FullscreenMode));
         TriggerResize();
     }
 
