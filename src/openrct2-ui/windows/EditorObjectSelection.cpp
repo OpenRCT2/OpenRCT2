@@ -187,7 +187,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    enum WINDOW_EDITOR_OBJECT_SELECTION_WIDGET_IDX
+    enum WindowEditorObjectSelectionWidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
