@@ -49,14 +49,14 @@ struct IZipArchive
     [[nodiscard]] bool Exists(std::string_view path) const;
 };
 
-enum class ZIP_ACCESS
+enum class ZipAccess
 {
-    READ,
-    WRITE,
+    read,
+    write,
 };
 
 namespace OpenRCT2::Zip
 {
-    [[nodiscard]] std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS zipAccess);
-    [[nodiscard]] std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS zipAccess);
+    [[nodiscard]] std::unique_ptr<IZipArchive> Open(std::string_view path, ZipAccess zipAccess);
+    [[nodiscard]] std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZipAccess zipAccess);
 } // namespace OpenRCT2::Zip
