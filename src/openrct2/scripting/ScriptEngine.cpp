@@ -1460,7 +1460,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
 {
     DukStackFrame frame(_context);
 
-    auto hookType = isExecute ? HOOK_TYPE::ACTION_EXECUTE : HOOK_TYPE::ACTION_QUERY;
+    auto hookType = isExecute ? HookType::actionExecute : HookType::actionQuery;
     if (_hookEngine.HasSubscriptions(hookType))
     {
         DukObject obj(_context);

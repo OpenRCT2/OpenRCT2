@@ -1069,7 +1069,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED)
     {
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        if (hookEngine.HasSubscriptions(HOOK_TYPE::RIDE_RATINGS_CALCULATE))
+        if (hookEngine.HasSubscriptions(HookType::rideRatingsCalculate))
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto originalRatings = ride.ratings;
@@ -1083,7 +1083,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
 
             // Call the subscriptions
             auto e = obj.Take();
-            hookEngine.Call(HOOK_TYPE::RIDE_RATINGS_CALCULATE, e, true);
+            hookEngine.Call(HookType::rideRatingsCalculate, e, true);
 
             auto scriptExcitement = AsOrDefault(e["excitement"], static_cast<int32_t>(originalRatings.excitement));
             auto scriptIntensity = AsOrDefault(e["intensity"], static_cast<int32_t>(originalRatings.intensity));

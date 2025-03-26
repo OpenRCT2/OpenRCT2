@@ -351,11 +351,11 @@ namespace OpenRCT2
 
 #ifdef ENABLE_SCRIPTING
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
+        hookEngine.Call(HookType::intervalTick, true);
 
         if (day != gameState.date.GetDay())
         {
-            hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
+            hookEngine.Call(HookType::intervalDay, true);
         }
 #endif
 

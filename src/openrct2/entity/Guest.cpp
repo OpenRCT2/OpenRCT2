@@ -7311,7 +7311,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
 #ifdef ENABLE_SCRIPTING
     auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_GENERATION))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::guestGeneration))
     {
         auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
 
@@ -7321,7 +7321,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
         // Call the subscriptions
         auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_GENERATION, e, true);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::guestGeneration, e, true);
     }
 #endif
 

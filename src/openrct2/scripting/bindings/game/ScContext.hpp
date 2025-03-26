@@ -273,7 +273,7 @@ namespace OpenRCT2::Scripting
         __declspec(noinline)
     #endif
         std::shared_ptr<ScDisposable>
-            CreateSubscription(HOOK_TYPE hookType, const DukValue& callback)
+            CreateSubscription(HookType hookType, const DukValue& callback)
         {
             auto owner = _execInfo.GetCurrentPlugin();
             auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
@@ -286,7 +286,7 @@ namespace OpenRCT2::Scripting
             auto ctx = scriptEngine.GetContext();
 
             auto hookType = GetHookType(hook);
-            if (hookType == HOOK_TYPE::UNDEFINED)
+            if (hookType == HookType::notDefined)
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Unknown hook type");
             }

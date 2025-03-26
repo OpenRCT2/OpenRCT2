@@ -160,13 +160,13 @@ namespace OpenRCT2::Park
 
 #ifdef ENABLE_SCRIPTING
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        if (hookEngine.HasSubscriptions(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP))
+        if (hookEngine.HasSubscriptions(HookType::parkCalculateGuestCap))
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto obj = DukObject(ctx);
             obj.Set("suggestedGuestMaximum", suggestedMaxGuests);
             auto e = obj.Take();
-            hookEngine.Call(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP, e, true);
+            hookEngine.Call(HookType::parkCalculateGuestCap, e, true);
 
             suggestedMaxGuests = AsOrDefault(e["suggestedGuestMaximum"], static_cast<int32_t>(suggestedMaxGuests));
             suggestedMaxGuests = std::clamp<uint16_t>(suggestedMaxGuests, 0, UINT16_MAX);
