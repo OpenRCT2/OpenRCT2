@@ -752,7 +752,7 @@ declare global {
 
 
     interface GameActionArgs {
-        /** @see GAME_COMMAND in [src/openrct2/Game.h](../src/openrct2/Game.h) */
+        /** @see `GameCommand` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/Game.h} */
         flags?: number;
     }
 
@@ -806,11 +806,11 @@ declare global {
     }
 
     interface CheatSetArgs extends GameActionArgs {
-        /** @see [src/openrct2/Cheats.h](../src/openrct2/Cheats.h) */
+        /** @see {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/Cheats.h} */
         type: number;
-        /** @see [src/openrct2/actions/CheatSetAction.h](../src/openrct2/actions/CheatSetAction.h) */
+        /** @see {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/CheatSetAction.h} */
         param1: number;
-        /** @see [src/openrct2/actions/CheatSetAction.h](../src/openrct2/actions/CheatSetAction.h) */
+        /** @see {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/CheatSetAction.h} */
         param2: number;
     }
 
@@ -866,7 +866,7 @@ declare global {
     }
 
     /**
-     * @see [src/openrct2/actions/FootpathPlaceAction.h](../src/openrct2/actions/FootpathPlaceAction.h)
+     * @see {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/FootpathPlaceAction.h}
      */
     interface FootpathLayoutPlaceArgs extends GameActionArgs {
         x: number;
@@ -897,7 +897,7 @@ declare global {
     interface GuestSetFlagsArgs extends GameActionArgs {
         peep: number;
         /**
-         * @see PEEP_FLAGS in [src/openrct2/entity/Peep.h](../src/openrct2/entity/Peep.h)
+         * @see `PEEP_FLAGS` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/entity/Peep.h}
          */
         guestFlags: number;
     }
@@ -930,7 +930,7 @@ declare global {
         y1: number;
         x2: number;
         y2: number;
-        /** @see MAP_SELECT_TYPE in [src/openrct2/world/Map.h](../src/openrct2/world/Map.h) */
+        /** @see `MAP_SELECT_TYPE` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/world/Map.h} */
         selectionType: number;
     }
 
@@ -945,7 +945,7 @@ declare global {
         y1: number;
         x2: number;
         y2: number;
-        /** @see MAP_SELECT_TYPE in [src/openrct2/world/Map.h](../src/openrct2/world/Map.h) */
+        /** @see `MAP_SELECT_TYPE` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/world/Map.h} */
         selectionType: number;
     }
 
@@ -953,7 +953,7 @@ declare global {
         x: number;
         y: number;
         height: number;
-        /** @see [src/openrct2/actions/LandSetHeightAction.h](../src/openrct2/actions/LandSetHeightAction.h) */
+        /** @see {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/LandSetHeightAction.h} */
         style: number;
     }
 
@@ -988,7 +988,7 @@ declare global {
         x2: number;
         y2: number;
         /**
-         * @see MAP_SELECT_TYPE in [src/openrct2/world/Map.h](../src/openrct2/world/Map.h)
+         * @see `MAP_SELECT_TYPE` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/world/Map.h}
          */
         selectionType: number;
         isLowering: boolean;
@@ -1089,7 +1089,7 @@ declare global {
         /**
          * Only used if {@link NetworkModifyGroupArgs.type} === 2 (set permissions)
          *
-         * @see NetworkPermission in [src/openrct2/network/NetworkAction.h](../src/openrct2/network/NetworkAction.h)
+         * @see `NetworkPermission` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/network/NetworkAction.h}
          */
         permissionIndex: number;
         /**
@@ -1118,12 +1118,12 @@ declare global {
 
     interface ParkMarketingArgs extends GameActionArgs {
         /**
-         * @see ADVERTISTING_CAMPAIGN in [src/openrct2/management/Marketing.h](../src/openrct2/management/Marketing.h)
+         * @see `ADVERTISTING_CAMPAIGN` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/management/Marketing.h}
          */
         type: number;
         /**
          * Ride ID or Shop Item
-         * @see ShopItem in [src/openrct2/ride/ShopItem.h](../src/openrct2/ride/ShopItem.h)
+         * @see `ShopItem` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/ride/ShopItem.h}
          */
         item: number;
         numweeks: number;
@@ -1157,7 +1157,7 @@ declare global {
         /**
          * Only used if {@link ParkSetParameterArgs.parameter} === 2 (set same price in park). Bitmask.
          *
-         * @see ShopItem in [src/openrct2/ride/ShopItem.h](../src/openrct2/ride/ShopItem.h)
+         * @see `ShopItem` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/ride/ShopItem.h}
          */
         value: number;
     }
@@ -1166,7 +1166,7 @@ declare global {
         /**
          * Bitmask.
          *
-         * @see ResearchCategory in [src/openrct2/management/Research.h](../src/openrct2/management/Research.h)
+         * @see `ResearchCategory` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/management/Research.h}
          */
         priorities: number;
         /**
@@ -1270,8 +1270,9 @@ declare global {
 
     interface RideSetAppearanceArgs extends GameActionArgs {
         ride: number;
-        /** @see RideSetAppearanceType in
-         * [src/openrct2/actions/RideSetAppearanceAction.h](../src/openrct2/actions/RideSetAppearanceAction.h)
+        /**
+         * @see RideSetAppearanceType in
+         * {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/RideSetAppearanceAction.h}
          */
         type: number;
         /**
@@ -1316,7 +1317,7 @@ declare global {
     interface RideSetSettingArgs extends GameActionArgs {
         ride: number;
         /**
-         * @see RideSetSetting in [src/openrct2/actions/RideSetSettingAction.h](../src/openrct2/actions/RideSetSettingAction.h)
+         * @see `RideSetSetting` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/RideSetSettingAction.h}
          */
         setting: number;
         value: number;
@@ -1353,7 +1354,7 @@ declare global {
 
     interface ScenarioSetSettingArgs extends GameActionArgs {
         /**
-         * @see ScenarioSetSetting in [src/openrct2/actions/ScenarioSetSettingAction.h](../src/openrct2/actions/ScenarioSetSettingAction.h)
+         * @see ScenarioSetSetting in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/ScenarioSetSettingAction.h}
          */
         setting: number;
         value: number;
@@ -1446,7 +1447,7 @@ declare global {
 
     interface StaffSetCostumeArgs extends GameActionArgs {
         id: number;
-        /** @see EntertainerCostume in [src/openrct2/entity/Staff.h](../src/openrct2/entity/Staff.h) */
+        /** @see `EntertainerCostume` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/entity/Staff.h} */
         costume: number;
     }
 
@@ -1503,13 +1504,14 @@ declare global {
         x: number;
         y: number;
         /**
-         * @see TileModifyType in [src/openrct2/actions/TileModifyAction.h](../src/openrct2/actions/TileModifyAction.h)
+         * @see `TileModifyType` in
+         * {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/TileModifyAction.h}
          */
         setting: number;
         value1: number;
         /**
          * @see TileModifyType in
-         * [src/openrct2/actions/TileModifyAction.cpp](../src/openrct2/actions/TileModifyAction.cpp)
+         * {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/TileModifyAction.cpp}
          */
         value2: number;
     }
