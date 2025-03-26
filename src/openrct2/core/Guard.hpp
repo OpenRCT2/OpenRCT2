@@ -16,11 +16,11 @@
 #include <stdbool.h>
 #include <string>
 
-enum class ASSERT_BEHAVIOUR
+enum class AssertBehaviour
 {
-    ABORT,
-    CASSERT,
-    MESSAGE_BOX,
+    abort,
+    cAssert,
+    messageBox,
 };
 
 /**
@@ -28,8 +28,8 @@ enum class ASSERT_BEHAVIOUR
  */
 namespace OpenRCT2::Guard
 {
-    ASSERT_BEHAVIOUR GetAssertBehaviour();
-    void SetAssertBehaviour(ASSERT_BEHAVIOUR behaviour);
+    AssertBehaviour GetAssertBehaviour();
+    void SetAssertBehaviour(AssertBehaviour behaviour);
 
     void Assert(bool expression, const std::source_location& location = std::source_location::current());
     void Assert(bool expression, const char* message, ...);

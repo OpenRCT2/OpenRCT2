@@ -28,7 +28,7 @@ private:
     jobject _zip;
 
 public:
-    ZipArchive(std::string_view path, ZIP_ACCESS access)
+    ZipArchive(std::string_view path, ZipAccess access)
     {
         // retrieve the JNI environment.
         JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
@@ -139,12 +139,12 @@ public:
 
 namespace OpenRCT2::Zip
 {
-    std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> Open(std::string_view path, ZipAccess access)
     {
         return std::make_unique<ZipArchive>(path, access);
     }
 
-    std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZipAccess access)
     {
         std::unique_ptr<IZipArchive> result;
         try

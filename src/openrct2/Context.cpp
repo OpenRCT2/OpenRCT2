@@ -1663,7 +1663,7 @@ void ContextTriggerResize()
 
 void ContextSetFullscreenMode(int32_t mode)
 {
-    return GetContext()->GetUiContext()->SetFullscreenMode(static_cast<FULLSCREEN_MODE>(mode));
+    return GetContext()->GetUiContext()->SetFullscreenMode(static_cast<FullscreenMode>(mode));
 }
 
 void ContextRecreateWindow()

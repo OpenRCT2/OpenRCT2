@@ -465,7 +465,7 @@ namespace OpenRCT2::Ui
                 break;
         }
 
-        if (!(InputTestFlag(INPUT_FLAG_6)) || !(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!gInputFlags.has(InputFlag::unk6) || !gInputFlags.has(InputFlag::toolActive))
         {
             auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::RideConstruction) == nullptr

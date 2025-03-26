@@ -190,9 +190,9 @@ namespace OpenRCT2
             {
                 if (InputGetState() == InputState::Reset || InputGetState() == InputState::Normal)
                 {
-                    if (InputTestFlag(INPUT_FLAG_VIEWPORT_SCROLLING))
+                    if (gInputFlags.has(InputFlag::viewportScrolling))
                     {
-                        InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+                        gInputFlags.unset(InputFlag::viewportScrolling);
                         break;
                     }
                 }
@@ -211,7 +211,7 @@ namespace OpenRCT2
 
         if (!gOpenRCT2Headless)
         {
-            InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+            gInputFlags.unset(InputFlag::viewportScrolling);
         }
 
         // Always perform autosave check, even when paused
@@ -351,11 +351,11 @@ namespace OpenRCT2
 
 #ifdef ENABLE_SCRIPTING
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
+        hookEngine.Call(HookType::intervalTick, true);
 
         if (day != gameState.date.GetDay())
         {
-            hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
+            hookEngine.Call(HookType::intervalDay, true);
         }
 #endif
 

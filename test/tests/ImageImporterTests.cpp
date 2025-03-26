@@ -41,7 +41,7 @@ TEST_F(ImageImporterTests, Import_Logo)
     auto logoPath = GetImagePath("logo.png");
 
     ImageImporter importer;
-    auto image = Imaging::ReadFromFile(logoPath, IMAGE_FORMAT::PNG_32);
+    auto image = Imaging::ReadFromFile(logoPath, ImageFormat::png32);
     auto meta = ImageImportMeta{ .offset = { 3, 5 } };
     auto result = importer.Import(image, meta);
 

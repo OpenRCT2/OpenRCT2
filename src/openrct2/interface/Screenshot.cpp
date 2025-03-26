@@ -65,7 +65,7 @@ static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo& dpi, cons
         image.Stride = dpi.LineStride();
         image.Palette = palette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
-        Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
+        Imaging::WriteToFile(path, image, ImageFormat::png);
         return true;
     }
     catch (const std::exception& e)

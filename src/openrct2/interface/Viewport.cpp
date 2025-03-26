@@ -102,7 +102,7 @@ namespace OpenRCT2
         WindowInitAll();
 
         // ?
-        InputResetFlags();
+        gInputFlags.clearAll();
         InputSetState(InputState::Reset);
         gPressedWidget.window_classification = WindowClass::Null;
         gPickupPeepImage = ImageId();
@@ -1009,7 +1009,7 @@ namespace OpenRCT2
         }
 
         bool useParallelDrawing = false;
-        if (useMultithreading && (dpi.DrawingEngine->GetFlags() & DEF_PARALLEL_DRAWING))
+        if (useMultithreading && dpi.DrawingEngine->GetFlags().has(DrawingEngineFlag::parallelDrawing))
         {
             useParallelDrawing = true;
         }

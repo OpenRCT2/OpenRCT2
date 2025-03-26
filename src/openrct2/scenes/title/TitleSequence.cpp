@@ -59,7 +59,7 @@ namespace OpenRCT2::Title
         auto ext = Path::GetExtension(path);
         if (String::equals(ext, TITLE_SEQUENCE_EXTENSION))
         {
-            auto zip = Zip::TryOpen(path, ZIP_ACCESS::READ);
+            auto zip = Zip::TryOpen(path, ZipAccess::read);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", path.c_str());
@@ -109,7 +109,7 @@ namespace OpenRCT2::Title
             const auto& filename = seq.Saves[index];
             if (seq.IsZip)
             {
-                auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::READ);
+                auto zip = Zip::TryOpen(seq.Path, ZipAccess::read);
                 if (zip != nullptr)
                 {
                     auto data = zip->GetFileData(filename);
@@ -159,7 +159,7 @@ namespace OpenRCT2::Title
             if (seq.IsZip)
             {
                 auto fdata = std::vector<uint8_t>(script.begin(), script.end());
-                auto zip = Zip::Open(seq.Path, ZIP_ACCESS::WRITE);
+                auto zip = Zip::Open(seq.Path, ZipAccess::write);
                 zip->SetFileData("script.txt", std::move(fdata));
             }
             else
@@ -189,7 +189,7 @@ namespace OpenRCT2::Title
             try
             {
                 auto fdata = File::ReadAllBytes(path);
-                auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
+                auto zip = Zip::TryOpen(seq.Path, ZipAccess::write);
                 if (zip == nullptr)
                 {
                     Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
@@ -222,7 +222,7 @@ namespace OpenRCT2::Title
         auto& oldRelativePath = seq.Saves[index];
         if (seq.IsZip)
         {
-            auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
+            auto zip = Zip::TryOpen(seq.Path, ZipAccess::write);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
@@ -252,7 +252,7 @@ namespace OpenRCT2::Title
         auto& relativePath = seq.Saves[index];
         if (seq.IsZip)
         {
-            auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
+            auto zip = Zip::TryOpen(seq.Path, ZipAccess::write);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());

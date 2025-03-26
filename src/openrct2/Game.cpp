@@ -417,7 +417,7 @@ void GameNotifyMapChange()
 
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& hookEngine = scriptEngine.GetHookEngine();
-    hookEngine.Call(HOOK_TYPE::MAP_CHANGE, false);
+    hookEngine.Call(HookType::mapChange, false);
     _mapChangedExpected = true;
 #endif
 }
@@ -429,7 +429,7 @@ void GameNotifyMapChanged()
 
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& hookEngine = scriptEngine.GetHookEngine();
-    hookEngine.Call(HOOK_TYPE::MAP_CHANGED, false);
+    hookEngine.Call(HookType::mapChanged, false);
     _mapChangedExpected = false;
 #endif
 }
@@ -677,9 +677,9 @@ void GameLoadOrQuitNoSavePrompt()
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
-            if (InputTestFlag(INPUT_FLAG_5))
+            if (gInputFlags.has(InputFlag::unk5))
             {
-                InputSetFlag(INPUT_FLAG_5, false);
+                gInputFlags.unset(InputFlag::unk5);
             }
             GameResetSpeed();
             gFirstTimeSaving = true;
@@ -757,9 +757,9 @@ void PrepareMapForSave()
 #ifdef ENABLE_SCRIPTING
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& hookEngine = scriptEngine.GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::MAP_SAVE))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::mapSave))
     {
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::MAP_SAVE, false);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::mapSave, false);
     }
 #endif
 }

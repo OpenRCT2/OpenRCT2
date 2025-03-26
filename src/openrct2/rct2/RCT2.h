@@ -314,7 +314,6 @@ namespace OpenRCT2::RCT2
         uint8_t SecondaryColour;      // 0x15
 
         colour_t getTertiaryWallColour() const;
-        void setTertiaryWallColour(colour_t colour);
     };
     static_assert(sizeof(TD6SceneryElement) == 0x16);
 
@@ -511,19 +510,19 @@ namespace OpenRCT2::RCT2
         }
         uint8_t GetTrackDirection() const
         {
-            return TrackTypeAndDirection & RCT12VehicleTrackDirectionMask;
+            return TrackTypeAndDirection & kRCT12VehicleTrackDirectionMask;
         }
         void SetTrackType(OpenRCT2::RCT12::TrackElemType trackType)
         {
             // set the upper 14 bits to 0
-            TrackTypeAndDirection &= ~RCT12VehicleTrackTypeMask;
+            TrackTypeAndDirection &= ~kRCT12VehicleTrackTypeMask;
             TrackTypeAndDirection |= EnumValue(trackType) << 2;
         }
         void SetTrackDirection(uint8_t trackDirection)
         {
             // set the lower 2 bits only
-            TrackTypeAndDirection &= ~RCT12VehicleTrackDirectionMask;
-            TrackTypeAndDirection |= trackDirection & RCT12VehicleTrackDirectionMask;
+            TrackTypeAndDirection &= ~kRCT12VehicleTrackDirectionMask;
+            TrackTypeAndDirection |= trackDirection & kRCT12VehicleTrackDirectionMask;
         }
     };
     static_assert(sizeof(Vehicle) == 0xDA);

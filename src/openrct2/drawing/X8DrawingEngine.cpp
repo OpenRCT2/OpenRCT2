@@ -273,9 +273,9 @@ DrawPixelInfo* X8DrawingEngine::GetDrawingPixelInfo()
     return &_bitsDPI;
 }
 
-DRAWING_ENGINE_FLAGS X8DrawingEngine::GetFlags()
+DrawingEngineFlags X8DrawingEngine::GetFlags()
 {
-    return static_cast<DRAWING_ENGINE_FLAGS>(DEF_DIRTY_OPTIMISATIONS | DEF_PARALLEL_DRAWING);
+    return { DrawingEngineFlag::dirtyOptimisations, DrawingEngineFlag::parallelDrawing };
 }
 
 void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)

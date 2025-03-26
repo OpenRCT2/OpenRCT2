@@ -2444,7 +2444,7 @@ namespace OpenRCT2::Ui::Windows
                 gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
                 gRideEntranceExitPlaceRideIndex = _currentRideIndex;
                 gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-                InputSetFlag(INPUT_FLAG_6, true);
+                gInputFlags.set(InputFlag::unk6);
                 RideConstructionInvalidateCurrentTrack();
                 if (_rideConstructionState != RideConstructionState::EntranceExit)
                 {
@@ -2470,7 +2470,7 @@ namespace OpenRCT2::Ui::Windows
                 gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
                 gRideEntranceExitPlaceRideIndex = _currentRideIndex;
                 gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-                InputSetFlag(INPUT_FLAG_6, true);
+                gInputFlags.set(InputFlag::unk6);
                 RideConstructionInvalidateCurrentTrack();
                 if (_rideConstructionState != RideConstructionState::EntranceExit)
                 {
@@ -3671,7 +3671,7 @@ namespace OpenRCT2::Ui::Windows
                         if (w != nullptr)
                         {
                             ToolSet(*w, WIDX_CONSTRUCT, Tool::crosshair);
-                            InputSetFlag(INPUT_FLAG_6, true);
+                            gInputFlags.set(InputFlag::unk6);
                             _trackPlaceCtrlState = false;
                             _trackPlaceShiftState = false;
                         }

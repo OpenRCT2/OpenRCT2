@@ -36,7 +36,7 @@ namespace OpenRCT2::Imaging
 {
     static constexpr auto kExceptionImageFormatUnknown = "Unknown image format.";
 
-    static std::unordered_map<IMAGE_FORMAT, ImageReaderFunc> _readerImplementations;
+    static std::unordered_map<ImageFormat, ImageReaderFunc> _readerImplementations;
 
     static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
@@ -259,22 +259,22 @@ namespace OpenRCT2::Imaging
         }
     }
 
-    IMAGE_FORMAT GetImageFormatFromPath(std::string_view path)
+    ImageFormat GetImageFormatFromPath(std::string_view path)
     {
         if (String::endsWith(path, ".png", true))
         {
-            return IMAGE_FORMAT::PNG;
+            return ImageFormat::png;
         }
 
         if (String::endsWith(path, ".bmp", true))
         {
-            return IMAGE_FORMAT::BITMAP;
+            return ImageFormat::bitmap;
         }
 
-        return IMAGE_FORMAT::UNKNOWN;
+        return ImageFormat::unknown;
     }
 
-    static ImageReaderFunc GetReader(IMAGE_FORMAT format)
+    static ImageReaderFunc GetReader(ImageFormat format)
     {
         auto result = _readerImplementations.find(format);
         if (result != _readerImplementations.end())
@@ -284,20 +284,20 @@ namespace OpenRCT2::Imaging
         return {};
     }
 
-    void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl)
+    void SetReader(ImageFormat format, ImageReaderFunc impl)
     {
         _readerImplementations[format] = impl;
     }
 
-    static Image ReadFromStream(std::istream& istream, IMAGE_FORMAT format)
+    static Image ReadFromStream(std::istream& istream, ImageFormat format)
     {
         switch (format)
         {
-            case IMAGE_FORMAT::PNG:
+            case ImageFormat::png:
                 return ReadPng(istream, false);
-            case IMAGE_FORMAT::PNG_32:
+            case ImageFormat::png32:
                 return ReadPng(istream, true);
-            case IMAGE_FORMAT::AUTOMATIC:
+            case ImageFormat::automatic:
                 throw std::invalid_argument("format can not be automatic.");
             default:
             {
@@ -311,11 +311,11 @@ namespace OpenRCT2::Imaging
         }
     }
 
-    Image ReadFromFile(std::string_view path, IMAGE_FORMAT format)
+    Image ReadFromFile(std::string_view path, ImageFormat format)
     {
         switch (format)
         {
-            case IMAGE_FORMAT::AUTOMATIC:
+            case ImageFormat::automatic:
                 return ReadFromFile(path, GetImageFormatFromPath(path));
             default:
             {
@@ -325,20 +325,20 @@ namespace OpenRCT2::Imaging
         }
     }
 
-    Image ReadFromBuffer(const std::vector<uint8_t>& buffer, IMAGE_FORMAT format)
+    Image ReadFromBuffer(const std::vector<uint8_t>& buffer, ImageFormat format)
     {
         ivstream<uint8_t> istream(buffer);
         return ReadFromStream(istream, format);
     }
 
-    void WriteToFile(std::string_view path, const Image& image, IMAGE_FORMAT format)
+    void WriteToFile(std::string_view path, const Image& image, ImageFormat format)
     {
         switch (format)
         {
-            case IMAGE_FORMAT::AUTOMATIC:
+            case ImageFormat::automatic:
                 WriteToFile(path, image, GetImageFormatFromPath(path));
                 break;
-            case IMAGE_FORMAT::PNG:
+            case ImageFormat::png:
             {
 #ifndef __EMSCRIPTEN__
                 std::ofstream fs(fs::u8path(path), std::ios::binary);

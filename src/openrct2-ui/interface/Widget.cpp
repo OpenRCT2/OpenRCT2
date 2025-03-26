@@ -900,7 +900,7 @@ namespace OpenRCT2::Ui
 
         if (InputGetState() == InputState::WidgetPressed || InputGetState() == InputState::DropdownActive)
         {
-            if (!(InputTestFlag(INPUT_FLAG_WIDGET_PRESSED)))
+            if (!gInputFlags.has(InputFlag::widgetPressed))
                 return false;
             if (gPressedWidget.window_classification != w.classification)
                 return false;

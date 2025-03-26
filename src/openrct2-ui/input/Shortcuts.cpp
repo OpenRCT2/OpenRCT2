@@ -773,7 +773,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
             {
                 windowMgr->Close(*window);
             }
-            else if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+            else if (gInputFlags.has(InputFlag::toolActive))
             {
                 ToolCancel();
             }

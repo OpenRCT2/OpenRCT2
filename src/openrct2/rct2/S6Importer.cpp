@@ -436,29 +436,29 @@ namespace OpenRCT2::RCT2
             Park::ResetHistories(gameState);
             for (size_t i = 0; i < std::size(_s6.ParkRatingHistory); i++)
             {
-                if (_s6.ParkRatingHistory[i] != RCT12ParkHistoryUndefined)
+                if (_s6.ParkRatingHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.park.RatingHistory[i] = _s6.ParkRatingHistory[i] * RCT12ParkRatingHistoryFactor;
+                    gameState.park.RatingHistory[i] = _s6.ParkRatingHistory[i] * kRCT12ParkRatingHistoryFactor;
                 }
             }
             for (size_t i = 0; i < std::size(_s6.GuestsInParkHistory); i++)
             {
-                if (_s6.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
+                if (_s6.GuestsInParkHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.guestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * RCT12GuestsInParkHistoryFactor;
+                    gameState.guestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
                 }
             }
 
             gameState.researchPriorities = _s6.ActiveResearchTypes;
             gameState.researchProgressStage = _s6.ResearchProgressStage;
-            if (_s6.LastResearchedItemSubject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
+            if (_s6.LastResearchedItemSubject != kRCT12ResearchedItemsSeparator)
                 gameState.researchLastItem = RCT12ResearchItem{ _s6.LastResearchedItemSubject,
                                                                 EnumValue(ResearchCategory::Transport) }
                                                  .ToResearchItem();
             else
                 gameState.researchLastItem = std::nullopt;
             // Pad01357CF8
-            if (_s6.NextResearchItem != RCT12_RESEARCHED_ITEMS_SEPARATOR)
+            if (_s6.NextResearchItem != kRCT12ResearchedItemsSeparator)
                 gameState.researchNextItem = RCT12ResearchItem{ _s6.NextResearchItem, _s6.NextResearchCategory }
                                                  .ToResearchItem();
             else
@@ -707,7 +707,7 @@ namespace OpenRCT2::RCT2
 
         bool IsFlatRide(const uint8_t rct12RideIndex)
         {
-            if (rct12RideIndex == RCT12_RIDE_ID_NULL)
+            if (rct12RideIndex == kRCT12RideIdNull)
                 return false;
             return _isFlatRide[rct12RideIndex];
         }
@@ -1060,7 +1060,7 @@ namespace OpenRCT2::RCT2
         {
             for (const auto& src : _s6.RideMeasurements)
             {
-                if (src.RideIndex != RCT12_RIDE_ID_NULL)
+                if (src.RideIndex != kRCT12RideIdNull)
                 {
                     const auto rideId = RideId::FromUnderlying(src.RideIndex);
                     auto ride = GetRide(rideId);
@@ -1159,14 +1159,14 @@ namespace OpenRCT2::RCT2
                 || String::equals(_s6.ScenarioFilename, "South America - Rio Carnival.SC6"))
             {
                 _s6.PeepSpawns[0] = { 2160, 3167, 6, 1 };
-                _s6.PeepSpawns[1].x = RCT12_PEEP_SPAWN_UNDEFINED;
+                _s6.PeepSpawns[1].x = kRCT12PeepSpawnUndefined;
             }
             // In this park, peep_spawns[0] is correct. Just clear the other.
             else if (
                 String::equals(_s6.ScenarioFilename, "Great Wall of China Tourism Enhancement.SC6")
                 || String::equals(_s6.ScenarioFilename, "Asia - Great Wall of China Tourism Enhancement.SC6"))
             {
-                _s6.PeepSpawns[1].x = RCT12_PEEP_SPAWN_UNDEFINED;
+                _s6.PeepSpawns[1].x = kRCT12PeepSpawnUndefined;
             }
             // Amity Airfield has peeps entering from the corner of the tile, instead of the middle.
             else if (String::equals(_s6.ScenarioFilename, "Amity Airfield.SC6"))
@@ -1183,7 +1183,7 @@ namespace OpenRCT2::RCT2
             gameState.peepSpawns.clear();
             for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
-                if (_s6.PeepSpawns[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
+                if (_s6.PeepSpawns[i].x != kRCT12PeepSpawnUndefined)
                 {
                     PeepSpawn spawn = { _s6.PeepSpawns[i].x, _s6.PeepSpawns[i].y, _s6.PeepSpawns[i].z * 16,
                                         _s6.PeepSpawns[i].direction };
@@ -2098,7 +2098,7 @@ namespace OpenRCT2::RCT2
             auto srcThought = &src->Thoughts[i];
             auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->Type);
-            if (srcThought->Item == RCT12PeepThoughtItemNone)
+            if (srcThought->Item == kRCT12PeepThoughtItemNone)
                 dstThought->item = kPeepThoughtItemNone;
             else
                 dstThought->item = srcThought->Item;

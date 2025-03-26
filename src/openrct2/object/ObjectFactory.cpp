@@ -433,7 +433,7 @@ namespace OpenRCT2::ObjectFactory
     {
         try
         {
-            auto archive = Zip::Open(path, ZIP_ACCESS::READ);
+            auto archive = Zip::Open(path, ZipAccess::read);
             auto jsonBytes = archive->GetFileData("object.json");
             if (jsonBytes.empty())
             {

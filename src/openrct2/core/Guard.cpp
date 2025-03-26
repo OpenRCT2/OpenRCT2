@@ -30,11 +30,11 @@ namespace OpenRCT2::Guard
     static constexpr const utf8* kAssertionMessage = "An assertion failed, please report this to the OpenRCT2 developers.";
 
     // The default behaviour when an assertion is raised.
-    static ASSERT_BEHAVIOUR _assertBehaviour =
+    static AssertBehaviour _assertBehaviour =
 #ifdef _WIN32
-        ASSERT_BEHAVIOUR::MESSAGE_BOX
+        AssertBehaviour::messageBox
 #else
-        ASSERT_BEHAVIOUR::CASSERT
+        AssertBehaviour::cAssert
 #endif
         ;
 
@@ -45,12 +45,12 @@ namespace OpenRCT2::Guard
     static void ForceCrash();
 #endif
 
-    ASSERT_BEHAVIOUR GetAssertBehaviour()
+    AssertBehaviour GetAssertBehaviour()
     {
         return _assertBehaviour;
     }
 
-    void SetAssertBehaviour(ASSERT_BEHAVIOUR behaviour)
+    void SetAssertBehaviour(AssertBehaviour behaviour)
     {
         _assertBehaviour = behaviour;
     }
@@ -99,14 +99,14 @@ namespace OpenRCT2::Guard
 
         switch (_assertBehaviour)
         {
-            case ASSERT_BEHAVIOUR::ABORT:
+            case AssertBehaviour::abort:
                 abort();
             default:
-            case ASSERT_BEHAVIOUR::CASSERT:
+            case AssertBehaviour::cAssert:
                 assert(false);
                 break;
 #ifdef _WIN32
-            case ASSERT_BEHAVIOUR::MESSAGE_BOX:
+            case AssertBehaviour::messageBox:
             {
                 // Show message box if we are not building for testing
                 auto buffer = CreateDialogAssertMessage(formattedMessage);

@@ -311,7 +311,7 @@ bool ObjectAsset::IsAvailable() const
         return File::Exists(_path);
     }
 
-    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
     return zipArchive != nullptr && zipArchive->Exists(_path);
 }
 
@@ -322,7 +322,7 @@ uint64_t ObjectAsset::GetSize() const
         return File::GetSize(_path);
     }
 
-    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
     if (zipArchive != nullptr)
     {
         auto index = zipArchive->GetIndexFromPath(_path);
@@ -342,7 +342,7 @@ std::vector<uint8_t> ObjectAsset::GetData() const
         return File::ReadAllBytes(_path);
     }
 
-    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
     if (zipArchive != nullptr)
     {
         return zipArchive->GetFileData(_path);
@@ -359,7 +359,7 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
             return std::make_unique<FileStream>(_path, FileMode::open);
         }
 
-        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
         if (zipArchive != nullptr)
         {
             auto stream = zipArchive->GetFileStream(_path);

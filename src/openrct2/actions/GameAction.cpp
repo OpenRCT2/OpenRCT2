@@ -479,7 +479,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
         return false;
 #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::ACTION_LOCATION))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::actionLocation))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -496,7 +496,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
 
         // Call the subscriptions
         auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::ACTION_LOCATION, e, true);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::actionLocation, e, true);
 
         auto scriptResult = OpenRCT2::Scripting::AsOrDefault(e["result"], true);
 

@@ -36,11 +36,11 @@ namespace OpenRCT2
     {
         struct IWindowManager;
 
-        enum class FULLSCREEN_MODE
+        enum class FullscreenMode
         {
-            WINDOWED,
-            FULLSCREEN,
-            FULLSCREEN_DESKTOP,
+            windowed,
+            fullscreen,
+            fullscreenDesktop,
         };
 
         inline bool operator<(const Resolution& lhs, const Resolution& rhs)
@@ -110,7 +110,7 @@ namespace OpenRCT2
             virtual int32_t GetWidth() = 0;
             virtual int32_t GetHeight() = 0;
             virtual ScaleQuality GetScaleQuality() = 0;
-            virtual void SetFullscreenMode(FULLSCREEN_MODE mode) = 0;
+            virtual void SetFullscreenMode(FullscreenMode mode) = 0;
             virtual const std::vector<Resolution>& GetFullscreenResolutions() = 0;
             virtual bool HasFocus() = 0;
             virtual bool IsMinimised() = 0;

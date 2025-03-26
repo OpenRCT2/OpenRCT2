@@ -1823,7 +1823,7 @@ static bool ProcessPlayerAuthenticatePluginHooks(
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_AUTHENTICATE))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkAuthenticate))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1836,7 +1836,7 @@ static bool ProcessPlayerAuthenticatePluginHooks(
         auto e = eObj.Take();
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_AUTHENTICATE, e, false);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::networkAuthenticate, e, false);
 
         // Check if any hook has cancelled the join
         if (AsOrDefault(e["cancel"], false))
@@ -1854,7 +1854,7 @@ static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_JOIN))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkJoin))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1864,7 +1864,7 @@ static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
         auto e = eObj.Take();
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_JOIN, e, false);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::networkJoin, e, false);
     }
     #endif
 }
@@ -1875,7 +1875,7 @@ static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_LEAVE))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkLeave))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1885,7 +1885,7 @@ static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
         auto e = eObj.Take();
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_LEAVE, e, false);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::networkLeave, e, false);
     }
     #endif
 }
@@ -2898,7 +2898,7 @@ static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 {
     #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkChat))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -2911,7 +2911,7 @@ static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
         auto e = DukValue::take_from_stack(ctx);
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, e, false);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::networkChat, e, false);
 
         // Update text from object if subscriptions changed it
         if (e["message"].type() != DukValue::Type::STRING)

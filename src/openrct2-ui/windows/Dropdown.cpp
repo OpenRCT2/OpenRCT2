@@ -357,9 +357,9 @@ namespace OpenRCT2::Ui::Windows
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t customItemHeight, uint8_t flags,
         size_t num_items, int32_t width, size_t prefRowsPerColumn)
     {
-        InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+        gInputFlags.unset(InputFlag::dropdownStayOpen, InputFlag::dropdownMouseUp);
         if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
-            InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
+            gInputFlags.set(InputFlag::dropdownStayOpen);
 
         WindowDropdownClose();
 
@@ -392,9 +392,9 @@ namespace OpenRCT2::Ui::Windows
         int32_t x, int32_t y, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
         int32_t itemHeight, int32_t numColumns)
     {
-        InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+        gInputFlags.unset(InputFlag::dropdownStayOpen, InputFlag::dropdownMouseUp);
         if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
-            InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
+            gInputFlags.set(InputFlag::dropdownStayOpen);
 
         // Close existing dropdown
         WindowDropdownClose();

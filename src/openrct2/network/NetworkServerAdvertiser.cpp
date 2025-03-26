@@ -59,7 +59,7 @@ private:
     std::unique_ptr<IUdpSocket> _lanListener;
     uint32_t _lastListenTime{};
 
-    ADVERTISE_STATUS _status = ADVERTISE_STATUS::UNREGISTERED;
+    AdvertiseStatus _status = AdvertiseStatus::unregistered;
 
     #ifndef DISABLE_HTTP
     uint32_t _lastAdvertiseTime = 0;
@@ -85,7 +85,7 @@ public:
     #endif
     }
 
-    ADVERTISE_STATUS GetStatus() const override
+    AdvertiseStatus GetStatus() const override
     {
         return _status;
     }
@@ -147,7 +147,7 @@ private:
     {
         switch (_status)
         {
-            case ADVERTISE_STATUS::UNREGISTERED:
+            case AdvertiseStatus::unregistered:
                 if (_lastAdvertiseTime == 0 || Platform::GetTicks() > _lastAdvertiseTime + kMasterServerRegisterTime)
                 {
                     if (_lastAdvertiseTime == 0)
@@ -157,14 +157,14 @@ private:
                     SendRegistration(_forceIPv4);
                 }
                 break;
-            case ADVERTISE_STATUS::REGISTERED:
+            case AdvertiseStatus::registered:
                 if (Platform::GetTicks() > _lastHeartbeatTime + kMasterServerHeartbeatTime)
                 {
                     SendHeartbeat();
                 }
                 break;
             // exhaust enum values to satisfy clang
-            case ADVERTISE_STATUS::DISABLED:
+            case AdvertiseStatus::disabled:
                 break;
         }
     }
@@ -246,7 +246,7 @@ private:
             if (jsonToken.is_string())
             {
                 _token = Json::GetString(jsonToken);
-                _status = ADVERTISE_STATUS::REGISTERED;
+                _status = AdvertiseStatus::registered;
             }
         }
         else
@@ -288,7 +288,7 @@ private:
         }
         else if (status == MasterServerStatus::InvalidToken)
         {
-            _status = ADVERTISE_STATUS::UNREGISTERED;
+            _status = AdvertiseStatus::unregistered;
             _lastAdvertiseTime = 0;
             Console::Error::WriteLine("Master server heartbeat failed: Invalid Token");
         }

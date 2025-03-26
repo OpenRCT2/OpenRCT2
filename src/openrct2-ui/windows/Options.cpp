@@ -838,8 +838,8 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().general.FullscreenHeight = resolution.Height;
 
                         if (Config::Get().general.FullscreenMode
-                            == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-                            ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
+                            == static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen))
+                            ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen));
 
                         Config::Save();
                         GfxInvalidateScreen();
@@ -879,7 +879,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.FullscreenHeight));
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            if (Config::Get().general.FullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+            if (Config::Get().general.FullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen))
             {
                 disabled_widgets |= (1uLL << WIDX_RESOLUTION_DROPDOWN);
                 disabled_widgets |= (1uLL << WIDX_RESOLUTION);

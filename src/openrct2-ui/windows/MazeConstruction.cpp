@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
                                                                            : ENTRANCE_TYPE_RIDE_EXIT;
             gRideEntranceExitPlaceRideIndex = rideId;
             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-            InputSetFlag(INPUT_FLAG_6, true);
+            gInputFlags.set(InputFlag::unk6);
 
             RideConstructionInvalidateCurrentTrack();
 

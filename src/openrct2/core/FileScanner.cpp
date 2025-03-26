@@ -29,15 +29,15 @@
 
 using namespace OpenRCT2;
 
-enum class DIRECTORY_CHILD_TYPE
+enum class DirectoryChildType
 {
-    DC_DIRECTORY,
-    DC_FILE,
+    directory,
+    file,
 };
 
 struct DirectoryChild
 {
-    DIRECTORY_CHILD_TYPE Type;
+    DirectoryChildType Type;
     std::string Name;
 
     // Files only
@@ -122,7 +122,7 @@ public:
             else
             {
                 const DirectoryChild* child = &state->Listing[state->Index];
-                if (child->Type == DIRECTORY_CHILD_TYPE::DC_DIRECTORY)
+                if (child->Type == DirectoryChildType::directory)
                 {
                     if (_recurse)
                     {
@@ -233,11 +233,11 @@ private:
         result.Name = String::toUtf8(child->cFileName);
         if (child->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         {
-            result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
+            result.Type = DirectoryChildType::directory;
         }
         else
         {
-            result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
+            result.Type = DirectoryChildType::file;
             result.Size = (static_cast<uint64_t>(child->nFileSizeHigh) << 32uLL) | static_cast<uint64_t>(child->nFileSizeLow);
             result.LastModified = (static_cast<uint64_t>(child->ftLastWriteTime.dwHighDateTime) << 32uLL)
                 | static_cast<uint64_t>(child->ftLastWriteTime.dwLowDateTime);
@@ -289,11 +289,11 @@ private:
         result.Name = std::string(node->d_name);
         if (node->d_type == DT_DIR)
         {
-            result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
+            result.Type = DirectoryChildType::directory;
         }
         else
         {
-            result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
+            result.Type = DirectoryChildType::file;
 
             // Get the full path of the file
             auto path = Path::Combine(directory, node->d_name);
@@ -307,7 +307,7 @@ private:
 
                 if (S_ISDIR(statInfo.st_mode))
                 {
-                    result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
+                    result.Type = DirectoryChildType::directory;
                 }
             }
         }
@@ -354,7 +354,7 @@ std::vector<std::string> Path::GetDirectories(const std::string& path)
     std::vector<std::string> subDirectories;
     for (const auto& c : children)
     {
-        if (c.Type == DIRECTORY_CHILD_TYPE::DC_DIRECTORY)
+        if (c.Type == DirectoryChildType::directory)
         {
             subDirectories.push_back(c.Name);
         }

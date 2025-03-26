@@ -20,13 +20,13 @@
 
 struct DrawPixelInfo;
 
-enum class IMAGE_FORMAT
+enum class ImageFormat
 {
-    UNKNOWN,
-    AUTOMATIC, // Automatically detect from file extension
-    BITMAP,
-    PNG,
-    PNG_32, // Force load to 32bpp buffer
+    unknown,
+    automatic, // Automatically detect from file extension
+    bitmap,
+    png,
+    png32, // Force load to 32bpp buffer
 };
 
 struct Image
@@ -42,14 +42,14 @@ struct Image
     uint32_t Stride{};
 };
 
-using ImageReaderFunc = std::function<Image(std::istream&, IMAGE_FORMAT)>;
+using ImageReaderFunc = std::function<Image(std::istream&, ImageFormat)>;
 
 namespace OpenRCT2::Imaging
 {
-    IMAGE_FORMAT GetImageFormatFromPath(std::string_view path);
-    Image ReadFromFile(std::string_view path, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
-    Image ReadFromBuffer(const std::vector<uint8_t>& buffer, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
-    void WriteToFile(std::string_view path, const Image& image, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
+    ImageFormat GetImageFormatFromPath(std::string_view path);
+    Image ReadFromFile(std::string_view path, ImageFormat format = ImageFormat::automatic);
+    Image ReadFromBuffer(const std::vector<uint8_t>& buffer, ImageFormat format = ImageFormat::automatic);
+    void WriteToFile(std::string_view path, const Image& image, ImageFormat format = ImageFormat::automatic);
 
-    void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl);
+    void SetReader(ImageFormat format, ImageReaderFunc impl);
 } // namespace OpenRCT2::Imaging

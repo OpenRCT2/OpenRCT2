@@ -104,7 +104,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_trackPlaceWidgets);
             WindowInitScrollWidgets(*this);
             ToolSet(*this, WIDX_PRICE, Tool::crosshair);
-            InputSetFlag(INPUT_FLAG_6, true);
+            gInputFlags.set(InputFlag::unk6);
             WindowPushOthersRight(*this);
             ShowGridlines();
             _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
