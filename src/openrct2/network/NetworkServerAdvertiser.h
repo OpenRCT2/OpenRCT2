@@ -11,11 +11,11 @@
 
 #include <memory>
 
-enum class ADVERTISE_STATUS
+enum class AdvertiseStatus
 {
-    DISABLED,
-    UNREGISTERED,
-    REGISTERED,
+    disabled,
+    unregistered,
+    registered,
 };
 
 struct INetworkServerAdvertiser
@@ -24,7 +24,7 @@ struct INetworkServerAdvertiser
     {
     }
 
-    virtual ADVERTISE_STATUS GetStatus() const = 0;
+    virtual AdvertiseStatus GetStatus() const = 0;
     virtual void Update() = 0;
 };
 
