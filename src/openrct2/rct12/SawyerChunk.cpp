@@ -13,7 +13,7 @@
 
 namespace OpenRCT2
 {
-    SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, MemoryStream&& data)
+    SawyerChunk::SawyerChunk(SawyerEncoding encoding, MemoryStream&& data)
         : _data(std::move(data))
         , _encoding(encoding)
     {
