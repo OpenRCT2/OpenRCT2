@@ -629,7 +629,7 @@ static constexpr float kWindowScrollLocations[][2] = {
 
     bool isToolActive(WindowClass cls)
     {
-        return InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == cls;
+        return gInputFlags.has(InputFlag::toolActive) && gCurrentToolWidget.window_classification == cls;
     }
 
     bool isToolActive(WindowClass cls, rct_windownumber number)
@@ -662,7 +662,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool)
     {
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+        if (gInputFlags.has(InputFlag::toolActive))
         {
             if (w.classification == gCurrentToolWidget.window_classification && w.number == gCurrentToolWidget.window_number
                 && widgetIndex == gCurrentToolWidget.widget_index)
@@ -674,9 +674,9 @@ static constexpr float kWindowScrollLocations[][2] = {
             ToolCancel();
         }
 
-        InputSetFlag(INPUT_FLAG_TOOL_ACTIVE, true);
-        InputSetFlag(INPUT_FLAG_4, false);
-        InputSetFlag(INPUT_FLAG_6, false);
+        gInputFlags.set(InputFlag::toolActive);
+        gInputFlags.unset(InputFlag::unk4);
+        gInputFlags.unset(InputFlag::unk6);
         gCurrentToolId = tool;
         gCurrentToolWidget.window_classification = w.classification;
         gCurrentToolWidget.window_number = w.number;
@@ -690,9 +690,9 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     void ToolCancel()
     {
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+        if (gInputFlags.has(InputFlag::toolActive))
         {
-            InputSetFlag(INPUT_FLAG_TOOL_ACTIVE, false);
+            gInputFlags.unset(InputFlag::toolActive);
 
             MapInvalidateSelectionRect();
             MapInvalidateMapSelectionTiles();

@@ -883,7 +883,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         gRideEntranceExitPlaceType = entranceType;
         gRideEntranceExitPlaceRideIndex = rideIndex;
         gRideEntranceExitPlaceStationIndex = stationIndex;
-        InputSetFlag(INPUT_FLAG_6, true);
+        gInputFlags.set(InputFlag::unk6);
         if (_rideConstructionState != RideConstructionState::EntranceExit)
         {
             gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
@@ -1073,7 +1073,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     w = ride_create_or_find_construction_window(ride.id);
 
     ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::crosshair);
-    InputSetFlag(INPUT_FLAG_6, true);
+    gInputFlags.set(InputFlag::unk6);
 
     _currentlySelectedTrack = ride.getRideTypeDescriptor().StartTrackPiece;
     _currentTrackPitchEnd = TrackPitch::None;

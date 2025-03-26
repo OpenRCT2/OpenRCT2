@@ -158,7 +158,7 @@ void TitleScene::Tick()
         // update_weather_animation();
     }
 
-    InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+    gInputFlags.unset(InputFlag::viewportScrolling);
 
     ContextHandleInput();
 

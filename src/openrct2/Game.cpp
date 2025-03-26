@@ -677,9 +677,9 @@ void GameLoadOrQuitNoSavePrompt()
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
-            if (InputTestFlag(INPUT_FLAG_5))
+            if (gInputFlags.has(InputFlag::unk5))
             {
-                InputSetFlag(INPUT_FLAG_5, false);
+                gInputFlags.unset(InputFlag::unk5);
             }
             GameResetSpeed();
             gFirstTimeSaving = true;

@@ -150,7 +150,7 @@ namespace OpenRCT2::Ui::Windows
         gTooltipCloseTimeout = 0;
         gTooltipWidget.window_classification = WindowClass::Null;
         InputSetState(InputState::Normal);
-        InputSetFlag(INPUT_FLAG_4, false);
+        gInputFlags.unset(InputFlag::unk4);
     }
 
     void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)

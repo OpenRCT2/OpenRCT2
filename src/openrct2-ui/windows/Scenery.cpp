@@ -3300,7 +3300,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto* toolWindow = ContextOpenWindow(WindowClass::Scenery);
             ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::arrow);
-            InputSetFlag(INPUT_FLAG_6, true);
+            gInputFlags.set(InputFlag::unk6);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

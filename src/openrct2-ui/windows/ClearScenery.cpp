@@ -401,7 +401,7 @@ namespace OpenRCT2::Ui::Windows
             ShowGridlines();
             auto* toolWindow = ContextOpenWindow(WindowClass::ClearScenery);
             ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::bulldozer);
-            InputSetFlag(INPUT_FLAG_6, true);
+            gInputFlags.set(InputFlag::unk6);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

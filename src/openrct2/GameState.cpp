@@ -190,9 +190,9 @@ namespace OpenRCT2
             {
                 if (InputGetState() == InputState::Reset || InputGetState() == InputState::Normal)
                 {
-                    if (InputTestFlag(INPUT_FLAG_VIEWPORT_SCROLLING))
+                    if (gInputFlags.has(InputFlag::viewportScrolling))
                     {
-                        InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+                        gInputFlags.unset(InputFlag::viewportScrolling);
                         break;
                     }
                 }
@@ -211,7 +211,7 @@ namespace OpenRCT2
 
         if (!gOpenRCT2Headless)
         {
-            InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+            gInputFlags.unset(InputFlag::viewportScrolling);
         }
 
         // Always perform autosave check, even when paused

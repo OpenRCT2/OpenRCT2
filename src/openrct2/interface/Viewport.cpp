@@ -102,7 +102,7 @@ namespace OpenRCT2
         WindowInitAll();
 
         // ?
-        InputResetFlags();
+        gInputFlags.clearAll();
         InputSetState(InputState::Reset);
         gPressedWidget.window_classification = WindowClass::Null;
         gPickupPeepImage = ImageId();

@@ -273,7 +273,7 @@ namespace OpenRCT2
             return;
 
         // Check window cursor is over
-        if (!(InputTestFlag(INPUT_FLAG_5)))
+        if (!gInputFlags.has(InputFlag::unk5))
         {
             auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindFromPoint(cursorState->position);

@@ -147,7 +147,7 @@ GameActions::Result PeepPickupAction::Execute() const
                 if (_owner == NetworkGetCurrentPlayerId())
                 {
                     // prevent tool_cancel()
-                    InputSetFlag(INPUT_FLAG_TOOL_ACTIVE, false);
+                    gInputFlags.unset(InputFlag::toolActive);
                 }
             }
 
