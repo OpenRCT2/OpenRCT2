@@ -314,7 +314,6 @@ namespace OpenRCT2::RCT2
         uint8_t SecondaryColour;      // 0x15
 
         colour_t getTertiaryWallColour() const;
-        void setTertiaryWallColour(colour_t colour);
     };
     static_assert(sizeof(TD6SceneryElement) == 0x16);
 
