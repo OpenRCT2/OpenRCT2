@@ -48,7 +48,7 @@ namespace OpenRCT2::World::MapGenerator
         bool normalize_height = true;
 
         // Water settings
-        int32_t waterLevel = 6;
+        int32_t waterLevel = 14;
         uint8_t numRiverbeds = 0;
         uint8_t minRiverWidth = 10;
         uint8_t maxRiverWidth = 20;
