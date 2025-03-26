@@ -1776,7 +1776,11 @@ declare global {
         clearanceZ: number;
         occupiedQuadrants: number;
         isGhost: boolean;
-        /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
+        /**
+         * Take caution when changing this field, it may invalidate TileElements you have stored in your script.
+         *
+         * @todo Need to validate if this comment still accurately describes behavior in latest OpenRCT2
+         * */
         isHidden: boolean;
     }
 
