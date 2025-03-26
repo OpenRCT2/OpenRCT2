@@ -116,6 +116,9 @@ namespace OpenRCT2::Editor
         LoadPalette();
         gScreenAge = 0;
         gameState.scenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
 
     /**
@@ -154,6 +157,9 @@ namespace OpenRCT2::Editor
         OpenEditorWindows();
         FinaliseMainView();
         gScreenAge = 0;
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
 
     /**
@@ -179,6 +185,9 @@ namespace OpenRCT2::Editor
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
 
     /**
@@ -204,6 +213,9 @@ namespace OpenRCT2::Editor
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
 
     /**
@@ -238,6 +250,9 @@ namespace OpenRCT2::Editor
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
 
     bool LoadLandscape(const utf8* path)

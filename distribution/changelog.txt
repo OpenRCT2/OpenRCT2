@@ -12,6 +12,7 @@
 - Change: [#23936] The ‘guests prefer less/more intense rides’ settings have been turned into a dropdown.
 - Change: [#24059] The ‘select other ride’ button is now available in the track designs manager.
 - Change: [#24067] [Plugin] Registered menu items are now listed alphabetically.
+- Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
 - Change: [#24070] Footpath selection menus now show object names on hover using a tooltip.
 - Change: [#24101] Frozen peeps are no longer removed when using the 'remove all guests' cheat.
 - Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve (original bug).
