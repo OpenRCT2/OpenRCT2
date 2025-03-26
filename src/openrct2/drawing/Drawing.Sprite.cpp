@@ -451,7 +451,7 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
     LOG_VERBOSE("GfxLoadG1(...)");
     try
     {
-        auto path = env.FindFile(DirBase::rct2, DIRID::DATA, u8"g1.dat");
+        auto path = env.FindFile(DirBase::rct2, DirId::data, u8"g1.dat");
         auto fs = FileStream(path, FileMode::open);
         _g1.header = fs.ReadValue<RCTG1Header>();
 

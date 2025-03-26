@@ -24,16 +24,16 @@
 
 using namespace OpenRCT2;
 
-enum class PATTERN
+enum class Pattern
 {
-    CYCLIC_SQUARES,
-    CONTINUOUS_CHASERS,
-    BOUNCING_PAIRS,
-    SPROUTING_BLOOMS,
-    RACING_PAIRS,
-    SPLITTING_CHASERS,
-    DOPEY_JUMPERS,
-    FAST_RANDOM_CHASERS,
+    cyclicSquares,
+    continuousChasers,
+    bouncingPairs,
+    sproutingBlooms,
+    racingPairs,
+    splittingChasers,
+    dopeyJumpers,
+    fastRandomChasers,
 };
 
 static constexpr std::array _fountainDirectionsNegative = {
@@ -66,20 +66,20 @@ const uint8_t _fountainDirections[] = {
 };
 
 // rct2: 0x0097F048
-const uint8_t _fountainDirectionFlags[] = {
-    0, 0, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, 0, 0,
+const FountainFlags _fountainDirectionFlags[] = {
+    {}, {}, FountainFlag::direction, FountainFlag::direction, FountainFlag::direction, FountainFlag::direction, {}, {},
 };
 
 // rct2: 0x0097F050
-const uint8_t _fountainPatternFlags[] = {
-    FOUNTAIN_FLAG::TERMINATE,                                              // CYCLIC_SQUARES
-    FOUNTAIN_FLAG::FAST | FOUNTAIN_FLAG::GOTO_EDGE,                        // CONTINUOUS_CHASERS
-    FOUNTAIN_FLAG::BOUNCE,                                                 // BOUNCING_PAIRS
-    FOUNTAIN_FLAG::FAST | FOUNTAIN_FLAG::SPLIT,                            // SPROUTING_BLOOMS
-    FOUNTAIN_FLAG::GOTO_EDGE,                                              // RACING_PAIRS
-    FOUNTAIN_FLAG::FAST | FOUNTAIN_FLAG::GOTO_EDGE | FOUNTAIN_FLAG::SPLIT, // SPLITTING_CHASERS
-    0,                                                                     // DOPEY_JUMPERS
-    FOUNTAIN_FLAG::FAST,                                                   // FAST_RANDOM_CHASERS
+const FountainFlags _fountainPatternFlags[] = {
+    { FountainFlag::terminate },                                         // cyclicSquares
+    { FountainFlag::fast, FountainFlag::goToEdge },                      // continuousChasers
+    { FountainFlag::bounce },                                            // bouncingPairs
+    { FountainFlag::fast, FountainFlag::split },                         // sproutingBlooms
+    { FountainFlag::goToEdge },                                          // racingPairs
+    { FountainFlag::fast, FountainFlag::goToEdge, FountainFlag::split }, // splittingChasers
+    {},                                                                  // dopeyJumpers
+    { FountainFlag::fast },                                              // fastRandomChasers
 };
 
 template<>
@@ -97,9 +97,9 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
 
     // Change pattern approximately every 51 seconds
     uint32_t pattern = (currentTicks >> 11) & 7;
-    switch (static_cast<PATTERN>(pattern))
+    switch (static_cast<Pattern>(pattern))
     {
-        case PATTERN::CYCLIC_SQUARES:
+        case Pattern::cyclicSquares:
             // 0, 1, 2, 3
             for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
             {
@@ -108,7 +108,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
                     _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
             }
             break;
-        case PATTERN::BOUNCING_PAIRS:
+        case Pattern::bouncingPairs:
             // random [0, 2 or 1, 3]
             randomIndex = ScenarioRand() & 1;
             for (int32_t i = randomIndex; i < kNumOrthogonalDirections; i += 2)
@@ -118,7 +118,7 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
                     _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
             }
             break;
-        case PATTERN::RACING_PAIRS:
+        case Pattern::racingPairs:
             // random [0 - 3 and 4 - 7]
             randomIndex = ScenarioRand() & 3;
             JumpingFountain::Create(
@@ -140,14 +140,14 @@ void JumpingFountain::StartAnimation(const JumpingFountainType newType, const Co
 }
 
 void JumpingFountain::Create(
-    const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const int32_t newFlags,
+    const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const OpenRCT2::FountainFlags newFlags,
     const int32_t iteration)
 {
     auto* jumpingFountain = CreateEntity<JumpingFountain>();
     if (jumpingFountain != nullptr)
     {
         jumpingFountain->Iteration = iteration;
-        jumpingFountain->FountainFlags = newFlags;
+        jumpingFountain->fountainFlags = newFlags;
         jumpingFountain->Orientation = direction << 3;
         jumpingFountain->SpriteData.Width = 33;
         jumpingFountain->SpriteData.HeightMin = 36;
@@ -177,11 +177,11 @@ void JumpingFountain::Update()
     switch (FountainType)
     {
         case JumpingFountainType::Water:
-            if (frame == 11 && (FountainFlags & FOUNTAIN_FLAG::FAST))
+            if (frame == 11 && (fountainFlags.has(FountainFlag::fast)))
             {
                 AdvanceAnimation();
             }
-            if (frame == 16 && !(FountainFlags & FOUNTAIN_FLAG::FAST))
+            if (frame == 16 && !(fountainFlags.has(FountainFlag::fast)))
             {
                 AdvanceAnimation();
             }
@@ -227,24 +227,24 @@ void JumpingFountain::AdvanceAnimation()
         return;
     }
 
-    if (FountainFlags & FOUNTAIN_FLAG::TERMINATE)
+    if (fountainFlags.has(FountainFlag::terminate))
     {
         return;
     }
 
-    if (FountainFlags & FOUNTAIN_FLAG::GOTO_EDGE)
+    if (fountainFlags.has(FountainFlag::goToEdge))
     {
         GoToEdge({ newLoc, z }, availableDirections);
         return;
     }
 
-    if (FountainFlags & FOUNTAIN_FLAG::BOUNCE)
+    if (fountainFlags.has(FountainFlag::bounce))
     {
         Bounce({ newLoc, z }, availableDirections);
         return;
     }
 
-    if (FountainFlags & FOUNTAIN_FLAG::SPLIT)
+    if (fountainFlags.has(FountainFlag::split))
     {
         Split({ newLoc, z }, availableDirections);
         return;
@@ -304,7 +304,7 @@ void JumpingFountain::GoToEdge(const CoordsXYZ& newLoc, const int32_t availableD
         return;
     }
 
-    if (FountainFlags & FOUNTAIN_FLAG::SPLIT)
+    if (fountainFlags.has(FountainFlag::split))
     {
         Split(newLoc, availableDirections);
         return;
@@ -353,14 +353,16 @@ void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections
         {
             if (availableDirections & (1 << direction))
             {
-                JumpingFountain::Create(
-                    newType, newLoc, direction >> 1, FountainFlags & ~FOUNTAIN_FLAG::DIRECTION, Iteration + 1);
+                auto copiedFlags = fountainFlags;
+                copiedFlags.unset(FountainFlag::direction);
+                JumpingFountain::Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
             }
             direction++;
             if (availableDirections & (1 << direction))
             {
-                JumpingFountain::Create(
-                    newType, newLoc, direction >> 1, FountainFlags | FOUNTAIN_FLAG::DIRECTION, Iteration + 1);
+                auto copiedFlags = fountainFlags;
+                copiedFlags.set(FountainFlag::direction);
+                JumpingFountain::Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
             }
         }
     }
@@ -383,11 +385,8 @@ void JumpingFountain::Random(const CoordsXYZ& newLoc, int32_t availableDirection
 void JumpingFountain::CreateNext(const CoordsXYZ& newLoc, int32_t direction) const
 {
     const auto newType = GetType();
-    int32_t newFlags = FountainFlags & ~FOUNTAIN_FLAG::DIRECTION;
-    if (direction & 1)
-    {
-        newFlags |= FOUNTAIN_FLAG::DIRECTION;
-    }
+    auto newFlags = fountainFlags;
+    newFlags.set(FountainFlag::direction, !!(direction & 1));
     JumpingFountain::Create(newType, newLoc, direction >> 1, newFlags, Iteration);
 }
 
@@ -397,7 +396,7 @@ void JumpingFountain::Serialise(DataSerialiser& stream)
     stream << frame;
     stream << FountainType;
     stream << NumTicksAlive;
-    stream << FountainFlags;
+    stream << fountainFlags.holder;
     stream << TargetX;
     stream << TargetY;
     stream << Iteration;
@@ -421,7 +420,7 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
     imageDirection = imageDirection / 8;
 
     // Fountain is firing anti clockwise
-    bool reversed = (FountainFlags & FOUNTAIN_FLAG::DIRECTION);
+    bool reversed = fountainFlags.has(FountainFlag::direction);
     // Fountain rotation
     bool rotated = (Orientation / 16) & 1;
     bool isAntiClockwise = (imageDirection / 2) & 1; // Clockwise or Anti-clockwise

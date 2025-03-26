@@ -475,7 +475,7 @@ void SaveGameCmd(u8string_view name /* = {} */)
     else
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto savePath = Path::Combine(env->GetDirectoryPath(DirBase::user, DIRID::SAVE), u8string(name) + u8".park");
+        auto savePath = Path::Combine(env->GetDirectoryPath(DirBase::user, DirId::saves), u8string(name) + u8".park");
         SaveGameWithName(savePath);
     }
 }
@@ -518,11 +518,11 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
     size_t numAutosavesToDelete = 0;
 
     auto environment = GetContext()->GetPlatformEnvironment();
-    auto folderDirectory = environment->GetDirectoryPath(DirBase::user, DIRID::SAVE);
+    auto folderDirectory = environment->GetDirectoryPath(DirBase::user, DirId::saves);
     char const* fileFilter = "autosave_*.park";
     if (processLandscapeFolder)
     {
-        folderDirectory = environment->GetDirectoryPath(DirBase::user, DIRID::LANDSCAPE);
+        folderDirectory = environment->GetDirectoryPath(DirBase::user, DirId::landscapes);
         fileFilter = "autosave_*.park";
     }
 
@@ -573,12 +573,12 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
 
 void GameAutosave()
 {
-    auto subDirectory = DIRID::SAVE;
+    auto subDirectory = DirId::saves;
     const char* fileExtension = ".park";
     uint32_t saveFlags = 0x80000000;
     if (isInEditorMode())
     {
-        subDirectory = DIRID::LANDSCAPE;
+        subDirectory = DirId::landscapes;
         fileExtension = ".park";
         saveFlags |= 2;
     }

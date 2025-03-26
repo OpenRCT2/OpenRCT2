@@ -708,7 +708,7 @@ namespace OpenRCT2::RCT2
         RCT12EntityLitter Litter;
         RCT12EntityBalloon Balloon;
         RCT12EntityDuck Duck;
-        RCT12EntityJumpingFountain JumpingFountain;
+        RCT12EntityJumpingFountain JumpingFountain{};
         RCT12EntityMoneyEffect MoneyEffect;
         RCT12EntityCrashedVehicleParticle CrashedVehicleParticle;
         RCT12EntityCrashSplash CrashSplash;

@@ -29,48 +29,48 @@ namespace OpenRCT2
     constexpr size_t kDirBaseCount = 7;
     using DirBaseValues = u8string[kDirBaseCount];
 
-    enum class DIRID
+    enum class DirId
     {
-        DATA,             // Contains g1.dat, music etc.
-        LANDSCAPE,        // Contains scenario editor landscapes (SC6).
-        LANGUAGE,         // Contains language packs.
-        LOG_CHAT,         // Contains chat logs.
-        LOG_SERVER,       // Contains server logs.
-        NETWORK_KEY,      // Contains the user's public and private keys.
-        OBJECT,           // Contains objects.
-        PLUGIN,           // Contains plugins (.js).
-        SAVE,             // Contains saved games (SV6).
-        SCENARIO,         // Contains scenarios (SC6).
-        SCREENSHOT,       // Contains screenshots.
-        SEQUENCE,         // Contains title sequences.
-        SHADER,           // Contains OpenGL shaders.
-        THEME,            // Contains interface themes.
-        TRACK,            // Contains track designs.
-        HEIGHTMAP,        // Contains heightmap data.
-        REPLAY,           // Contains recorded replays.
-        LOG_DESYNCS,      // Contains desync reports.
-        CRASH,            // Contains crash dumps.
-        ASSET_PACK,       // Contains asset packs.
-        SCENARIO_PATCHES, // Contains scenario patches.
+        data,             // Contains g1.dat, music etc.
+        landscapes,       // Contains scenario editor landscapes (SC6).
+        languages,        // Contains language packs.
+        chatLogs,         // Contains chat logs.
+        serverLogs,       // Contains server logs.
+        networkKeys,      // Contains the user's public and private keys.
+        objects,          // Contains objects.
+        plugins,          // Contains plugins (.js).
+        saves,            // Contains saved games (SV6).
+        scenarios,        // Contains scenarios (SC6).
+        screenshots,      // Contains screenshots.
+        sequences,        // Contains title sequences.
+        shaders,          // Contains OpenGL shaders.
+        themes,           // Contains interface themes.
+        trackDesigns,     // Contains track designs.
+        heightmaps,       // Contains heightmap data.
+        replayRecordings, // Contains recorded replays.
+        desyncLogs,       // Contains desync reports.
+        crashDumps,       // Contains crash dumps.
+        assetPacks,       // Contains asset packs.
+        scenarioPatches,  // Contains scenario patches.
     };
 
-    enum class PATHID
+    enum class PathId
     {
-        CONFIG,                  // Main configuration (config.ini).
-        CONFIG_SHORTCUTS_LEGACY, // Old keyboard shortcuts (hotkeys.cfg)
-        CONFIG_SHORTCUTS,        // Shortcut bindings (shortcuts.json)
-        CACHE_OBJECTS,           // Object repository cache (objects.idx).
-        CACHE_TRACKS,            // Track repository cache (tracks.idx).
-        CACHE_SCENARIOS,         // Scenario repository cache (scenarios.idx).
-        NETWORK_GROUPS,          // Server groups with permissions (groups.json).
-        NETWORK_SERVERS,         // Saved servers (servers.cfg).
-        NETWORK_USERS,           // Users and their groups (users.json).
-        SCORES,                  // Scenario scores (highscores.dat).
-        SCORES_LEGACY,           // Scenario scores, legacy (scores.dat).
-        SCORES_RCT2,             // Scenario scores, rct2 (\Saved Games\scores.dat).
-        CHANGELOG,               // Notable changes to the game between versions, distributed with the game.
-        PLUGIN_STORE,            // Shared storage for plugins.
-        CONTRIBUTORS,            // Who has provided work to the game (Contributors.md).
+        config,                // Main configuration (config.ini).
+        configShortcutsLegacy, // Old keyboard shortcuts (hotkeys.cfg)
+        configShortcuts,       // Shortcut bindings (shortcuts.json)
+        cacheObjects,          // Object repository cache (objects.idx).
+        cacheTracks,           // Track repository cache (tracks.idx).
+        cacheScenarios,        // Scenario repository cache (scenarios.idx).
+        networkGroups,         // Server groups with permissions (groups.json).
+        networkServers,        // Saved servers (servers.cfg).
+        networkUsers,          // Users and their groups (users.json).
+        scores,                // Scenario scores (highscores.dat).
+        scoresLegacy,          // Scenario scores, legacy (scores.dat).
+        scoresRCT2,            // Scenario scores, rct2 (\Saved Games\scores.dat).
+        changelog,             // Notable changes to the game between versions, distributed with the game.
+        pluginStore,           // Shared storage for plugins.
+        contributors,          // Who has provided work to the game (Contributors.md).
     };
 
     /**
@@ -81,9 +81,9 @@ namespace OpenRCT2
         virtual ~IPlatformEnvironment() = default;
 
         virtual u8string GetDirectoryPath(DirBase base) const = 0;
-        virtual u8string GetDirectoryPath(DirBase base, DIRID did) const = 0;
-        virtual u8string GetFilePath(PATHID pathid) const = 0;
-        virtual u8string FindFile(DirBase base, DIRID did, u8string_view fileName) const = 0;
+        virtual u8string GetDirectoryPath(DirBase base, DirId did) const = 0;
+        virtual u8string GetFilePath(PathId pathid) const = 0;
+        virtual u8string FindFile(DirBase base, DirId did, u8string_view fileName) const = 0;
         virtual void SetBasePath(DirBase base, u8string_view path) = 0;
         virtual bool IsUsingClassic() const = 0;
     };

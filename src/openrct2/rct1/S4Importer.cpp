@@ -3089,7 +3089,7 @@ namespace OpenRCT2::RCT1
         dst->frame = src->Frame;
         dst->FountainType = fountainType;
         dst->NumTicksAlive = src->NumTicksAlive;
-        dst->FountainFlags = src->FountainFlags;
+        dst->fountainFlags = src->fountainFlags;
         dst->TargetX = src->TargetX;
         dst->TargetY = src->TargetY;
         dst->Iteration = src->Iteration;

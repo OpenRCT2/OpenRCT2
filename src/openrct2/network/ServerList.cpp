@@ -190,7 +190,7 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
     try
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
+        auto path = env->GetFilePath(PathId::networkServers);
         if (File::Exists(path))
         {
             auto fs = FileStream(path, FileMode::open);

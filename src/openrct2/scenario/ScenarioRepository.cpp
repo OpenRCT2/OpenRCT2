@@ -123,18 +123,18 @@ static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 {
 private:
-    static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
-    static constexpr uint16_t VERSION = 9;
-    static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea;*.park";
+    static constexpr uint32_t kMagicNumber = 0x58444953; // SIDX
+    static constexpr uint16_t kVersion = 9;
+    static constexpr auto kPattern = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
         : FileIndex(
-              "scenario index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(PATTERN),
+              "scenario index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheScenarios), std::string(kPattern),
               std::vector<std::string>({
-                  env.GetDirectoryPath(DirBase::rct1, DIRID::SCENARIO),
-                  env.GetDirectoryPath(DirBase::rct2, DIRID::SCENARIO),
-                  env.GetDirectoryPath(DirBase::user, DIRID::SCENARIO),
+                  env.GetDirectoryPath(DirBase::rct1, DirId::scenarios),
+                  env.GetDirectoryPath(DirBase::rct2, DirId::scenarios),
+                  env.GetDirectoryPath(DirBase::user, DirId::scenarios),
               }))
     {
     }
@@ -437,10 +437,10 @@ private:
      */
     void ImportMegaPark()
     {
-        auto mpdatPath = _env->FindFile(DirBase::rct1, DIRID::DATA, "mp.dat");
+        auto mpdatPath = _env->FindFile(DirBase::rct1, DirId::data, "mp.dat");
         if (File::Exists(mpdatPath))
         {
-            auto scenarioDirectory = _env->GetDirectoryPath(DirBase::user, DIRID::SCENARIO);
+            auto scenarioDirectory = _env->GetDirectoryPath(DirBase::user, DirId::scenarios);
             auto expectedSc21Path = Path::Combine(scenarioDirectory, "sc21.sc4");
             auto sc21Path = Path::ResolveCasing(expectedSc21Path);
             if (!File::Exists(sc21Path))
@@ -526,7 +526,7 @@ private:
 
     void LoadScores()
     {
-        std::string path = _env->GetFilePath(PATHID::SCORES);
+        std::string path = _env->GetFilePath(PathId::scores);
         if (!File::Exists(path))
         {
             return;
@@ -566,8 +566,8 @@ private:
      */
     void LoadLegacyScores()
     {
-        std::string rct2Path = _env->GetFilePath(PATHID::SCORES_RCT2);
-        std::string legacyPath = _env->GetFilePath(PATHID::SCORES_LEGACY);
+        std::string rct2Path = _env->GetFilePath(PathId::scoresRCT2);
+        std::string legacyPath = _env->GetFilePath(PathId::scoresLegacy);
         LoadLegacyScores(legacyPath);
         LoadLegacyScores(rct2Path);
     }
@@ -670,7 +670,7 @@ private:
 
     void SaveHighscores()
     {
-        std::string path = _env->GetFilePath(PATHID::SCORES);
+        std::string path = _env->GetFilePath(PathId::scores);
         try
         {
             auto fs = FileStream(path, FileMode::write);

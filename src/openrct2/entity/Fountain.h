@@ -9,11 +9,26 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../world/Map.h"
 #include "EntityBase.h"
 
 class DataSerialiser;
 struct PaintSession;
+
+namespace OpenRCT2
+{
+    enum class FountainFlag : uint8_t
+    {
+        fast,
+        goToEdge,
+        split,
+        terminate,
+        bounce,
+        direction = 7,
+    };
+    using FountainFlags = FlagHolder<uint8_t, FountainFlag>;
+} // namespace OpenRCT2
 
 enum class JumpingFountainType : uint8_t
 {
@@ -28,7 +43,7 @@ struct JumpingFountain : EntityBase
     uint16_t frame;
     JumpingFountainType FountainType;
     uint8_t NumTicksAlive;
-    uint8_t FountainFlags;
+    OpenRCT2::FountainFlags fountainFlags;
     int16_t TargetX;
     int16_t TargetY;
     uint16_t Iteration;
@@ -46,16 +61,7 @@ private:
     void Random(const CoordsXYZ& newLoc, int32_t availableDirections) const;
     void CreateNext(const CoordsXYZ& newLoc, int32_t direction) const;
     static void Create(
-        JumpingFountainType newType, const CoordsXYZ& newLoc, int32_t direction, int32_t newFlags, int32_t iteration);
+        JumpingFountainType newType, const CoordsXYZ& newLoc, int32_t direction, OpenRCT2::FountainFlags newFlags,
+        int32_t iteration);
     static bool IsJumpingFountain(JumpingFountainType newType, const CoordsXYZ& newLoc);
 };
-
-namespace OpenRCT2::FOUNTAIN_FLAG
-{
-    const uint32_t FAST = 1 << 0;
-    const uint32_t GOTO_EDGE = 1 << 1;
-    const uint32_t SPLIT = 1 << 2;
-    const uint32_t TERMINATE = 1 << 3;
-    const uint32_t BOUNCE = 1 << 4;
-    const uint32_t DIRECTION = 1 << 7;
-}; // namespace OpenRCT2::FOUNTAIN_FLAG

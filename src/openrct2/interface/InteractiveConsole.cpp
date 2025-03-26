@@ -1318,7 +1318,7 @@ static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console,
     {
         // no / or \ was included. File should be in save dir.
         auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-        auto directory = env->GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DIRID::SAVE);
+        auto directory = env->GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::saves);
         savePath = Path::Combine(directory, argv[0]);
     }
     else
@@ -1391,7 +1391,7 @@ static void ConsoleCommandReplayStartRecord(InteractiveConsole& console, const a
         name += ".parkrep";
     }
     std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
-        OpenRCT2::DirBase::user, OpenRCT2::DIRID::REPLAY);
+        OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
     name = Path::Combine(outPath, name);
 
     // If ticks are specified by user use that otherwise maximum ticks specified by const.
@@ -1517,7 +1517,7 @@ static void ConsoleCommandReplayNormalise(InteractiveConsole& console, const arg
         outputFile += ".parkrep";
     }
     std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
-        OpenRCT2::DirBase::user, OpenRCT2::DIRID::REPLAY);
+        OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
     outputFile = Path::Combine(outPath, outputFile);
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();

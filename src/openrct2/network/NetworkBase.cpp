@@ -1166,7 +1166,7 @@ void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
 void NetworkBase::BeginChatLog()
 {
     auto env = GetContext().GetPlatformEnvironment();
-    auto directory = env->GetDirectoryPath(DirBase::user, DIRID::LOG_CHAT);
+    auto directory = env->GetDirectoryPath(DirBase::user, DirId::chatLogs);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
     _chat_log_fs.open(fs::u8path(_chatLogPath), std::ios::out | std::ios::app);
 }
@@ -1187,7 +1187,7 @@ void NetworkBase::CloseChatLog()
 void NetworkBase::BeginServerLog()
 {
     auto env = GetContext().GetPlatformEnvironment();
-    auto directory = env->GetDirectoryPath(DirBase::user, DIRID::LOG_SERVER);
+    auto directory = env->GetDirectoryPath(DirBase::user, DirId::serverLogs);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
     _server_log_fs.open(fs::u8path(_serverLogPath), std::ios::out | std::ios::app | std::ios::binary);
 
@@ -2556,7 +2556,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
         {
             GameStateCompareData cmpData = snapshots->Compare(serverSnapshot, *desyncSnapshot);
 
-            std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DirBase::user, DIRID::LOG_DESYNCS);
+            std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DirBase::user, DirId::desyncLogs);
 
             Path::CreateDirectory(outputPath);
 

@@ -100,7 +100,7 @@ public:
         return _basePath[EnumValue(base)];
     }
 
-    u8string GetDirectoryPath(DirBase base, DIRID did) const override
+    u8string GetDirectoryPath(DirBase base, DirId did) const override
     {
         auto basePath = GetDirectoryPath(base);
         u8string_view directoryName;
@@ -123,7 +123,7 @@ public:
         return Path::Combine(basePath, directoryName);
     }
 
-    u8string GetFilePath(PATHID pathid) const override
+    u8string GetFilePath(PathId pathid) const override
     {
         auto dirbase = GetDefaultBaseDirectory(pathid);
         auto basePath = GetDirectoryPath(dirbase);
@@ -131,12 +131,12 @@ public:
         return Path::Combine(basePath, fileName);
     }
 
-    u8string FindFile(DirBase base, DIRID did, u8string_view fileName) const override
+    u8string FindFile(DirBase base, DirId did, u8string_view fileName) const override
     {
         auto dataPath = GetDirectoryPath(base, did);
 
         std::string alternativeFilename;
-        if (_usingRCTClassic && base == DirBase::rct2 && did == DIRID::DATA)
+        if (_usingRCTClassic && base == DirBase::rct2 && did == DirId::data)
         {
             // Special case, handle RCT Classic css ogg files
             if (String::startsWith(fileName, "css", true) && String::endsWith(fileName, ".dat", true))
@@ -148,7 +148,7 @@ public:
         }
 
         auto path = Path::ResolveCasing(Path::Combine(dataPath, fileName));
-        if (base == DirBase::rct1 && did == DIRID::DATA && !File::Exists(path))
+        if (base == DirBase::rct1 && did == DirId::data && !File::Exists(path))
         {
             // Special case, handle RCT1 steam layout where some data files are under a CD root
             auto basePath = GetDirectoryPath(base);
@@ -178,28 +178,28 @@ public:
     }
 
 private:
-    static DirBase GetDefaultBaseDirectory(PATHID pathid)
+    static DirBase GetDefaultBaseDirectory(PathId pathid)
     {
         switch (pathid)
         {
-            case PATHID::CONFIG:
-            case PATHID::CONFIG_SHORTCUTS_LEGACY:
-            case PATHID::CONFIG_SHORTCUTS:
+            case PathId::config:
+            case PathId::configShortcutsLegacy:
+            case PathId::configShortcuts:
                 return DirBase::config;
-            case PATHID::CACHE_OBJECTS:
-            case PATHID::CACHE_TRACKS:
-            case PATHID::CACHE_SCENARIOS:
+            case PathId::cacheObjects:
+            case PathId::cacheTracks:
+            case PathId::cacheScenarios:
                 return DirBase::cache;
-            case PATHID::SCORES_RCT2:
+            case PathId::scoresRCT2:
                 return DirBase::rct2;
-            case PATHID::CHANGELOG:
-            case PATHID::CONTRIBUTORS:
+            case PathId::changelog:
+            case PathId::contributors:
                 return DirBase::documentation;
-            case PATHID::NETWORK_GROUPS:
-            case PATHID::NETWORK_SERVERS:
-            case PATHID::NETWORK_USERS:
-            case PATHID::SCORES:
-            case PATHID::SCORES_LEGACY:
+            case PathId::networkGroups:
+            case PathId::networkServers:
+            case PathId::networkUsers:
+            case PathId::scores:
+            case PathId::scoresLegacy:
             default:
                 return DirBase::user;
         }
@@ -260,7 +260,7 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);
 
     // Now load the config so we can get the RCT1 and RCT2 paths
-    auto configPath = env->GetFilePath(PATHID::CONFIG);
+    auto configPath = env->GetFilePath(PathId::config);
     Config::SetDefaults();
     if (!Config::OpenFromPath(configPath))
     {

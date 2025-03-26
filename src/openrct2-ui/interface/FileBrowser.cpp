@@ -120,27 +120,27 @@ namespace OpenRCT2::Ui::FileBrowser
 
     u8string GetInitialDirectoryByType(const LoadSaveType type)
     {
-        std::optional<DIRID> subdir = std::nullopt;
+        std::optional<DirId> subdir = std::nullopt;
         switch (type)
         {
             case LoadSaveType::park:
-                subdir = DIRID::SAVE;
+                subdir = DirId::saves;
                 break;
 
             case LoadSaveType::landscape:
-                subdir = DIRID::LANDSCAPE;
+                subdir = DirId::landscapes;
                 break;
 
             case LoadSaveType::scenario:
-                subdir = DIRID::SCENARIO;
+                subdir = DirId::scenarios;
                 break;
 
             case LoadSaveType::track:
-                subdir = DIRID::TRACK;
+                subdir = DirId::trackDesigns;
                 break;
 
             case LoadSaveType::heightmap:
-                subdir = DIRID::HEIGHTMAP;
+                subdir = DirId::heightmaps;
                 break;
         }
 
