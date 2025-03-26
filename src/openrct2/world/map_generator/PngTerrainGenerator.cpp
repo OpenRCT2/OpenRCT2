@@ -40,10 +40,10 @@ namespace OpenRCT2::World::MapGenerator
     bool LoadHeightmapImage(const utf8* path)
     {
         auto format = Imaging::GetImageFormatFromPath(path);
-        if (format == IMAGE_FORMAT::PNG)
+        if (format == ImageFormat::png)
         {
             // Promote to 32-bit
-            format = IMAGE_FORMAT::PNG_32;
+            format = ImageFormat::png32;
         }
 
         try
@@ -79,10 +79,10 @@ namespace OpenRCT2::World::MapGenerator
         {
             switch (format)
             {
-                case IMAGE_FORMAT::BITMAP:
+                case ImageFormat::bitmap:
                     ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
                     break;
-                case IMAGE_FORMAT::PNG_32:
+                case ImageFormat::png32:
                     ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
                     break;
                 default:

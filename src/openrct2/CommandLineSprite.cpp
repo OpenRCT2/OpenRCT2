@@ -216,7 +216,7 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
         image.Stride = dpi.LineStride();
         image.Palette = StandardPalette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
-        Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);
+        Imaging::WriteToFile(outPath, image, ImageFormat::png);
         return true;
     }
     catch (const std::exception& e)
@@ -230,10 +230,10 @@ static std::optional<ImageImporter::ImportResult> SpriteImageImport(u8string_vie
 {
     try
     {
-        auto format = IMAGE_FORMAT::PNG_32;
+        auto format = ImageFormat::png32;
         if (meta.palette == Palette::KeepIndices)
         {
-            format = IMAGE_FORMAT::PNG;
+            format = ImageFormat::png;
         }
 
         ImageImporter importer;
