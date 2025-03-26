@@ -358,9 +358,9 @@ public:
         return &_bitsDPI;
     }
 
-    DRAWING_ENGINE_FLAGS GetFlags() override
+    DrawingEngineFlags GetFlags() override
     {
-        return DEF_NONE;
+        return {};
     }
 
     void InvalidateImage(uint32_t image) override

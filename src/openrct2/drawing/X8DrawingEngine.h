@@ -108,7 +108,7 @@ namespace OpenRCT2
             std::string Screenshot() override;
             IDrawingContext* GetDrawingContext() override;
             DrawPixelInfo* GetDrawingPixelInfo() override;
-            DRAWING_ENGINE_FLAGS GetFlags() override;
+            DrawingEngineFlags GetFlags() override;
             void InvalidateImage(uint32_t image) override;
 
             DrawPixelInfo* GetDPI();
