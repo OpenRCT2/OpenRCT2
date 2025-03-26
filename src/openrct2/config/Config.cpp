@@ -755,7 +755,7 @@ namespace OpenRCT2::Config
             }
         }
 
-        auto discordPath = Platform::GetFolderPath(SPECIAL_FOLDER::RCT2_DISCORD);
+        auto discordPath = Platform::GetFolderPath(SpecialFolder::rct2Discord);
         if (!discordPath.empty() && Platform::OriginalGameDataExists(discordPath))
         {
             return discordPath;
@@ -777,7 +777,7 @@ namespace OpenRCT2::Config
         desc.Filters.emplace_back(LanguageGetString(STR_GOG_INSTALLER), "*.exe");
         desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
-        const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+        const auto userHomePath = Platform::GetFolderPath(SpecialFolder::userHome);
         desc.InitialDirectory = userHomePath;
 
         return ContextOpenCommonFileDialog(desc);

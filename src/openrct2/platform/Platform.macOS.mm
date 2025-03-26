@@ -30,19 +30,19 @@
 
 namespace OpenRCT2::Platform
 {
-    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    std::string GetFolderPath(SpecialFolder folder)
     {
         // macOS stores everything in ~/Library/Application Support/OpenRCT2
         switch (folder)
         {
-            case SPECIAL_FOLDER::USER_CACHE:
-            case SPECIAL_FOLDER::USER_CONFIG:
-            case SPECIAL_FOLDER::USER_DATA:
+            case SpecialFolder::userCache:
+            case SpecialFolder::userConfig:
+            case SpecialFolder::userData:
             {
-                auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                auto home = GetFolderPath(SpecialFolder::userHome);
                 return Path::Combine(home, "Library/Application Support");
             }
-            case SPECIAL_FOLDER::USER_HOME:
+            case SpecialFolder::userHome:
                 return GetHomePath();
             default:
                 return std::string();

@@ -227,9 +227,9 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     // Set default paths
     std::string basePaths[kDirBaseCount];
     basePaths[EnumValue(DirBase::openrct2)] = Platform::GetInstallPath();
-    basePaths[EnumValue(DirBase::user)] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_DATA), subDirectory);
-    basePaths[EnumValue(DirBase::config)] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CONFIG), subDirectory);
-    basePaths[EnumValue(DirBase::cache)] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CACHE), subDirectory);
+    basePaths[EnumValue(DirBase::user)] = Path::Combine(Platform::GetFolderPath(SpecialFolder::userData), subDirectory);
+    basePaths[EnumValue(DirBase::config)] = Path::Combine(Platform::GetFolderPath(SpecialFolder::userConfig), subDirectory);
+    basePaths[EnumValue(DirBase::cache)] = Path::Combine(Platform::GetFolderPath(SpecialFolder::userCache), subDirectory);
     basePaths[EnumValue(DirBase::documentation)] = Platform::GetDocsPath();
 
     // Override paths that have been specified via the command line

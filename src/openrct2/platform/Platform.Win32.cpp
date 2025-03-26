@@ -90,23 +90,23 @@ namespace OpenRCT2::Platform
         return result;
     }
 
-    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    std::string GetFolderPath(SpecialFolder folder)
     {
         switch (folder)
         {
             // We currently store everything under Documents/OpenRCT2
-            case SPECIAL_FOLDER::USER_CACHE:
-            case SPECIAL_FOLDER::USER_CONFIG:
-            case SPECIAL_FOLDER::USER_DATA:
+            case SpecialFolder::userCache:
+            case SpecialFolder::userConfig:
+            case SpecialFolder::userData:
             {
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Documents);
                 if (path.empty())
                 {
-                    path = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                    path = GetFolderPath(SpecialFolder::userHome);
                 }
                 return path;
             }
-            case SPECIAL_FOLDER::USER_HOME:
+            case SpecialFolder::userHome:
             {
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Profile);
                 if (path.empty())
@@ -119,7 +119,7 @@ namespace OpenRCT2::Platform
                 }
                 return path;
             }
-            case SPECIAL_FOLDER::RCT2_DISCORD:
+            case SpecialFolder::rct2Discord:
             {
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_LocalAppData);
                 if (!path.empty())
