@@ -336,6 +336,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
+            if (Config::Get().interface.TouchEnhancements)
+            {
+                return;
+                // Dynamic window is not good experience for Touch Interface
+            }
             if (width < min_width)
             {
                 Invalidate();
