@@ -64,7 +64,7 @@ namespace OpenRCT2
     static uint8_t _currentScrollArea;
 
     ScreenCoordsXY gInputDragLast;
-    ScreenCoordsXY gTouchDragLast;
+    static ScreenCoordsXY gTouchDragLast;
 
     uint32_t gTooltipCloseTimeout;
     WidgetRef gTooltipWidget;
