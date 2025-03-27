@@ -537,7 +537,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto i = 2; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
                 SetWidgetDisabled(WIDX_TAB_1 + i, !isOtherTab);
 
-            SetWidgetDisabled(WIDX_TAB_6, !AnyRidesExist());
+            SetWidgetDisabled(WIDX_TAB_6, !(isOtherTab && AnyRidesExist()));
 
             // Reposition tabs based on availability so there are no gaps
             widgets[WIDX_TAB_1].left = 3;
