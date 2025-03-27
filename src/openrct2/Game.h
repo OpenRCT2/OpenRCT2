@@ -95,7 +95,6 @@ enum class GameCommand : int32_t
     ModifyTile,
     EditScenarioOptions,
     PlacePeepSpawn,
-    SetClimate,
     SetColourScheme,
     SetStaffCostume,
     PlaceFootpathAddition,
