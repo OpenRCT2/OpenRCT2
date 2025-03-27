@@ -324,7 +324,36 @@ namespace OpenRCT2
                                 // control..) So, scroll drag by map window
                                 break;
                             }
+
+                            // Copy from Right Press
+                            windowMgr->CloseByClass(WindowClass::Tooltip);
+
+                            if (w != nullptr)
+                            {
+                                w = windowMgr->BringToFront(*w);
+                            }
+
+                            if (widgetIndex != kWidgetIndexNull)
+                            {
+                                switch (widget->type)
+                                {
+                                    case WindowWidgetType::Viewport:
+                                        if (!(gLegacyScene == LegacyScene::trackDesignsManager
+                                              || gLegacyScene == LegacyScene::titleSequence))
+                                        {
+                                            InputViewportDragBegin(*w);
+                                        }
+                                        break;
+                                    case WindowWidgetType::Scroll:
+                                        InputScrollDragBegin(screenCoords, w, widgetIndex);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
                         }
+                        break;
                     case MouseState::RightPress:
                         windowMgr->CloseByClass(WindowClass::Tooltip);
 
