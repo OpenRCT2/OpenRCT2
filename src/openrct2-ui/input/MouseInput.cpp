@@ -1154,18 +1154,18 @@ namespace OpenRCT2
                                 if (gTouchDragLast.x >= screenCoords.x - 60 && gTouchDragLast.x <= screenCoords.x +60 &&
                                  gTouchDragLast.y>= screenCoords.y - 60 && gTouchDragLast.y<= screenCoords.y + 60)
                                 {
-                                    s_touchover=false;
+                                    s_touchover = false;
                                     w->OnToolDown(gCurrentToolWidget.widget_index, gTouchDragLast);
                                 }
                                 else
                                 {
                                     // gTouchDragLast = screenCoords;
-                                    s_touchover=false;
+                                    s_touchover = false;
                                 }  
                             }
                             else
                             {
-                                s_touchover=true;
+                                s_touchover = true;
                                 gTouchDragLast = screenCoords;
                                 w->OnToolUpdate(gCurrentToolWidget.widget_index, screenCoords);
                             }
