@@ -306,9 +306,10 @@ namespace OpenRCT2
                         break;
                     case MouseState::LeftPress:
                         InputWidgetLeft(screenCoords, w, widgetIndex);
-//                        If Touchscreen Option is True,(ex> Android or Tablet) don't break
-//                        Next case running too.
-                        if (!Config::Get().interface.TouchEnhancements) {
+                        //                        If Touchscreen Option is True,(ex> Android or Tablet) don't break
+                        //                        Next case running too.
+                        if (!Config::Get().interface.TouchEnhancements)
+                        {
                             break;
                         }
                         else
@@ -316,10 +317,11 @@ namespace OpenRCT2
                             auto window_water = windowMgr->FindByClass(WindowClass::Water);
                             auto window_land = windowMgr->FindByClass(WindowClass::Land);
                             auto window_scenery = windowMgr->FindByClass(WindowClass::Scenery);
-                            if (window_water != nullptr || window_land != nullptr || window_scenery != nullptr ){
+                            if (window_water != nullptr || window_land != nullptr || window_scenery != nullptr)
+                            {
                                 // ContextOpenWindow(WindowClass::Map);
-                                // Water, Land, Scenery edit screen is can not scroll touchscreen (camera is jumping and can not control..)
-                                // So, scroll drag by map window
+                                // Water, Land, Scenery edit screen is can not scroll touchscreen (camera is jumping and can not
+                                // control..) So, scroll drag by map window
                                 break;
                             }
                         }
@@ -454,9 +456,10 @@ namespace OpenRCT2
                             else if (!gInputFlags.has(InputFlag::unk4))
                             {
                                 if (!(gLegacyScene == LegacyScene::trackDesignsManager
-                                    || gLegacyScene == LegacyScene::titleSequence))
+                                      || gLegacyScene == LegacyScene::titleSequence))
                                 {
-                                    if (_ticksSinceDragStart.has_value() && gCurrentRealTimeTicks - _ticksSinceDragStart.value() < 500)
+                                    if (_ticksSinceDragStart.has_value()
+                                        && gCurrentRealTimeTicks - _ticksSinceDragStart.value() < 500)
                                     {
                                         ViewportInteractionLeftClick(screenCoords);
                                     }
@@ -633,10 +636,10 @@ namespace OpenRCT2
             {
                 if (Config::Get().interface.TouchEnhancements)
                 {
-                    if (std::abs(differentialCoords.x) > 80 || std::abs(differentialCoords.y)> 80)
+                    if (std::abs(differentialCoords.x) > 80 || std::abs(differentialCoords.y) > 80)
                     {
                         return;
-                    // Drag coordinate over 80 by 1 tick, it's ignore. Prevent Viewport jumping
+                        // Drag coordinate over 80 by 1 tick, it's ignore. Prevent Viewport jumping
                     }
                 }
                 // User dragged a scrollable viewport
@@ -1144,15 +1147,17 @@ namespace OpenRCT2
                     if (w != nullptr)
                     {
                         gInputFlags.set(InputFlag::unk4);
-                        
-                        if (!Config::Get().interface.TouchEnhancements) {
+
+                        if (!Config::Get().interface.TouchEnhancements)
+                        {
                             w->OnToolDown(gCurrentToolWidget.widget_index, screenCoords);
                         }
-                        else {
+                        else
+                        {
                             if (s_touchover)
                             {
-                                if (gTouchDragLast.x >= screenCoords.x - 60 && gTouchDragLast.x <= screenCoords.x +60 &&
-                                 gTouchDragLast.y>= screenCoords.y - 60 && gTouchDragLast.y<= screenCoords.y + 60)
+                                if (gTouchDragLast.x >= screenCoords.x - 60 && gTouchDragLast.x <= screenCoords.x + 60
+                                    && gTouchDragLast.y >= screenCoords.y - 60 && gTouchDragLast.y <= screenCoords.y + 60)
                                 {
                                     s_touchover = false;
                                     w->OnToolDown(gCurrentToolWidget.widget_index, gTouchDragLast);
@@ -1161,7 +1166,7 @@ namespace OpenRCT2
                                 {
                                     // gTouchDragLast = screenCoords;
                                     s_touchover = false;
-                                }  
+                                }
                             }
                             else
                             {
