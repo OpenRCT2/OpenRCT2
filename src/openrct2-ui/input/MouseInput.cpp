@@ -351,7 +351,6 @@ namespace OpenRCT2
                                         break;
                                 }
                             }
-                            break;
                         }
                         break;
                     case MouseState::RightPress:
