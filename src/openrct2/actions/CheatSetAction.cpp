@@ -761,6 +761,11 @@ void CheatSetAction::RemoveAllGuests() const
     // will be fetched on a deleted guest.
     for (auto guest : EntityList<Guest>())
     {
+        // Frozen peeps are usually placed and tweaked for artistic purposes,
+        // so exempt them from being removed.
+        if (guest->PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
+            continue;
+
         guest->Remove();
     }
 
