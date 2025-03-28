@@ -173,9 +173,11 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HARD_GUEST_GENERATION,
 
         // Land tab
-        WIDX_LAND_COST = WIDX_PAGE_START,
+        WIDX_LAND_COST_LABEL = WIDX_PAGE_START,
+        WIDX_LAND_COST,
         WIDX_LAND_COST_INCREASE,
         WIDX_LAND_COST_DECREASE,
+        WIDX_CONSTRUCTION_RIGHTS_COST_LABEL,
         WIDX_CONSTRUCTION_RIGHTS_COST,
         WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE,
         WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE,
@@ -244,7 +246,9 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_editor_scenario_options_land_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS, kSizeLand.width, kSizeLand.height),
+        MakeWidget        ({  8,  48}, {                 170,  12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_LAND_COST_LABEL                                             ),
         MakeSpinnerWidgets({188,  48}, {                  70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+        MakeWidget        ({  8,  65}, {                 170,  12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_RIGHTS_COST_LABEL                                           ),
         MakeSpinnerWidgets({188,  65}, {                  70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeWidget        ({  8,  82}, {kSizeLand.width - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
         MakeWidget        ({  8,  99}, {kSizeLand.width - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
@@ -2169,10 +2173,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& landCostWidget = widgets[WIDX_LAND_COST];
             if (landCostWidget.type != WindowWidgetType::Empty)
             {
-                // Cost to buy land label
-                screenCoords = windowPos + ScreenCoordsXY{ 8, landCostWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_LAND_COST_LABEL);
-
                 // Cost to buy land value
                 screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
                 auto ft = Formatter();
@@ -2183,10 +2183,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& constructionRightsCostWidget = widgets[WIDX_CONSTRUCTION_RIGHTS_COST];
             if (constructionRightsCostWidget.type != WindowWidgetType::Empty)
             {
-                // Cost to buy construction rights label
-                screenCoords = windowPos + ScreenCoordsXY{ 8, constructionRightsCostWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_RIGHTS_COST_LABEL);
-
                 // Cost to buy construction rights value
                 screenCoords = windowPos
                     + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
