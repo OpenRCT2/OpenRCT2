@@ -40,8 +40,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW_OBJECTIVE = 450;
     static constexpr int32_t WH_OBJECTIVE = 122;
 
-    static constexpr int32_t WW_SCENARIO_INFO = 450;
-    static constexpr int32_t WH_SCENARIO_INFO = 169;
+    static constexpr int32_t WW_SCENARIO_DETAILS = 450;
+    static constexpr int32_t WH_SCENARIO_DETAILS = 169;
 
     static constexpr int32_t WW_FINANCIAL = 380;
     static constexpr int32_t WH_FINANCIAL = 226;
@@ -85,7 +85,7 @@ namespace OpenRCT2::Ui::Windows
     enum
     {
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE,
-        WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO,
+        WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK,
@@ -200,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_SHIM(TITLE, WIDTH, HEIGHT), \
         MakeWidget({  0, 43}, { WIDTH, 106 }, WindowWidgetType::Resize, WindowColour::Secondary), \
         MakeTab   ({  3, 17}, STR_SCENARIO_OPTIONS_OBJECTIVE_TIP             ), \
-        MakeTab   ({ 34, 17}, STR_SCENARIO_OPTIONS_SCENARIO_INFO_TIP         ), \
+        MakeTab   ({ 34, 17}, STR_SCENARIO_OPTIONS_SCENARIO_DETAILS_TIP         ), \
         MakeTab   ({ 65, 17}, STR_SCENARIO_OPTIONS_FINANCIAL_TIP             ), \
         MakeTab   ({ 96, 17}, STR_SCENARIO_OPTIONS_GUESTS_TIP                ), \
         MakeTab   ({127, 17}, STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS_TIP     ), \
@@ -215,8 +215,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 15,  99}, {340,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP                   ),
     };
 
-    static constexpr Widget window_editor_scenario_options_scenario_info_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_SCENARIO_INFO, WW_SCENARIO_INFO, WH_SCENARIO_INFO),
+    static constexpr Widget window_editor_scenario_options_scenario_details_widgets[] = {
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_SCENARIO_DETAILS, WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS),
         MakeWidget        ({370, 48}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
         MakeWidget        ({370, 65}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
         MakeWidget        ({ 98, 82}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr std::span<const Widget> window_editor_scenario_options_widgets[] = {
         window_editor_scenario_options_objective_widgets,
-        window_editor_scenario_options_scenario_info_widgets,
+        window_editor_scenario_options_scenario_details_widgets,
         window_editor_scenario_options_financial_widgets,
         window_editor_scenario_options_guests_widgets,
         window_editor_scenario_options_park_widgets,
@@ -347,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnMouseUp(widgetIndex);
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO:
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
                     return ScenarioInfoOnMouseUp(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialMouseUp(widgetIndex);
@@ -362,7 +362,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnResize();
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO:
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
                     return ScenarioInfoOnResize();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialResize();
@@ -381,7 +381,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnMouseDown(widgetIndex);
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO:
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
                     return ScenarioInfoOnMouseDown(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialMouseDown(widgetIndex);
@@ -398,7 +398,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnUpdate();
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO:
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
                     return ScenarioInfoOnUpdate();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialUpdate();
@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnPrepareDraw();
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO:
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
                     return ScenarioInfoOnPrepareDraw();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialPrepareDraw();
@@ -438,7 +438,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnDraw(dpi);
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO:
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
                     return ScenarioInfoOnDraw(dpi);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialDraw(dpi);
@@ -457,7 +457,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
                     return ObjectiveOnDropdown(widgetIndex, selectedIndex);
-                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO:
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
                     return ScenarioInfoOnDropdown(widgetIndex, selectedIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialDropdown(widgetIndex, selectedIndex);
@@ -468,7 +468,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
-            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO)
+            if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS)
             {
                 ScenarioInfoOnTextInput(widgetIndex, text);
             }
@@ -550,7 +550,7 @@ namespace OpenRCT2::Ui::Windows
                 if (isObjectiveSelection)
                     SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE);
                 else if (isScenarioDetails)
-                    SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO);
+                    SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS);
                 else
                     SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL);
             }
@@ -590,7 +590,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget = &widgets[WIDX_TAB_2];
                 spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
-                if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_INFO)
+                if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS)
                     spriteIndex += (frame_no / 4) % 8;
 
                 GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
@@ -1340,7 +1340,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ScenarioInfoOnResize()
         {
-            WindowSetResize(*this, { WW_SCENARIO_INFO, WH_SCENARIO_INFO }, { WW_SCENARIO_INFO, WH_SCENARIO_INFO });
+            WindowSetResize(*this, { WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS }, { WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS });
         }
 
 #pragma endregion
