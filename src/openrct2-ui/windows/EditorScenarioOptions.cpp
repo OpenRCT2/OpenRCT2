@@ -155,15 +155,19 @@ namespace OpenRCT2::Ui::Windows
         WIDX_FORBID_MARKETING,
 
         // Guests tab
-        WIDX_CASH_PER_GUEST = WIDX_PAGE_START,
+        WIDX_CASH_PER_GUEST_LABEL = WIDX_PAGE_START,
+        WIDX_CASH_PER_GUEST,
         WIDX_CASH_PER_GUEST_INCREASE,
         WIDX_CASH_PER_GUEST_DECREASE,
+        WIDX_GUEST_INITIAL_HAPPINESS_LABEL,
         WIDX_GUEST_INITIAL_HAPPINESS,
         WIDX_GUEST_INITIAL_HAPPINESS_INCREASE,
         WIDX_GUEST_INITIAL_HAPPINESS_DECREASE,
+        WIDX_GUEST_INITIAL_HUNGER_LABEL,
         WIDX_GUEST_INITIAL_HUNGER,
         WIDX_GUEST_INITIAL_HUNGER_INCREASE,
         WIDX_GUEST_INITIAL_HUNGER_DECREASE,
+        WIDX_GUEST_INITIAL_THIRST_LABEL,
         WIDX_GUEST_INITIAL_THIRST,
         WIDX_GUEST_INITIAL_THIRST_INCREASE,
         WIDX_GUEST_INITIAL_THIRST_DECREASE,
@@ -234,9 +238,13 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_GUESTS, kSizeGuests.width, kSizeGuests.height),
+        MakeWidget        ({  8,  48}, {      170,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_CASH_PER_GUEST_LABEL                                                ),
         MakeSpinnerWidgets({298,  48}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeWidget        ({  8,  65}, {      170,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUEST_INIT_HAPPINESS                                                ),
         MakeSpinnerWidgets({298,  65}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeWidget        ({  8,  82}, {      170,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUEST_INIT_HUNGER                                                   ),
         MakeSpinnerWidgets({298,  82}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeWidget        ({  8,  99}, {      170,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUEST_INIT_THIRST                                                   ),
         MakeSpinnerWidgets({298,  99}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
         MakeWidget        ({  8, 116}, {      170,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
         MakeWidget        ({198, 116}, {      170,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                        STR_GUESTS_PREFER_INTENSITY_TIP   ),
@@ -1957,10 +1965,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
             if (cashPerGuestWidget.type != WindowWidgetType::Empty)
             {
-                // Cash per guest label
-                screenCoords = windowPos + ScreenCoordsXY{ 8, cashPerGuestWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_CASH_PER_GUEST_LABEL);
-
                 // Cash per guest value
                 screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
                 auto ft = Formatter();
@@ -1968,34 +1972,22 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
-            // Guest initial happiness label
-            const auto& initialHappinessWidget = widgets[WIDX_GUEST_INITIAL_HAPPINESS];
-            screenCoords = windowPos + ScreenCoordsXY{ 8, initialHappinessWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HAPPINESS);
-
             // Guest initial happiness value
+            const auto& initialHappinessWidget = widgets[WIDX_GUEST_INITIAL_HAPPINESS];
             screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
             auto ft = Formatter();
             ft.Add<uint16_t>((gameState.guestInitialHappiness * 100) / 255);
             DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
-            // Guest initial hunger label
-            const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
-            screenCoords = windowPos + ScreenCoordsXY{ 8, initialHungerWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HUNGER);
-
             // Guest initial hunger value
+            const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
             screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
             ft = Formatter();
             ft.Add<uint16_t>(((255 - gameState.guestInitialHunger) * 100) / 255);
             DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
-            // Guest initial thirst label
-            const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
-            screenCoords = windowPos + ScreenCoordsXY{ 8, initialThirstWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_THIRST);
-
             // Guest initial thirst value
+            const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
             screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
             ft = Formatter();
             ft.Add<uint16_t>(((255 - gameState.guestInitialThirst) * 100) / 255);
