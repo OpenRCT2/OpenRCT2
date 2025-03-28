@@ -201,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeSpinnerWidgets({158,  65}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
         MakeSpinnerWidgets({158,  82}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
-        MakeWidget        ({ 15,  99}, {340,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP                   ),
+        MakeWidget        ({ 14,  99}, {340,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP                   ),
     };
 
     static constexpr Widget window_editor_scenario_options_scenario_details_widgets[] = {
@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 10, 111}, {kSizeFinancial.width - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
         MakeWidget        ({  5, 133}, {kSizeFinancial.width - 10, 87}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_BUSINESS_MODEL                                  ),
         MakeSpinnerWidgets({268, 150}, {                      100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeWidget        ({ 10, 167}, {                      150, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_EARNINGS_LABEL                                        ),
+        MakeWidget        ({  9, 167}, {                      150, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_EARNINGS_LABEL                                        ),
         MakeWidget        ({158, 167}, {                      210, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,      STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeWidget        ({356, 168}, {                       11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeSpinnerWidgets({298, 184}, {                       70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
