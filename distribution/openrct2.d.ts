@@ -961,7 +961,7 @@ declare global {
         /**
          * Only used if {@link LandSetRightsArgs.setting} === 4 (set ownership)
          *
-         * @see {@link https://github.com/OpenRCT2/OpenRCT2/blob/e427d6424c2f3142d5ce8284135aa2384a246499/src/openrct2/world/tile_element/SurfaceElement.h}
+         * @see {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/world/tile_element/SurfaceElement.h}
          */
         ownership: number;
     }
