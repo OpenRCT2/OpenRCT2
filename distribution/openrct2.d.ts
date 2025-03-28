@@ -331,7 +331,6 @@ declare global {
         queryAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
-        queryAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathadditionremove", args: FootpathAdditionRemoveArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -423,7 +422,6 @@ declare global {
         executeAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
-        executeAction(action: "climateset", args: ClimateSetArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathadditionremove", args: FootpathAdditionRemoveArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -823,16 +821,6 @@ declare global {
          * - `4`: `(100)`: Footpaths
          */
         itemsToClear: number;
-    }
-
-    interface ClimateSetArgs extends GameActionArgs {
-        /**
-         * - `0`: Cool and wet
-         * - `1`: Warm
-         * - `2`: Hot and dry
-         * - `3`: Cold
-         */
-        climate: number;
     }
 
     interface FootpathAdditionPlaceArgs extends GameActionArgs {
