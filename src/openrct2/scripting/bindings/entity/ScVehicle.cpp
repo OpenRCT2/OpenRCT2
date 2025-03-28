@@ -537,18 +537,17 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    void ScVehicle::moveToTrack(const DukValue& dukPosition, int32_t elementIndex)
+    void ScVehicle::moveToTrack(int32_t x, int32_t y, int32_t elementIndex)
     {
         auto vehicle = GetVehicle();
         if (vehicle == nullptr)
             return;
 
-        auto position = FromDuk<CoordsXY>(dukPosition);
-        auto el = MapGetNthElementAt(position, elementIndex);
+        auto el = MapGetNthElementAt(CoordsXY(x, y), elementIndex);
         if (el == nullptr)
             return;
 
-        auto origin = GetTrackSegmentOrigin(CoordsXYE(position, el));
+        auto origin = GetTrackSegmentOrigin(CoordsXYE(x, y, el));
         if (!origin)
             return;
 

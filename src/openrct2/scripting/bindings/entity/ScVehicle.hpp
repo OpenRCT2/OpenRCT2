@@ -103,7 +103,7 @@ namespace OpenRCT2::Scripting
 
         void travelBy(int32_t value);
 
-        void moveToTrack(const DukValue& dukPosition, int32_t elementIndex);
+        void moveToTrack(int32_t x, int32_t y, int32_t elementIndex);
     };
 
 } // namespace OpenRCT2::Scripting

@@ -120,8 +120,8 @@ declare global {
     /**
      * A track piece coordinate and type within the game.
      */
-    interface CarTrackLocation extends CoordsXYZD {
-        trackType: number;
+    interface CarTrackLocation extends Readonly<CoordsXYZD> {
+        readonly trackType: number;
     }
 
     /**
@@ -2974,7 +2974,7 @@ declare global {
         /**
          * Moves the vehicle to the track piece specified in the parameters.
          */
-        moveToTrack(coord: CoordsXY, elemIndex: number): void;
+        moveToTrack(x: number, y: number, elemIndex: number): void;
     }
 
     type VehicleStatus =
