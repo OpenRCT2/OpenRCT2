@@ -132,38 +132,47 @@ namespace OpenRCT2::Ui::Windows
         // Financial tab
         WIDX_NO_MONEY = WIDX_PAGE_START,
         WIDX_GROUP_LOAN,
+        WIDX_INITIAL_LOAN_LABEL,
         WIDX_INITIAL_LOAN,
         WIDX_INITIAL_LOAN_INCREASE,
         WIDX_INITIAL_LOAN_DECREASE,
+        WIDX_MAXIMUM_LOAN_LABEL,
         WIDX_MAXIMUM_LOAN,
         WIDX_MAXIMUM_LOAN_INCREASE,
         WIDX_MAXIMUM_LOAN_DECREASE,
+        WIDX_INTEREST_RATE_LABEL,
         WIDX_INTEREST_RATE,
         WIDX_INTEREST_RATE_INCREASE,
         WIDX_INTEREST_RATE_DECREASE,
         WIDX_RCT1_INTEREST,
         WIDX_GROUP_BUSINESS_MODEL,
+        WIDX_INITIAL_CASH_LABEL,
         WIDX_INITIAL_CASH,
         WIDX_INITIAL_CASH_INCREASE,
         WIDX_INITIAL_CASH_DECREASE,
         WIDX_PAY_FOR_PARK_OR_RIDES_LABEL,
         WIDX_PAY_FOR_PARK_OR_RIDES,
         WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN,
+        WIDX_ENTRY_PRICE_LABEL,
         WIDX_ENTRY_PRICE,
         WIDX_ENTRY_PRICE_INCREASE,
         WIDX_ENTRY_PRICE_DECREASE,
         WIDX_FORBID_MARKETING,
 
         // Guests tab
-        WIDX_CASH_PER_GUEST = WIDX_PAGE_START,
+        WIDX_CASH_PER_GUEST_LABEL = WIDX_PAGE_START,
+        WIDX_CASH_PER_GUEST,
         WIDX_CASH_PER_GUEST_INCREASE,
         WIDX_CASH_PER_GUEST_DECREASE,
+        WIDX_GUEST_INITIAL_HAPPINESS_LABEL,
         WIDX_GUEST_INITIAL_HAPPINESS,
         WIDX_GUEST_INITIAL_HAPPINESS_INCREASE,
         WIDX_GUEST_INITIAL_HAPPINESS_DECREASE,
+        WIDX_GUEST_INITIAL_HUNGER_LABEL,
         WIDX_GUEST_INITIAL_HUNGER,
         WIDX_GUEST_INITIAL_HUNGER_INCREASE,
         WIDX_GUEST_INITIAL_HUNGER_DECREASE,
+        WIDX_GUEST_INITIAL_THIRST_LABEL,
         WIDX_GUEST_INITIAL_THIRST,
         WIDX_GUEST_INITIAL_THIRST_INCREASE,
         WIDX_GUEST_INITIAL_THIRST_DECREASE,
@@ -173,9 +182,11 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HARD_GUEST_GENERATION,
 
         // Land tab
-        WIDX_LAND_COST = WIDX_PAGE_START,
+        WIDX_LAND_COST_LABEL = WIDX_PAGE_START,
+        WIDX_LAND_COST,
         WIDX_LAND_COST_INCREASE,
         WIDX_LAND_COST_DECREASE,
+        WIDX_CONSTRUCTION_RIGHTS_COST_LABEL,
         WIDX_CONSTRUCTION_RIGHTS_COST,
         WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE,
         WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE,
@@ -201,7 +212,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeSpinnerWidgets({158,  65}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
         MakeSpinnerWidgets({158,  82}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
-        MakeWidget        ({ 15,  99}, {340,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP                   ),
+        MakeWidget        ({ 14,  99}, {340,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP                   ),
     };
 
     static constexpr Widget window_editor_scenario_options_scenario_details_widgets[] = {
@@ -217,26 +228,35 @@ namespace OpenRCT2::Ui::Windows
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_FINANCIAL, kSizeFinancial.width, kSizeFinancial.height),
         MakeWidget        ({  8,  48}, {kSizeFinancial.width - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
         MakeWidget        ({  5,  63}, {kSizeFinancial.width - 10, 67}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_LOAN_OPTIONS                                    ),
+        MakeWidget        ({  9,  77}, {                      250, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_INIT_LOAN_LABEL                                        ),
         MakeSpinnerWidgets({268,  77}, {                      100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({  9,  94}, {                      250, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_MAX_LOAN_LABEL                                        ),
         MakeSpinnerWidgets({268,  94}, {                      100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({  9, 111}, {                      280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_INTEREST_RATE_LABEL                                        ),
         MakeSpinnerWidgets({298, 111}, {                       70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
         MakeWidget        ({ 10, 111}, {kSizeFinancial.width - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
         MakeWidget        ({  5, 133}, {kSizeFinancial.width - 10, 87}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_BUSINESS_MODEL                                  ),
+        MakeWidget        ({  9, 150}, {                      250, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_INIT_CASH_LABEL                                        ),
         MakeSpinnerWidgets({268, 150}, {                      100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeWidget        ({ 10, 167}, {                      150, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_EARNINGS_LABEL                                        ),
+        MakeWidget        ({  9, 167}, {                      150, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_EARNINGS_LABEL                                        ),
         MakeWidget        ({158, 167}, {                      210, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,      STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeWidget        ({356, 168}, {                       11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeWidget        ({  9, 184}, {                      280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_ENTRY_PRICE_LABEL                                        ),
         MakeSpinnerWidgets({298, 184}, {                       70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
         MakeWidget        ({ 10, 201}, {kSizeFinancial.width - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
     };
 
     static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_GUESTS, kSizeGuests.width, kSizeGuests.height),
+        MakeWidget        ({  8,  48}, {      280,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_CASH_PER_GUEST_LABEL                                                ),
         MakeSpinnerWidgets({298,  48}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeWidget        ({  8,  65}, {      280,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUEST_INIT_HAPPINESS                                                ),
         MakeSpinnerWidgets({298,  65}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeWidget        ({  8,  82}, {      280,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUEST_INIT_HUNGER                                                   ),
         MakeSpinnerWidgets({298,  82}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeWidget        ({  8,  99}, {      280,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUEST_INIT_THIRST                                                   ),
         MakeSpinnerWidgets({298,  99}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
-        MakeWidget        ({  8, 116}, {      170,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
+        MakeWidget        ({  8, 116}, {      180,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
         MakeWidget        ({198, 116}, {      170,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                        STR_GUESTS_PREFER_INTENSITY_TIP   ),
         MakeWidget        ({357, 117}, {       11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                   STR_GUESTS_PREFER_INTENSITY_TIP   ),
         MakeWidget        ({  8, 133}, {      350,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_HARD_GUEST_GENERATION,            STR_HARD_GUEST_GENERATION_TIP     ),
@@ -244,7 +264,9 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_editor_scenario_options_land_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS, kSizeLand.width, kSizeLand.height),
+        MakeWidget        ({  8,  48}, {                 170,  12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_LAND_COST_LABEL                                             ),
         MakeSpinnerWidgets({188,  48}, {                  70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+        MakeWidget        ({  8,  65}, {                 170,  12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_RIGHTS_COST_LABEL                                           ),
         MakeSpinnerWidgets({188,  65}, {                  70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeWidget        ({  8,  82}, {kSizeLand.width - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
         MakeWidget        ({  8,  99}, {kSizeLand.width - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
@@ -253,7 +275,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_editor_scenario_options_rides_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_PRESERVED_RIDES, kSizeRides.width, kSizeRides.height),
-        MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
+        MakeWidget({  6,  46}, {kSizeRides.width - 12,  12}, WindowWidgetType::Label,  WindowColour::Secondary, STR_WINDOW_PRESERVATION_ORDER),
+        MakeWidget({  3,  60}, {                  374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL              ),
     };
 
     static constexpr std::span<const Widget> window_editor_scenario_options_widgets[] = {
@@ -269,7 +292,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Enabled widgets
 
-    static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
+    static uint64_t window_editor_scenario_options_page_hold_down_widgets[] = {
         (1uLL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
             (1uLL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
             (1uLL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
@@ -1585,15 +1608,18 @@ namespace OpenRCT2::Ui::Windows
                 SetWidgetPressed(WIDX_NO_MONEY, false);
 
                 widgets[WIDX_GROUP_LOAN].type = WindowWidgetType::Groupbox;
+                widgets[WIDX_INITIAL_LOAN_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_INITIAL_LOAN].type = WindowWidgetType::Spinner;
                 widgets[WIDX_INITIAL_LOAN_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_INITIAL_LOAN_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_MAXIMUM_LOAN_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_MAXIMUM_LOAN].type = WindowWidgetType::Spinner;
                 widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
 
                 if (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
                 {
+                    widgets[WIDX_INTEREST_RATE_LABEL].type = WindowWidgetType::Empty;
                     widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Empty;
                     widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Empty;
                     widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Empty;
@@ -1602,6 +1628,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
+                    widgets[WIDX_INTEREST_RATE_LABEL].type = WindowWidgetType::Label;
                     widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
                     widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
                     widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
@@ -1609,12 +1636,14 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 widgets[WIDX_GROUP_BUSINESS_MODEL].type = WindowWidgetType::Groupbox;
+                widgets[WIDX_INITIAL_CASH_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
                 widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_PAY_FOR_PARK_OR_RIDES_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
+                widgets[WIDX_ENTRY_PRICE_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Spinner;
                 widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
@@ -1622,6 +1651,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (!Park::EntranceFeeUnlocked())
                 {
+                    widgets[WIDX_ENTRY_PRICE_LABEL].type = WindowWidgetType::Empty;
                     widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
                     widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
                     widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Empty;
@@ -1648,9 +1678,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
             if (initialCashWidget.type != WindowWidgetType::Empty)
             {
-                screenCoords = windowPos + ScreenCoordsXY{ 10, initialCashWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_INIT_CASH_LABEL);
-
                 screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(getGameState().initialCash);
@@ -1660,9 +1687,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& initialLoanWidget = widgets[WIDX_INITIAL_LOAN];
             if (initialLoanWidget.type != WindowWidgetType::Empty)
             {
-                screenCoords = windowPos + ScreenCoordsXY{ 10, initialLoanWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_INIT_LOAN_LABEL);
-
                 screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.bankLoan);
@@ -1672,9 +1696,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& maximumLoanWidget = widgets[WIDX_MAXIMUM_LOAN];
             if (maximumLoanWidget.type != WindowWidgetType::Empty)
             {
-                screenCoords = windowPos + ScreenCoordsXY{ 10, maximumLoanWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_MAX_LOAN_LABEL);
-
                 screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(getGameState().maxBankLoan);
@@ -1684,9 +1705,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& interestRateWidget = widgets[WIDX_INTEREST_RATE];
             if (interestRateWidget.type != WindowWidgetType::Empty)
             {
-                screenCoords = windowPos + ScreenCoordsXY{ 10, interestRateWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_INTEREST_RATE_LABEL);
-
                 screenCoords = windowPos + ScreenCoordsXY{ interestRateWidget.left + 1, interestRateWidget.top };
 
                 auto ft = Formatter();
@@ -1716,10 +1734,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& entryPriceWidget = widgets[WIDX_ENTRY_PRICE];
             if (entryPriceWidget.type != WindowWidgetType::Empty)
             {
-                // Entry price label
-                screenCoords = windowPos + ScreenCoordsXY{ 10, entryPriceWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
-
                 // Entry price value
                 screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
                 auto ft = Formatter();
@@ -1952,10 +1966,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
             if (cashPerGuestWidget.type != WindowWidgetType::Empty)
             {
-                // Cash per guest label
-                screenCoords = windowPos + ScreenCoordsXY{ 8, cashPerGuestWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_CASH_PER_GUEST_LABEL);
-
                 // Cash per guest value
                 screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
                 auto ft = Formatter();
@@ -1963,34 +1973,22 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
-            // Guest initial happiness label
-            const auto& initialHappinessWidget = widgets[WIDX_GUEST_INITIAL_HAPPINESS];
-            screenCoords = windowPos + ScreenCoordsXY{ 8, initialHappinessWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HAPPINESS);
-
             // Guest initial happiness value
+            const auto& initialHappinessWidget = widgets[WIDX_GUEST_INITIAL_HAPPINESS];
             screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
             auto ft = Formatter();
             ft.Add<uint16_t>((gameState.guestInitialHappiness * 100) / 255);
             DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
-            // Guest initial hunger label
-            const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
-            screenCoords = windowPos + ScreenCoordsXY{ 8, initialHungerWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HUNGER);
-
             // Guest initial hunger value
+            const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
             screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
             ft = Formatter();
             ft.Add<uint16_t>(((255 - gameState.guestInitialHunger) * 100) / 255);
             DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
-            // Guest initial thirst label
-            const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
-            screenCoords = windowPos + ScreenCoordsXY{ 8, initialThirstWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_THIRST);
-
             // Guest initial thirst value
+            const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
             screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
             ft = Formatter();
             ft.Add<uint16_t>(((255 - gameState.guestInitialThirst) * 100) / 255);
@@ -2134,11 +2132,12 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
             if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
             {
-                for (int32_t i = WIDX_LAND_COST; i <= WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE; i++)
+                for (int32_t i = WIDX_LAND_COST_LABEL; i <= WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE; i++)
                     widgets[i].type = WindowWidgetType::Empty;
             }
             else
             {
+                widgets[WIDX_LAND_COST_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_LAND_COST].type = WindowWidgetType::Spinner;
                 widgets[WIDX_LAND_COST_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_LAND_COST_DECREASE].type = WindowWidgetType::Button;
@@ -2168,10 +2167,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& landCostWidget = widgets[WIDX_LAND_COST];
             if (landCostWidget.type != WindowWidgetType::Empty)
             {
-                // Cost to buy land label
-                screenCoords = windowPos + ScreenCoordsXY{ 8, landCostWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_LAND_COST_LABEL);
-
                 // Cost to buy land value
                 screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
                 auto ft = Formatter();
@@ -2182,10 +2177,6 @@ namespace OpenRCT2::Ui::Windows
             const auto& constructionRightsCostWidget = widgets[WIDX_CONSTRUCTION_RIGHTS_COST];
             if (constructionRightsCostWidget.type != WindowWidgetType::Empty)
             {
-                // Cost to buy construction rights label
-                screenCoords = windowPos + ScreenCoordsXY{ 8, constructionRightsCostWidget.top };
-                DrawTextBasic(dpi, screenCoords, STR_RIGHTS_COST_LABEL);
-
                 // Cost to buy construction rights value
                 screenCoords = windowPos
                     + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
@@ -2306,9 +2297,6 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
-
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PAGE_BACKGROUND].top + 3 }, STR_WINDOW_PRESERVATION_ORDER);
         }
 
         /**
