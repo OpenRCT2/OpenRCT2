@@ -265,7 +265,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_editor_scenario_options_rides_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_PRESERVED_RIDES, kSizeRides.width, kSizeRides.height),
-        MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
+        MakeWidget({  6,  46}, {kSizeRides.width - 12,  12}, WindowWidgetType::Label,  WindowColour::Secondary, STR_WINDOW_PRESERVATION_ORDER),
+        MakeWidget({  3,  60}, {                  374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL              ),
     };
 
     static constexpr std::span<const Widget> window_editor_scenario_options_widgets[] = {
@@ -2295,9 +2296,6 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
-
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PAGE_BACKGROUND].top + 3 }, STR_WINDOW_PRESERVATION_ORDER);
         }
 
         /**
