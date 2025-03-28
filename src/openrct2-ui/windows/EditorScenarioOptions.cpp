@@ -49,8 +49,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW_GUESTS = 380;
     static constexpr int32_t WH_GUESTS = 154;
 
-    static constexpr int32_t WW_PARK = 268;
-    static constexpr int32_t WH_PARK = 134;
+    static constexpr int32_t WW_LAND = 268;
+    static constexpr int32_t WH_LAND = 134;
 
     static constexpr int32_t WW_RIDES = 380;
     static constexpr int32_t WH_RIDES = 224;
@@ -183,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_GUESTS_INTENSITY_PREFERENCE_DROPDOWN,
         WIDX_HARD_GUEST_GENERATION,
 
-        // Park tab
+        // Land tab
         WIDX_LAND_COST = WIDX_PAGE_START,
         WIDX_LAND_COST_INCREASE,
         WIDX_LAND_COST_DECREASE,
@@ -253,13 +253,13 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  8, 133}, {      350,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_HARD_GUEST_GENERATION,            STR_HARD_GUEST_GENERATION_TIP     ),
     };
 
-    static constexpr Widget window_editor_scenario_options_park_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS, WW_PARK, WH_PARK),
+    static constexpr Widget window_editor_scenario_options_land_widgets[] = {
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS, WW_LAND, WH_LAND),
         MakeSpinnerWidgets({188,  48}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeSpinnerWidgets({188,  65}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeWidget        ({  8,  82}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
-        MakeWidget        ({  8,  99}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
-        MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+        MakeWidget        ({  8,  82}, {WW_LAND - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+        MakeWidget        ({  8,  99}, {WW_LAND - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+        MakeWidget        ({  8, 116}, {WW_LAND - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
     };
 
     static constexpr Widget window_editor_scenario_options_rides_widgets[] = {
@@ -272,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
         window_editor_scenario_options_scenario_details_widgets,
         window_editor_scenario_options_financial_widgets,
         window_editor_scenario_options_guests_widgets,
-        window_editor_scenario_options_park_widgets,
+        window_editor_scenario_options_land_widgets,
         window_editor_scenario_options_rides_widgets,
     };
 
@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
                     return FinancialMouseUp(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                    return ParkMouseUp(widgetIndex);
+                    return LandMouseUp(widgetIndex);
             }
         }
 
@@ -369,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
                     return GuestsResize();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                    return ParkResize();
+                    return LandResize();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES:
                     return RidesOnResize();
             }
@@ -388,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
                     return GuestsMouseDown(widgetIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                    return ParkMouseDown(widgetIndex);
+                    return LandMouseDown(widgetIndex);
             }
         }
 
@@ -405,7 +405,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
                     return GuestsUpdate();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                    return ParkUpdate();
+                    return LandUpdate();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES:
                     return RidesOnUpdate();
             }
@@ -426,7 +426,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
                     return GuestsPrepareDraw();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                    return ParkPrepareDraw();
+                    return LandPrepareDraw();
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES:
                     return RidesOnPrepareDraw();
             }
@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
                     return GuestsDraw(dpi);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                    return ParkDraw(dpi);
+                    return LandDraw(dpi);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES:
                     return RidesOnDraw(dpi);
             }
@@ -1253,7 +1253,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& gameState = getGameState();
 
-            // Park name
+            // Land name
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_PARK_NAME].top };
             int32_t widthToSet = widgets[WIDX_PARK_NAME].left - 16;
 
@@ -2031,9 +2031,9 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-#pragma region Park
+#pragma region Land
 
-        void ParkMouseUp(WidgetIndex widgetIndex)
+        void LandMouseUp(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -2067,12 +2067,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ParkResize()
+        void LandResize()
         {
-            WindowSetResize(*this, { WW_PARK, WH_PARK }, { WW_PARK, WH_PARK });
+            WindowSetResize(*this, { WW_LAND, WH_LAND }, { WW_LAND, WH_LAND });
         }
 
-        void ParkMouseDown(WidgetIndex widgetIndex)
+        void LandMouseDown(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
             switch (widgetIndex)
@@ -2132,13 +2132,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ParkUpdate()
+        void LandUpdate()
         {
             frame_no++;
             InvalidateWidget(WIDX_TAB_3);
         }
 
-        void ParkPrepareDraw()
+        void LandPrepareDraw()
         {
             SetPressedTab();
 
@@ -2168,7 +2168,7 @@ namespace OpenRCT2::Ui::Windows
             AnchorBorderWidgets();
         }
 
-        void ParkDraw(DrawPixelInfo& dpi)
+        void LandDraw(DrawPixelInfo& dpi)
         {
             ScreenCoordsXY screenCoords{};
 
