@@ -316,11 +316,21 @@ namespace OpenRCT2
                         {
                             auto window_water = windowMgr->FindByClass(WindowClass::Water);
                             auto window_land = windowMgr->FindByClass(WindowClass::Land);
-                            auto window_scenery = windowMgr->FindByClass(WindowClass::Scenery);
-                            if (window_water != nullptr || window_land != nullptr || window_scenery != nullptr)
+                            // auto window_scenery = windowMgr->FindByClass(WindowClass::Scenery);
+                            auto window_loadsave = windowMgr->FindByClass(WindowClass::Loadsave);
+                            auto window_scenarioselect = windowMgr->FindByClass(WindowClass::ScenarioSelect);
+                            // auto window_ridelist = windowMgr->FindByClass(WindowClass::RideList);
+                            auto window_map = windowMgr->FindByClass(WindowClass::Map);
+                            if (window_water != nullptr
+                                || window_land != nullptr
+                                // || window_scenery != nullptr
+                                || window_loadsave != nullptr
+                                || window_scenarioselect != nullptr
+                                // || window_ridelist != nullptr
+                                || window_map != nullptr)
                             {
                                 // ContextOpenWindow(WindowClass::Map);
-                                // Water, Land, Scenery edit screen is can not scroll touchscreen (camera is jumping and can not
+                                // Water, Land screen is can not scroll touchscreen (camera is jumping and can not
                                 // control..) So, scroll drag by map window
                                 break;
                             }
@@ -344,9 +354,10 @@ namespace OpenRCT2
                                             InputViewportDragBegin(*w);
                                         }
                                         break;
-                                    case WindowWidgetType::Scroll:
-                                        InputScrollDragBegin(screenCoords, w, widgetIndex);
-                                        break;
+                                    // Scroll can some of control bug. ex)Scenary Window. So This is Remove.
+                                    // case WindowWidgetType::Scroll:
+                                    // InputScrollDragBegin(screenCoords, w, widgetIndex);
+                                    // break;
                                     default:
                                         break;
                                 }
@@ -483,15 +494,23 @@ namespace OpenRCT2
                             }
                             else if (!gInputFlags.has(InputFlag::unk4))
                             {
-                                if (!(gLegacyScene == LegacyScene::trackDesignsManager
-                                      || gLegacyScene == LegacyScene::titleSequence))
+                                if (Config::Get().interface.TouchEnhancements)
                                 {
-                                    if (_ticksSinceDragStart.has_value()
-                                        && gCurrentRealTimeTicks - _ticksSinceDragStart.value() < 500)
+                                    if (!(gLegacyScene == LegacyScene::trackDesignsManager
+                                          || gLegacyScene == LegacyScene::titleSequence))
                                     {
-                                        ViewportInteractionLeftClick(screenCoords);
+                                        InputViewportDragEnd();
+                                        if (_ticksSinceDragStart.has_value()
+                                            && gCurrentRealTimeTicks - _ticksSinceDragStart.value() < 500)
+                                        {
+                                            ViewportInteractionLeftClick(screenCoords);
+                                        }
+                                        // If title Sequence, hang on in Sone of device.
                                     }
-                                    // If title Sequence, hang on in Sone of device.
+                                }
+                                else
+                                {
+                                    ViewportInteractionLeftClick(screenCoords);
                                 }
                             }
                         }
