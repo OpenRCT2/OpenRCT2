@@ -673,7 +673,6 @@ declare global {
         "bannersetstyle" |
         "cheatset" |
         "clearscenery" |
-        "climateset" |
         "footpathadditionplace" |
         "footpathadditionremove" |
         "footpathplace" |
