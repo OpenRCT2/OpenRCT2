@@ -242,7 +242,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  8, 133}, {      350,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_HARD_GUEST_GENERATION,            STR_HARD_GUEST_GENERATION_TIP     ),
     };
 
-    static constexpr Widget window_editor_scenario_options_park_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_land_widgets[] = {
         MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS, kSizeLand.width, kSizeLand.height),
         MakeSpinnerWidgets({188,  48}, {                  70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
         MakeSpinnerWidgets({188,  65}, {                  70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
@@ -261,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
         window_editor_scenario_options_scenario_details_widgets,
         window_editor_scenario_options_financial_widgets,
         window_editor_scenario_options_guests_widgets,
-        window_editor_scenario_options_park_widgets,
+        window_editor_scenario_options_land_widgets,
         window_editor_scenario_options_rides_widgets,
     };
 
