@@ -37,23 +37,12 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WW_OBJECTIVE = 450;
-    static constexpr int32_t WH_OBJECTIVE = 122;
-
-    static constexpr int32_t WW_SCENARIO_DETAILS = 450;
-    static constexpr int32_t WH_SCENARIO_DETAILS = 169;
-
-    static constexpr int32_t WW_FINANCIAL = 380;
-    static constexpr int32_t WH_FINANCIAL = 226;
-
-    static constexpr int32_t WW_GUESTS = 380;
-    static constexpr int32_t WH_GUESTS = 154;
-
-    static constexpr int32_t WW_LAND = 268;
-    static constexpr int32_t WH_LAND = 134;
-
-    static constexpr int32_t WW_RIDES = 380;
-    static constexpr int32_t WH_RIDES = 224;
+    static constexpr ScreenSize kSizeObjective = { 450, 122 };
+    static constexpr ScreenSize kSizeScenarioDetails = { 450, 169 };
+    static constexpr ScreenSize kSizeFinancial = { 380, 226 };
+    static constexpr ScreenSize kSizeGuests = { 380, 154 };
+    static constexpr ScreenSize kSizeLand = { 268, 134 };
+    static constexpr ScreenSize kSizeRides = { 380, 224 };
 
     static constexpr money64 kObjectiveCurrencyLoanAndValueMax = 2000000.00_GBP;
     static constexpr money64 kObjectiveCurrencyLoanAndValueMin = 1000.00_GBP;
@@ -207,7 +196,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab   ({158, 17}, STR_SCENARIO_OPTIONS_PRESERVED_RIDES_TIP       )
 
     static constexpr Widget window_editor_scenario_options_objective_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_OBJECTIVE, WW_OBJECTIVE, WH_OBJECTIVE),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_OBJECTIVE, kSizeObjective.width, kSizeObjective.height),
         MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeSpinnerWidgets({158,  65}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
@@ -216,7 +205,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget window_editor_scenario_options_scenario_details_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_SCENARIO_DETAILS, WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_SCENARIO_DETAILS, kSizeScenarioDetails.width, kSizeScenarioDetails.height),
         MakeWidget        ({370, 48}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
         MakeWidget        ({370, 65}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
         MakeWidget        ({ 98, 82}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
@@ -225,24 +214,24 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget window_editor_scenario_options_financial_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
-        MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
-        MakeWidget        ({  5,  63}, {WW_FINANCIAL - 10, 67}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_LOAN_OPTIONS                                    ),
-        MakeSpinnerWidgets({268,  77}, {              100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeSpinnerWidgets({268,  94}, {              100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeSpinnerWidgets({298, 111}, {               70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeWidget        ({ 10, 111}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
-        MakeWidget        ({  5, 133}, {WW_FINANCIAL - 10, 87}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_BUSINESS_MODEL                                  ),
-        MakeSpinnerWidgets({268, 150}, {              100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeWidget        ({ 10, 167}, {              150, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_EARNINGS_LABEL                                        ),
-        MakeWidget        ({158, 167}, {              210, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,      STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-        MakeWidget        ({356, 168}, {               11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-        MakeSpinnerWidgets({298, 184}, {               70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-        MakeWidget        ({ 10, 201}, {WW_FINANCIAL - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_FINANCIAL, kSizeFinancial.width, kSizeFinancial.height),
+        MakeWidget        ({  8,  48}, {kSizeFinancial.width - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
+        MakeWidget        ({  5,  63}, {kSizeFinancial.width - 10, 67}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_LOAN_OPTIONS                                    ),
+        MakeSpinnerWidgets({268,  77}, {                      100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({268,  94}, {                      100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({298, 111}, {                       70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({ 10, 111}, {kSizeFinancial.width - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
+        MakeWidget        ({  5, 133}, {kSizeFinancial.width - 10, 87}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GROUP_BUSINESS_MODEL                                  ),
+        MakeSpinnerWidgets({268, 150}, {                      100, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({ 10, 167}, {                      150, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_EARNINGS_LABEL                                        ),
+        MakeWidget        ({158, 167}, {                      210, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,      STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeWidget        ({356, 168}, {                       11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeSpinnerWidgets({298, 184}, {                       70, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({ 10, 201}, {kSizeFinancial.width - 16, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
     };
 
     static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_GUESTS, kSizeGuests.width, kSizeGuests.height),
         MakeSpinnerWidgets({298,  48}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
         MakeSpinnerWidgets({298,  65}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
         MakeSpinnerWidgets({298,  82}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
@@ -254,16 +243,16 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget window_editor_scenario_options_land_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS, WW_LAND, WH_LAND),
-        MakeSpinnerWidgets({188,  48}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeSpinnerWidgets({188,  65}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeWidget        ({  8,  82}, {WW_LAND - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
-        MakeWidget        ({  8,  99}, {WW_LAND - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
-        MakeWidget        ({  8, 116}, {WW_LAND - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS, kSizeLand.width, kSizeLand.height),
+        MakeSpinnerWidgets({188,  48}, {                  70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+        MakeSpinnerWidgets({188,  65}, {                  70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+        MakeWidget        ({  8,  82}, {kSizeLand.width - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+        MakeWidget        ({  8,  99}, {kSizeLand.width - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+        MakeWidget        ({  8, 116}, {kSizeLand.width - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
     };
 
     static constexpr Widget window_editor_scenario_options_rides_widgets[] = {
-        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_PRESERVED_RIDES, WW_OBJECTIVE, WH_OBJECTIVE),
+        MAIN_OPTIONS_WIDGETS(STR_SCENARIO_OPTIONS_PRESERVED_RIDES, kSizeRides.width, kSizeRides.height),
         MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     };
 
@@ -930,7 +919,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void ObjectiveOnResize()
         {
-            WindowSetResize(*this, { WW_OBJECTIVE, WH_OBJECTIVE }, { WW_OBJECTIVE, WH_OBJECTIVE });
+            WindowSetResize(*this, kSizeObjective, kSizeObjective);
         }
 
         void ObjectiveOnMouseUp(WidgetIndex widgetIndex)
@@ -1341,7 +1330,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ScenarioDetailsOnResize()
         {
-            WindowSetResize(*this, { WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS }, { WW_SCENARIO_DETAILS, WH_SCENARIO_DETAILS });
+            WindowSetResize(*this, kSizeScenarioDetails, kSizeScenarioDetails);
         }
 
 #pragma endregion
@@ -1383,7 +1372,7 @@ namespace OpenRCT2::Ui::Windows
 
         void FinancialResize()
         {
-            WindowSetResize(*this, { WW_FINANCIAL, WH_FINANCIAL }, { WW_FINANCIAL, WH_FINANCIAL });
+            WindowSetResize(*this, kSizeFinancial, kSizeFinancial);
         }
 
         void FinancialMouseDown(WidgetIndex widgetIndex)
@@ -1745,7 +1734,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GuestsResize()
         {
-            WindowSetResize(*this, { WW_GUESTS, WH_GUESTS }, { WW_GUESTS, WH_GUESTS });
+            WindowSetResize(*this, kSizeGuests, kSizeGuests);
         }
 
         void GuestsMouseDown(WidgetIndex widgetIndex)
@@ -2069,7 +2058,7 @@ namespace OpenRCT2::Ui::Windows
 
         void LandResize()
         {
-            WindowSetResize(*this, { WW_LAND, WH_LAND }, { WW_LAND, WH_LAND });
+            WindowSetResize(*this, kSizeLand, kSizeLand);
         }
 
         void LandMouseDown(WidgetIndex widgetIndex)
@@ -2216,7 +2205,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void RidesOnResize()
         {
-            WindowSetResize(*this, { WW_RIDES, WH_RIDES }, { WW_RIDES, WH_RIDES });
+            WindowSetResize(*this, kSizeRides, kSizeRides);
         }
 
         /**
