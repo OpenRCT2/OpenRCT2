@@ -491,7 +491,7 @@ namespace OpenRCT2
                                 {
                                     gTouchDragLast = screenCoords;
                                 }
-                                
+
                                 if (w != nullptr)
                                 {
                                     w->OnToolUp(gCurrentToolWidget.widget_index, screenCoords);
