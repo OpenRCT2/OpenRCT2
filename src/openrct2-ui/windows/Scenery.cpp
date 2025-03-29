@@ -1370,16 +1370,13 @@ namespace OpenRCT2::Ui::Windows
         {
             // Add the base widgets
             SetWidgets(WindowSceneryBaseWidgets);
-            ResizeFrameWithPage();
-
-            // Add tabs
-            int32_t xInit = InitTabPosX;
-            int32_t tabsInThisRow = 0;
 
             auto hasMisc = GetSceneryTabInfoForMisc() != nullptr;
             auto maxTabsInThisRow = MaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
 
-            ScreenCoordsXY pos = { xInit, InitTabPosY };
+            // Add tabs
+            int32_t tabsInThisRow = 0;
+            ScreenCoordsXY pos = { InitTabPosX, InitTabPosY };
             for (const auto& tabInfo : _tabEntries)
             {
                 auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
@@ -1411,7 +1408,7 @@ namespace OpenRCT2::Ui::Windows
                 tabsInThisRow++;
                 if (tabsInThisRow >= maxTabsInThisRow)
                 {
-                    pos.x = xInit;
+                    pos.x = InitTabPosX;
                     pos.y += TabHeight;
                     tabsInThisRow = 0;
                     _actualMinHeight += TabHeight;
