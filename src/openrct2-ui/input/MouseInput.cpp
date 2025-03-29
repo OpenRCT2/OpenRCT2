@@ -487,6 +487,11 @@ namespace OpenRCT2
                             {
                                 w = windowMgr->FindByNumber(
                                     gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+                                if (Config::Get().interface.TouchEnhancements)
+                                {
+                                    gTouchDragLast = screenCoords;
+                                }
+                                
                                 if (w != nullptr)
                                 {
                                     w->OnToolUp(gCurrentToolWidget.widget_index, screenCoords);
@@ -1218,7 +1223,8 @@ namespace OpenRCT2
                             else
                             {
                                 s_touchover = true;
-                                gTouchDragLast = screenCoords;
+                                // gTouchDragLast = screenCoords;
+                                // LeftDown's Coordinate -> LeftRelease's Coordinate using
                                 w->OnToolUpdate(gCurrentToolWidget.widget_index, screenCoords);
                             }
                         }
