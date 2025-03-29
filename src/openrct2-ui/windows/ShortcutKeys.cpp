@@ -189,8 +189,6 @@ namespace OpenRCT2::Ui::Windows
             InitialiseTabs();
             InitialiseWidgets();
             InitialiseList();
-
-            WindowSetResize(*this, { WW, WH }, { WW_SC_MAX, WH_SC_MAX });
         }
 
         void OnClose() override
@@ -201,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
+            WindowSetResize(*this, { WW, WH }, { WW_SC_MAX, WH_SC_MAX });
             ResizeFrameWithPage();
         }
 
