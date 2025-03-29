@@ -281,13 +281,14 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             RemoveViewport();
 
-            hold_down_widgets = HoldDownWidgets[newPage];
             SetWidgets(PageWidgets[newPage]);
+            hold_down_widgets = HoldDownWidgets[newPage];
             disabled_widgets = PageDisabledWidgets[newPage];
             pressed_widgets = PressedWidgets[newPage];
 
             InitScrollWidgets();
             Invalidate();
+            ResizeFrameWithPage();
         }
 
         void SetPressedTab()
@@ -1526,6 +1527,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
+            WindowSetResize(*this, kWindowSize, kWindowSize);
             ResizeFrameWithPage();
         }
     };
