@@ -2973,6 +2973,7 @@ declare global {
 
         /**
          * Moves the vehicle to the track piece specified in the parameters.
+         * Coordinates are tile coords.
          */
         moveToTrack(x: number, y: number, elemIndex: number): void;
     }

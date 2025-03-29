@@ -539,15 +539,16 @@ namespace OpenRCT2::Scripting
 
     void ScVehicle::moveToTrack(int32_t x, int32_t y, int32_t elementIndex)
     {
+        CoordsXY coords = TileCoordsXY(x, y).ToCoordsXY();
         auto vehicle = GetVehicle();
         if (vehicle == nullptr)
             return;
 
-        auto el = MapGetNthElementAt(CoordsXY(x, y), elementIndex);
+        auto el = MapGetNthElementAt(coords, elementIndex);
         if (el == nullptr)
             return;
 
-        auto origin = GetTrackSegmentOrigin(CoordsXYE(x, y, el));
+        auto origin = GetTrackSegmentOrigin(CoordsXYE(coords, el));
         if (!origin)
             return;
 
