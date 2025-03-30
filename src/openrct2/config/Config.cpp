@@ -923,7 +923,7 @@ namespace OpenRCT2::Config
                             uiContext->ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
                         }
 
-                        // New installer installs in ‘dest’, old installer installs in ‘dest/app’.
+                        // New installer extracts to ‘dest’, old installer installs in ‘dest/app’.
                         possibleInstallPaths.emplace_back(dest);
                         possibleInstallPaths.emplace_back(Path::Combine(dest, u8"app"));
                     }
