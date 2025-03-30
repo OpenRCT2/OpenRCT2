@@ -280,7 +280,6 @@ namespace OpenRCT2::Ui::Windows
         void OnClose() override
         {
             RideConstructionInvalidateCurrentTrack();
-            ViewportSetVisibility(ViewportVisibility::Default);
 
             MapInvalidateMapSelectionTiles();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -4773,10 +4772,6 @@ namespace OpenRCT2::Ui::Windows
         _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + zBegin, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
 
-        const auto resultData = res.GetData<TrackPlaceActionResult>();
-        const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
-                                                                                 : ViewportVisibility::UndergroundViewOff;
-        ViewportSetVisibility(visiblity);
         if (_currentTrackPitchEnd != TrackPitch::None)
             ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
