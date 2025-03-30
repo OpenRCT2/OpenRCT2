@@ -48,10 +48,10 @@ namespace OpenRCT2::Ui::Windows
     constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
     constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;
 
-    static constexpr uint8_t kPaletteIndexColourEntrance = PALETTE_INDEX_20; // White
-    static constexpr uint8_t kPaletteIndexColourExit = PALETTE_INDEX_10;     // Black
-    static constexpr uint8_t kPaletteIndexColourTrack = PALETTE_INDEX_248;   // Grey (dark)
-    static constexpr uint8_t kPaletteIndexColourStation = PALETTE_INDEX_252; // Grey (light)
+    static constexpr uint8_t kPaletteIndexColourEntrance = PaletteIndex::_20; // White
+    static constexpr uint8_t kPaletteIndexColourExit = PaletteIndex::_10;     // Black
+    static constexpr uint8_t kPaletteIndexColourTrack = PaletteIndex::_248;   // Grey (dark)
+    static constexpr uint8_t kPaletteIndexColourStation = PaletteIndex::_252; // Grey (light)
 
     enum
     {
@@ -430,7 +430,7 @@ namespace OpenRCT2::Ui::Windows
         void ClearMiniPreview()
         {
             // Fill with transparent colour.
-            std::fill(_miniPreview.begin(), _miniPreview.end(), PALETTE_INDEX_0);
+            std::fill(_miniPreview.begin(), _miniPreview.end(), PaletteIndex::_0);
         }
 
     private:

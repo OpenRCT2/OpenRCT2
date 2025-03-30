@@ -179,7 +179,7 @@ public:
 
         ConfigureBits(width, height, width);
 
-        _drawingContext->Clear(_bitsDPI, PALETTE_INDEX_10);
+        _drawingContext->Clear(_bitsDPI, PaletteIndex::_10);
     }
 
     void SetPalette(const GamePalette& palette) override

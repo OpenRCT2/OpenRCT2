@@ -50,18 +50,18 @@ void ColoursInitMaps()
         const G1Element* g1 = GfxGetG1Element(paletteIndex + i);
         if (g1 != nullptr)
         {
-            ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];
-            ColourMapA[i].colour_1 = g1->offset[INDEX_COLOUR_1];
-            ColourMapA[i].darkest = g1->offset[INDEX_DARKEST];
-            ColourMapA[i].darker = g1->offset[INDEX_DARKER];
-            ColourMapA[i].dark = g1->offset[INDEX_DARK];
-            ColourMapA[i].mid_dark = g1->offset[INDEX_MID_DARK];
-            ColourMapA[i].mid_light = g1->offset[INDEX_MID_LIGHT];
-            ColourMapA[i].light = g1->offset[INDEX_LIGHT];
-            ColourMapA[i].lighter = g1->offset[INDEX_LIGHTER];
-            ColourMapA[i].lightest = g1->offset[INDEX_LIGHTEST];
-            ColourMapA[i].colour_10 = g1->offset[INDEX_COLOUR_10];
-            ColourMapA[i].colour_11 = g1->offset[INDEX_COLOUR_11];
+            ColourMapA[i].colour_0 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_0]);
+            ColourMapA[i].colour_1 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_1]);
+            ColourMapA[i].darkest = static_cast<PaletteIndex>(g1->offset[INDEX_DARKEST]);
+            ColourMapA[i].darker = static_cast<PaletteIndex>(g1->offset[INDEX_DARKER]);
+            ColourMapA[i].dark = static_cast<PaletteIndex>(g1->offset[INDEX_DARK]);
+            ColourMapA[i].mid_dark = static_cast<PaletteIndex>(g1->offset[INDEX_MID_DARK]);
+            ColourMapA[i].mid_light = static_cast<PaletteIndex>(g1->offset[INDEX_MID_LIGHT]);
+            ColourMapA[i].light = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHT]);
+            ColourMapA[i].lighter = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHTER]);
+            ColourMapA[i].lightest = static_cast<PaletteIndex>(g1->offset[INDEX_LIGHTEST]);
+            ColourMapA[i].colour_10 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_10]);
+            ColourMapA[i].colour_11 = static_cast<PaletteIndex>(g1->offset[INDEX_COLOUR_11]);
         }
     }
 }
@@ -154,7 +154,7 @@ static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
     int16_t closest = -1;
     int32_t closestDistance = INT32_MAX;
 
-    for (int i = PALETTE_INDEX_0; i < PALETTE_INDEX_230; i++)
+    for (int i = PaletteIndex::_0; i < PaletteIndex::_230; i++)
     {
         const int32_t distance = std::pow(gPalette[i].Red - red, 2) + std::pow(gPalette[i].Green - green, 2)
             + std::pow(gPalette[i].Blue - blue, 2);
