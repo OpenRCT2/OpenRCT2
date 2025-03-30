@@ -18,8 +18,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-#ifndef SFL_SMALL_VECTOR_HPP_INCLUDED
-#define SFL_SMALL_VECTOR_HPP_INCLUDED
+#ifndef SFL_VECTOR_HPP_INCLUDED
+#define SFL_VECTOR_HPP_INCLUDED
 
 #include <sfl/detail/container_compatible_range.hpp>
 #include <sfl/detail/cpp.hpp>
@@ -32,7 +32,6 @@
 #include <sfl/detail/uninitialized_memory_algorithms.hpp>
 
 #include <algorithm>        // copy, move, swap, swap_ranges
-#include <cstddef>          // size_t
 #include <initializer_list> // initializer_list
 #include <iterator>         // distance, next, reverse_iterator
 #include <limits>           // numeric_limits
@@ -43,10 +42,8 @@
 namespace sfl
 {
 
-template < typename T,
-           std::size_t N,
-           typename Allocator = std::allocator<T> >
-class small_vector
+template <typename T, typename Allocator = std::allocator<T>>
+class vector
 {
 public:
 
@@ -59,76 +56,35 @@ public:
     using const_reference        = const T&;
     using pointer                = typename allocator_traits::pointer;
     using const_pointer          = typename allocator_traits::const_pointer;
-    using iterator               = sfl::dtl::normal_iterator<pointer, small_vector>;
-    using const_iterator         = sfl::dtl::normal_iterator<const_pointer, small_vector>;
+    using iterator               = sfl::dtl::normal_iterator<pointer, vector>;
+    using const_iterator         = sfl::dtl::normal_iterator<const_pointer, vector>;
     using reverse_iterator       = std::reverse_iterator<iterator>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     static_assert
     (
         std::is_same<typename Allocator::value_type, value_type>::value,
-        "Allocator::value_type must be same as sfl::small_vector::value_type."
+        "Allocator::value_type must be same as sfl::vector::value_type."
     );
-
-public:
-
-    static constexpr size_type static_capacity = N;
 
 private:
 
-    template <bool WithInternalStorage = true, typename = void>
     class data_base
     {
-    private:
-
-        union
-        {
-            value_type internal_storage_[N];
-        };
-
     public:
 
-        pointer first_;
-        pointer last_;
-        pointer eos_;
-
-        data_base() noexcept
-            : first_(std::pointer_traits<pointer>::pointer_to(*internal_storage_))
-            , last_(first_)
-            , eos_(first_ + N)
-        {}
-
-        ~data_base() noexcept
-        {}
-
-        pointer internal_storage() noexcept
-        {
-            return std::pointer_traits<pointer>::pointer_to(*internal_storage_);
-        }
-    };
-
-    template <typename Dummy>
-    class data_base<false, Dummy>
-    {
-    public:
-
-        pointer first_;
-        pointer last_;
-        pointer eos_;
+        pointer first_; // First element in vector
+        pointer last_;  // One-past-last element in vector
+        pointer eos_;   // End of storage
 
         data_base() noexcept
             : first_(nullptr)
             , last_(nullptr)
             , eos_(nullptr)
         {}
-
-        pointer internal_storage() noexcept
-        {
-            return nullptr;
-        }
     };
 
-    class data : public data_base<(N > 0)> , public allocator_type
+    class data : public data_base, public allocator_type
     {
     public:
 
@@ -163,39 +119,33 @@ public:
     // ---- CONSTRUCTION AND DESTRUCTION --------------------------------------
     //
 
-    small_vector() noexcept
-    (
-        std::is_nothrow_default_constructible<Allocator>::value
-    )
+    vector() noexcept(std::is_nothrow_default_constructible<Allocator>::value)
         : data_()
     {}
 
-    explicit small_vector(const Allocator& alloc) noexcept
-    (
-        std::is_nothrow_copy_constructible<Allocator>::value
-    )
+    explicit vector(const Allocator& alloc) noexcept(std::is_nothrow_copy_constructible<Allocator>::value)
         : data_(alloc)
     {}
 
-    small_vector(size_type n)
+    vector(size_type n)
         : data_()
     {
         initialize_default_n(n);
     }
 
-    explicit small_vector(size_type n, const Allocator& alloc)
+    explicit vector(size_type n, const Allocator& alloc)
         : data_(alloc)
     {
         initialize_default_n(n);
     }
 
-    small_vector(size_type n, const T& value)
+    vector(size_type n, const T& value)
         : data_()
     {
         initialize_fill_n(n, value);
     }
 
-    small_vector(size_type n, const T& value, const Allocator& alloc)
+    vector(size_type n, const T& value, const Allocator& alloc)
         : data_(alloc)
     {
         initialize_fill_n(n, value);
@@ -203,7 +153,7 @@ public:
 
     template <typename InputIt,
               sfl::dtl::enable_if_t<sfl::dtl::is_input_iterator<InputIt>::value>* = nullptr>
-    small_vector(InputIt first, InputIt last)
+    vector(InputIt first, InputIt last)
         : data_()
     {
         initialize_range(first, last);
@@ -211,21 +161,21 @@ public:
 
     template <typename InputIt,
               sfl::dtl::enable_if_t<sfl::dtl::is_input_iterator<InputIt>::value>* = nullptr>
-    small_vector(InputIt first, InputIt last, const Allocator& alloc)
+    vector(InputIt first, InputIt last, const Allocator& alloc)
         : data_(alloc)
     {
         initialize_range(first, last);
     }
 
-    small_vector(std::initializer_list<T> ilist)
-        : small_vector(ilist.begin(), ilist.end())
+    vector(std::initializer_list<T> ilist)
+        : vector(ilist.begin(), ilist.end())
     {}
 
-    small_vector(std::initializer_list<T> ilist, const Allocator& alloc)
-        : small_vector(ilist.begin(), ilist.end(), alloc)
+    vector(std::initializer_list<T> ilist, const Allocator& alloc)
+        : vector(ilist.begin(), ilist.end(), alloc)
     {}
 
-    small_vector(const small_vector& other)
+    vector(const vector& other)
         : data_
         (
             allocator_traits::select_on_container_copy_construction
@@ -237,19 +187,19 @@ public:
         initialize_copy(other);
     }
 
-    small_vector(const small_vector& other, const Allocator& alloc)
+    vector(const vector& other, const Allocator& alloc)
         : data_(alloc)
     {
         initialize_copy(other);
     }
 
-    small_vector(small_vector&& other)
+    vector(vector&& other)
         : data_(std::move(other.data_.ref_to_alloc()))
     {
         initialize_move(other);
     }
 
-    small_vector(small_vector&& other, const Allocator& alloc)
+    vector(vector&& other, const Allocator& alloc)
         : data_(alloc)
     {
         initialize_move(other);
@@ -258,14 +208,14 @@ public:
 #if SFL_CPP_VERSION >= SFL_CPP_20
 
     template <sfl::dtl::container_compatible_range<value_type> Range>
-    small_vector(sfl::from_range_t, Range&& range)
+    vector(sfl::from_range_t, Range&& range)
         : data_()
     {
         initialize_range(std::forward<Range>(range));
     }
 
     template <sfl::dtl::container_compatible_range<value_type> Range>
-    small_vector(sfl::from_range_t, Range&& range, const Allocator& alloc)
+    vector(sfl::from_range_t, Range&& range, const Allocator& alloc)
         : data_(alloc)
     {
         initialize_range(std::forward<Range>(range));
@@ -274,14 +224,14 @@ public:
 #else // before C++20
 
     template <typename Range>
-    small_vector(sfl::from_range_t, Range&& range)
+    vector(sfl::from_range_t, Range&& range)
         : data_()
     {
         initialize_range(std::forward<Range>(range));
     }
 
     template <typename Range>
-    small_vector(sfl::from_range_t, Range&& range, const Allocator& alloc)
+    vector(sfl::from_range_t, Range&& range, const Allocator& alloc)
         : data_(alloc)
     {
         initialize_range(std::forward<Range>(range));
@@ -289,7 +239,7 @@ public:
 
 #endif // before C++20
 
-    ~small_vector()
+    ~vector()
     {
         sfl::dtl::destroy_a
         (
@@ -298,15 +248,12 @@ public:
             data_.last_
         );
 
-        if (data_.first_ != data_.internal_storage())
-        {
-            sfl::dtl::deallocate
-            (
-                data_.ref_to_alloc(),
-                data_.first_,
-                std::distance(data_.first_, data_.eos_)
-            );
-        }
+        sfl::dtl::deallocate
+        (
+            data_.ref_to_alloc(),
+            data_.first_,
+            std::distance(data_.first_, data_.eos_)
+        );
     }
 
     //
@@ -357,19 +304,19 @@ public:
 
 #endif // before C++20
 
-    small_vector& operator=(const small_vector& other)
+    vector& operator=(const vector& other)
     {
         assign_copy(other);
         return *this;
     }
 
-    small_vector& operator=(small_vector&& other)
+    vector& operator=(vector&& other)
     {
         assign_move(other);
         return *this;
     }
 
-    small_vector& operator=(std::initializer_list<T> ilist)
+    vector& operator=(std::initializer_list<T> ilist)
     {
         assign_range(ilist.begin(), ilist.end());
         return *this;
@@ -522,101 +469,53 @@ public:
 
     void reserve(size_type new_cap)
     {
-        check_size(new_cap, "sfl::small_vector::reserve");
+        check_size(new_cap, "sfl::vector::reserve");
 
         if (new_cap > capacity())
         {
-            if (new_cap <= N)
+            pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
+            pointer new_last  = new_first;
+            pointer new_eos   = new_first + new_cap;
+
+            SFL_TRY
             {
-                if (data_.first_ == data_.internal_storage())
-                {
-                    // Do nothing. We are already using internal storage.
-                }
-                else
-                {
-                    // We are not using internal storage but new capacity
-                    // can fit in internal storage.
-
-                    pointer new_first = data_.internal_storage();
-                    pointer new_last  = new_first;
-                    pointer new_eos   = new_first + N;
-
-                    new_last = sfl::dtl::uninitialized_move_if_noexcept_a
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        data_.last_,
-                        new_first
-                    );
-
-                    sfl::dtl::destroy_a
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        data_.last_
-                    );
-
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        std::distance(data_.first_, data_.eos_)
-                    );
-
-                    data_.first_ = new_first;
-                    data_.last_  = new_last;
-                    data_.eos_   = new_eos;
-                }
-            }
-            else
-            {
-                pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
-                pointer new_last  = new_first;
-                pointer new_eos   = new_first + new_cap;
-
-                SFL_TRY
-                {
-                    new_last = sfl::dtl::uninitialized_move_if_noexcept_a
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        data_.last_,
-                        new_first
-                    );
-                }
-                SFL_CATCH (...)
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        new_first,
-                        new_cap
-                    );
-
-                    SFL_RETHROW;
-                }
-
-                sfl::dtl::destroy_a
+                new_last = sfl::dtl::uninitialized_move_if_noexcept_a
                 (
                     data_.ref_to_alloc(),
                     data_.first_,
-                    data_.last_
+                    data_.last_,
+                    new_first
+                );
+            }
+            SFL_CATCH (...)
+            {
+                sfl::dtl::deallocate
+                (
+                    data_.ref_to_alloc(),
+                    new_first,
+                    new_cap
                 );
 
-                if (data_.first_ != data_.internal_storage())
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        std::distance(data_.first_, data_.eos_)
-                    );
-                }
-
-                data_.first_ = new_first;
-                data_.last_  = new_last;
-                data_.eos_   = new_eos;
+                SFL_RETHROW;
             }
+
+            sfl::dtl::destroy_a
+            (
+                data_.ref_to_alloc(),
+                data_.first_,
+                data_.last_
+            );
+
+            sfl::dtl::deallocate
+            (
+                data_.ref_to_alloc(),
+                data_.first_,
+                std::distance(data_.first_, data_.eos_)
+            );
+
+            data_.first_ = new_first;
+            data_.last_  = new_last;
+            data_.eos_   = new_eos;
         }
     }
 
@@ -626,97 +525,49 @@ public:
 
         if (new_cap < capacity())
         {
-            if (new_cap <= N)
+            pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
+            pointer new_last  = new_first;
+            pointer new_eos   = new_first + new_cap;
+
+            SFL_TRY
             {
-                if (data_.first_ == data_.internal_storage())
-                {
-                    // Do nothing. We are already using internal storage.
-                }
-                else
-                {
-                    // We are not using internal storage but new capacity
-                    // can fit in internal storage.
-
-                    pointer new_first = data_.internal_storage();
-                    pointer new_last  = new_first;
-                    pointer new_eos   = new_first + N;
-
-                    new_last = sfl::dtl::uninitialized_move_if_noexcept_a
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        data_.last_,
-                        new_first
-                    );
-
-                    sfl::dtl::destroy_a
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        data_.last_
-                    );
-
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        std::distance(data_.first_, data_.eos_)
-                    );
-
-                    data_.first_ = new_first;
-                    data_.last_  = new_last;
-                    data_.eos_   = new_eos;
-                }
-            }
-            else
-            {
-                pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
-                pointer new_last  = new_first;
-                pointer new_eos   = new_first + new_cap;
-
-                SFL_TRY
-                {
-                    new_last = sfl::dtl::uninitialized_move_if_noexcept_a
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        data_.last_,
-                        new_first
-                    );
-                }
-                SFL_CATCH (...)
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        new_first,
-                        new_cap
-                    );
-
-                    SFL_RETHROW;
-                }
-
-                sfl::dtl::destroy_a
+                new_last = sfl::dtl::uninitialized_move_if_noexcept_a
                 (
                     data_.ref_to_alloc(),
                     data_.first_,
-                    data_.last_
+                    data_.last_,
+                    new_first
+                );
+            }
+            SFL_CATCH (...)
+            {
+                sfl::dtl::deallocate
+                (
+                    data_.ref_to_alloc(),
+                    new_first,
+                    new_cap
                 );
 
-                if (data_.first_ != data_.internal_storage())
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        std::distance(data_.first_, data_.eos_)
-                    );
-                }
-
-                data_.first_ = new_first;
-                data_.last_  = new_last;
-                data_.eos_   = new_eos;
+                SFL_RETHROW;
             }
+
+            sfl::dtl::destroy_a
+            (
+                data_.ref_to_alloc(),
+                data_.first_,
+                data_.last_
+            );
+
+            sfl::dtl::deallocate
+            (
+                data_.ref_to_alloc(),
+                data_.first_,
+                std::distance(data_.first_, data_.eos_)
+            );
+
+            data_.first_ = new_first;
+            data_.last_  = new_last;
+            data_.eos_   = new_eos;
         }
     }
 
@@ -729,7 +580,7 @@ public:
     {
         if (pos >= size())
         {
-            sfl::dtl::throw_out_of_range("sfl::small_vector::at");
+            sfl::dtl::throw_out_of_range("sfl::vector::at");
         }
 
         return *(data_.first_ + pos);
@@ -740,7 +591,7 @@ public:
     {
         if (pos >= size())
         {
-            sfl::dtl::throw_out_of_range("sfl::small_vector::at");
+            sfl::dtl::throw_out_of_range("sfl::vector::at");
         }
 
         return *(data_.first_ + pos);
@@ -871,25 +722,11 @@ public:
         {
             const difference_type offset = std::distance(cbegin(), pos);
 
-            const size_type new_cap =
-                calculate_new_capacity(1, "sfl::small_vector::emplace");
+            const size_type new_cap = calculate_new_capacity(1, "sfl::vector::emplace");
 
-            pointer new_first;
-            pointer new_last;
-            pointer new_eos;
-
-            if (new_cap <= N && data_.first_ != data_.internal_storage())
-            {
-                new_first = data_.internal_storage();
-                new_last  = new_first;
-                new_eos   = new_first + N;
-            }
-            else
-            {
-                new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
-                new_last  = new_first;
-                new_eos   = new_first + new_cap;
-            }
+            pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
+            pointer new_last  = new_first;
+            pointer new_eos   = new_first + new_cap;
 
             const pointer p = new_first + offset;
 
@@ -904,13 +741,11 @@ public:
 
                 new_last = nullptr;
 
-                const pointer mid = data_.first_ + offset;
-
                 new_last = sfl::dtl::uninitialized_move_if_noexcept_a
                 (
                     data_.ref_to_alloc(),
                     data_.first_,
-                    mid,
+                    data_.first_ + offset,
                     new_first
                 );
 
@@ -919,7 +754,7 @@ public:
                 new_last = sfl::dtl::uninitialized_move_if_noexcept_a
                 (
                     data_.ref_to_alloc(),
-                    mid,
+                    data_.first_ + offset,
                     data_.last_,
                     new_last
                 );
@@ -944,15 +779,12 @@ public:
                     );
                 }
 
-                if (new_first != data_.internal_storage())
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        new_first,
-                        new_cap
-                    );
-                }
+                sfl::dtl::deallocate
+                (
+                    data_.ref_to_alloc(),
+                    new_first,
+                    new_cap
+                );
 
                 SFL_RETHROW;
             }
@@ -964,15 +796,12 @@ public:
                 data_.last_
             );
 
-            if (data_.first_ != data_.internal_storage())
-            {
-                sfl::dtl::deallocate
-                (
-                    data_.ref_to_alloc(),
-                    data_.first_,
-                    std::distance(data_.first_, data_.eos_)
-                );
-            }
+            sfl::dtl::deallocate
+            (
+                data_.ref_to_alloc(),
+                data_.first_,
+                std::distance(data_.first_, data_.eos_)
+            );
 
             data_.first_ = new_first;
             data_.last_  = new_last;
@@ -1063,25 +892,11 @@ public:
         }
         else
         {
-            const size_type new_cap =
-                calculate_new_capacity(1, "sfl::small_vector::emplace_back");
+            const size_type new_cap = calculate_new_capacity(1, "sfl::vector::emplace_back");
 
-            pointer new_first;
-            pointer new_last;
-            pointer new_eos;
-
-            if (new_cap <= N && data_.first_ != data_.internal_storage())
-            {
-                new_first = data_.internal_storage();
-                new_last  = new_first;
-                new_eos   = new_first + N;
-            }
-            else
-            {
-                new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
-                new_last  = new_first;
-                new_eos   = new_first + new_cap;
-            }
+            pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
+            pointer new_last  = new_first;
+            pointer new_eos   = new_first + new_cap;
 
             const pointer p = new_first + size();
 
@@ -1121,15 +936,12 @@ public:
                     // Nothing to do
                 }
 
-                if (new_first != data_.internal_storage())
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        new_first,
-                        new_cap
-                    );
-                }
+                sfl::dtl::deallocate
+                (
+                    data_.ref_to_alloc(),
+                    new_first,
+                    new_cap
+                );
 
                 SFL_RETHROW;
             }
@@ -1141,15 +953,12 @@ public:
                 data_.last_
             );
 
-            if (data_.first_ != data_.internal_storage())
-            {
-                sfl::dtl::deallocate
-                (
-                    data_.ref_to_alloc(),
-                    data_.first_,
-                    std::distance(data_.first_, data_.eos_)
-                );
-            }
+            sfl::dtl::deallocate
+            (
+                data_.ref_to_alloc(),
+                data_.first_,
+                std::distance(data_.first_, data_.eos_)
+            );
 
             data_.first_ = new_first;
             data_.last_  = new_last;
@@ -1232,7 +1041,7 @@ public:
 
     void resize(size_type n)
     {
-        check_size(n, "sfl::small_vector::resize");
+        check_size(n, "sfl::vector::resize");
 
         const size_type size = this->size();
 
@@ -1255,29 +1064,18 @@ public:
 
             if (n > capacity())
             {
-                pointer new_first;
-                pointer new_last;
-                pointer new_eos;
+                pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), n);
+                pointer new_last  = new_first;
+                pointer new_eos   = new_first + n;
 
-                if (n <= N && data_.first_ != data_.internal_storage())
-                {
-                    new_first = data_.internal_storage();
-                    new_last  = new_first;
-                    new_eos   = new_first + N;
-                }
-                else
-                {
-                    new_first = sfl::dtl::allocate(data_.ref_to_alloc(), n);
-                    new_last  = new_first;
-                    new_eos   = new_first + n;
-                }
+                const pointer p = new_first + size;
 
                 SFL_TRY
                 {
                     sfl::dtl::uninitialized_default_construct_n_a
                     (
                         data_.ref_to_alloc(),
-                        new_first + size,
+                        p,
                         delta
                     );
 
@@ -1300,7 +1098,7 @@ public:
                         sfl::dtl::destroy_n_a
                         (
                             data_.ref_to_alloc(),
-                            new_first + size,
+                            p,
                             delta
                         );
                     }
@@ -1314,15 +1112,12 @@ public:
                         );
                     }
 
-                    if (new_first != data_.internal_storage())
-                    {
-                        sfl::dtl::deallocate
-                        (
-                            data_.ref_to_alloc(),
-                            new_first,
-                            n
-                        );
-                    }
+                    sfl::dtl::deallocate
+                    (
+                        data_.ref_to_alloc(),
+                        new_first,
+                        n
+                    );
 
                     SFL_RETHROW;
                 }
@@ -1334,15 +1129,12 @@ public:
                     data_.last_
                 );
 
-                if (data_.first_ != data_.internal_storage())
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        std::distance(data_.first_, data_.eos_)
-                    );
-                }
+                sfl::dtl::deallocate
+                (
+                    data_.ref_to_alloc(),
+                    data_.first_,
+                    std::distance(data_.first_, data_.eos_)
+                );
 
                 data_.first_ = new_first;
                 data_.last_  = new_last;
@@ -1362,7 +1154,7 @@ public:
 
     void resize(size_type n, const T& value)
     {
-        check_size(n, "sfl::small_vector::resize");
+        check_size(n, "sfl::vector::resize");
 
         const size_type size = this->size();
 
@@ -1385,29 +1177,18 @@ public:
 
             if (n > capacity())
             {
-                pointer new_first;
-                pointer new_last;
-                pointer new_eos;
+                pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), n);
+                pointer new_last  = new_first;
+                pointer new_eos   = new_first + n;
 
-                if (n <= N && data_.first_ != data_.internal_storage())
-                {
-                    new_first = data_.internal_storage();
-                    new_last  = new_first;
-                    new_eos   = new_first + N;
-                }
-                else
-                {
-                    new_first = sfl::dtl::allocate(data_.ref_to_alloc(), n);
-                    new_last  = new_first;
-                    new_eos   = new_first + n;
-                }
+                const pointer p = new_first + size;
 
                 SFL_TRY
                 {
                     sfl::dtl::uninitialized_fill_n_a
                     (
                         data_.ref_to_alloc(),
-                        new_first + size,
+                        p,
                         delta,
                         value
                     );
@@ -1431,7 +1212,7 @@ public:
                         sfl::dtl::destroy_n_a
                         (
                             data_.ref_to_alloc(),
-                            new_first + size,
+                            p,
                             delta
                         );
                     }
@@ -1445,15 +1226,12 @@ public:
                         );
                     }
 
-                    if (new_first != data_.internal_storage())
-                    {
-                        sfl::dtl::deallocate
-                        (
-                            data_.ref_to_alloc(),
-                            new_first,
-                            n
-                        );
-                    }
+                    sfl::dtl::deallocate
+                    (
+                        data_.ref_to_alloc(),
+                        new_first,
+                        n
+                    );
 
                     SFL_RETHROW;
                 }
@@ -1465,15 +1243,12 @@ public:
                     data_.last_
                 );
 
-                if (data_.first_ != data_.internal_storage())
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        data_.first_,
-                        std::distance(data_.first_, data_.eos_)
-                    );
-                }
+                sfl::dtl::deallocate
+                (
+                    data_.ref_to_alloc(),
+                    data_.first_,
+                    std::distance(data_.first_, data_.eos_)
+                );
 
                 data_.first_ = new_first;
                 data_.last_  = new_last;
@@ -1492,7 +1267,7 @@ public:
         }
     }
 
-    void swap(small_vector& other)
+    void swap(vector& other)
     {
         if (this == &other)
         {
@@ -1517,139 +1292,9 @@ public:
             swap(this->data_.ref_to_alloc(), other.data_.ref_to_alloc());
         }
 
-        if
-        (
-            this->data_.first_ == this->data_.internal_storage() &&
-            other.data_.first_ == other.data_.internal_storage()
-        )
-        {
-            const size_type this_size  = this->size();
-            const size_type other_size = other.size();
-
-            if (this_size <= other_size)
-            {
-                std::swap_ranges
-                (
-                    this->data_.first_,
-                    this->data_.first_ + this_size,
-                    other.data_.first_
-                );
-
-                sfl::dtl::uninitialized_move_a
-                (
-                    this->data_.ref_to_alloc(),
-                    other.data_.first_ + this_size,
-                    other.data_.first_ + other_size,
-                    this->data_.first_ + this_size
-                );
-
-                sfl::dtl::destroy_a
-                (
-                    other.data_.ref_to_alloc(),
-                    other.data_.first_ + this_size,
-                    other.data_.first_ + other_size
-                );
-            }
-            else
-            {
-                std::swap_ranges
-                (
-                    other.data_.first_,
-                    other.data_.first_ + other_size,
-                    this->data_.first_
-                );
-
-                sfl::dtl::uninitialized_move_a
-                (
-                    other.data_.ref_to_alloc(),
-                    this->data_.first_ + other_size,
-                    this->data_.first_ + this_size,
-                    other.data_.first_ + other_size
-                );
-
-                sfl::dtl::destroy_a
-                (
-                    this->data_.ref_to_alloc(),
-                    this->data_.first_ + other_size,
-                    this->data_.first_ + this_size
-                );
-            }
-
-            this->data_.last_ = this->data_.first_ + other_size;
-            other.data_.last_ = other.data_.first_ + this_size;
-        }
-        else if
-        (
-            this->data_.first_ == this->data_.internal_storage() &&
-            other.data_.first_ != other.data_.internal_storage()
-        )
-        {
-            pointer new_other_first = other.data_.internal_storage();
-            pointer new_other_last  = new_other_first;
-            pointer new_other_eos   = new_other_first + N;
-
-            new_other_last = sfl::dtl::uninitialized_move_a
-            (
-                other.data_.ref_to_alloc(),
-                this->data_.first_,
-                this->data_.last_,
-                new_other_first
-            );
-
-            sfl::dtl::destroy_a
-            (
-                this->data_.ref_to_alloc(),
-                this->data_.first_,
-                this->data_.last_
-            );
-
-            this->data_.first_ = other.data_.first_;
-            this->data_.last_  = other.data_.last_;
-            this->data_.eos_   = other.data_.eos_;
-
-            other.data_.first_ = new_other_first;
-            other.data_.last_  = new_other_last;
-            other.data_.eos_   = new_other_eos;
-        }
-        else if
-        (
-            this->data_.first_ != this->data_.internal_storage() &&
-            other.data_.first_ == other.data_.internal_storage()
-        )
-        {
-            pointer new_this_first = this->data_.internal_storage();
-            pointer new_this_last  = new_this_first;
-            pointer new_this_eos   = new_this_first + N;
-
-            new_this_last = sfl::dtl::uninitialized_move_a
-            (
-                this->data_.ref_to_alloc(),
-                other.data_.first_,
-                other.data_.last_,
-                new_this_first
-            );
-
-            sfl::dtl::destroy_a
-            (
-                other.data_.ref_to_alloc(),
-                other.data_.first_,
-                other.data_.last_
-            );
-
-            other.data_.first_ = this->data_.first_;
-            other.data_.last_  = this->data_.last_;
-            other.data_.eos_   = this->data_.eos_;
-
-            this->data_.first_ = new_this_first;
-            this->data_.last_  = new_this_last;
-            this->data_.eos_   = new_this_eos;
-        }
-        else
-        {
-            swap(this->data_.first_, other.data_.first_);
-            swap(this->data_.last_,  other.data_.last_);
-            swap(this->data_.eos_,   other.data_.eos_);
-        }
+        swap(this->data_.first_, other.data_.first_);
+        swap(this->data_.last_,  other.data_.last_);
+        swap(this->data_.eos_,   other.data_.eos_);
     }
 
 private:
@@ -1678,15 +1323,15 @@ private:
         }
         else if (size + num_additional_elements < capacity + capacity / 2)
         {
-            return std::max(N, capacity + capacity / 2);
+            return capacity + capacity / 2;
         }
         else
         {
-            return std::max(N, size + num_additional_elements);
+            return size + num_additional_elements;
         }
     }
 
-    void reset(size_type new_cap = N)
+    void reset(size_type new_cap = 0)
     {
         sfl::dtl::destroy_a
         (
@@ -1695,41 +1340,35 @@ private:
             data_.last_
         );
 
-        if (data_.first_ != data_.internal_storage())
-        {
-            sfl::dtl::deallocate
-            (
-                data_.ref_to_alloc(),
-                data_.first_,
-                std::distance(data_.first_, data_.eos_)
-            );
-        }
+        sfl::dtl::deallocate
+        (
+            data_.ref_to_alloc(),
+            data_.first_,
+            std::distance(data_.first_, data_.eos_)
+        );
 
-        data_.first_ = data_.internal_storage();
-        data_.last_  = data_.first_;
-        data_.eos_   = data_.first_ + N;
+        // First set pointers to null ...
+        data_.first_ = nullptr;
+        data_.last_  = nullptr;
+        data_.eos_   = nullptr;
 
-        if (new_cap > N)
+        // ... and then allocate new storage. If allocation fails,
+        // first_, last_ and eos_ won't be dangling pointers.
+        if (new_cap > 0)
         {
             data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
             data_.last_  = data_.first_;
             data_.eos_   = data_.first_ + new_cap;
-
-            // If allocation throws, first_, last_ and eos_ will be valid
-            // (they will be pointing to internal_storage).
         }
     }
 
     void initialize_default_n(size_type n)
     {
-        check_size(n, "sfl::small_vector::initialize_default_n");
+        check_size(n, "sfl::vector::initialize_default_n");
 
-        if (n > N)
-        {
-            data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
-            data_.last_  = data_.first_;
-            data_.eos_   = data_.first_ + n;
-        }
+        data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
+        data_.last_  = data_.first_;
+        data_.eos_   = data_.first_ + n;
 
         SFL_TRY
         {
@@ -1742,25 +1381,18 @@ private:
         }
         SFL_CATCH (...)
         {
-            if (n > N)
-            {
-                sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
-            }
-
+            sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
             SFL_RETHROW;
         }
     }
 
     void initialize_fill_n(size_type n, const T& value)
     {
-        check_size(n, "sfl::small_vector::initialize_fill_n");
+        check_size(n, "sfl::vector::initialize_fill_n");
 
-        if (n > N)
-        {
-            data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
-            data_.last_  = data_.first_;
-            data_.eos_   = data_.first_ + n;
-        }
+        data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
+        data_.last_  = data_.first_;
+        data_.eos_   = data_.first_ + n;
 
         SFL_TRY
         {
@@ -1774,11 +1406,7 @@ private:
         }
         SFL_CATCH (...)
         {
-            if (n > N)
-            {
-                sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
-            }
-
+            sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
             SFL_RETHROW;
         }
     }
@@ -1809,15 +1437,12 @@ private:
                 data_.last_
             );
 
-            if (data_.first_ != data_.internal_storage())
-            {
-                sfl::dtl::deallocate
-                (
-                    data_.ref_to_alloc(),
-                    data_.first_,
-                    std::distance(data_.first_, data_.eos_)
-                );
-            }
+            sfl::dtl::deallocate
+            (
+                data_.ref_to_alloc(),
+                data_.first_,
+                std::distance(data_.first_, data_.eos_)
+            );
 
             SFL_RETHROW;
         }
@@ -1828,14 +1453,11 @@ private:
     {
         const size_type n = std::distance(first, last);
 
-        check_size(n, "sfl::small_vector::initialize_range");
+        check_size(n, "sfl::vector::initialize_range");
 
-        if (n > N)
-        {
-            data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
-            data_.last_  = data_.first_;
-            data_.eos_   = data_.first_ + n;
-        }
+        data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
+        data_.last_  = data_.first_;
+        data_.eos_   = data_.first_ + n;
 
         SFL_TRY
         {
@@ -1849,11 +1471,7 @@ private:
         }
         SFL_CATCH (...)
         {
-            if (n > N)
-            {
-                sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
-            }
-
+            sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
             SFL_RETHROW;
         }
     }
@@ -1885,18 +1503,15 @@ private:
 
 #endif // before C++20
 
-    void initialize_copy(const small_vector& other)
+    void initialize_copy(const vector& other)
     {
         const size_type n = other.size();
 
-        check_size(n, "sfl::small_vector::initialize_copy");
+        check_size(n, "sfl::vector::initialize_copy");
 
-        if (n > N)
-        {
-            data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
-            data_.last_  = data_.first_;
-            data_.eos_   = data_.first_ + n;
-        }
+        data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
+        data_.last_  = data_.first_;
+        data_.eos_   = data_.first_ + n;
 
         SFL_TRY
         {
@@ -1910,28 +1525,14 @@ private:
         }
         SFL_CATCH (...)
         {
-            if (n > N)
-            {
-                sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
-            }
-
+            sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
             SFL_RETHROW;
         }
     }
 
-    void initialize_move(small_vector& other)
+    void initialize_move(vector& other)
     {
-        if (other.data_.first_ == other.data_.internal_storage())
-        {
-            data_.last_ = sfl::dtl::uninitialized_move_a
-            (
-                data_.ref_to_alloc(),
-                other.data_.first_,
-                other.data_.last_,
-                data_.first_
-            );
-        }
-        else if (data_.ref_to_alloc() == other.data_.ref_to_alloc())
+        if (data_.ref_to_alloc() == other.data_.ref_to_alloc())
         {
             data_.first_ = other.data_.first_;
             data_.last_  = other.data_.last_;
@@ -1945,14 +1546,11 @@ private:
         {
             const size_type n = other.size();
 
-            check_size(n, "sfl::small_vector::initialize_move");
+            check_size(n, "sfl::vector::initialize_move");
 
-            if (n > N)
-            {
-                data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
-                data_.last_  = data_.first_;
-                data_.eos_   = data_.first_ + n;
-            }
+            data_.first_ = sfl::dtl::allocate(data_.ref_to_alloc(), n);
+            data_.last_  = data_.first_;
+            data_.eos_   = data_.first_ + n;
 
             SFL_TRY
             {
@@ -1966,11 +1564,7 @@ private:
             }
             SFL_CATCH (...)
             {
-                if (n > N)
-                {
-                    sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
-                }
-
+                sfl::dtl::deallocate(data_.ref_to_alloc(), data_.first_, n);
                 SFL_RETHROW;
             }
         }
@@ -1978,7 +1572,7 @@ private:
 
     void assign_fill_n(size_type n, const T& value)
     {
-        check_size(n, "sfl::small_vector::assign_fill_n");
+        check_size(n, "sfl::vector::assign_fill_n");
 
         if (n <= capacity())
         {
@@ -2075,7 +1669,7 @@ private:
     {
         const size_type n = std::distance(first, last);
 
-        check_size(n, "sfl::small_vector::assign_range");
+        check_size(n, "sfl::vector::assign_range");
 
         if (n <= capacity())
         {
@@ -2133,7 +1727,7 @@ private:
         }
     }
 
-    void assign_copy(const small_vector& other)
+    void assign_copy(const vector& other)
     {
         if (this != &other)
         {
@@ -2155,7 +1749,7 @@ private:
         }
     }
 
-    void assign_move(small_vector& other)
+    void assign_move(vector& other)
     {
         if (allocator_traits::propagate_on_container_move_assignment::value)
         {
@@ -2167,15 +1761,7 @@ private:
             data_.ref_to_alloc() = std::move(other.data_.ref_to_alloc());
         }
 
-        if (other.data_.first_ == other.data_.internal_storage())
-        {
-            assign_range
-            (
-                std::make_move_iterator(other.data_.first_),
-                std::make_move_iterator(other.data_.last_)
-            );
-        }
-        else if (data_.ref_to_alloc() == other.data_.ref_to_alloc())
+        if (data_.ref_to_alloc() == other.data_.ref_to_alloc())
         {
             reset();
 
@@ -2275,25 +1861,11 @@ private:
         {
             const difference_type offset = std::distance(cbegin(), pos);
 
-            const size_type new_cap =
-                calculate_new_capacity(n, "sfl::small_vector::insert_fill_n");
+            const size_type new_cap = calculate_new_capacity(n, "sfl::vector::insert_fill_n");
 
-            pointer new_first;
-            pointer new_last;
-            pointer new_eos;
-
-            if (new_cap <= N && data_.first_ != data_.internal_storage())
-            {
-                new_first = data_.internal_storage();
-                new_last  = new_first;
-                new_eos   = new_first + N;
-            }
-            else
-            {
-                new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
-                new_last  = new_first;
-                new_eos   = new_first + new_cap;
-            }
+            pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
+            pointer new_last  = new_first;
+            pointer new_eos   = new_first + new_cap;
 
             const pointer p = new_first + offset;
 
@@ -2313,13 +1885,11 @@ private:
 
                 new_last = nullptr;
 
-                const pointer mid = data_.first_ + offset;
-
                 new_last = sfl::dtl::uninitialized_move_if_noexcept_a
                 (
                     data_.ref_to_alloc(),
                     data_.first_,
-                    mid,
+                    data_.first_ + offset,
                     new_first
                 );
 
@@ -2328,7 +1898,7 @@ private:
                 new_last = sfl::dtl::uninitialized_move_if_noexcept_a
                 (
                     data_.ref_to_alloc(),
-                    mid,
+                    data_.first_ + offset,
                     data_.last_,
                     new_last
                 );
@@ -2354,15 +1924,12 @@ private:
                     );
                 }
 
-                if (new_first != data_.internal_storage())
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        new_first,
-                        new_cap
-                    );
-                }
+                sfl::dtl::deallocate
+                (
+                    data_.ref_to_alloc(),
+                    new_first,
+                    new_cap
+                );
 
                 SFL_RETHROW;
             }
@@ -2374,15 +1941,12 @@ private:
                 data_.last_
             );
 
-            if (data_.first_ != data_.internal_storage())
-            {
-                sfl::dtl::deallocate
-                (
-                    data_.ref_to_alloc(),
-                    data_.first_,
-                    std::distance(data_.first_, data_.eos_)
-                );
-            }
+            sfl::dtl::deallocate
+            (
+                data_.ref_to_alloc(),
+                data_.first_,
+                std::distance(data_.first_, data_.eos_)
+            );
 
             data_.first_ = new_first;
             data_.last_  = new_last;
@@ -2492,37 +2056,21 @@ private:
         {
             const difference_type offset = std::distance(cbegin(), pos);
 
-            const size_type new_cap =
-                calculate_new_capacity(n, "sfl::small_vector::insert_range");
+            const size_type new_cap = calculate_new_capacity(n, "sfl::vector::insert_range");
 
-            pointer new_first;
-            pointer new_last;
-            pointer new_eos;
-
-            if (new_cap <= N && data_.first_ != data_.internal_storage())
-            {
-                new_first = data_.internal_storage();
-                new_last  = new_first;
-                new_eos   = new_first + N;
-            }
-            else
-            {
-                new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
-                new_last  = new_first;
-                new_eos   = new_first + new_cap;
-            }
+            pointer new_first = sfl::dtl::allocate(data_.ref_to_alloc(), new_cap);
+            pointer new_last  = new_first;
+            pointer new_eos   = new_first + new_cap;
 
             const pointer p = new_first + offset;
 
             SFL_TRY
             {
-                const pointer mid = data_.first_ + offset;
-
                 new_last = sfl::dtl::uninitialized_move_if_noexcept_a
                 (
                     data_.ref_to_alloc(),
                     data_.first_,
-                    mid,
+                    data_.first_ + offset,
                     new_first
                 );
 
@@ -2537,7 +2085,7 @@ private:
                 new_last = sfl::dtl::uninitialized_move_if_noexcept_a
                 (
                     data_.ref_to_alloc(),
-                    mid,
+                    data_.first_ + offset,
                     data_.last_,
                     new_last
                 );
@@ -2551,15 +2099,12 @@ private:
                     new_last
                 );
 
-                if (new_first != data_.internal_storage())
-                {
-                    sfl::dtl::deallocate
-                    (
-                        data_.ref_to_alloc(),
-                        new_first,
-                        new_cap
-                    );
-                }
+                sfl::dtl::deallocate
+                (
+                    data_.ref_to_alloc(),
+                    new_first,
+                    new_cap
+                );
 
                 SFL_RETHROW;
             }
@@ -2571,15 +2116,12 @@ private:
                 data_.last_
             );
 
-            if (data_.first_ != data_.internal_storage())
-            {
-                sfl::dtl::deallocate
-                (
-                    data_.ref_to_alloc(),
-                    data_.first_,
-                    std::distance(data_.first_, data_.eos_)
-                );
-            }
+            sfl::dtl::deallocate
+            (
+                data_.ref_to_alloc(),
+                data_.first_,
+                std::distance(data_.first_, data_.eos_)
+            );
 
             data_.first_ = new_first;
             data_.last_  = new_last;
@@ -2594,85 +2136,85 @@ private:
 // ---- NON-MEMBER FUNCTIONS --------------------------------------------------
 //
 
-template <typename T, std::size_t N, typename A>
+template <typename T, typename A>
 SFL_NODISCARD
 bool operator==
 (
-    const small_vector<T, N, A>& x,
-    const small_vector<T, N, A>& y
+    const vector<T, A>& x,
+    const vector<T, A>& y
 )
 {
     return x.size() == y.size() && std::equal(x.begin(), x.end(), y.begin());
 }
 
-template <typename T, std::size_t N, typename A>
+template <typename T, typename A>
 SFL_NODISCARD
 bool operator!=
 (
-    const small_vector<T, N, A>& x,
-    const small_vector<T, N, A>& y
+    const vector<T, A>& x,
+    const vector<T, A>& y
 )
 {
     return !(x == y);
 }
 
-template <typename T, std::size_t N, typename A>
+template <typename T, typename A>
 SFL_NODISCARD
 bool operator<
 (
-    const small_vector<T, N, A>& x,
-    const small_vector<T, N, A>& y
+    const vector<T, A>& x,
+    const vector<T, A>& y
 )
 {
     return std::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 }
 
-template <typename T, std::size_t N, typename A>
+template <typename T, typename A>
 SFL_NODISCARD
 bool operator>
 (
-    const small_vector<T, N, A>& x,
-    const small_vector<T, N, A>& y
+    const vector<T, A>& x,
+    const vector<T, A>& y
 )
 {
     return y < x;
 }
 
-template <typename T, std::size_t N, typename A>
+template <typename T, typename A>
 SFL_NODISCARD
 bool operator<=
 (
-    const small_vector<T, N, A>& x,
-    const small_vector<T, N, A>& y
+    const vector<T, A>& x,
+    const vector<T, A>& y
 )
 {
     return !(y < x);
 }
 
-template <typename T, std::size_t N, typename A>
+template <typename T, typename A>
 SFL_NODISCARD
 bool operator>=
 (
-    const small_vector<T, N, A>& x,
-    const small_vector<T, N, A>& y
+    const vector<T, A>& x,
+    const vector<T, A>& y
 )
 {
     return !(x < y);
 }
 
-template <typename T, std::size_t N, typename A>
+template <typename T, typename A>
 void swap
 (
-    small_vector<T, N, A>& x,
-    small_vector<T, N, A>& y
+    vector<T, A>& x,
+    vector<T, A>& y
 )
 {
     x.swap(y);
 }
 
-template <typename T, std::size_t N, typename A, typename U>
-typename small_vector<T, N, A>::size_type
-    erase(small_vector<T, N, A>& c, const U& value)
+template <typename T, typename A, typename U>
+typename vector<T, A>::size_type
+    erase(vector<T, A>& c, const U& value)
 {
     auto it = std::remove(c.begin(), c.end(), value);
     auto r = std::distance(it, c.end());
@@ -2680,9 +2222,9 @@ typename small_vector<T, N, A>::size_type
     return r;
 }
 
-template <typename T, std::size_t N, typename A, typename Predicate>
-typename small_vector<T, N, A>::size_type
-    erase_if(small_vector<T, N, A>& c, Predicate pred)
+template <typename T, typename A, typename Predicate>
+typename vector<T, A>::size_type
+    erase_if(vector<T, A>& c, Predicate pred)
 {
     auto it = std::remove_if(c.begin(), c.end(), pred);
     auto r = std::distance(it, c.end());
@@ -2690,6 +2232,20 @@ typename small_vector<T, N, A>::size_type
     return r;
 }
 
+//
+// ---- DEDUCTION GUIDES ------------------------------------------------------
+//
+
+#if SFL_CPP_VERSION >= SFL_CPP_17
+
+template < typename InputIt,
+           typename Allocator = std::allocator<typename std::iterator_traits<InputIt>::value_type>,
+           sfl::dtl::enable_if_t<sfl::dtl::is_input_iterator<InputIt>::value>* = nullptr >
+vector(InputIt, InputIt, Allocator = Allocator())
+    -> vector<typename std::iterator_traits<InputIt>::value_type, Allocator>;
+
+#endif
+
 } // namespace sfl
 
-#endif // SFL_SMALL_VECTOR_HPP_INCLUDED
+#endif // SFL_VECTOR_HPP_INCLUDED
