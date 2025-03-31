@@ -11,6 +11,7 @@
 
 #include "../world/Location.hpp"
 
+#include <optional>
 #include <quickjs.h>
 
 namespace OpenRCT2::Scripting
@@ -99,6 +100,50 @@ namespace OpenRCT2::Scripting
             return str;
         }
         return {};
+    }
+
+    inline std::string GetStdString(JSContext* ctx, JSValue obj, const char* property)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        std::string output = GetStdString(ctx, val);
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
+    inline std::optional<int32_t> GetOptionalInt(JSContext* ctx, JSValue obj, const char* property)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        std::optional<int32_t> output = std::nullopt;
+        if (JS_IsNumber(val))
+        {
+            int32_t intVal = -1;
+            if (JS_ToInt32(ctx, &intVal, val) >= 0)
+            {
+                output = std::make_optional(intVal);
+            }
+        }
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
+    inline int32_t GetInt(JSContext* ctx, JSValue obj, const char* property)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        int32_t output = -1;
+        if (JS_IsNumber(val))
+        {
+            JS_ToInt32(ctx, &output, val);
+        }
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
+    inline JSCallback GetJSCallback(JSContext* ctx, JSValue obj, const char* property)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        JSCallback out(ctx, val);
+        JS_FreeValue(ctx, val);
+        return out;
     }
 
     inline JSValue ToJSValue(JSContext* ctx, const CoordsXY& coords)

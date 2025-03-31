@@ -1909,16 +1909,6 @@ std::string OpenRCT2::Scripting::Stringify(JSContext* ctx, const JSValue val)
     return ExpressionStringifier::StringifyExpression(ctx, val);
 }
 
-std::string OpenRCT2::Scripting::ProcessString(const JSValue value)
-{
-    /*
-    if (value.type() == DukValue::Type::STRING)
-        return value.as_string();
-    return {};
-    */
-    return std::string{};
-}
-
 bool OpenRCT2::Scripting::IsGameStateMutable()
 {
     // Allow single player to alter game state anywhere
