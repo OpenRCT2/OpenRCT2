@@ -13,6 +13,7 @@
 
     #include "../windows/Windows.h"
     #include "CustomMenu.h"
+    #include "CustomWindow.h"
     #include "ScImageManager.hpp"
     #include "ScTileSelection.hpp"
     #include "ScViewport.hpp"
@@ -30,15 +31,6 @@
 namespace OpenRCT2::Scripting
 {
     class Plugin;
-}
-
-namespace OpenRCT2::Ui::Windows
-{
-    WindowBase* WindowCustomOpen(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, JSValue desc);
-}
-
-namespace OpenRCT2::Scripting
-{
     class ScUi;
     extern ScUi gScUi;
     class ScTool;
@@ -173,29 +165,34 @@ namespace OpenRCT2::Scripting
             // return std::make_shared<ScImageManager>(_scriptEngine.GetContext());
         }
 
-        /*
-        std::shared_ptr<ScWindow> openWindow(DukValue desc)
+        static JSValue openWindow(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             using namespace OpenRCT2::Ui::Windows;
 
-            auto& execInfo = _scriptEngine.GetExecInfo();
+            ScriptEngine* scriptEngine = gScUi.GetOpaque<ScriptEngine*>(thisVal);
+            if (!scriptEngine)
+            {
+                JS_ThrowInternalError(ctx, "No script engine");
+                return JS_EXCEPTION;
+            }
+
+            auto& execInfo = scriptEngine->GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
 
-            // TODO (mber) find out how to do something similar in quickjs.
-            if (IsStopping())
+            if (owner->IsStopping())
             {
-                duk_error(_context, DUK_ERR_ERROR, "Plugin is stopping.");
+                JS_ThrowInternalError(ctx, "Plugin is stopping.");
+                return JS_EXCEPTION;
             }
 
-            std::shared_ptr<ScWindow> scWindow = nullptr;
-            auto w = WindowCustomOpen(owner, desc);
+            auto w = WindowCustomOpen(ctx, owner, argv[0]);
             if (w != nullptr)
             {
-                scWindow = std::make_shared<ScWindow>(w);
+                return gScWindow.New(ctx, w);
             }
-            return scWindow;
+            return JS_NULL;
         }
-
+        /*
         void closeWindows(std::string classification, DukValue id)
         {
             auto* windowMgr = Ui::GetWindowManager();
@@ -424,7 +421,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("tileSelection", ScUi::tileSelection_get, nullptr), JS_CGETSET_DEF("tool", ScUi::tool_get, nullptr),
             JS_CGETSET_DEF("imageManager", ScUi::imageManager_get, nullptr),
 
-            // dukglue_register_method(ctx, &ScUi::openWindow, "openWindow"),
+            JS_CFUNC_DEF("openWindow", 1, ScUi::openWindow),
             // dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows"),
             // dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows"),
             JS_CFUNC_DEF("getWindow", 1, ScUi::getWindow), JS_CFUNC_DEF("showError", 2, ScUi::showError),

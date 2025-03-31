@@ -271,7 +271,7 @@ namespace OpenRCT2::Scripting
                     auto c = ColourWithFlags{ COLOUR_BLACK };
                     if (i < coloursLen)
                     {
-                        JSValue elem = JS_GetPropertyInt64(ctx,colours,i);
+                        JSValue elem = JS_GetPropertyInt64(ctx, colours, i);
                         if (JS_IsNumber(elem))
                         {
                             int32_t colorInt = -1;
@@ -302,7 +302,7 @@ namespace OpenRCT2::Scripting
         }
         static JSValue title_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            if (!JS_IsString(thisVal))
+            if (!JS_IsString(value))
             {
                 JS_ThrowTypeError(ctx, "Expected string");
                 return JS_EXCEPTION;
@@ -311,8 +311,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr && w->classification == WindowClass::Custom)
             {
                 const char* valueStr = JS_ToCString(ctx, value);
-                // TODO (mber)
-                // UpdateWindowTitle(w, valueStr);
+                UpdateWindowTitle(w, valueStr);
                 JS_FreeCString(ctx, valueStr);
             }
             return JS_UNDEFINED;

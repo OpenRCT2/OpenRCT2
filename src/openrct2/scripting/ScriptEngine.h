@@ -297,7 +297,6 @@ namespace OpenRCT2::Scripting
     int32_t GetTargetAPIVersion();
 
     std::string Stringify(JSContext* context, JSValue value);
-    std::string ProcessString(JSValue value);
 
     class ScBase
     {

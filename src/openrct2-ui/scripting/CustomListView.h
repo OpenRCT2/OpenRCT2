@@ -9,13 +9,12 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../interface/Window.h"
 
     #include <cstdint>
     #include <memory>
-    #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <optional>
     #include <string>
@@ -33,6 +32,7 @@ namespace OpenRCT2::Ui::Windows
         Both
     };
 
+    /* TODO (mber)
     enum class ColumnSortOrder
     {
         None,
@@ -151,8 +151,9 @@ namespace OpenRCT2::Ui::Windows
         Widget* GetWidget() const;
         void Invalidate();
     };
+    */
 } // namespace OpenRCT2::Ui::Windows
-
+/* TODO (mber)
 class DukValue;
 
 namespace OpenRCT2::Scripting
@@ -192,5 +193,6 @@ namespace OpenRCT2::Scripting
     template<>
     DukValue ToDuk(duk_context* ctx, const ScrollbarType& value);
 } // namespace OpenRCT2::Scripting
+*/
 
 #endif
