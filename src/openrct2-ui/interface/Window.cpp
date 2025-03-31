@@ -498,6 +498,13 @@ namespace OpenRCT2
             closeButton.right = width - 3;
         }
 
+        // Set appropriate close button
+        bool useWhite = closeButton.string == kCloseBoxStringWhiteLarge || closeButton.string == kCloseBoxStringWhiteNormal;
+        if (closeButtonSize == kCloseButtonSizeTouch)
+            closeButton.string = !useWhite ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
+        else
+            closeButton.string = !useWhite ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
+
         auto preferredHeight = GetTitleBarHeight();
         auto currentHeight = titleWidget.height();
         auto heightDifference = preferredHeight - currentHeight;

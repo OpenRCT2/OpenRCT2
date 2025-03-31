@@ -606,17 +606,15 @@ namespace OpenRCT2::Ui
         // Draw the button
         GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
 
-        if (widget.text == kStringIdNone)
+        if (widget.string == nullptr)
             return;
 
         topLeft = w.windowPos + ScreenCoordsXY{ widget.midX() - 1, std::max<int32_t>(widget.top, widget.midY() - 5) };
 
         if (WidgetIsDisabled(w, widgetIndex))
             colour.setFlag(ColourFlag::inset, true);
-        ;
 
-        DrawTextEllipsised(
-            dpi, topLeft, widget.width() - 2, widget.text, Formatter::Common(), { colour, TextAlignment::CENTRE });
+        DrawText(dpi, topLeft, { colour, TextAlignment::CENTRE }, widget.string);
     }
 
     /**

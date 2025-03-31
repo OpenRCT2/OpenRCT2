@@ -81,7 +81,7 @@ namespace OpenRCT2
             uint32_t content;
             ImageId image{};
             StringId text;
-            utf8* string;
+            const utf8* string;
         };
         StringId tooltip{ kStringIdNone };
 
