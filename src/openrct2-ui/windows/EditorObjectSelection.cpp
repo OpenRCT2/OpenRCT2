@@ -636,9 +636,10 @@ namespace OpenRCT2::Ui::Windows
                 auto& objManager = GetContext()->GetObjectManager();
                 objManager.LoadObject(_loadedObject.get()->GetIdentifier());
 
+                windowMgr->ForceClose(WindowClass::EditorObjectSelection);
+
                 // This function calls window_track_list_open
                 ManageTracks();
-                Close();
                 return;
             }
 
