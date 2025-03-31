@@ -3733,10 +3733,10 @@ STR_6678    :Bronbestand:
 STR_6679    :Vlak land
 STR_6680    :Simplex-ruis
 STR_6681    :Hoogtekaart
-STR_6682    :Mapgenerator - Generator
-STR_6683    :Mapgenerator - Terrein
-STR_6684    :Mapgenerator - Water
-STR_6685    :Mapgenerator - Bossen
+STR_6682    :Kaartgenerator - Generator
+STR_6683    :Kaartgenerator - Terrein
+STR_6684    :Kaartgenerator - Water
+STR_6685    :Kaartgenerator - Bossen
 STR_6686    :Ratio bomen/land:
 STR_6687    :Minimale boomhoogte:
 STR_6688    :Maximale boomhoogte:
