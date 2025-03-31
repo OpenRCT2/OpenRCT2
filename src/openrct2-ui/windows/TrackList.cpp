@@ -221,15 +221,6 @@ namespace OpenRCT2::Ui::Windows
 
             LoadDesignsList(_window_track_list_item);
 
-            if (gLegacyScene == LegacyScene::trackDesignsManager)
-            {
-                widgets[WIDX_BACK].type = WindowWidgetType::Empty;
-            }
-            else
-            {
-                widgets[WIDX_BACK].type = WindowWidgetType::TableHeader;
-            }
-
             WindowInitScrollWidgets(*this);
             _selectedItemIsBeingUpdated = false;
             _reloadTrackDesigns = false;
@@ -246,6 +237,14 @@ namespace OpenRCT2::Ui::Windows
 
             _loadedTrackDesign = nullptr;
             _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
+        }
+
+        void ReopenTrackManager()
+        {
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByNumber(WindowClass::ManageTrackDesign, number);
+            windowMgr->CloseByNumber(WindowClass::TrackDeletePrompt, number);
+            Editor::LoadTrackManager();
         }
 
         void OnClose() override
@@ -265,10 +264,7 @@ namespace OpenRCT2::Ui::Windows
             // try to load the track manager again, and an infinite loop will result.
             if ((gLegacyScene == LegacyScene::trackDesignsManager) && gScreenAge != 0)
             {
-                auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->CloseByNumber(WindowClass::ManageTrackDesign, number);
-                windowMgr->CloseByNumber(WindowClass::TrackDeletePrompt, number);
-                Editor::LoadTrackManager();
+                ReopenTrackManager();
             }
         }
 
@@ -294,6 +290,10 @@ namespace OpenRCT2::Ui::Windows
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
                         ContextOpenWindow(WindowClass::ConstructRide);
+                    }
+                    else
+                    {
+                        ReopenTrackManager();
                     }
                     break;
                 case WIDX_FILTER_STRING:
