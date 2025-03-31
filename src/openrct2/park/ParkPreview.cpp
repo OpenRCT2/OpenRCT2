@@ -51,14 +51,18 @@ namespace OpenRCT2
         return preview;
     }
 
+    static uint8_t _tileColourIndex = 0;
+
     static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
     {
-        PaletteIndex colour = PALETTE_INDEX_0;
+        PaletteIndex paletteIndex = PALETTE_INDEX_0;
 
         auto tileElement = MapGetFirstElementAt(pos);
         if (tileElement == nullptr)
-            return colour;
+            return paletteIndex;
 
+        PaletteIndex surfaceColour = paletteIndex;
+        bool isOutsidePark = false;
         do
         {
             switch (tileElement->GetType())
@@ -68,39 +72,42 @@ namespace OpenRCT2
                     auto* surfaceElement = tileElement->AsSurface();
                     if (surfaceElement == nullptr)
                     {
-                        colour = PALETTE_INDEX_0;
+                        surfaceColour = paletteIndex = PALETTE_INDEX_0;
                         break;
                     }
 
                     if (surfaceElement->GetWaterHeight() > 0)
                     {
-                        colour = PALETTE_INDEX_195;
-                        break;
+                        surfaceColour = paletteIndex = PALETTE_INDEX_195;
+                    }
+                    else
+                    {
+                        const auto* surfaceObject = surfaceElement->GetSurfaceObject();
+                        if (surfaceObject != nullptr)
+                        {
+                            surfaceColour = paletteIndex = surfaceObject->MapColours[_tileColourIndex];
+                        }
                     }
 
-                    const auto* surfaceObject = surfaceElement->GetSurfaceObject();
-                    if (surfaceObject != nullptr)
-                    {
-                        colour = surfaceObject->MapColours[1];
-                    }
+                    isOutsidePark |= !(surfaceElement->GetOwnership() & OWNERSHIP_OWNED);
                     break;
                 }
 
                 case TileElementType::Path:
-                    colour = PALETTE_INDEX_17;
+                    paletteIndex = PALETTE_INDEX_17;
                     break;
 
                 case TileElementType::Track:
-                    colour = PALETTE_INDEX_183;
+                    paletteIndex = PALETTE_INDEX_183;
                     break;
 
                 case TileElementType::SmallScenery:
                 case TileElementType::LargeScenery:
-                    colour = PALETTE_INDEX_99; // 64
+                    paletteIndex = PALETTE_INDEX_99; // 64
                     break;
 
                 case TileElementType::Entrance:
-                    colour = PALETTE_INDEX_186;
+                    paletteIndex = PALETTE_INDEX_186;
                     break;
 
                 default:
@@ -108,32 +115,58 @@ namespace OpenRCT2
             }
         } while (!(tileElement++)->IsLastForTile());
 
-        return colour;
+        // Darken every other tile that's outside of the park, unless it's a path
+        if (isOutsidePark && _tileColourIndex == 1 && paletteIndex != PALETTE_INDEX_17)
+            paletteIndex = PALETTE_INDEX_10;
+        // For rides, every other tile should use the surface colour
+        else if (_tileColourIndex == 1 && paletteIndex == PALETTE_INDEX_183)
+            paletteIndex = surfaceColour;
+
+        _tileColourIndex = (_tileColourIndex + 1) % 2;
+
+        return paletteIndex;
     }
 
     // 0x0046DB4C
     static std::optional<PreviewImage> generatePreviewMap()
     {
         const auto& gameState = getGameState();
-        const auto previewSize = 128;
-        const auto longEdgeSize = std::max(gameState.mapSize.x, gameState.mapSize.y);
-        const auto nearestPower = Numerics::ceil2(longEdgeSize, previewSize);
-        const auto mapSkipFactor = nearestPower / previewSize;
-        const auto offset = mapSkipFactor > 0 ? (nearestPower - longEdgeSize) / mapSkipFactor : 1;
+        const auto drawableMapSize = TileCoordsXY{ gameState.mapSize.x - 2, gameState.mapSize.y - 2 };
+        const auto longEdgeSize = std::max(drawableMapSize.x, drawableMapSize.y);
+        const auto idealPreviewSize = 150;
+
+        auto longEdgeSizeLeft = longEdgeSize;
+        uint8_t mapSkipFactor = 1;
+        while (longEdgeSizeLeft > idealPreviewSize)
+        {
+            longEdgeSizeLeft -= idealPreviewSize;
+            mapSkipFactor++;
+        }
+
+        const uint8_t previewWidth = std::max(1, drawableMapSize.x / mapSkipFactor);
+        const uint8_t previewHeight = std::max(1, drawableMapSize.y / mapSkipFactor);
 
         PreviewImage image{
             .type = PreviewImageType::miniMap,
-            .width = previewSize,
-            .height = previewSize,
+            .width = previewWidth,
+            .height = previewHeight,
         };
 
         for (auto y = 0u; y < image.height; y++)
         {
+            int32_t mapY = 1 + (y * mapSkipFactor);
+            if (mapY >= drawableMapSize.y)
+                break;
+
+            _tileColourIndex = y % 2;
+
             for (auto x = 0u; x < image.width; x++)
             {
-                auto pos = TileCoordsXY(gameState.mapSize.x - (x + 1) * mapSkipFactor + 1, y * mapSkipFactor + 1);
+                int32_t mapX = drawableMapSize.x - (x * mapSkipFactor);
+                if (mapX < 1)
+                    break;
 
-                image.pixels[(y + offset) * previewSize + (x + offset)] = getPreviewColourByTilePos(pos);
+                image.pixels[y * image.width + x] = getPreviewColourByTilePos({ mapX, mapY });
             }
         }
 

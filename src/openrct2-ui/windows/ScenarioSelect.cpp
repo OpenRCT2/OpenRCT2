@@ -13,15 +13,20 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/Diagnostic.h>
+#include <openrct2/FileClassifier.h>
+#include <openrct2/ParkImporter.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/FileStream.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
+#include <openrct2/park/ParkPreview.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioRepository.h>
@@ -31,17 +36,18 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId kWindowTitle = STR_SELECT_SCENARIO;
-    static constexpr int32_t kWindowWidth = 734;
-    static constexpr int32_t kWindowHeight = 384;
+    static constexpr int32_t kInitialNumUnlockedScenarios = 5;
+    static constexpr uint8_t kNumTabs = 10;
+    static constexpr int32_t kPreviewPaneWidth = 179;
     static constexpr int32_t kSidebarWidth = 180;
-    static constexpr int32_t kTabWidth = 92;
     static constexpr int32_t kTabHeight = 34;
-    static constexpr int32_t kTrueFontSize = 24;
     static constexpr int32_t kWidgetsStart = 17;
     static constexpr int32_t kTabsStart = kWidgetsStart;
-    static constexpr int32_t kInitialNumUnlockedScenarios = 5;
-    constexpr uint8_t kNumTabs = 10;
+    static constexpr int32_t kTabWidth = 92;
+    static constexpr int32_t kTrueFontSize = 24;
+    static constexpr int32_t kWindowHeight = 384;
+    static constexpr int32_t kWindowWidth = 734;
+    static constexpr StringId kWindowTitle = STR_SELECT_SCENARIO;
 
     enum class ListItemType : uint8_t
     {
@@ -117,6 +123,7 @@ namespace OpenRCT2::Ui::Windows
         std::function<void(std::string_view)> _callback;
         std::vector<ScenarioListItem> _listItems;
         const ScenarioIndexEntry* _highlightedScenario = nullptr;
+        ParkPreview _preview;
 
     public:
         ScenarioSelectWindow(std::function<void(std::string_view)> callback)
@@ -150,9 +157,12 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
             {
                 selected_tab = widgetIndex - 4;
-                _highlightedScenario = nullptr;
                 Config::Get().interface.ScenarioselectLastTab = selected_tab;
                 Config::Save();
+
+                _highlightedScenario = nullptr;
+                _preview = {};
+
                 InitialiseListItems();
                 Invalidate();
                 OnResize();
@@ -162,10 +172,69 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void LoadPreview()
+        {
+            _preview = {};
+
+            if (_highlightedScenario == nullptr)
+                return;
+
+            auto& path = _highlightedScenario->Path;
+            auto fs = FileStream(path, FileMode::open);
+
+            ClassifiedFileInfo info;
+            if (!TryClassifyFile(&fs, &info) || info.Type != FileType::park)
+            {
+                // TODO: try loading a preview from a 'scenario meta' object file
+                return;
+            }
+
+            try
+            {
+                auto& objectRepository = GetContext()->GetObjectRepository();
+                auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
+                parkImporter->LoadFromStream(&fs, false, true, path.c_str());
+                _preview = parkImporter->GetParkPreview();
+            }
+            catch (const std::exception& e)
+            {
+                LOG_ERROR("Could not get preview:", e.what());
+                _preview = {};
+                return;
+            }
+        }
+
+        ScreenCoordsXY DrawPreview(DrawPixelInfo& dpi, ScreenCoordsXY screenPos)
+        {
+            // Find minimap image to draw, if available
+            PreviewImage* image = nullptr;
+            for (auto& candidate : _preview.images)
+            {
+                if (candidate.type == PreviewImageType::miniMap)
+                {
+                    image = &candidate;
+                    break;
+                }
+            }
+
+            if (image == nullptr)
+                return screenPos;
+
+            // Draw frame
+            auto startFrameX = width - (kPreviewPaneWidth / 2) - (image->width / 2);
+            auto frameStartPos = ScreenCoordsXY(windowPos.x + startFrameX, screenPos.y + 15);
+            auto frameEndPos = frameStartPos + ScreenCoordsXY(image->width + 1, image->height + 1);
+            GfxFillRectInset(dpi, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+
+            // Draw image, if available
+            auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
+            drawPreviewImage(*image, dpi, imagePos);
+
+            return frameEndPos;
+        }
+
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            const ScenarioIndexEntry* scenario;
-
             DrawWidgets(dpi);
 
             StringId format = STR_WINDOW_COLOUR_2_STRINGID;
@@ -199,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Return if no scenario highlighted
-            scenario = _highlightedScenario;
+            auto* scenario = _highlightedScenario;
             if (scenario == nullptr)
             {
                 if (_showLockedInformation)
@@ -242,7 +311,10 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<const char*>(scenario->Name.c_str());
             DrawTextEllipsised(
                 dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
-            screenPos.y += 15;
+
+            // Draw preview
+            auto previewEnd = DrawPreview(dpi, screenPos);
+            screenPos.y = previewEnd.y + 15;
 
             // Scenario details
             ft = Formatter();
@@ -289,7 +361,7 @@ namespace OpenRCT2::Ui::Windows
 
             ResizeFrameWithPage();
             const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
-            widgets[WIDX_SCENARIOLIST].right = width - 179;
+            widgets[WIDX_SCENARIOLIST].right = width - kPreviewPaneWidth;
             widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
         }
 
@@ -353,6 +425,7 @@ namespace OpenRCT2::Ui::Windows
             if (_highlightedScenario != selected)
             {
                 _highlightedScenario = selected;
+                LoadPreview();
                 Invalidate();
             }
             else if (_showLockedInformation != originalShowLockedInformation)

@@ -887,10 +887,10 @@ namespace OpenRCT2::Config
                         chosenOption = hdd;
                     }
 
-                    std::string installPath;
+                    std::vector<std::string> possibleInstallPaths{};
                     if (chosenOption == hdd)
                     {
-                        installPath = uiContext->ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR));
+                        possibleInstallPaths.emplace_back(uiContext->ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR)));
                     }
                     else if (chosenOption == gog)
                     {
@@ -923,17 +923,22 @@ namespace OpenRCT2::Config
                             uiContext->ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
                         }
 
-                        installPath = Path::Combine(dest, u8"app");
+                        // New installer extracts to ‘dest’, old installer installs in ‘dest/app’.
+                        possibleInstallPaths.emplace_back(dest);
+                        possibleInstallPaths.emplace_back(Path::Combine(dest, u8"app"));
                     }
-                    if (installPath.empty())
+                    if (possibleInstallPaths.empty())
                     {
                         return false;
                     }
-                    Get().general.RCT2Path = installPath;
 
-                    if (Platform::OriginalGameDataExists(installPath))
+                    for (const auto& possiblePath : possibleInstallPaths)
                     {
-                        return true;
+                        if (Platform::OriginalGameDataExists(possiblePath))
+                        {
+                            Get().general.RCT2Path = possiblePath;
+                            return true;
+                        }
                     }
 
                     uiContext->ShowMessageBox(FormatStringIDLegacy(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
