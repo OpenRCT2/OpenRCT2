@@ -109,6 +109,11 @@ namespace OpenRCT2::Ui::Windows
             NotifyShortcutKeysWindow();
         }
 
+        void OnResize() override
+        {
+            ResizeFrameWithPage();
+        }
+
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
