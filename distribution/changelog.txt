@@ -17,6 +17,7 @@
 - Fix: [#18309] Flying and Multi Dimension trains glitch when changing between inverted and uninverted track when uncap fps is on.
 - Fix: [#19506] Queue paths can be placed on level crossings by replacing an existing regular path.
 - Fix: [#23443] New GOG version of RCT2 is not extracted correctly.
+- Fix: [#23484] Stray coloured pixels on castle-themed stations and Roman-themed entrances/exits (original bug).
 - Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.
 - Fix: [#23743] Parks with guest goals over 32767 do not appear in the scenario list.
 - Fix: [#23844] Sound effects keep playing when loading another save.

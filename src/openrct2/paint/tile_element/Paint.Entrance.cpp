@@ -141,8 +141,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     auto hasGlass = (stationObj->Flags & StationObjectFlags::isTransparent) != 0;
     auto colourPrimary = ride->trackColours[0].main;
-    auto colourSecondary = ride->trackColours[0].additional;
-    auto imageTemplate = ImageId(0, colourPrimary, colourSecondary);
+    auto imageTemplate = ImageId(0);
     ImageId glassImageTemplate;
     if (hasGlass)
     {
@@ -157,6 +156,18 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+    }
+    else
+    {
+        if (stationObj->Flags & StationObjectFlags::hasPrimaryColour)
+        {
+            imageTemplate = imageTemplate.WithPrimary(colourPrimary);
+        }
+        if (stationObj->Flags & StationObjectFlags::hasSecondaryColour)
+        {
+            auto colourSecondary = ride->trackColours[0].additional;
+            imageTemplate = imageTemplate.WithSecondary(colourSecondary);
+        }
     }
 
     // Format modified to stop repeated code
