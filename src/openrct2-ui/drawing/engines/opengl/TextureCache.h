@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui
     struct BasicTextureInfo
     {
         GLuint index;
-        vec4 normalizedBounds;
+        vec4 coords;
     };
 
     // Location of an image (texture atlas index, slot and normalized coordinates)
@@ -124,7 +124,12 @@ namespace OpenRCT2::Ui
             info.index = _index;
             info.slot = slot;
             info.bounds = bounds;
-            info.normalizedBounds = NormalizeCoordinates(bounds);
+            info.coords = vec4{
+                static_cast<float>(bounds.x),
+                static_cast<float>(bounds.y),
+                static_cast<float>(_atlasWidth),
+                static_cast<float>(_atlasHeight),
+            };
 
             return info;
         }
@@ -174,16 +179,6 @@ namespace OpenRCT2::Ui
                 _imageSize * row,
                 _imageSize * col + actualWidth,
                 _imageSize * row + actualHeight,
-            };
-        }
-
-        [[nodiscard]] vec4 NormalizeCoordinates(const ivec4& coords) const
-        {
-            return vec4{
-                coords.x / static_cast<float>(_atlasWidth),
-                coords.y / static_cast<float>(_atlasHeight),
-                coords.z / static_cast<float>(_atlasWidth),
-                coords.w / static_cast<float>(_atlasHeight),
             };
         }
     };

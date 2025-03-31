@@ -8,25 +8,29 @@ uniform ivec2 uScreenSize;
 // clang-format off
 in ivec4 vClip;
 in int   vTexColourAtlas;
-in vec4  vTexColourBounds;
+in vec4  vTexColourCoords;
 in int   vTexMaskAtlas;
-in vec4  vTexMaskBounds;
+in vec4  vTexMaskCoords;
 in ivec3 vPalettes;
 in int   vFlags;
 in uint  vColour;
 in ivec4 vBounds;
 in int   vDepth;
+in float vZoom;
 
 in mat4x2 vVertMat;
 in vec2   vVertVec;
 
-out vec2       fPosition;
+flat out vec2  fPosition;
 out vec3       fPeelPos;
 flat out int   fFlags;
 flat out uint  fColour;
-out vec3       fTexColour;
-out vec3       fTexMask;
+flat out vec4  fTexColour;
+flat out vec4  fTexMask;
 flat out vec3  fPalettes;
+flat out float fZoom;
+flat out int   fTexColourAtlas;
+flat out int   fTexMaskAtlas;
 // clang-format on
 
 void main()
@@ -35,10 +39,13 @@ void main()
     vec2 m = clamp(
         ((vVertMat * vec4(vClip)) - (vVertMat * vec4(vBounds))) / vec2(vBounds.zw - vBounds.xy) + vVertVec, 0.0, 1.0);
     vec2 pos = mix(vec2(vBounds.xy), vec2(vBounds.zw), m);
-    fTexColour = vec3(mix(vTexColourBounds.xy, vTexColourBounds.zw, m), vTexColourAtlas);
-    fTexMask = vec3(mix(vTexMaskBounds.xy, vTexMaskBounds.zw, m), vTexMaskAtlas);
+    fTexColour = vTexColourCoords;
+    fTexMask = vTexMaskCoords;
 
-    fPosition = pos;
+    fPosition = vBounds.xy;
+    fZoom = vZoom;
+    fTexColourAtlas = vTexColourAtlas;
+    fTexMaskAtlas = vTexMaskAtlas;
 
     // Transform screen coordinates to texture coordinates
     float depth = 1.0 - (float(vDepth) + 1.0) * DEPTH_INCREMENT;
