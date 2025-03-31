@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../config/Config.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
@@ -238,7 +239,11 @@ GameActions::Result TrackDesignAction::Execute() const
 
     auto numCircuits = std::max<uint8_t>(1, _td.operation.numCircuits);
     SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, numCircuits, flags);
-    ride->setToDefaultInspectionInterval();
+
+    uint8_t defaultInspectionInterval = Config::Get().general.DefaultInspectionInterval;
+    if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
+        SetOperatingSettingNested(ride->id, RideSetSetting::InspectionInterval, defaultInspectionInterval, flags);
+
     ride->lifecycleFlags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->vehicleColourSettings = _td.appearance.vehicleColourSettings;
 
