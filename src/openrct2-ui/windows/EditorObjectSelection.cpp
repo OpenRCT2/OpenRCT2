@@ -261,6 +261,7 @@ namespace OpenRCT2::Ui::Windows
         u8string _filter;
         uint32_t _filterFlags = FILTER_RIDES_ALL;
         uint8_t _selectedSubTab = 0;
+        bool _overrideChecks = false;
 
     public:
         /**
@@ -292,10 +293,15 @@ namespace OpenRCT2::Ui::Windows
             VisibleListRefresh();
         }
 
+        void SetOverrideChecks(bool newState)
+        {
+            _overrideChecks = newState;
+        }
+
         bool CanClose() override
         {
             // Prevent window closure when selection is invalid
-            return EditorObjectSelectionWindowCheck();
+            return _overrideChecks || EditorObjectSelectionWindowCheck();
         }
 
         /**
@@ -306,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
         {
             UnloadUnselectedObjects();
             EditorLoadSelectedObjects();
-            EditorObjectFlagsFree();
+            EditorObjectFlagsClear();
 
             if (_loadedObject != nullptr)
                 _loadedObject->Unload();
@@ -327,7 +333,7 @@ namespace OpenRCT2::Ui::Windows
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
 
-            VisibleListDispose();
+            VisibleListClear();
 
             intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
             ContextBroadcastIntent(&intent);
@@ -630,9 +636,10 @@ namespace OpenRCT2::Ui::Windows
                 auto& objManager = GetContext()->GetObjectManager();
                 objManager.LoadObject(_loadedObject.get()->GetIdentifier());
 
+                windowMgr->ForceClose(WindowClass::EditorObjectSelection);
+
                 // This function calls window_track_list_open
                 ManageTracks();
-                Close();
                 return;
             }
 
@@ -1173,7 +1180,7 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
 
-            VisibleListDispose();
+            VisibleListClear();
             selected_list_item = -1;
 
             const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
@@ -1200,7 +1207,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_listItems.empty())
             {
-                VisibleListDispose();
+                VisibleListClear();
             }
             else
             {
@@ -1229,7 +1236,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        void VisibleListDispose()
+        void VisibleListClear()
         {
             _listItems.clear();
             _listItems.shrink_to_fit();
@@ -1623,6 +1630,20 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
             WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+    }
+
+    // Used for forced closure
+    void EditorObjectSelectionClose()
+    {
+        auto* windowMgr = GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
+        if (window == nullptr)
+        {
+            return;
+        }
+        auto objSelWindow = static_cast<EditorObjectSelectionWindow*>(window);
+        objSelWindow->SetOverrideChecks(true);
+        objSelWindow->Close();
     }
 
     static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b)

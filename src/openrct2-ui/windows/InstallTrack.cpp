@@ -422,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+        windowMgr->ForceClose(WindowClass::EditorObjectSelection);
         windowMgr->CloseConstructionWindows();
 
         gTrackDesignSceneryToggle = false;
