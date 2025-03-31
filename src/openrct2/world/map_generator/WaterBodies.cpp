@@ -22,7 +22,9 @@ namespace OpenRCT2::World::MapGenerator
         {
             const bool riverEastWest = ScenarioRand() % 2;
             const auto riverWidth = settings.minRiverWidth + ScenarioRandMax(settings.maxRiverWidth - settings.minRiverWidth);
-            const auto riverbedHeight = std::max(settings.heightmapLow - 4, 0);
+
+            // NB: this is dividing by two to match SimplexNoise.cpp
+            const auto riverbedHeight = std::max(settings.heightmapLow / 2 - 4, 0);
 
             // We'll be varying the bank width as we meander
             auto riverbankWidth = settings.riverbankWidth;
