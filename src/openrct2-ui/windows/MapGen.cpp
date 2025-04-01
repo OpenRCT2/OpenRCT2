@@ -1463,10 +1463,12 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_MIN_RIVER_WIDTH:
                     _settings.minRiverWidth = std::clamp<uint8_t>(value, kMinMinRiverWidth, kMaxMinRiverWidth);
+                    _settings.maxRiverWidth = std::max<int8_t>(_settings.minRiverWidth + 1, _settings.maxRiverWidth);
                     break;
 
                 case WIDX_MAX_RIVER_WIDTH:
                     _settings.maxRiverWidth = std::clamp<uint8_t>(value, kMinMaxRiverWidth, kMaxMaxRiverWidth);
+                    _settings.minRiverWidth = std::min<int8_t>(_settings.maxRiverWidth - 1, _settings.minRiverWidth);
                     break;
 
                 case WIDX_RIVERBANK_WIDTH:
