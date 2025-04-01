@@ -123,16 +123,16 @@ namespace OpenRCT2::RCT2
         {
         }
 
-        ParkLoadResult Load(const u8string& path) override
+        ParkLoadResult Load(const u8string& path, const bool skipObjectCheck) override
         {
             const auto extension = Path::GetExtension(path);
             if (String::iequals(extension, ".sc6"))
             {
-                return LoadScenario(path);
+                return LoadScenario(path, skipObjectCheck);
             }
             if (String::iequals(extension, ".sv6"))
             {
-                return LoadSavedGame(path);
+                return LoadSavedGame(path, skipObjectCheck);
             }
 
             throw std::runtime_error("Invalid RCT2 park extension.");
@@ -155,8 +155,7 @@ namespace OpenRCT2::RCT2
         }
 
         ParkLoadResult LoadFromStream(
-            OpenRCT2::IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck = false,
-            const u8string& path = {}) override
+            OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const u8string& path = {}) override
         {
             auto chunkReader = SawyerChunkReader(stream);
             chunkReader.ReadChunk(&_s6.Header, sizeof(_s6.Header));
@@ -188,9 +187,12 @@ namespace OpenRCT2::RCT2
 
             // Read packed objects
             // TODO try to contain this more and not store objects until later
-            for (uint16_t i = 0; i < _s6.Header.NumPackedObjects; i++)
+            if (!skipObjectCheck)
             {
-                _objectRepository.ExportPackedObject(stream);
+                for (uint16_t i = 0; i < _s6.Header.NumPackedObjects; i++)
+                {
+                    _objectRepository.ExportPackedObject(stream);
+                }
             }
 
             if (!path.empty())

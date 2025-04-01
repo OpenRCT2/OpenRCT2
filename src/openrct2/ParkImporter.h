@@ -50,7 +50,7 @@ struct IParkImporter
 public:
     virtual ~IParkImporter() = default;
 
-    virtual ParkLoadResult Load(const u8string& path) = 0;
+    virtual ParkLoadResult Load(const u8string& path, bool skipObjectCheck = false) = 0;
     virtual ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) = 0;
     virtual ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) = 0;
     virtual ParkLoadResult LoadFromStream(

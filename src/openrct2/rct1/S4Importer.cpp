@@ -145,16 +145,16 @@ namespace OpenRCT2::RCT1
         IScenarioRepository* _scenarioRepository = GetScenarioRepository();
 
     public:
-        ParkLoadResult Load(const u8string& path) override
+        ParkLoadResult Load(const u8string& path, const bool skipObjectCheck) override
         {
             const auto extension = Path::GetExtension(path);
             if (String::iequals(extension, ".sc4"))
             {
-                return LoadScenario(path);
+                return LoadScenario(path, skipObjectCheck);
             }
             if (String::iequals(extension, ".sv4"))
             {
-                return LoadSavedGame(path);
+                return LoadSavedGame(path, skipObjectCheck);
             }
 
             throw std::runtime_error("Invalid RCT1 park extension.");
