@@ -102,8 +102,8 @@ void main()
 
     if ((fFlags & FLAG_CROSS_HATCH) != 0)
     {
-        int posSum = int(fPosition.x) + int(fPosition.y);
-        if ((posSum % 2) == 0)
+        int posSum = int(position.x) + int(position.y);
+        if ((posSum % 2) != 0)
         {
             discard;
         }

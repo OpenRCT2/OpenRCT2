@@ -534,6 +534,7 @@ void OpenGLDrawingContext::FillRect(
     command.bounds = { left, top, right + 1, bottom + 1 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE;
     command.depth = _drawCount++;
+    command.zoom = 1.0f;
 
     if (colour & 0x1000000)
     {
@@ -569,6 +570,7 @@ void OpenGLDrawingContext::FilterRect(
     command.bounds = { left, top, right + 1, bottom + 1 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE;
     command.depth = _drawCount++;
+    command.zoom = 1.0f;
 }
 
 // Compute the bit code for a point p relative to the clip rectangle defined by topLeft and bottomRight
