@@ -18,50 +18,17 @@
     #include <openrct2/core/Path.hpp>
     #include <openrct2/core/String.hpp>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
-OpenGLShader::OpenGLShader(const char* name, GLenum type)
-    : _type(type)
-{
-    auto path = GetPath(name);
-    auto sourceCode = ReadSourceCode(path);
-    auto sourceCodeStr = sourceCode.c_str();
+static constexpr uint64_t kMaxSourceSize = 8 * 1024 * 1024; // 8 MiB
 
-    _id = glCreateShader(type);
-    glShaderSource(_id, 1, static_cast<const GLchar**>(&sourceCodeStr), nullptr);
-    glCompileShader(_id);
-
-    GLint status;
-    glGetShaderiv(_id, GL_COMPILE_STATUS, &status);
-    if (status != GL_TRUE)
-    {
-        char buffer[512];
-        glGetShaderInfoLog(_id, sizeof(buffer), nullptr, buffer);
-        glDeleteShader(_id);
-
-        Console::Error::WriteLine("Error compiling %s", path.c_str());
-        Console::Error::WriteLine(buffer);
-
-        throw std::runtime_error("Error compiling shader.");
-    }
-}
-
-OpenGLShader::~OpenGLShader()
-{
-    glDeleteShader(_id);
-}
-
-GLuint OpenGLShader::GetShaderId()
-{
-    return _id;
-}
-
-std::string OpenGLShader::GetPath(const std::string& name)
+static std::filesystem::path GetPath(u8string_view name, GLenum type)
 {
     auto env = GetContext()->GetPlatformEnvironment();
     auto shadersPath = env->GetDirectoryPath(DirBase::openrct2, DirId::shaders);
     auto path = Path::Combine(shadersPath, name);
-    if (_type == GL_VERTEX_SHADER)
+    if (type == GL_VERTEX_SHADER)
     {
         path += ".vert";
     }
@@ -69,10 +36,10 @@ std::string OpenGLShader::GetPath(const std::string& name)
     {
         path += ".frag";
     }
-    return path;
+    return std::filesystem::path{ path };
 }
 
-std::string OpenGLShader::ReadSourceCode(const std::string& path)
+static std::string ReadSourceCode(const std::filesystem::path& path)
 {
     auto fs = FileStream(path, FileMode::open);
 
@@ -87,30 +54,138 @@ std::string OpenGLShader::ReadSourceCode(const std::string& path)
     return fileData;
 }
 
-OpenGLShaderProgram::OpenGLShaderProgram(const char* name)
+OpenGLShader::OpenGLShader(const char* name, GLenum type)
+    : _type(type)
 {
-    _vertexShader = std::make_unique<OpenGLShader>(name, GL_VERTEX_SHADER);
-    _fragmentShader = std::make_unique<OpenGLShader>(name, GL_FRAGMENT_SHADER);
+    _filePath = GetPath(name, type);
+    _lastWriteTime = std::filesystem::last_write_time(_filePath);
 
-    _id = glCreateProgram();
-    glAttachShader(_id, _vertexShader->GetShaderId());
-    glAttachShader(_id, _fragmentShader->GetShaderId());
-    glBindFragDataLocation(_id, 0, "oColour");
+    const auto sourceCode = ReadSourceCode(_filePath);
+    const auto* sourceCodeStr = sourceCode.c_str();
+
+    _id = glCreateShader(type);
+    glCall(glShaderSource, _id, 1, static_cast<const GLchar**>(&sourceCodeStr), nullptr);
+    glCall(glCompileShader, _id);
+
+    GLint status;
+    glCall(glGetShaderiv, _id, GL_COMPILE_STATUS, &status);
+    if (status != GL_TRUE)
+    {
+        char buffer[512];
+        glCall(glGetShaderInfoLog, _id, GLsizei(sizeof(buffer)), nullptr, buffer);
+        glCall(glDeleteShader, _id);
+
+        Console::Error::WriteLine("Error compiling %s", _filePath.u8string().c_str());
+        Console::Error::WriteLine(buffer);
+    }
+}
+
+OpenGLShader::~OpenGLShader()
+{
+    glDeleteShader(_id);
+}
+
+GLuint OpenGLShader::GetShaderId()
+{
+    return _id;
+}
+
+bool OpenGLShader::NeedsReload() const
+{
+    std::error_code ec;
+    auto lastWrite = std::filesystem::last_write_time(_filePath, ec);
+    if (ec)
+    {
+        return false;
+    }
+    return lastWrite > _lastWriteTime;
+}
+
+OpenGLShaderProgram::OpenGLShaderProgram(u8string_view name)
+    : _name{ name }
+{
+    Reload();
+}
+
+OpenGLShaderProgram::~OpenGLShaderProgram()
+{
+    Destroy();
+}
+
+GLuint OpenGLShaderProgram::GetAttributeLocation(const char* name)
+{
+    return glCall(glGetAttribLocation, _id, name);
+}
+
+GLuint OpenGLShaderProgram::GetUniformLocation(const char* name)
+{
+    return glCall(glGetUniformLocation, _id, name);
+}
+
+void OpenGLShaderProgram::Use()
+{
+    if (OpenGLState::CurrentProgram != _id)
+    {
+        OpenGLState::CurrentProgram = _id;
+        glCall(glUseProgram, _id);
+    }
+}
+
+bool OpenGLShaderProgram::Link()
+{
+    glCall(glLinkProgram, _id);
+
+    GLint linkStatus;
+    glCall(glGetProgramiv, _id, GL_LINK_STATUS, &linkStatus);
+    return linkStatus == GL_TRUE;
+}
+
+void OpenGLShaderProgram::Reload()
+{
+    Destroy();
+
+    _fragmentShader = std::make_unique<OpenGLShader>(_name.c_str(), GL_FRAGMENT_SHADER);
+
+    std::error_code ec{};
+    if (!std::filesystem::exists(GetPath(_name, GL_VERTEX_SHADER), ec))
+    {
+        // Use the default vertex shader for post processing.
+        _vertexShader = std::make_unique<OpenGLShader>("pp", GL_VERTEX_SHADER);
+    }
+    else
+    {
+        _vertexShader = std::make_unique<OpenGLShader>(_name.c_str(), GL_VERTEX_SHADER);
+    }
+
+    _id = glCall(glCreateProgram);
+    glCall(glAttachShader, _id, _vertexShader->GetShaderId());
+    glCall(glAttachShader, _id, _fragmentShader->GetShaderId());
+    glCall(glBindFragDataLocation, _id, 0, "oColour");
+
+    if (glObjectLabel != nullptr)
+    {
+        glObjectLabel(GL_PROGRAM, _id, -1, _name.c_str());
+        // Might fail, consume errors.
+        while (glGetError() != GL_NO_ERROR)
+            ;
+    }
 
     if (!Link())
     {
         char buffer[512];
         GLsizei length;
-        glGetProgramInfoLog(_id, sizeof(buffer), &length, buffer);
+        glCall(glGetProgramInfoLog, _id, GLsizei(sizeof(buffer)), &length, buffer);
 
-        Console::Error::WriteLine("Error linking %s", name);
+        Console::Error::WriteLine("Error linking %s", _name.c_str());
         Console::Error::WriteLine(buffer);
 
         throw std::runtime_error("Failed to link OpenGL shader.");
     }
+
+    _lastReloadCheck = Clock::now();
 }
 
-OpenGLShaderProgram::~OpenGLShaderProgram()
+void OpenGLShaderProgram::Destroy()
 {
     if (_vertexShader != nullptr)
     {
@@ -120,35 +195,25 @@ OpenGLShaderProgram::~OpenGLShaderProgram()
     {
         glDetachShader(_id, _fragmentShader->GetShaderId());
     }
-    glDeleteProgram(_id);
-}
-
-GLuint OpenGLShaderProgram::GetAttributeLocation(const char* name)
-{
-    return glGetAttribLocation(_id, name);
-}
-
-GLuint OpenGLShaderProgram::GetUniformLocation(const char* name)
-{
-    return glGetUniformLocation(_id, name);
-}
-
-void OpenGLShaderProgram::Use()
-{
-    if (OpenGLState::CurrentProgram != _id)
+    if (_id != 0)
     {
-        OpenGLState::CurrentProgram = _id;
-        glUseProgram(_id);
+        glDeleteProgram(_id);
     }
 }
 
-bool OpenGLShaderProgram::Link()
+void OpenGLShaderProgram::Update()
 {
-    glLinkProgram(_id);
+    auto reloadCheckDelta = Clock::now() - _lastReloadCheck;
+    if (reloadCheckDelta < std::chrono::milliseconds(200))
+    {
+        return;
+    }
+    _lastReloadCheck = Clock::now();
 
-    GLint linkStatus;
-    glGetProgramiv(_id, GL_LINK_STATUS, &linkStatus);
-    return linkStatus == GL_TRUE;
+    if (_vertexShader->NeedsReload() || _fragmentShader->NeedsReload())
+    {
+        Reload();
+    }
 }
 
 #endif /* DISABLE_OPENGL */
