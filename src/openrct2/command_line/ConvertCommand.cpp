@@ -97,7 +97,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     try
     {
         auto importer = ParkImporter::Create(sourcePath);
-        auto loadResult = importer->Load(sourcePath.c_str());
+        auto loadResult = importer->Load(sourcePath.c_str(), false);
 
         objManager.LoadObjects(loadResult.RequiredObjects);
 
