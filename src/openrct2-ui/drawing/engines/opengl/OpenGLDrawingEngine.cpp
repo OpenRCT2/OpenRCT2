@@ -676,10 +676,9 @@ void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const S
     command.depth = _drawCount++;
 }
 
-template<typename type>
-type EuclideanRemainder(const type a, const type b)
+static auto EuclideanRemainder(const auto a, const auto b)
 {
-    const type r = a % b;
+    const auto r = a % b;
     return r >= 0 ? r : r + b;
 };
 
@@ -746,8 +745,8 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
     right += clip.GetLeft() - dpi.x;
     bottom += clip.GetTop() - dpi.y;
 
-    const float zoom = dpi.zoom_level >= ZoomLevel{ 0 } ? float(dpi.zoom_level.ApplyTo(1))
-                                                        : 1.0f / float(dpi.zoom_level.ApplyInversedTo(1));
+    const float zoom = dpi.zoom_level >= ZoomLevel{ 0 } ? static_cast<float>(dpi.zoom_level.ApplyTo(1))
+                                                        : 1.0f / static_cast<float>(dpi.zoom_level.ApplyInversedTo(1));
 
     int paletteCount;
     ivec3 palettes{};
@@ -858,8 +857,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     right += clip.GetLeft() - dpi.x;
     bottom += clip.GetTop() - dpi.y;
 
-    const float zoom = dpi.zoom_level >= ZoomLevel{ 0 } ? float(dpi.zoom_level.ApplyTo(1))
-                                                        : 1.0f / float(dpi.zoom_level.ApplyInversedTo(1));
+    const float zoom = dpi.zoom_level >= ZoomLevel{ 0 } ? static_cast<float>(dpi.zoom_level.ApplyTo(1))
+                                                        : 1.0f / static_cast<float>(dpi.zoom_level.ApplyInversedTo(1));
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -961,8 +960,8 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
     right += clip.GetLeft() - dpi.x;
     bottom += clip.GetTop() - dpi.y;
 
-    const float zoom = dpi.zoom_level >= ZoomLevel{ 0 } ? float(dpi.zoom_level.ApplyTo(1))
-                                                        : 1.0f / float(dpi.zoom_level.ApplyInversedTo(1));
+    const float zoom = dpi.zoom_level >= ZoomLevel{ 0 } ? static_cast<float>(dpi.zoom_level.ApplyTo(1))
+                                                        : 1.0f / static_cast<float>(dpi.zoom_level.ApplyInversedTo(1));
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
