@@ -675,7 +675,14 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[widgetIdx];
                 y = std::max<int32_t>(y, widget.bottom);
             }
-            height = y + 6;
+            y += 6;
+
+            if (height != y)
+            {
+                Invalidate();
+                height = y;
+                Invalidate();
+            }
         }
 
         void OnResize() override
