@@ -34,3 +34,4 @@ mkdir -p www/
 cd www/
 cp -r ../openrct2.* ./
 cp -r ../../emscripten/static/* ./
+zip -r openrct2.zip ../openrct2.*
