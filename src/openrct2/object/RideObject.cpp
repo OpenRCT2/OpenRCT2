@@ -408,6 +408,8 @@ void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, ISt
     car->sprite_height_positive = stream->ReadValue<uint8_t>();
     auto legacyAnimation = stream->ReadValue<uint8_t>();
     car->flags = stream->ReadValue<uint32_t>();
+    // Implied in vanilla, but can be turned off in OpenRCT2.
+    car->flags |= CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR;
     car->base_num_frames = stream->ReadValue<uint16_t>();
     stream->Seek(15 * 4, STREAM_SEEK_CURRENT);
     car->no_seating_rows = stream->ReadValue<uint8_t>();
@@ -833,6 +835,8 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             // Obsolete flag, only used on Boat Hire. Remaining usages have not yet been updated as of 2022-07-11.
             { "VEHICLE_ENTRY_FLAG_11", CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES },
         });
+    if (Json::GetBoolean(jCar["hasBaseColour"], true))
+        car.flags |= CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR;
 
     // legacy sprite groups
     auto jFrames = jCar["frames"];
