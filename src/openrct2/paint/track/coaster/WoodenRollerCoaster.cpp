@@ -851,11 +851,23 @@ static constexpr uint32_t kBlockBrakesImageIds[4][3] = {
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
 };
 
-static constexpr uint32_t kStationBlockBrakesImageIds[4][2] = {
-    { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
-    { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
-    { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
-    { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
+static constexpr ImageIndex kStationBlockBrakesImageIds[2][kNumOrthogonalDirections][2] = {
+    {
+        { SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_BLOCK_BRAKE_OPEN_SW_NE,
+          SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_BLOCK_BRAKE_CLOSED_SW_NE },
+        { SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_BLOCK_BRAKE_OPEN_NW_SE,
+          SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_BLOCK_BRAKE_CLOSED_NW_SE },
+        { SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_BLOCK_BRAKE_OPEN_SW_NE,
+          SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_BLOCK_BRAKE_CLOSED_SW_NE },
+        { SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_BLOCK_BRAKE_OPEN_NW_SE,
+          SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_BLOCK_BRAKE_CLOSED_NW_SE },
+    },
+    {
+        { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
+        { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
+        { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
+        { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
+    },
 };
 
 static constexpr const uint32_t kWoodenRCDiagBrakeImages[kNumOrthogonalDirections] = {
@@ -2036,30 +2048,37 @@ static void WoodenRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t stationImageIds[4][2] = {
-        { SPR_WOODEN_RC_STATION_SW_NE, SPR_WOODEN_RC_STATION_RAILS_SW_NE },
-        { SPR_WOODEN_RC_STATION_NW_SE, SPR_WOODEN_RC_STATION_RAILS_NW_SE },
-        { SPR_WOODEN_RC_STATION_SW_NE, SPR_WOODEN_RC_STATION_RAILS_SW_NE },
-        { SPR_WOODEN_RC_STATION_NW_SE, SPR_WOODEN_RC_STATION_RAILS_NW_SE },
+    static constexpr ImageIndex stationImageIds[2][kNumOrthogonalDirections] = {
+        {
+            SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_SW_NE,
+            SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_NW_SE,
+            SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_SW_NE,
+            SPR_G2_WOODEN_RC_STATION_NO_PLATFORM_NW_SE,
+        },
+        {
+            SPR_WOODEN_RC_STATION_SW_NE,
+            SPR_WOODEN_RC_STATION_NW_SE,
+            SPR_WOODEN_RC_STATION_SW_NE,
+            SPR_WOODEN_RC_STATION_NW_SE,
+        },
     };
-
-    auto trackType = trackElement.GetTrackType();
-    if (trackType == TrackElemType::EndStation)
+    const bool drewStation = TrackPaintUtilDrawStation2(
+        session, ride, direction, height, trackElement, StationBaseType::none, 0, 9, 11);
+    const ImageId colours = isClassic ? session.TrackColours : session.SupportColours;
+    if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        const auto brakeImg = trackElement.IsBrakeClosed() ? kStationBlockBrakesImageIds[direction][1]
-                                                           : kStationBlockBrakesImageIds[direction][0];
-        WoodenRCTrackPaint<isClassic>(
-            session, direction, brakeImg, SPR_G2_EMPTY, { 0, 2, height }, { { 0, 2, height }, { 32, 27, 2 } });
+        const ImageIndex imageIndex = kStationBlockBrakesImageIds[drewStation][direction][trackElement.IsBrakeClosed()];
+        PaintAddImageAsParentRotated(
+            session, direction, colours.WithIndex(imageIndex), { 0, 2, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
     else
     {
-        WoodenRCTrackPaint<isClassic>(
-            session, direction, stationImageIds[direction][0], stationImageIds[direction][1], { 0, 2, height },
+        PaintAddImageAsParentRotated(
+            session, direction, colours.WithIndex(stationImageIds[drewStation][direction]), { 0, 2, height },
             { { 0, 2, height }, { 32, 27, 2 } });
     }
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::none, 0, 9, 11);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
