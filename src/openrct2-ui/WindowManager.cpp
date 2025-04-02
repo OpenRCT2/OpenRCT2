@@ -930,6 +930,7 @@ public:
         ColourSchemeUpdate(w);
         w->Invalidate();
         w->OnOpen();
+        w->OnResize();
         return w;
     }
 
