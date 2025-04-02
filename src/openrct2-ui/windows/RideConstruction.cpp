@@ -345,6 +345,11 @@ namespace OpenRCT2::Ui::Windows
 
             uint64_t disabledWidgets = 0;
 
+            if (_rideConstructionState == RideConstructionState::Place)
+            {
+                disabledWidgets |= (1uLL << WIDX_CONSTRUCT);
+            }
+
             if (_currentlySelectedTrack.isTrackType)
             {
                 disabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_BANKING_GROUPBOX)

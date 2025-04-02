@@ -3,6 +3,7 @@
 - Feature: [#22646] New scenario files now contain a minimap image, shown in the scenario selection window.
 - Feature: [#23774] Climates can now be customised using objects.
 - Feature: [#23876] New park save files now contain a preview image, shown in the load/save window.
+- Improved: [#24078] Handrails on Wooden Roller Coaster station sprites with no platforms have been removed.
 - Change: [#23932] The land rights window now checks “Land Owned” by default.
 - Change: [#23936] The ‘guests prefer less/more intense rides’ settings have been turned into a dropdown.
 - Change: [#24059] The ‘select other ride’ button is now available in the track manager.
@@ -18,6 +19,7 @@
 - Fix: [#18309] Flying and Multi Dimension trains glitch when changing between inverted and uninverted track when uncap fps is on.
 - Fix: [#19506] Queue paths can be placed on level crossings by replacing an existing regular path.
 - Fix: [#21908] Ride mode warnings when hovering track designs.
+- Fix: [#22961] Clicking on the construction preview places duplicate flat rides and stalls.
 - Fix: [#23359] Scripting: Add car.moveToTrack, an easier API than setting car.trackLocation directly.
 - Fix: [#23443] New GOG version of RCT2 is not extracted correctly.
 - Fix: [#23484] Stray coloured pixels on castle-themed stations and Roman-themed entrances/exits (original bug).
