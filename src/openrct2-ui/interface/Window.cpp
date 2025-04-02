@@ -512,6 +512,8 @@ namespace OpenRCT2
         if (heightDifference == 0)
             return 0;
 
+        Invalidate();
+
         // Offset title and close button
         titleWidget.bottom += heightDifference;
         closeButton.bottom += heightDifference;
@@ -519,6 +521,8 @@ namespace OpenRCT2
         height += heightDifference;
         min_height += heightDifference;
         max_height += heightDifference;
+
+        Invalidate();
 
         // Resize frame again to match new height
         frameWidget.bottom = height - 1;
