@@ -1,6 +1,7 @@
 0.4.22 (in development)
 ------------------------------------------------------------------------
 - Change: [#23803] Lightning strikes and thunder happen at the same frequency independently of the game speed.
+- Fix: [#23108] Missing pieces on Hypercoaster and Hyper-Twister, even with the ‘all drawable track pieces’ cheat enabled.
 
 0.4.21 (2025-04-05)
 ------------------------------------------------------------------------
