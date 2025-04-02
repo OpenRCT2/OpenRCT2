@@ -21,15 +21,16 @@ namespace OpenRCT2::World::MapGenerator
         for (auto i = 0; i < settings.numRiverbeds; i++)
         {
             const bool riverEastWest = ScenarioRand() % 2;
-            const auto riverWidth = settings.minRiverWidth + ScenarioRandMax(settings.maxRiverWidth - settings.minRiverWidth);
+            const auto riverWidth = (settings.minRiverWidth + ScenarioRandMax(settings.maxRiverWidth - settings.minRiverWidth))
+                * heightMap.density;
 
             // NB: this is dividing by two to match SimplexNoise.cpp
             const auto riverbedHeight = std::max(settings.heightmapLow / 2 - 4, 0);
 
             // We'll be varying the bank width as we meander
-            auto riverbankWidth = settings.riverbankWidth;
-            auto totalRiverWidth = riverWidth + 2 * riverbankWidth;
-            auto easternBankOffset = riverWidth + riverbankWidth;
+            uint8_t riverbankWidth = settings.riverbankWidth * heightMap.density;
+            uint8_t totalRiverWidth = riverWidth + 2 * riverbankWidth;
+            uint8_t easternBankOffset = riverWidth + riverbankWidth;
 
             // Pivot: generate a random X position
             auto xStartPos = ScenarioRandMax(0.7 * heightMap.width);
