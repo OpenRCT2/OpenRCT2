@@ -50,8 +50,8 @@ namespace OpenRCT2::World::MapGenerator
         // Water settings
         int32_t waterLevel = 14;
         uint8_t numRiverbeds = 0;
-        uint8_t minRiverWidth = 10;
-        uint8_t maxRiverWidth = 20;
+        uint8_t minRiverWidth = 5;
+        uint8_t maxRiverWidth = 10;
         uint8_t riverbankWidth = 10;
         uint8_t riverMeanderRate = 15;
     };
