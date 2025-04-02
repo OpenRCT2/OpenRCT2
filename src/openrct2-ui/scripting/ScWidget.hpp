@@ -167,7 +167,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                return widget->top - GetTitleHeightDiff();
+                return widget->top - getTitleHeightDiff();
             }
             return 0;
         }
@@ -176,7 +176,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                value += GetTitleHeightDiff();
+                value += getTitleHeightDiff();
                 auto delta = value - widget->top;
 
                 Invalidate();

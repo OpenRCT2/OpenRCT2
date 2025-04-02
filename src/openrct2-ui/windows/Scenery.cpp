@@ -637,7 +637,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT + GetTitleBarHeight();
+            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT + getTitleBarHeight();
 
             // Set the window title
             StringId titleStringId = STR_MISCELLANEOUS;

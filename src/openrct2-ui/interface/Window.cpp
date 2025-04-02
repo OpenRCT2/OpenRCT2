@@ -505,7 +505,7 @@ namespace OpenRCT2
         else
             closeButton.string = !useWhite ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
 
-        auto preferredHeight = GetTitleBarHeight();
+        auto preferredHeight = getTitleBarHeight();
         auto currentHeight = titleWidget.height();
         auto heightDifference = preferredHeight - currentHeight;
 
@@ -1066,8 +1066,8 @@ namespace OpenRCT2::Ui::Windows
 
         if (Config::Get().interface.EnlargedUi)
         {
-            w.min_height += GetTitleHeightDiff();
-            w.max_height += GetTitleHeightDiff();
+            w.min_height += getTitleHeightDiff();
+            w.max_height += getTitleHeightDiff();
         }
 
         // Clamp width and height to minimum and maximum

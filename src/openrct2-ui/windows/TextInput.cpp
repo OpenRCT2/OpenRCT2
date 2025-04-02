@@ -308,7 +308,7 @@ namespace OpenRCT2::Ui::Windows
             GfxWrapString(text, WW - (24 + 13), FontStyle::Medium, nullptr, &numLines);
 
             const auto textHeight = numLines * 10;
-            const auto addedTitleHeight = GetTitleBarHeight() - kTitleHeightNormal;
+            const auto addedTitleHeight = getTitleBarHeight() - kTitleHeightNormal;
             return WH + textHeight + addedTitleHeight;
         }
 
