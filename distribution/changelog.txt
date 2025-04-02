@@ -20,6 +20,7 @@
 - Fix: [#19506] Queue paths can be placed on level crossings by replacing an existing regular path.
 - Fix: [#21908] Ride mode warnings when hovering track designs.
 - Fix: [#22961] Clicking on the construction preview places duplicate flat rides and stalls.
+- Fix: [#23359] Scripting: Add car.moveToTrack, an easier API than setting car.trackLocation directly.
 - Fix: [#23443] New GOG version of RCT2 is not extracted correctly.
 - Fix: [#23484] Stray coloured pixels on castle-themed stations and Roman-themed entrances/exits (original bug).
 - Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.

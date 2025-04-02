@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../entity/EntityTweener.h"
     #include "../../../ride/Ride.h"
     #include "ScEntity.hpp"
 
@@ -101,6 +102,8 @@ namespace OpenRCT2::Scripting
         DukValue gForces_get() const;
 
         void travelBy(int32_t value);
+
+        void moveToTrack(int32_t x, int32_t y, int32_t elementIndex);
     };
 
 } // namespace OpenRCT2::Scripting
