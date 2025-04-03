@@ -5,6 +5,7 @@
 - Fix: [#21919] Non-recolourable cars still show colour picker.
 - Fix: [#23108] Missing pieces on Hypercoaster and Hyper-Twister, even with the ‘all drawable track pieces’ cheat enabled.
 - Fix: [#24013] Failure to load a scenario preview image (minimap) could lead to an uncaught exception error message.
+- Fix: [#24142] [Plugin] Track origin is miscalculated on downward slopes.
 
 0.4.21 (2025-04-05)
 ------------------------------------------------------------------------
