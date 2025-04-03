@@ -4763,6 +4763,11 @@ namespace OpenRCT2::Ui::Windows
         {
             zBegin = coords.zBegin;
             zEnd = coords.zEnd;
+
+            const auto resultData = res.GetData<TrackPlaceActionResult>();
+            const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
+                                                                                     : ViewportVisibility::UndergroundViewOff;
+            ViewportSetVisibility(visiblity);
         }
         else
         {
