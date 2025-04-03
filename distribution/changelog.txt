@@ -3,6 +3,8 @@
 - Feature: [#22646] New scenario files now contain a minimap image, shown in the scenario selection window.
 - Feature: [#23774] Climates can now be customised using objects.
 - Feature: [#23876] New park save files now contain a preview image, shown in the load/save window.
+- Improved: [#24078] Handrails on Wooden Roller Coaster station sprites with no platforms have been removed.
+- Improved: [objects#379] Add additional colour schemes to Mine Train.
 - Change: [#23932] The land rights window now checks “Land Owned” by default.
 - Change: [#23936] The ‘guests prefer less/more intense rides’ settings have been turned into a dropdown.
 - Change: [#24059] The ‘select other ride’ button is now available in the track manager.
@@ -11,6 +13,7 @@
 - Change: [#24101] Frozen peeps are no longer removed when using the 'remove all guests' cheat.
 - Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve (original bug).
 - Fix: [#5281] Missing supports on miniature railways built backwards.
+- Fix: [#7222] Transparent pixels in sloped path tunnels (original bug).
 - Fix: [#10379] Banners outside the park can be renamed and modified (original bug).
 - Fix: [#10582] Low clearance tunnels below water are drawn incorrectly (original bug).
 - Fix: [#17524, #23710] Station bases are drawn on many ride types when the “No entrance, no platform station” style is selected.
@@ -21,6 +24,8 @@
 - Fix: [#21824] Some sprites are drawn incorrectly when zoomed out in OpenGL rendering.
 - Fix: [#21908] Ride mode warnings when hovering track designs.
 - Fix: [#22820] OpenGL does not draw masked sprites correctly.
+- Fix: [#22961] Clicking on the construction preview places duplicate flat rides and stalls.
+- Fix: [#23359] Scripting: Add car.moveToTrack, an easier API than setting car.trackLocation directly.
 - Fix: [#23443] New GOG version of RCT2 is not extracted correctly.
 - Fix: [#23484] Stray coloured pixels on castle-themed stations and Roman-themed entrances/exits (original bug).
 - Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.

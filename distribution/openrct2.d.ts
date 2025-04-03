@@ -120,8 +120,8 @@ declare global {
     /**
      * A track piece coordinate and type within the game.
      */
-    interface CarTrackLocation extends CoordsXYZD {
-        trackType: number;
+    interface CarTrackLocation extends Readonly<CoordsXYZD> {
+        readonly trackType: number;
     }
 
     /**
@@ -2930,7 +2930,7 @@ declare global {
         /**
          * The location and direction of where the car is on the track.
          */
-        trackLocation: CarTrackLocation;
+        readonly trackLocation: CarTrackLocation;
 
         /**
          * The current g-forces of this car.
@@ -2970,6 +2970,12 @@ declare global {
          * on the direction its moving in.
          */
         travelBy(distance: number): void;
+
+        /**
+         * Moves the vehicle to the track piece specified in the parameters.
+         * Coordinates are tile coords.
+         */
+        moveToTrack(x: number, y: number, elemIndex: number): void;
     }
 
     type VehicleStatus =
