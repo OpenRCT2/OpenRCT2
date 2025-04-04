@@ -678,7 +678,7 @@ namespace OpenRCT2::Ui::Windows
         return _currentTextBox;
     }
 
-    void WindowResize(WindowBase& w, int16_t dw, int16_t dh)
+    void WindowResizeByDelta(WindowBase& w, int16_t dw, int16_t dh)
     {
         if (dw == 0 && dh == 0)
             return;

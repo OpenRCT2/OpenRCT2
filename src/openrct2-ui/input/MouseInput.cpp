@@ -522,7 +522,7 @@ namespace OpenRCT2
             int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w.width;
             int32_t targetHeight = _originalWindowHeight + differentialCoords.y - w.height;
 
-            WindowResize(w, targetWidth, targetHeight);
+            WindowResizeByDelta(w, targetWidth, targetHeight);
         }
     }
 
