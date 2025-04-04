@@ -99,7 +99,7 @@ namespace OpenRCT2::Scripting
             {
                 if (WindowCanResize(*w))
                 {
-                    WindowResize(*w, value - w->width, 0);
+                    WindowResizeByDelta(*w, value - w->width, 0);
                 }
                 else
                 {
@@ -123,7 +123,7 @@ namespace OpenRCT2::Scripting
             {
                 if (WindowCanResize(*w))
                 {
-                    WindowResize(*w, 0, value - w->height);
+                    WindowResizeByDelta(*w, 0, value - w->height);
                 }
                 else
                 {
