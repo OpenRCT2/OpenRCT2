@@ -91,7 +91,7 @@ namespace OpenRCT2::Scripting
          {"lift_flume", SoundId::LiftFlume },
          {"no_scream", SoundId::NoScream },
          {"null", SoundId::Null}
-        };
+    };
  
 
     inline SoundId GetSoundByName(const std::string& input)
