@@ -48,6 +48,8 @@ namespace OpenRCT2::Scripting
 
         DukValue getTrackIterator(const DukValue& position, int32_t elementIndex) const;
 
+        void playSoundAt(const std::string& soundName, const DukValue& position) const;
+
         static void Register(duk_context* ctx);
 
     private:

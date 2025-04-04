@@ -560,9 +560,11 @@
     <ClInclude Include="scenes\title\TitleSequence.h" />
     <ClInclude Include="scenes\title\TitleSequenceManager.h" />
     <ClInclude Include="scenes\title\TitleSequencePlayer.h" />
+    <ClInclude Include="scripting\bindings\entity\ScBalloon.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScEntity.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScGuest.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScLitter.hpp" />
+    <ClInclude Include="scripting\bindings\entity\ScMoneyEffect.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScParticle.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScPeep.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScStaff.hpp" />
@@ -599,6 +601,7 @@
     <ClInclude Include="scripting\IconNames.hpp" />
     <ClInclude Include="scripting\Plugin.h" />
     <ClInclude Include="scripting\ScriptEngine.h" />
+    <ClInclude Include="scripting\SoundNames.hpp" />
     <ClInclude Include="SpriteIds.h" />
     <ClInclude Include="System.hpp" />
     <ClInclude Include="TrackImporter.h" />
@@ -1087,8 +1090,10 @@
     <ClCompile Include="scenes\title\TitleScene.cpp" />
     <ClCompile Include="scenes\title\TitleSequence.cpp" />
     <ClCompile Include="scenes\title\TitleSequenceManager.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScBalloon.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScLitter.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScMoneyEffect.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScParticle.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScStaff.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScVehicle.cpp" />

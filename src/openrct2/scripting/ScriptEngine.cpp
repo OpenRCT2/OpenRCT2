@@ -31,6 +31,8 @@
     #include "bindings/entity/ScGuest.hpp"
     #include "bindings/entity/ScLitter.hpp"
     #include "bindings/entity/ScParticle.hpp"
+    #include "bindings/entity/ScBalloon.hpp"
+    #include "bindings/entity/ScMoneyEffect.hpp"
     #include "bindings/entity/ScPeep.hpp"
     #include "bindings/entity/ScStaff.hpp"
     #include "bindings/entity/ScVehicle.hpp"
@@ -438,6 +440,8 @@ void ScriptEngine::Initialise()
     ScTrackSegment::Register(ctx);
     ScEntity::Register(ctx);
     ScLitter::Register(ctx);
+    ScBalloon::Register(ctx);
+    ScMoneyEffect::Register(ctx);
     ScVehicle::Register(ctx);
     ScCrashedVehicleParticle::Register(ctx);
     ScPeep::Register(ctx);
