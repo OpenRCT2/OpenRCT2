@@ -191,6 +191,13 @@ namespace OpenRCT2
                 _shouldStop = true;
             }
             _cv.notify_all();
+            for (auto& thread : _workThreads)
+            {
+                if (thread.joinable())
+                {
+                    thread.join();
+                }
+            }
         }
 
         template<typename WorkFunc, typename CompletionFunc>
@@ -303,7 +310,7 @@ namespace OpenRCT2
         }
 
         mutable std::mutex _mtx;
-        std::vector<std::jthread> _workThreads;
+        std::vector<std::thread> _workThreads;
         std::condition_variable _cv;
         std::atomic_bool _shouldStop{ false };
         std::vector<std::shared_ptr<JobBase>> _jobs;
