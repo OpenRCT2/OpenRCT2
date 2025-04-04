@@ -135,6 +135,7 @@ namespace OpenRCT2::Ui::Windows
         LoadSaveAction action;
         LoadSaveType type;
         ParkPreview _preview;
+        BackgroundWorker::Job _previewLoadJob;
 
         bool ShowPreviews()
         {
@@ -337,7 +338,12 @@ namespace OpenRCT2::Ui::Windows
 
             auto& bgWorker = GetContext()->GetBackgroundWorker();
 
-            bgWorker.addJob(
+            if (_previewLoadJob.isValid())
+            {
+                _previewLoadJob.cancel();
+            }
+
+            _previewLoadJob = bgWorker.addJob(
                 [path]() {
                     try
                     {
