@@ -3,7 +3,7 @@
 - Feature: [#22646] New scenario files now contain a minimap image, shown in the scenario selection window.
 - Feature: [#23774] Climates can now be customised using objects.
 - Feature: [#23876] New park save files now contain a preview image, shown in the load/save window.
-- Feature: [#23146] Add plugin support for colouring balloons and setting the value of money effects.
+- Feature: [#24146] Add plugin support for colouring balloons and setting the value of money effects.
 - Improved: [#24078] Handrails on Wooden Roller Coaster station sprites with no platforms have been removed.
 - Change: [#23932] The land rights window now checks “Land Owned” by default.
 - Change: [#23936] The ‘guests prefer less/more intense rides’ settings have been turned into a dropdown.
