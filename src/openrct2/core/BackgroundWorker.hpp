@@ -70,7 +70,7 @@ namespace OpenRCT2
         };
 
         template<typename Result>
-        class JobImpl : public JobBase
+        class JobImpl final : public JobBase
         {
         public:
             using WorkFunc = std::function<Result(std::atomic_bool&)>;
@@ -107,7 +107,7 @@ namespace OpenRCT2
         };
 
         template<>
-        class JobImpl<void> : public JobBase
+        class JobImpl<void> final : public JobBase
         {
         public:
             using WorkFunc = std::function<void(std::atomic_bool&)>;
