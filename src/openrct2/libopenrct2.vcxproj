@@ -179,6 +179,7 @@
     <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="Context.h" />
     <ClInclude Include="core\Algorithm.hpp" />
+    <ClInclude Include="core\BackgroundWorker.hpp" />
     <ClInclude Include="core\BitSet.hpp" />
     <ClInclude Include="core\CallingConventions.h" />
     <ClInclude Include="core\ChecksumStream.h" />
