@@ -319,8 +319,7 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
     }
 }
 
-void X8DrawingEngine::OnDrawDirtyBlock(
-    [[maybe_unused]] uint32_t x, [[maybe_unused]] uint32_t y, [[maybe_unused]] uint32_t columns, [[maybe_unused]] uint32_t rows)
+void X8DrawingEngine::OnDrawDirtyBlock(int32_t, int32_t, int32_t, int32_t)
 {
 }
 
@@ -334,16 +333,16 @@ void X8DrawingEngine::ConfigureDirtyGrid()
 
 void X8DrawingEngine::DrawAllDirtyBlocks()
 {
-    _invalidationGrid.traverseDirtyCells(
-        [this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
-            DrawDirtyBlocks(left, top, right, bottom);
-        });
+    _invalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+        // Draw region
+        DrawDirtyBlocks(left, top, right, bottom);
+    });
 }
 
 void X8DrawingEngine::DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Draw region
-    //OnDrawDirtyBlock(x, y, columns, rows);
+    OnDrawDirtyBlock(left, top, right, bottom);
     WindowDrawAll(_bitsDPI, left, top, right, bottom);
 }
 
