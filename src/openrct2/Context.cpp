@@ -160,6 +160,8 @@ namespace OpenRCT2
         std::thread::id _mainThreadId{};
         Timer _forcedUpdateTimer;
 
+        BackgroundWorker _backgroundWorker;
+
     public:
         // Singleton of Context.
         // Remove this when GetContext() is no longer called so that
@@ -1549,6 +1551,11 @@ namespace OpenRCT2
         float GetTimeScale() const override
         {
             return _timeScale;
+        }
+
+        BackgroundWorker& GetBackgroundWorker() override
+        {
+            return _backgroundWorker;
         }
     };
 
