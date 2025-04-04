@@ -26,7 +26,6 @@
     #include "../../../ride/TrainManager.h"
     #include "../../../world/Map.h"
     #include "../../Duktape.hpp"
-    #include "../../SoundNames.hpp"
     #include "../entity/ScBalloon.hpp"
     #include "../entity/ScEntity.hpp"
     #include "../entity/ScGuest.hpp"
@@ -394,13 +393,6 @@ namespace OpenRCT2::Scripting
             return ToDuk(_context, undefined);
 
         return GetObjectAsDukValue(_context, trackIterator);
-    }
-
-    void ScMap::playSoundAt(const std::string& soundName, const DukValue& dukPosition) const
-    {
-        auto position = FromDuk<CoordsXYZ>(dukPosition);
-
-        OpenRCT2::Audio::Play3D(GetSoundByName(soundName), position);
     }
 
     void ScMap::Register(duk_context* ctx)
