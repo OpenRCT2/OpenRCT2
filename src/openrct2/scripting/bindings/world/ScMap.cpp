@@ -132,7 +132,7 @@ namespace OpenRCT2::Scripting
                 result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->Id)));
             }
         }
-        else if (type == "moneyEffect")
+        else if (type == "money_effect")
         {
             for (auto sprite : EntityList<MoneyEffect>())
             {
