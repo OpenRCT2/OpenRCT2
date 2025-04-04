@@ -11,6 +11,7 @@
 
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
+#include "InvalidationGrid.h"
 
 #include <memory>
 
@@ -81,6 +82,7 @@ namespace OpenRCT2
 
             X8WeatherDrawer _weatherDrawer;
             X8DrawingContext* _drawingContext;
+            InvalidationGrid _invalidationGrid;
 
         public:
             explicit X8DrawingEngine(const std::shared_ptr<Ui::IUiContext>& uiContext);
@@ -120,8 +122,7 @@ namespace OpenRCT2
         private:
             void ConfigureDirtyGrid();
             void DrawAllDirtyBlocks();
-            uint32_t GetNumDirtyRows(const uint32_t x, const uint32_t y, const uint32_t columns);
-            void DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows);
+            void DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom);
         };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
     #pragma GCC diagnostic pop
