@@ -12,7 +12,7 @@
 #include "../core/EnumMap.hpp"
 
 #include <map>
-#include <openrct2/audio/Audio.h>
+#include "../audio/Audio.h"
 #include <string>
 
 using namespace OpenRCT2::Audio;
