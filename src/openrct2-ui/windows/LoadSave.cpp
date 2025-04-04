@@ -425,8 +425,11 @@ namespace OpenRCT2::Ui::Windows
                 GfxDrawSpriteSolid(dpi, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
 
                 auto textPos = imagePos + ScreenCoordsXY(kPreviewWidth / 2, kPreviewHeight / 2 - 6);
+
+                const auto previewText = _previewLoadJob.isValid() ? STR_LOADING_GENERIC : STR_NO_PREVIEW_AVAILABLE;
+
                 DrawTextBasic(
-                    dpi, textPos, STR_NO_PREVIEW_AVAILABLE, {},
+                    dpi, textPos, previewText, {},
                     { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
                 return;
             }
