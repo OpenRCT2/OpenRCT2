@@ -34,7 +34,7 @@ namespace OpenRCT2
 
             void cancel()
             {
-                _stopSource.request_stop();
+                _stopSource.store(true);
                 _valid.store(false);
             }
 
@@ -49,16 +49,16 @@ namespace OpenRCT2
             }
 
         protected:
-            std::atomic<bool> _valid{ true };
-            std::atomic<bool> _completed{ false };
-            std::stop_source _stopSource;
+            std::atomic_bool _valid{ true };
+            std::atomic_bool _completed{ false };
+            std::atomic_bool _stopSource{ false };
         };
 
         template<typename Result>
         class JobImpl : public JobBase
         {
         public:
-            using WorkFunc = std::function<Result(std::stop_token)>;
+            using WorkFunc = std::function<Result(std::atomic_bool&)>;
             using CompletionFunc = std::function<void(Result)>;
 
             JobImpl(WorkFunc work, CompletionFunc completion)
@@ -69,16 +69,16 @@ namespace OpenRCT2
 
             void run() override
             {
-                if (!_stopSource.stop_requested())
+                if (!_stopSource.load())
                 {
-                    _result.emplace(_workFn(_stopSource.get_token()));
+                    _result.emplace(_workFn(_stopSource));
                     _completed.store(true);
                 }
             }
 
             void dispatch() override
             {
-                if (!_stopSource.stop_requested() && _completed.load() && _completionFn)
+                if (!_stopSource.load() && _completed.load() && _completionFn)
                 {
                     _completionFn(std::move(_result.value()));
                     _valid.store(false);
@@ -95,7 +95,7 @@ namespace OpenRCT2
         class JobImpl<void> : public JobBase
         {
         public:
-            using WorkFunc = std::function<void(std::stop_token)>;
+            using WorkFunc = std::function<void(std::atomic_bool&)>;
             using CompletionFunc = std::function<void()>;
 
             JobImpl(WorkFunc work, CompletionFunc completion)
@@ -106,16 +106,16 @@ namespace OpenRCT2
 
             void run() override
             {
-                if (!_stopSource.stop_requested())
+                if (!_stopSource.load())
                 {
-                    _workFn(_stopSource.get_token());
+                    _workFn(_stopSource);
                     _completed.store(true);
                 }
             }
 
             void dispatch() override
             {
-                if (!_stopSource.stop_requested() && _completed.load() && _completionFn)
+                if (!_stopSource.load() && _completed.load() && _completionFn)
                 {
                     _completionFn();
                 }
@@ -132,7 +132,7 @@ namespace OpenRCT2
         template<typename TFn>
         struct ResultType<TFn, std::true_type>
         {
-            using type = std::invoke_result_t<TFn, std::stop_token>;
+            using type = std::invoke_result_t<TFn, std::atomic_bool&>;
         };
 
         template<typename TFn>
@@ -163,12 +163,6 @@ namespace OpenRCT2
                 {
                     job->cancel();
                 }
-            }
-
-            bool isCompleted() const
-            {
-                auto job = _jobRef.lock();
-                return job && job->isCompleted();
             }
 
         private:
@@ -203,14 +197,14 @@ namespace OpenRCT2
         Job addJob(WorkFunc&& work, CompletionFunc&& completion)
         {
             static_assert(
-                std::is_invocable_v<WorkFunc, std::stop_token> || std::is_invocable_v<WorkFunc>,
+                std::is_invocable_v<WorkFunc, std::atomic_bool&> || std::is_invocable_v<WorkFunc>,
                 "Work function must be callable with or without stop_token");
 
-            constexpr bool expectsToken = std::is_invocable_v<WorkFunc, std::stop_token>;
+            constexpr bool expectsToken = std::is_invocable_v<WorkFunc, std::atomic_bool&>;
             using Result = typename ResultType<WorkFunc, std::integral_constant<bool, expectsToken>>::type;
 
-            const auto wrappedFunc = [wf = std::forward<WorkFunc>(work)](std::stop_token token) {
-                if constexpr (expectsToken)
+            const auto wrappedFunc = [wf = std::forward<WorkFunc>(work)](std::atomic_bool& token) {
+                if constexpr (std::is_invocable_v<WorkFunc, std::atomic_bool&>)
                 {
                     return wf(token);
                 }
@@ -311,7 +305,7 @@ namespace OpenRCT2
         mutable std::mutex _mtx;
         std::vector<std::jthread> _workThreads;
         std::condition_variable _cv;
-        std::atomic<bool> _shouldStop{ false };
+        std::atomic_bool _shouldStop{ false };
         std::vector<std::shared_ptr<JobBase>> _jobs;
         std::deque<std::shared_ptr<JobBase>> _pending;
     };
