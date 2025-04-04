@@ -30,7 +30,7 @@ namespace OpenRCT2::Scripting
     {
         return ::GetEntity<Balloon>(_id);
     }
-    
+
     uint8_t ScBalloon::colour_get() const
     {
         auto balloon = GetBalloon();
@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
         auto balloon = GetBalloon();
         if (balloon != nullptr)
         {
-            balloon->colour = value;            
+            balloon->colour = value;
         }
     }
 

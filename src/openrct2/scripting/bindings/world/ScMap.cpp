@@ -26,10 +26,11 @@
     #include "../../../ride/TrainManager.h"
     #include "../../../world/Map.h"
     #include "../../Duktape.hpp"
+    #include "../../SoundNames.hpp"
+    #include "../entity/ScBalloon.hpp"
     #include "../entity/ScEntity.hpp"
     #include "../entity/ScGuest.hpp"
     #include "../entity/ScLitter.hpp"
-    #include "../entity/ScBalloon.hpp"
     #include "../entity/ScMoneyEffect.hpp"
     #include "../entity/ScParticle.hpp"
     #include "../entity/ScStaff.hpp"
@@ -37,7 +38,6 @@
     #include "../ride/ScRide.hpp"
     #include "../ride/ScTrackIterator.h"
     #include "../world/ScTile.hpp"
-    #include "../../SoundNames.hpp"
 
 namespace OpenRCT2::Scripting
 {
