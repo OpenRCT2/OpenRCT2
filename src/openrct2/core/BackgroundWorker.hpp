@@ -178,13 +178,13 @@ namespace OpenRCT2
     public:
         BackgroundWorker()
         {
-            const auto threadsAvailable = std::max(std::thread::hardware_concurrency(), 1U);
+            const auto threadsAvailable = std::max(std::thread::hardware_concurrency(), 1u);
 
             // NOTE: We don't want to use all available threads, this is for background work only.
             // Adjust the number of threads if needed.
-            const auto numThreads = std::min(threadsAvailable, 2U);
+            const auto numThreads = std::min(threadsAvailable, 2u);
 
-            for (auto i = 0U; i < numThreads; ++i)
+            for (auto i = 0u; i < numThreads; ++i)
             {
                 _workThreads.emplace_back([this] { processJobs(); });
             }
