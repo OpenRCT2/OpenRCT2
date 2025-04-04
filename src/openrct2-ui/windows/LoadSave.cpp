@@ -426,7 +426,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto textPos = imagePos + ScreenCoordsXY(kPreviewWidth / 2, kPreviewHeight / 2 - 6);
 
-                const auto previewText = _previewLoadJob.isValid() ? STR_LOADING_GENERIC : STR_NO_PREVIEW_AVAILABLE;
+                const StringId previewText = _previewLoadJob.isValid() ? STR_LOADING_GENERIC : STR_NO_PREVIEW_AVAILABLE;
 
                 DrawTextBasic(
                     dpi, textPos, previewText, {},
