@@ -408,7 +408,6 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScMap::getAllEntitiesOnTile, "getAllEntitiesOnTile");
         dukglue_register_method(ctx, &ScMap::createEntity, "createEntity");
         dukglue_register_method(ctx, &ScMap::getTrackIterator, "getTrackIterator");
-        dukglue_register_method(ctx, &ScMap::playSoundAt, "playSoundAt");
     }
 
     DukValue ScMap::GetEntityAsDukValue(const EntityBase* sprite) const
