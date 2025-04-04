@@ -22,8 +22,23 @@
 
 namespace OpenRCT2
 {
-    class BackgroundWorker
+    namespace Detail
     {
+        template<typename TFn, typename TWantsToken>
+        struct ResultType;
+
+        template<typename TFn>
+        struct ResultType<TFn, std::true_type>
+        {
+            using type = std::invoke_result_t<TFn, std::atomic_bool&>;
+        };
+
+        template<typename TFn>
+        struct ResultType<TFn, std::false_type>
+        {
+            using type = std::invoke_result_t<TFn>;
+        };
+
         class JobBase
         {
         public:
@@ -126,27 +141,16 @@ namespace OpenRCT2
             CompletionFunc _completionFn;
         };
 
-        template<typename TFn, typename TWantsToken>
-        struct ResultType;
+    } // namespace Detail
 
-        template<typename TFn>
-        struct ResultType<TFn, std::true_type>
-        {
-            using type = std::invoke_result_t<TFn, std::atomic_bool&>;
-        };
-
-        template<typename TFn>
-        struct ResultType<TFn, std::false_type>
-        {
-            using type = std::invoke_result_t<TFn>;
-        };
-
+    class BackgroundWorker
+    {
     public:
         class Job
         {
         public:
             Job() = default;
-            explicit Job(std::shared_ptr<JobBase> job)
+            explicit Job(std::shared_ptr<Detail::JobBase> job)
                 : _jobRef(job)
             {
             }
@@ -166,7 +170,7 @@ namespace OpenRCT2
             }
 
         private:
-            std::weak_ptr<JobBase> _jobRef;
+            std::weak_ptr<Detail::JobBase> _jobRef;
         };
 
     public:
@@ -208,7 +212,7 @@ namespace OpenRCT2
                 "Work function must be callable with or without stop_token");
 
             constexpr bool expectsToken = std::is_invocable_v<WorkFunc, std::atomic_bool&>;
-            using Result = typename ResultType<WorkFunc, std::integral_constant<bool, expectsToken>>::type;
+            using Result = typename Detail::ResultType<WorkFunc, std::integral_constant<bool, expectsToken>>::type;
 
             const auto wrappedFunc = [wf = std::forward<WorkFunc>(work)](std::atomic_bool& token) {
                 if constexpr (std::is_invocable_v<WorkFunc, std::atomic_bool&>)
@@ -230,7 +234,8 @@ namespace OpenRCT2
                 static_assert(std::is_invocable_v<CompletionFunc, Result>, "Completion function must match work result type");
             }
 
-            auto job = std::make_shared<JobImpl<Result>>(std::move(wrappedFunc), std::forward<CompletionFunc>(completion));
+            auto job = std::make_shared<Detail::JobImpl<Result>>(
+                std::move(wrappedFunc), std::forward<CompletionFunc>(completion));
 
             {
                 std::lock_guard lock(_mtx);
@@ -244,7 +249,7 @@ namespace OpenRCT2
 
         void dispatchCompleted()
         {
-            std::vector<std::shared_ptr<JobBase>> completed;
+            std::vector<std::shared_ptr<Detail::JobBase>> completed;
 
             {
                 std::lock_guard lock(_mtx);
@@ -292,7 +297,7 @@ namespace OpenRCT2
         {
             while (true)
             {
-                std::shared_ptr<JobBase> job;
+                std::shared_ptr<Detail::JobBase> job;
                 {
                     std::unique_lock lock(_mtx);
                     _cv.wait(lock, [this] { return !_pending.empty() || _shouldStop; });
@@ -313,8 +318,8 @@ namespace OpenRCT2
         std::vector<std::thread> _workThreads;
         std::condition_variable _cv;
         std::atomic_bool _shouldStop{ false };
-        std::vector<std::shared_ptr<JobBase>> _jobs;
-        std::deque<std::shared_ptr<JobBase>> _pending;
+        std::vector<std::shared_ptr<Detail::JobBase>> _jobs;
+        std::deque<std::shared_ptr<Detail::JobBase>> _pending;
     };
 
 } // namespace OpenRCT2
