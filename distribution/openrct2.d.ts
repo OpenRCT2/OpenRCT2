@@ -3858,7 +3858,8 @@ declare global {
          * The colour of the balloon.
          */
         colour: number;      
-
+	}
+	
 	/**
      * Represents money_effect entity.
      */
@@ -3867,7 +3868,8 @@ declare global {
          * The value of the money effect.
          */
         value: number;  
-
+	}
+	
     /**
      * Network APIs
      * Use `network.mode` to determine whether the current game is a client, server or in single player mode.
