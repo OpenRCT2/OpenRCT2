@@ -33,6 +33,11 @@ namespace OpenRCT2::Drawing
         _rowCount = (height / blockHeight) + 1;
         _screenWidth = width;
         _screenHeight = height;
+
+        _blocks.resize(_columnCount * _rowCount);
+        _blocks.shrink_to_fit();
+
+        std::fill(_blocks.begin(), _blocks.end(), 0);
     }
 
     void InvalidationGrid::invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) noexcept
@@ -58,7 +63,7 @@ namespace OpenRCT2::Drawing
         bottom /= _blockHeight;
 
         // TODO: Remove this once _blocks is no longer interop wrapper.
-        auto& blocks = _blocks;
+        auto* blocks = _blocks.data();
 
         const auto columnSize = right - left + 1;
 
