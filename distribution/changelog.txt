@@ -1,4 +1,4 @@
-0.4.21 (in development)
+0.4.21 (2025-04-05)
 ------------------------------------------------------------------------
 - Feature: [#22646] New scenario files now contain a minimap image, shown in the scenario selection window.
 - Feature: [#23774] Climates can now be customised using objects.
