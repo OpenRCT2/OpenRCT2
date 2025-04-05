@@ -27,7 +27,6 @@
     <TargetDir>$(RootDir)bin\</TargetDir>
 
     <OutputExe>$(TargetDir)openrct2.exe</OutputExe>
-    <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
     <!-- Set openrct2.sln properties -->
     <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
@@ -55,9 +54,6 @@
     <ReplaysSha1>637E73F20C03DCD52ACA36FAEE15DADB31797FE0</ReplaysSha1>
   </PropertyGroup>
 
-  <ItemGroup>
-    <g2Inputs Include="$(RootDir)resources\g2\*" />
-  </ItemGroup>
 
   <Target Name="DownloadLibs">
     <!-- libs -->
@@ -107,14 +103,8 @@
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
 
-  <!-- Target to build g2.dat containing OpenRCT2 sprites -->
-  <!-- Only Arm64 machines will build g2.dat for Arm64 -->
-  <!-- Note: Arm64 machines can build for x86, x64 and Arm64 -->
-  <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
-          Condition="'$(TestConfig)'!='true' and ('$(Platform)'!='ARM64' or '$(PROCESSOR_ARCHITECTURE)'=='ARM64')">
-    <Message Text="Building g2.dat..." Importance="high" />
-    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
-          StandardOutputImportance="normal" />
+  <Target Name="g2">
+    <MSBuild Projects="src\openrct2-win\openrct2-win.vcxproj" Targets="g2" />
   </Target>
 
   <!-- Target to download the title sequences -->
