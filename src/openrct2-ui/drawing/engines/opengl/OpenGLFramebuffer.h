@@ -59,6 +59,7 @@ namespace OpenRCT2::Ui
         void SwapColourBuffer(OpenGLFramebuffer& other);
         GLuint SwapDepthTexture(GLuint depth);
         void Copy(OpenGLFramebuffer& src, GLenum filter);
+        void SetPixels(const DrawPixelInfo& dpi);
 
         static GLuint CreateDepthTexture(int32_t width, int32_t height);
     };
