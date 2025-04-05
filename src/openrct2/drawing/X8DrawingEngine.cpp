@@ -139,7 +139,7 @@ void X8DrawingEngine::Resize(uint32_t width, uint32_t height)
 {
     uint32_t pitch = width;
     ConfigureBits(width, height, pitch);
-    _drawingContext->Clear(_bitsDPI, PaletteIndex::_10);
+    _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
 }
 
 void X8DrawingEngine::SetPalette([[maybe_unused]] const GamePalette& palette)

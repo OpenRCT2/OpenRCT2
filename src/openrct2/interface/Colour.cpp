@@ -154,7 +154,7 @@ static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
     int16_t closest = -1;
     int32_t closestDistance = INT32_MAX;
 
-    for (int i = PaletteIndex::_0; i < PaletteIndex::_230; i++)
+    for (int i = PaletteIndex::pi0; i < PaletteIndex::pi230; i++)
     {
         const int32_t distance = std::pow(gPalette[i].Red - red, 2) + std::pow(gPalette[i].Green - green, 2)
             + std::pow(gPalette[i].Blue - blue, 2);

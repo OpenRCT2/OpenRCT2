@@ -201,7 +201,7 @@ void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
             int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::Medium);
             int32_t caretY = screenCoords.y + 14;
 
-            GfxFillRect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::_56);
+            GfxFillRect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::pi56);
         }
     }
 }

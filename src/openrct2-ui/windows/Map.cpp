@@ -52,7 +52,7 @@ namespace OpenRCT2::Ui::Windows
     }
     static constexpr uint16_t MapColourUnowned(uint16_t colour)
     {
-        return MapColour2((colour & 0xFF00) >> 8, PaletteIndex::_10);
+        return MapColour2((colour & 0xFF00) >> 8, PaletteIndex::pi10);
     }
     static int32_t getPracticalMapSize()
     {
@@ -163,23 +163,23 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr uint16_t RideKeyColours[] = {
-        MapColour(PaletteIndex::_61),  // COLOUR_KEY_RIDE
-        MapColour(PaletteIndex::_42),  // COLOUR_KEY_FOOD
-        MapColour(PaletteIndex::_20),  // COLOUR_KEY_DRINK
-        MapColour(PaletteIndex::_209), // COLOUR_KEY_SOUVENIR
-        MapColour(PaletteIndex::_136), // COLOUR_KEY_KIOSK
-        MapColour(PaletteIndex::_102), // COLOUR_KEY_FIRST_AID
-        MapColour(PaletteIndex::_55),  // COLOUR_KEY_CASH_MACHINE
-        MapColour(PaletteIndex::_161), // COLOUR_KEY_TOILETS
+        MapColour(PaletteIndex::pi61),  // COLOUR_KEY_RIDE
+        MapColour(PaletteIndex::pi42),  // COLOUR_KEY_FOOD
+        MapColour(PaletteIndex::pi20),  // COLOUR_KEY_DRINK
+        MapColour(PaletteIndex::pi209), // COLOUR_KEY_SOUVENIR
+        MapColour(PaletteIndex::pi136), // COLOUR_KEY_KIOSK
+        MapColour(PaletteIndex::pi102), // COLOUR_KEY_FIRST_AID
+        MapColour(PaletteIndex::pi55),  // COLOUR_KEY_CASH_MACHINE
+        MapColour(PaletteIndex::pi161), // COLOUR_KEY_TOILETS
     };
 
-    static constexpr uint8_t DefaultPeepMapColour = PaletteIndex::_20;
-    static constexpr uint8_t GuestMapColour = PaletteIndex::_172;
-    static constexpr uint8_t GuestMapColourAlternate = PaletteIndex::_21;
-    static constexpr uint8_t StaffMapColour = PaletteIndex::_138;
-    static constexpr uint8_t StaffMapColourAlternate = PaletteIndex::_10;
+    static constexpr uint8_t DefaultPeepMapColour = PaletteIndex::pi20;
+    static constexpr uint8_t GuestMapColour = PaletteIndex::pi172;
+    static constexpr uint8_t GuestMapColourAlternate = PaletteIndex::pi21;
+    static constexpr uint8_t StaffMapColour = PaletteIndex::pi138;
+    static constexpr uint8_t StaffMapColourAlternate = PaletteIndex::pi10;
 
-    static constexpr uint16_t WaterColour = MapColour(PaletteIndex::_195);
+    static constexpr uint16_t WaterColour = MapColour(PaletteIndex::pi195);
 
     static constexpr uint16_t ElementTypeMaskColour[] = {
         0xFFFF, // TILE_ELEMENT_TYPE_SURFACE
@@ -193,14 +193,14 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr uint16_t ElementTypeAddColour[] = {
-        MapColour(PaletteIndex::_0),                      // TILE_ELEMENT_TYPE_SURFACE
-        MapColour(PaletteIndex::_17),                     // TILE_ELEMENT_TYPE_PATH
-        MapColour2(PaletteIndex::_183, PaletteIndex::_0), // TILE_ELEMENT_TYPE_TRACK
-        MapColour2(PaletteIndex::_0, PaletteIndex::_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
-        MapColour(PaletteIndex::_186),                    // TILE_ELEMENT_TYPE_ENTRANCE
-        MapColour(PaletteIndex::_0),                      // TILE_ELEMENT_TYPE_WALL
-        MapColour(PaletteIndex::_99),                     // TILE_ELEMENT_TYPE_LARGE_SCENERY
-        MapColour(PaletteIndex::_0),                      // TILE_ELEMENT_TYPE_BANNER
+        MapColour(PaletteIndex::pi0),                       // TILE_ELEMENT_TYPE_SURFACE
+        MapColour(PaletteIndex::pi17),                      // TILE_ELEMENT_TYPE_PATH
+        MapColour2(PaletteIndex::pi183, PaletteIndex::pi0), // TILE_ELEMENT_TYPE_TRACK
+        MapColour2(PaletteIndex::pi0, PaletteIndex::pi99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
+        MapColour(PaletteIndex::pi186),                     // TILE_ELEMENT_TYPE_ENTRANCE
+        MapColour(PaletteIndex::pi0),                       // TILE_ELEMENT_TYPE_WALL
+        MapColour(PaletteIndex::pi99),                      // TILE_ELEMENT_TYPE_LARGE_SCENERY
+        MapColour(PaletteIndex::pi0),                       // TILE_ELEMENT_TYPE_BANNER
     };
 
     namespace MapFlashingFlags
@@ -569,7 +569,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            GfxClear(dpi, PaletteIndex::_10);
+            GfxClear(dpi, PaletteIndex::pi10);
 
             // Ensure small maps are centred
             auto screenOffset = ScreenCoordsXY(0, 0);
@@ -714,7 +714,7 @@ namespace OpenRCT2::Ui::Windows
         void InitMap()
         {
             _mapImageData.resize(getMiniMapWidth() * getMiniMapWidth());
-            std::fill(_mapImageData.begin(), _mapImageData.end(), PaletteIndex::_10);
+            std::fill(_mapImageData.begin(), _mapImageData.end(), PaletteIndex::pi10);
             _currentLine = 0;
         }
 
@@ -856,7 +856,7 @@ namespace OpenRCT2::Ui::Windows
             if (surfaceElement == nullptr)
                 return 0;
 
-            uint16_t colour = MapColour(PaletteIndex::_0);
+            uint16_t colour = MapColour(PaletteIndex::pi0);
             const auto* surfaceObject = surfaceElement->GetSurfaceObject();
             if (surfaceObject != nullptr)
                 colour = MapColour2(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
@@ -873,7 +873,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (tileElement->IsGhost())
                 {
-                    colour = MapColour(PaletteIndex::_21);
+                    colour = MapColour(PaletteIndex::pi21);
                     break;
                 }
 
@@ -892,7 +892,7 @@ namespace OpenRCT2::Ui::Windows
         uint16_t GetPixelColourRide(const CoordsXY& c)
         {
             uint16_t colourA = 0;                            // highlight colour
-            uint16_t colourB = MapColour(PaletteIndex::_13); // surface colour (dark grey)
+            uint16_t colourB = MapColour(PaletteIndex::pi13); // surface colour (dark grey)
 
             // as an improvement we could use first_element to show underground stuff?
             TileElement* tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(c));
@@ -903,7 +903,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (tileElement->IsGhost())
                 {
-                    colourA = MapColour(PaletteIndex::_21);
+                    colourA = MapColour(PaletteIndex::pi21);
                     break;
                 }
 
@@ -912,12 +912,12 @@ namespace OpenRCT2::Ui::Windows
                     case TileElementType::Surface:
                         if (tileElement->AsSurface()->GetWaterHeight() > 0)
                             // Why is this a different water colour as above (195)?
-                            colourB = MapColour(PaletteIndex::_194);
+                            colourB = MapColour(PaletteIndex::pi194);
                         if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
                             colourB = MapColourUnowned(colourB);
                         break;
                     case TileElementType::Path:
-                        colourA = MapColour(PaletteIndex::_14); // lighter grey
+                        colourA = MapColour(PaletteIndex::pi14); // lighter grey
                         break;
                     case TileElementType::Entrance:
                     {
@@ -1025,7 +1025,7 @@ namespace OpenRCT2::Ui::Windows
                     auto mapCoord = TransformToMapCoords({ vehicle->x, vehicle->y });
                     auto pixelCoord = ScreenCoordsXY{ mapCoord.x, mapCoord.y } + offset;
 
-                    GfxFillRect(dpi, { pixelCoord, pixelCoord }, PaletteIndex::_171);
+                    GfxFillRect(dpi, { pixelCoord, pixelCoord }, PaletteIndex::pi171);
                 }
             }
         }
@@ -1056,20 +1056,20 @@ namespace OpenRCT2::Ui::Windows
             auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
             // top horizontal lines
-            GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::_56);
-            GfxFillRect(dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PaletteIndex::_56);
+            GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
+            GfxFillRect(dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PaletteIndex::pi56);
 
             // left vertical lines
-            GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::_56);
-            GfxFillRect(dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PaletteIndex::_56);
+            GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
+            GfxFillRect(dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PaletteIndex::pi56);
 
             // bottom horizontal lines
-            GfxFillRect(dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::_56);
-            GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PaletteIndex::_56);
+            GfxFillRect(dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
+            GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PaletteIndex::pi56);
 
             // right vertical lines
-            GfxFillRect(dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::_56);
-            GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::_56);
+            GfxFillRect(dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
+            GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::pi56);
         }
 
         void DrawTabImages(DrawPixelInfo& dpi)

@@ -55,7 +55,7 @@ namespace OpenRCT2
 
     static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
     {
-        PaletteIndex paletteIndex = PaletteIndex::_0;
+        PaletteIndex paletteIndex = PaletteIndex::pi0;
 
         auto tileElement = MapGetFirstElementAt(pos);
         if (tileElement == nullptr)
@@ -72,13 +72,13 @@ namespace OpenRCT2
                     auto* surfaceElement = tileElement->AsSurface();
                     if (surfaceElement == nullptr)
                     {
-                        surfaceColour = paletteIndex = PaletteIndex::_0;
+                        surfaceColour = paletteIndex = PaletteIndex::pi0;
                         break;
                     }
 
                     if (surfaceElement->GetWaterHeight() > 0)
                     {
-                        surfaceColour = paletteIndex = PaletteIndex::_195;
+                        surfaceColour = paletteIndex = PaletteIndex::pi195;
                     }
                     else
                     {
@@ -94,20 +94,20 @@ namespace OpenRCT2
                 }
 
                 case TileElementType::Path:
-                    paletteIndex = PaletteIndex::_17;
+                    paletteIndex = PaletteIndex::pi17;
                     break;
 
                 case TileElementType::Track:
-                    paletteIndex = PaletteIndex::_183;
+                    paletteIndex = PaletteIndex::pi183;
                     break;
 
                 case TileElementType::SmallScenery:
                 case TileElementType::LargeScenery:
-                    paletteIndex = PaletteIndex::_99;
+                    paletteIndex = PaletteIndex::pi99;
                     break;
 
                 case TileElementType::Entrance:
-                    paletteIndex = PaletteIndex::_186;
+                    paletteIndex = PaletteIndex::pi186;
                     break;
 
                 default:
@@ -116,10 +116,10 @@ namespace OpenRCT2
         } while (!(tileElement++)->IsLastForTile());
 
         // Darken every other tile that's outside of the park, unless it's a path
-        if (isOutsidePark && _tileColourIndex == 1 && paletteIndex != PaletteIndex::_17)
-            paletteIndex = PaletteIndex::_10;
+        if (isOutsidePark && _tileColourIndex == 1 && paletteIndex != PaletteIndex::pi17)
+            paletteIndex = PaletteIndex::pi10;
         // For rides, every other tile should use the surface colour
-        else if (_tileColourIndex == 1 && paletteIndex == PaletteIndex::_183)
+        else if (_tileColourIndex == 1 && paletteIndex == PaletteIndex::pi183)
             paletteIndex = surfaceColour;
 
         _tileColourIndex = (_tileColourIndex + 1) % 2;

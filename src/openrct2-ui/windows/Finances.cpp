@@ -471,7 +471,7 @@ namespace OpenRCT2::Ui::Windows
                 GfxFillRect(
                     dpi,
                     { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
-                    PaletteIndex::_10);
+                    PaletteIndex::pi10);
 
                 screenCoords.x += EXPENDITURE_COLUMN_WIDTH;
             }
