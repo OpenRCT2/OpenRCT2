@@ -7,7 +7,7 @@
 - Improved: [objects#379] Add additional colour schemes to Mine Train.
 - Change: [#23932] The land rights window now checks “Land Owned” by default.
 - Change: [#23936] The ‘guests prefer less/more intense rides’ settings have been turned into a dropdown.
-- Change: [#24059] The ‘select other ride’ button is now available in the track manager.
+- Change: [#24059] The ‘select other ride’ button is now available in the track designs manager.
 - Change: [#24067] [Plugin] Registered menu items are now listed alphabetically.
 - Change: [#24070] Footpath selection menus now show object names on hover using a tooltip.
 - Change: [#24101] Frozen peeps are no longer removed when using the 'remove all guests' cheat.
