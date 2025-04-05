@@ -31,6 +31,7 @@
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/IDrawingContext.h>
     #include <openrct2/drawing/IDrawingEngine.h>
+    #include <openrct2/drawing/InvalidationGrid.h>
     #include <openrct2/drawing/LightFX.h>
     #include <openrct2/drawing/Weather.h>
     #include <openrct2/interface/Screenshot.h>
@@ -196,6 +197,7 @@ private:
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
     OpenGLWeatherDrawer _weatherDrawer;
+    InvalidationGrid _invalidationGrid;
 
 public:
     SDL_Color Palette[256];
@@ -246,8 +248,17 @@ public:
     {
         ConfigureBits(width, height, width);
         ConfigureCanvas();
+        ConfigureDirtyGrid();
         _drawingContext->Resize(width, height);
         _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
+    }
+
+    void ConfigureDirtyGrid()
+    {
+        const auto blockWidth = 1u << 7;
+        const auto blockHeight = 1u << 5;
+
+        _invalidationGrid.reset(_width, _height, blockWidth, blockHeight);
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -281,6 +292,7 @@ public:
 
     void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override
     {
+        _invalidationGrid.invalidate(left, top, right, bottom);
     }
 
     void BeginDraw() override
@@ -326,7 +338,21 @@ public:
     void PaintWindows() override
     {
         WindowUpdateAllViewports();
-        WindowDrawAll(_bitsDPI, 0, 0, _width, _height);
+        DrawAllDirtyBlocks();
+    }
+
+    void DrawAllDirtyBlocks()
+    {
+        _invalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+            // Draw region
+            DrawDirtyBlocks(left, top, right, bottom);
+        });
+    }
+
+    void DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
+    {
+        // Draw region
+        WindowDrawAll(_bitsDPI, left, top, right, bottom);
     }
 
     void PaintWeather() override
