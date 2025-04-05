@@ -108,7 +108,7 @@ void EntityTweener::Restore()
     for (size_t i = 0; i < Entities.size(); ++i)
     {
         auto* ent = Entities[i];
-        if (ent == nullptr)
+        if (ent == nullptr || PrePos[i] == PostPos[i])
             continue;
 
         ent->MoveTo(PostPos[i]);
