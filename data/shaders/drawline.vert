@@ -17,12 +17,16 @@ flat out uint fColour;
 
 void main()
 {
-    vec2 pos = vVertMat * vec4(vBounds);
+    // Explicitly cast ivec4 to vec4 for position computation
+    vec2 pos = vVertMat * vec4(float(vBounds.x), float(vBounds.y), float(vBounds.z), float(vBounds.w));
 
-    // Transform screen coordinates to viewport coordinates
-    pos = (pos * (2.0 / vec2(uScreenSize))) - 1.0;
+    // Explicitly cast ivec2 to vec2 for screen size
+    vec2 screenSizeFloat = vec2(float(uScreenSize.x), float(uScreenSize.y));
+    pos = (pos * (2.0 / screenSizeFloat)) - 1.0;
     pos.y *= -1.0;
+
     float depth = 1.0 - (float(vDepth) + 1.0) * DEPTH_INCREMENT;
+    depth = clamp(depth, 0.0, 1.0);
 
     fColour = vColour;
 

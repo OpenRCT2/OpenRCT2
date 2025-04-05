@@ -34,11 +34,13 @@ void main()
         }
         else
         {
-            oColour = texture(uBlendPaletteTex, vec2(opaque, blendColour) / 256.f).r;
+            vec2 blendUV = clamp(vec2(float(opaque), float(blendColour)) / 256.0, 0.0, 1.0);
+            oColour = texture(uBlendPaletteTex, blendUV).r;
         }
     }
     else
     {
-        oColour = texture(uPaletteTex, vec2(opaque, transparent) / 256.f).r;
+        vec2 paletteUV = clamp(vec2(float(opaque), float(transparent)) / 256.0, 0.0, 1.0);
+        oColour = texture(uPaletteTex, paletteUV).r;
     }
 }

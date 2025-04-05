@@ -41,13 +41,13 @@ void main()
         }
     }
 
-    vec2 position = (gl_FragCoord.xy - fPosition) * fZoom;
+    highp vec2 position = (gl_FragCoord.xy - fPosition) * fZoom;
 
     uint texel;
     if ((fFlags & FLAG_NO_TEXTURE) == 0)
     {
-        float colourU = (fTexColour.x + position.x) / fTexColour.z;
-        float colourV = (fTexColour.y + position.y) / fTexColour.w;
+        highp float colourU = (fTexColour.x + position.x) / fTexColour.z;
+        highp float colourV = (fTexColour.y + position.y) / fTexColour.w;
         texel = texture(uTexture, vec3(colourU, colourV, fTexColourAtlas)).r;
         if (texel == 0u)
         {
@@ -111,8 +111,8 @@ void main()
 
     if ((fFlags & FLAG_MASK) != 0)
     {
-        float maskU = (fTexMask.x + position.x) / fTexMask.z;
-        float maskV = (fTexMask.y + position.y) / fTexMask.w;
+        highp float maskU = (fTexMask.x + position.x) / fTexMask.z;
+        highp float maskV = (fTexMask.y + position.y) / fTexMask.w;
         uint mask = texture(uTexture, vec3(maskU, maskV, fTexMaskAtlas)).r;
         if (mask == 0u)
         {
