@@ -198,7 +198,7 @@ namespace OpenRCT2::Ui::Windows
 
             DrawWidgets(dpi);
 
-            auto screenCoords = windowPos + ScreenCoordsXY{ 10, 30 };
+            auto screenCoords = windowPos + ScreenCoordsXY{ 10, 18 + widgets[WIDX_TITLE].height() };
 
             DrawTextBasic(dpi, screenCoords, STR_RATE, {}, { colours[1] });
 

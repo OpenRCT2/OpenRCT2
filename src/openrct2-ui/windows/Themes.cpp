@@ -266,102 +266,29 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_themesWidgets);
 
             WindowThemesInitVars();
-
             WindowInitScrollWidgets(*this);
+            WindowSetResize(*this, { 320, 107 }, { 320, 107 });
+
             list_information_type = 0;
             _classIndex = -1;
             _buttonIndex = -1;
-            min_width = 320;
-            min_height = 107;
-            max_width = 320;
-            max_height = 107;
         }
 
         void OnResize() override
         {
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
             {
-                min_width = 320;
-                min_height = 107;
-                max_width = 320;
-                max_height = 107;
-
-                if (width < min_width)
-                {
-                    width = min_width;
+                if (WindowSetResize(*this, { 320, 107 }, { 320, 107 }))
                     GfxInvalidateScreen();
-                }
-                if (height < min_height)
-                {
-                    height = min_height;
-                    GfxInvalidateScreen();
-                }
-                if (width > max_width)
-                {
-                    width = max_width;
-                    GfxInvalidateScreen();
-                }
-                if (height > max_height)
-                {
-                    height = max_height;
-                    GfxInvalidateScreen();
-                }
             }
             else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
             {
-                min_width = 320;
-                min_height = 122;
-                max_width = 320;
-                max_height = 122;
-
-                if (width < min_width)
-                {
-                    width = min_width;
+                if (WindowSetResize(*this, { 320, 122 }, { 320, 122 }))
                     GfxInvalidateScreen();
-                }
-                if (height < min_height)
-                {
-                    height = min_height;
-                    GfxInvalidateScreen();
-                }
-                if (width > max_width)
-                {
-                    width = max_width;
-                    GfxInvalidateScreen();
-                }
-                if (height > max_height)
-                {
-                    height = max_height;
-                    GfxInvalidateScreen();
-                }
             }
             else
             {
-                min_width = 320;
-                min_height = 270;
-                max_width = 320;
-                max_height = 450;
-
-                if (width < min_width)
-                {
-                    width = min_width;
-                    Invalidate();
-                }
-                if (height < min_height)
-                {
-                    height = min_height;
-                    Invalidate();
-                }
-                if (width > max_width)
-                {
-                    width = max_width;
-                    Invalidate();
-                }
-                if (height > max_height)
-                {
-                    height = max_height;
-                    Invalidate();
-                }
+                WindowSetResize(*this, { 320, 270 }, { 320, 450 });
             }
 
             ResizeFrameWithPage();

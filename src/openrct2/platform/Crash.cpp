@@ -41,7 +41,6 @@
     #include "../interface/Screenshot.h"
     #include "../object/ObjectManager.h"
     #include "../park/ParkFile.h"
-    #include "../scenario/Scenario.h"
     #include "Platform.h"
 
     #define WSZ(x) L"" x
@@ -183,7 +182,7 @@ static bool OnCrash(
         auto& objManager = ctx->GetObjectManager();
         exporter->ExportObjectsList = objManager.GetPackableObjects();
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         exporter->Export(gameState, saveFilePathUTF8.c_str());
         savedGameDumped = true;
     }
@@ -318,7 +317,7 @@ static bool OnCrash(
 static std::wstring GetDumpDirectory()
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    auto crashPath = env->GetDirectoryPath(DIRBASE::USER, DIRID::CRASH);
+    auto crashPath = env->GetDirectoryPath(DirBase::user, DirId::crashDumps);
 
     auto result = String::toWideChar(crashPath);
     return result;

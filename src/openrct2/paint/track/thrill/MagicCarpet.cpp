@@ -93,7 +93,7 @@ static ImageIndex GetMagicCarpetPendulumImage(Plane plane, Direction direction, 
 
 static Vehicle* GetFirstVehicle(const Ride& ride)
 {
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
         return GetEntity<Vehicle>(ride.vehicles[0]);
     }
@@ -146,7 +146,7 @@ static void PaintMagicCarpetVehicle(
     PaintSession& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const BoundBoxXYZ& bb,
     ImageId stationColour)
 {
-    const auto* rideEntry = ride.GetRideEntry();
+    const auto* rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -169,7 +169,7 @@ static void PaintMagicCarpetVehicle(
     offset.z += kMagicCarpetOscillationZ[swing];
 
     // Vehicle
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         imageTemplate = stationColour;
@@ -225,9 +225,9 @@ static void PaintMagicCarpet(
         case 0:
         case 2:
             DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
-            const StationObject* stationObject = ride.GetStationObject();
+            const StationObject* stationObject = ride.getStationObject();
 
-            if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+            if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
             {
                 auto imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });

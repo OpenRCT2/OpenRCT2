@@ -2288,10 +2288,6 @@ STR_3252    :Can’t increase maximum loan size any further!
 STR_3253    :Can’t reduce maximum loan size any further!
 STR_3254    :Can’t increase interest rate any further!
 STR_3255    :Can’t reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
-STR_3257    :Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
-STR_3259    :Select whether guests should generally prefer more intense rides only
 STR_3260    :{WINDOW_COLOUR_2}Готівка на гостя (в середньому):
 STR_3261    :{WINDOW_COLOUR_2}Початкове щастя гостей:
 STR_3262    :{WINDOW_COLOUR_2}Початковий голод гостей:

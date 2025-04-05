@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MiniatureRailwayRTD =
 {
-    .Category = RIDE_CATEGORY_TRANSPORT,
+    .Category = RideCategory::transport,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniatureRailway,
@@ -33,8 +33,8 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::allowMultipleCircuits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
                      RtdFlag::supportsLevelCrossings),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::shuttle),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MINIATURE_RAILWAY, STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),

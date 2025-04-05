@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::invertedImpulseCoaster,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
                  EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                               RtdFlag::allowMultipleCircuits, RtdFlag::isSuspended, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch),
-    .DefaultMode = RideMode::PoweredLaunchPasstrough,
+    .RideModes = EnumsToFlags(RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch),
+    .DefaultMode = RideMode::poweredLaunchPasstrough,
     .OperatingSettings = { 10, 33 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },

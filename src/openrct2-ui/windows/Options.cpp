@@ -838,8 +838,8 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().general.FullscreenHeight = resolution.Height;
 
                         if (Config::Get().general.FullscreenMode
-                            == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-                            ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
+                            == static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen))
+                            ContextSetFullscreenMode(static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen));
 
                         Config::Save();
                         GfxInvalidateScreen();
@@ -879,7 +879,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<uint16_t>(static_cast<uint16_t>(Config::Get().general.FullscreenHeight));
 
             // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            if (Config::Get().general.FullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+            if (Config::Get().general.FullscreenMode != static_cast<int32_t>(OpenRCT2::Ui::FullscreenMode::fullscreen))
             {
                 disabled_widgets |= (1uLL << WIDX_RESOLUTION_DROPDOWN);
                 disabled_widgets |= (1uLL << WIDX_RESOLUTION);
@@ -1800,7 +1800,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
-                    Dropdown::SetChecked(Config::Get().general.ScenarioSelectMode, true);
+                    Dropdown::SetChecked(EnumValue(Config::Get().general.scenarioSelectMode), true);
                     break;
                 }
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
@@ -1847,9 +1847,9 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_SCENARIO_GROUPING_DROPDOWN:
-                    if (dropdownIndex != Config::Get().general.ScenarioSelectMode)
+                    if (dropdownIndex != EnumValue(Config::Get().general.scenarioSelectMode))
                     {
-                        Config::Get().general.ScenarioSelectMode = dropdownIndex;
+                        Config::Get().general.scenarioSelectMode = static_cast<ScenarioSelectMode>(dropdownIndex);
                         Config::Get().interface.ScenarioselectLastTab = 0;
                         Config::Save();
                         Invalidate();
@@ -1898,14 +1898,14 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_AUTO_OPEN_SHOPS, Config::Get().general.AutoOpenShops);
             SetCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, Config::Get().general.AllowEarlyCompletion);
 
-            if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_DIFFICULTY)
+            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::difficulty)
                 widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
             else
                 widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
 
             SetCheckboxValue(WIDX_SCENARIO_UNLOCKING, Config::Get().general.ScenarioUnlockingEnabled);
 
-            if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
             {
                 disabled_widgets &= ~(1uLL << WIDX_SCENARIO_UNLOCKING);
             }
@@ -2107,6 +2107,10 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t p)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == p && !widgets.empty())
+                return;
+
             page = p;
             frame_no = 0;
             pressed_widgets = 0;
@@ -2203,7 +2207,7 @@ namespace OpenRCT2::Ui::Windows
         static bool IsRCT1TitleMusicAvailable()
         {
             auto env = GetContext()->GetPlatformEnvironment();
-            auto rct1path = env->GetDirectoryPath(DIRBASE::RCT1);
+            auto rct1path = env->GetDirectoryPath(DirBase::rct1);
             return !rct1path.empty();
         }
 

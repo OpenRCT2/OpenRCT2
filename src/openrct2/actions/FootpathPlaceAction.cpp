@@ -86,7 +86,7 @@ GameActions::Result FootpathPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode) && !MapIsLocationOwned(_loc))
+    if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -106,7 +106,7 @@ GameActions::Result FootpathPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
     }
 
-    if (_direction != INVALID_DIRECTION && !DirectionValid(_direction))
+    if (_direction != kInvalidDirection && !DirectionValid(_direction))
     {
         LOG_ERROR("Direction invalid. direction = %u", _direction);
         return GameActions::Result(
@@ -139,11 +139,11 @@ GameActions::Result FootpathPlaceAction::Execute() const
     gFootpathGroundFlags = 0;
 
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        if (_direction != INVALID_DIRECTION && !GetGameState().Cheats.disableClearanceChecks)
+        if (_direction != kInvalidDirection && !getGameState().cheats.disableClearanceChecks)
         {
             // It is possible, let's remove walls between the old and new piece of path
             auto zLow = _loc.z;
@@ -211,6 +211,12 @@ bool FootpathPlaceAction::IsSameAsEntranceElement(const EntranceElement& entranc
 
 GameActions::Result FootpathPlaceAction::ElementUpdateQuery(PathElement* pathElement, GameActions::Result res) const
 {
+    if (_constructFlags & PathConstructFlag::IsQueue && pathElement->IsLevelCrossing(_loc))
+    {
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_QUEUE_PATHS_CANNOT_BE_USED_FOR_LEVEL_CROSSINGS);
+    }
+
     if (!IsSameAsPathElement(pathElement))
     {
         res.Cost += 6.00_GBP;
@@ -323,7 +329,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertQuery(GameActions::Result 
     const auto clearanceData = canBuild.GetData<ConstructClearResult>();
 
     gFootpathGroundFlags = clearanceData.GroundFlags;
-    if (!GetGameState().Cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
+    if (!getGameState().cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
@@ -446,7 +452,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
         {
             FootpathRemoveEdgesAt(_loc, pathElement->as<TileElement>());
         }
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (gLegacyScene == LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             AutomaticallySetPeepSpawn();
         }
@@ -484,12 +490,12 @@ void FootpathPlaceAction::AutomaticallySetPeepSpawn() const
         }
     }
 
-    auto& gameState = GetGameState();
-    if (gameState.PeepSpawns.empty())
+    auto& gameState = getGameState();
+    if (gameState.peepSpawns.empty())
     {
-        gameState.PeepSpawns.emplace_back();
+        gameState.peepSpawns.emplace_back();
     }
-    PeepSpawn* peepSpawn = &gameState.PeepSpawns[0];
+    PeepSpawn* peepSpawn = &gameState.peepSpawns[0];
     peepSpawn->x = _loc.x + (DirectionOffsets[direction].x * 15) + 16;
     peepSpawn->y = _loc.y + (DirectionOffsets[direction].y * 15) + 16;
     peepSpawn->direction = direction;

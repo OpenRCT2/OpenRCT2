@@ -12,14 +12,14 @@
 #include "../drawing/ImageId.hpp"
 #include "Object.h"
 
-namespace OpenRCT2::STATION_OBJECT_FLAGS
+namespace OpenRCT2::StationObjectFlags
 {
-    const uint32_t HAS_PRIMARY_COLOUR = 1 << 0;
-    const uint32_t HAS_SECONDARY_COLOUR = 1 << 1;
-    const uint32_t IS_TRANSPARENT = 1 << 2;
-    const uint32_t NO_PLATFORMS = 1 << 3;
-    const uint32_t HAS_SHELTER = (1 << 4);
-} // namespace OpenRCT2::STATION_OBJECT_FLAGS
+    const uint32_t hasPrimaryColour = 1 << 0;
+    const uint32_t hasSecondaryColour = 1 << 1;
+    const uint32_t isTransparent = 1 << 2;
+    const uint32_t noPlatforms = 1 << 3;
+    const uint32_t hasShelter = (1 << 4);
+} // namespace OpenRCT2::StationObjectFlags
 
 class StationObject final : public Object
 {

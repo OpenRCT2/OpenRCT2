@@ -2255,10 +2255,6 @@ STR_3252    :Kan ikke øke maksimal lånstørrelse videre!
 STR_3253    :Kan ikke senke maksimal lånstørrelse videre!
 STR_3254    :Kan ikke øke renter videre!
 STR_3255    :Kan ikke senke renter videre!
-STR_3256    :Gjester foretrekker mindre intense attraksjoner
-STR_3257    :Velg om gjester kun skal generelt foretrekke mindre intense attraksjoner
-STR_3258    :Gjester foretrekker mer intense attraksjoner
-STR_3259    :Velg om gjester kun skal generelt foretrekke mer intense attraksjoner
 STR_3260    :{WINDOW_COLOUR_2}Penger per gjest (gjennomsnitt):
 STR_3261    :{WINDOW_COLOUR_2}Gjester's innledende glede:
 STR_3262    :{WINDOW_COLOUR_2}Gjester's innledende sult:

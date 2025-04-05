@@ -13,8 +13,8 @@
 
     #include <algorithm>
     #include <cassert>
-    #include <map>
-    #include <vector>
+    #include <sfl/small_map.hpp>
+    #include <sfl/small_vector.hpp>
 
 namespace OpenRCT2::Ui
 {
@@ -23,11 +23,18 @@ namespace OpenRCT2::Ui
      */
     struct XData
     {
-        int32_t xposition;
+        int16_t xposition;
+        int16_t top;
+        int16_t bottom;
         bool begin;
-        int32_t top, bottom;
     };
-    using SweepLine = std::vector<XData>;
+
+    #ifdef _DEBUG
+    // Debug builds use a lot of stack so we have to keep it small.
+    using SweepLine = sfl::small_vector<XData, 4096>;
+    #else
+    using SweepLine = sfl::small_vector<XData, 8192>;
+    #endif
 
     /*
      * Creates a list of vertical bounding box edges, stored as xdata and sorted
@@ -41,10 +48,10 @@ namespace OpenRCT2::Ui
 
         for (const DrawRectCommand& command : transparent)
         {
-            int32_t left = std::min(std::max(command.bounds.x, command.clip.x), command.clip.z);
-            int32_t top = std::min(std::max(command.bounds.y, command.clip.y), command.clip.w);
-            int32_t right = std::min(std::max(command.bounds.z, command.clip.x), command.clip.z);
-            int32_t bottom = std::min(std::max(command.bounds.w, command.clip.y), command.clip.w);
+            int16_t left = std::min(std::max(command.bounds.x, command.clip.x), command.clip.z);
+            int16_t top = std::min(std::max(command.bounds.y, command.clip.y), command.clip.w);
+            int16_t right = std::min(std::max(command.bounds.z, command.clip.x), command.clip.z);
+            int16_t bottom = std::min(std::max(command.bounds.w, command.clip.y), command.clip.w);
 
             assert(left <= right);
             assert(top <= bottom);
@@ -53,8 +60,8 @@ namespace OpenRCT2::Ui
             if (top == bottom)
                 continue;
 
-            x_sweep.push_back({ left, true, top, bottom });
-            x_sweep.push_back({ right, false, top, bottom });
+            x_sweep.push_back({ left, top, bottom, true });
+            x_sweep.push_back({ right, top, bottom, false });
         }
 
         std::sort(x_sweep.begin(), x_sweep.end(), [](const XData& a, const XData& b) -> bool {
@@ -77,9 +84,10 @@ namespace OpenRCT2::Ui
      */
     struct YData
     {
-        int32_t count, depth;
+        int32_t count;
+        int32_t depth;
     };
-    using IntervalTree = std::map<int32_t, YData>;
+    using IntervalTree = sfl::small_map<int32_t, YData, 2048>;
 
     /*
      * Inserts the interval's top endpoint into the interval tree. If the endpoint
@@ -87,7 +95,7 @@ namespace OpenRCT2::Ui
      */
     static inline IntervalTree::iterator InsertTopEndpoint(IntervalTree& y_intersect, int32_t top)
     {
-        auto top_in = y_intersect.insert({ top, { 1, 0 } });
+        auto top_in = y_intersect.emplace(top, YData{ 1, 0 });
         IntervalTree::iterator top_it = top_in.first;
         if (top_in.second)
         {
@@ -111,7 +119,7 @@ namespace OpenRCT2::Ui
      */
     static inline IntervalTree::iterator InsertBottomEndpoint(IntervalTree& y_intersect, int32_t bottom)
     {
-        auto bottom_in = y_intersect.insert({ bottom, { 1, 1 } });
+        auto bottom_in = y_intersect.emplace(bottom, YData{ 1, 1 });
         IntervalTree::iterator bottom_it = bottom_in.first;
         if (bottom_in.second)
         {

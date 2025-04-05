@@ -35,14 +35,14 @@
 static_assert(
     std::endian::native == std::endian::little, "OpenRCT2 is known to be broken on big endian. Proceed with caution!");
 
-enum class SPECIAL_FOLDER
+enum class SpecialFolder
 {
-    USER_CACHE,
-    USER_CONFIG,
-    USER_DATA,
-    USER_HOME,
+    userCache,
+    userConfig,
+    userData,
+    userHome,
 
-    RCT2_DISCORD,
+    rct2Discord,
 };
 
 struct RealWorldDate;
@@ -52,7 +52,7 @@ struct TTFFontDescriptor;
 namespace OpenRCT2::Platform
 {
     std::string GetEnvironmentVariable(std::string_view name);
-    std::string GetFolderPath(SPECIAL_FOLDER folder);
+    std::string GetFolderPath(SpecialFolder folder);
     std::string GetInstallPath();
     std::string GetDocsPath();
     std::string GetCurrentExecutablePath();

@@ -74,7 +74,7 @@ static void PaintSwingingInverterShipStructure(
     BoundBoxXYZ bb = { { boundBox.offset, height }, { boundBox.length, 127 } };
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
         vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
@@ -103,7 +103,7 @@ static void PaintSwingingInverterShipStructure(
         }
     }
 
-    auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto vehicleImageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         vehicleImageTemplate = stationColour;
@@ -134,13 +134,13 @@ static void PaintSwingingInverterShip(
     uint8_t relativeTrackSequence = kTrackMap1x4[direction][trackSequence];
     ImageId imageId;
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
 
-        if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+        if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
             imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });

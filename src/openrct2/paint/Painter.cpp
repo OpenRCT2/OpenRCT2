@@ -87,7 +87,7 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
     auto stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
     screenCoords.x = screenCoords.x - stringWidth;
 
-    if (((GetGameState().CurrentTicks >> 1) & 0xF) > 4)
+    if (((getGameState().currentTicks >> 1) & 0xF) > 4)
         DrawText(dpi, screenCoords, { COLOUR_SATURATED_RED }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
@@ -96,7 +96,7 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
 
 static bool ShouldShowFPS()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return true;
 
     auto* windowMgr = Ui::GetWindowManager();
@@ -119,7 +119,7 @@ void Painter::PaintFPS(DrawPixelInfo& dpi)
     screenCoords.x = screenCoords.x - (stringWidth / 2);
 
     // Move counter below toolbar if buttons are centred
-    const bool isTitle = gScreenFlags == SCREEN_FLAGS_TITLE_DEMO;
+    const bool isTitle = gLegacyScene == LegacyScene::titleSequence;
     if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
     {
         screenCoords.y = kTopToolbarHeight + 3;

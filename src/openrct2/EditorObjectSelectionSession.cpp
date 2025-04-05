@@ -16,6 +16,7 @@
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "drawing/Drawing.h"
+#include "entity/EntityList.h"
 #include "entity/Guest.h"
 #include "entity/Staff.h"
 #include "localisation/Formatter.h"
@@ -25,11 +26,11 @@
 #include "object/ObjectList.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "object/WaterObject.h"
 #include "ride/RideData.h"
 #include "ride/RideManager.hpp"
 #include "ride/TrainManager.h"
 #include "ride/Vehicle.h"
-#include "scenario/Scenario.h"
 #include "windows/Intent.h"
 #include "world/tile_element/BannerElement.h"
 #include "world/tile_element/EntranceElement.h"
@@ -53,8 +54,8 @@ static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::count)];
 static void SetupInUseSelectionFlags();
 static void SetupTrackDesignerObjects();
 static void SetupTrackManagerObjects();
-static void WindowEditorObjectSelectionSelectDefaultObjects();
-static void SelectDesignerObjects();
+static void selectScenarioEditorObjects();
+static void selectTrackDesignerObjects();
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
 
 /**
@@ -104,7 +105,7 @@ static void SetupTrackDesignerObjects()
 {
     int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
     const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
-    SelectDesignerObjects();
+    selectTrackDesignerObjects();
     for (int32_t i = 0; i < numObjects; i++)
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
@@ -246,7 +247,7 @@ void SetupInUseSelectionFlags()
     for (auto& ride : GetRideManager())
     {
         Editor::SetSelectedObject(ObjectType::ride, ride.subtype, ObjectSelectionFlags::InUse);
-        Editor::SetSelectedObject(ObjectType::station, ride.entrance_style, ObjectSelectionFlags::InUse);
+        Editor::SetSelectedObject(ObjectType::station, ride.entranceStyle, ObjectSelectionFlags::InUse);
         Editor::SetSelectedObject(ObjectType::music, ride.music, ObjectSelectionFlags::InUse);
     }
 
@@ -325,12 +326,12 @@ void Sub6AB211()
         _numAvailableObjectsForType[EnumValue(objectType)]++;
     }
 
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+    if (gLegacyScene == LegacyScene::trackDesigner)
     {
         SetupTrackDesignerObjects();
     }
 
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+    if (gLegacyScene == LegacyScene::trackDesignsManager)
     {
         SetupTrackManagerObjects();
     }
@@ -338,12 +339,12 @@ void Sub6AB211()
     SetupInUseSelectionFlags();
     ResetSelectedObjectCountAndSize();
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(isInTrackDesignerOrManager()))
     {
         // To prevent it breaking in scenario mode.
-        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        if (gLegacyScene == LegacyScene::scenarioEditor)
         {
-            WindowEditorObjectSelectionSelectDefaultObjects();
+            selectScenarioEditorObjects();
         }
     }
 
@@ -354,7 +355,7 @@ void Sub6AB211()
  *
  *  rct2: 0x006AB316
  */
-void EditorObjectFlagsFree()
+void EditorObjectFlagsClear()
 {
     _objectSelectionFlags.clear();
     _objectSelectionFlags.shrink_to_fit();
@@ -430,31 +431,33 @@ void UnloadUnselectedObjects()
  *
  *  rct2: 0x006AA805
  */
-static void WindowEditorObjectSelectionSelectDefaultObjects()
+static void selectScenarioEditorObjects()
 {
     if (_numSelectedObjectsForType[0] == 0)
     {
-        for (auto defaultSelectedObject : DefaultSelectedObjects)
+        for (auto designerSelectedObject : kCommonScenarioAndTrackDesignerObjects)
         {
             WindowEditorObjectSelectionSelectObject(
-                0,
-                INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
-                    | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
+                0, { EditorInputFlag::select, EditorInputFlag::unk1, EditorInputFlag::selectObjectsInSceneryGroup },
+                ObjectEntryDescriptor(designerSelectedObject));
+        }
+        for (auto defaultSelectedObject : kDefaultScenarioObjects)
+        {
+            WindowEditorObjectSelectionSelectObject(
+                0, { EditorInputFlag::select, EditorInputFlag::unk1, EditorInputFlag::selectObjectsInSceneryGroup },
                 ObjectEntryDescriptor(defaultSelectedObject));
         }
     }
 }
 
-static void SelectDesignerObjects()
+static void selectTrackDesignerObjects()
 {
     if (_numSelectedObjectsForType[0] == 0)
     {
-        for (auto designerSelectedObject : DesignerSelectedObjects)
+        for (auto designerSelectedObject : kCommonScenarioAndTrackDesignerObjects)
         {
             WindowEditorObjectSelectionSelectObject(
-                0,
-                INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
-                    | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
+                0, { EditorInputFlag::select, EditorInputFlag::unk1, EditorInputFlag::selectObjectsInSceneryGroup },
                 ObjectEntryDescriptor(designerSelectedObject));
         }
     }
@@ -466,7 +469,7 @@ static void SelectDesignerObjects()
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto* oldPalette = objectManager.GetLoadedObject(ObjectType::water, 0);
+    auto* oldPalette = objectManager.GetLoadedObject<WaterObject>(0);
 
     if (oldPalette != nullptr)
     {
@@ -510,20 +513,20 @@ void ResetSelectedObjectCountAndSize()
 
 void FinishObjectSelection()
 {
-    auto& gameState = GetGameState();
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+    auto& gameState = getGameState();
+    if (gLegacyScene == LegacyScene::trackDesigner)
     {
         SetEveryRideTypeInvented();
         SetEveryRideEntryInvented();
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-        if (gameState.LastEntranceStyle == kObjectEntryIndexNull)
+        gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+        if (gameState.lastEntranceStyle == kObjectEntryIndexNull)
         {
-            gameState.LastEntranceStyle = 0;
+            gameState.lastEntranceStyle = 0;
         }
 
-        gameState.EditorStep = EditorStep::RollercoasterDesigner;
+        gameState.editorStep = EditorStep::RollercoasterDesigner;
         GfxInvalidateScreen();
     }
     else
@@ -533,7 +536,7 @@ void FinishObjectSelection()
         auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
         ContextBroadcastIntent(&intent);
 
-        gameState.EditorStep = EditorStep::LandscapeEditor;
+        gameState.editorStep = EditorStep::LandscapeEditor;
         GfxInvalidateScreen();
     }
 }
@@ -543,7 +546,7 @@ void FinishObjectSelection()
  *  rct2: 0x006AB54F
  */
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
-    uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item)
+    uint8_t isMasterObject, EditorInputFlags flags, const ObjectRepositoryItem* item)
 {
     if (item == nullptr)
     {
@@ -563,7 +566,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
     }
 
     uint8_t* selectionFlags = &_objectSelectionFlags[index];
-    if (!(flags & INPUT_FLAG_EDITOR_OBJECT_SELECT))
+    if (!flags.has(EditorInputFlag::select))
     {
         if (!(*selectionFlags & ObjectSelectionFlags::Selected))
         {
@@ -581,7 +584,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         }
 
         ObjectType objectType = item->Type;
-        if (objectType == ObjectType::sceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
+        if (objectType == ObjectType::sceneryGroup && flags.has(EditorInputFlag::selectObjectsInSceneryGroup))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
@@ -596,7 +599,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
 
     if (isMasterObject == 0)
     {
-        if (flags & INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED)
+        if (flags.has(EditorInputFlag::objectAlwaysRequired))
         {
             *selectionFlags |= ObjectSelectionFlags::AlwaysRequired;
         }
@@ -620,7 +623,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
     }
 
-    if (objectType == ObjectType::sceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
+    if (objectType == ObjectType::sceneryGroup && flags.has(EditorInputFlag::selectObjectsInSceneryGroup))
     {
         for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
         {
@@ -642,7 +645,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         PeepUpdateNames();
     }
 
-    if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
+    if (isMasterObject != 0 && !flags.has(EditorInputFlag::unk1))
     {
         char objectName[64];
         ObjectCreateIdentifierName(objectName, 64, &item->ObjectEntry);
@@ -663,7 +666,7 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
 }
 
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
-    uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& descriptor)
+    uint8_t isMasterObject, EditorInputFlags flags, const ObjectEntryDescriptor& descriptor)
 {
     auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
     const auto* item = objectRepository.FindObject(descriptor);
@@ -753,6 +756,10 @@ int32_t EditorRemoveUnusedObjects()
                 if (objectType == ObjectType::peepAnimations)
                     continue;
 
+                // Avoid deleting climate objects, as they're not bound to entities.
+                if (objectType == ObjectType::climate)
+                    continue;
+
                 // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.
                 if (objectType == ObjectType::sceneryGroup)
                     continue;
@@ -764,7 +771,7 @@ int32_t EditorRemoveUnusedObjects()
         }
     }
     UnloadUnselectedObjects();
-    EditorObjectFlagsFree();
+    EditorObjectFlagsClear();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
     ContextBroadcastIntent(&intent);

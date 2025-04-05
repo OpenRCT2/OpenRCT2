@@ -23,6 +23,7 @@ struct RideObjectEntry;
 class ObjectList;
 enum class EditorStep : uint8_t;
 enum class VehicleColourSettings : uint8_t;
+enum class ScenarioCategory : uint8_t;
 
 namespace OpenRCT2::RCT2
 {
@@ -71,213 +72,213 @@ namespace OpenRCT2::RCT2
      */
     struct Ride
     {
-        uint8_t Type; // 0x000
+        uint8_t type; // 0x000
         // pointer to static info. for example, wild mouse type is 0x36, subtype is
         // 0x4c.
-        RCT12ObjectEntryIndex Subtype;                                 // 0x001
-        uint16_t Pad002;                                               // 0x002
-        uint8_t Mode;                                                  // 0x004
+        RCT12ObjectEntryIndex subtype;                                 // 0x001
+        uint16_t pad002;                                               // 0x002
+        uint8_t mode;                                                  // 0x004
         VehicleColourSettings vehicleColourSettings;                   // 0x005
-        RCT12VehicleColour VehicleColours[Limits::kMaxVehicleColours]; // 0x006
-        uint8_t Pad046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
+        RCT12VehicleColour vehicleColours[Limits::kMaxVehicleColours]; // 0x006
+        uint8_t pad046[0x03]; // 0x046, Used to be track colours in RCT1 without expansions
         // 0 = closed, 1 = open, 2 = test
-        uint8_t Status; // 0x049
-        StringId Name;  // 0x04A
+        uint8_t status; // 0x049
+        StringId name;  // 0x04A
         union
         {
-            uint32_t NameArguments; // 0x04C
+            uint32_t nameArguments; // 0x04C
             struct
             {
-                StringId NameArgumentsTypeName; // 0x04C
-                uint16_t NameArgumentsNumber;   // 0x04E
+                StringId nameArgumentsTypeName; // 0x04C
+                uint16_t nameArgumentsNumber;   // 0x04E
             };
         };
-        RCT12xy8 OverallView;                                // 0x050
-        RCT12xy8 StationStarts[Limits::kMaxStationsPerRide]; // 0x052
-        uint8_t StationHeights[Limits::kMaxStationsPerRide]; // 0x05A
-        uint8_t StationLength[Limits::kMaxStationsPerRide];  // 0x05E
-        uint8_t StationDepart[Limits::kMaxStationsPerRide];  // 0x062
+        RCT12xy8 overallView;                                // 0x050
+        RCT12xy8 stationStarts[Limits::kMaxStationsPerRide]; // 0x052
+        uint8_t stationHeights[Limits::kMaxStationsPerRide]; // 0x05A
+        uint8_t stationLength[Limits::kMaxStationsPerRide];  // 0x05E
+        uint8_t stationDepart[Limits::kMaxStationsPerRide];  // 0x062
         // ride->vehicle index for current train waiting for passengers
         // at station
-        uint8_t TrainAtStation[Limits::kMaxStationsPerRide];   // 0x066
-        RCT12xy8 Entrances[Limits::kMaxStationsPerRide];       // 0x06A
-        RCT12xy8 Exits[Limits::kMaxStationsPerRide];           // 0x072
-        uint16_t LastPeepInQueue[Limits::kMaxStationsPerRide]; // 0x07A
-        uint8_t Pad082[Limits::kMaxStationsPerRide];           // 0x082, Used to be number of peeps in queue in RCT1, but this
+        uint8_t trainAtStation[Limits::kMaxStationsPerRide];   // 0x066
+        RCT12xy8 entrances[Limits::kMaxStationsPerRide];       // 0x06A
+        RCT12xy8 exits[Limits::kMaxStationsPerRide];           // 0x072
+        uint16_t lastPeepInQueue[Limits::kMaxStationsPerRide]; // 0x07A
+        uint8_t pad082[Limits::kMaxStationsPerRide];           // 0x082, Used to be number of peeps in queue in RCT1, but this
                                                                // has moved.
-        uint16_t Vehicles[Limits::kMaxTrainsPerRide];          // 0x086, Points to the first car in the train
-        uint8_t DepartFlags;                                   // 0x0C6
+        uint16_t vehicles[Limits::kMaxTrainsPerRide];          // 0x086, Points to the first car in the train
+        uint8_t departFlags;                                   // 0x0C6
 
         // Not sure if these should be uint or sint.
-        uint8_t NumStations;             // 0x0C7
-        uint8_t NumTrains;               // 0x0C8
-        uint8_t NumCarsPerTrain;         // 0x0C9
-        uint8_t ProposedNumTrains;       // 0x0CA
-        uint8_t ProposedNumCarsPerTrain; // 0x0CB
-        uint8_t MaxTrains;               // 0x0CC
-        uint8_t MinMaxCarsPerTrain;      // 0x0CD
-        uint8_t MinWaitingTime;          // 0x0CE
-        uint8_t MaxWaitingTime;          // 0x0CF
+        uint8_t numStations;             // 0x0C7
+        uint8_t numTrains;               // 0x0C8
+        uint8_t numCarsPerTrain;         // 0x0C9
+        uint8_t proposedNumTrains;       // 0x0CA
+        uint8_t proposedNumCarsPerTrain; // 0x0CB
+        uint8_t maxTrains;               // 0x0CC
+        uint8_t minMaxCarsPerTrain;      // 0x0CD
+        uint8_t minWaitingTime;          // 0x0CE
+        uint8_t maxWaitingTime;          // 0x0CF
         union
         {
-            uint8_t OperationOption; // 0x0D0
-            uint8_t TimeLimit;       // 0x0D0
-            uint8_t NumLaps;         // 0x0D0
-            uint8_t LaunchSpeed;     // 0x0D0
-            uint8_t Speed;           // 0x0D0
-            uint8_t Rotations;       // 0x0D0
+            uint8_t operationOption; // 0x0D0
+            uint8_t timeLimit;       // 0x0D0
+            uint8_t numLaps;         // 0x0D0
+            uint8_t launchSpeed;     // 0x0D0
+            uint8_t speed;           // 0x0D0
+            uint8_t rotations;       // 0x0D0
         };
 
-        uint8_t BoatHireReturnDirection; // 0x0D1
-        RCT12xy8 BoatHireReturnPosition; // 0x0D2
-        uint8_t MeasurementIndex;        // 0x0D4
+        uint8_t boatHireReturnDirection; // 0x0D1
+        RCT12xy8 boatHireReturnPosition; // 0x0D2
+        uint8_t measurementIndex;        // 0x0D4
         // bits 0 through 4 are the number of helix sections
         // bit 5: spinning tunnel, water splash, or rapids
         // bit 6: log reverser, waterfall
         // bit 7: whirlpool
-        uint8_t SpecialTrackElements; // 0x0D5
-        uint8_t Pad0D6[2];            // 0x0D6
+        uint8_t specialTrackElements; // 0x0D5
+        uint8_t pad0D6[2];            // 0x0D6
         // Use ToHumanReadableSpeed if converting to display
-        int32_t MaxSpeed;                            // 0x0D8
-        int32_t AverageSpeed;                        // 0x0DC
-        uint8_t CurrentTestSegment;                  // 0x0E0
-        uint8_t AverageSpeedTestTimeout;             // 0x0E1
-        uint8_t Pad0E2[0x2];                         // 0x0E2
-        int32_t Length[Limits::kMaxStationsPerRide]; // 0x0E4
-        uint16_t Time[Limits::kMaxStationsPerRide];  // 0x0F4
-        fixed16_2dp MaxPositiveVerticalG;            // 0x0FC
-        fixed16_2dp MaxNegativeVerticalG;            // 0x0FE
-        fixed16_2dp MaxLateralG;                     // 0x100
-        fixed16_2dp PreviousVerticalG;               // 0x102
-        fixed16_2dp PreviousLateralG;                // 0x104
-        uint8_t Pad106[0x2];                         // 0x106
-        uint32_t TestingFlags;                       // 0x108
+        int32_t maxSpeed;                            // 0x0D8
+        int32_t averageSpeed;                        // 0x0DC
+        uint8_t currentTestSegment;                  // 0x0E0
+        uint8_t averageSpeedTestTimeout;             // 0x0E1
+        uint8_t pad0E2[0x2];                         // 0x0E2
+        int32_t length[Limits::kMaxStationsPerRide]; // 0x0E4
+        uint16_t time[Limits::kMaxStationsPerRide];  // 0x0F4
+        fixed16_2dp maxPositiveVerticalG;            // 0x0FC
+        fixed16_2dp maxNegativeVerticalG;            // 0x0FE
+        fixed16_2dp maxLateralG;                     // 0x100
+        fixed16_2dp previousVerticalG;               // 0x102
+        fixed16_2dp previousLateralG;                // 0x104
+        uint8_t pad106[0x2];                         // 0x106
+        uint32_t testingFlags;                       // 0x108
         // x y map location of the current track piece during a test
         // this is to prevent counting special tracks multiple times
-        RCT12xy8 CurTestTrackLocation; // 0x10C
+        RCT12xy8 curTestTrackLocation; // 0x10C
         // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
-        uint16_t TurnCountDefault; // 0x10E X = current turn count
-        uint16_t TurnCountBanked;  // 0x110
-        uint16_t TurnCountSloped;  // 0x112 X = number turns > 3 elements
+        uint16_t turnCountDefault; // 0x10E X = current turn count
+        uint16_t turnCountBanked;  // 0x110
+        uint16_t turnCountSloped;  // 0x112 X = number turns > 3 elements
         union
         {
-            uint8_t Inversions; // 0x114 (???X XXXX)
-            uint8_t Holes;      // 0x114 (???X XXXX)
+            uint8_t inversions; // 0x114 (???X XXXX)
+            uint8_t holes;      // 0x114 (???X XXXX)
             // This is a very rough approximation of how much of the ride is undercover.
             // It reaches the maximum value of 7 at about 50% undercover and doesn't increase beyond that.
-            uint8_t ShelteredEighths; // 0x114 (XXX?-????)
+            uint8_t shelteredEighths; // 0x114 (XXX?-????)
         };
         // Y is number of powered lifts, X is drops
-        uint8_t Drops;             // 0x115 (YYXX XXXX)
-        uint8_t StartDropHeight;   // 0x116
-        uint8_t HighestDropHeight; // 0x117
-        int32_t ShelteredLength;   // 0x118
+        uint8_t drops;             // 0x115 (YYXX XXXX)
+        uint8_t startDropHeight;   // 0x116
+        uint8_t highestDropHeight; // 0x117
+        int32_t shelteredLength;   // 0x118
         // Unused always 0? Should affect nausea
-        uint16_t Var11C;              // 0x11C
-        uint8_t NumShelteredSections; // 0x11E (?abY YYYY)
+        uint16_t var11C;              // 0x11C
+        uint8_t numShelteredSections; // 0x11E (?abY YYYY)
         // see CurTestTrackLocation
-        uint8_t CurTestTrackZ; // 0x11F
+        uint8_t curTestTrackZ; // 0x11F
         // Customer counter in the current 960 game tick (about 30 seconds) interval
-        uint16_t CurNumCustomers; // 0x120
+        uint16_t curNumCustomers; // 0x120
         // Counts ticks to update customer intervals, resets each 960 game ticks.
-        uint16_t NumCustomersTimeout; // 0x122
+        uint16_t numCustomersTimeout; // 0x122
         // Customer count in the last 10 * 960 game ticks (sliding window)
-        uint16_t NumCustomers[Limits::kCustomerHistorySize]; // 0x124
-        money16 Price;                                       // 0x138
-        RCT12xy8 ChairliftBullwheelLocation[2];              // 0x13A
-        uint8_t ChairliftBullwheelZ[2];                      // 0x13E
+        uint16_t numCustomers[Limits::kCustomerHistorySize]; // 0x124
+        money16 price;                                       // 0x138
+        RCT12xy8 chairliftBullwheelLocation[2];              // 0x13A
+        uint8_t chairliftBullwheelZ[2];                      // 0x13E
         RatingTuple ratings;                                 // 0x140
-        money16 Value;                                       // 0x146
-        uint16_t ChairliftBullwheelRotation;                 // 0x148
-        uint8_t Satisfaction;                                // 0x14A
-        uint8_t SatisfactionTimeOut;                         // 0x14B
-        uint8_t SatisfactionNext;                            // 0x14C
+        money16 value;                                       // 0x146
+        uint16_t chairliftBullwheelRotation;                 // 0x148
+        uint8_t satisfaction;                                // 0x14A
+        uint8_t satisfactionTimeOut;                         // 0x14B
+        uint8_t satisfactionNext;                            // 0x14C
         // Various flags stating whether a window needs to be refreshed
-        uint8_t WindowInvalidateFlags; // 0x14D
-        uint8_t Pad14E[0x02];          // 0x14E
-        uint32_t TotalCustomers;       // 0x150
-        money32 TotalProfit;           // 0x154
-        uint8_t Popularity;            // 0x158
-        uint8_t PopularityTimeOut;     // 0x159 Updated every purchase and ?possibly by time?
-        uint8_t PopularityNext;        // 0x15A When timeout reached this will be the next popularity
-        uint8_t NumRiders;             // 0x15B
-        uint8_t MusicTuneId;           // 0x15C
-        uint8_t SlideInUse;            // 0x15D
+        uint8_t windowInvalidateFlags; // 0x14D
+        uint8_t pad14E[0x02];          // 0x14E
+        uint32_t totalCustomers;       // 0x150
+        money32 totalProfit;           // 0x154
+        uint8_t popularity;            // 0x158
+        uint8_t popularityTimeOut;     // 0x159 Updated every purchase and ?possibly by time?
+        uint8_t popularityNext;        // 0x15A When timeout reached this will be the next popularity
+        uint8_t numRiders;             // 0x15B
+        uint8_t musicTuneId;           // 0x15C
+        uint8_t slideInUse;            // 0x15D
         union
         {
-            uint16_t SlidePeep; // 0x15E
-            uint16_t MazeTiles; // 0x15E
+            uint16_t slidePeep; // 0x15E
+            uint16_t mazeTiles; // 0x15E
         };
-        uint8_t Pad160[0xE];            // 0x160
-        uint8_t SlidePeepTShirtColour;  // 0x16E
-        uint8_t Pad16F[0x7];            // 0x16F
-        uint8_t SpiralSlideProgress;    // 0x176
-        uint8_t Pad177[0x9];            // 0x177
-        int16_t BuildDate;              // 0x180
-        money16 UpkeepCost;             // 0x182
-        uint16_t RaceWinner;            // 0x184
-        uint8_t Pad186[0x02];           // 0x186
-        uint32_t MusicPosition;         // 0x188
-        uint8_t BreakdownReasonPending; // 0x18C
-        uint8_t MechanicStatus;         // 0x18D
-        uint16_t Mechanic;              // 0x18E
-        uint8_t InspectionStation;      // 0x190
-        uint8_t BrokenVehicle;          // 0x191
-        uint8_t BrokenCar;              // 0x192
-        uint8_t BreakdownReason;        // 0x193
-        money16 PriceSecondary;         // 0x194
+        uint8_t pad160[0xE];            // 0x160
+        uint8_t slidePeepTShirtColour;  // 0x16E
+        uint8_t pad16F[0x7];            // 0x16F
+        uint8_t spiralSlideProgress;    // 0x176
+        uint8_t pad177[0x9];            // 0x177
+        int16_t buildDate;              // 0x180
+        money16 upkeepCost;             // 0x182
+        uint16_t raceWinner;            // 0x184
+        uint8_t pad186[0x02];           // 0x186
+        uint32_t musicPosition;         // 0x188
+        uint8_t breakdownReasonPending; // 0x18C
+        uint8_t mechanicStatus;         // 0x18D
+        uint16_t mechanic;              // 0x18E
+        uint8_t inspectionStation;      // 0x190
+        uint8_t brokenTrain;            // 0x191
+        uint8_t brokenCar;              // 0x192
+        uint8_t breakdownReason;        // 0x193
+        money16 priceSecondary;         // 0x194
         union
         {
             struct
             {
-                uint8_t ReliabilitySubvalue;   // 0x196, 0 - 255, acts like the decimals for reliability_percentage
-                uint8_t ReliabilityPercentage; // 0x197, Starts at 100 and decreases from there.
+                uint8_t reliabilitySubvalue;   // 0x196, 0 - 255, acts like the decimals for reliabilityPercentage
+                uint8_t reliabilityPercentage; // 0x197, Starts at 100 and decreases from there.
             };
-            uint16_t Reliability; // 0x196
+            uint16_t reliability; // 0x196
         };
         // Small constant used to increase the unreliability as the game continues,
         // making breakdowns more and more likely.
-        uint8_t UnreliabilityFactor; // 0x198
+        uint8_t unreliabilityFactor; // 0x198
         // Range from [0, 100]
-        uint8_t Downtime;                                      // 0x199
-        uint8_t InspectionInterval;                            // 0x19A
-        uint8_t LastInspection;                                // 0x19B
-        uint8_t DowntimeHistory[Limits::kDowntimeHistorySize]; // 0x19C
-        uint32_t NoPrimaryItemsSold;                           // 0x1A4
-        uint32_t NoSecondaryItemsSold;                         // 0x1A8
-        uint8_t BreakdownSoundModifier;                        // 0x1AC
+        uint8_t downtime;                                      // 0x199
+        uint8_t inspectionInterval;                            // 0x19A
+        uint8_t lastInspection;                                // 0x19B
+        uint8_t downtimeHistory[Limits::kDowntimeHistorySize]; // 0x19C
+        uint32_t numPrimaryItemsSold;                          // 0x1A4
+        uint32_t numSecondaryItemsSold;                        // 0x1A8
+        uint8_t breakdownSoundModifier;                        // 0x1AC
         // Used to oscillate the sound when ride breaks down.
         // 0 = no change, 255 = max change
-        uint8_t NotFixedTimeout;                                    // 0x1AD
-        uint8_t LastCrashType;                                      // 0x1AE
-        uint8_t ConnectedMessageThrottle;                           // 0x1AF
-        money32 IncomePerHour;                                      // 0x1B0
-        money32 Profit;                                             // 0x1B4
-        uint8_t QueueTime[Limits::kMaxStationsPerRide];             // 0x1B8
-        uint8_t TrackColourMain[Limits::kNumColourSchemes];         // 0x1BC
-        uint8_t TrackColourAdditional[Limits::kNumColourSchemes];   // 0x1C0
-        uint8_t TrackColourSupports[Limits::kNumColourSchemes];     // 0x1C4
-        uint8_t Music;                                              // 0x1C8
-        uint8_t EntranceStyle;                                      // 0x1C9
-        uint16_t VehicleChangeTimeout;                              // 0x1CA
-        uint8_t NumBlockBrakes;                                     // 0x1CC
-        uint8_t LiftHillSpeed;                                      // 0x1CD
-        uint16_t GuestsFavourite;                                   // 0x1CE
-        uint32_t LifecycleFlags;                                    // 0x1D0
-        uint8_t VehicleColoursExtended[Limits::kMaxVehicleColours]; // 0x1D4
-        uint16_t TotalAirTime;                                      // 0x1F4
-        uint8_t CurrentTestStation;                                 // 0x1F6
-        uint8_t NumCircuits;                                        // 0x1F7
-        int16_t CableLiftX;                                         // 0x1F8
-        int16_t CableLiftY;                                         // 0x1FA
-        uint8_t CableLiftZ;                                         // 0x1FC
-        uint8_t Pad1FD;                                             // 0x1FD
-        uint16_t CableLift;                                         // 0x1FE
-        uint16_t QueueLength[Limits::kMaxStationsPerRide];          // 0x200
-        uint8_t Pad208[0x58];                                       // 0x208
+        uint8_t notFixedTimeout;                                    // 0x1AD
+        uint8_t lastCrashType;                                      // 0x1AE
+        uint8_t connectedMessageThrottle;                           // 0x1AF
+        money32 incomePerHour;                                      // 0x1B0
+        money32 profit;                                             // 0x1B4
+        uint8_t queueTime[Limits::kMaxStationsPerRide];             // 0x1B8
+        uint8_t trackColourMain[Limits::kNumColourSchemes];         // 0x1BC
+        uint8_t trackColourAdditional[Limits::kNumColourSchemes];   // 0x1C0
+        uint8_t trackColourSupports[Limits::kNumColourSchemes];     // 0x1C4
+        uint8_t music;                                              // 0x1C8
+        uint8_t entranceStyle;                                      // 0x1C9
+        uint16_t vehicleChangeTimeout;                              // 0x1CA
+        uint8_t numBlockBrakes;                                     // 0x1CC
+        uint8_t liftHillSpeed;                                      // 0x1CD
+        uint16_t guestsFavourite;                                   // 0x1CE
+        uint32_t lifecycleFlags;                                    // 0x1D0
+        uint8_t vehicleColoursExtended[Limits::kMaxVehicleColours]; // 0x1D4
+        uint16_t totalAirTime;                                      // 0x1F4
+        uint8_t currentTestStation;                                 // 0x1F6
+        uint8_t numCircuits;                                        // 0x1F7
+        int16_t cableLiftX;                                         // 0x1F8
+        int16_t cableLiftY;                                         // 0x1FA
+        uint8_t cableLiftZ;                                         // 0x1FC
+        uint8_t pad1FD;                                             // 0x1FD
+        uint16_t cableLift;                                         // 0x1FE
+        uint16_t queueLength[Limits::kMaxStationsPerRide];          // 0x200
+        uint8_t pad208[0x58];                                       // 0x208
 
-        uint8_t GetMinCarsPerTrain() const;
-        uint8_t GetMaxCarsPerTrain() const;
+        uint8_t getMinCarsPerTrain() const;
+        uint8_t getMaxCarsPerTrain() const;
     };
     static_assert(sizeof(Ride) == 0x260);
 
@@ -313,7 +314,6 @@ namespace OpenRCT2::RCT2
         uint8_t SecondaryColour;      // 0x15
 
         colour_t getTertiaryWallColour() const;
-        void setTertiaryWallColour(colour_t colour);
     };
     static_assert(sizeof(TD6SceneryElement) == 0x16);
 
@@ -393,7 +393,7 @@ namespace OpenRCT2::RCT2
         int8_t ObjectiveType;
         int8_t ObjectiveArg1;
         int32_t objectiveArg2;
-        int16_t objectiveArg3;
+        uint16_t objectiveArg3;
         char Name[64];
         char Details[256];
         int32_t Flags;
@@ -510,19 +510,19 @@ namespace OpenRCT2::RCT2
         }
         uint8_t GetTrackDirection() const
         {
-            return TrackTypeAndDirection & RCT12VehicleTrackDirectionMask;
+            return TrackTypeAndDirection & kRCT12VehicleTrackDirectionMask;
         }
         void SetTrackType(OpenRCT2::RCT12::TrackElemType trackType)
         {
             // set the upper 14 bits to 0
-            TrackTypeAndDirection &= ~RCT12VehicleTrackTypeMask;
+            TrackTypeAndDirection &= ~kRCT12VehicleTrackTypeMask;
             TrackTypeAndDirection |= EnumValue(trackType) << 2;
         }
         void SetTrackDirection(uint8_t trackDirection)
         {
             // set the lower 2 bits only
-            TrackTypeAndDirection &= ~RCT12VehicleTrackDirectionMask;
-            TrackTypeAndDirection |= trackDirection & RCT12VehicleTrackDirectionMask;
+            TrackTypeAndDirection &= ~kRCT12VehicleTrackDirectionMask;
+            TrackTypeAndDirection |= trackDirection & kRCT12VehicleTrackDirectionMask;
         }
     };
     static_assert(sizeof(Vehicle) == 0xDA);
@@ -707,7 +707,7 @@ namespace OpenRCT2::RCT2
         RCT12EntityLitter Litter;
         RCT12EntityBalloon Balloon;
         RCT12EntityDuck Duck;
-        RCT12EntityJumpingFountain JumpingFountain;
+        RCT12EntityJumpingFountain JumpingFountain{};
         RCT12EntityMoneyEffect MoneyEffect;
         RCT12EntityCrashedVehicleParticle CrashedVehicleParticle;
         RCT12EntityCrashSplash CrashSplash;
@@ -758,11 +758,11 @@ namespace OpenRCT2::RCT2
     struct S6Info
     {
         ::EditorStep EditorStep;
-        uint8_t Category;      // 0x01
-        uint8_t ObjectiveType; // 0x02
-        uint8_t ObjectiveArg1; // 0x03
-        int32_t ObjectiveArg2; // 0x04
-        int16_t ObjectiveArg3; // 0x08
+        ScenarioCategory Category; // 0x01
+        uint8_t ObjectiveType;     // 0x02
+        uint8_t ObjectiveArg1;     // 0x03
+        int32_t ObjectiveArg2;     // 0x04
+        uint16_t ObjectiveArg3;    // 0x08
         uint8_t Pad00A[0x3E];
         char Name[64];        // 0x48
         char Details[256];    // 0x88
@@ -977,7 +977,7 @@ namespace OpenRCT2::RCT2
         uint8_t Byte13CA740;
         uint8_t Pad13CA741;
         uint8_t Byte13CA742[4]; // unused
-        uint8_t Climate;
+        RCT12::ClimateType Climate;
         uint8_t Pad013CA747;
         uint16_t WeatherUpdateTimer;
         uint8_t CurrentWeather;
@@ -990,7 +990,8 @@ namespace OpenRCT2::RCT2
         uint8_t NextWeatherGloom;
         uint8_t CurrentWeatherLevel;
         uint8_t NextWeatherLevel;
-        RCT12NewsItem NewsItems[Limits::MaxNewsItems];
+        RCT12NewsItem recentMessages[Limits::kMaxRecentNewsItems];
+        RCT12NewsItem archivedMessages[Limits::kMaxArchivedNewsItems];
         char RCT1ScenarioName[62];      // Unused in RCT2
         uint16_t RCT1ScenarioSlotIndex; // Unused in RCT2
         uint32_t RCT1ScenarioFlags;     // Unused in RCT2

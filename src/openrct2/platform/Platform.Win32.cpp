@@ -35,6 +35,7 @@
     #include "Platform.h"
 
     #include <cstring>
+    #include <format>
     #include <iterator>
     #include <locale>
 
@@ -54,7 +55,8 @@ static constexpr wchar_t SINGLE_INSTANCE_MUTEX_NAME[] = L"RollerCoaster Tycoon 2
 namespace OpenRCT2::Platform
 {
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
-    static std::string WIN32_GetModuleFileNameW(HMODULE hModule);
+    static std::wstring WIN32_GetModuleFileNameW(HMODULE hModule);
+    static u8string WIN32_GetModuleFileNameUTF8(HMODULE hModule);
 
     std::string GetEnvironmentVariable(std::string_view name)
     {
@@ -88,23 +90,23 @@ namespace OpenRCT2::Platform
         return result;
     }
 
-    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    std::string GetFolderPath(SpecialFolder folder)
     {
         switch (folder)
         {
             // We currently store everything under Documents/OpenRCT2
-            case SPECIAL_FOLDER::USER_CACHE:
-            case SPECIAL_FOLDER::USER_CONFIG:
-            case SPECIAL_FOLDER::USER_DATA:
+            case SpecialFolder::userCache:
+            case SpecialFolder::userConfig:
+            case SpecialFolder::userData:
             {
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Documents);
                 if (path.empty())
                 {
-                    path = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                    path = GetFolderPath(SpecialFolder::userHome);
                 }
                 return path;
             }
-            case SPECIAL_FOLDER::USER_HOME:
+            case SpecialFolder::userHome:
             {
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Profile);
                 if (path.empty())
@@ -117,7 +119,7 @@ namespace OpenRCT2::Platform
                 }
                 return path;
             }
-            case SPECIAL_FOLDER::RCT2_DISCORD:
+            case SpecialFolder::rct2Discord:
             {
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_LocalAppData);
                 if (!path.empty())
@@ -155,7 +157,7 @@ namespace OpenRCT2::Platform
 
     std::string GetCurrentExecutablePath()
     {
-        return WIN32_GetModuleFileNameW(nullptr);
+        return WIN32_GetModuleFileNameUTF8(nullptr);
     }
 
     std::string GetDocsPath()
@@ -307,18 +309,25 @@ namespace OpenRCT2::Platform
         return path;
     }
 
-    static std::string WIN32_GetModuleFileNameW(HMODULE hModule)
+    static std::wstring WIN32_GetModuleFileNameW(HMODULE hModule)
     {
-        uint32_t wExePathCapacity = MAX_PATH;
-        std::unique_ptr<wchar_t[]> wExePath;
+        uint32_t wExePathCapacity = 128;
+        std::wstring exePath;
+
         uint32_t size;
         do
         {
             wExePathCapacity *= 2;
-            wExePath = std::make_unique<wchar_t[]>(wExePathCapacity);
-            size = GetModuleFileNameW(hModule, wExePath.get(), wExePathCapacity);
+            exePath.resize(wExePathCapacity);
+            size = GetModuleFileNameW(hModule, exePath.data(), wExePathCapacity);
         } while (size >= wExePathCapacity);
-        return String::toUtf8(wExePath.get());
+        exePath.resize(size);
+        return exePath;
+    }
+
+    static u8string WIN32_GetModuleFileNameUTF8(HMODULE hModule)
+    {
+        return String::toUtf8(WIN32_GetModuleFileNameW(hModule));
     }
 
     u8string StrDecompToPrecomp(u8string_view input)
@@ -364,13 +373,8 @@ namespace OpenRCT2::Platform
         std::string_view extension, std::string_view fileTypeText, std::string_view commandText, std::string_view commandArgs,
         const uint32_t iconIndex)
     {
-        wchar_t exePathW[MAX_PATH];
-        wchar_t dllPathW[MAX_PATH];
-
-        [[maybe_unused]] int32_t printResult;
-
-        GetModuleFileNameW(nullptr, exePathW, static_cast<DWORD>(std::size(exePathW)));
-        GetModuleFileNameW(GetDLLModule(), dllPathW, static_cast<DWORD>(std::size(dllPathW)));
+        const std::wstring& exePathW = WIN32_GetModuleFileNameW(nullptr);
+        const std::wstring& dllPathW = WIN32_GetModuleFileNameW(GetDLLModule());
 
         auto extensionW = String::toWideChar(extension);
         auto fileTypeTextW = String::toWideChar(fileTypeText);
@@ -410,10 +414,8 @@ namespace OpenRCT2::Platform
             return false;
         }
         // [hRootKey\OpenRCT2.ext\DefaultIcon]
-        wchar_t szIconW[MAX_PATH];
-        printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
-        assert(printResult >= 0);
-        if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS)
+        const std::wstring szIconW = std::format(L"\"{}\",{}", dllPathW, iconIndex);
+        if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW.c_str(), 0) != ERROR_SUCCESS)
         {
             RegCloseKey(hKey);
             RegCloseKey(hRootKey);
@@ -437,10 +439,8 @@ namespace OpenRCT2::Platform
         }
 
         // [hRootKey\OpenRCT2.sv6\shell\open\command]
-        wchar_t szCommandW[MAX_PATH];
-        printResult = swprintf_s(szCommandW, MAX_PATH, L"\"%s\" %s", exePathW, commandArgsW.c_str());
-        assert(printResult >= 0);
-        if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS)
+        const std::wstring szCommandW = std::format(L"\"{}\" {}", exePathW, commandArgsW);
+        if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW.c_str(), 0) != ERROR_SUCCESS)
         {
             RegCloseKey(hKey);
             RegCloseKey(hRootKey);
@@ -857,23 +857,22 @@ namespace OpenRCT2::Platform
                     if (RegSetKeyValueW(hClassKey, nullptr, L"URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS)
                     {
                         // [hRootKey\openrct2\shell\open\command]
-                        wchar_t exePath[MAX_PATH];
-                        GetModuleFileNameW(nullptr, exePath, MAX_PATH);
-
-                        wchar_t buffer[512];
-                        swprintf_s(buffer, std::size(buffer), L"\"%s\" handle-uri \"%%1\"", exePath);
-                        if (RegSetValueW(hClassKey, L"shell\\open\\command", REG_SZ, buffer, 0) == ERROR_SUCCESS)
+                        const std::wstring& exePathW = WIN32_GetModuleFileNameW(nullptr);
+                        const std::wstring handle_uri_string = std::format(L"\"{}\" handle-uri \"%1\"", exePathW);
+                        if (RegSetValueW(hClassKey, L"shell\\open\\command", REG_SZ, handle_uri_string.c_str(), 0)
+                            == ERROR_SUCCESS)
                         {
                             // Not compulsory, but gives the application a nicer name
                             // [HKEY_CURRENT_USER\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache]
                             HKEY hMuiCacheKey;
                             if (RegCreateKeyW(hRootKey, MUI_CACHE, &hMuiCacheKey) == ERROR_SUCCESS)
                             {
-                                swprintf_s(buffer, std::size(buffer), L"%s.FriendlyAppName", exePath);
+                                const std::wstring friendly_apl_name = std::format(L"{}.FriendlyAppName", exePathW);
                                 // mingw-w64 used to define RegSetKeyValueW's signature incorrectly
                                 // You need at least mingw-w64 5.0 including this commit:
                                 //   https://sourceforge.net/p/mingw-w64/mingw-w64/ci/da9341980a4b70be3563ac09b5927539e7da21f7/
-                                RegSetKeyValueW(hMuiCacheKey, nullptr, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2"));
+                                RegSetKeyValueW(
+                                    hMuiCacheKey, nullptr, friendly_apl_name.c_str(), REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2"));
                             }
 
                             LOG_VERBOSE("URI protocol setup successful");

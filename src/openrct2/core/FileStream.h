@@ -14,11 +14,11 @@
 
 namespace OpenRCT2
 {
-    enum
+    enum class FileMode : uint8_t
     {
-        FILE_MODE_OPEN,
-        FILE_MODE_WRITE,
-        FILE_MODE_APPEND,
+        open,
+        write,
+        append,
     };
 
     /**
@@ -35,10 +35,10 @@ namespace OpenRCT2
         uint64_t _fileSize = 0;
 
     public:
-        FileStream(const fs::path& path, int32_t fileMode);
-        FileStream(const std::string& path, int32_t fileMode);
-        FileStream(std::string_view path, int32_t fileMode);
-        FileStream(const utf8* path, int32_t fileMode);
+        FileStream(const fs::path& path, FileMode fileMode);
+        FileStream(const std::string& path, FileMode fileMode);
+        FileStream(std::string_view path, FileMode fileMode);
+        FileStream(const utf8* path, FileMode fileMode);
         ~FileStream() override;
 
         bool CanRead() const override;

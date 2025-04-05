@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "core/BackgroundWorker.hpp"
 #include "core/StringTypes.h"
 #include "interface/WindowClasses.h"
 #include "localisation/StringIdType.h"
@@ -177,6 +178,8 @@ namespace OpenRCT2
 
         virtual void SetTimeScale(float newScale) = 0;
         virtual float GetTimeScale() const = 0;
+
+        virtual BackgroundWorker& GetBackgroundWorker() = 0;
     };
 
     [[nodiscard]] std::unique_ptr<IContext> CreateContext();

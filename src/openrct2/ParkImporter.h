@@ -23,6 +23,7 @@ namespace OpenRCT2
 {
     struct IStream;
     struct GameState_t;
+    struct ParkPreview;
 } // namespace OpenRCT2
 
 struct ScenarioIndexEntry;
@@ -49,7 +50,7 @@ struct IParkImporter
 public:
     virtual ~IParkImporter() = default;
 
-    virtual ParkLoadResult Load(const u8string& path) = 0;
+    virtual ParkLoadResult Load(const u8string& path, bool skipObjectCheck) = 0;
     virtual ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) = 0;
     virtual ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) = 0;
     virtual ParkLoadResult LoadFromStream(
@@ -57,7 +58,8 @@ public:
         = 0;
 
     virtual void Import(OpenRCT2::GameState_t& gameState) = 0;
-    virtual bool GetDetails(ScenarioIndexEntry* dst) = 0;
+    virtual bool PopulateIndexEntry(ScenarioIndexEntry* dst) = 0;
+    virtual OpenRCT2::ParkPreview GetParkPreview() = 0;
 };
 
 namespace OpenRCT2::ParkImporter

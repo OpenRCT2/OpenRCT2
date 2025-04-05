@@ -59,7 +59,7 @@ GLuint OpenGLShader::GetShaderId()
 std::string OpenGLShader::GetPath(const std::string& name)
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    auto shadersPath = env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::SHADER);
+    auto shadersPath = env->GetDirectoryPath(DirBase::openrct2, DirId::shaders);
     auto path = Path::Combine(shadersPath, name);
     if (_type == GL_VERTEX_SHADER)
     {
@@ -74,7 +74,7 @@ std::string OpenGLShader::GetPath(const std::string& name)
 
 std::string OpenGLShader::ReadSourceCode(const std::string& path)
 {
-    auto fs = FileStream(path, FILE_MODE_OPEN);
+    auto fs = FileStream(path, FileMode::open);
 
     uint64_t fileLength = fs.GetLength();
     if (fileLength > kMaxSourceSize)

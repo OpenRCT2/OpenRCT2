@@ -20,7 +20,7 @@ using namespace OpenRCT2;
 const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 {
     { "",       "",                     "",                      LANGUAGE_UNDEFINED, kFamilyOpenRCT2Sprite,                false }, // LANGUAGE_UNDEFINED
-    { "ar-EG", "Arabic (experimental)", "Arabic (experimental)", LANGUAGE_UNDEFINED, FAMILY(&TTFFamilySansSerif),          true  }, // LANGUAGE_ARABIC
+    { "ar-EG", "Arabic (experimental)", "Arabic (experimental)", LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyArabic),             true  }, // LANGUAGE_ARABIC
     { "ca-ES", "Catalan",               u8"Català",              LANGUAGE_UNDEFINED, kFamilyOpenRCT2Sprite,                false }, // LANGUAGE_CATALAN
     { "zh-CN", "Chinese (Simplified)",  "Chinese (Simplified)",  LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyChineseSimplified),  false }, // LANGUAGE_CHINESE_SIMPLIFIED
     { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyChineseTraditional), false }, // LANGUAGE_CHINESE_TRADITIONAL

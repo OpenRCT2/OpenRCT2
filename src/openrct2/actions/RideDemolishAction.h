@@ -11,15 +11,21 @@
 
 #include "GameAction.h"
 
+enum class RideModifyType : uint8_t
+{
+    demolish,
+    renew,
+};
+
 class RideDemolishAction final : public GameActionBase<GameCommand::DemolishRide>
 {
 private:
     RideId _rideIndex{ RideId::GetNull() };
-    uint8_t _modifyType{ RIDE_MODIFY_DEMOLISH };
+    RideModifyType _modifyType{ RideModifyType::demolish };
 
 public:
     RideDemolishAction() = default;
-    RideDemolishAction(RideId rideIndex, uint8_t modifyType);
+    RideDemolishAction(RideId rideIndex, RideModifyType modifyType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

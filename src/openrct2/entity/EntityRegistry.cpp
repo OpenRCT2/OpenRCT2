@@ -19,13 +19,13 @@
 #include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/String.hpp"
+#include "../entity/EntityList.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../peep/RideUseSystem.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Vehicle.h"
-#include "../scenario/Scenario.h"
 #include "Balloon.h"
 #include "Duck.h"
 #include "EntityTweener.h"
@@ -112,9 +112,9 @@ std::string EntitiesChecksum::ToString() const
 
 EntityBase* TryGetEntity(EntityId entityIndex)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     const auto idx = entityIndex.ToUnderlying();
-    return idx >= kMaxEntities ? nullptr : &gameState.Entities[idx].base;
+    return idx >= kMaxEntities ? nullptr : &gameState.entities[idx].base;
 }
 
 EntityBase* GetEntity(EntityId entityIndex)
@@ -175,8 +175,8 @@ void ResetAllEntities()
         FreeEntity(*spr);
     }
 
-    auto& gameState = GetGameState();
-    std::fill(std::begin(gameState.Entities), std::end(gameState.Entities), Entity_t());
+    auto& gameState = getGameState();
+    std::fill(std::begin(gameState.entities), std::end(gameState.entities), Entity_t());
     OpenRCT2::RideUse::GetHistory().Clear();
     OpenRCT2::RideUse::GetTypeHistory().Clear();
     for (int32_t i = 0; i < kMaxEntities; ++i)
@@ -452,7 +452,7 @@ void UpdateEntitiesSpatialIndex()
     {
         for (auto& entityId : entityList)
         {
-            auto* entity = GetEntity(entityId);
+            auto* entity = TryGetEntity(entityId);
             if (entity == nullptr || entity->Type == EntityType::Null)
                 continue;
 
@@ -475,9 +475,29 @@ CoordsXYZ EntityBase::GetLocation() const
 
 void EntityBase::SetLocation(const CoordsXYZ& newLocation)
 {
+    if (GetLocation() == newLocation)
+    {
+        // No change, this can happen quite often when the entity is interpolated.
+        return;
+    }
+
     x = newLocation.x;
     y = newLocation.y;
     z = newLocation.z;
+
+    if (SpatialIndex & kSpatialIndexDirtyMask)
+    {
+        // Already marked as dirty.
+        return;
+    }
+
+    const auto newSpatialIndex = ComputeSpatialIndex({ x, y });
+    if (newSpatialIndex == GetSpatialIndex(this))
+    {
+        // Avoid marking it dirty when we don't leave the current tile.
+        return;
+    }
+
     SpatialIndex |= kSpatialIndexDirtyMask;
 }
 

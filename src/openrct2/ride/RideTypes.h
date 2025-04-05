@@ -19,14 +19,15 @@
 struct Ride;
 
 using ride_type_t = uint16_t;
+static ride_type_t constexpr kRideTypeNull = 0xFF;
 
 /**
  * Couples a ride type and subtype together.
  */
 struct RideSelection
 {
-    ride_type_t Type;
-    ObjectEntryIndex EntryIndex;
+    ride_type_t Type = kRideTypeNull;
+    ObjectEntryIndex EntryIndex = kObjectEntryIndexNull;
 
     bool operator==(const RideSelection& other) const
     {

@@ -64,7 +64,7 @@ bool TrackElement::IsStation() const
 uint8_t TrackElement::GetSeatRotation() const
 {
     const auto* ride = GetRide(GetRideIndex());
-    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
+    if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
         return DEFAULT_SEAT_ROTATION;
 
     return URide.ColourScheme >> 4;
@@ -252,7 +252,7 @@ void TrackElement::SetBrakeClosed(bool isClosed)
 
 bool TrackElement::IsIndestructible() const
 {
-    return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0 && !GetGameState().Cheats.makeAllDestructible;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0 && !getGameState().cheats.makeAllDestructible;
 }
 
 void TrackElement::SetIsIndestructible(bool isIndestructible)

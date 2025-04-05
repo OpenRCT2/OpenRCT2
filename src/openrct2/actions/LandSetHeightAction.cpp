@@ -59,8 +59,8 @@ void LandSetHeightAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result LandSetHeightAction::Query() const
 {
-    auto& gameState = GetGameState();
-    if (gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+    auto& gameState = getGameState();
+    if (gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, kStringIdNone);
     }
@@ -71,7 +71,7 @@ GameActions::Result LandSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, errorMessage);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {
@@ -80,9 +80,9 @@ GameActions::Result LandSetHeightAction::Query() const
     }
 
     money64 sceneryRemovalCost = 0;
-    if (!gameState.Cheats.disableClearanceChecks)
+    if (!gameState.cheats.disableClearanceChecks)
     {
-        if (gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             // Check for obstructing large trees
             TileElement* tileElement = CheckTreeObstructions();
@@ -97,7 +97,7 @@ GameActions::Result LandSetHeightAction::Query() const
     }
 
     // Check for ride support limits
-    if (!gameState.Cheats.disableSupportLimits)
+    if (!gameState.cheats.disableSupportLimits)
     {
         errorMessage = CheckRideSupports();
         if (errorMessage != kStringIdNone)
@@ -128,7 +128,7 @@ GameActions::Result LandSetHeightAction::Query() const
         return res;
     }
 
-    if (!gameState.Cheats.disableClearanceChecks)
+    if (!gameState.cheats.disableClearanceChecks)
     {
         uint8_t zCorner = _height;
         if (_style & kTileSlopeRaisedCornersMask)
@@ -161,7 +161,7 @@ GameActions::Result LandSetHeightAction::Execute() const
     auto surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
 
-    if (!GetGameState().Cheats.disableClearanceChecks)
+    if (!getGameState().cheats.disableClearanceChecks)
     {
         WallRemoveAt({ _coords, _height * 8 - 16, _height * 8 + 32 });
         cost += GetSmallSceneryRemovalCost();
@@ -280,14 +280,14 @@ StringId LandSetHeightAction::CheckRideSupports() const
         if (ride == nullptr)
             continue;
 
-        const auto* rideEntry = ride->GetRideEntry();
+        const auto* rideEntry = ride->getRideEntry();
         if (rideEntry == nullptr)
             continue;
 
         int32_t maxHeight = rideEntry->max_height;
         if (maxHeight == 0)
         {
-            maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
+            maxHeight = ride->getRideTypeDescriptor().Heights.MaxHeight;
         }
 
         int32_t zDelta = trackElement->ClearanceHeight - _height;

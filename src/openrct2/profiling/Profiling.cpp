@@ -163,7 +163,7 @@ namespace OpenRCT2::Profiling
 
             double avg = 0.0;
             if (func->GetCallCount() > 0)
-                avg = func->GetTotalTime() / func->GetCallCount();
+                avg = func->getTotalTime() / func->GetCallCount();
 
             out << avg << "\n";
         }

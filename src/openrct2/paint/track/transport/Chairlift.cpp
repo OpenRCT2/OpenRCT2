@@ -200,7 +200,7 @@ static void ChairliftPaintStationNeSw(
     bool isStart = ChairliftPaintUtilIsFirstTrack(ride, trackElement, pos, trackType);
     bool isEnd = ChairliftPaintUtilIsLastTrack(ride, trackElement, pos, trackType);
 
-    const auto* stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.getStationObject();
     auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
@@ -243,7 +243,7 @@ static void ChairliftPaintStationNeSw(
         imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 2, height + 4 }, { 1, 28, 27 } });
 
-        imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairlift_bullwheel_rotation / 16384]);
+        imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairliftBullwheelRotation / 16384]);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 19 } });
 
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_STATION_END_CAP_NE);
@@ -253,7 +253,7 @@ static void ChairliftPaintStationNeSw(
     }
     else if ((direction == 2 && isStart) || (direction == 0 && isEnd))
     {
-        imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairlift_bullwheel_rotation / 16384]);
+        imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairliftBullwheelRotation / 16384]);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 19 } });
 
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_STATION_END_CAP_SW);
@@ -291,7 +291,7 @@ static void ChairliftPaintStationSeNw(
     bool isStart = ChairliftPaintUtilIsFirstTrack(ride, trackElement, pos, trackType);
     bool isEnd = ChairliftPaintUtilIsLastTrack(ride, trackElement, pos, trackType);
 
-    const auto* stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.getStationObject();
     auto stationColour = GetStationColourScheme(session, trackElement);
 
     WoodenASupportsPaintSetupRotated(
@@ -333,7 +333,7 @@ static void ChairliftPaintStationSeNw(
     bool drawLeftColumn = true;
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
-        imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairlift_bullwheel_rotation / 16384]);
+        imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairliftBullwheelRotation / 16384]);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 14, 14, height + 4 }, { 4, 4, 19 } });
 
         imageId = session.TrackColours.WithIndex(SPR_CHAIRLIFT_STATION_END_CAP_SE);
@@ -346,7 +346,7 @@ static void ChairliftPaintStationSeNw(
         imageId = session.TrackColours.WithIndex(SPR_FENCE_METAL_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 30, height + 4 }, { 28, 1, 27 } });
 
-        imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairlift_bullwheel_rotation / 16384]);
+        imageId = session.TrackColours.WithIndex(chairlift_bullwheel_frames[ride.chairliftBullwheelRotation / 16384]);
 
         auto bb = BoundBoxXYZ{ { 14, 14, height + 4 }, { 4, 4, 19 } };
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
@@ -647,8 +647,8 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
     }
 
     ChairliftPaintUtilDrawSupports(
-        session, PaintUtilRotateSegments(EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::bottomLeftSide), direction),
-        height, supportType);
+        session, PaintUtilRotateSegments(EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft), direction), height,
+        supportType);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

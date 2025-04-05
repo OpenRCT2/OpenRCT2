@@ -18,7 +18,6 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/actions/ClimateSetAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/Peep.h>
@@ -35,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH_FINANCIAL = 149;
 
     static constexpr int32_t WW_GUESTS = 380;
-    static constexpr int32_t WH_GUESTS = 149;
+    static constexpr int32_t WH_GUESTS = 137;
 
     static constexpr int32_t WW_PARK = 400;
     static constexpr int32_t WH_PARK = 200;
@@ -48,13 +47,6 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK,
         WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT
-    };
-
-    static constexpr StringId kClimateNames[] = {
-        STR_CLIMATE_COOL_AND_WET,
-        STR_CLIMATE_WARM,
-        STR_CLIMATE_HOT_AND_DRY,
-        STR_CLIMATE_COLD,
     };
 
     enum
@@ -98,8 +90,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_GUEST_INITIAL_THIRST,
         WIDX_GUEST_INITIAL_THIRST_INCREASE,
         WIDX_GUEST_INITIAL_THIRST_DECREASE,
-        WIDX_GUEST_PREFER_LESS_INTENSE_RIDES,
-        WIDX_GUEST_PREFER_MORE_INTENSE_RIDES,
+        WIDX_GUESTS_INTENSITY_PREFERENCE_LABEL,
+        WIDX_GUESTS_INTENSITY_PREFERENCE,
+        WIDX_GUESTS_INTENSITY_PREFERENCE_DROPDOWN,
 
         // Park tab
         WIDX_LAND_COST = WIDX_PAGE_START,
@@ -113,8 +106,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_ENTRY_PRICE,
         WIDX_ENTRY_PRICE_INCREASE,
         WIDX_ENTRY_PRICE_DECREASE,
-        WIDX_CLIMATE,
-        WIDX_CLIMATE_DROPDOWN,
         WIDX_FORBID_TREE_REMOVAL,
         WIDX_FORBID_LANDSCAPE_CHANGES,
         WIDX_FORBID_HIGH_CONSTRUCTION,
@@ -140,16 +131,17 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
-        MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
-        MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
-        MakeRemapWidget   ({ 34,  17}, {            31,  30}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
-        MakeRemapWidget   ({ 65,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
-        MakeSpinnerWidgets({268,  48}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-        MakeSpinnerWidgets({268,  65}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-        MakeSpinnerWidgets({268,  82}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-        MakeSpinnerWidgets({268,  99}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-        MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
-        MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
+        MakeWidget        ({  0,  43}, {WW_GUESTS, 106}, WindowWidgetType::Resize,       WindowColour::Secondary),
+        MakeRemapWidget   ({  3,  17}, {       31,  27}, WindowWidgetType::Tab,          WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+        MakeRemapWidget   ({ 34,  17}, {       31,  30}, WindowWidgetType::Tab,          WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+        MakeRemapWidget   ({ 65,  17}, {       31,  27}, WindowWidgetType::Tab,          WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP     ),
+        MakeSpinnerWidgets({298,  48}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeSpinnerWidgets({298,  65}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeSpinnerWidgets({298,  82}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeSpinnerWidgets({298,  99}, {       70,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary                                                                          ), // NB: 3 widgets
+        MakeWidget        ({  8, 116}, {      170,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
+        MakeWidget        ({198, 116}, {      170,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                        STR_GUESTS_PREFER_INTENSITY_TIP   ),
+        MakeWidget        ({357, 117}, {       11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                   STR_GUESTS_PREFER_INTENSITY_TIP   ),
     };
 
     static constexpr Widget window_editor_scenario_options_park_widgets[] = {
@@ -163,8 +155,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  8,  82}, {         210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeWidget        ({206,  83}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         MakeSpinnerWidgets({328,  82}, {          67,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-        MakeWidget        ({188,  99}, {         207,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                     STR_SELECT_CLIMATE_TIP            ),
-        MakeWidget        ({383, 100}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
         MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
         MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
         MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
@@ -300,6 +290,8 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (page)
             {
+                case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
+                    return GuestsDropdown(widgetIndex, selectedIndex);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
                     return ParkDropdown(widgetIndex, selectedIndex);
             }
@@ -348,6 +340,10 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t newPage)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
+
             page = newPage;
             frame_no = 0;
             hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
@@ -363,7 +359,7 @@ namespace OpenRCT2::Ui::Windows
 
         void FinancialMouseUp(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -376,7 +372,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_NO_MONEY:
                 {
-                    auto newMoneySetting = (gameState.Park.Flags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
+                    auto newMoneySetting = (gameState.park.Flags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
                     auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::NoMoney, newMoneySetting);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
@@ -386,7 +382,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::ForbidMarketingCampaigns,
-                        gameState.Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1);
+                        gameState.park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -394,7 +390,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_RCT1_INTEREST:
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::UseRCT1Interest, gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST ? 0 : 1);
+                        ScenarioSetSetting::UseRCT1Interest, gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -404,36 +400,19 @@ namespace OpenRCT2::Ui::Windows
 
         void FinancialResize()
         {
-            WindowSetResize(*this, 280, 149, 280, 149);
-        }
-
-        void ShowClimateDropdown()
-        {
-            int32_t i;
-
-            const auto& dropdownWidget = widgets[WIDX_CLIMATE];
-
-            for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
-            {
-                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItems[i].Args = kClimateNames[i];
-            }
-            WindowDropdownShowTextCustomWidth(
-                { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() + 1,
-                colours[1], 0, Dropdown::Flag::StayOpen, static_cast<uint8_t>(ClimateType::Count), dropdownWidget.width() - 3);
-            Dropdown::SetChecked(static_cast<uint8_t>(GetGameState().Climate), true);
+            WindowSetResize(*this, { 280, 149 }, { 280, 149 });
         }
 
         void FinancialMouseDown(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_INITIAL_CASH_INCREASE:
-                    if (gameState.InitialCash < 1000000.00_GBP)
+                    if (gameState.initialCash < 1000000.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialCash, gameState.InitialCash + 500.00_GBP);
+                            ScenarioSetSetting::InitialCash, gameState.initialCash + 500.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -443,10 +422,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INITIAL_CASH_DECREASE:
-                    if (gameState.InitialCash > 0.00_GBP)
+                    if (gameState.initialCash > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialCash, gameState.InitialCash - 500.00_GBP);
+                            ScenarioSetSetting::InitialCash, gameState.initialCash - 500.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -456,10 +435,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INITIAL_LOAN_INCREASE:
-                    if (gameState.BankLoan < 5000000.00_GBP)
+                    if (gameState.bankLoan < 5000000.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialLoan, gameState.BankLoan + 1000.00_GBP);
+                            ScenarioSetSetting::InitialLoan, gameState.bankLoan + 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -469,10 +448,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INITIAL_LOAN_DECREASE:
-                    if (gameState.BankLoan > 0.00_GBP)
+                    if (gameState.bankLoan > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialLoan, gameState.BankLoan - 1000.00_GBP);
+                            ScenarioSetSetting::InitialLoan, gameState.bankLoan - 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -482,10 +461,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_MAXIMUM_LOAN_INCREASE:
-                    if (gameState.MaxBankLoan < 5000000.00_GBP)
+                    if (gameState.maxBankLoan < 5000000.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan + 1000.00_GBP);
+                            ScenarioSetSetting::MaximumLoanSize, gameState.maxBankLoan + 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -495,10 +474,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_MAXIMUM_LOAN_DECREASE:
-                    if (gameState.MaxBankLoan > 0.00_GBP)
+                    if (gameState.maxBankLoan > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan - 1000.00_GBP);
+                            ScenarioSetSetting::MaximumLoanSize, gameState.maxBankLoan - 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -508,10 +487,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INTEREST_RATE_INCREASE:
-                    if (gameState.BankLoanInterestRate < MaxBankLoanInterestRate)
+                    if (gameState.bankLoanInterestRate < MaxBankLoanInterestRate)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::AnnualInterestRate, gameState.BankLoanInterestRate + 1);
+                            ScenarioSetSetting::AnnualInterestRate, gameState.bankLoanInterestRate + 1);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -521,9 +500,9 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INTEREST_RATE_DECREASE:
-                    if (gameState.BankLoanInterestRate > 0)
+                    if (gameState.bankLoanInterestRate > 0)
                     {
-                        auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.BankLoanInterestRate - 1);
+                        auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.bankLoanInterestRate - 1);
                         auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
                         GameActions::Execute(&scenarioSetSetting);
                     }
@@ -535,7 +514,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+            if (gLegacyScene == LegacyScene::playing)
             {
                 auto* windowMgr = Ui::GetWindowManager();
                 windowMgr->InvalidateByClass(WindowClass::Finances);
@@ -554,8 +533,8 @@ namespace OpenRCT2::Ui::Windows
         {
             SetPressedTab();
 
-            auto& gameState = GetGameState();
-            if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
+            auto& gameState = getGameState();
+            if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 SetWidgetPressed(WIDX_NO_MONEY, true);
                 for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_RCT1_INTEREST; i++)
@@ -575,7 +554,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
 
-                if (gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST)
+                if (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
                 {
                     widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Empty;
                     widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Empty;
@@ -592,10 +571,10 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
+            SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
 
-            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                     : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
+                                                                                   : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }
@@ -607,7 +586,7 @@ namespace OpenRCT2::Ui::Windows
             WindowDrawWidgets(*this, dpi);
             DrawTabImages(dpi);
 
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
 
             const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
             if (initialCashWidget.type != WindowWidgetType::Empty)
@@ -617,7 +596,7 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(GetGameState().InitialCash);
+                ft.Add<money64>(getGameState().initialCash);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
@@ -629,7 +608,7 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.BankLoan);
+                ft.Add<money64>(gameState.bankLoan);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
@@ -641,7 +620,7 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(GetGameState().MaxBankLoan);
+                ft.Add<money64>(getGameState().maxBankLoan);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
@@ -655,7 +634,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto ft = Formatter();
                 ft.Add<int16_t>(
-                    std::clamp<int16_t>(static_cast<int16_t>(gameState.BankLoanInterestRate), INT16_MIN, INT16_MAX));
+                    std::clamp<int16_t>(static_cast<int16_t>(gameState.bankLoanInterestRate), INT16_MIN, INT16_MAX));
                 DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
             }
         }
@@ -666,7 +645,6 @@ namespace OpenRCT2::Ui::Windows
 
         void GuestsMouseUp(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -677,43 +655,25 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_3:
                     SetPage(widgetIndex - WIDX_TAB_1);
                     break;
-                case WIDX_GUEST_PREFER_LESS_INTENSE_RIDES:
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestsPreferLessIntenseRides,
-                        gameState.Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1);
-                    GameActions::Execute(&scenarioSetSetting);
-                    Invalidate();
-                    break;
-                }
-                case WIDX_GUEST_PREFER_MORE_INTENSE_RIDES:
-                {
-                    auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestsPreferMoreIntenseRides,
-                        gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1);
-                    GameActions::Execute(&scenarioSetSetting);
-                    Invalidate();
-                    break;
-                }
             }
         }
 
         void GuestsResize()
         {
-            WindowSetResize(*this, 380, 149, 380, 149);
+            WindowSetResize(*this, { WW_GUESTS, WH_GUESTS }, { WW_GUESTS, WH_GUESTS });
         }
 
         void GuestsMouseDown(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
 
             switch (widgetIndex)
             {
                 case WIDX_CASH_PER_GUEST_INCREASE:
-                    if (gameState.GuestInitialCash < 1000.00_GBP)
+                    if (gameState.guestInitialCash < 1000.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::AverageCashPerGuest, gameState.GuestInitialCash + 1.00_GBP);
+                            ScenarioSetSetting::AverageCashPerGuest, gameState.guestInitialCash + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -723,10 +683,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_CASH_PER_GUEST_DECREASE:
-                    if (gameState.GuestInitialCash > 0.00_GBP)
+                    if (gameState.guestInitialCash > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::AverageCashPerGuest, gameState.GuestInitialCash - 1.00_GBP);
+                            ScenarioSetSetting::AverageCashPerGuest, gameState.guestInitialCash - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -736,10 +696,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
-                    if (gameState.GuestInitialHappiness < 250)
+                    if (gameState.guestInitialHappiness < 250)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialHappiness, gameState.GuestInitialHappiness + 4);
+                            ScenarioSetSetting::GuestInitialHappiness, gameState.guestInitialHappiness + 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -749,10 +709,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
-                    if (gameState.GuestInitialHappiness > 40)
+                    if (gameState.guestInitialHappiness > 40)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialHappiness, gameState.GuestInitialHappiness - 4);
+                            ScenarioSetSetting::GuestInitialHappiness, gameState.guestInitialHappiness - 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -762,10 +722,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
-                    if (gameState.GuestInitialHunger > 40)
+                    if (gameState.guestInitialHunger > 40)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialHunger, gameState.GuestInitialHunger - 4);
+                            ScenarioSetSetting::GuestInitialHunger, gameState.guestInitialHunger - 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -775,10 +735,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
-                    if (gameState.GuestInitialHunger < 250)
+                    if (gameState.guestInitialHunger < 250)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialHunger, gameState.GuestInitialHunger + 4);
+                            ScenarioSetSetting::GuestInitialHunger, gameState.guestInitialHunger + 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -788,10 +748,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_THIRST_INCREASE:
-                    if (gameState.GuestInitialThirst > 40)
+                    if (gameState.guestInitialThirst > 40)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialThirst, gameState.GuestInitialThirst - 4);
+                            ScenarioSetSetting::GuestInitialThirst, gameState.guestInitialThirst - 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -801,10 +761,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_THIRST_DECREASE:
-                    if (gameState.GuestInitialThirst < 250)
+                    if (gameState.guestInitialThirst < 250)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialThirst, gameState.GuestInitialThirst + 4);
+                            ScenarioSetSetting::GuestInitialThirst, gameState.guestInitialThirst + 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -813,7 +773,57 @@ namespace OpenRCT2::Ui::Windows
                     }
                     Invalidate();
                     break;
+
+                case WIDX_GUESTS_INTENSITY_PREFERENCE_DROPDOWN:
+                {
+                    auto& dropdownWidget = widgets[widgetIndex - 1];
+
+                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[3].Format = STR_DROPDOWN_MENU_LABEL;
+
+                    gDropdownItems[0].Args = STR_GUESTS_PREFER_INTENSITY_NONE;
+                    gDropdownItems[1].Args = STR_GUESTS_PREFER_INTENSITY_BALANCED;
+                    gDropdownItems[2].Args = STR_GUESTS_PREFER_INTENSITY_LESS_INTENSE_RIDES;
+                    gDropdownItems[3].Args = STR_GUESTS_PREFER_INTENSITY_MORE_INTENSE_RIDES;
+
+                    WindowDropdownShowTextCustomWidth(
+                        { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() - 1,
+                        colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget.width() - 3);
+
+                    const auto preferLess = gameState.park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+                    const auto preferMore = gameState.park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+
+                    auto prefItem = 1;
+                    if (preferLess && preferMore)
+                        prefItem = 0;
+                    else if (preferLess && !preferMore)
+                        prefItem = 2;
+                    else if (!preferLess && preferMore)
+                        prefItem = 3;
+
+                    Dropdown::SetChecked(prefItem, true);
+                    break;
+                }
             }
+        }
+
+        void GuestsDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+            if (dropdownIndex < 0 || dropdownIndex > 3)
+                return;
+
+            bool preferLess = dropdownIndex == 0 || dropdownIndex == 2;
+            bool preferMore = dropdownIndex == 0 || dropdownIndex == 3;
+
+            auto scenarioSetLessSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::GuestsPreferLessIntenseRides, preferLess);
+            GameActions::Execute(&scenarioSetLessSetting);
+
+            auto scenarioSetMoreSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::GuestsPreferMoreIntenseRides, preferMore);
+            GameActions::Execute(&scenarioSetMoreSetting);
         }
 
         void GuestsUpdate()
@@ -827,8 +837,8 @@ namespace OpenRCT2::Ui::Windows
         {
             SetPressedTab();
 
-            auto& gameState = GetGameState();
-            if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
+            auto& gameState = getGameState();
+            if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Empty;
                 widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Empty;
@@ -841,11 +851,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WindowWidgetType::Button;
             }
 
-            SetWidgetPressed(WIDX_GUEST_PREFER_LESS_INTENSE_RIDES, gameState.Park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES);
-            SetWidgetPressed(WIDX_GUEST_PREFER_MORE_INTENSE_RIDES, gameState.Park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES);
-
-            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                     : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
+                                                                                   : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }
@@ -856,7 +863,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDrawWidgets(*this, dpi);
             DrawTabImages(dpi);
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
 
             const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
             if (cashPerGuestWidget.type != WindowWidgetType::Empty)
@@ -868,7 +875,7 @@ namespace OpenRCT2::Ui::Windows
                 // Cash per guest value
                 screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.GuestInitialCash);
+                ft.Add<money64>(gameState.guestInitialCash);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
@@ -880,7 +887,7 @@ namespace OpenRCT2::Ui::Windows
             // Guest initial happiness value
             screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
             auto ft = Formatter();
-            ft.Add<uint16_t>((gameState.GuestInitialHappiness * 100) / 255);
+            ft.Add<uint16_t>((gameState.guestInitialHappiness * 100) / 255);
             DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
             // Guest initial hunger label
@@ -891,7 +898,7 @@ namespace OpenRCT2::Ui::Windows
             // Guest initial hunger value
             screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
             ft = Formatter();
-            ft.Add<uint16_t>(((255 - gameState.GuestInitialHunger) * 100) / 255);
+            ft.Add<uint16_t>(((255 - gameState.guestInitialHunger) * 100) / 255);
             DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
             // Guest initial thirst label
@@ -902,8 +909,29 @@ namespace OpenRCT2::Ui::Windows
             // Guest initial thirst value
             screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
             ft = Formatter();
-            ft.Add<uint16_t>(((255 - gameState.GuestInitialThirst) * 100) / 255);
+            ft.Add<uint16_t>(((255 - gameState.guestInitialThirst) * 100) / 255);
             DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+
+            // Guests' intensity value
+            {
+                const auto& guestsIntensity = widgets[WIDX_GUESTS_INTENSITY_PREFERENCE];
+                screenCoords = windowPos + ScreenCoordsXY{ guestsIntensity.left + 1, guestsIntensity.top };
+
+                const auto preferLess = gameState.park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+                const auto preferMore = gameState.park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+
+                StringId prefString = STR_GUESTS_PREFER_INTENSITY_BALANCED;
+                if (preferLess && preferMore)
+                    prefString = STR_GUESTS_PREFER_INTENSITY_NONE;
+                else if (preferLess && !preferMore)
+                    prefString = STR_GUESTS_PREFER_INTENSITY_LESS_INTENSE_RIDES;
+                else if (!preferLess && preferMore)
+                    prefString = STR_GUESTS_PREFER_INTENSITY_MORE_INTENSE_RIDES;
+
+                ft = Formatter();
+                ft.Add<StringId>(prefString);
+                DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+            }
         }
 
 #pragma endregion
@@ -912,7 +940,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ParkMouseUp(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -926,7 +954,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FORBID_TREE_REMOVAL:
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::ForbidTreeRemoval, gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1);
+                        ScenarioSetSetting::ForbidTreeRemoval, gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -935,7 +963,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::ForbidLandscapeChanges,
-                        gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1);
+                        gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -944,7 +972,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::ForbidHighConstruction,
-                        gameState.Park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1);
+                        gameState.park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -953,7 +981,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::ParkRatingHigherDifficultyLevel,
-                        gameState.Park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
+                        gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -962,7 +990,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
                         ScenarioSetSetting::GuestGenerationHigherDifficultyLevel,
-                        gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
+                        gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
                     GameActions::Execute(&scenarioSetSetting);
                     Invalidate();
                     break;
@@ -972,7 +1000,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ParkResize()
         {
-            WindowSetResize(*this, 400, 200, 400, 200);
+            WindowSetResize(*this, { 400, 200 }, { 400, 200 });
         }
 
         void ParkMouseDown(WidgetIndex widgetIndex)
@@ -980,14 +1008,14 @@ namespace OpenRCT2::Ui::Windows
             Widget* dropdownWidget;
             Widget* widget = &widgets[widgetIndex];
 
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_LAND_COST_INCREASE:
-                    if (gameState.LandPrice < 200.00_GBP)
+                    if (gameState.landPrice < 200.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::CostToBuyLand, gameState.LandPrice + 1.00_GBP);
+                            ScenarioSetSetting::CostToBuyLand, gameState.landPrice + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -997,10 +1025,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_LAND_COST_DECREASE:
-                    if (gameState.LandPrice > 5.00_GBP)
+                    if (gameState.landPrice > 5.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::CostToBuyLand, gameState.LandPrice - 1.00_GBP);
+                            ScenarioSetSetting::CostToBuyLand, gameState.landPrice - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1010,10 +1038,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
-                    if (gameState.ConstructionRightsPrice < 200.00_GBP)
+                    if (gameState.constructionRightsPrice < 200.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::CostToBuyConstructionRights, gameState.ConstructionRightsPrice + 1.00_GBP);
+                            ScenarioSetSetting::CostToBuyConstructionRights, gameState.constructionRightsPrice + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1023,10 +1051,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
-                    if (gameState.ConstructionRightsPrice > 5.00_GBP)
+                    if (gameState.constructionRightsPrice > 5.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::CostToBuyConstructionRights, gameState.ConstructionRightsPrice - 1.00_GBP);
+                            ScenarioSetSetting::CostToBuyConstructionRights, gameState.constructionRightsPrice - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1036,10 +1064,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_ENTRY_PRICE_INCREASE:
-                    if (gameState.Park.EntranceFee < kMaxEntranceFee)
+                    if (gameState.park.EntranceFee < kMaxEntranceFee)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::ParkChargeEntryFee, gameState.Park.EntranceFee + 1.00_GBP);
+                            ScenarioSetSetting::ParkChargeEntryFee, gameState.park.EntranceFee + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1049,10 +1077,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_ENTRY_PRICE_DECREASE:
-                    if (gameState.Park.EntranceFee > 0.00_GBP)
+                    if (gameState.park.EntranceFee > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::ParkChargeEntryFee, gameState.Park.EntranceFee - 1.00_GBP);
+                            ScenarioSetSetting::ParkChargeEntryFee, gameState.park.EntranceFee - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1075,16 +1103,13 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
 
-                    if (gameState.Park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                    if (gameState.park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
                         Dropdown::SetChecked(2, true);
-                    else if (gameState.Park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
+                    else if (gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
                         Dropdown::SetChecked(0, true);
                     else
                         Dropdown::SetChecked(1, true);
 
-                    break;
-                case WIDX_CLIMATE_DROPDOWN:
-                    ShowClimateDropdown();
                     break;
             }
         }
@@ -1105,13 +1130,6 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 }
-                case WIDX_CLIMATE_DROPDOWN:
-                    if (static_cast<uint8_t>(GetGameState().Climate) != static_cast<uint8_t>(dropdownIndex))
-                    {
-                        auto gameAction = ClimateSetAction(ClimateType{ static_cast<uint8_t>(dropdownIndex) });
-                        GameActions::Execute(&gameAction);
-                    }
-                    break;
             }
         }
 
@@ -1126,8 +1144,8 @@ namespace OpenRCT2::Ui::Windows
         {
             SetPressedTab();
 
-            auto& gameState = GetGameState();
-            if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
+            auto& gameState = getGameState();
+            if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
                     widgets[i].type = WindowWidgetType::Empty;
@@ -1157,14 +1175,14 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL);
-            SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
-            SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.Park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
-            SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.Park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
-            SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
+            SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL);
+            SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
+            SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
+            SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
+            SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
 
-            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
-                                                                                     : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
+                                                                                   : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }
@@ -1176,7 +1194,7 @@ namespace OpenRCT2::Ui::Windows
             WindowDrawWidgets(*this, dpi);
             DrawTabImages(dpi);
 
-            const auto& gameState = GetGameState();
+            const auto& gameState = getGameState();
             const auto& landCostWidget = widgets[WIDX_LAND_COST];
             if (landCostWidget.type != WindowWidgetType::Empty)
             {
@@ -1187,7 +1205,7 @@ namespace OpenRCT2::Ui::Windows
                 // Cost to buy land value
                 screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.LandPrice);
+                ft.Add<money64>(gameState.landPrice);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
@@ -1202,7 +1220,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos
                     + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.ConstructionRightsPrice);
+                ft.Add<money64>(gameState.constructionRightsPrice);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
@@ -1214,9 +1232,9 @@ namespace OpenRCT2::Ui::Windows
 
                 auto ft = Formatter();
                 // Pay for park and/or rides value
-                if (gameState.Park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                if (gameState.park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
                     ft.Add<StringId>(STR_PAID_ENTRY_PAID_RIDES);
-                else if (gameState.Park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
+                else if (gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
                     ft.Add<StringId>(STR_FREE_PARK_ENTER);
                 else
                     ft.Add<StringId>(STR_PAY_PARK_ENTER);
@@ -1234,20 +1252,9 @@ namespace OpenRCT2::Ui::Windows
                 // Entry price value
                 screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.Park.EntranceFee);
+                ft.Add<money64>(gameState.park.EntranceFee);
                 DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
-
-            // Climate label
-            const auto& climateWidget = widgets[WIDX_CLIMATE];
-            screenCoords = windowPos + ScreenCoordsXY{ 8, climateWidget.top };
-            DrawTextBasic(dpi, screenCoords, STR_CLIMATE_LABEL);
-
-            // Climate value
-            screenCoords = windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
-            auto ft = Formatter();
-            ft.Add<StringId>(kClimateNames[EnumValue(gameState.Climate)]);
-            DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 
 #pragma endregion

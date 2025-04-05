@@ -20,7 +20,6 @@
     #include <openrct2/core/String.hpp>
     #include <openrct2/entity/EntityRegistry.h>
     #include <openrct2/object/ObjectManager.h>
-    #include <openrct2/scenario/Scenario.h>
     #include <openrct2/scenes/title/TitleScene.h>
     #include <openrct2/scenes/title/TitleSequence.h>
     #include <openrct2/scenes/title/TitleSequenceManager.h>
@@ -260,14 +259,14 @@ namespace OpenRCT2::Scripting
                         objectMgr.LoadObjects(result.RequiredObjects);
 
                         // TODO: Have a separate GameState and exchange once loaded.
-                        auto& gameState = GetGameState();
+                        auto& gameState = getGameState();
                         parkImporter->Import(gameState);
 
                         auto old = gLoadKeepWindowsOpen;
 
                         // Unless we are already in the game, we have to re-create the windows
                         // so that the game toolbars are created.
-                        if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+                        if (gLegacyScene == LegacyScene::playing)
                         {
                             gLoadKeepWindowsOpen = true;
                         }
@@ -481,7 +480,7 @@ namespace OpenRCT2::Scripting
                 {
                     duk_error(ctx, DUK_ERR_ERROR, "Failed to load title sequence");
                 }
-                else if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+                else if (gLegacyScene != LegacyScene::titleSequence)
                 {
                     gPreviewingTitleSequenceInGame = true;
                 }

@@ -118,7 +118,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_CLIP_SELECTOR:
                     // Activate the selection tool
-                    ToolSet(*this, WIDX_BACKGROUND, Tool::Crosshair);
+                    ToolSet(*this, WIDX_BACKGROUND, Tool::crosshair);
                     _toolActive = true;
                     _dragging = false;
 

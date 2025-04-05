@@ -29,7 +29,7 @@ struct Vehicle;
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
-using LoadSaveCallback = void (*)(int32_t result, const utf8* path);
+using LoadSaveCallback = void (*)(ModalResult result, const utf8* path);
 using ScenarioSelectCallback = void (*)(const utf8* path);
 
 namespace OpenRCT2::Ui::Windows
@@ -81,6 +81,7 @@ namespace OpenRCT2::Ui::Windows
     // EditorObjectSelection
     WindowBase* EditorObjectSelectionOpen();
     bool EditorObjectSelectionWindowCheck();
+    void EditorObjectSelectionClose();
 
     // EditorParkEntrance
     WindowBase* EditorParkEntranceOpen();
@@ -133,8 +134,8 @@ namespace OpenRCT2::Ui::Windows
 
     // LoadSave
     WindowBase* LoadsaveOpen(
-        int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
-        TrackDesign* trackDesign);
+        LoadSaveAction action, LoadSaveType type, std::string_view defaultPath,
+        std::function<void(ModalResult result, std::string_view)> callback, TrackDesign* trackDesign);
     void WindowLoadSaveInputKey(WindowBase* w, uint32_t keycode);
 
     // Main
@@ -188,7 +189,8 @@ namespace OpenRCT2::Ui::Windows
 
     // OverwritePrompt
     WindowBase* WindowOverwritePromptOpen(
-        const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr);
+        const std::string_view name, const std::string_view path, LoadSaveAction action, LoadSaveType type,
+        TrackDesign* trackDesignPtr);
     void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode);
 
     // Park

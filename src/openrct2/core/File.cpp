@@ -124,7 +124,7 @@ namespace OpenRCT2::File
 
     void WriteAllBytes(u8string_view path, const void* buffer, size_t length)
     {
-        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::write);
         fs.Write(buffer, length);
     }
 

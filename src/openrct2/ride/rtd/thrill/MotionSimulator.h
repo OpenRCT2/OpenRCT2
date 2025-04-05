@@ -16,7 +16,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MotionSimulatorRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::motionSimulator,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::FilmAvengingAviators, RideMode::FilmThrillRiders),
-    .DefaultMode = RideMode::FilmAvengingAviators,
+    .RideModes = EnumsToFlags(RideMode::filmAvengingAviators, RideMode::filmThrillRiders),
+    .DefaultMode = RideMode::filmAvengingAviators,
     .Naming = { STR_RIDE_NAME_MOTION_SIMULATOR, STR_RIDE_DESCRIPTION_MOTION_SIMULATOR },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
@@ -64,7 +64,7 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,

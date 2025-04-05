@@ -16,7 +16,7 @@
 // clang-format off
 constexpr RideTypeDescriptor TwistRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::twist,
@@ -28,8 +28,8 @@ constexpr RideTypeDescriptor TwistRTD =
                      RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide,
                      RtdFlag::hasVehicleColours, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::singleSession, RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::Rotation),
-    .DefaultMode = RideMode::Rotation,
+    .RideModes = EnumsToFlags(RideMode::rotation),
+    .DefaultMode = RideMode::rotation,
     .OperatingSettings = { 3, 6, 3 },
     .Naming = { STR_RIDE_NAME_TWIST, STR_RIDE_DESCRIPTION_TWIST },
     .NameConvention = { RideComponentType::Structure, RideComponentType::Structure, RideComponentType::Station },

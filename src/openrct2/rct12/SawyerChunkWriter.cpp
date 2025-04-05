@@ -28,7 +28,7 @@ namespace OpenRCT2
         WriteChunk(chunk->GetData(), chunk->GetLength(), chunk->GetEncoding());
     }
 
-    void SawyerChunkWriter::WriteChunk(const void* src, size_t length, SAWYER_ENCODING encoding)
+    void SawyerChunkWriter::WriteChunk(const void* src, size_t length, SawyerEncoding encoding)
     {
         SawyerCoding::ChunkHeader header;
         header.encoding = static_cast<uint8_t>(encoding);

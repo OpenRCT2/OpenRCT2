@@ -122,7 +122,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
     {
         if (&ride != forRide)
         {
-            auto rideEntry = ride.GetRideEntry();
+            auto rideEntry = ride.getRideEntry();
             if (rideEntry == nullptr)
             {
                 continue;
@@ -135,7 +135,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
             {
                 return ride.price[1];
             }
-            if (GetShopItemDescriptor(shopItem).IsPhoto() && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
+            if (GetShopItemDescriptor(shopItem).IsPhoto() && (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
             {
                 return ride.price[1];
             }
@@ -147,7 +147,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
 
 bool ShopItemHasCommonPrice(const ShopItem shopItem)
 {
-    return (GetGameState().SamePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
+    return (getGameState().samePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
 }
 
 bool ShopItemDescriptor::IsFood() const

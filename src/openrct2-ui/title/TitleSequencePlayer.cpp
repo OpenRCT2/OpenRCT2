@@ -36,7 +36,7 @@
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Map.h>
+#include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Scenery.h>
 #include <stdexcept>
 
@@ -316,7 +316,7 @@ namespace OpenRCT2::Title
                     ReportProgress(0);
                     auto parkImporter = ParkImporter::Create(path);
 
-                    auto result = parkImporter->Load(path);
+                    auto result = parkImporter->Load(path, false);
                     ReportProgress(10);
 
                     auto& objectManager = GetContext()->GetObjectManager();
@@ -324,7 +324,7 @@ namespace OpenRCT2::Title
                     ReportProgress(90);
 
                     // TODO: Have a separate GameState and exchange once loaded.
-                    auto& gameState = GetGameState();
+                    auto& gameState = getGameState();
                     parkImporter->Import(gameState);
                     ReportProgress(100);
 
@@ -380,7 +380,7 @@ namespace OpenRCT2::Title
                     ReportProgress(70);
 
                     // TODO: Have a separate GameState and exchange once loaded.
-                    auto& gameState = GetGameState();
+                    auto& gameState = getGameState();
                     parkImporter->Import(gameState);
                     ReportProgress(100);
 
@@ -431,14 +431,14 @@ namespace OpenRCT2::Title
         void PrepareParkForPlayback()
         {
             auto windowManager = Ui::GetWindowManager();
-            auto& gameState = GetGameState();
-            windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
+            auto& gameState = getGameState();
+            windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
             ResetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
             Ui::Windows::WindowScenerySetDefaultPlacementConfiguration();
-            News::InitQueue();
+            News::InitQueue(gameState);
             LoadPalette();
             gScreenAge = 0;
             gGamePaused = false;

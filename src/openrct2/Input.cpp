@@ -15,7 +15,7 @@
 namespace OpenRCT2
 {
     InputState _inputState;
-    uint8_t _inputFlags;
+    InputFlags gInputFlags;
 
     WidgetRef gHoverWidget;
     WidgetRef gPressedWidget;
@@ -38,28 +38,6 @@ namespace OpenRCT2
     void GameHandleKeyboardInput()
     {
         ContextInputHandleKeyboard(false);
-    }
-
-    void InputSetFlag(INPUT_FLAGS flag, bool on)
-    {
-        if (on)
-        {
-            _inputFlags |= flag;
-        }
-        else
-        {
-            _inputFlags &= ~flag;
-        }
-    }
-
-    bool InputTestFlag(INPUT_FLAGS flag)
-    {
-        return _inputFlags & flag;
-    }
-
-    void InputResetFlags()
-    {
-        _inputFlags = 0;
     }
 
     void InputSetState(InputState state)

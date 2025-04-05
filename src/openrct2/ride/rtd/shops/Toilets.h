@@ -16,7 +16,7 @@
 // clang-format off
 constexpr RideTypeDescriptor ToiletsRTD =
 {
-    .Category = RIDE_CATEGORY_SHOP,
+    .Category = RideCategory::shop,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::facility,
@@ -28,8 +28,8 @@ constexpr RideTypeDescriptor ToiletsRTD =
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::guestsShouldGoInsideFacility, RtdFlag::describeAsInside,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::ShopStall),
-    .DefaultMode = RideMode::ShopStall,
+    .RideModes = EnumsToFlags(RideMode::shopStall),
+    .DefaultMode = RideMode::shopStall,
     .OperatingSettings = { 4, 4 },
     .Naming = { STR_RIDE_NAME_TOILETS, STR_RIDE_DESCRIPTION_TOILETS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor ToiletsRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::KioskOrFacility,
+    .Classification = RideClassification::kioskOrFacility,
     .specialType = RtdSpecialType::toilet,
 };
 // clang-format on

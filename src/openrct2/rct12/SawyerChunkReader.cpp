@@ -75,7 +75,7 @@ namespace OpenRCT2
                         throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
                     }
 
-                    return std::make_shared<SawyerChunk>(static_cast<SAWYER_ENCODING>(header.encoding), std::move(buffer));
+                    return std::make_shared<SawyerChunk>(static_cast<SawyerEncoding>(header.encoding), std::move(buffer));
                 }
                 default:
                     throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
@@ -114,7 +114,7 @@ namespace OpenRCT2
             {
                 throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
             }
-            return std::make_shared<SawyerChunk>(SAWYER_ENCODING::RLE, std::move(buffer));
+            return std::make_shared<SawyerChunk>(SawyerEncoding::rle, std::move(buffer));
         }
         catch (const std::exception&)
         {

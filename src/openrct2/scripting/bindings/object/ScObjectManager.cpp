@@ -157,15 +157,15 @@ void ScObjectManager::unload(const DukValue& p1, const DukValue& p2)
     if (p1.type() == DukValue::STRING)
     {
         const auto& szP1 = p1.as_string();
-        auto objType = ScObject::StringToObjectType(szP1);
-        if (objType)
+        auto objType = objectTypeFromString(szP1);
+        if (objType != ObjectType::none)
         {
             // unload(type, index)
             if (p2.type() != DukValue::NUMBER)
                 throw DukException() << "'index' is invalid.";
 
             auto objIndex = p2.as_uint();
-            auto obj = objectManager.GetLoadedObject(*objType, objIndex);
+            auto obj = objectManager.GetLoadedObject(objType, objIndex);
             if (obj != nullptr)
             {
                 objectManager.UnloadObjects({ obj->GetDescriptor() });
@@ -198,13 +198,13 @@ DukValue ScObjectManager::getObject(const std::string& typez, int32_t index) con
     auto ctx = GetContext()->GetScriptEngine().GetContext();
     auto& objManager = GetContext()->GetObjectManager();
 
-    auto type = ScObject::StringToObjectType(typez);
-    if (type)
+    auto type = objectTypeFromString(typez);
+    if (type != ObjectType::none)
     {
-        auto obj = objManager.GetLoadedObject(*type, index);
+        auto obj = objManager.GetLoadedObject(type, index);
         if (obj != nullptr)
         {
-            return CreateScObject(ctx, *type, index);
+            return CreateScObject(ctx, type, index);
         }
     }
     else
@@ -220,16 +220,16 @@ std::vector<DukValue> ScObjectManager::getAllObjects(const std::string& typez) c
     auto& objManager = GetContext()->GetObjectManager();
 
     std::vector<DukValue> result;
-    auto type = ScObject::StringToObjectType(typez);
-    if (type)
+    auto type = objectTypeFromString(typez);
+    if (type != ObjectType::none)
     {
-        auto count = getObjectEntryGroupCount(*type);
+        auto count = getObjectEntryGroupCount(type);
         for (auto i = 0u; i < count; i++)
         {
-            auto obj = objManager.GetLoadedObject(*type, i);
+            auto obj = objManager.GetLoadedObject(type, i);
             if (obj != nullptr)
             {
-                result.push_back(CreateScObject(ctx, *type, i));
+                result.push_back(CreateScObject(ctx, type, i));
             }
         }
     }

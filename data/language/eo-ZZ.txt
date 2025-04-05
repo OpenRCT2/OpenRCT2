@@ -2260,10 +2260,6 @@ STR_3252    :Ne eblas pliigi maksimuman prunton plu!
 STR_3253    :Ne eblas malpliigi maksimuman prunton plu!
 STR_3254    :Ne eblas pliigi procenton de interezo plu!
 STR_3255    :Ne eblas malpliigi procenton de interezo plu!
-STR_3256    :Gastoj preferas malpli intensajn atrakciojn
-STR_3257    :Elekti ĉu gastoj kutime preferas nur malpli intensajn atrakciojn
-STR_3258    :Gastoj preferas pli intensajn atrakciojn
-STR_3259    :Elekti ĉu gastoj kutime preferas nur pli intensajn atrakciojn
 STR_3260    :{WINDOW_COLOUR_2}Mono por ĉiu gasto (meznombro):
 STR_3261    :{WINDOW_COLOUR_2}Komenca feliĉeco de gastoj:
 STR_3262    :{WINDOW_COLOUR_2}Komenca malsateco de gastoj:
@@ -3285,7 +3281,7 @@ STR_6199    :Agordi daton
 STR_6200    :Rekomencigi daton
 STR_6201    :{MONTH}
 STR_6202    :Stilo de virtuala planko:
-STR_6203    :Se ŝaltita, virtuala planko bildiĝos per premteni Ctrl aŭ Shift, por faciligi vertikalan lokadon de elementoj.
+STR_6203    :Se ŝaltita, virtuala planko bildigos per premteni Ctrl aŭ Shift, por faciligi vertikalan lokadon de elementoj.
 STR_6215    :Konstruado
 STR_6216    :Funkciado
 STR_6217    :Havebleco de atrakcio / trako
@@ -3365,7 +3361,7 @@ STR_6302    :Kopii la tutan liston da mankantaj objektoj al la tondujo.
 STR_6303    :Elŝuti objekton ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :Malfermi elektilon de pejzaĝo
 STR_6305    :Disfadenigo
-STR_6306    :Opcio eksperimenta por uzi multoblajn fadenojn por bildiĝi. Povas kaŭzi nestabilecon.
+STR_6306    :Opcio eksperimenta por uzi multoblajn fadenojn por bildigi. Povas kaŭzi nestabilecon.
 STR_6307    :Kolorskemo: {BLACK}{STRINGID}
 STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Rekonektiĝi
@@ -3789,3 +3785,21 @@ STR_6729    :Kablolifto-monteto devas komenci tuj post stacio aŭ bremso de blok
 STR_6730    :Eksporti datumojn de emscripten
 STR_6731    :Importi datumojn de emscripten
 STR_6732    :Montri butonon en la ilobreto por turni la vidon maldekstrumen
+STR_6733    :Travideblo
+STR_6734    :Mapelementoj ĉe aŭ sub la tranĉita alteco estas bildigitaj travideble.
+STR_6735    :Supreniri al patra dosierulo
+STR_6736    :Antaŭrigardo
+STR_6737    :Neniu antaŭrigardo disponebla
+STR_6738    :{WINDOW_COLOUR_2}Pritakso de parko: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Dato: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Mono: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Nombro de atrakcioj: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Nombro de gastoj: {BLACK}{UINT16}
+STR_6743    :Klimato
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Intenseco-preferoj de gastoj:
+STR_6746    :Neniuj preferoj
+STR_6747    :Preferoj varias (defaŭlto)
+STR_6748    :Nur malpli intensaj atrakcioj
+STR_6749    :Nur pli intensaj atrakcioj
+STR_6750    :Elekti kian atrakcio-intensecon, ke nove generitaj gastoj preferas.

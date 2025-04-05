@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::multiDimensionRollerCoaster,
@@ -35,8 +35,8 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant, 
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::hasSeatRotation,
                      RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },
@@ -95,7 +95,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
 {
-    .Category = RIDE_CATEGORY_NONE,
+    .Category = RideCategory::none,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .trackStyle = TrackStyle::null,
@@ -109,8 +109,8 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     }),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasSeatRotation),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },

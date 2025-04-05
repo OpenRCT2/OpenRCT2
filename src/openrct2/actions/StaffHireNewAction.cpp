@@ -15,6 +15,7 @@
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../localisation/StringIds.h"
@@ -22,7 +23,6 @@
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
 #include "../ride/Ride.h"
-#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
@@ -186,14 +186,14 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->PathfindGoal.x = 0xFF;
         newPeep->PathfindGoal.y = 0xFF;
         newPeep->PathfindGoal.z = 0xFF;
-        newPeep->PathfindGoal.direction = INVALID_DIRECTION;
+        newPeep->PathfindGoal.direction = kInvalidDirection;
 
         uint8_t colour = StaffGetColour(static_cast<StaffType>(_staffType));
         newPeep->TshirtColour = colour;
         newPeep->TrousersColour = colour;
 
         // Staff energy determines their walking speed
-        switch (GetGameState().Cheats.selectedStaffSpeed)
+        switch (getGameState().cheats.selectedStaffSpeed)
         {
             case StaffSpeedCheat::None:
                 newPeep->Energy = kCheatsStaffNormalSpeed;
@@ -280,11 +280,11 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     else
     {
         // No walking guests; pick random park entrance
-        const auto& gameState = GetGameState();
-        if (!gameState.Park.Entrances.empty())
+        const auto& gameState = getGameState();
+        if (!gameState.park.Entrances.empty())
         {
-            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.Park.Entrances.size()));
-            const auto& entrance = gameState.Park.Entrances[rand];
+            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.park.Entrances.size()));
+            const auto& entrance = gameState.park.Entrances[rand];
             auto dir = entrance.direction;
             newLocation = entrance;
             // TODO: Replace with CoordsDirectionDelta

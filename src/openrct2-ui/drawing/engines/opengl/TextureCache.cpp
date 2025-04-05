@@ -83,7 +83,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(const ImageId imageId)
             const auto& info = _textureCache[index];
             return {
                 info.index,
-                info.normalizedBounds,
+                info.coords,
             };
         }
     }
@@ -123,7 +123,7 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(const ImageId imageId, cons
             const auto& info = kvp->second;
             return {
                 info.index,
-                info.normalizedBounds,
+                info.coords,
             };
         }
     }
@@ -151,7 +151,7 @@ BasicTextureInfo TextureCache::GetOrLoadBitmapTexture(ImageIndex image, const vo
             const auto& info = _textureCache[index];
             return {
                 info.index,
-                info.normalizedBounds,
+                info.coords,
             };
         }
     }

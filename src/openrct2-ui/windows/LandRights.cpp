@@ -50,11 +50,11 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BUY_CONSTRUCTION_RIGHTS,
 
         // Editor/sandbox widgets
-        WIDX_UNOWNED_LAND_CHECKBOX,
-        WIDX_LAND_SALE_CHECKBOX,
         WIDX_LAND_OWNED_CHECKBOX,
-        WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX,
+        WIDX_LAND_SALE_CHECKBOX,
         WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX,
+        WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX,
+        WIDX_UNOWNED_LAND_CHECKBOX,
     };
 
     // clang-format off
@@ -65,11 +65,11 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget({ 54, 32}, { 16, 16}, WindowWidgetType::TrnBtn, WindowColour::Primary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_RIGHTS_TIP              ), // increment size
         MakeRemapWidget({ 22, 53}, { 24, 24}, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_BUY_LAND_RIGHTS,             STR_BUY_LAND_RIGHTS_TIP                        ), // land rights
         MakeRemapWidget({ 52, 53}, { 24, 24}, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_BUY_CONSTRUCTION_RIGHTS,     STR_BUY_CONSTRUCTION_RIGHTS_TIP                ), // construction rights
-        MakeWidget     ({100, 22}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_NOT_OWNED,              STR_SET_LAND_TO_BE_NOT_OWNED_TIP               ),
+        MakeWidget     ({100, 22}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
         MakeWidget     ({100, 38}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
-        MakeWidget     ({100, 54}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
+        MakeWidget     ({100, 54}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
         MakeWidget     ({100, 70}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
-        MakeWidget     ({100, 86}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
+        MakeWidget     ({100, 86}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_NOT_OWNED,              STR_SET_LAND_TO_BE_NOT_OWNED_TIP               ),
     };
     // clang-format on
 
@@ -80,15 +80,15 @@ namespace OpenRCT2::Ui::Windows
         BuyConstructionRights,
 
         // Sandbox/editor mode
-        SetLandUnowned,
-        SetLandForSale,
         SetLandOwned,
-        SetConstructionRightsForSale,
+        SetLandForSale,
         SetConstructionRightsOwned,
+        SetConstructionRightsForSale,
+        SetLandUnowned,
     };
 
-    static const bool kLandRightsVisibleByMode[] = { true, false, true, true, true, false, false };
-    static const bool kConstructionRightsVisibleByMode[] = { false, true, true, false, false, true, true };
+    static const bool kLandRightsVisibleByMode[] = { true, false, true, true, false, false, true };
+    static const bool kConstructionRightsVisibleByMode[] = { false, true, false, false, true, true, true };
 
     class LandRightsWindow final : public Window
     {
@@ -98,7 +98,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsOwnershipMode() const
         {
-            return (gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.sandboxMode;
+            return isInEditorMode() != 0 || getGameState().cheats.sandboxMode;
         }
 
         void SwitchToMode(LandRightsMode mode)
@@ -107,8 +107,8 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets = (1uLL << widgetIndex);
             _landRightsMode = mode;
 
-            ToolSet(*this, widgetIndex, Tool::UpArrow);
-            InputSetFlag(INPUT_FLAG_6, true);
+            ToolSet(*this, widgetIndex, Tool::upArrow);
+            gInputFlags.set(InputFlag::unk6);
 
             if (kLandRightsVisibleByMode[EnumValue(mode)])
                 ShowLandRights();
@@ -143,7 +143,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                SwitchToMode(LandRightsMode::SetLandUnowned);
+                SwitchToMode(LandRightsMode::SetLandOwned);
             }
         }
 
@@ -408,7 +408,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw cost amount
             if (_landRightsCost != kMoney64Undefined && _landRightsCost != 0
-                && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+                && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_landRightsCost);

@@ -592,7 +592,7 @@ std::vector<std::string> ScriptEngine::GetPluginFiles() const
 {
     // Scan for .js files in plugin directory
     std::vector<std::string> pluginFiles;
-    auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
+    auto base = _env.GetDirectoryPath(DirBase::user, DirId::plugins);
     if (Path::DirectoryExists(base))
     {
         auto pattern = Path::Combine(base, u8"*.js");
@@ -794,7 +794,7 @@ void ScriptEngine::SetupHotReloading()
 {
     try
     {
-        auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
+        auto base = _env.GetDirectoryPath(DirBase::user, DirId::plugins);
         if (Path::DirectoryExists(base))
         {
             _pluginFileWatcher = std::make_unique<FileWatcher>(base);
@@ -1460,7 +1460,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
 {
     DukStackFrame frame(_context);
 
-    auto hookType = isExecute ? HOOK_TYPE::ACTION_EXECUTE : HOOK_TYPE::ACTION_QUERY;
+    auto hookType = isExecute ? HookType::actionExecute : HookType::actionQuery;
     if (_hookEngine.HasSubscriptions(hookType))
     {
         DukObject obj(_context);
@@ -1573,7 +1573,7 @@ void ScriptEngine::LoadSharedStorage()
 {
     InitSharedStorage();
 
-    auto path = _env.GetFilePath(PATHID::PLUGIN_STORE);
+    auto path = _env.GetFilePath(PathId::pluginStore);
     try
     {
         if (File::Exists(path))
@@ -1595,7 +1595,7 @@ void ScriptEngine::LoadSharedStorage()
 
 void ScriptEngine::SaveSharedStorage()
 {
-    auto path = _env.GetFilePath(PATHID::PLUGIN_STORE);
+    auto path = _env.GetFilePath(PathId::pluginStore);
     try
     {
         _sharedStorage.push();

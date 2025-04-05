@@ -70,14 +70,14 @@ class ZipArchive final : public IZipArchive
 {
 private:
     zip_t* _zip;
-    ZIP_ACCESS _access;
+    ZipAccess _access;
     std::vector<std::vector<uint8_t>> _writeBuffers;
 
 public:
-    ZipArchive(std::string_view path, ZIP_ACCESS access)
+    ZipArchive(std::string_view path, ZipAccess access)
     {
         auto zipOpenMode = ZIP_RDONLY;
-        if (access == ZIP_ACCESS::WRITE)
+        if (access == ZipAccess::write)
         {
             zipOpenMode = ZIP_CREATE;
         }
@@ -378,12 +378,12 @@ private:
 
 namespace OpenRCT2::Zip
 {
-    std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> Open(std::string_view path, ZipAccess access)
     {
         return std::make_unique<ZipArchive>(path, access);
     }
 
-    std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZipAccess access)
     {
         std::unique_ptr<IZipArchive> result;
         try

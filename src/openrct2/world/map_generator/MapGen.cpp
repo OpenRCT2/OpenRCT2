@@ -111,10 +111,10 @@ namespace OpenRCT2::World::MapGenerator
      */
     void setWaterLevel(int32_t waterLevel)
     {
-        auto& gameState = GetGameState();
-        for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
+        auto& gameState = getGameState();
+        for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
         {
-            for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
+            for (int32_t x = 1; x < gameState.mapSize.x - 1; x++)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
                 if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel)
@@ -128,12 +128,12 @@ namespace OpenRCT2::World::MapGenerator
      */
     void setMapHeight(Settings* settings, const HeightMap& heightMap)
     {
-        for (auto y = 1; y < heightMap.height / 2 - 1; y++)
+        for (auto y = 1; y < heightMap.height / heightMap.density - 1; y++)
         {
-            for (auto x = 1; x < heightMap.width / 2 - 1; x++)
+            for (auto x = 1; x < heightMap.width / heightMap.density - 1; x++)
             {
-                auto heightX = x * 2;
-                auto heightY = y * 2;
+                auto heightX = x * heightMap.density;
+                auto heightY = y * heightMap.density;
 
                 uint8_t q00 = heightMap[{ heightX + 0, heightY + 0 }];
                 uint8_t q01 = heightMap[{ heightX + 0, heightY + 1 }];

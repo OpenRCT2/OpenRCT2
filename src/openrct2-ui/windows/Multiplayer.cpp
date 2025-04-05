@@ -64,10 +64,8 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
 
     #define MAIN_MULTIPLAYER_WIDGETS \
-        MakeWidget({  0,  0}, {340, 240}, WindowWidgetType::Frame,    WindowColour::Primary                                        ), /* panel / background */ \
-        MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,  kStringIdNone,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
-        MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,  STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
-        MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                      ), /* content panel */ \
+        WINDOW_SHIM(kStringIdNone, 340, 240), \
+        MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize, WindowColour::Secondary                          ), /* content panel */ \
         MakeTab   ({  3, 17},                                                                STR_SHOW_SERVER_INFO_TIP), /* tab */ \
         MakeTab   ({ 34, 17},                                                                STR_PLAYERS_TIP         ), /* tab */ \
         MakeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ), /* tab */ \
@@ -142,7 +140,7 @@ namespace OpenRCT2::Ui::Windows
     class MultiplayerWindow final : public Window
     {
     private:
-        std::optional<ScreenCoordsXY> _windowInformationSize;
+        std::optional<ScreenSize> _windowInformationSize;
         uint8_t _selectedGroup{ 0 };
 
     private:
@@ -159,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
         void GroupsScrollPaint(int32_t scrollIndex, DrawPixelInfo& dpi) const;
 
         void ShowGroupDropdown(WidgetIndex widgetIndex);
-        ScreenCoordsXY InformationGetSize();
+        ScreenSize InformationGetSize();
 
     public:
         void OnOpen() override;
@@ -203,6 +201,10 @@ namespace OpenRCT2::Ui::Windows
 
     void MultiplayerWindow::SetPage(int32_t page_number)
     {
+        // Skip setting page if we're already on this page, unless we're initialising the window
+        if (page == page_number && !widgets.empty())
+            return;
+
         _windowInformationSize.reset();
 
         page = page_number;
@@ -289,7 +291,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    ScreenCoordsXY MultiplayerWindow::InformationGetSize()
+    ScreenSize MultiplayerWindow::InformationGetSize()
     {
         assert(!_windowInformationSize.has_value());
 
@@ -342,12 +344,12 @@ namespace OpenRCT2::Ui::Windows
             case WINDOW_MULTIPLAYER_PAGE_INFORMATION:
             {
                 auto size = _windowInformationSize ? _windowInformationSize.value() : InformationGetSize();
-                WindowSetResize(*this, size.x, size.y, size.x, size.y);
+                WindowSetResize(*this, size, size);
                 break;
             }
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             {
-                WindowSetResize(*this, 420, 124, 500, 450);
+                WindowSetResize(*this, { 420, 124 }, { 500, 450 });
 
                 no_list_items = (IsServerPlayerInvisible() ? NetworkGetNumVisiblePlayers() : NetworkGetNumPlayers());
 
@@ -359,7 +361,7 @@ namespace OpenRCT2::Ui::Windows
             }
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
-                WindowSetResize(*this, 320, 200, 320, 500);
+                WindowSetResize(*this, { 320, 200 }, { 320, 500 });
 
                 no_list_items = NetworkGetNumActions();
 
@@ -369,7 +371,7 @@ namespace OpenRCT2::Ui::Windows
             }
             case WINDOW_MULTIPLAYER_PAGE_OPTIONS:
             {
-                WindowSetResize(*this, 300, 100, 300, 100);
+                WindowSetResize(*this, { 300, 100 }, { 300, 100 });
                 break;
             }
         }

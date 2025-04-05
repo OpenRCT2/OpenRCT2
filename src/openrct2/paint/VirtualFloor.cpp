@@ -247,7 +247,7 @@ static void VirtualFloorGetTileProperties(
 
     *tileOwned = MapIsLocationOwned({ loc, height });
 
-    if (GetGameState().Cheats.sandboxMode)
+    if (getGameState().cheats.sandboxMode)
         *tileOwned = true;
 
     // Iterate through the map elements of the current tile to find:

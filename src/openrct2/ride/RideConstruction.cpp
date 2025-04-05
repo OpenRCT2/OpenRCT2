@@ -62,7 +62,7 @@ CoordsXYZ _currentTrackBegin;
 
 uint8_t _currentTrackPieceDirection;
 OpenRCT2::TrackElemType _currentTrackPieceType;
-uint8_t _currentTrackSelectionFlags;
+TrackSelectionFlags _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
 TrackPitch _currentTrackPitchEnd;
 TrackRoll _currentTrackRollEnd;
@@ -93,22 +93,22 @@ using namespace OpenRCT2::TrackMetaData;
 static int32_t ride_check_if_construction_allowed(Ride& ride)
 {
     Formatter ft;
-    const auto* rideEntry = ride.GetRideEntry();
+    const auto* rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
     {
         ContextShowError(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE, ft);
         return 0;
     }
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        ride.FormatNameTo(ft);
+        ride.formatNameTo(ft);
         ContextShowError(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING, ft);
         return 0;
     }
 
-    if (ride.status != RideStatus::Closed && ride.status != RideStatus::Simulating)
+    if (ride.status != RideStatus::closed && ride.status != RideStatus::simulating)
     {
-        ride.FormatNameTo(ft);
+        ride.formatNameTo(ft);
         ContextShowError(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST, ft);
         return 0;
     }
@@ -134,7 +134,7 @@ void RideConstructionStart(Ride& ride)
     CoordsXYE trackElement;
     if (RideTryGetOriginElement(ride, &trackElement))
     {
-        ride.FindTrackGap(trackElement, &trackElement);
+        ride.findTrackGap(trackElement, &trackElement);
 
         WindowBase* w = WindowGetMain();
         if (w != nullptr && RideModify(trackElement))
@@ -152,10 +152,10 @@ void RideConstructionStart(Ride& ride)
  */
 static void ride_remove_cable_lift(Ride& ride)
 {
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_CABLE_LIFT)
     {
-        ride.lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT;
-        auto spriteIndex = ride.cable_lift;
+        ride.lifecycleFlags &= ~RIDE_LIFECYCLE_CABLE_LIFT;
+        auto spriteIndex = ride.cableLift;
         do
         {
             Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
@@ -174,12 +174,12 @@ static void ride_remove_cable_lift(Ride& ride)
  *
  *  rct2: 0x006DD506
  */
-void Ride::RemoveVehicles()
+void Ride::removeVehicles()
 {
-    if (lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
-        lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
+        lifecycleFlags &= ~RIDE_LIFECYCLE_ON_TRACK;
+        lifecycleFlags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
         for (size_t i = 0; i <= OpenRCT2::Limits::kMaxTrainsPerRide; i++)
         {
@@ -222,8 +222,8 @@ void RideClearForConstruction(Ride& ride)
 {
     ride.measurement = {};
 
-    ride.lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
-    ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    ride.lifecycleFlags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 
     // Open circuit rides will go directly into building mode (creating ghosts) where it would normally clear the stats,
     // however this causes desyncs since it's directly run from the window and other clients would not get it.
@@ -234,7 +234,7 @@ void RideClearForConstruction(Ride& ride)
     }
 
     ride_remove_cable_lift(ride);
-    ride.RemoveVehicles();
+    ride.removeVehicles();
     RideClearBlockedTiles(ride);
 
     auto* windowMgr = Ui::GetWindowManager();
@@ -247,16 +247,16 @@ void RideClearForConstruction(Ride& ride)
  *
  *  rct2: 0x006664DF
  */
-void Ride::RemovePeeps()
+void Ride::removePeeps()
 {
     // Find first station
     auto stationIndex = RideGetFirstValidStationStart(*this);
 
     // Get exit position and direction
-    auto exitPosition = CoordsXYZD{ 0, 0, 0, INVALID_DIRECTION };
+    auto exitPosition = CoordsXYZD{ 0, 0, 0, kInvalidDirection };
     if (!stationIndex.IsNull())
     {
-        auto location = GetStation(stationIndex).Exit.ToCoordsXYZD();
+        auto location = getStation(stationIndex).Exit.ToCoordsXYZD();
         if (!location.IsNull())
         {
             auto direction = DirectionReverse(location.direction);
@@ -285,7 +285,7 @@ void Ride::RemovePeeps()
             if (peep->State == PeepState::QueuingFront && peep->RideSubState == PeepRideSubState::AtEntrance)
                 peep->RemoveFromQueue();
 
-            if (exitPosition.direction == INVALID_DIRECTION)
+            if (exitPosition.direction == kInvalidDirection)
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
@@ -315,7 +315,7 @@ void Ride::RemovePeeps()
             if (peep->CurrentRide != id)
                 continue;
 
-            if (exitPosition.direction == INVALID_DIRECTION)
+            if (exitPosition.direction == kInvalidDirection)
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
@@ -335,17 +335,17 @@ void Ride::RemovePeeps()
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
         }
     }
-    num_riders = 0;
-    slide_in_use = 0;
-    window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
+    numRiders = 0;
+    slideInUse = 0;
+    windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN;
 }
 
 void RideClearBlockedTiles(const Ride& ride)
 {
-    auto& gameState = GetGameState();
-    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
+    auto& gameState = getGameState();
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.mapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.mapSize.y; ++tilePos.y)
         {
             for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
             {
@@ -377,7 +377,7 @@ void RideClearBlockedTiles(const Ride& ride)
  */
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
-    uint16_t flags)
+    TrackElementSetFlags flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
     auto trackElement = MapGetTrackElementAtOfTypeSeq(location, type, 0);
@@ -431,15 +431,15 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         {
             *output_element = reinterpret_cast<TileElement*>(trackElement);
         }
-        if (flags & TRACK_ELEMENT_SET_HIGHLIGHT_FALSE)
+        if (flags.has(TrackElementSetFlag::highlightOff))
         {
             trackElement->SetHighlight(false);
         }
-        if (flags & TRACK_ELEMENT_SET_HIGHLIGHT_TRUE)
+        if (flags.has(TrackElementSetFlag::highlightOn))
         {
             trackElement->SetHighlight(true);
         }
-        if (flags & TRACK_ELEMENT_SET_COLOUR_SCHEME)
+        if (flags.has(TrackElementSetFlag::colourScheme))
         {
             auto newScheme = static_cast<RideColourScheme>(extra_params & 0xFF);
             trackElement->SetColourScheme(newScheme);
@@ -449,23 +449,23 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
                 _currentColourScheme = newScheme;
             }
         }
-        if (flags & TRACK_ELEMENT_SET_SEAT_ROTATION)
+        if (flags.has(TrackElementSetFlag::seatRotation))
         {
             trackElement->SetSeatRotation(static_cast<uint8_t>(extra_params & 0xFF));
         }
-        if (flags & TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE)
+        if (flags.has(TrackElementSetFlag::cableLiftOn))
         {
             trackElement->SetHasCableLift(true);
         }
-        if (flags & TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE)
+        if (flags.has(TrackElementSetFlag::cableLiftOff))
         {
             trackElement->SetHasCableLift(false);
         }
-        if (flags & TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE)
+        if (flags.has(TrackElementSetFlag::brakeClosed))
         {
             trackElement->SetBrakeClosed(extra_params != 0);
         }
-        if (flags & TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED)
+        if (flags.has(TrackElementSetFlag::brakeBoosterSpeed))
         {
             trackElement->SetBrakeBoosterSpeed(static_cast<uint8_t>(extra_params & 0xFF));
         }
@@ -485,16 +485,16 @@ static void WindowRideConstructionUpdateActiveElements()
  */
 void RideConstructionRemoveGhosts()
 {
-    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
+    if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
         RideEntranceExitRemoveGhost();
-        _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
+        _currentTrackSelectionFlags.unset(TrackSelectionFlag::entranceOrExit);
     }
-    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
+    if (_currentTrackSelectionFlags.has(TrackSelectionFlag::track))
     {
         auto intent = Intent(INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE);
         ContextBroadcastIntent(&intent);
-        _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_TRACK;
+        _currentTrackSelectionFlags.unset(TrackSelectionFlag::track);
     }
 }
 
@@ -508,14 +508,14 @@ void RideConstructionInvalidateCurrentTrack()
         case RideConstructionState::Selected:
             GetTrackElementOriginAndApplyChanges(
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
-                nullptr, TRACK_ELEMENT_SET_HIGHLIGHT_FALSE);
+                nullptr, { TrackElementSetFlag::highlightOff });
             break;
         case RideConstructionState::MazeBuild:
         case RideConstructionState::MazeMove:
         case RideConstructionState::MazeFill:
         case RideConstructionState::Front:
         case RideConstructionState::Back:
-            if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
+            if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
             {
                 MapInvalidateTileFull(_currentTrackBegin.ToTileStart());
             }
@@ -524,9 +524,9 @@ void RideConstructionInvalidateCurrentTrack()
         case RideConstructionState::Place:
         case RideConstructionState::EntranceExit:
         default:
-            if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
+            if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
             {
-                _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ARROW;
+                _currentTrackSelectionFlags.unset(TrackSelectionFlag::arrow);
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
                 MapInvalidateTileFull(_currentTrackBegin);
             }
@@ -545,9 +545,9 @@ static void ride_construction_reset_current_piece()
     if (ride == nullptr)
         return;
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
+    const auto& rtd = ride->getRideTypeDescriptor();
 
-    if (rtd.HasFlag(RtdFlag::hasTrack) || ride->num_stations == 0)
+    if (rtd.HasFlag(RtdFlag::hasTrack) || ride->numStations == 0)
     {
         _currentlySelectedTrack = rtd.StartTrackPiece;
         _currentTrackPitchEnd = TrackPitch::None;
@@ -579,7 +579,7 @@ void RideConstructionSetDefaultNextPiece()
     if (ride == nullptr)
         return;
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
+    const auto& rtd = ride->getRideTypeDescriptor();
 
     int32_t z, direction;
     OpenRCT2::TrackElemType trackType;
@@ -602,7 +602,7 @@ void RideConstructionSetDefaultNextPiece()
             tileElement = trackBeginEnd.begin_element;
             trackType = tileElement->AsTrack()->GetTrackType();
 
-            if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+            if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
             {
                 ride_construction_reset_current_piece();
                 return;
@@ -644,7 +644,7 @@ void RideConstructionSetDefaultNextPiece()
             _previousTrackPitchEnd = slope;
             _currentTrackHasLiftHill = trackElement->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
-                    || GetGameState().Cheats.enableChainLiftOnAllTrack);
+                    || getGameState().cheats.enableChainLiftOnAllTrack);
 
             if (TrackTypeHasSpeedSetting(trackElement->GetTrackType()))
                 _currentBrakeSpeed = trackElement->GetBrakeBoosterSpeed();
@@ -701,7 +701,7 @@ void RideConstructionSetDefaultNextPiece()
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
+            if (!getGameState().cheats.enableChainLiftOnAllTrack)
             {
                 _currentTrackHasLiftHill = trackElement->HasChain();
             }
@@ -734,7 +734,7 @@ void RideSelectNextSection()
         auto type = _currentTrackPieceType;
         TileElement* tileElement;
         auto newCoords = GetTrackElementOriginAndApplyChanges(
-            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, {});
         if (!newCoords.has_value())
         {
             _rideConstructionState = RideConstructionState::State0;
@@ -754,7 +754,7 @@ void RideSelectNextSection()
             _currentTrackBegin = *newCoords;
             _currentTrackPieceDirection = tileElement->GetDirection();
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             WindowRideConstructionUpdateActiveElements();
         }
         else
@@ -763,7 +763,7 @@ void RideSelectNextSection()
             _currentTrackBegin = { outputElement, newCoords->z };
             _currentTrackPieceDirection = direction;
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             RideConstructionSetDefaultNextPiece();
             WindowRideConstructionUpdateActiveElements();
         }
@@ -792,7 +792,7 @@ void RideSelectPreviousSection()
         auto type = _currentTrackPieceType;
         TileElement* tileElement;
         auto newCoords = GetTrackElementOriginAndApplyChanges(
-            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, {});
         if (newCoords == std::nullopt)
         {
             _rideConstructionState = RideConstructionState::State0;
@@ -808,7 +808,7 @@ void RideSelectPreviousSection()
             _currentTrackBegin.z = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             WindowRideConstructionUpdateActiveElements();
         }
         else
@@ -819,7 +819,7 @@ void RideSelectPreviousSection()
             _currentTrackBegin.z = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.end_direction;
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             RideConstructionSetDefaultNextPiece();
             WindowRideConstructionUpdateActiveElements();
         }
@@ -879,11 +879,11 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         ToolSet(
             *constructionWindow,
             entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT,
-            Tool::Crosshair);
+            Tool::crosshair);
         gRideEntranceExitPlaceType = entranceType;
         gRideEntranceExitPlaceRideIndex = rideIndex;
         gRideEntranceExitPlaceStationIndex = stationIndex;
-        InputSetFlag(INPUT_FLAG_6, true);
+        gInputFlags.set(InputFlag::unk6);
         if (_rideConstructionState != RideConstructionState::EntranceExit)
         {
             gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
@@ -907,7 +907,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
                                                                                     : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
 
             ToolCancel();
-            ToolSet(*constructionWindow, newToolWidgetIndex, Tool::Crosshair);
+            ToolSet(*constructionWindow, newToolWidgetIndex, Tool::crosshair);
         });
 
         GameActions::Execute(&rideEntranceExitRemove);
@@ -933,7 +933,7 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
             _currentTrackBegin.x = tileElement.x;
             _currentTrackBegin.y = tileElement.y;
             _currentTrackBegin.z = trackElement->GetBaseZ();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
@@ -962,23 +962,23 @@ bool RideModify(const CoordsXYE& input)
         return false;
     }
 
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride->getRideEntry();
     if (rideEntry == nullptr || !ride_check_if_construction_allowed(*ride))
         return false;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE && !GetGameState().Cheats.makeAllDestructible)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE && !getGameState().cheats.makeAllDestructible)
     {
         Formatter ft;
-        ride->FormatNameTo(ft);
+        ride->formatNameTo(ft);
         ContextShowError(
             STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE, ft);
         return false;
     }
 
     // Stop the ride again to clear all vehicles and peeps (compatible with network games)
-    if (ride->status != RideStatus::Simulating)
+    if (ride->status != RideStatus::simulating)
     {
-        auto gameAction = RideSetStatusAction(ride->id, RideStatus::Closed);
+        auto gameAction = RideSetStatusAction(ride->id, RideStatus::closed);
         GameActions::Execute(&gameAction);
     }
 
@@ -988,16 +988,16 @@ bool RideModify(const CoordsXYE& input)
 
     ride_create_or_find_construction_window(rideIndex);
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
+    const auto& rtd = ride->getRideTypeDescriptor();
     if (rtd.specialType == RtdSpecialType::maze)
     {
         return ride_modify_maze(tileElement);
     }
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::cannotHaveGaps))
+    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::cannotHaveGaps))
     {
         CoordsXYE endOfTrackElement{};
-        if (ride->FindTrackGap(tileElement, &endOfTrackElement))
+        if (ride->findTrackGap(tileElement, &endOfTrackElement))
             tileElement = endOfTrackElement;
     }
 
@@ -1007,7 +1007,7 @@ bool RideModify(const CoordsXYE& input)
     auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->GetBaseZ() };
     auto direction = tileElement.element->GetDirection();
     auto type = tileElement.element->AsTrack()->GetTrackType();
-    auto newCoords = GetTrackElementOriginAndApplyChanges({ tileCoords, direction }, type, 0, nullptr, 0);
+    auto newCoords = GetTrackElementOriginAndApplyChanges({ tileCoords, direction }, type, 0, nullptr, {});
     if (!newCoords.has_value())
         return false;
 
@@ -1016,11 +1016,11 @@ bool RideModify(const CoordsXYE& input)
     _currentTrackBegin = newCoords.value();
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
-    _currentTrackSelectionFlags = 0;
+    _currentTrackSelectionFlags.clearAll();
     _rideConstructionNextArrowPulse = 0;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+    if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
     {
         WindowRideConstructionUpdateActiveElements();
         return true;
@@ -1037,7 +1037,7 @@ bool RideModify(const CoordsXYE& input)
     _currentTrackBegin = *newCoords;
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
-    _currentTrackSelectionFlags = 0;
+    _currentTrackSelectionFlags.clearAll();
 
     RideSelectPreviousSection();
 
@@ -1047,7 +1047,7 @@ bool RideModify(const CoordsXYE& input)
         _currentTrackBegin = *newCoords;
         _currentTrackPieceDirection = direction;
         _currentTrackPieceType = type;
-        _currentTrackSelectionFlags = 0;
+        _currentTrackSelectionFlags.clearAll();
     }
 
     WindowRideConstructionUpdateActiveElements();
@@ -1068,20 +1068,20 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
         return 0;
 
     RideClearForConstruction(ride);
-    ride.RemovePeeps();
+    ride.removePeeps();
 
     w = ride_create_or_find_construction_window(ride.id);
 
-    ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
-    InputSetFlag(INPUT_FLAG_6, true);
+    ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::crosshair);
+    gInputFlags.set(InputFlag::unk6);
 
-    _currentlySelectedTrack = ride.GetRideTypeDescriptor().StartTrackPiece;
+    _currentlySelectedTrack = ride.getRideTypeDescriptor().StartTrackPiece;
     _currentTrackPitchEnd = TrackPitch::None;
     _currentTrackRollEnd = TrackRoll::None;
     _currentTrackHasLiftHill = false;
     _currentTrackAlternative.clearAll();
 
-    if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
+    if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
         _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
     _previousTrackRollEnd = TrackRoll::None;
@@ -1089,7 +1089,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
 
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RideConstructionState::Place;
-    _currentTrackSelectionFlags = 0;
+    _currentTrackSelectionFlags.clearAll();
 
     WindowRideConstructionUpdateActiveElements();
     return 1;
@@ -1173,9 +1173,9 @@ money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t
  *
  *  rct2: 0x006CB945
  */
-void Ride::ValidateStations()
+void Ride::validateStations()
 {
-    const auto& rtd = GetRideTypeDescriptor();
+    const auto& rtd = getRideTypeDescriptor();
     if (rtd.specialType != RtdSpecialType::maze)
     {
         // find the stations of the ride to begin stepping over track elements from
@@ -1185,14 +1185,14 @@ void Ride::ValidateStations()
                 continue;
 
             CoordsXYZ location = station.GetStart();
-            uint8_t direction = INVALID_DIRECTION;
+            uint8_t direction = kInvalidDirection;
 
             bool specialTrack = false;
             TileElement* tileElement = nullptr;
             while (true)
             {
                 // search backwards for the previous station TrackElement (only if the first station TrackElement is found)
-                if (direction != INVALID_DIRECTION)
+                if (direction != kInvalidDirection)
                 {
                     location.x -= CoordsDirectionDelta[direction].x;
                     location.y -= CoordsDirectionDelta[direction].y;
@@ -1228,12 +1228,12 @@ void Ride::ValidateStations()
                     break;
                 }
                 // update the StationIndex, get the TrackElement's rotation
-                tileElement->AsTrack()->SetStationIndex(GetStationIndex(&station));
+                tileElement->AsTrack()->SetStationIndex(getStationIndex(&station));
                 direction = tileElement->GetDirection();
 
                 // In the future this could look at the TED and see if the station has a sequence longer than 1
                 // tower ride, flat ride, shop
-                if (GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation))
+                if (getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation))
                 {
                     // if the track has multiple sequences, stop looking for the next one.
                     specialTrack = true;
@@ -1279,7 +1279,7 @@ void Ride::ValidateStations()
                     break;
                 }
 
-                tileElement->AsTrack()->SetStationIndex(GetStationIndex(&station));
+                tileElement->AsTrack()->SetStationIndex(getStationIndex(&station));
             }
         }
     }
@@ -1381,7 +1381,7 @@ void Ride::ValidateStations()
                     stationId = trackElement->AsTrack()->GetStationIndex();
                 }
 
-                auto& station = GetStation(stationId);
+                auto& station = getStation(stationId);
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
                 {
                     // if the location is already set for this station, big problem!
@@ -1435,7 +1435,7 @@ bool RideSelectBackwardsFromFront()
             _currentTrackBegin.z = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             return true;
         }
     }
@@ -1460,7 +1460,7 @@ bool RideSelectForwardsFromBack()
             _currentTrackBegin.z = z;
             _currentTrackPieceDirection = next_track.element->GetDirection();
             _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             return true;
         }
     }
@@ -1473,10 +1473,10 @@ bool RideSelectForwardsFromBack()
  */
 ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride)
 {
-    if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+    if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         return { true };
 
-    for (auto& station : ride.GetStations())
+    for (auto& station : ride.getStations())
     {
         if (station.Start.IsNull())
         {

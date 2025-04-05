@@ -42,7 +42,7 @@ static void HeartlineTwisterRCTrackFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21356), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 26 } });
+                    { { 0, 27, height }, { 32, 1, 24 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -50,7 +50,7 @@ static void HeartlineTwisterRCTrackFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21357), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 26 } });
+                    { { 0, 27, height }, { 32, 1, 24 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -58,7 +58,7 @@ static void HeartlineTwisterRCTrackFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21360), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 26 } });
+                    { { 0, 27, height }, { 32, 1, 24 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -66,7 +66,7 @@ static void HeartlineTwisterRCTrackFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21361), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 26 } });
+                    { { 0, 27, height }, { 32, 1, 24 } });
                 break;
         }
     }
@@ -81,7 +81,7 @@ static void HeartlineTwisterRCTrackFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21296), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 26 } });
+                    { { 0, 27, height }, { 32, 1, 24 } });
                 break;
             case 1:
             case 3:
@@ -90,7 +90,7 @@ static void HeartlineTwisterRCTrackFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21297), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 26 } });
+                    { { 0, 27, height }, { 32, 1, 24 } });
                 break;
         }
     }
@@ -107,21 +107,27 @@ static void HeartlineTwisterRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][3] = {
-        { 19732, SPR_STATION_BASE_B_SW_NE },
-        { 19733, SPR_STATION_BASE_B_NW_SE },
-        { 19732, SPR_STATION_BASE_B_SW_NE },
-        { 19733, SPR_STATION_BASE_B_NW_SE },
+    static constexpr ImageIndex imageIds[4][2] = {
+        { 19732, 19734 },
+        { 19733, 19735 },
+        { 19732, 19734 },
+        { 19733, 19735 },
     };
-
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
         { { 0, 6, height + 3 }, { 32, 20, 1 } });
-    PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
-        { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, 0))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
+    }
+    else
+    {
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
+            { { 0, 27, height }, { 32, 1, 26 } });
+        DrawSupportForSequenceA<TrackElemType::Flat>(
+            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+    }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -142,7 +148,7 @@ static void HeartlineTwisterRCTrack25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21382), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 50 } });
+                    { { 0, 27, height }, { 32, 1, 40 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -150,7 +156,7 @@ static void HeartlineTwisterRCTrack25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21383), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 50 } });
+                    { { 0, 27, height }, { 32, 1, 40 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -158,7 +164,7 @@ static void HeartlineTwisterRCTrack25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21384), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 50 } });
+                    { { 0, 27, height }, { 32, 1, 40 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -166,7 +172,7 @@ static void HeartlineTwisterRCTrack25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21385), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 50 } });
+                    { { 0, 27, height }, { 32, 1, 40 } });
                 break;
         }
     }
@@ -180,7 +186,7 @@ static void HeartlineTwisterRCTrack25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21326), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 50 } });
+                    { { 0, 27, height }, { 32, 1, 40 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -188,7 +194,7 @@ static void HeartlineTwisterRCTrack25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21327), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 50 } });
+                    { { 0, 27, height }, { 32, 1, 40 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -196,7 +202,7 @@ static void HeartlineTwisterRCTrack25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21328), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 50 } });
+                    { { 0, 27, height }, { 32, 1, 40 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -204,7 +210,7 @@ static void HeartlineTwisterRCTrack25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21329), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 50 } });
+                    { { 0, 27, height }, { 32, 1, 40 } });
                 break;
         }
     }
@@ -239,7 +245,7 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21406), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 0, 27, height }, { 32, 1, 88 } });
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -247,7 +253,7 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21407), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 0, 27, height }, { 32, 1, 88 } });
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -255,7 +261,7 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21408), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 0, 27, height }, { 32, 1, 88 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -263,7 +269,7 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21409), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 0, 27, height }, { 32, 1, 88 } });
                 break;
         }
     }
@@ -277,7 +283,7 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21350), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 0, 27, height }, { 32, 1, 88 } });
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -285,7 +291,7 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21351), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 0, 27, height }, { 32, 1, 88 } });
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -293,7 +299,7 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21352), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 0, 27, height }, { 32, 1, 88 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -301,7 +307,7 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21353), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 0, 27, height }, { 32, 1, 88 } });
                 break;
         }
     }
@@ -336,7 +342,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21366), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 42 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -344,7 +350,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21367), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 42 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -352,7 +358,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21368), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 42 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -360,7 +366,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21369), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 42 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
         }
     }
@@ -374,7 +380,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21310), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 42 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -382,7 +388,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21311), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 42 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -390,7 +396,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21312), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 42 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -398,7 +404,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21313), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 42 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
         }
     }
@@ -433,7 +439,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21390), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -441,7 +447,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21391), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -449,7 +455,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21392), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -457,7 +463,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21393), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
         }
     }
@@ -471,7 +477,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21334), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -479,7 +485,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21335), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -487,7 +493,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21336), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -495,7 +501,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21337), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
         }
     }
@@ -530,7 +536,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21398), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -538,7 +544,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21399), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -546,7 +552,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21400), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -554,7 +560,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21401), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
         }
     }
@@ -568,7 +574,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21342), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 1:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -576,7 +582,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21343), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 2:
                 session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
@@ -584,7 +590,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21344), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -592,7 +598,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21345), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 0, 27, height }, { 32, 1, 56 } });
                 break;
         }
     }
@@ -627,7 +633,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21374), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 34 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -635,7 +641,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21375), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 34 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -643,7 +649,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21376), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 34 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -651,7 +657,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21377), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 34 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
         }
     }
@@ -665,7 +671,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21318), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 34 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -673,7 +679,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21319), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 34 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -681,7 +687,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21320), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 34 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -689,7 +695,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
                     { { 0, 6, height }, { 32, 20, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21321), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 34 } });
+                    { { 0, 27, height }, { 32, 1, 32 } });
                 break;
         }
     }
@@ -893,7 +899,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21302), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -901,7 +907,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21303), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -909,7 +915,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21304), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -917,7 +923,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21305), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
 
@@ -936,7 +942,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height - 7 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21320), { 0, 0, height - 8 },
-                        { { 0, 27, height - 8 }, { 32, 1, 34 } });
+                        { { 0, 27, height - 8 }, { 32, 1, 32 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -944,7 +950,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height - 7 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21321), { 0, 0, height - 8 },
-                        { { 0, 27, height - 8 }, { 32, 1, 34 } });
+                        { { 0, 27, height - 8 }, { 32, 1, 32 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -952,7 +958,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height - 7 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21318), { 0, 0, height - 8 },
-                        { { 0, 27, height - 8 }, { 32, 1, 34 } });
+                        { { 0, 27, height - 8 }, { 32, 1, 32 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -960,7 +966,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
                         { { 0, 6, height - 7 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21319), { 0, 0, height - 8 },
-                        { { 0, 27, height - 8 }, { 32, 1, 34 } });
+                        { { 0, 27, height - 8 }, { 32, 1, 32 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -993,7 +999,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height - 7 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21320), { 0, 0, height - 8 },
-                        { { 0, 27, height - 8 }, { 32, 1, 34 } });
+                        { { 0, 27, height - 8 }, { 32, 1, 32 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1001,7 +1007,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height - 7 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21321), { 0, 0, height - 8 },
-                        { { 0, 27, height - 8 }, { 32, 1, 34 } });
+                        { { 0, 27, height - 8 }, { 32, 1, 32 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1009,7 +1015,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height - 7 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21318), { 0, 0, height - 8 },
-                        { { 0, 27, height - 8 }, { 32, 1, 34 } });
+                        { { 0, 27, height - 8 }, { 32, 1, 32 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1017,7 +1023,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height - 7 }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21319), { 0, 0, height - 8 },
-                        { { 0, 27, height - 8 }, { 32, 1, 34 } });
+                        { { 0, 27, height - 8 }, { 32, 1, 32 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -1107,7 +1113,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21302), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1115,7 +1121,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21303), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1123,7 +1129,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21304), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1131,7 +1137,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21305), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
 
@@ -1211,7 +1217,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21422), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1219,7 +1225,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21425), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1227,7 +1233,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21428), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1235,7 +1241,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21431), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1248,7 +1254,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21423), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1256,7 +1262,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21426), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1264,7 +1270,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21429), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1272,7 +1278,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21432), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1285,7 +1291,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21424), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1293,7 +1299,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21427), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1301,7 +1307,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21430), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1309,7 +1315,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21433), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1322,7 +1328,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21430), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1330,7 +1336,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21433), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1338,7 +1344,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21424), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1346,7 +1352,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21427), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1359,7 +1365,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21429), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1367,7 +1373,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21432), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1375,7 +1381,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21423), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1383,7 +1389,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21426), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1396,7 +1402,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21428), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1404,7 +1410,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21431), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1412,7 +1418,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21422), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1420,7 +1426,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21425), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1450,7 +1456,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21446), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1458,7 +1464,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21449), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1466,7 +1472,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21452), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1474,7 +1480,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21455), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1487,7 +1493,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21447), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1495,7 +1501,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21450), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1503,7 +1509,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21453), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1511,7 +1517,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21456), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1524,7 +1530,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21448), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1532,7 +1538,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21451), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1540,7 +1546,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21454), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1548,7 +1554,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21457), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1561,7 +1567,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21454), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1569,7 +1575,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21457), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1577,7 +1583,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21448), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1585,7 +1591,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21451), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1598,7 +1604,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21453), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1606,7 +1612,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21456), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1614,7 +1620,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21447), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1622,7 +1628,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21450), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;
@@ -1635,7 +1641,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21452), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1643,7 +1649,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21455), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1651,7 +1657,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21446), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1659,7 +1665,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21449), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 26 } });
+                        { { 0, 27, height }, { 32, 1, 24 } });
                     break;
             }
             break;

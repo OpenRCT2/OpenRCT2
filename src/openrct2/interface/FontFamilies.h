@@ -25,6 +25,7 @@ extern TTFontFamily const TTFFamilyChineseSimplified;
 extern TTFontFamily const TTFFamilyChineseTraditional;
 extern TTFontFamily const TTFFamilyJapanese;
 extern TTFontFamily const TTFFamilyKorean;
+extern TTFontFamily const TTFFamilyArabic;
 extern TTFontFamily const TTFFamilySansSerif;
 
     #define FAMILY(x) x

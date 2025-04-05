@@ -18,6 +18,7 @@
 #include "../actions/ParkSetParameterAction.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
+#include "../entity/EntityList.h"
 #include "../entity/Litter.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
@@ -32,13 +33,11 @@
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
-#include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
-#include "Map.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/SurfaceElement.h"
 
@@ -63,10 +62,10 @@ namespace OpenRCT2::Park
      */
     static PeepSpawn* GetRandomPeepSpawn()
     {
-        auto& gameState = GetGameState();
-        if (!gameState.PeepSpawns.empty())
+        auto& gameState = getGameState();
+        if (!gameState.peepSpawns.empty())
         {
-            return &gameState.PeepSpawns[ScenarioRand() % gameState.PeepSpawns.size()];
+            return &gameState.peepSpawns[ScenarioRand() % gameState.peepSpawns.size()];
         }
 
         return nullptr;
@@ -75,9 +74,9 @@ namespace OpenRCT2::Park
     static money64 calculateRideValue(const Ride& ride)
     {
         money64 result = 0;
-        if (ride.value != RIDE_VALUE_UNDEFINED)
+        if (ride.value != kRideValueUndefined)
         {
-            const auto& rtd = ride.GetRideTypeDescriptor();
+            const auto& rtd = ride.getRideTypeDescriptor();
             result = (ride.value * 10) * (static_cast<money64>(RideCustomersInLast5Minutes(ride)) + rtd.BonusValue * 4LL);
         }
         return result;
@@ -86,18 +85,18 @@ namespace OpenRCT2::Park
     static money64 calculateTotalRideValueForMoney()
     {
         money64 totalRideValue = 0;
-        bool ridePricesUnlocked = RidePricesUnlocked() && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY);
+        bool ridePricesUnlocked = RidePricesUnlocked() && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY);
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Open)
+            if (ride.status != RideStatus::open)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED)
                 continue;
 
             // Add ride value
-            if (ride.value != RIDE_VALUE_UNDEFINED)
+            if (ride.value != kRideValueUndefined)
             {
                 money64 rideValue = ride.value;
                 if (ridePricesUnlocked)
@@ -118,40 +117,40 @@ namespace OpenRCT2::Park
         uint32_t suggestedMaxGuests = 0;
         uint32_t difficultGenerationBonus = 0;
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Open)
+            if (ride.status != RideStatus::open)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
-            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED)
                 continue;
 
             // Add guest score for ride type
-            suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
+            suggestedMaxGuests += ride.getRideTypeDescriptor().BonusValue;
 
             // If difficult guest generation, extra guests are available for good rides
-            if (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+            if (gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
             {
-                if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+                if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED))
                     continue;
-                if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     continue;
-                if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasDataLogging))
+                if (!ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasDataLogging))
                     continue;
-                if (ride.GetStation().SegmentLength < (600 << 16))
+                if (ride.getStation().SegmentLength < (600 << 16))
                     continue;
                 if (ride.ratings.excitement < MakeRideRating(6, 00))
                     continue;
 
                 // Bonus guests for good ride
-                difficultGenerationBonus += ride.GetRideTypeDescriptor().BonusValue * 2;
+                difficultGenerationBonus += ride.getRideTypeDescriptor().BonusValue * 2;
             }
         }
 
-        if (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        if (gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
         {
             suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
             suggestedMaxGuests += difficultGenerationBonus;
@@ -161,13 +160,13 @@ namespace OpenRCT2::Park
 
 #ifdef ENABLE_SCRIPTING
         auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-        if (hookEngine.HasSubscriptions(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP))
+        if (hookEngine.HasSubscriptions(HookType::parkCalculateGuestCap))
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto obj = DukObject(ctx);
             obj.Set("suggestedGuestMaximum", suggestedMaxGuests);
             auto e = obj.Take();
-            hookEngine.Call(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP, e, true);
+            hookEngine.Call(HookType::parkCalculateGuestCap, e, true);
 
             suggestedMaxGuests = AsOrDefault(e["suggestedGuestMaximum"], static_cast<int32_t>(suggestedMaxGuests));
             suggestedMaxGuests = std::clamp<uint16_t>(suggestedMaxGuests, 0, UINT16_MAX);
@@ -178,18 +177,18 @@ namespace OpenRCT2::Park
 
     static uint32_t calculateGuestGenerationProbability()
     {
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
         // Begin with 50 + park rating
-        uint32_t probability = 50 + std::clamp(gameState.Park.Rating - 200, 0, 650);
+        uint32_t probability = 50 + std::clamp(gameState.park.Rating - 200, 0, 650);
 
         // The more guests, the lower the chance of a new one
-        uint32_t numGuests = gameState.NumGuestsInPark + gameState.NumGuestsHeadingForPark;
-        if (numGuests > gameState.SuggestedGuestMaximum)
+        uint32_t numGuests = gameState.numGuestsInPark + gameState.numGuestsHeadingForPark;
+        if (numGuests > gameState.suggestedGuestMaximum)
         {
             probability /= 4;
             // Even lower for difficult guest generation
-            if (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+            if (gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
             {
                 probability /= 4;
             }
@@ -203,18 +202,18 @@ namespace OpenRCT2::Park
 
         // Penalty for overpriced entrance fee relative to total ride value
         auto entranceFee = GetEntranceFee();
-        if (entranceFee > gameState.TotalRideValueForMoney)
+        if (entranceFee > gameState.totalRideValueForMoney)
         {
             probability /= 4;
             // Extra penalty for very overpriced entrance fee
-            if (entranceFee / 2 > gameState.TotalRideValueForMoney)
+            if (entranceFee / 2 > gameState.totalRideValueForMoney)
             {
                 probability /= 4;
             }
         }
 
         // Reward or penalties for park awards
-        for (const auto& award : GetGameState().CurrentAwards)
+        for (const auto& award : getGameState().currentAwards)
         {
             // +/- 0.25% of the probability
             if (AwardIsPositive(award.Type))
@@ -233,17 +232,17 @@ namespace OpenRCT2::Park
     static void generateGuests(GameState_t& gameState)
     {
         // Generate a new guest for some probability
-        if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < gameState.GuestGenerationProbability)
+        if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < gameState.guestGenerationProbability)
         {
-            bool difficultGeneration = (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
-            if (!difficultGeneration || gameState.SuggestedGuestMaximum + 150 >= gameState.NumGuestsInPark)
+            bool difficultGeneration = (gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
+            if (!difficultGeneration || gameState.suggestedGuestMaximum + 150 >= gameState.numGuestsInPark)
             {
                 GenerateGuest();
             }
         }
 
         // Extra guests generated by advertising campaigns
-        for (const auto& campaign : gameState.MarketingCampaigns)
+        for (const auto& campaign : gameState.marketingCampaigns)
         {
             // Random chance of guest generation
             auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.Type);
@@ -277,21 +276,21 @@ namespace OpenRCT2::Park
 
     void Initialise(GameState_t& gameState)
     {
-        gameState.Park.Name = LanguageGetString(STR_UNNAMED_PARK);
-        gameState.PluginStorage = {};
-        gameState.StaffHandymanColour = COLOUR_BRIGHT_RED;
-        gameState.StaffMechanicColour = COLOUR_LIGHT_BLUE;
-        gameState.StaffSecurityColour = COLOUR_YELLOW;
-        gameState.NumGuestsInPark = 0;
-        gameState.NumGuestsInParkLastWeek = 0;
-        gameState.NumGuestsHeadingForPark = 0;
-        gameState.GuestChangeModifier = 0;
-        gameState.Park.Rating = 0;
-        gameState.GuestGenerationProbability = 0;
-        gameState.TotalRideValueForMoney = 0;
-        gameState.SuggestedGuestMaximum = 0;
-        gameState.ResearchLastItem = std::nullopt;
-        gameState.MarketingCampaigns.clear();
+        gameState.park.Name = LanguageGetString(STR_UNNAMED_PARK);
+        gameState.pluginStorage = {};
+        gameState.staffHandymanColour = COLOUR_BRIGHT_RED;
+        gameState.staffMechanicColour = COLOUR_LIGHT_BLUE;
+        gameState.staffSecurityColour = COLOUR_YELLOW;
+        gameState.numGuestsInPark = 0;
+        gameState.numGuestsInParkLastWeek = 0;
+        gameState.numGuestsHeadingForPark = 0;
+        gameState.guestChangeModifier = 0;
+        gameState.park.Rating = 0;
+        gameState.guestGenerationProbability = 0;
+        gameState.totalRideValueForMoney = 0;
+        gameState.suggestedGuestMaximum = 0;
+        gameState.researchLastItem = std::nullopt;
+        gameState.marketingCampaigns.clear();
 
         ResearchResetItems(gameState);
         FinanceInit();
@@ -300,32 +299,32 @@ namespace OpenRCT2::Park
 
         SetAllSceneryItemsInvented();
 
-        gameState.Park.EntranceFee = 10.00_GBP;
+        gameState.park.EntranceFee = 10.00_GBP;
 
-        gameState.PeepSpawns.clear();
+        gameState.peepSpawns.clear();
         ParkEntranceReset();
 
-        gameState.ResearchPriorities = EnumsToFlags(
+        gameState.researchPriorities = EnumsToFlags(
             ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
             ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
-        gameState.ResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
+        gameState.researchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-        gameState.GuestInitialCash = 50.00_GBP;
-        gameState.GuestInitialHappiness = Park::CalculateGuestInitialHappiness(50);
-        gameState.GuestInitialHunger = 200;
-        gameState.GuestInitialThirst = 200;
-        gameState.ScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
-        gameState.ScenarioObjective.Year = 4;
-        gameState.ScenarioObjective.NumGuests = 1000;
-        gameState.LandPrice = 90.00_GBP;
-        gameState.ConstructionRightsPrice = 40.00_GBP;
-        gameState.Park.Flags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.guestInitialCash = 50.00_GBP;
+        gameState.guestInitialHappiness = Park::CalculateGuestInitialHappiness(50);
+        gameState.guestInitialHunger = 200;
+        gameState.guestInitialThirst = 200;
+        gameState.scenarioObjective.Type = OBJECTIVE_GUESTS_BY;
+        gameState.scenarioObjective.Year = 4;
+        gameState.scenarioObjective.NumGuests = 1000;
+        gameState.landPrice = 90.00_GBP;
+        gameState.constructionRightsPrice = 40.00_GBP;
+        gameState.park.Flags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         ResetHistories(gameState);
         FinanceResetHistory();
         AwardReset();
 
-        gameState.ScenarioName.clear();
-        gameState.ScenarioDetails = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
+        gameState.scenarioName.clear();
+        gameState.scenarioDetails = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
     }
 
     void Update(GameState_t& gameState, const Date& date)
@@ -338,18 +337,18 @@ namespace OpenRCT2::Park
             UpdateHistories(gameState);
         }
 
-        const auto currentTicks = gameState.CurrentTicks;
+        const auto currentTicks = gameState.currentTicks;
         auto* windowMgr = Ui::GetWindowManager();
 
         // Every ~13 seconds
         if (currentTicks % 512 == 0)
         {
-            gameState.Park.Rating = CalculateParkRating();
-            gameState.Park.Value = Park::CalculateParkValue();
-            gameState.CompanyValue = CalculateCompanyValue();
-            gameState.TotalRideValueForMoney = calculateTotalRideValueForMoney();
-            gameState.SuggestedGuestMaximum = calculateSuggestedMaxGuests();
-            gameState.GuestGenerationProbability = calculateGuestGenerationProbability();
+            gameState.park.Rating = CalculateParkRating();
+            gameState.park.Value = Park::CalculateParkValue();
+            gameState.companyValue = CalculateCompanyValue();
+            gameState.totalRideValueForMoney = calculateTotalRideValueForMoney();
+            gameState.suggestedGuestMaximum = calculateSuggestedMaxGuests();
+            gameState.guestGenerationProbability = calculateGuestGenerationProbability();
 
             windowMgr->InvalidateByClass(WindowClass::Finances);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
@@ -359,7 +358,7 @@ namespace OpenRCT2::Park
         // Every ~102 seconds
         if (currentTicks % 4096 == 0)
         {
-            gameState.Park.Size = CalculateParkSize();
+            gameState.park.Size = CalculateParkSize();
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
 
@@ -382,10 +381,10 @@ namespace OpenRCT2::Park
             }
         } while (TileElementIteratorNext(&it));
 
-        auto& gameState = GetGameState();
-        if (tiles != gameState.Park.Size)
+        auto& gameState = getGameState();
+        if (tiles != gameState.park.Size)
         {
-            gameState.Park.Size = tiles;
+            gameState.park.Size = tiles;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
@@ -395,15 +394,15 @@ namespace OpenRCT2::Park
 
     int32_t CalculateParkRating()
     {
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
-        if (gameState.Cheats.forcedParkRating != kForcedParkRatingDisabled)
+        if (gameState.cheats.forcedParkRating != kForcedParkRatingDisabled)
         {
-            return gameState.Cheats.forcedParkRating;
+            return gameState.cheats.forcedParkRating;
         }
 
         int32_t result = 1150;
-        if (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING)
+        if (gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING)
         {
             result = 1050;
         }
@@ -411,7 +410,7 @@ namespace OpenRCT2::Park
         // Guests
         {
             // -150 to +3 based on a range of guests from 0 to 2000
-            result -= 150 - (std::min<int32_t>(2000, gameState.NumGuestsInPark) / 13);
+            result -= 150 - (std::min<int32_t>(2000, gameState.numGuestsInPark) / 13);
 
             // Find the number of happy peeps and the number of peeps who can't find the park exit
             uint32_t happyGuestCount = 0;
@@ -433,9 +432,9 @@ namespace OpenRCT2::Park
 
             // Peep happiness -500 to +0
             result -= 500;
-            if (gameState.NumGuestsInPark > 0)
+            if (gameState.numGuestsInPark > 0)
             {
-                result += 2 * std::min(250u, (happyGuestCount * 300) / gameState.NumGuestsInPark);
+                result += 2 * std::min(250u, (happyGuestCount * 300) / gameState.numGuestsInPark);
             }
 
             // Up to 25 guests can be lost without affecting the park rating.
@@ -506,7 +505,7 @@ namespace OpenRCT2::Park
             result -= 600 - (4 * (150 - std::min<int32_t>(150, litterCount)));
         }
 
-        result -= gameState.Park.RatingCasualtyPenalty;
+        result -= gameState.park.RatingCasualtyPenalty;
         result = std::clamp(result, 0, 999);
         return result;
     }
@@ -521,16 +520,16 @@ namespace OpenRCT2::Park
         }
 
         // +7.00 per guest
-        result += static_cast<money64>(GetGameState().NumGuestsInPark) * 7.00_GBP;
+        result += static_cast<money64>(getGameState().numGuestsInPark) * 7.00_GBP;
 
         return result;
     }
 
     money64 CalculateCompanyValue()
     {
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
 
-        auto result = gameState.Park.Value - gameState.BankLoan;
+        auto result = gameState.park.Value - gameState.bankLoan;
 
         // Clamp addition to prevent overflow
         result = AddClamp<money64>(result, FinanceGetCurrentCash());
@@ -585,16 +584,16 @@ namespace OpenRCT2::Park
     void ResetHistories(GameState_t& gameState)
     {
         std::fill(
-            std::begin(gameState.Park.RatingHistory), std::end(gameState.Park.RatingHistory), kParkRatingHistoryUndefined);
+            std::begin(gameState.park.RatingHistory), std::end(gameState.park.RatingHistory), kParkRatingHistoryUndefined);
         std::fill(
-            std::begin(gameState.GuestsInParkHistory), std::end(gameState.GuestsInParkHistory), kGuestsInParkHistoryUndefined);
+            std::begin(gameState.guestsInParkHistory), std::end(gameState.guestsInParkHistory), kGuestsInParkHistoryUndefined);
     }
 
     void UpdateHistories(GameState_t& gameState)
     {
         uint8_t guestChangeModifier = 1;
-        int32_t changeInGuestsInPark = static_cast<int32_t>(gameState.NumGuestsInPark)
-            - static_cast<int32_t>(gameState.NumGuestsInParkLastWeek);
+        int32_t changeInGuestsInPark = static_cast<int32_t>(gameState.numGuestsInPark)
+            - static_cast<int32_t>(gameState.numGuestsInParkLastWeek);
         if (changeInGuestsInPark > -20)
         {
             guestChangeModifier++;
@@ -603,32 +602,32 @@ namespace OpenRCT2::Park
                 guestChangeModifier = 0;
             }
         }
-        gameState.GuestChangeModifier = guestChangeModifier;
-        gameState.NumGuestsInParkLastWeek = gameState.NumGuestsInPark;
+        gameState.guestChangeModifier = guestChangeModifier;
+        gameState.numGuestsInParkLastWeek = gameState.numGuestsInPark;
 
         // Update park rating, guests in park and current cash history
         constexpr auto ratingHistorySize = std::extent_v<decltype(ParkData::RatingHistory)>;
-        HistoryPushRecord<uint16_t, ratingHistorySize>(gameState.Park.RatingHistory, gameState.Park.Rating);
-        constexpr auto numGuestsHistorySize = std::extent_v<decltype(GameState_t::GuestsInParkHistory)>;
-        HistoryPushRecord<uint32_t, numGuestsHistorySize>(gameState.GuestsInParkHistory, gameState.NumGuestsInPark);
+        HistoryPushRecord<uint16_t, ratingHistorySize>(gameState.park.RatingHistory, gameState.park.Rating);
+        constexpr auto numGuestsHistorySize = std::extent_v<decltype(GameState_t::guestsInParkHistory)>;
+        HistoryPushRecord<uint32_t, numGuestsHistorySize>(gameState.guestsInParkHistory, gameState.numGuestsInPark);
 
-        constexpr auto cashHistorySize = std::extent_v<decltype(GameState_t::CashHistory)>;
-        HistoryPushRecord<money64, cashHistorySize>(gameState.CashHistory, FinanceGetCurrentCash() - gameState.BankLoan);
+        constexpr auto cashHistorySize = std::extent_v<decltype(GameState_t::cashHistory)>;
+        HistoryPushRecord<money64, cashHistorySize>(gameState.cashHistory, FinanceGetCurrentCash() - gameState.bankLoan);
 
         // Update weekly profit history
-        auto currentWeeklyProfit = gameState.WeeklyProfitAverageDividend;
-        if (gameState.WeeklyProfitAverageDivisor != 0)
+        auto currentWeeklyProfit = gameState.weeklyProfitAverageDividend;
+        if (gameState.weeklyProfitAverageDivisor != 0)
         {
-            currentWeeklyProfit /= gameState.WeeklyProfitAverageDivisor;
+            currentWeeklyProfit /= gameState.weeklyProfitAverageDivisor;
         }
-        constexpr auto profitHistorySize = std::extent_v<decltype(GameState_t::WeeklyProfitHistory)>;
-        HistoryPushRecord<money64, profitHistorySize>(gameState.WeeklyProfitHistory, currentWeeklyProfit);
-        gameState.WeeklyProfitAverageDividend = 0;
-        gameState.WeeklyProfitAverageDivisor = 0;
+        constexpr auto profitHistorySize = std::extent_v<decltype(GameState_t::weeklyProfitHistory)>;
+        HistoryPushRecord<money64, profitHistorySize>(gameState.weeklyProfitHistory, currentWeeklyProfit);
+        gameState.weeklyProfitAverageDividend = 0;
+        gameState.weeklyProfitAverageDivisor = 0;
 
         // Update park value history
-        constexpr auto parkValueHistorySize = std::extent_v<decltype(GameState_t::WeeklyProfitHistory)>;
-        HistoryPushRecord<money64, parkValueHistorySize>(gameState.Park.ValueHistory, gameState.Park.Value);
+        constexpr auto parkValueHistorySize = std::extent_v<decltype(GameState_t::weeklyProfitHistory)>;
+        HistoryPushRecord<money64, parkValueHistorySize>(gameState.park.ValueHistory, gameState.park.Value);
 
         // Invalidate relevant windows
         auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
@@ -642,9 +641,9 @@ namespace OpenRCT2::Park
     uint32_t UpdateSize(GameState_t& gameState)
     {
         auto tiles = CalculateParkSize();
-        if (tiles != gameState.Park.Size)
+        if (tiles != gameState.park.Size)
         {
-            gameState.Park.Size = tiles;
+            gameState.park.Size = tiles;
 
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
@@ -739,9 +738,9 @@ namespace OpenRCT2::Park
 
     void SetForcedRating(int32_t rating)
     {
-        auto& gameState = GetGameState();
-        gameState.Cheats.forcedParkRating = rating;
-        gameState.Park.Rating = CalculateParkRating();
+        auto& gameState = getGameState();
+        gameState.cheats.forcedParkRating = rating;
+        gameState.park.Rating = CalculateParkRating();
 
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         ContextBroadcastIntent(&intent);
@@ -749,13 +748,13 @@ namespace OpenRCT2::Park
 
     int32_t GetForcedRating()
     {
-        return GetGameState().Cheats.forcedParkRating;
+        return getGameState().cheats.forcedParkRating;
     }
 
     money64 GetEntranceFee()
     {
-        const auto& gameState = GetGameState();
-        if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
+        const auto& gameState = getGameState();
+        if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
         {
             return 0;
         }
@@ -763,17 +762,17 @@ namespace OpenRCT2::Park
         {
             return 0;
         }
-        return gameState.Park.EntranceFee;
+        return gameState.park.EntranceFee;
     }
 
     bool RidePricesUnlocked()
     {
-        const auto& gameState = GetGameState();
-        if (gameState.Park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+        const auto& gameState = getGameState();
+        if (gameState.park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
         {
             return true;
         }
-        if (gameState.Park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
+        if (gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY)
         {
             return true;
         }
@@ -782,12 +781,12 @@ namespace OpenRCT2::Park
 
     bool EntranceFeeUnlocked()
     {
-        const auto& gameState = GetGameState();
-        if (gameState.Park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+        const auto& gameState = getGameState();
+        if (gameState.park.Flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
         {
             return true;
         }
-        if (!(gameState.Park.Flags & PARK_FLAGS_PARK_FREE_ENTRY))
+        if (!(gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY))
         {
             return true;
         }

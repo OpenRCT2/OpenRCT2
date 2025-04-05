@@ -115,7 +115,7 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
 {
     try
     {
-        OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_OPEN);
+        OpenRCT2::FileStream stream(path, OpenRCT2::FileMode::open);
 
         SpriteFile spriteFile;
         stream.Read(&spriteFile.Header, sizeof(RCTG1Header));
@@ -155,7 +155,7 @@ bool SpriteFile::Save(const utf8* path)
 {
     try
     {
-        OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_WRITE);
+        OpenRCT2::FileStream stream(path, OpenRCT2::FileMode::write);
         stream.Write(&Header, sizeof(RCTG1Header));
 
         if (Header.num_entries > 0)
@@ -216,7 +216,7 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
         image.Stride = dpi.LineStride();
         image.Palette = StandardPalette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
-        Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);
+        Imaging::WriteToFile(outPath, image, ImageFormat::png);
         return true;
     }
     catch (const std::exception& e)
@@ -230,10 +230,10 @@ static std::optional<ImageImporter::ImportResult> SpriteImageImport(u8string_vie
 {
     try
     {
-        auto format = IMAGE_FORMAT::PNG_32;
+        auto format = ImageFormat::png32;
         if (meta.palette == Palette::KeepIndices)
         {
-            format = IMAGE_FORMAT::PNG;
+            format = ImageFormat::png;
         }
 
         ImageImporter importer;
@@ -628,8 +628,8 @@ static int32_t CommandLineForSpriteCombine(const char** argv, int32_t argc)
     const utf8* dataFile = argv[2];
     const utf8* outputPath = argv[3];
 
-    auto fileHeader = OpenRCT2::FileStream(indexFile, OpenRCT2::FILE_MODE_OPEN);
-    auto fileData = OpenRCT2::FileStream(dataFile, OpenRCT2::FILE_MODE_OPEN);
+    auto fileHeader = OpenRCT2::FileStream(indexFile, OpenRCT2::FileMode::open);
+    auto fileData = OpenRCT2::FileStream(dataFile, OpenRCT2::FileMode::open);
     auto fileHeaderSize = fileHeader.GetLength();
     auto fileDataSize = fileData.GetLength();
 
@@ -638,7 +638,7 @@ static int32_t CommandLineForSpriteCombine(const char** argv, int32_t argc)
     RCTG1Header header = {};
     header.num_entries = numEntries;
     header.total_size = fileDataSize;
-    OpenRCT2::FileStream outputStream(outputPath, OpenRCT2::FILE_MODE_WRITE);
+    OpenRCT2::FileStream outputStream(outputPath, OpenRCT2::FileMode::write);
 
     outputStream.Write(&header, sizeof(RCTG1Header));
     auto g1Elements32 = std::make_unique<RCTG1Element[]>(numEntries);

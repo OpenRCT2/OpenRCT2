@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui::Windows
                     dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
             }
 
-            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // Draw raise cost amount
                 screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
@@ -207,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                     {
-                        gCurrentToolId = Tool::UpDownArrow;
+                        gCurrentToolId = Tool::upDownArrow;
                     }
                     break;
             }
@@ -230,7 +230,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::WaterDown;
+                    gCurrentToolId = Tool::waterDown;
                     break;
             }
         }
@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto* windowMgr = Ui::GetWindowManager();
 
-            if (gCurrentToolId == Tool::UpDownArrow)
+            if (gCurrentToolId == Tool::upDownArrow)
             {
                 if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                     return;
@@ -446,8 +446,8 @@ namespace OpenRCT2::Ui::Windows
         {
             ShowGridlines();
             auto* toolWindow = ContextOpenWindow(WindowClass::Water);
-            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::WaterDown);
-            InputSetFlag(INPUT_FLAG_6, true);
+            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::waterDown);
+            gInputFlags.set(InputFlag::unk6);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

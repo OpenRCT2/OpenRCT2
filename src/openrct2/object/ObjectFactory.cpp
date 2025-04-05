@@ -15,6 +15,7 @@
 #include "../PlatformEnvironment.h"
 #include "../audio/Audio.h"
 #include "../core/Console.hpp"
+#include "../core/EnumMap.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/Json.hpp"
@@ -26,6 +27,7 @@
 #include "../rct12/SawyerChunkReader.h"
 #include "AudioObject.h"
 #include "BannerObject.h"
+#include "ClimateObject.h"
 #include "EntranceObject.h"
 #include "FootpathObject.h"
 #include "FootpathRailingsObject.h"
@@ -265,7 +267,7 @@ namespace OpenRCT2::ObjectFactory
         std::unique_ptr<Object> result;
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
             auto chunkReader = SawyerChunkReader(&fs);
 
             RCTObjectEntry entry = fs.ReadValue<RCTObjectEntry>();
@@ -394,60 +396,44 @@ namespace OpenRCT2::ObjectFactory
             case ObjectType::peepAnimations:
                 result = std::make_unique<PeepAnimationsObject>();
                 break;
+            case ObjectType::climate:
+                result = std::make_unique<ClimateObject>();
+                break;
             default:
                 throw std::runtime_error("Invalid object type");
         }
         return result;
     }
 
-    static ObjectType ParseObjectType(const std::string& s)
-    {
-        if (s == "ride")
-            return ObjectType::ride;
-        if (s == "footpath_banner")
-            return ObjectType::banners;
-        if (s == "footpath_item")
-            return ObjectType::pathAdditions;
-        if (s == "scenery_small")
-            return ObjectType::smallScenery;
-        if (s == "scenery_large")
-            return ObjectType::largeScenery;
-        if (s == "scenery_wall")
-            return ObjectType::walls;
-        if (s == "scenery_group")
-            return ObjectType::sceneryGroup;
-        if (s == "park_entrance")
-            return ObjectType::parkEntrance;
-        if (s == "water")
-            return ObjectType::water;
-        if (s == "scenario_text")
-            return ObjectType::scenarioText;
-        if (s == "terrain_surface")
-            return ObjectType::terrainSurface;
-        if (s == "terrain_edge")
-            return ObjectType::terrainEdge;
-        if (s == "station")
-            return ObjectType::station;
-        if (s == "music")
-            return ObjectType::music;
-        if (s == "footpath_surface")
-            return ObjectType::footpathSurface;
-        if (s == "footpath_railings")
-            return ObjectType::footpathRailings;
-        if (s == "audio")
-            return ObjectType::audio;
-        if (s == "peep_names")
-            return ObjectType::peepNames;
-        if (s == "peep_animations")
-            return ObjectType::peepAnimations;
-        return ObjectType::none;
-    }
+    static const EnumMap<ObjectType> kObjectTypeMap = {
+        { "ride", ObjectType::ride },
+        { "scenery_small", ObjectType::smallScenery },
+        { "scenery_large", ObjectType::largeScenery },
+        { "scenery_wall", ObjectType::walls },
+        { "footpath_banner", ObjectType::banners },
+        { "footpath_legacy", ObjectType::paths },
+        { "footpath_item", ObjectType::pathAdditions },
+        { "scenery_group", ObjectType::sceneryGroup },
+        { "park_entrance", ObjectType::parkEntrance },
+        { "water", ObjectType::water },
+        { "scenario_text", ObjectType::scenarioText },
+        { "terrain_surface", ObjectType::terrainSurface },
+        { "terrain_edge", ObjectType::terrainEdge },
+        { "station", ObjectType::station },
+        { "music", ObjectType::music },
+        { "footpath_surface", ObjectType::footpathSurface },
+        { "footpath_railings", ObjectType::footpathRailings },
+        { "audio", ObjectType::audio },
+        { "peep_names", ObjectType::peepNames },
+        { "peep_animations", ObjectType::peepAnimations },
+        { "climate", ObjectType::climate },
+    };
 
     std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path, bool loadImages)
     {
         try
         {
-            auto archive = Zip::Open(path, ZIP_ACCESS::READ);
+            auto archive = Zip::Open(path, ZipAccess::read);
             auto jsonBytes = archive->GetFileData("object.json");
             if (jsonBytes.empty())
             {
@@ -538,9 +524,10 @@ namespace OpenRCT2::ObjectFactory
 
         std::unique_ptr<Object> result;
 
-        auto objectType = ParseObjectType(Json::GetString(jRoot["objectType"]));
-        if (objectType != ObjectType::none)
+        auto lookup = kObjectTypeMap.find(Json::GetString(jRoot["objectType"]));
+        if (lookup != kObjectTypeMap.end())
         {
+            auto objectType = lookup->second;
             auto id = Json::GetString(jRoot["id"]);
 
             // Base audio files are renamed to a common, virtual name so asset packs can override it correctly.

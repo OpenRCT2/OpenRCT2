@@ -24,17 +24,27 @@ namespace OpenRCT2::World::MapGenerator
         std::vector<uint8_t> _height;
 
     public:
-        const uint16_t width;
-        const uint16_t height;
+        uint16_t width{};
+        uint16_t height{};
+        uint8_t density{};
 
-        HeightMap(int32_t tagetWidth, int32_t targetHeight)
-            : _height(tagetWidth * targetHeight)
-            , width(tagetWidth)
+        HeightMap(int32_t targetWidth, int32_t targetHeight)
+            : _height(targetWidth * targetHeight)
+            , width(targetWidth)
             , height(targetHeight)
+            , density(1)
         {
         }
 
-        HeightMap(const HeightMap& heightMap) = default;
+        HeightMap(int32_t baseWidth, int32_t baseHeight, uint8_t density_)
+            : _height((baseWidth * density_) * (baseHeight * density_))
+            , width(baseWidth * density_)
+            , height(baseHeight * density_)
+            , density(density_)
+        {
+        }
+
+        HeightMap() = default;
 
         uint8_t& operator[](TileCoordsXY pos)
         {
@@ -48,6 +58,11 @@ namespace OpenRCT2::World::MapGenerator
             return _height[pos.y * width + pos.x];
         }
 
+        void clear()
+        {
+            _height.clear();
+        }
+
         uint8_t* data()
         {
             return _height.data();
@@ -56,6 +71,11 @@ namespace OpenRCT2::World::MapGenerator
         const uint8_t* data() const
         {
             return _height.data();
+        }
+
+        bool empty() const
+        {
+            return _height.empty();
         }
 
         size_t size() const

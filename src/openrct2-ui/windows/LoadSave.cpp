@@ -15,27 +15,32 @@
 #include <openrct2-ui/interface/FileBrowser.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/Editor.h>
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/FileScanner.h>
+#include <openrct2/core/FileStream.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/Network.h>
+#include <openrct2/object/ObjectRepository.h>
+#include <openrct2/park/ParkPreview.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -53,6 +58,11 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSizeInit = { 400, 350 };
     static constexpr ScreenSize kWindowSizeMin = { 300, kWindowSizeInit.height / 2 };
     static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 3;
+
+    static constexpr auto kPadding = 5;
+
+    static constexpr auto kPreviewWidth = 250;
+    static constexpr auto kWindowSizeMinPreview = ScreenSize{ kWindowSizeInit.width + kPreviewWidth, kWindowSizeInit.height };
 
     static constexpr int kKibiByte = 1024;
     static constexpr int kMebiByte = kKibiByte * 1024;
@@ -113,18 +123,27 @@ namespace OpenRCT2::Ui::Windows
     class LoadSaveWindow final : public Window
     {
     public:
-        LoadSaveWindow(int32_t loadSaveType)
-            : type(loadSaveType)
+        LoadSaveWindow(LoadSaveAction _action, LoadSaveType _type)
+            : action(_action)
+            , type(_type)
         {
         }
 
     private:
         int32_t maxDateWidth{ 0 };
         int32_t maxTimeWidth{ 0 };
-        int32_t type;
+        LoadSaveAction action;
+        LoadSaveType type;
+        ParkPreview _preview;
+        BackgroundWorker::Job _previewLoadJob;
 
-    public:
-        void PopulateList(bool includeNewItem, const u8string& directory, std::string_view extensionPattern)
+        bool ShowPreviews()
+        {
+            auto& config = Config::Get().general;
+            return config.FileBrowserShowPreviews;
+        }
+
+        void PopulateList(const u8string& directory, std::string_view extensionPattern)
         {
             const auto absoluteDirectory = Path::GetAbsolute(directory);
             String::safeUtf8Copy(_directory, absoluteDirectory.c_str(), std::size(_directory));
@@ -299,6 +318,174 @@ namespace OpenRCT2::Ui::Windows
             maxTimeWidth = GfxGetStringWidth(time.c_str(), FontStyle::Medium) + kDateTimeGap;
         }
 
+        void LoadPreview()
+        {
+            _preview = {};
+
+            if (selected_list_item == -1)
+                return;
+
+            if (!ShowPreviews())
+                return;
+
+            if (type == LoadSaveType::track || type == LoadSaveType::heightmap)
+                return;
+
+            if (_listItems[selected_list_item].type == FileType::directory)
+                return;
+
+            auto path = _listItems[selected_list_item].path;
+
+            auto& bgWorker = GetContext()->GetBackgroundWorker();
+
+            if (_previewLoadJob.isValid())
+            {
+                _previewLoadJob.cancel();
+            }
+
+            _previewLoadJob = bgWorker.addJob(
+                [path]() {
+                    try
+                    {
+                        auto fs = FileStream(path, FileMode::open);
+
+                        ClassifiedFileInfo info;
+                        if (!TryClassifyFile(&fs, &info) || info.Type != ::FileType::park)
+                            return ParkPreview{};
+
+                        auto& objectRepository = GetContext()->GetObjectRepository();
+                        auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
+                        parkImporter->LoadFromStream(&fs, false, true, path.c_str());
+                        return parkImporter->GetParkPreview();
+                    }
+                    catch (const std::exception& e)
+                    {
+                        LOG_ERROR("Could not get preview:", e.what());
+                        return ParkPreview{};
+                    }
+                },
+                [](const ParkPreview preview) {
+                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* wnd = windowMgr->FindByClass(WindowClass::Loadsave);
+                    if (wnd == nullptr)
+                    {
+                        return;
+                    }
+                    auto* loadSaveWnd = static_cast<LoadSaveWindow*>(wnd);
+                    loadSaveWnd->UpdateParkPreview(preview);
+                });
+        }
+
+        void UpdateParkPreview(const ParkPreview& preview)
+        {
+            _preview = preview;
+            if (ShowPreviews())
+            {
+                Invalidate();
+            }
+        }
+
+        void DrawPreview(DrawPixelInfo& dpi)
+        {
+            constexpr auto kPreviewHeight = kPreviewWidth / 5 * 4;
+
+            // Draw frame
+            auto& widget = widgets[WIDX_SCROLL];
+            auto frameStartPos = windowPos + ScreenCoordsXY(width - kPreviewWidth - kPadding - 1, widget.top);
+            auto frameEndPos = frameStartPos + ScreenCoordsXY(kPreviewWidth + 1, kPreviewHeight + 1);
+            GfxFillRectInset(dpi, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+
+            // Draw park name
+            {
+                auto namePos = frameStartPos + ScreenCoordsXY{ kPreviewWidth / 2, -kButtonFaceHeight };
+                auto ft = Formatter();
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<const char*>(_preview.parkName.c_str());
+                DrawTextEllipsised(dpi, namePos, kPreviewWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+            }
+
+            // Draw image, if available
+            bool foundImage = false;
+            for (auto& image : _preview.images)
+            {
+                if (image.type == PreviewImageType::screenshot)
+                {
+                    auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
+                    drawPreviewImage(image, dpi, imagePos);
+                    foundImage = true;
+                    break;
+                }
+            }
+
+            // Draw OpenRCT2 logo if no preview was found
+            if (!foundImage)
+            {
+                auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
+                auto colour = ColourMapA[colours[1].colour].dark;
+                GfxDrawSpriteSolid(dpi, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
+
+                auto textPos = imagePos + ScreenCoordsXY(kPreviewWidth / 2, kPreviewHeight / 2 - 6);
+
+                // NOTE: Can't simplify this as the compiler complains about different enumeration types.
+                StringId previewText = STR_NO_PREVIEW_AVAILABLE;
+                if (_previewLoadJob.isValid())
+                {
+                    previewText = STR_LOADING_GENERIC;
+                }
+
+                DrawTextBasic(
+                    dpi, textPos, previewText, {},
+                    { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
+                return;
+            }
+
+            auto summaryCoords = frameStartPos + ScreenCoordsXY(0, kPreviewHeight + kListRowHeight);
+
+            // Date
+            {
+                auto ft = Formatter();
+                ft.Add<StringId>(DateFormatStringFormatIds[Config::Get().general.DateFormat]);
+                ft.Add<StringId>(DateDayNames[_preview.day]);
+                ft.Add<int16_t>(_preview.month);
+                ft.Add<int16_t>(_preview.year + 1);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_DATE, ft);
+                summaryCoords.y += kListRowHeight;
+            }
+
+            // Park Rating
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(_preview.parkRating);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_PARK_RATING, ft);
+                summaryCoords.y += kListRowHeight;
+            }
+
+            // Cash
+            if (_preview.parkUsesMoney)
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(_preview.cash);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_CASH, ft);
+                summaryCoords.y += kListRowHeight;
+            }
+
+            // Num. Rides
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(_preview.numRides);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_NUM_RIDES, ft);
+                summaryCoords.y += kListRowHeight;
+            }
+
+            // Num. Guests
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(_preview.numGuests);
+                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_NUM_GUESTS, ft);
+                summaryCoords.y += kListRowHeight;
+            }
+        }
+
         void SortList()
         {
             std::sort(_listItems.begin(), _listItems.end(), ListItemSort);
@@ -317,11 +504,10 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SYSTEM_BROWSER].type = WindowWidgetType::Empty;
             }
 
-            // TODO: Split LOADSAVETYPE_* into two proper enum classes (one for load/save, the other for the type)
-            const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
+            const bool isSave = action == LoadSaveAction::save;
 
             // Pause the game if not on title scene, nor in network play.
-            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (gLegacyScene != LegacyScene::titleSequence && NetworkGetMode() == NETWORK_MODE_NONE)
             {
                 gGamePaused |= GAME_PAUSED_MODAL;
                 Audio::StopAll();
@@ -348,7 +534,7 @@ namespace OpenRCT2::Ui::Windows
             // Populate file list
             const char* pattern = GetFilterPatternByType(type, isSave);
             const auto path = GetDir(type);
-            PopulateList(isSave, path, pattern);
+            PopulateList(path, pattern);
             no_list_items = static_cast<uint16_t>(_listItems.size());
             selected_list_item = -1;
 
@@ -356,10 +542,8 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
             ComputeMaxDateWidth();
 
-            min_width = kWindowSizeMin.width;
-            min_height = kWindowSizeMin.height;
-            max_width = kWindowSizeMax.width;
-            max_height = kWindowSizeMax.height;
+            auto minSize = ShowPreviews() ? kWindowSizeMinPreview : kWindowSizeMin;
+            WindowSetResize(*this, minSize, kWindowSizeMax);
         }
 
         void OnClose() override
@@ -372,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
             Config::Save();
 
             // Unpause the game if not on title scene, nor in network play.
-            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (gLegacyScene != LegacyScene::titleSequence && NetworkGetMode() == NETWORK_MODE_NONE)
             {
                 gGamePaused &= ~GAME_PAUSED_MODAL;
                 Audio::Resume();
@@ -381,7 +565,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, kWindowSizeMin.width, kWindowSizeMin.height, kWindowSizeMax.width, kWindowSizeMax.height);
+            auto minSize = ShowPreviews() ? kWindowSizeMinPreview : kWindowSizeMin;
+            WindowSetResize(*this, minSize, kWindowSizeMax);
 
             auto& config = Config::Get().general;
             config.FileBrowserWidth = width;
@@ -410,8 +595,15 @@ namespace OpenRCT2::Ui::Windows
                 toolbarXPos = widget.left - 1;
             }
 
+            auto paddingBottom = ShowPreviews() ? kPadding : kPadding + 10;
+
+            widgets[WIDX_SCROLL].right = width - kPadding;
+            widgets[WIDX_SCROLL].bottom = height - paddingBottom;
+            if (ShowPreviews())
+                widgets[WIDX_SCROLL].right -= kPreviewWidth + kPadding;
+
             Widget& customiseWidget = widgets[WIDX_SORT_CUSTOMISE];
-            customiseWidget.right = width - 5;
+            customiseWidget.right = widgets[WIDX_SCROLL].right;
             customiseWidget.left = customiseWidget.right - 14;
 
             auto& config = Config::Get().general;
@@ -469,10 +661,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SORT_DATE].type = WindowWidgetType::Empty;
             }
 
-            widgets[WIDX_SCROLL].right = width - 5;
-            widgets[WIDX_SCROLL].bottom = height - 15;
-
-            if (type & LOADSAVETYPE_SAVE)
+            if (action == LoadSaveAction::save)
             {
                 widgets[WIDX_SCROLL].bottom -= 18;
 
@@ -481,18 +670,18 @@ namespace OpenRCT2::Ui::Windows
                 auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::Medium) + 16;
 
                 widgets[WIDX_SAVE].type = WindowWidgetType::Button;
-                widgets[WIDX_SAVE].top = height - 30;
-                widgets[WIDX_SAVE].bottom = height - 18;
-                widgets[WIDX_SAVE].left = width - saveLabelWidth - 5;
-                widgets[WIDX_SAVE].right = width - 5;
+                widgets[WIDX_SAVE].top = height - paddingBottom - 15;
+                widgets[WIDX_SAVE].bottom = height - paddingBottom - 3;
+                widgets[WIDX_SAVE].right = widgets[WIDX_SCROLL].right;
+                widgets[WIDX_SAVE].left = widgets[WIDX_SCROLL].right - saveLabelWidth;
 
                 // Get 'Filename:' string width
                 auto filenameLabel = LanguageGetString(STR_FILENAME_LABEL);
                 auto filenameLabelWidth = GfxGetStringWidth(filenameLabel, FontStyle::Medium);
 
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::TextBox;
-                widgets[WIDX_FILENAME_TEXTBOX].top = height - 30;
-                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 18;
+                widgets[WIDX_FILENAME_TEXTBOX].top = height - paddingBottom - 15;
+                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - paddingBottom - 3;
                 widgets[WIDX_FILENAME_TEXTBOX].left = 4 + filenameLabelWidth + 6;
                 widgets[WIDX_FILENAME_TEXTBOX].right = widgets[WIDX_SAVE].left - 5;
             }
@@ -506,6 +695,9 @@ namespace OpenRCT2::Ui::Windows
         void OnDraw(DrawPixelInfo& dpi) override
         {
             DrawWidgets(dpi);
+
+            if (ShowPreviews())
+                DrawPreview(dpi);
 
             {
                 const auto& widget = widgets[WIDX_PARENT_FOLDER];
@@ -559,7 +751,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SORT_DATE], STR_DATE_COLUMN, FileBrowserSort::DateAscending, FileBrowserSort::DateDescending);
 
             // 'Filename:' label
-            if (type & LOADSAVETYPE_SAVE)
+            if (action == LoadSaveAction::save)
             {
                 auto& widget = widgets[WIDX_FILENAME_TEXTBOX];
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, {}, { COLOUR_GREY });
@@ -568,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
-            bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
+            bool isSave = action == LoadSaveAction::save;
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -576,7 +768,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_PARENT_FOLDER:
-                    PopulateList(isSave, _parentDirectory, _extensionPattern);
+                    PopulateList(_parentDirectory, _extensionPattern);
                     InitScrollWidgets();
                     no_list_items = static_cast<uint16_t>(_listItems.size());
                     break;
@@ -592,12 +784,12 @@ namespace OpenRCT2::Ui::Windows
                     u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath);
                     if (!path.empty())
                     {
-                        Select(path.c_str(), type, _trackDesign);
+                        Select(path.c_str(), action, type, _trackDesign);
                     }
                     else
                     {
                         // If user cancels file dialog, refresh list
-                        PopulateList(isSave, _directory, _extensionPattern);
+                        PopulateList(_directory, _extensionPattern);
                         InitScrollWidgets();
                         no_list_items = static_cast<uint16_t>(_listItems.size());
                     }
@@ -647,7 +839,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_DEFAULT_FOLDER:
-                    PopulateList(isSave, GetInitialDirectoryByType(type).c_str(), _extensionPattern);
+                    PopulateList(GetInitialDirectoryByType(type).c_str(), _extensionPattern);
                     InitScrollWidgets();
                     no_list_items = static_cast<uint16_t>(_listItems.size());
                     break;
@@ -662,9 +854,9 @@ namespace OpenRCT2::Ui::Windows
                         Path::Combine(_directory, _currentFilename), RemovePatternWildcard(_extensionPattern));
 
                     if (File::Exists(path))
-                        WindowOverwritePromptOpen(_currentFilename, path, type, _trackDesign);
+                        WindowOverwritePromptOpen(_currentFilename, path, action, type, _trackDesign);
                     else
-                        Select(path.c_str(), type, _trackDesign);
+                        Select(path.c_str(), action, type, _trackDesign);
                 }
             }
         }
@@ -677,21 +869,24 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[0].Format = STR_TOGGLE_OPTION;
             gDropdownItems[1].Format = STR_TOGGLE_OPTION;
             gDropdownItems[2].Format = STR_TOGGLE_OPTION;
+            gDropdownItems[3].Format = STR_TOGGLE_OPTION;
             gDropdownItems[0].Args = STR_FILEBROWSER_CUSTOMISE_FILENAME;
             gDropdownItems[1].Args = STR_FILEBROWSER_CUSTOMISE_SIZE;
             gDropdownItems[2].Args = STR_FILEBROWSER_CUSTOMISE_DATE;
+            gDropdownItems[3].Args = STR_FILEBROWSER_CUSTOMISE_PREVIEW;
 
             Widget* widget = &widgets[WIDX_SORT_CUSTOMISE];
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + widget->left - 70, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                Dropdown::Flag::StayOpen, 3, 90);
+                Dropdown::Flag::StayOpen, 4, 90);
 
             auto& config = Config::Get().general;
 
             Dropdown::SetChecked(0, true);
             Dropdown::SetChecked(1, config.FileBrowserShowSizeColumn);
             Dropdown::SetChecked(2, config.FileBrowserShowDateColumn);
+            Dropdown::SetChecked(3, config.FileBrowserShowPreviews);
         }
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
@@ -709,6 +904,18 @@ namespace OpenRCT2::Ui::Windows
             else if (selectedIndex == 2)
             {
                 config.FileBrowserShowDateColumn ^= true;
+                changed = true;
+            }
+            else if (selectedIndex == 3)
+            {
+                config.FileBrowserShowPreviews ^= true;
+
+                Invalidate();
+                if (config.FileBrowserShowPreviews)
+                    width += kPreviewWidth;
+                else
+                    width -= kPreviewWidth;
+
                 changed = true;
             }
 
@@ -744,7 +951,7 @@ namespace OpenRCT2::Ui::Windows
                     no_list_items = 0;
                     selected_list_item = -1;
 
-                    PopulateList((type & 1) == LOADSAVETYPE_SAVE, path, _extensionPattern);
+                    PopulateList(path, _extensionPattern);
                     InitScrollWidgets();
 
                     no_list_items = static_cast<uint16_t>(_listItems.size());
@@ -771,15 +978,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int32_t selectedItem;
-
-            selectedItem = screenCoords.y / kScrollableRowHeight;
+            int32_t selectedItem = screenCoords.y / kScrollableRowHeight;
             if (selectedItem >= no_list_items)
                 return;
 
             if (selected_list_item != selectedItem)
             {
                 selected_list_item = selectedItem;
+                LoadPreview();
                 Invalidate();
             }
         }
@@ -797,12 +1003,11 @@ namespace OpenRCT2::Ui::Windows
                 // The selected item is a folder
                 no_list_items = 0;
                 selected_list_item = -1;
-                bool includeNewItem = (type & 1) == LOADSAVETYPE_SAVE;
 
                 char directory[MAX_PATH];
                 String::safeUtf8Copy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
-                PopulateList(includeNewItem, directory, _extensionPattern);
+                PopulateList(directory, _extensionPattern);
                 InitScrollWidgets();
 
                 no_list_items = static_cast<uint16_t>(_listItems.size());
@@ -813,10 +1018,15 @@ namespace OpenRCT2::Ui::Windows
                 String::set(_currentFilename, std::size(_currentFilename), _listItems[selectedItem].name.c_str());
                 InvalidateWidget(WIDX_FILENAME_TEXTBOX);
 
-                if ((type & 0x01) == LOADSAVETYPE_SAVE)
-                    WindowOverwritePromptOpen(_listItems[selectedItem].name, _listItems[selectedItem].path, type, _trackDesign);
+                if (action == LoadSaveAction::save)
+                {
+                    WindowOverwritePromptOpen(
+                        _listItems[selectedItem].name, _listItems[selectedItem].path, action, type, _trackDesign);
+                }
                 else
-                    Select(_listItems[selectedItem].path.c_str(), type, _trackDesign);
+                {
+                    Select(_listItems[selectedItem].path.c_str(), action, type, _trackDesign);
+                }
             }
         }
 
@@ -902,7 +1112,9 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
     };
 
-    WindowBase* LoadsaveOpen(int32_t type, std::string_view defaultPath, LoadSaveCallback callback, TrackDesign* trackDesign)
+    WindowBase* LoadsaveOpen(
+        LoadSaveAction action, LoadSaveType type, std::string_view defaultPath, LoadSaveCallback callback,
+        TrackDesign* trackDesign)
     {
         _trackDesign = trackDesign;
         _defaultPath = defaultPath;
@@ -927,12 +1139,12 @@ namespace OpenRCT2::Ui::Windows
 
             w = windowMgr->Create<LoadSaveWindow>(
                 WindowClass::Loadsave, width, height, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
-                type);
+                action, type);
         }
 
-        bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
+        bool isSave = action == LoadSaveAction::save;
 
-        if ((type & 0x0E) == LOADSAVETYPE_HEIGHTMAP && !isSave)
+        if (type == LoadSaveType::heightmap && isSave)
         {
             Guard::Fail("Cannot save images through loadsave window");
         }
@@ -940,7 +1152,7 @@ namespace OpenRCT2::Ui::Windows
         w->widgets[WIDX_TITLE].text = GetTitleStringId(type, isSave);
         if (w->widgets[WIDX_TITLE].text == kStringIdNone)
         {
-            Guard::Fail("Unsupported load/save type: %d", type & 0x0F);
+            Guard::Fail("Unsupported load/save type: %d", EnumValue(type));
         }
 
         return w;

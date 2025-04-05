@@ -12,6 +12,7 @@
     #include "Platform.h"
 
     #include "../Diagnostic.h"
+    #include "../core/File.h"
     #include "../core/Guard.hpp"
     #include "../localisation/Language.h"
 
@@ -34,15 +35,15 @@ static std::shared_ptr<AndroidClassLoader> acl;
 
 namespace OpenRCT2::Platform
 {
-    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    std::string GetFolderPath(SpecialFolder folder)
     {
         // Android builds currently only read from /sdcard/openrct2*
         switch (folder)
         {
-            case SPECIAL_FOLDER::USER_CACHE:
-            case SPECIAL_FOLDER::USER_CONFIG:
-            case SPECIAL_FOLDER::USER_DATA:
-            case SPECIAL_FOLDER::USER_HOME:
+            case SpecialFolder::userCache:
+            case SpecialFolder::userConfig:
+            case SpecialFolder::userData:
+            case SpecialFolder::userHome:
                 return "/sdcard";
             default:
                 return std::string();
@@ -165,8 +166,13 @@ namespace OpenRCT2::Platform
     #ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
-        STUB();
-        return {};
+        auto expectedPath = std::string("/system/fonts/") + std::string(font.filename);
+        if (File::Exists(expectedPath))
+        {
+            return expectedPath;
+        }
+
+        return "";
     }
     #endif
 

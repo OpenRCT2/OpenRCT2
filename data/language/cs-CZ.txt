@@ -2260,10 +2260,6 @@ STR_3252    :Nelze zvýšit maximální půjčku!
 STR_3253    :Nelze snížit maximální půjčku!
 STR_3254    :Nelze zvýšit úrok půjčky!
 STR_3255    :Nelze snížit úrok půjčky!
-STR_3256    :Návštěvníci preferují mírnější atrakce
-STR_3257    :Vyberte, zda návštěvníci mají obecně preferovat jen mírnější atrakce
-STR_3258    :Návštěvníci preferují divočejší atrakce
-STR_3259    :Vyberte, zda návštěvníci mají obecně preferovat jen divočejší atrakce
 STR_3260    :{WINDOW_COLOUR_2}Průměrná hotovost návštěvníků:
 STR_3261    :{WINDOW_COLOUR_2}Počáteční nálada návštěvníků:
 STR_3262    :{WINDOW_COLOUR_2}Počáteční hlad návštěvníků:

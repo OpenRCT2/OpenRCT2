@@ -16,7 +16,6 @@
 #include "../core/Path.hpp"
 #include "../object/ObjectManager.h"
 #include "../park/ParkFile.h"
-#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "CommandLine.hpp"
 
@@ -93,12 +92,12 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     context->Initialise();
 
     auto& objManager = context->GetObjectManager();
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     try
     {
         auto importer = ParkImporter::Create(sourcePath);
-        auto loadResult = importer->Load(sourcePath.c_str());
+        auto loadResult = importer->Load(sourcePath.c_str(), false);
 
         objManager.LoadObjects(loadResult.RequiredObjects);
 

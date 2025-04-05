@@ -11,6 +11,19 @@
 
 #include "Object.h"
 
-extern const std::string_view MinimumRequiredObjects[2];
-extern const std::string_view DefaultSelectedObjects[119];
-extern const std::string_view DesignerSelectedObjects[39];
+#include <array>
+
+/**
+ * Used by all editor modes: Scenario Editor, Track Designer and Track Designs Manager.
+ */
+extern const std::array<std::string_view, 3> kMinimumRequiredObjects;
+
+/**
+ * Used by the Scenario Editor and Track Designer.
+ */
+extern const std::array<std::string_view, 82> kCommonScenarioAndTrackDesignerObjects;
+
+/**
+ * Used only by the Scenario Editor.
+ */
+extern const std::array<std::string_view, 37> kDefaultScenarioObjects;

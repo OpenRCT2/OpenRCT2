@@ -272,7 +272,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
 {
     auto entryIndex = tileElement->GetEntryIndex();
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr.GetLoadedObject(ObjectType::largeScenery, entryIndex);
+    auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
@@ -488,7 +488,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
 
     auto entryIndex = tileElement->GetEntryIndex();
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr.GetLoadedObject(ObjectType::largeScenery, entryIndex);
+    auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr)
     {
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());

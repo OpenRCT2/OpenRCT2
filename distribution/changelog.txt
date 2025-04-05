@@ -1,3 +1,51 @@
+0.4.21 (in development)
+------------------------------------------------------------------------
+- Feature: [#22646] New scenario files now contain a minimap image, shown in the scenario selection window.
+- Feature: [#23774] Climates can now be customised using objects.
+- Feature: [#23876] New park save files now contain a preview image, shown in the load/save window.
+- Improved: [#24078] Handrails on Wooden Roller Coaster station sprites with no platforms have been removed.
+- Improved: [objects#379] Add additional colour schemes to Mine Train.
+- Change: [#23932] The land rights window now checks “Land Owned” by default.
+- Change: [#23936] The ‘guests prefer less/more intense rides’ settings have been turned into a dropdown.
+- Change: [#24059] The ‘select other ride’ button is now available in the track designs manager.
+- Change: [#24067] [Plugin] Registered menu items are now listed alphabetically.
+- Change: [#24070] Footpath selection menus now show object names on hover using a tooltip.
+- Change: [#24101] Frozen peeps are no longer removed when using the 'remove all guests' cheat.
+- Fix: [#4225] Ride Construction window offers non-existent banked sloped to level curve (original bug).
+- Fix: [#5281] Missing supports on miniature railways built backwards.
+- Fix: [#7222] Transparent pixels in sloped path tunnels (original bug).
+- Fix: [#10379] Banners outside the park can be renamed and modified (original bug).
+- Fix: [#10582] Low clearance tunnels below water are drawn incorrectly (original bug).
+- Fix: [#17524, #23710] Station bases are drawn on many ride types when the “No entrance, no platform station” style is selected.
+- Fix: [#18169] CJK, Arabic and Vietnamese display all text as ‘???’ on Android.
+- Fix: [#18309] Flying and Multi Dimension trains glitch when changing between inverted and uninverted track when uncap fps is on.
+- Fix: [#19506] Queue paths can be placed on level crossings by replacing an existing regular path.
+- Fix: [#21803] The park fence is drawn differently in OpenGL compared to software rendering when zoomed out.
+- Fix: [#21824] Some sprites are drawn incorrectly when zoomed out in OpenGL rendering.
+- Fix: [#21908] Ride mode warnings when hovering track designs.
+- Fix: [#22820] OpenGL does not draw masked sprites correctly.
+- Fix: [#22961] Clicking on the construction preview places duplicate flat rides and stalls.
+- Fix: [#23359] Scripting: Add car.moveToTrack, an easier API than setting car.trackLocation directly.
+- Fix: [#23443] New GOG version of RCT2 is not extracted correctly.
+- Fix: [#23484] Stray coloured pixels on castle-themed stations and Roman-themed entrances/exits (original bug).
+- Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.
+- Fix: [#23743] Parks with guest goals over 32767 do not appear in the scenario list.
+- Fix: [#23844] Sound effects keep playing when loading another save.
+- Fix: [#23881] Compiling on Raspbian/arm-linux-gnueabihf fails.
+- Fix: [#23891] Inverted Hairpin Coaster track can draw over things above it (original bug).
+- Fix: [#23892] Gentle banked Wooden Roller Coaster track glitches as trains pass (original bug).
+- Fix: [#23897] Reverse Freefall Coaster slope up to vertical track piece does not draw a vertical tunnel.
+- Fix: [#23910] Heartline Twister Coaster track can draw over things above it (original bug).
+- Fix: [#23939] Incorrect assertion when trying to load heightmap.
+- Fix: [#23941] Underflow in “Repay loan and achieve a certain park value” objective when using Japanese.
+- Fix: [#23949] Walls draw over sloped rear water edges and those edge sprites are misaligned (original bug).
+- Fix: [#23960] Corner path fences can draw over adjacent sloped land (original bug).
+- Fix: [#23961] Lamps and queue line tvs draw incorrectly on paths with fences.
+- Fix: [#23983] Ordering files by size does not work and occasionally crashes the game.
+- Fix: [#24009] [Plugin] The object manager API does not identify recently introduced object types.
+- Fix: [#24028] Giga and LSM Launched Coaster booster sprites have pixels that draw over transparent pixels.
+- Fix: [#24077] Track Designer crashes when clicking the park fence.
+
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------
 - Feature: [#22905] Add diagonal downward-inclined brakes to hybrid coaster and single rail coaster.
@@ -81,7 +129,7 @@
 - Fix: [#22742, #22793] In game console does not handle format tokens properly.
 - Fix: [#23135] Map generator tree placement has noticable patterns.
 - Fix: [#23286] Currency formatted incorrectly in the in game console.
-- Fix: [#23348] Console set commands don't print output properly.
+- Fix: [#23348] Console set commands don’t print output properly.
 - Fix: [#23376] Peeps with balloons, hats and umbrellas may leave artifacts on screen.
 - Fix: [#23496] Newly spawned vehicles are invisible when spawned while the game is paused.
 - Fix: [#23509] Map generator window reverts to flatland after selecting a heightmap image.
@@ -103,7 +151,7 @@
 - Fix: [#20070, #22972] Missing and mismatched flat and sloped footpaths on several scenarios.
 - Fix: [#22726] ‘Force park rating’ cheat is not saved with the park.
 - Fix: [#23064] Stand-Up Roller Coaster unbanked to banked track pieces are misaligned.
-- Fix: [#23066] Stand-Up Roller Coaster has many supports that don't join up to the track.
+- Fix: [#23066] Stand-Up Roller Coaster has many supports that don’t join up to the track.
 - Fix: [#23206] Multiplayer desyncs when FPS is uncapped.
 - Fix: [#23238] Updating a guest’s favourite ride works differently from vanilla RCT2.
 - Fix: [objects#355] Fix colour preset settings of the Stand-Up Roller Coaster trains.
@@ -138,7 +186,7 @@
 - Feature: [#775] Add 2x and 4x zoom levels to software renderer (previously limited to OpenGL).
 - Feature: [#15642] Track design placement can now use construction modifier keys (ctrl/shift).
 - Feature: [#20539] [Plugin] Add API for getting a ride’s statistics.
-- Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
+- Feature: [#21521] [Plugin] Add hook “park.guest.softcap.calculate” called before calculating the soft guest cap.
 - Feature: [#22383] Add downward-inclined brakes to hybrid coaster and single rail coaster.
 - Feature: [#22694] Park graphs have tooltips and can be resized like finance graphs.
 - Feature: [#22758] The table of ‘real’ peep names can now be changed using Peep Names objects.
@@ -235,7 +283,7 @@
 - Change: [#22309] The scenario editor now supports loading landscapes from .sea save files.
 - Fix: [#17390] Glitchy animations for the ride type tabs in the object selection window.
 - Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
-- Fix: [#21175] Terraform tool hotkeys don't work when toolbars are hidden.
+- Fix: [#21175] Terraform tool hotkeys don’t work when toolbars are hidden.
 - Fix: [#22056] Potential crash upon exiting the game.
 - Fix: [#22101] Wrong tunnel shapes on Log Flume and Giga, Hybrid, Single-Rail and Alpine Coasters.
 - Fix: [#22208] Cursor may fail to register hits in some cases (original bug).

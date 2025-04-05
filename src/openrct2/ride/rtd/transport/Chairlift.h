@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor ChairliftRTD =
 {
-    .Category = RIDE_CATEGORY_TRANSPORT,
+    .Category = RideCategory::transport,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::chairlift,
@@ -32,8 +32,8 @@ constexpr RideTypeDescriptor ChairliftRTD =
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::isSuspended),
-    .RideModes = EnumsToFlags(RideMode::StationToStation),
-    .DefaultMode = RideMode::StationToStation,
+    .RideModes = EnumsToFlags(RideMode::stationToStation),
+    .DefaultMode = RideMode::stationToStation,
     .OperatingSettings = { 1, 4 },
     .Naming = { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
@@ -83,11 +83,11 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
-    .RideUpdate = UpdateChairlift,
+    .RideUpdate = updateChairlift,
 };
 // clang-format on

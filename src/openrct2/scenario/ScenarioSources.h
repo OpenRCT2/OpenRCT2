@@ -11,13 +11,15 @@
 
 #include "../core/StringTypes.h"
 
+enum class ScenarioCategory : uint8_t;
+
 struct SourceDescriptor
 {
     const utf8* title;
     uint8_t id;
     uint8_t source;
     int32_t index;
-    uint8_t category;
+    ScenarioCategory category;
     u8string_view textObjectId;
 };
 

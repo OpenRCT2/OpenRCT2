@@ -45,7 +45,7 @@ public:
 
         while (iter != end && Entity == nullptr)
         {
-            Entity = GetEntity<T>(*iter++);
+            Entity = TryGetEntity<T>(*iter++);
         }
         return *this;
     }
@@ -119,7 +119,7 @@ public:
 
         while (iter != end && Entity == nullptr)
         {
-            Entity = GetEntity<T>(*iter++);
+            Entity = TryGetEntity<T>(*iter++);
         }
         return *this;
     }

@@ -51,16 +51,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::cash_get() const
     {
-        return GetGameState().Cash;
+        return getGameState().cash;
     }
     void ScPark::cash_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
-        auto& gameState = GetGameState();
-        if (gameState.Cash != value)
+        auto& gameState = getGameState();
+        if (gameState.cash != value)
         {
-            gameState.Cash = value;
+            gameState.cash = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -68,17 +68,17 @@ namespace OpenRCT2::Scripting
 
     int32_t ScPark::rating_get() const
     {
-        return GetGameState().Park.Rating;
+        return getGameState().park.Rating;
     }
     void ScPark::rating_set(int32_t value)
     {
         ThrowIfGameStateNotMutable();
 
         auto valueClamped = std::min(std::max(0, value), 999);
-        auto& gameState = GetGameState();
-        if (gameState.Park.Rating != valueClamped)
+        auto& gameState = getGameState();
+        if (gameState.park.Rating != valueClamped)
         {
-            gameState.Park.Rating = std::min(std::max(0, value), 999);
+            gameState.park.Rating = std::min(std::max(0, value), 999);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
             ContextBroadcastIntent(&intent);
         }
@@ -86,17 +86,17 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::bankLoan_get() const
     {
-        return GetGameState().BankLoan;
+        return getGameState().bankLoan;
     }
     void ScPark::bankLoan_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
-        if (gameState.BankLoan != value)
+        if (gameState.bankLoan != value)
         {
-            gameState.BankLoan = value;
+            gameState.bankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -104,16 +104,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::maxBankLoan_get() const
     {
-        return GetGameState().MaxBankLoan;
+        return getGameState().maxBankLoan;
     }
     void ScPark::maxBankLoan_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
-        auto& gameState = GetGameState();
-        if (gameState.MaxBankLoan != value)
+        auto& gameState = getGameState();
+        if (gameState.maxBankLoan != value)
         {
-            gameState.MaxBankLoan = value;
+            gameState.maxBankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -121,16 +121,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::entranceFee_get() const
     {
-        return GetGameState().Park.EntranceFee;
+        return getGameState().park.EntranceFee;
     }
     void ScPark::entranceFee_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
-        auto& gameState = GetGameState();
-        if (gameState.Park.EntranceFee != value)
+        auto& gameState = getGameState();
+        if (gameState.park.EntranceFee != value)
         {
-            gameState.Park.EntranceFee = value;
+            gameState.park.EntranceFee = value;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
@@ -138,17 +138,17 @@ namespace OpenRCT2::Scripting
 
     uint32_t ScPark::guests_get() const
     {
-        return GetGameState().NumGuestsInPark;
+        return getGameState().numGuestsInPark;
     }
 
     uint32_t ScPark::suggestedGuestMaximum_get() const
     {
-        return GetGameState().SuggestedGuestMaximum;
+        return getGameState().suggestedGuestMaximum;
     }
 
     int32_t ScPark::guestGenerationProbability_get() const
     {
-        return GetGameState().GuestGenerationProbability;
+        return getGameState().guestGenerationProbability;
     }
 
     DukValue ScPark::generateGuest()
@@ -160,36 +160,36 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::guestInitialCash_get() const
     {
-        return GetGameState().GuestInitialCash;
+        return getGameState().guestInitialCash;
     }
 
     uint8_t ScPark::guestInitialHappiness_get() const
     {
-        return GetGameState().GuestInitialHappiness;
+        return getGameState().guestInitialHappiness;
     }
 
     uint8_t ScPark::guestInitialHunger_get() const
     {
-        return GetGameState().GuestInitialHunger;
+        return getGameState().guestInitialHunger;
     }
 
     uint8_t ScPark::guestInitialThirst_get() const
     {
-        return GetGameState().GuestInitialThirst;
+        return getGameState().guestInitialThirst;
     }
 
     money64 ScPark::value_get() const
     {
-        return GetGameState().Park.Value;
+        return getGameState().park.Value;
     }
     void ScPark::value_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
-        auto& gameState = GetGameState();
-        if (gameState.Park.Value != value)
+        auto& gameState = getGameState();
+        if (gameState.park.Value != value)
         {
-            gameState.Park.Value = value;
+            gameState.park.Value = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -197,16 +197,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::companyValue_get() const
     {
-        return GetGameState().CompanyValue;
+        return getGameState().companyValue;
     }
     void ScPark::companyValue_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
-        if (gameState.CompanyValue != value)
+        if (gameState.companyValue != value)
         {
-            gameState.CompanyValue = value;
+            gameState.companyValue = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -214,21 +214,21 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::totalRideValueForMoney_get() const
     {
-        return GetGameState().TotalRideValueForMoney;
+        return getGameState().totalRideValueForMoney;
     }
 
     uint32_t ScPark::totalAdmissions_get() const
     {
-        return GetGameState().TotalAdmissions;
+        return getGameState().totalAdmissions;
     }
     void ScPark::totalAdmissions_set(uint32_t value)
     {
         ThrowIfGameStateNotMutable();
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
-        if (gameState.TotalAdmissions != value)
+        if (gameState.totalAdmissions != value)
         {
-            gameState.TotalAdmissions = value;
+            gameState.totalAdmissions = value;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
@@ -236,16 +236,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::totalIncomeFromAdmissions_get() const
     {
-        return GetGameState().TotalIncomeFromAdmissions;
+        return getGameState().totalIncomeFromAdmissions;
     }
     void ScPark::totalIncomeFromAdmissions_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
-        if (gameState.TotalIncomeFromAdmissions != value)
+        if (gameState.totalIncomeFromAdmissions != value)
         {
-            gameState.TotalIncomeFromAdmissions = value;
+            gameState.totalIncomeFromAdmissions = value;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
@@ -253,48 +253,48 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::landPrice_get() const
     {
-        return GetGameState().LandPrice;
+        return getGameState().landPrice;
     }
     void ScPark::landPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
-        GetGameState().LandPrice = value;
+        getGameState().landPrice = value;
     }
 
     money64 ScPark::constructionRightsPrice_get() const
     {
-        return GetGameState().ConstructionRightsPrice;
+        return getGameState().constructionRightsPrice;
     }
     void ScPark::constructionRightsPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
-        GetGameState().ConstructionRightsPrice = value;
+        getGameState().constructionRightsPrice = value;
     }
 
     int16_t ScPark::casualtyPenalty_get() const
     {
-        return GetGameState().Park.RatingCasualtyPenalty;
+        return getGameState().park.RatingCasualtyPenalty;
     }
     void ScPark::casualtyPenalty_set(int16_t value)
     {
         ThrowIfGameStateNotMutable();
-        GetGameState().Park.RatingCasualtyPenalty = value;
+        getGameState().park.RatingCasualtyPenalty = value;
     }
 
     uint16_t ScPark::parkSize_get() const
     {
-        return GetGameState().Park.Size;
+        return getGameState().park.Size;
     }
 
     std::string ScPark::name_get() const
     {
-        return GetGameState().Park.Name;
+        return getGameState().park.Name;
     }
     void ScPark::name_set(std::string value)
     {
         ThrowIfGameStateNotMutable();
 
-        auto& park = GetGameState().Park;
+        auto& park = getGameState().park;
         if (park.Name != value)
         {
             park.Name = std::move(value);
@@ -305,18 +305,18 @@ namespace OpenRCT2::Scripting
     bool ScPark::getFlag(const std::string& key) const
     {
         auto mask = ParkFlagMap[key];
-        return (GetGameState().Park.Flags & mask) != 0;
+        return (getGameState().park.Flags & mask) != 0;
     }
 
     void ScPark::setFlag(const std::string& key, bool value)
     {
         ThrowIfGameStateNotMutable();
         auto mask = ParkFlagMap[key];
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         if (value)
-            gameState.Park.Flags |= mask;
+            gameState.park.Flags |= mask;
         else
-            gameState.Park.Flags &= ~mask;
+            gameState.park.Flags &= ~mask;
         GfxInvalidateScreen();
     }
 
@@ -328,12 +328,12 @@ namespace OpenRCT2::Scripting
     std::vector<std::shared_ptr<ScParkMessage>> ScPark::messages_get() const
     {
         std::vector<std::shared_ptr<ScParkMessage>> result;
-        auto& gameState = GetGameState();
-        for (size_t i = 0, newsSize = gameState.NewsItems.GetRecent().size(); i < newsSize; i++)
+        auto& gameState = getGameState();
+        for (size_t i = 0, newsSize = gameState.newsItems.GetRecent().size(); i < newsSize; i++)
         {
             result.push_back(std::make_shared<ScParkMessage>(i));
         }
-        for (size_t i = 0, newsSize = gameState.NewsItems.GetArchived().size(); i < newsSize; i++)
+        for (size_t i = 0, newsSize = gameState.newsItems.GetArchived().size(); i < newsSize; i++)
         {
             result.push_back(std::make_shared<ScParkMessage>(i + News::ItemHistoryStart));
         }
@@ -344,7 +344,7 @@ namespace OpenRCT2::Scripting
     {
         int32_t index = 0;
         int32_t archiveIndex = News::ItemHistoryStart;
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         for (const auto& item : value)
         {
             auto isArchived = item["isArchived"].as_bool();
@@ -353,7 +353,7 @@ namespace OpenRCT2::Scripting
             {
                 if (archiveIndex < News::MaxItems)
                 {
-                    gameState.NewsItems[archiveIndex] = newsItem;
+                    gameState.newsItems[archiveIndex] = newsItem;
                     archiveIndex++;
                 }
             }
@@ -361,7 +361,7 @@ namespace OpenRCT2::Scripting
             {
                 if (index < News::ItemHistoryStart)
                 {
-                    gameState.NewsItems[index] = newsItem;
+                    gameState.newsItems[index] = newsItem;
                     index++;
                 }
             }
@@ -370,11 +370,11 @@ namespace OpenRCT2::Scripting
         // End the lists by setting next item to null
         if (index < News::ItemHistoryStart)
         {
-            gameState.NewsItems[index].Type = News::ItemType::Null;
+            gameState.newsItems[index].Type = News::ItemType::Null;
         }
         if (archiveIndex < News::MaxItems)
         {
-            gameState.NewsItems[archiveIndex].Type = News::ItemType::Null;
+            gameState.newsItems[archiveIndex].Type = News::ItemType::Null;
         }
     }
 
@@ -421,10 +421,10 @@ namespace OpenRCT2::Scripting
         auto type = ScriptEngine::StringToExpenditureType(expenditureType);
         if (type != ExpenditureType::Count)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             for (size_t i = 0; i < recordedMonths; ++i)
             {
-                result[i] = gameState.ExpenditureTable[i][EnumValue(type)];
+                result[i] = gameState.expenditureTable[i][EnumValue(type)];
             }
         }
         return result;

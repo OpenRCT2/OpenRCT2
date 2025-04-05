@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor HauntedHouseRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::hauntedHouse,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::HauntedHouse),
-    .DefaultMode = RideMode::HauntedHouse,
+    .RideModes = EnumsToFlags(RideMode::hauntedHouse),
+    .DefaultMode = RideMode::hauntedHouse,
     .Naming = { STR_RIDE_NAME_HAUNTED_HOUSE, STR_RIDE_DESCRIPTION_HAUNTED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),

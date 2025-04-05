@@ -34,8 +34,8 @@ void PreloaderScene::Load()
 {
     LOG_VERBOSE("PreloaderScene::Load()");
 
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
-    gameStateInitAll(GetGameState(), kDefaultMapSize);
+    gLegacyScene = LegacyScene::playing;
+    gameStateInitAll(getGameState(), kDefaultMapSize);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
     WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);

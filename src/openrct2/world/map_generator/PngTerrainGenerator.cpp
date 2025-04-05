@@ -17,6 +17,7 @@
 #include "../../localisation/StringIds.h"
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
+#include "HeightMap.hpp"
 #include "MapGen.h"
 #include "MapHelpers.h"
 #include "SurfaceSelection.h"
@@ -25,12 +26,7 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    static struct
-    {
-        uint32_t width = 0;
-        uint32_t height = 0;
-        std::vector<uint8_t> mono_bitmap;
-    } _heightMapData;
+    static HeightMap _heightMapData{};
 
     /**
      * Return the tile coordinate that matches the given pixel of a heightmap
@@ -44,10 +40,10 @@ namespace OpenRCT2::World::MapGenerator
     bool LoadHeightmapImage(const utf8* path)
     {
         auto format = Imaging::GetImageFormatFromPath(path);
-        if (format == IMAGE_FORMAT::PNG)
+        if (format == ImageFormat::png)
         {
             // Promote to 32-bit
-            format = IMAGE_FORMAT::PNG_32;
+            format = ImageFormat::png32;
         }
 
         try
@@ -61,9 +57,7 @@ namespace OpenRCT2::World::MapGenerator
             }
 
             // Allocate memory for the height map values, one byte pixel
-            _heightMapData.mono_bitmap.resize(width * height);
-            _heightMapData.width = width;
-            _heightMapData.height = height;
+            _heightMapData = HeightMap(width, height);
 
             // Copy average RGB value to mono bitmap
             constexpr auto numChannels = 4;
@@ -76,7 +70,7 @@ namespace OpenRCT2::World::MapGenerator
                     const auto red = pixels[x * numChannels + y * pitch];
                     const auto green = pixels[x * numChannels + y * pitch + 1];
                     const auto blue = pixels[x * numChannels + y * pitch + 2];
-                    _heightMapData.mono_bitmap[x + y * _heightMapData.width] = (red + green + blue) / 3;
+                    _heightMapData[TileCoordsXY(x, y)] = (red + green + blue) / 3;
                 }
             }
             return true;
@@ -85,10 +79,10 @@ namespace OpenRCT2::World::MapGenerator
         {
             switch (format)
             {
-                case IMAGE_FORMAT::BITMAP:
+                case ImageFormat::bitmap:
                     ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
                     break;
-                case IMAGE_FORMAT::PNG_32:
+                case ImageFormat::png32:
                     ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
                     break;
                 default:
@@ -104,25 +98,23 @@ namespace OpenRCT2::World::MapGenerator
      */
     void UnloadHeightmapImage()
     {
-        _heightMapData.mono_bitmap.clear();
-        _heightMapData.width = 0;
-        _heightMapData.height = 0;
+        _heightMapData.clear();
     }
 
     /**
      * Applies box blur to the surface N times
      */
-    static void SmoothHeightmap(std::vector<uint8_t>& src, int32_t strength)
+    static void SmoothHeightmap(HeightMap& src, int32_t strength)
     {
         // Create buffer to store one channel
-        std::vector<uint8_t> dest(src.size());
+        HeightMap temp{ src.width, src.height };
 
         for (int32_t i = 0; i < strength; i++)
         {
             // Calculate box blur value to all pixels of the surface
-            for (uint32_t y = 0; y < _heightMapData.height; y++)
+            for (auto y = 0; y < temp.height; y++)
             {
-                for (uint32_t x = 0; x < _heightMapData.width; x++)
+                for (auto x = 0; x < temp.width; x++)
                 {
                     uint32_t heightSum = 0;
 
@@ -133,23 +125,23 @@ namespace OpenRCT2::World::MapGenerator
                         {
                             // Clamp x and y so they stay within the image
                             // This assumes the height map is not tiled, and increases the weight of the edges
-                            const int32_t readX = std::clamp<int32_t>(x + offsetX, 0, _heightMapData.width - 1);
-                            const int32_t readY = std::clamp<int32_t>(y + offsetY, 0, _heightMapData.height - 1);
-                            heightSum += src[readX + readY * _heightMapData.width];
+                            const auto readX = std::clamp<int32_t>(x + offsetX, 0, temp.width - 1);
+                            const auto readY = std::clamp<int32_t>(y + offsetY, 0, temp.height - 1);
+                            heightSum += src[{ readX, readY }];
                         }
                     }
 
                     // Take average
-                    dest[x + y * _heightMapData.width] = heightSum / 9;
+                    temp[{ x, y }] = heightSum / 9;
                 }
             }
 
-            // Now apply the blur to the source pixels
-            for (uint32_t y = 0; y < _heightMapData.height; y++)
+            // Now copy the blur to the source pixels
+            for (auto y = 0; y < temp.height; y++)
             {
-                for (uint32_t x = 0; x < _heightMapData.width; x++)
+                for (auto x = 0; x < temp.width; x++)
                 {
-                    src[x + y * _heightMapData.width] = dest[x + y * _heightMapData.width];
+                    src[{ x, y }] = temp[{ x, y }];
                 }
             }
         }
@@ -157,15 +149,15 @@ namespace OpenRCT2::World::MapGenerator
 
     void GenerateFromHeightmapImage(Settings* settings)
     {
-        Guard::Assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
+        Guard::Assert(!_heightMapData.empty(), "No height map loaded");
         Guard::Assert(settings->heightmapHigh != settings->heightmapLow, "Low and high setting cannot be the same");
 
         // Make a copy of the original height map that we can edit
-        auto dest = _heightMapData.mono_bitmap;
+        HeightMap dest = _heightMapData;
 
         // Get technical map size, +2 for the black tiles around the map
-        auto maxWidth = static_cast<int32_t>(_heightMapData.width + 2);
-        auto maxHeight = static_cast<int32_t>(_heightMapData.height + 2);
+        auto maxWidth = static_cast<int32_t>(dest.width + 2);
+        auto maxHeight = static_cast<int32_t>(dest.height + 2);
         MapInit({ maxHeight, maxWidth });
 
         if (settings->smooth_height_map)
@@ -180,12 +172,12 @@ namespace OpenRCT2::World::MapGenerator
         {
             // Get highest and lowest pixel value
             maxValue = 0;
-            minValue = 0xff;
-            for (uint32_t y = 0; y < _heightMapData.height; y++)
+            minValue = 255;
+            for (auto y = 0; y < dest.height; y++)
             {
-                for (uint32_t x = 0; x < _heightMapData.width; x++)
+                for (auto x = 0; x < dest.width; x++)
                 {
-                    uint8_t value = dest[x + y * _heightMapData.width];
+                    uint8_t value = dest[{ x, y }];
                     maxValue = std::max(maxValue, value);
                     minValue = std::min(minValue, value);
                 }
@@ -207,9 +199,9 @@ namespace OpenRCT2::World::MapGenerator
         const uint8_t rangeIn = maxValue - minValue;
         const uint8_t rangeOut = (settings->heightmapHigh - settings->heightmapLow) * 2;
 
-        for (uint32_t y = 0; y < _heightMapData.height; y++)
+        for (auto y = 0; y < dest.height; y++)
         {
-            for (uint32_t x = 0; x < _heightMapData.width; x++)
+            for (auto x = 0; x < dest.width; x++)
             {
                 // The x and y axis are flipped in the world, so this uses y for x and x for y.
                 auto tileCoords = HeightmapCoordToTileCoordsXY(x, y);
@@ -218,7 +210,7 @@ namespace OpenRCT2::World::MapGenerator
                     continue;
 
                 // Read value from bitmap, and convert its range
-                uint8_t value = dest[x + y * _heightMapData.width];
+                uint8_t value = dest[{ x, y }];
                 value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut)
                     + (settings->heightmapLow * 2);
                 surfaceElement->BaseHeight = value;
@@ -247,9 +239,9 @@ namespace OpenRCT2::World::MapGenerator
             while (true)
             {
                 uint32_t numTilesChanged = 0;
-                for (uint32_t y = 0; y < _heightMapData.height; y++)
+                for (auto y = 0; y < dest.height; y++)
                 {
-                    for (uint32_t x = 0; x < _heightMapData.width; x++)
+                    for (auto x = 0; x < dest.width; x++)
                     {
                         auto tileCoords = HeightmapCoordToTileCoordsXY(x, y);
                         numTilesChanged += TileSmooth(tileCoords);

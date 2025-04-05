@@ -39,6 +39,7 @@ namespace OpenRCT2::Ui
     static void WidgetTextInset(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetProgressBarDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetHorizontalSeparatorDraw(DrawPixelInfo& dpi, WindowBase& w, const Widget& widget);
     static void WidgetGroupboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
@@ -118,6 +119,9 @@ namespace OpenRCT2::Ui
             case WindowWidgetType::ProgressBar:
                 WidgetProgressBarDraw(dpi, w, widgetIndex);
                 break;
+            case WindowWidgetType::HorizontalSeparator:
+                WidgetHorizontalSeparatorDraw(dpi, w, *widget);
+                break;
             default:
                 break;
         }
@@ -145,10 +149,7 @@ namespace OpenRCT2::Ui
         // Draw the frame
         GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, press);
 
-        // Check if the window can be resized
-        if (!(w.flags & WF_RESIZABLE))
-            return;
-        if (w.min_width == w.max_width && w.min_height == w.max_height)
+        if (!w.canBeResized())
             return;
 
         // Draw the resize sprite at the bottom right corner
@@ -175,10 +176,7 @@ namespace OpenRCT2::Ui
         // Draw the panel
         GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, 0);
 
-        // Check if the window can be resized
-        if (!(w.flags & WF_RESIZABLE))
-            return;
-        if (w.min_width == w.max_width && w.min_height == w.max_height)
+        if (!w.canBeResized())
             return;
 
         // Draw the resize sprite at the bottom right corner
@@ -568,13 +566,13 @@ namespace OpenRCT2::Ui
         int32_t width = widget->width() - 4;
         if ((widget + 1)->type == WindowWidgetType::CloseBox)
         {
-            width -= kCloseButtonWidth;
+            width -= kCloseButtonSize;
             if ((widget + 2)->type == WindowWidgetType::CloseBox)
-                width -= kCloseButtonWidth;
+                width -= kCloseButtonSize;
         }
         topLeft.x += width / 2;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
-            topLeft.x += kCloseButtonWidth;
+            topLeft.x += kCloseButtonSize;
 
         DrawTextEllipsised(
             dpi, topLeft, width, widget->text, Formatter::Common(),
@@ -902,7 +900,7 @@ namespace OpenRCT2::Ui
 
         if (InputGetState() == InputState::WidgetPressed || InputGetState() == InputState::DropdownActive)
         {
-            if (!(InputTestFlag(INPUT_FLAG_WIDGET_PRESSED)))
+            if (!gInputFlags.has(InputFlag::widgetPressed))
                 return false;
             if (gPressedWidget.window_classification != w.classification)
                 return false;
@@ -1214,6 +1212,14 @@ namespace OpenRCT2::Ui
                 dpi, { topLeft + ScreenCoordsXY{ 1, 1 }, topLeft + ScreenCoordsXY{ fillSize + 1, widget.height() - 1 } },
                 { widget.colour }, 0);
         }
+    }
+
+    static void WidgetHorizontalSeparatorDraw(DrawPixelInfo& dpi, WindowBase& w, const Widget& widget)
+    {
+        ScreenCoordsXY topLeft{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top } };
+        ScreenCoordsXY bottomRight{ w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
+
+        GfxFillRectInset(dpi, { topLeft, bottomRight }, w.colours[1], INSET_RECT_FLAG_BORDER_INSET);
     }
 
     ImageId GetColourButtonImage(colour_t colour)

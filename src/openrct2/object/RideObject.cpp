@@ -188,7 +188,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         _presetColours.list[i] = stream->ReadValue<VehicleColour>();
     }
 
-    if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
+    if (isRideTypeShopOrFacility(_legacyType.ride_type[0]))
     {
         // This used to be hard-coded. JSON objects set this themselves.
         _presetColours.count = 1;
@@ -386,17 +386,9 @@ ImageIndex RideObject::GetPreviewImage(ride_type_t type)
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
-    // Find the first non-null ride type, to be used when checking the ride group and determining the category.
-    auto firstRideType = _legacyType.GetFirstNonNullRideType();
-    uint8_t category = GetRideTypeDescriptor(firstRideType).Category;
-
     for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
     {
         item->RideInfo.RideType[i] = _legacyType.ride_type[i];
-    }
-    for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxCategoriesPerRide; i++)
-    {
-        item->RideInfo.RideCategory[i] = category;
     }
 
     item->RideInfo.RideFlags = 0;
@@ -555,7 +547,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         auto carColours = Json::AsArray(properties["carColours"]);
         _presetColours = ReadJsonCarColours(carColours);
 
-        if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
+        if (isRideTypeShopOrFacility(_legacyType.ride_type[0]))
         {
             // Standard car info for a shop
             auto& car = _legacyType.Cars[0];
@@ -648,7 +640,7 @@ void RideObject::ReadJsonVehicleInfo([[maybe_unused]] IReadObjectContext* contex
 
     _legacyType.min_cars_in_train = Json::GetNumber<uint8_t>(properties["minCarsPerTrain"], 1);
     _legacyType.max_cars_in_train = Json::GetNumber<uint8_t>(properties["maxCarsPerTrain"], 1);
-    _legacyType.cars_per_flat_ride = Json::GetNumber<uint8_t>(properties["carsPerFlatRide"], NoFlatRideCars);
+    _legacyType.cars_per_flat_ride = Json::GetNumber<uint8_t>(properties["carsPerFlatRide"], kNoFlatRideCars);
     _legacyType.zero_cars = Json::GetNumber<uint8_t>(properties["numEmptyCars"]);
 
     // Train formation from car indices
@@ -962,7 +954,7 @@ std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColo
     return config;
 }
 
-bool RideObject::IsRideTypeShopOrFacility(ride_type_t rideType)
+bool RideObject::isRideTypeShopOrFacility(ride_type_t rideType)
 {
     return GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isShopOrFacility);
 }
@@ -977,19 +969,19 @@ ride_type_t RideObject::ParseRideType(const std::string& s)
         return std::distance(std::begin(kRideTypeDescriptors), result);
 }
 
-static const EnumMap<uint8_t> RideCategoryLookupTable{
-    { "transport", RIDE_CATEGORY_TRANSPORT },
-    { "gentle", RIDE_CATEGORY_GENTLE },
-    { "rollercoaster", RIDE_CATEGORY_ROLLERCOASTER },
-    { "thrill", RIDE_CATEGORY_THRILL },
-    { "water", RIDE_CATEGORY_WATER },
-    { "stall", RIDE_CATEGORY_SHOP },
+static const EnumMap<RideCategory> RideCategoryLookupTable{
+    { "transport", RideCategory::transport },
+    { "gentle", RideCategory::gentle },
+    { "rollercoaster", RideCategory::rollerCoaster },
+    { "thrill", RideCategory::thrill },
+    { "water", RideCategory::water },
+    { "stall", RideCategory::shop },
 };
 
-uint8_t RideObject::ParseRideCategory(const std::string& s)
+RideCategory RideObject::ParseRideCategory(const std::string& s)
 {
     auto result = RideCategoryLookupTable.find(s);
-    return (result != RideCategoryLookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_CATEGORY_TRANSPORT);
+    return (result != RideCategoryLookupTable.end()) ? result->second : RideCategory::transport;
 }
 
 static const EnumMap<ShopItem> ShopItemLookupTable{

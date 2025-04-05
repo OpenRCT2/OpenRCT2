@@ -2257,10 +2257,6 @@ STR_3252    :A maximum kölcsön összege nem növelhető tovább!
 STR_3253    :A maximum kölcsön összege nem csökkenthető tovább!
 STR_3254    :A kamatláb nem növelhető tovább!
 STR_3255    :A kamatláb nem csökkenthető tovább!
-STR_3256    :A vendégek a kevésbé intenzív játékokat részesítik előnyben
-STR_3257    :Válaszd ki, hogy a vendégek általában csak a kevésbé intenzív játékokat részesítsék előnyben
-STR_3258    :A vendégek az intenzívebb játékokat részesítik előnyben
-STR_3259    :Válaszd ki, hogy a vendégek általában csak a intenzívebb játékokat részesítsék előnyben
 STR_3260    :{WINDOW_COLOUR_2}Készpénz/vendég (átlagosan):
 STR_3261    :{WINDOW_COLOUR_2}Vendégek kezdeti boldogsága:
 STR_3262    :{WINDOW_COLOUR_2}Vendégek kezdeti éhsége:

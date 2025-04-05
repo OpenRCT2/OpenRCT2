@@ -2248,10 +2248,6 @@ STR_3252    :Kredi miktarı daha fazla yükseltilemiyor!
 STR_3253    :Kredi miktarı daha fazla düşürülemiyor!
 STR_3254    :Faiz oranı daha fazla yükseltilemiyor!
 STR_3255    :Faiz oranı daha fazla düşürülemiyor!
-STR_3256    :Müşteriler daha çok şiddet oranı düşük olan aletleri tercih etsin
-STR_3257    :Bu ayar ile müşteriler daha çok şiddet oranı düşük olan aletleri tercih ediyor
-STR_3258    :Müşteriler daha çok şiddet oranı yüksek olan aletleri tercih etsin
-STR_3259    :Bu ayar ile müşteriler daha çok şiddet oranı yüksek olan aletleri tercih ediyor
 STR_3260    :{WINDOW_COLOUR_2}Müşteri başı para (yaklaşık):
 STR_3261    :{WINDOW_COLOUR_2}Ana müşteri mutluluğu:
 STR_3262    :{WINDOW_COLOUR_2}Ana müşteri açlığı:

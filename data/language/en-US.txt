@@ -231,8 +231,15 @@ STR_6274    :Can’t set color scheme…
 STR_6307    :Color scheme: {BLACK}{STRINGID}
 STR_6328    :With this option enabled, giant screenshots will have a transparent background instead of the default black color.
 STR_6501    :Random color
+STR_6529    :Invalid color scheme parameter!
+STR_6575    :Allow special color schemes
+STR_6576    :Adds special colors to color dropdown
 STR_6625    :Invalid color
 
 STR_6629    :Align toolbar buttons horizontally centered
 STR_6630    :This setting will align the toolbar buttons horizontally in the center of the screen. The traditional way of aligning them is in the left and right corner.
+
+STR_6661    :Randomize all
+STR_6662    :Randomize colors for every train or vehicle
+
 STR_6732    :Show a button in the toolbar to rotate the view counterclockwise

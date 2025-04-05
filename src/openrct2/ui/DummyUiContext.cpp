@@ -59,7 +59,7 @@ namespace OpenRCT2::Ui
         {
             return ScaleQuality::NearestNeighbour;
         }
-        void SetFullscreenMode(FULLSCREEN_MODE /*mode*/) override
+        void SetFullscreenMode(FullscreenMode /*mode*/) override
         {
         }
         const std::vector<Resolution>& GetFullscreenResolutions() override

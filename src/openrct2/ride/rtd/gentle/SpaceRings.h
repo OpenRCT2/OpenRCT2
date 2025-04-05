@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor SpaceRingsRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::spaceRings,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::SpaceRings),
-    .DefaultMode = RideMode::SpaceRings,
+    .RideModes = EnumsToFlags(RideMode::spaceRings),
+    .DefaultMode = RideMode::spaceRings,
     .Naming = { STR_RIDE_NAME_SPACE_RINGS, STR_RIDE_DESCRIPTION_SPACE_RINGS },
     .NameConvention = { RideComponentType::Ring, RideComponentType::Structure, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),

@@ -514,12 +514,12 @@ static StringId window_cheats_page_titles[] = {
             // Set title
             widgets[WIDX_TITLE].text = window_cheats_page_titles[page];
 
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (page)
             {
                 case WINDOW_CHEATS_PAGE_MONEY:
                 {
-                    auto moneyDisabled = (gameState.Park.Flags & PARK_FLAGS_NO_MONEY) != 0;
+                    auto moneyDisabled = (gameState.park.Flags & PARK_FLAGS_NO_MONEY) != 0;
                     SetCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
                     SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
                     SetWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
@@ -534,60 +534,60 @@ static StringId window_cheats_page_titles[] = {
                 {
                     auto ft = Formatter::Common();
                     ft.Add<money64>(1000.00_GBP);
-                    SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gameState.Cheats.ignoreRideIntensity);
-                    SetCheckboxValue(WIDX_GUEST_IGNORE_PRICE, gameState.Cheats.ignorePrice);
-                    SetCheckboxValue(WIDX_DISABLE_VANDALISM, gameState.Cheats.disableVandalism);
-                    SetCheckboxValue(WIDX_DISABLE_LITTERING, gameState.Cheats.disableLittering);
+                    SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gameState.cheats.ignoreRideIntensity);
+                    SetCheckboxValue(WIDX_GUEST_IGNORE_PRICE, gameState.cheats.ignorePrice);
+                    SetCheckboxValue(WIDX_DISABLE_VANDALISM, gameState.cheats.disableVandalism);
+                    SetCheckboxValue(WIDX_DISABLE_LITTERING, gameState.cheats.disableLittering);
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
                     widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
-                    if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
+                    if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
                         widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
 
                     SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
-                    SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.Cheats.neverendingMarketing);
-                    SetCheckboxValue(WIDX_ALLOW_BUILD_IN_PAUSE_MODE, gameState.Cheats.buildInPauseMode);
-                    SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gameState.Cheats.allowRegularPathAsQueue);
-                    SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.Cheats.allowSpecialColourSchemes);
+                    SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.cheats.neverendingMarketing);
+                    SetCheckboxValue(WIDX_ALLOW_BUILD_IN_PAUSE_MODE, gameState.cheats.buildInPauseMode);
+                    SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gameState.cheats.allowRegularPathAsQueue);
+                    SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.cheats.allowSpecialColourSchemes);
                     break;
                 case WINDOW_CHEATS_PAGE_RIDES:
-                    SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gameState.Cheats.unlockOperatingLimits);
-                    SetCheckboxValue(WIDX_DISABLE_BRAKES_FAILURE, gameState.Cheats.disableBrakesFailure);
-                    SetCheckboxValue(WIDX_DISABLE_ALL_BREAKDOWNS, gameState.Cheats.disableAllBreakdowns);
-                    SetCheckboxValue(WIDX_SHOW_ALL_OPERATING_MODES, gameState.Cheats.showAllOperatingModes);
+                    SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gameState.cheats.unlockOperatingLimits);
+                    SetCheckboxValue(WIDX_DISABLE_BRAKES_FAILURE, gameState.cheats.disableBrakesFailure);
+                    SetCheckboxValue(WIDX_DISABLE_ALL_BREAKDOWNS, gameState.cheats.disableAllBreakdowns);
+                    SetCheckboxValue(WIDX_SHOW_ALL_OPERATING_MODES, gameState.cheats.showAllOperatingModes);
                     SetCheckboxValue(
-                        WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, gameState.Cheats.showVehiclesFromOtherTrackTypes);
-                    SetCheckboxValue(WIDX_DISABLE_TRAIN_LENGTH_LIMITS, gameState.Cheats.disableTrainLengthLimit);
-                    SetCheckboxValue(WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gameState.Cheats.enableChainLiftOnAllTrack);
-                    SetCheckboxValue(WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gameState.Cheats.allowArbitraryRideTypeChanges);
-                    SetCheckboxValue(WIDX_DISABLE_RIDE_VALUE_AGING, gameState.Cheats.disableRideValueAging);
-                    SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gameState.Cheats.ignoreResearchStatus);
-                    SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gameState.Cheats.enableAllDrawableTrackPieces);
-                    SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gameState.Cheats.allowTrackPlaceInvalidHeights);
-                    SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gameState.Cheats.makeAllDestructible);
+                        WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, gameState.cheats.showVehiclesFromOtherTrackTypes);
+                    SetCheckboxValue(WIDX_DISABLE_TRAIN_LENGTH_LIMITS, gameState.cheats.disableTrainLengthLimit);
+                    SetCheckboxValue(WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gameState.cheats.enableChainLiftOnAllTrack);
+                    SetCheckboxValue(WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gameState.cheats.allowArbitraryRideTypeChanges);
+                    SetCheckboxValue(WIDX_DISABLE_RIDE_VALUE_AGING, gameState.cheats.disableRideValueAging);
+                    SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gameState.cheats.ignoreResearchStatus);
+                    SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gameState.cheats.enableAllDrawableTrackPieces);
+                    SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gameState.cheats.allowTrackPlaceInvalidHeights);
+                    SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gameState.cheats.makeAllDestructible);
                     break;
                 case WINDOW_CHEATS_PAGE_STAFF:
-                    SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.Cheats.disablePlantAging);
+                    SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.cheats.disablePlantAging);
                     break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
-                    SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.Cheats.freezeWeather);
+                    SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.cheats.freezeWeather);
                     break;
             }
 
             // Current weather
             if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
-                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.WeatherCurrent.weatherType)];
+                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.weatherCurrent.weatherType)];
             }
 
             // Staff speed
             if (page == WINDOW_CHEATS_PAGE_STAFF)
             {
-                widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gameState.Cheats.selectedStaffSpeed)];
+                widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gameState.cheats.selectedStaffSpeed)];
             }
 
-            if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+            if (isInEditorMode())
             {
                 SetWidgetDisabled(WIDX_TAB_2, true);
                 SetWidgetDisabled(WIDX_TAB_3, true);
@@ -737,6 +737,10 @@ static StringId window_cheats_page_titles[] = {
     private:
         void SetPage(int32_t p)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == p && !widgets.empty())
+                return;
+
             page = p;
             frame_no = 0;
 
@@ -755,8 +759,7 @@ static StringId window_cheats_page_titles[] = {
             Invalidate();
             WindowInitScrollWidgets(*this);
             height = maxY;
-            widgets[WIDX_BACKGROUND].bottom = maxY - 1;
-            widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;
+            ResizeFrameWithPage();
             Invalidate();
         }
 
@@ -937,7 +940,7 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_NO_MONEY:
-                    CheatsSet(CheatType::NoMoney, GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
+                    CheatsSet(CheatType::NoMoney, getGameState().park.Flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                     break;
                 case WIDX_MONEY_SPINNER:
                     MoneyToString(_moneySpinnerValue, _moneySpinnerText, kMoneyStringMaxlength, false);
@@ -981,7 +984,7 @@ static StringId window_cheats_page_titles[] = {
         void OnMouseDownStaff(WidgetIndex widgetIndex)
         {
             auto* widget = &widgets[widgetIndex];
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_STAFF_SPEED_DROPDOWN_BUTTON:
@@ -999,7 +1002,7 @@ static StringId window_cheats_page_titles[] = {
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                    Dropdown::SetChecked(EnumValue(gameState.Cheats.selectedStaffSpeed), true);
+                    Dropdown::SetChecked(EnumValue(gameState.cheats.selectedStaffSpeed), true);
                 }
             }
         }
@@ -1007,7 +1010,7 @@ static StringId window_cheats_page_titles[] = {
         void OnMouseDownWeather(WidgetIndex widgetIndex)
         {
             auto* widget = &widgets[widgetIndex];
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_WEATHER_DROPDOWN_BUTTON:
@@ -1023,7 +1026,7 @@ static StringId window_cheats_page_titles[] = {
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 3);
 
-                    auto currentWeather = gameState.WeatherCurrent.weatherType;
+                    auto currentWeather = gameState.weatherCurrent.weatherType;
                     Dropdown::SetChecked(EnumValue(currentWeather), true);
 
                     break;
@@ -1033,7 +1036,7 @@ static StringId window_cheats_page_titles[] = {
 
         void OnMouseUpPark(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_OWN_ALL_LAND:
@@ -1052,7 +1055,7 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::HaveFun);
                     break;
                 case WIDX_NEVERENDING_MARKETING:
-                    CheatsSet(CheatType::NeverendingMarketing, !gameState.Cheats.neverendingMarketing);
+                    CheatsSet(CheatType::NeverendingMarketing, !gameState.cheats.neverendingMarketing);
                     break;
                 case WIDX_FORCE_PARK_RATING:
                     if (Park::GetForcedRating() >= 0)
@@ -1065,20 +1068,20 @@ static StringId window_cheats_page_titles[] = {
                     }
                     break;
                 case WIDX_ALLOW_BUILD_IN_PAUSE_MODE:
-                    CheatsSet(CheatType::BuildInPauseMode, !gameState.Cheats.buildInPauseMode);
+                    CheatsSet(CheatType::BuildInPauseMode, !gameState.cheats.buildInPauseMode);
                     break;
                 case WIDX_ALLOW_REGULAR_PATH_AS_QUEUE:
-                    CheatsSet(CheatType::AllowRegularPathAsQueue, !gameState.Cheats.allowRegularPathAsQueue);
+                    CheatsSet(CheatType::AllowRegularPathAsQueue, !gameState.cheats.allowRegularPathAsQueue);
                     break;
                 case WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES:
-                    CheatsSet(CheatType::AllowSpecialColourSchemes, !gameState.Cheats.allowSpecialColourSchemes);
+                    CheatsSet(CheatType::AllowSpecialColourSchemes, !gameState.cheats.allowSpecialColourSchemes);
                     break;
             }
         }
 
         void OnMouseUpStaff(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_CLEAR_GRASS:
@@ -1097,18 +1100,18 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::RemoveLitter);
                     break;
                 case WIDX_DISABLE_PLANT_AGING:
-                    CheatsSet(CheatType::DisablePlantAging, !gameState.Cheats.disablePlantAging);
+                    CheatsSet(CheatType::DisablePlantAging, !gameState.cheats.disablePlantAging);
                     break;
             }
         }
 
         void OnMouseUpWeather(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_FREEZE_WEATHER:
-                    CheatsSet(CheatType::FreezeWeather, !gameState.Cheats.freezeWeather);
+                    CheatsSet(CheatType::FreezeWeather, !gameState.cheats.freezeWeather);
                     break;
                 case WIDX_CREATE_DUCKS:
                     CheatsSet(CheatType::CreateDucks, kCheatsDuckIncrement);
@@ -1129,21 +1132,21 @@ static StringId window_cheats_page_titles[] = {
             if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
             {
                 int32_t speed = kCheatsStaffNormalSpeed;
-                auto& gameState = GetGameState();
+                auto& gameState = getGameState();
                 switch (dropdownIndex)
                 {
                     case 0:
-                        gameState.Cheats.selectedStaffSpeed = StaffSpeedCheat::None;
+                        gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::None;
                         speed = kCheatsStaffNormalSpeed;
                         break;
 
                     case 1:
-                        gameState.Cheats.selectedStaffSpeed = StaffSpeedCheat::Frozen;
+                        gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::Frozen;
                         speed = kCheatsStaffFreezeSpeed;
                         break;
 
                     case 2:
-                        gameState.Cheats.selectedStaffSpeed = StaffSpeedCheat::Fast;
+                        gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::Fast;
                         speed = kCheatsStaffFastSpeed;
                 }
                 CheatsSet(CheatType::SetStaffSpeed, speed);
@@ -1165,7 +1168,7 @@ static StringId window_cheats_page_titles[] = {
 
         void OnMouseUpGuests(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_GUEST_HAPPINESS_MAX:
@@ -1237,42 +1240,42 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::GiveAllGuests, OBJECT_UMBRELLA);
                     break;
                 case WIDX_GUEST_IGNORE_RIDE_INTENSITY:
-                    CheatsSet(CheatType::IgnoreRideIntensity, !gameState.Cheats.ignoreRideIntensity);
+                    CheatsSet(CheatType::IgnoreRideIntensity, !gameState.cheats.ignoreRideIntensity);
                     break;
                 case WIDX_GUEST_IGNORE_PRICE:
-                    CheatsSet(CheatType::IgnorePrice, !gameState.Cheats.ignorePrice);
+                    CheatsSet(CheatType::IgnorePrice, !gameState.cheats.ignorePrice);
                     break;
                 case WIDX_DISABLE_VANDALISM:
-                    CheatsSet(CheatType::DisableVandalism, !gameState.Cheats.disableVandalism);
+                    CheatsSet(CheatType::DisableVandalism, !gameState.cheats.disableVandalism);
                     break;
                 case WIDX_DISABLE_LITTERING:
-                    CheatsSet(CheatType::DisableLittering, !gameState.Cheats.disableLittering);
+                    CheatsSet(CheatType::DisableLittering, !gameState.cheats.disableLittering);
                     break;
             }
         }
 
         void OnMouseUpRides(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_RENEW_RIDES:
                     CheatsSet(CheatType::RenewRides);
                     break;
                 case WIDX_MAKE_DESTRUCTIBLE:
-                    CheatsSet(CheatType::MakeDestructible, !gameState.Cheats.makeAllDestructible);
+                    CheatsSet(CheatType::MakeDestructible, !gameState.cheats.makeAllDestructible);
                     break;
                 case WIDX_FIX_ALL:
                     CheatsSet(CheatType::FixRides);
                     break;
                 case WIDX_UNLOCK_OPERATING_LIMITS:
-                    CheatsSet(CheatType::FastLiftHill, !gameState.Cheats.unlockOperatingLimits);
+                    CheatsSet(CheatType::FastLiftHill, !gameState.cheats.unlockOperatingLimits);
                     break;
                 case WIDX_DISABLE_BRAKES_FAILURE:
-                    CheatsSet(CheatType::DisableBrakesFailure, !gameState.Cheats.disableBrakesFailure);
+                    CheatsSet(CheatType::DisableBrakesFailure, !gameState.cheats.disableBrakesFailure);
                     break;
                 case WIDX_DISABLE_ALL_BREAKDOWNS:
-                    CheatsSet(CheatType::DisableAllBreakdowns, !gameState.Cheats.disableAllBreakdowns);
+                    CheatsSet(CheatType::DisableAllBreakdowns, !gameState.cheats.disableAllBreakdowns);
                     break;
                 case WIDX_RESET_CRASH_STATUS:
                     CheatsSet(CheatType::ResetCrashStatus);
@@ -1282,59 +1285,59 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_SHOW_ALL_OPERATING_MODES:
                 {
-                    if (!gameState.Cheats.showAllOperatingModes)
+                    if (!gameState.cheats.showAllOperatingModes)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::ShowAllOperatingModes, !gameState.Cheats.showAllOperatingModes);
+                    CheatsSet(CheatType::ShowAllOperatingModes, !gameState.cheats.showAllOperatingModes);
                 }
                 break;
                 case WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES:
                 {
-                    if (!gameState.Cheats.showVehiclesFromOtherTrackTypes)
+                    if (!gameState.cheats.showVehiclesFromOtherTrackTypes)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::ShowVehiclesFromOtherTrackTypes, !gameState.Cheats.showVehiclesFromOtherTrackTypes);
+                    CheatsSet(CheatType::ShowVehiclesFromOtherTrackTypes, !gameState.cheats.showVehiclesFromOtherTrackTypes);
                 }
                 break;
                 case WIDX_DISABLE_TRAIN_LENGTH_LIMITS:
                 {
-                    if (!gameState.Cheats.disableTrainLengthLimit)
+                    if (!gameState.cheats.disableTrainLengthLimit)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::DisableTrainLengthLimit, !gameState.Cheats.disableTrainLengthLimit);
+                    CheatsSet(CheatType::DisableTrainLengthLimit, !gameState.cheats.disableTrainLengthLimit);
                 }
                 break;
                 case WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK:
-                    CheatsSet(CheatType::EnableChainLiftOnAllTrack, !gameState.Cheats.enableChainLiftOnAllTrack);
+                    CheatsSet(CheatType::EnableChainLiftOnAllTrack, !gameState.cheats.enableChainLiftOnAllTrack);
                     break;
                 case WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES:
                 {
-                    if (!gameState.Cheats.allowArbitraryRideTypeChanges)
+                    if (!gameState.cheats.allowArbitraryRideTypeChanges)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::AllowArbitraryRideTypeChanges, !gameState.Cheats.allowArbitraryRideTypeChanges);
+                    CheatsSet(CheatType::AllowArbitraryRideTypeChanges, !gameState.cheats.allowArbitraryRideTypeChanges);
                 }
                 break;
                 case WIDX_DISABLE_RIDE_VALUE_AGING:
-                    CheatsSet(CheatType::DisableRideValueAging, !gameState.Cheats.disableRideValueAging);
+                    CheatsSet(CheatType::DisableRideValueAging, !gameState.cheats.disableRideValueAging);
                     break;
                 case WIDX_IGNORE_RESEARCH_STATUS:
-                    CheatsSet(CheatType::IgnoreResearchStatus, !gameState.Cheats.ignoreResearchStatus);
+                    CheatsSet(CheatType::IgnoreResearchStatus, !gameState.cheats.ignoreResearchStatus);
                     break;
                 case WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES:
-                    CheatsSet(CheatType::EnableAllDrawableTrackPieces, !gameState.Cheats.enableAllDrawableTrackPieces);
+                    CheatsSet(CheatType::EnableAllDrawableTrackPieces, !gameState.cheats.enableAllDrawableTrackPieces);
                     break;
                 case WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS:
                 {
-                    if (!gameState.Cheats.allowTrackPlaceInvalidHeights)
+                    if (!gameState.cheats.allowTrackPlaceInvalidHeights)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gameState.Cheats.allowTrackPlaceInvalidHeights);
+                    CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gameState.cheats.allowTrackPlaceInvalidHeights);
                 }
                 break;
             }

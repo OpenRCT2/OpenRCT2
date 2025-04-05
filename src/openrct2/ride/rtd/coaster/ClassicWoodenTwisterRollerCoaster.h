@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
 {
-   .Category = RIDE_CATEGORY_ROLLERCOASTER,
+   .Category = RideCategory::rollerCoaster,
    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
    .TrackPaintFunctions = TrackDrawerDescriptor({
        .trackStyle = TrackStyle::classicWoodenTwisterRollerCoaster,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
        EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                     RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-   .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-   .DefaultMode = RideMode::ContinuousCircuit,
+   .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+   .DefaultMode = RideMode::continuousCircuit,
    .BoosterSettings = { 0, 68 },
    .LegacyBoosterSettings = { 0, 68 },
    .Naming = { STR_RIDE_NAME_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER },

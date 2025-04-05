@@ -74,7 +74,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     auto resultData = LargeSceneryPlaceActionResult{};
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     money64 supportsCost = 0;
 
@@ -152,7 +152,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         int32_t tempSceneryGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        if (!gameState.Cheats.disableClearanceChecks)
+        if (!gameState.cheats.disableClearanceChecks)
         {
             if ((clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER) || (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND))
             {
@@ -174,8 +174,8 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !MapIsLocationOwned({ curTile, zLow })
-            && !gameState.Cheats.sandboxMode)
+        if (gLegacyScene != LegacyScene::scenarioEditor && !MapIsLocationOwned({ curTile, zLow })
+            && !gameState.cheats.sandboxMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -190,7 +190,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     }
 
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     res.Cost = sceneryEntry->price + supportsCost;
     res.SetData(std::move(resultData));
@@ -297,7 +297,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             FootpathRemoveLitter({ curTile, zLow });
-            if (!GetGameState().Cheats.disableClearanceChecks)
+            if (!getGameState().cheats.disableClearanceChecks)
             {
                 WallRemoveAt({ curTile, zLow, zHigh });
             }
@@ -324,7 +324,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     }
 
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     res.Cost = sceneryEntry->price + supportsCost;
     res.SetData(std::move(resultData));

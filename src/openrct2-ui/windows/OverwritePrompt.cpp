@@ -43,14 +43,17 @@ namespace OpenRCT2::Ui::Windows
     {
         std::string _name;
         std::string _path;
-        int32_t _type;
+        LoadSaveAction _action;
+        LoadSaveType _type;
         TrackDesign* _trackDesign;
 
     public:
         OverwritePromptWindow(
-            const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr)
+            const std::string_view name, const std::string_view path, LoadSaveAction action, LoadSaveType type,
+            TrackDesign* trackDesignPtr)
             : _name(name)
             , _path(path)
+            , _action(action)
             , _type(type)
             , _trackDesign(trackDesignPtr)
         {
@@ -67,7 +70,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_OVERWRITE_OVERWRITE:
                 {
-                    FileBrowser::Select(_path.c_str(), _type, _trackDesign);
+                    FileBrowser::Select(_path.c_str(), _action, _type, _trackDesign);
 
                     // As the LoadSaveWindow::Select function can change the order of the
                     // windows we can't use WindowClose(w).
@@ -97,14 +100,15 @@ namespace OpenRCT2::Ui::Windows
     };
 
     WindowBase* WindowOverwritePromptOpen(
-        const std::string_view name, const std::string_view path, int32_t type, TrackDesign* trackDesignPtr)
+        const std::string_view name, const std::string_view path, LoadSaveAction action, LoadSaveType type,
+        TrackDesign* trackDesignPtr)
     {
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
         return windowMgr->Create<OverwritePromptWindow>(
             WindowClass::LoadsaveOverwritePrompt, OVERWRITE_WW, OVERWRITE_WH,
-            WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name, path, type, trackDesignPtr);
+            WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name, path, action, type, trackDesignPtr);
     }
 
     void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode)

@@ -80,7 +80,7 @@ GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
             if (surfaceElement == nullptr)
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
@@ -126,7 +126,7 @@ GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
         Audio::Play3D(Audio::SoundId::LayingOutWater, res.Position);
     }
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     return res;
 }
@@ -139,7 +139,7 @@ uint8_t WaterLowerAction::GetLowestHeight(const MapRange& validRange) const
     {
         for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {

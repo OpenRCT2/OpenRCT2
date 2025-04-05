@@ -317,7 +317,7 @@ namespace OpenRCT2::Scripting
             }
             case PixelDataKind::Png:
             {
-                auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
+                auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? ImageFormat::png : ImageFormat::png32;
                 auto palette = pixelData.Palette == PixelDataPaletteKind::Keep ? Palette::KeepIndices : Palette::OpenRCT2;
                 auto importMode = getImportModeFromPalette(pixelData.Palette);
                 auto pngData = DukGetDataFromBufferLikeObject(pixelData.Data);

@@ -80,7 +80,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             if (surfaceElement == nullptr)
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
@@ -139,7 +139,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res.Position);
     }
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     return res;
 }
@@ -152,7 +152,7 @@ uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
     {
         for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {

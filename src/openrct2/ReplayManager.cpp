@@ -34,7 +34,6 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "park/ParkFile.h"
-#include "scenario/Scenario.h"
 #include "world/Park.h"
 #include "zlib.h"
 
@@ -162,7 +161,7 @@ namespace OpenRCT2
             if (_mode == ReplayMode::NONE)
                 return;
 
-            const auto currentTicks = GetGameState().CurrentTicks;
+            const auto currentTicks = getGameState().currentTicks;
 
             if ((_mode == ReplayMode::RECORDING || _mode == ReplayMode::NORMALISATION) && currentTicks == _nextChecksumTick)
             {
@@ -222,7 +221,7 @@ namespace OpenRCT2
 
             auto& snapshot = snapshots->CreateSnapshot();
             snapshots->Capture(snapshot);
-            snapshots->LinkSnapshot(snapshot, GetGameState().CurrentTicks, ScenarioRandState().s0);
+            snapshots->LinkSnapshot(snapshot, getGameState().currentTicks, ScenarioRandState().s0);
             DataSerialiser snapShotDs(true, snapshotStream);
             snapshots->SerialiseSnapshot(snapshot, snapShotDs);
         }
@@ -238,8 +237,8 @@ namespace OpenRCT2
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
                 return false;
 
-            auto& gameState = GetGameState();
-            const auto currentTicks = gameState.CurrentTicks;
+            auto& gameState = getGameState();
+            const auto currentTicks = gameState.currentTicks;
 
             auto replayData = std::make_unique<ReplayRecordData>();
             replayData->magic = kReplayMagic;
@@ -294,7 +293,7 @@ namespace OpenRCT2
                 return true;
             }
 
-            const auto currentTicks = GetGameState().CurrentTicks;
+            const auto currentTicks = getGameState().currentTicks;
 
             _currentRecording->tickEnd = currentTicks;
 
@@ -379,7 +378,7 @@ namespace OpenRCT2
             info.Version = data->version;
             info.TimeRecorded = data->timeRecorded;
             if (_mode == ReplayMode::RECORDING)
-                info.Ticks = GetGameState().CurrentTicks - data->tickStart;
+                info.Ticks = getGameState().currentTicks - data->tickStart;
             else if (_mode == ReplayMode::PLAYING)
                 info.Ticks = data->tickEnd - data->tickStart;
             info.NumCommands = static_cast<uint32_t>(data->commands.size());
@@ -397,7 +396,7 @@ namespace OpenRCT2
             GameStateSnapshot_t& replaySnapshot = snapshots->CreateSnapshot();
             snapshots->SerialiseSnapshot(replaySnapshot, ds);
 
-            const auto currentTicks = GetGameState().CurrentTicks;
+            const auto currentTicks = getGameState().currentTicks;
 
             auto& localSnapshot = snapshots->CreateSnapshot();
             snapshots->Capture(localSnapshot);
@@ -415,7 +414,7 @@ namespace OpenRCT2
                 if (res != cmpData.spriteChanges.end())
                 {
                     std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
-                        DIRBASE::USER, DIRID::LOG_DESYNCS);
+                        DirBase::user, DirId::desyncLogs);
                     char uniqueFileName[128] = {};
                     snprintf(uniqueFileName, sizeof(uniqueFileName), "replay_desync_%u.txt", currentTicks);
 
@@ -448,7 +447,7 @@ namespace OpenRCT2
                 return false;
             }
 
-            GetGameState().CurrentTicks = replayData->tickStart;
+            getGameState().currentTicks = replayData->tickStart;
 
             LoadAndCompareSnapshot(replayData->gameStateSnapshots);
 
@@ -510,7 +509,7 @@ namespace OpenRCT2
                 return false;
             }
 
-            _nextReplayTick = GetGameState().CurrentTicks + 1;
+            _nextReplayTick = getGameState().currentTicks + 1;
 
             return true;
         }
@@ -542,7 +541,7 @@ namespace OpenRCT2
                 objManager.LoadObjects(loadResult.RequiredObjects);
 
                 // TODO: Have a separate GameState and exchange once loaded.
-                auto& gameState = GetGameState();
+                auto& gameState = getGameState();
                 importer->Import(gameState);
 
                 EntityTweener::Get().Reset();
@@ -625,7 +624,8 @@ namespace OpenRCT2
                 fileName += ".parkrep";
             }
 
-            std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);
+            std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+                DirBase::user, DirId::replayRecordings);
             std::string outFile = Path::Combine(outPath, fileName);
 
             bool loaded = false;
@@ -670,10 +670,10 @@ namespace OpenRCT2
 
         bool SerialiseParkParameters(DataSerialiser& serialiser)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
 
-            serialiser << gameState.GuestGenerationProbability;
-            serialiser << gameState.SuggestedGuestMaximum;
+            serialiser << gameState.guestGenerationProbability;
+            serialiser << gameState.suggestedGuestMaximum;
             serialiser << Config::Get().general.ShowRealNamesOfGuests;
 
             // To make this a little bit less volatile against updates
@@ -807,7 +807,7 @@ namespace OpenRCT2
             if (checksumIndex >= _currentReplay->checksums.size())
                 return;
 
-            const auto currentTicks = GetGameState().CurrentTicks;
+            const auto currentTicks = getGameState().currentTicks;
 
             const auto& savedChecksum = _currentReplay->checksums[checksumIndex];
             if (_currentReplay->checksums[checksumIndex].first == currentTicks)
@@ -841,7 +841,7 @@ namespace OpenRCT2
         {
             auto& replayQueue = _currentReplay->commands;
 
-            const auto currentTicks = GetGameState().CurrentTicks;
+            const auto currentTicks = getGameState().currentTicks;
 
             while (replayQueue.begin() != replayQueue.end())
             {

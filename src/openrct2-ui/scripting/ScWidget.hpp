@@ -113,6 +113,8 @@ namespace OpenRCT2::Scripting
                         return "placeholder";
                     case WindowWidgetType::ProgressBar:
                         return "progress_bar";
+                    case WindowWidgetType::HorizontalSeparator:
+                        return "horizontal_separator";
                     case WindowWidgetType::Custom:
                         return "custom";
                 }

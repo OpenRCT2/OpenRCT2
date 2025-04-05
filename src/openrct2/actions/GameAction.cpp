@@ -21,7 +21,6 @@
 #include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
-#include "../scenario/Scenario.h"
 #include "../scripting/Duktape.hpp"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
@@ -100,7 +99,7 @@ namespace OpenRCT2::GameActions
             return;
         }
 
-        const uint32_t currentTick = GetGameState().CurrentTicks;
+        const uint32_t currentTick = getGameState().currentTicks;
 
         while (_actionQueue.begin() != _actionQueue.end())
         {
@@ -182,7 +181,7 @@ namespace OpenRCT2::GameActions
     {
         if (gGamePaused == 0)
             return true;
-        if (GetGameState().Cheats.buildInPauseMode)
+        if (getGameState().cheats.buildInPauseMode)
             return true;
         if (actionFlags & GameActions::Flags::AllowWhilePaused)
             return true;
@@ -250,7 +249,7 @@ namespace OpenRCT2::GameActions
 
         char temp[128] = {};
         snprintf(
-            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), GetGameState().CurrentTicks, action->GetName(),
+            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), getGameState().currentTicks, action->GetName(),
             EnumValue(action->GetType()));
 
         output.Write(temp, strlen(temp));
@@ -344,7 +343,7 @@ namespace OpenRCT2::GameActions
                     if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
-                        Enqueue(action, GetGameState().CurrentTicks);
+                        Enqueue(action, getGameState().currentTicks);
 
                         return result;
                     }
@@ -414,7 +413,7 @@ namespace OpenRCT2::GameActions
                     }
                     if (recordAction)
                     {
-                        replayManager->AddGameAction(GetGameState().CurrentTicks, action);
+                        replayManager->AddGameAction(getGameState().currentTicks, action);
                     }
                 }
             }
@@ -480,7 +479,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
         return false;
 #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::ACTION_LOCATION))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::actionLocation))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -497,7 +496,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
 
         // Call the subscriptions
         auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::ACTION_LOCATION, e, true);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::actionLocation, e, true);
 
         auto scriptResult = OpenRCT2::Scripting::AsOrDefault(e["result"], true);
 

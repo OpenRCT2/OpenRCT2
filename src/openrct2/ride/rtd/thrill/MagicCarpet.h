@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MagicCarpetRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::magicCarpet,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::Swing),
-    .DefaultMode = RideMode::Swing,
+    .RideModes = EnumsToFlags(RideMode::swing),
+    .DefaultMode = RideMode::swing,
     .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },

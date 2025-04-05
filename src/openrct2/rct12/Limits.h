@@ -16,7 +16,8 @@ namespace OpenRCT2::RCT12::Limits
 
     constexpr uint8_t kMaxRidesInPark = 255;
     constexpr uint8_t kMaxAwards = 4;
-    constexpr uint8_t MaxNewsItems = 61;
+    constexpr uint8_t kMaxRecentNewsItems = 11;
+    constexpr uint8_t kMaxArchivedNewsItems = 50;
     constexpr uint8_t kMaxStationsPerRide = 4;
     constexpr uint8_t kMaxPeepSpawns = 2;
     constexpr uint8_t kMaxParkEntrances = 4;

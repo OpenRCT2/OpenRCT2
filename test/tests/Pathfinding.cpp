@@ -59,7 +59,7 @@ protected:
     {
         for (auto& ride : GetRideManager())
         {
-            auto thisName = ride.GetName();
+            auto thisName = ride.getName();
             if (String::startsWith(thisName, u8string{ name }, true))
             {
                 return &ride;
@@ -88,7 +88,7 @@ protected:
         // Pick the direction the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.
         const Direction moveDir = PathFinding::ChooseDirection(*pos, goal, *peep, false, RideId::GetNull());
-        if (moveDir == INVALID_DIRECTION)
+        if (moveDir == kInvalidDirection)
         {
             // Couldn't determine a direction to move off in
             return false;
@@ -108,8 +108,7 @@ protected:
         int step = 0;
         while (!(*pos == goal) && step < expectedSteps)
         {
-            uint8_t pathingResult = 0;
-            peep->PerformNextAction(pathingResult);
+            peep->PerformNextAction();
             ++step;
 
             *pos = TileCoordsXYZ(peep->GetLocation());
@@ -201,7 +200,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
-    auto entrancePos = ride->GetStation().Entrance;
+    auto entrancePos = ride->getStation().Entrance;
     TileCoordsXYZ goal = TileCoordsXYZ(
         entrancePos.x - TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y - TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
@@ -239,7 +238,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
-    auto entrancePos = ride->GetStation().Entrance;
+    auto entrancePos = ride->getStation().Entrance;
     TileCoordsXYZ goal = TileCoordsXYZ(
         entrancePos.x + TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y + TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
