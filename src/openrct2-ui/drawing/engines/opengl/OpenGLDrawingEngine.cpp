@@ -94,7 +94,13 @@ public:
     {
         return _textureCache.get();
     }
+
     const OpenGLFramebuffer& GetFinalFramebuffer() const
+    {
+        return _swapFramebuffer->GetFinalFramebuffer();
+    }
+
+    OpenGLFramebuffer& GetFinalFramebuffer()
     {
         return _swapFramebuffer->GetFinalFramebuffer();
     }
@@ -371,7 +377,50 @@ public:
 
     void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override
     {
-        // Not applicable for this engine
+        if (dx == 0 && dy == 0)
+            return;
+
+        _drawingContext->FlushCommandBuffers();
+
+        OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
+        framebuffer.Bind();
+        framebuffer.GetPixels(_bitsDPI);
+
+        // Originally 0x00683359
+        // Adjust for move off screen
+        // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
+        // screen; hence the checks. This code should ultimately not be called when
+        // zooming because this function is specific to updating the screen on move
+        int32_t lmargin = std::min(x - dx, 0);
+        int32_t rmargin = std::min(static_cast<int32_t>(_width) - (x - dx + width), 0);
+        int32_t tmargin = std::min(y - dy, 0);
+        int32_t bmargin = std::min(static_cast<int32_t>(_height) - (y - dy + height), 0);
+        x -= lmargin;
+        y -= tmargin;
+        width += lmargin + rmargin;
+        height += tmargin + bmargin;
+
+        int32_t stride = _bitsDPI.LineStride();
+        uint8_t* to = _bitsDPI.bits + y * stride + x;
+        uint8_t* from = _bitsDPI.bits + (y - dy) * stride + x - dx;
+
+        if (dy > 0)
+        {
+            // If positive dy, reverse directions
+            to += (height - 1) * stride;
+            from += (height - 1) * stride;
+            stride = -stride;
+        }
+
+        // Move bytes
+        for (int32_t i = 0; i < height; i++)
+        {
+            memmove(to, from, width);
+            to += stride;
+            from += stride;
+        }
+
+        framebuffer.SetPixels(_bitsDPI);
     }
 
     IDrawingContext* GetDrawingContext() override
@@ -386,7 +435,7 @@ public:
 
     DrawingEngineFlags GetFlags() override
     {
-        return {};
+        return DrawingEngineFlag::dirtyOptimisations;
     }
 
     void InvalidateImage(uint32_t image) override
