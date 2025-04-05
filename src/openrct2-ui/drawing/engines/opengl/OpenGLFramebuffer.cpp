@@ -150,7 +150,7 @@ GLuint OpenGLFramebuffer::CreateDepthTexture(int32_t width, int32_t height)
     return depth;
 }
 
-  void OpenGLFramebuffer::SetPixels(const DrawPixelInfo& dpi)
+void OpenGLFramebuffer::SetPixels(const DrawPixelInfo& dpi)
 {
     assert(dpi.width == _width && dpi.height == _height);
 
