@@ -122,8 +122,6 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
-            width = WW_DEVELOPMENT;
-            height = WH_DEVELOPMENT;
             ResearchUpdateUncompletedTypes();
         }
 
@@ -309,7 +307,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ResearchOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
+        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, WW_DEVELOPMENT, WH_DEVELOPMENT, WF_10);
         window->SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
         return window;
     }

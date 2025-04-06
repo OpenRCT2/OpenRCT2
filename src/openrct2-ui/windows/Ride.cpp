@@ -4935,7 +4935,8 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + 103 }, 97, STR_STATION_STYLE, {});
+                auto labelPos = windowPos + ScreenCoordsXY{ 3, widgets[WIDX_ENTRANCE_STYLE].top };
+                DrawTextEllipsised(dpi, labelPos, 97, STR_STATION_STYLE, {});
             }
         }
 

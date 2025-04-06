@@ -405,7 +405,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = ScreenCoordsXY{ 0, kTableCellHeight + 2 };
 
-            Widget self = widgets[WIDX_SUMMARY_SCROLL];
+            auto& self = widgets[WIDX_SUMMARY_SCROLL];
             int32_t row_width = std::max<uint16_t>(scrolls[0].contentWidth, self.width());
 
             // Expenditure / Income row labels
@@ -678,7 +678,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Count number of active campaigns
             int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().marketingCampaigns.size());
-            int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
+            int32_t y = widgets[WIDX_TAB_1].top + std::max(1, numActiveCampaigns) * kListRowHeight + 75;
 
             // Update group box positions
             widgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;

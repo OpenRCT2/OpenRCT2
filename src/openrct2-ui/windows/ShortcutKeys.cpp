@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
 
-            ScreenCoordsXY stringCoords(windowPos.x + 125, windowPos.y + 30);
+            ScreenCoordsXY stringCoords(windowPos.x + 125, windowPos.y + widgets[WIDX_TITLE].bottom + 16);
 
             auto ft = Formatter();
             if (_shortcutCustomName.empty())

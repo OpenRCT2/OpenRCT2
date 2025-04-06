@@ -440,7 +440,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw ping
-            auto screenCoords = windowPos + ScreenCoordsXY{ 90, 24 };
+            auto screenCoords = windowPos + ScreenCoordsXY{ 90, widgets[WIDX_TAB_1].midY() };
 
             auto ft = Formatter();
             ft.Add<StringId>(STR_PING);
