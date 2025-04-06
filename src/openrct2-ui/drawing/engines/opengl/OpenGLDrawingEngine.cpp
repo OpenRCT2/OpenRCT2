@@ -344,12 +344,18 @@ public:
     void PaintWindows() override
     {
         WindowResetVisibilities();
-
-        // Redraw dirty regions before updating the viewports, otherwise
-        // when viewports get panned, they copy dirty pixels
-        DrawAllDirtyBlocks();
         WindowUpdateAllViewports();
-        DrawAllDirtyBlocks();
+
+        if (ClimateIsRaining() || ClimateIsSnowing() || ClimateIsSnowingHeavily())
+        {
+            // OpenGL doesn't support restoring pixels, always redraw.
+            // TODO: Render the weather to a texture and use that instead.
+            WindowDrawAll(_bitsDPI, 0, 0, static_cast<int32_t>(_width), static_cast<int32_t>(_height));
+        }
+        else
+        {
+            DrawAllDirtyBlocks();
+        }
     }
 
     void DrawAllDirtyBlocks()
