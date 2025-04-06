@@ -43,7 +43,7 @@
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window_internal.h"
+#include "../interface/WindowBase.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"

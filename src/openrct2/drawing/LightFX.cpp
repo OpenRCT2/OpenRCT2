@@ -16,7 +16,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
-#include "../interface/Window_internal.h"
+#include "../interface/WindowBase.h"
 #include "../paint/Paint.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"

@@ -287,8 +287,8 @@
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="interface\WindowBase.h" />
     <ClInclude Include="interface\WindowClasses.h" />
-    <ClInclude Include="interface\Window_internal.h" />
     <ClInclude Include="interface\ZoomLevel.h" />
     <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\Currency.h" />
@@ -840,7 +840,7 @@
     <ClCompile Include="interface\StdInOutConsole.cpp" />
     <ClCompile Include="interface\Viewport.cpp" />
     <ClCompile Include="interface\Window.cpp" />
-    <ClCompile Include="interface\Window_internal.cpp" />
+    <ClCompile Include="interface\WindowBase.cpp" />
     <ClCompile Include="interface\ZoomLevel.cpp" />
     <ClCompile Include="localisation\Currency.cpp" />
     <ClCompile Include="localisation\FormatCodes.cpp" />

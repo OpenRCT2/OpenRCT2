@@ -25,7 +25,7 @@
 #include "../ui/WindowManager.h"
 #include "Viewport.h"
 #include "Widget.h"
-#include "Window_internal.h"
+#include "WindowBase.h"
 
 #include <cassert>
 #include <cmath>

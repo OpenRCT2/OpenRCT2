@@ -1,4 +1,4 @@
-#include "Window_internal.h"
+#include "WindowBase.h"
 
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
