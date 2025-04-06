@@ -121,7 +121,12 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                value += getTitleHeightDiff();
+                // NB: we only compensate for the title bar height if the widget *has* been adjusted!
+                if (w->widgets[1].height() == getTitleBarHeight())
+                {
+                    value += getTitleHeightDiff();
+                }
+
                 if (WindowCanResize(*w))
                 {
                     WindowResizeByDelta(*w, 0, value - w->height);
