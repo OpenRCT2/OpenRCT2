@@ -75,5 +75,25 @@
   <ItemGroup>
     <ClCompile Include="Cli.cpp" />
   </ItemGroup>
+  
+  <ItemGroup Label="G2 Build Items">
+    <g2Inputs Include="$(SolutionDir)resources\g2\*" />
+  </ItemGroup>
+  <PropertyGroup Label="G2 Build Properties">
+    <g2Output>$(SolutionDir)data\g2.dat</g2Output>
+  </PropertyGroup>
+  <!-- Target to build g2.dat containing OpenRCT2 sprites -->
+  <!-- Only Arm64 machines will build g2.dat for Arm64 -->
+  <!-- Note: Arm64 machines can build for x86, x64 and Arm64 -->
+  <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
+          Condition="'$(TestConfig)'!='true' and ('$(Platform)'!='ARM64' or '$(PROCESSOR_ARCHITECTURE)'=='ARM64')">
+    <Message Text="Building g2.dat..." Importance="high" />
+    <Exec Command="&quot;$(OutDir)$(TargetName)$(TargetExt)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(SolutionDir)resources\g2\sprites.json&quot;"
+          StandardOutputImportance="normal" />
+  </Target>
+  <Target Name="clean-g2" AfterTargets="Clean">
+    <Delete Files="$(g2Output)" />
+  </Target>
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

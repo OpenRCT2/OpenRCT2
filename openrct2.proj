@@ -104,7 +104,7 @@
   </Target>
 
   <Target Name="g2">
-    <MSBuild Projects="src\openrct2-win\openrct2-win.vcxproj" Targets="g2" />
+    <MSBuild Projects="src\openrct2-cli\openrct2-cli.vcxproj" Targets="g2" />
   </Target>
 
   <!-- Target to download the title sequences -->
