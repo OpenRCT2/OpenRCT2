@@ -526,6 +526,10 @@ namespace OpenRCT2
                 WindowDrawAll(dpi, left, top, right, bottom);
                 return;
             }
+            else
+            {
+                GfxInvalidateScreen();
+            }
         }
 
         Viewport view_copy = *viewport;
@@ -572,6 +576,10 @@ namespace OpenRCT2
         {
             DrawPixelInfo& dpi = DrawingEngineGetDpi();
             ViewportShiftPixels(dpi, w, viewport, x_diff, y_diff);
+        }
+        else
+        {
+            GfxInvalidateScreen();
         }
 
         *viewport = view_copy;

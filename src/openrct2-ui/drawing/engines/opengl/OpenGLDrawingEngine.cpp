@@ -343,6 +343,11 @@ public:
 
     void PaintWindows() override
     {
+        WindowResetVisibilities();
+
+        // Redraw dirty regions before updating the viewports, otherwise
+        // when viewports get panned, they copy dirty pixels
+        DrawAllDirtyBlocks();
         WindowUpdateAllViewports();
         DrawAllDirtyBlocks();
     }
@@ -435,7 +440,7 @@ public:
 
     DrawingEngineFlags GetFlags() override
     {
-        return DrawingEngineFlag::dirtyOptimisations;
+        return {};
     }
 
     void InvalidateImage(uint32_t image) override
