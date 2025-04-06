@@ -345,7 +345,15 @@ namespace OpenRCT2
                 || drawRect.GetTop() >= window->windowPos.y + window->height)
             {
                 auto itWindowPos = WindowGetIterator(window);
-                auto itNextWindow = itWindowPos != g_window_list.end() ? std::next(itWindowPos) : g_window_list.end();
+                // Get next valid window after.
+                auto itNextWindow = [&]() {
+                    auto itNext = std::next(itWindowPos);
+                    while (itNext != g_window_list.end() && (itNext->get()->flags & WF_DEAD))
+                    {
+                        ++itNext;
+                    }
+                    return itNext;
+                }();
                 ViewportRedrawAfterShift(
                     dpi, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
                 return;
@@ -441,7 +449,7 @@ namespace OpenRCT2
         for (; it != g_window_list.end(); it++)
         {
             auto w = it->get();
-            if (!(w->flags & WF_TRANSPARENT))
+            if (!(w->flags & WF_TRANSPARENT) || (w->flags & WF_DEAD))
                 continue;
             if (w->viewport == viewport)
                 continue;
@@ -710,7 +718,7 @@ namespace OpenRCT2
 
             if (gLegacyScene != LegacyScene::titleSequence)
             {
-                int32_t height = (TileElementHeight({ sprite->x, sprite->y }))-16;
+                int32_t height = (TileElementHeight({ sprite->x, sprite->y })) - 16;
                 int32_t underground = sprite->z < height;
                 ViewportSetUndergroundFlag(underground, window, window->viewport);
             }
