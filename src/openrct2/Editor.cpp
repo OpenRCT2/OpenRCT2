@@ -29,7 +29,7 @@
 #include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Viewport.h"
-#include "interface/Window_internal.h"
+#include "interface/WindowBase.h"
 #include "localisation/LocalisationService.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
