@@ -470,22 +470,8 @@ namespace OpenRCT2
             this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
     }
 
-    int32_t Window::ResizeFrame()
+    static inline void repositionCloseButton(Widget& closeButton, int32_t windowWidth)
     {
-        // Frame
-        auto& frameWidget = widgets[0];
-        assert(frameWidget.type == WindowWidgetType::Frame);
-        frameWidget.right = width - 1;
-        frameWidget.bottom = height - 1;
-
-        // Title
-        auto& titleWidget = widgets[1];
-        assert(titleWidget.type == WindowWidgetType::Caption);
-        titleWidget.right = width - 2;
-
-        // Close button
-        auto& closeButton = widgets[2];
-        assert(closeButton.type == WindowWidgetType::CloseBox || closeButton.type == WindowWidgetType::Empty);
         auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
         {
@@ -494,8 +480,8 @@ namespace OpenRCT2
         }
         else
         {
-            closeButton.left = width - 3 - closeButtonSize;
-            closeButton.right = width - 3;
+            closeButton.left = windowWidth - 3 - closeButtonSize;
+            closeButton.right = windowWidth - 3;
         }
 
         // Set appropriate close button
@@ -504,6 +490,30 @@ namespace OpenRCT2
             closeButton.string = !useWhite ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
         else
             closeButton.string = !useWhite ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
+    }
+
+    int32_t Window::ResizeFrame()
+    {
+        if (widgets.size() < 3)
+            return 0;
+
+        // Frame
+        auto& frameWidget = widgets[0];
+        if (frameWidget.type == WindowWidgetType::Frame)
+        {
+            frameWidget.right = width - 1;
+            frameWidget.bottom = height - 1;
+        }
+
+        // Title
+        auto& titleWidget = widgets[1];
+        if (titleWidget.type == WindowWidgetType::Caption)
+            titleWidget.right = width - 2;
+
+        // Close button
+        auto& closeButton = widgets[2];
+        if (closeButton.type == WindowWidgetType::CloseBox || closeButton.type == WindowWidgetType::Empty)
+            repositionCloseButton(closeButton, width);
 
         auto preferredHeight = getTitleBarHeight();
         auto currentHeight = titleWidget.height();
@@ -539,12 +549,8 @@ namespace OpenRCT2
         if (viewport != nullptr)
             viewport->pos.y += heightDifference;
 
-        return heightDifference;
-    }
-
-    int32_t Window::ResizeFrameWithPage()
-    {
-        auto heightDifference = ResizeFrame();
+        if (widgets.size() < 4)
+            return heightDifference;
 
         // Page/resize widget
         auto& pageWidget = widgets[3];
@@ -555,6 +561,11 @@ namespace OpenRCT2
         }
 
         return heightDifference;
+    }
+
+    int32_t Window::ResizeFrameWithPage()
+    {
+        return ResizeFrame();
     }
 
     void Window::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
