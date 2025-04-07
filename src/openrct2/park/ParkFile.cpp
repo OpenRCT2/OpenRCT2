@@ -131,20 +131,23 @@ namespace OpenRCT2
             return targetVersion > kParkFileCurrentVersion;
         }
 
-        void Load(const std::string_view path)
+        void Load(const std::string_view path, const bool skipObjectCheck)
         {
             FileStream fs(path, FileMode::open);
-            Load(fs);
+            Load(fs, skipObjectCheck);
         }
 
-        void Load(IStream& stream)
+        void Load(IStream& stream, const bool skipObjectCheck)
         {
             _os = std::make_unique<OrcaStream>(stream, OrcaStream::Mode::READING);
             ThrowIfIncompatibleVersion();
 
             RequiredObjects = {};
-            ReadWriteObjectsChunk(*_os);
-            ReadWritePackedObjectsChunk(*_os);
+            if (!skipObjectCheck)
+            {
+                ReadWriteObjectsChunk(*_os);
+                ReadWritePackedObjectsChunk(*_os);
+            }
         }
 
         void Import(GameState_t& gameState)
@@ -2763,10 +2766,10 @@ public:
     {
     }
 
-    ParkLoadResult Load(const u8string& path) override
+    ParkLoadResult Load(const u8string& path, const bool skipObjectCheck) override
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
-        _parkFile->Load(path);
+        _parkFile->Load(path, skipObjectCheck);
 
         auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
         result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);
@@ -2775,19 +2778,19 @@ public:
 
     ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
     {
-        return Load(path);
+        return Load(path, skipObjectCheck);
     }
 
     ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
     {
-        return Load(path);
+        return Load(path, skipObjectCheck);
     }
 
     ParkLoadResult LoadFromStream(
         OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const u8string& path = {}) override
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
-        _parkFile->Load(*stream);
+        _parkFile->Load(*stream, skipObjectCheck);
 
         auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
         result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);

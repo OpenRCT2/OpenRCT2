@@ -143,13 +143,13 @@ static void MineTrainRCTrackStation(
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(kMineTrainBlockBrakeImages[direction][isClosed]),
-            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+            { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
     }
     else
     {
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
-            { { 0, 6, height }, { 32, 20, 1 } });
+            { { 0, 6, height + 1 }, { 32, 20, 1 } });
     }
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {

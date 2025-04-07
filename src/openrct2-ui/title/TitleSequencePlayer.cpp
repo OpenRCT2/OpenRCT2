@@ -316,7 +316,7 @@ namespace OpenRCT2::Title
                     ReportProgress(0);
                     auto parkImporter = ParkImporter::Create(path);
 
-                    auto result = parkImporter->Load(path);
+                    auto result = parkImporter->Load(path, false);
                     ReportProgress(10);
 
                     auto& objectManager = GetContext()->GetObjectManager();

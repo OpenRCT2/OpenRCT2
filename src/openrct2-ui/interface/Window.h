@@ -10,7 +10,7 @@
 #pragma once
 
 #include <openrct2/interface/Window.h>
-#include <openrct2/interface/Window_internal.h>
+#include <openrct2/interface/WindowBase.h>
 
 struct TextInputSession;
 
@@ -71,7 +71,7 @@ namespace OpenRCT2::Ui::Windows
     bool TextBoxCaretIsFlashed();
     const WidgetIdentifier& GetCurrentTextBox();
 
-    void WindowResize(WindowBase& w, int16_t dw, int16_t dh);
+    void WindowResizeByDelta(WindowBase& w, int16_t dw, int16_t dh);
     void WindowInitScrollWidgets(WindowBase& w);
     void WindowUpdateScrollWidgets(WindowBase& w);
 

@@ -31,14 +31,15 @@ namespace OpenRCT2::Ui
 
         GLuint vClip;
         GLuint vTexColourAtlas;
-        GLuint vTexColourBounds;
+        GLuint vTexColourCoords;
         GLuint vTexMaskAtlas;
-        GLuint vTexMaskBounds;
+        GLuint vTexMaskCoords;
         GLuint vPalettes;
         GLuint vFlags;
         GLuint vColour;
         GLuint vBounds;
         GLuint vDepth;
+        GLuint vZoom;
 
         GLuint _vbo;
         GLuint _vboInstances;

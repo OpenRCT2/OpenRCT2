@@ -14,7 +14,7 @@
     #include "ScWidget.hpp"
 
     #include <openrct2/interface/Window.h>
-    #include <openrct2/interface/Window_internal.h>
+    #include <openrct2/interface/WindowBase.h>
     #include <openrct2/scripting/Duktape.hpp>
 
 namespace OpenRCT2::Scripting
@@ -99,7 +99,7 @@ namespace OpenRCT2::Scripting
             {
                 if (WindowCanResize(*w))
                 {
-                    WindowResize(*w, value - w->width, 0);
+                    WindowResizeByDelta(*w, value - w->width, 0);
                 }
                 else
                 {
@@ -123,7 +123,7 @@ namespace OpenRCT2::Scripting
             {
                 if (WindowCanResize(*w))
                 {
-                    WindowResize(*w, 0, value - w->height);
+                    WindowResizeByDelta(*w, 0, value - w->height);
                 }
                 else
                 {

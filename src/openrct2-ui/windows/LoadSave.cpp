@@ -135,6 +135,7 @@ namespace OpenRCT2::Ui::Windows
         LoadSaveAction action;
         LoadSaveType type;
         ParkPreview _preview;
+        BackgroundWorker::Job _previewLoadJob;
 
         bool ShowPreviews()
         {
@@ -334,24 +335,53 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto path = _listItems[selected_list_item].path;
-            auto fs = FileStream(path, FileMode::open);
 
-            ClassifiedFileInfo info;
-            if (!TryClassifyFile(&fs, &info) || info.Type != ::FileType::park)
-                return;
+            auto& bgWorker = GetContext()->GetBackgroundWorker();
 
-            try
+            if (_previewLoadJob.isValid())
             {
-                auto& objectRepository = GetContext()->GetObjectRepository();
-                auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
-                parkImporter->LoadFromStream(&fs, false, true, path.c_str());
-                _preview = parkImporter->GetParkPreview();
+                _previewLoadJob.cancel();
             }
-            catch (const std::exception& e)
+
+            _previewLoadJob = bgWorker.addJob(
+                [path]() {
+                    try
+                    {
+                        auto fs = FileStream(path, FileMode::open);
+
+                        ClassifiedFileInfo info;
+                        if (!TryClassifyFile(&fs, &info) || info.Type != ::FileType::park)
+                            return ParkPreview{};
+
+                        auto& objectRepository = GetContext()->GetObjectRepository();
+                        auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
+                        parkImporter->LoadFromStream(&fs, false, true, path.c_str());
+                        return parkImporter->GetParkPreview();
+                    }
+                    catch (const std::exception& e)
+                    {
+                        LOG_ERROR("Could not get preview:", e.what());
+                        return ParkPreview{};
+                    }
+                },
+                [](const ParkPreview preview) {
+                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* wnd = windowMgr->FindByClass(WindowClass::Loadsave);
+                    if (wnd == nullptr)
+                    {
+                        return;
+                    }
+                    auto* loadSaveWnd = static_cast<LoadSaveWindow*>(wnd);
+                    loadSaveWnd->UpdateParkPreview(preview);
+                });
+        }
+
+        void UpdateParkPreview(const ParkPreview& preview)
+        {
+            _preview = preview;
+            if (ShowPreviews())
             {
-                LOG_ERROR("Could not get preview:", e.what());
-                _preview = {};
-                return;
+                Invalidate();
             }
         }
 
@@ -395,8 +425,16 @@ namespace OpenRCT2::Ui::Windows
                 GfxDrawSpriteSolid(dpi, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
 
                 auto textPos = imagePos + ScreenCoordsXY(kPreviewWidth / 2, kPreviewHeight / 2 - 6);
+
+                // NOTE: Can't simplify this as the compiler complains about different enumeration types.
+                StringId previewText = STR_NO_PREVIEW_AVAILABLE;
+                if (_previewLoadJob.isValid())
+                {
+                    previewText = STR_LOADING_GENERIC;
+                }
+
                 DrawTextBasic(
-                    dpi, textPos, STR_NO_PREVIEW_AVAILABLE, {},
+                    dpi, textPos, previewText, {},
                     { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
                 return;
             }
