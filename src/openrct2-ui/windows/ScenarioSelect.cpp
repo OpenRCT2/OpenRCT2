@@ -180,17 +180,17 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto& path = _highlightedScenario->Path;
-            auto fs = FileStream(path, FileMode::open);
-
-            ClassifiedFileInfo info;
-            if (!TryClassifyFile(&fs, &info) || info.Type != FileType::park)
-            {
-                // TODO: try loading a preview from a 'scenario meta' object file
-                return;
-            }
-
             try
             {
+                auto fs = FileStream(path, FileMode::open);
+
+                ClassifiedFileInfo info;
+                if (!TryClassifyFile(&fs, &info) || info.Type != FileType::park)
+                {
+                    // TODO: try loading a preview from a 'scenario meta' object file
+                    return;
+                }
+
                 auto& objectRepository = GetContext()->GetObjectRepository();
                 auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
                 parkImporter->LoadFromStream(&fs, false, true, path.c_str());
@@ -198,7 +198,7 @@ namespace OpenRCT2::Ui::Windows
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR("Could not get preview:", e.what());
+                LOG_ERROR("Could not get preview for \"%s\" due to %s", path.c_str(), e.what());
                 _preview = {};
                 return;
             }
