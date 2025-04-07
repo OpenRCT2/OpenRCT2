@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Improved: [#21767] RCT Classic for macOS can now be used as the source game.
 - Improved: [#23590] Title bars are now drawn bigger when “Enlarged UI” is enabled.
+- Improved: [#23626] Add small, medium and large flat and sloped turns, S-bends and diagonal track to the Go-Karts.
 - Improved: [#23982] The scenario objective window has been merged into the scenario options window.
 - Change: [#23803] Lightning strikes and thunder happen at the same frequency independently of the game speed.
 - Change: [#23857] Replace display options tab with custom sprites.
