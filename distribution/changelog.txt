@@ -1,5 +1,6 @@
 0.4.22 (in development)
 ------------------------------------------------------------------------
+- Improved: [#23626] Add small, medium and large flat and sloped turns, S-bends and diagonal track to the Go-Karts.
 
 0.4.21 (2025-04-05)
 ------------------------------------------------------------------------

@@ -2926,6 +2926,64 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
+    else if (rideType == RIDE_TYPE_GO_KARTS && parkFileVersion < kExtendedGoKartsVersion)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::Up60:
+            case TrackElemType::Up25ToUp60:
+            case TrackElemType::Up60ToUp25:
+            case TrackElemType::Down60:
+            case TrackElemType::Down25ToDown60:
+            case TrackElemType::Down60ToDown25:
+            case TrackElemType::FlatToUp60LongBase:
+            case TrackElemType::Up60ToFlatLongBase:
+            case TrackElemType::FlatToDown60LongBase:
+            case TrackElemType::Down60ToFlatLongBase:
+            case TrackElemType::LeftQuarterTurn3Tiles:
+            case TrackElemType::RightQuarterTurn3Tiles:
+            case TrackElemType::LeftQuarterTurn5Tiles:
+            case TrackElemType::RightQuarterTurn5Tiles:
+            case TrackElemType::LeftEighthToDiag:
+            case TrackElemType::RightEighthToDiag:
+            case TrackElemType::LeftEighthToOrthogonal:
+            case TrackElemType::RightEighthToOrthogonal:
+            case TrackElemType::DiagFlat:
+            case TrackElemType::DiagFlatToUp25:
+            case TrackElemType::DiagUp25ToFlat:
+            case TrackElemType::DiagFlatToDown25:
+            case TrackElemType::DiagDown25ToFlat:
+            case TrackElemType::DiagUp25:
+            case TrackElemType::DiagDown25:
+            case TrackElemType::DiagUp25ToUp60:
+            case TrackElemType::DiagUp60ToUp25:
+            case TrackElemType::DiagUp60:
+            case TrackElemType::DiagDown25ToDown60:
+            case TrackElemType::DiagDown60ToDown25:
+            case TrackElemType::DiagDown60:
+            case TrackElemType::LeftQuarterTurn3TilesUp25:
+            case TrackElemType::RightQuarterTurn3TilesUp25:
+            case TrackElemType::LeftQuarterTurn3TilesDown25:
+            case TrackElemType::RightQuarterTurn3TilesDown25:
+            case TrackElemType::LeftQuarterTurn5TilesUp25:
+            case TrackElemType::RightQuarterTurn5TilesUp25:
+            case TrackElemType::LeftQuarterTurn5TilesDown25:
+            case TrackElemType::RightQuarterTurn5TilesDown25:
+            case TrackElemType::LeftEighthToDiagUp25:
+            case TrackElemType::RightEighthToDiagUp25:
+            case TrackElemType::LeftEighthToDiagDown25:
+            case TrackElemType::RightEighthToDiagDown25:
+            case TrackElemType::LeftEighthToOrthogonalUp25:
+            case TrackElemType::RightEighthToOrthogonalUp25:
+            case TrackElemType::LeftEighthToOrthogonalDown25:
+            case TrackElemType::RightEighthToOrthogonalDown25:
+            case TrackElemType::SBendLeft:
+            case TrackElemType::SBendRight:
+                return true;
+            default:
+                break;
+        }
+    }
 
     return false;
 }

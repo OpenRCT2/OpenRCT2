@@ -217,6 +217,54 @@ static PaintStruct* CreateNormalPaintStruct(
     return ps;
 }
 
+static PaintStruct* CreateNormalPaintStructHeight(
+    PaintSession& session, const ImageId imageId, const int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+{
+    auto* const g1 = GfxGetG1Element(imageId);
+    if (g1 == nullptr)
+    {
+        return nullptr;
+    }
+
+    const auto swappedRotation = DirectionFlipXAxis(session.CurrentRotation);
+    auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z + height };
+    swappedRotCoord += session.SpritePosition;
+
+    const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
+
+    if (!ImageWithinDPI(imagePos, *g1, session.DPI))
+    {
+        return nullptr;
+    }
+
+    const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.Rotate(swappedRotation), boundBox.offset.z + height };
+    const auto rotBoundBoxSize = RotateBoundBoxSize(boundBox.length, session.CurrentRotation);
+
+    auto* ps = session.AllocateNormalPaintEntry();
+    if (ps == nullptr)
+    {
+        return nullptr;
+    }
+
+    ps->image_id = imageId;
+    ps->ScreenPos = imagePos;
+    ps->Bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session.SpritePosition.x;
+    ps->Bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session.SpritePosition.y;
+    ps->Bounds.z_end = rotBoundBoxSize.z + rotBoundBoxOffset.z;
+    ps->Bounds.x = rotBoundBoxOffset.x + session.SpritePosition.x;
+    ps->Bounds.y = rotBoundBoxOffset.y + session.SpritePosition.y;
+    ps->Bounds.z = rotBoundBoxOffset.z;
+    ps->Attached = nullptr;
+    ps->Children = nullptr;
+    ps->NextQuadrantEntry = nullptr;
+    ps->InteractionItem = session.InteractionType;
+    ps->MapPos = session.MapPosition;
+    ps->Element = session.CurrentlyDrawnTileElement;
+    ps->Entity = session.CurrentlyDrawnEntity;
+
+    return ps;
+}
+
 template<uint8_t direction>
 void PaintSessionGenerateRotate(PaintSession& session)
 {
@@ -905,6 +953,23 @@ PaintStruct* PaintAddImageAsChild(
     }
 
     parentPS->Children = ps;
+
+    return ps;
+}
+
+PaintStruct* PaintAddImageAsParentHeight(
+    PaintSession& session, const ImageId imageId, const int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+{
+    session.LastPS = nullptr;
+    session.LastAttachedPS = nullptr;
+
+    auto* const ps = CreateNormalPaintStructHeight(session, imageId, height, offset, boundBox);
+    if (ps == nullptr)
+    {
+        return nullptr;
+    }
+
+    PaintSessionAddPSToQuadrant(session, ps);
 
     return ps;
 }
