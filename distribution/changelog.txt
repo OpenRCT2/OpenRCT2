@@ -1,5 +1,6 @@
 0.4.22 (in development)
 ------------------------------------------------------------------------
+- Change: [#23803] Lightning strikes and thunder happen at the same frequency independently of the game speed.
 
 0.4.21 (2025-04-05)
 ------------------------------------------------------------------------
