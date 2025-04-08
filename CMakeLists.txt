@@ -111,6 +111,9 @@ option(DISABLE_HTTP "Disable HTTP support.")
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(DISABLE_VERSION_CHECKER "Disable the check for newer versions.")
+option(DISABLE_FLAC     "Disable FLAC support.")
+option(DISABLE_VORBIS   "Disable OGG/VORBIS support.")
+option(DISABLE_OPENGL   "Disable OpenGL support.")
 option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
 option(ENABLE_ASAN "Enable the AddressSanitizer.")
 option(ENABLE_UBSAN "Enable the UndefinedBehaviourSanitizer.")
@@ -407,7 +410,7 @@ if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_A
         COMMAND ./openrct2-cli sprite build ${CMAKE_BINARY_DIR}/g2.dat ${ROOT_DIR}/resources/g2/sprites.json
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
-    add_custom_target(g2 DEPENDS ${PROJECT_NAME} g2.dat)
+    add_custom_target(g2 DEPENDS openrct2 g2.dat)
 else ()
     message("Skipping g2.dat generation in macOS cross-compile")
 endif ()
@@ -442,7 +445,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
                 ZIP_VERSION ${TITLE_SEQUENCE_VERSION}
-                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/sequence/
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/sequence/
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/sequence/
                 ZIP_URL ${TITLE_SEQUENCE_URL}
                 SHA1 ${TITLE_SEQUENCE_SHA1}
@@ -456,7 +459,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
                 ZIP_VERSION ${OBJECTS_VERSION}
-                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/object/
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/object/
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/object/
                 ZIP_URL ${OBJECTS_URL}
                 SHA1 ${OBJECTS_SHA1}
@@ -468,7 +471,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
             download_openrct2_zip(
                 ZIP_VERSION ${OPENSFX_VERSION}
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/assetpack/openrct2.sound.parkap
-                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/
                 ZIP_URL ${OPENSFX_URL}
                 SHA1 ${OPENSFX_SHA1}
             )")
@@ -479,7 +482,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
             download_openrct2_zip(
                 ZIP_VERSION ${OPENMSX_VERSION}
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/assetpack/openrct2.music.alternative.parkap
-                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/
                 ZIP_URL ${OPENMSX_URL}
                 SHA1 ${OPENMSX_SHA1}
             )")
