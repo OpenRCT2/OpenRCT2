@@ -75,7 +75,7 @@ struct LanguageDescriptor
     const utf8* english_name;
     const utf8* native_name;
     uint8_t fallback;
-#if !defined(NO_TTF)
+#if !defined(DISABLE_TTF)
     TTFontFamily const* font_family;
 #else
     void* font_family;

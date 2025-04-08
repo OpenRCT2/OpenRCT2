@@ -17,7 +17,7 @@ bool TTFInitialise();
 void TTFDispose();
 struct TTFSurface;
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 struct TTFSurface
 {
@@ -44,4 +44,4 @@ void TTF_SetFontHinting(TTF_Font* font, int hinting);
 int TTF_GetFontHinting(const TTF_Font* font);
 void TTF_Quit(void);
 
-#endif // NO_TTF
+#endif // DISABLE_TTF

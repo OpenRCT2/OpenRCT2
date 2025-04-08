@@ -90,9 +90,9 @@ namespace OpenRCT2::Platform
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();
 #endif
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font);
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
     std::string FormatShortDate(std::time_t timestamp);
     std::string FormatTime(std::time_t timestamp);

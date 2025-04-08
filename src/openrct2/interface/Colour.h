@@ -265,7 +265,7 @@ namespace OpenRCT2::Colour
     u8string ToString(colour_t colour);
 } // namespace OpenRCT2::Colour
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
 #endif
 

@@ -740,7 +740,7 @@ void X8DrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_
     GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
 }
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 template<bool TUseHinting>
 static void DrawTTFBitmapInternal(
     DrawPixelInfo& dpi, uint8_t colour, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
@@ -810,12 +810,12 @@ static void DrawTTFBitmapInternal(
         dst += dstScanSkip;
     }
 }
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 void X8DrawingContext::DrawTTFBitmap(
     DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     const uint8_t fgColor = info->palette[1];
     const uint8_t bgColor = info->palette[3];
 
@@ -835,5 +835,5 @@ void X8DrawingContext::DrawTTFBitmap(
         DrawTTFBitmapInternal<true>(dpi, fgColor, surface, x, y, hintingThreshold);
     else
         DrawTTFBitmapInternal<false>(dpi, fgColor, surface, x, y, 0);
-#endif // NO_TTF
+#endif // DISABLE_TTF
 }

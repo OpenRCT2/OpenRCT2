@@ -1023,7 +1023,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResizeObjective()
         {
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
             if (gCurrentTTFFontSet != nullptr)
                 WindowSetResize(*this, { 230, 270 }, { 230, 270 });
             else

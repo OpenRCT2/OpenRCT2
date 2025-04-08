@@ -11,7 +11,7 @@
 
 #include "Fonts.h"
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 TTFontFamily const TTFFamilyChineseSimplified = {
     &TTFFontSimSun,
@@ -53,4 +53,4 @@ TTFontFamily const TTFFamilySansSerif = {
     &TTFFontRoboto,
 };
 
-#endif // NO_TTF
+#endif // DISABLE_TTF

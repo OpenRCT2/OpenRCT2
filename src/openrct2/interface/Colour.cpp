@@ -144,7 +144,7 @@ namespace OpenRCT2::Colour
 
 } // namespace OpenRCT2::Colour
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 static BlendColourMapType BlendColourMap = { 0 };
 
 static bool BlendColourMapInitialised = false;

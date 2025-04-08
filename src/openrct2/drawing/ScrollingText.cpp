@@ -1546,7 +1546,7 @@ static void ScrollingTextSetBitmapForSprite(
 static void ScrollingTextSetBitmapForTTF(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     auto fontDesc = TTFGetFontFromSpriteBase(FontStyle::Tiny);
     if (fontDesc->font == nullptr)
     {
@@ -1634,5 +1634,5 @@ static void ScrollingTextSetBitmapForTTF(
             scroll--;
         }
     }
-#endif // NO_TTF
+#endif // DISABLE_TTF
 }

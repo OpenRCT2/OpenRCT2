@@ -13,7 +13,7 @@
 
 constexpr std::nullptr_t kFamilyOpenRCT2Sprite = nullptr;
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
     #include <vector>
 
@@ -30,8 +30,8 @@ extern TTFontFamily const TTFFamilySansSerif;
 
     #define FAMILY(x) x
 
-#else // NO_TTF
+#else // DISABLE_TTF
 
     #define FAMILY(x) kFamilyOpenRCT2Sprite
 
-#endif // NO_TTF
+#endif // DISABLE_TTF

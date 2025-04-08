@@ -34,9 +34,9 @@ static constexpr int32_t kSpriteFontLineHeight[FontStyleCount] = {
 static uint8_t _spriteFontCharacterWidths[FontStyleCount][kSpriteFontGlyphCount];
 static uint8_t _additionalSpriteFontCharacterWidth[FontStyleCount][SPR_G2_GLYPH_COUNT] = {};
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 TTFFontSetDescriptor* gCurrentTTFFontSet;
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 constexpr uint8_t CS_SPRITE_FONT_OFFSET = 32;
 
@@ -358,12 +358,12 @@ ImageId FontSpriteGetCodepointSprite(FontStyle fontStyle, int32_t codepoint)
 int32_t FontGetLineHeight(FontStyle fontStyle)
 {
     auto fontSize = EnumValue(fontStyle);
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     if (LocalisationService_UseTrueTypeFont())
     {
         return gCurrentTTFFontSet->size[fontSize].line_height;
     }
-#endif // NO_TTF
+#endif // DISABLE_TTF
     return kSpriteFontLineHeight[fontSize];
 }
 
@@ -401,7 +401,7 @@ bool FontSupportsStringSprite(const utf8* text)
 
 bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle)
 {
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     const utf8* src = text;
     const TTF_Font* font = gCurrentTTFFontSet->size[EnumValue(fontStyle)].font;
     if (font == nullptr)
@@ -421,7 +421,7 @@ bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle)
     return true;
 #else
     return false;
-#endif // NO_TTF
+#endif // DISABLE_TTF
 }
 
 bool FontSupportsString(const utf8* text, FontStyle fontStyle)

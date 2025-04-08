@@ -16,7 +16,7 @@ namespace OpenRCT2::Localisation
 
 #include "../drawing/Font.h"
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 extern TTFFontSetDescriptor TTFFontMSGothic;
 extern TTFFontSetDescriptor TTFFontNotoSansMono;
 extern TTFFontSetDescriptor TTFFontHiragano;
@@ -33,6 +33,6 @@ extern TTFFontSetDescriptor TTFFontMicroHei;
 extern TTFFontSetDescriptor TTFFontRoboto;
 extern TTFFontSetDescriptor TTFFontNotoSansCJK;
 extern TTFFontSetDescriptor TTFFontNotoNaskhArabic;
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 void TryLoadFonts(OpenRCT2::Localisation::LocalisationService& localisationService);
