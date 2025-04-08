@@ -43,11 +43,12 @@ if (APPLE)
         message("Unknown macOS architecture: ${ARCH}. Behavior may be unexpected.")
     endif()
 endif ()
-project(openrct2 CXX)
 
 if (APPLE)
     set(CMAKE_SYSTEM_PROCESSOR "${CMAKE_OSX_ARCHITECTURES}" CACHE STRING "")
 endif ()
+
+project(openrct2 CXX)
 
 include(cmake/platform.cmake)
 include(CMakeDependentOption)
@@ -254,6 +255,8 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*")
     set(X86_64 1)
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "i686.*|i386.*|x86.*|amd64.*|AMD64.*")
     set(X86 1)
+elseif(CMAKE_OSX_ARCHITECTURES MATCHES "amd64.*|x86_64.*|AMD64.*")
+    set(X86_64 1)
 endif()
 
 # Check if a flag exists and add it to the list of compiler (so, not linker) options
