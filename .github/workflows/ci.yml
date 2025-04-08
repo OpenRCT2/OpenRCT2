@@ -498,7 +498,9 @@ jobs:
         with:
           key: linux-appimage
       - name: Install Clang 15
-        run: apt update && apt install -y clang-15
+        run: apt update && apt install -y clang-15 software-properties-common
+      - name: Install CMake 3.25
+        run: add-apt-repository -y ppa:ecal/cmake-3.25 && apt install -y cmake
       - name: Get pre-reqs
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
