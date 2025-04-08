@@ -891,7 +891,7 @@ namespace OpenRCT2::Ui::Windows
 
         uint16_t GetPixelColourRide(const CoordsXY& c)
         {
-            uint16_t colourA = 0;                            // highlight colour
+            uint16_t colourA = 0;                             // highlight colour
             uint16_t colourB = MapColour(PaletteIndex::pi13); // surface colour (dark grey)
 
             // as an improvement we could use first_element to show underground stuff?
