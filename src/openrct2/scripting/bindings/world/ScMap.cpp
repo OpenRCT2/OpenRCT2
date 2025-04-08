@@ -253,7 +253,7 @@ namespace OpenRCT2::Scripting
                 result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->Id)));
             }
         }
-        if (type == "money_effect")
+        else if (type == "money_effect")
         {
             for (auto sprite : EntityTileList<MoneyEffect>(pos))
             {

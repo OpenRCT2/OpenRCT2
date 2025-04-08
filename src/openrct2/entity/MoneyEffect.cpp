@@ -51,25 +51,11 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guest
     if (moneyEffect == nullptr)
         return;
 
-    moneyEffect->Value = value;
     moneyEffect->GuestPurchase = (guestPurchase ? 1 : 0);
-    moneyEffect->SpriteData.Width = 64;
-    moneyEffect->SpriteData.HeightMin = 20;
-    moneyEffect->SpriteData.HeightMax = 30;
     moneyEffect->MoveTo(effectPos);
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;
-
-    int16_t offsetX = 0;
-    if (!gOpenRCT2NoGraphics)
-    {
-        auto [stringId, newValue] = moneyEffect->GetStringId();
-        char buffer[128];
-        OpenRCT2::FormatStringLegacy(buffer, 128, stringId, &newValue);
-        offsetX = -(GfxGetStringWidth(buffer, FontStyle::Medium) / 2);
-    }
-    moneyEffect->OffsetX = offsetX;
-    moneyEffect->Wiggle = 0;
+    moneyEffect->SetValue(value);
 }
 
 /**
@@ -103,6 +89,28 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
     }
     offsetLoc.z += 10;
     CreateAt(-value, offsetLoc, false);
+}
+
+/**
+ * Set the value of the money effect
+ */
+void MoneyEffect::SetValue(money64 value)
+{
+    Value = value;
+    SpriteData.Width = 64;
+    SpriteData.HeightMin = 20;
+    SpriteData.HeightMax = 30;
+
+    int16_t offsetX = 0;
+    if (!gOpenRCT2NoGraphics)
+    {
+        auto [stringId, newValue] = GetStringId();
+        char buffer[128];
+        OpenRCT2::FormatStringLegacy(buffer, 128, stringId, &newValue);
+        offsetX = -(GfxGetStringWidth(buffer, FontStyle::Medium) / 2);
+    }
+    OffsetX = offsetX;
+    Wiggle = 0;
 }
 
 /**

@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
         auto moneyEffect = GetMoneyEffect();
         if (moneyEffect != nullptr)
         {
-            moneyEffect->Value = value;
+            moneyEffect->SetValue(value);
         }
     }
 
