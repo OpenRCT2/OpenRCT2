@@ -169,10 +169,6 @@ namespace OpenRCT2
                 // Keep updating the money effect even when paused.
                 UpdateMoneyEffect();
 
-                // Update the animation list. Note this does not
-                // increment the map animation.
-                MapAnimationInvalidateAll();
-
                 // Post-tick network update
                 NetworkProcessPending();
 

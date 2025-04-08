@@ -4253,20 +4253,21 @@ namespace OpenRCT2::Ui::Windows
                     if (rideEntry == nullptr)
                         return;
 
+                    bool allowChangingBodyColour = false;
                     bool allowChangingTrimColour = false;
                     bool allowChangingTertiaryColour = false;
                     for (int32_t i = 0; i < ride->numCarsPerTrain; i++)
                     {
                         uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, i);
 
+                        if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR)
+                            allowChangingBodyColour = true;
+
                         if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
-                        {
                             allowChangingTrimColour = true;
-                        }
+
                         if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR)
-                        {
                             allowChangingTertiaryColour = true;
-                        }
                     }
 
                     int32_t numItems = ride->numTrains;
@@ -4275,23 +4276,28 @@ namespace OpenRCT2::Ui::Windows
 
                     for (auto i = 0; i < numItems; i++)
                     {
-                        colour_t colour = UtilRand() % kColourNumNormal;
-                        auto vehicleSetBodyColourAction = RideSetAppearanceAction(
-                            rideId, RideSetAppearanceType::VehicleColourBody, colour, i);
-                        GameActions::Execute(&vehicleSetBodyColourAction);
+                        if (allowChangingBodyColour)
+                        {
+                            colour_t colour = UtilRand() % kColourNumNormal;
+                            auto vehicleSetBodyColourAction = RideSetAppearanceAction(
+                                rideId, RideSetAppearanceType::VehicleColourBody, colour, i);
+                            GameActions::Execute(&vehicleSetBodyColourAction);
+                        }
+
                         if (allowChangingTrimColour)
                         {
-                            colour = UtilRand() % kColourNumNormal;
+                            colour_t colour = UtilRand() % kColourNumNormal;
                             auto vehicleSetTrimColourAction = RideSetAppearanceAction(
                                 rideId, RideSetAppearanceType::VehicleColourTrim, colour, i);
                             GameActions::Execute(&vehicleSetTrimColourAction);
-                            if (allowChangingTertiaryColour)
-                            {
-                                colour = UtilRand() % kColourNumNormal;
-                                auto vehicleSetTertiaryColourAction = RideSetAppearanceAction(
-                                    rideId, RideSetAppearanceType::VehicleColourTertiary, colour, i);
-                                GameActions::Execute(&vehicleSetTertiaryColourAction);
-                            }
+                        }
+
+                        if (allowChangingTertiaryColour)
+                        {
+                            colour_t colour = UtilRand() % kColourNumNormal;
+                            auto vehicleSetTertiaryColourAction = RideSetAppearanceAction(
+                                rideId, RideSetAppearanceType::VehicleColourTertiary, colour, i);
+                            GameActions::Execute(&vehicleSetTertiaryColourAction);
                         }
                     }
                     break;
@@ -4722,6 +4728,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body);
 
+                bool allowChangingBodyColour = false;
                 bool allowChangingTrimColour = false;
                 bool allowChangingTertiaryColour = false;
 
@@ -4729,35 +4736,34 @@ namespace OpenRCT2::Ui::Windows
                 {
                     uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, i);
 
+                    if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR)
+                        allowChangingBodyColour = true;
+
                     if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
-                    {
                         allowChangingTrimColour = true;
-                    }
+
                     if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR)
-                    {
                         allowChangingTertiaryColour = true;
-                    }
                 }
 
-                // Additional colours
+                widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::Empty;
+                widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
+                widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
+
+                if (allowChangingBodyColour)
+                {
+                    widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
+                    widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body);
+                }
                 if (allowChangingTrimColour)
                 {
                     widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::ColourBtn;
                     widgets[WIDX_VEHICLE_TRIM_COLOUR].image = GetColourButtonImage(vehicleColour.Trim);
-                    if (allowChangingTertiaryColour)
-                    {
-                        widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::ColourBtn;
-                        widgets[WIDX_VEHICLE_TERTIARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary);
-                    }
-                    else
-                    {
-                        widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
-                    }
                 }
-                else
+                if (allowChangingTertiaryColour)
                 {
-                    widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
-                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
+                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::ColourBtn;
+                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary);
                 }
 
                 // Vehicle colour scheme type

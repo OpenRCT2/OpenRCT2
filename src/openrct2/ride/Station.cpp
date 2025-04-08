@@ -332,10 +332,12 @@ static void RideInvalidateStationStart(Ride& ride, StationIndex stationIndex, bo
     if (tileElement == nullptr)
         return;
 
-    tileElement->AsTrack()->SetHasGreenLight(greenLight);
-
-    // Invalidate map tile
-    MapInvalidateTileZoom1({ startPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    TrackElement* const trackElement = tileElement->AsTrack();
+    if (trackElement->HasGreenLight() != greenLight)
+    {
+        trackElement->SetHasGreenLight(greenLight);
+        MapInvalidateTileZoom1({ startPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    }
 }
 
 TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex)
