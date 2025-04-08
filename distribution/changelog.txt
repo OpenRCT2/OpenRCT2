@@ -1,5 +1,6 @@
 0.4.22 (in development)
 ------------------------------------------------------------------------
+- Improved: [#21767] RCT Classic for macOS can now be used as the source game.
 - Change: [#23803] Lightning strikes and thunder happen at the same frequency independently of the game speed.
 - Change: [#24135] Compress Emscripten js/wasm files.
 - Fix: [#21919] Non-recolourable cars still show colour picker.
