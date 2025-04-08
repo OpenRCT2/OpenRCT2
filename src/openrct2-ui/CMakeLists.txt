@@ -145,18 +145,14 @@ if (MSVC)
 endif ()
 
 # Defines
-if (DISABLE_FLAC)
-    add_definitions(-DDISABLE_FLAC)
-endif ()
-if (DISABLE_VORBIS)
-    add_definitions(-DDISABLE_VORBIS)
-endif ()
-if (DISABLE_OPENGL)
-    add_definitions(-DDISABLE_OPENGL)
-else ()
-    # Makes OpenGL function get queried in run-time rather than linked-in
-    add_definitions(-DOPENGL_NO_LINK)
-endif ()
+target_compile_definitions(openrct2 PUBLIC
+    $<$<BOOL:${DISABLE_FLAC}>:DISABLE_FLAC>
+    $<$<BOOL:${DISABLE_VORBIS}>:DISABLE_VORBIS>
+    # If OpenGL is enabled then we want to dynamically look up symbols.
+    # If its disabled and somehow we magically end up linking to OpenGL we don't want look up the OpenGL symbols????
+    $<IF:$<BOOL:${DISABLE_OPENGL}>,DISABLE_OPENGL,OPENGL_NO_LINK>
+)
+
 if (MSVC)
     add_definitions(-D__DISABLE_DLL_PROXY__)
 endif ()

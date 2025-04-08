@@ -389,19 +389,20 @@ if(NOT DISABLE_GUI)
 endif()
 
 # Defines
-target_compile_definitions(libopenrct2 PUBLIC $<${USE_MMAP}:USE_MMAP>)
-target_compile_definitions(libopenrct2 PUBLIC $<${DISABLE_NETWORK}:DISABLE_NETWORK>)
-target_compile_definitions(libopenrct2 PUBLIC $<${DISABLE_HTTP}:DISABLE_HTTP>)
-target_compile_definitions(libopenrct2 PUBLIC $<${DISABLE_TTF}:DISABLE_TTF>)
-target_compile_definitions(libopenrct2 PUBLIC $<${DISABLE_TTF}:DISABLE_TTF>)
-target_compile_definitions(libopenrct2 PUBLIC $<${DISABLE_VERSION_CHECKER}:DISABLE_VERSION_CHECKER>)
-target_compile_definitions(libopenrct2 PUBLIC $<${ENABLE_SCRIPTING}:ENABLE_SCRIPTING>)
+target_compile_definitions(libopenrct2 PUBLIC
+    $<$<BOOL:${USE_MMAP}>:USE_MMAP>
+    $<$<BOOL:${DISABLE_NETWORK}>:DISABLE_NETWORK>
+    $<$<BOOL:${DISABLE_HTTP}>:DISABLE_HTTP>
+    $<$<BOOL:${DISABLE_TTF}>:DISABLE_TTF>
+    $<$<BOOL:${DISABLE_VERSION_CHECKER}>:DISABLE_VERSION_CHECKER>
+    $<$<BOOL:${ENABLE_SCRIPTING}>:ENABLE_SCRIPTING>
+)
 
-target_compile_options(libopenrct2 PUBLIC $<${ENABLE_ASAN}:-fsanitize=address>)
-target_link_options(libopenrct2 PUBLIC $<${ENABLE_ASAN}:-fsanitize=address>)
+target_compile_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_ASAN}>:-fsanitize=address>)
+target_link_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_ASAN}>:-fsanitize=address>)
 
-target_compile_options(libopenrct2 PUBLIC $<${ENABLE_UBSAN}:-fsanitize=undefined>)
-target_link_options(libopenrct2 PUBLIC  $<${ENABLE_UBSAN}:-fsanitize=undefined>)
+target_compile_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_UBSAN}>:-fsanitize=undefined>)
+target_link_options(libopenrct2 PUBLIC  $<$<BOOL:${ENABLE_UBSAN}>:-fsanitize=undefined>)
 
 # g2
 if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_ARCH}")))
