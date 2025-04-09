@@ -271,35 +271,40 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
+        static void SaveScenarioCallback(ModalResult result, const utf8* path)
+        {
+            if (result == ModalResult::ok)
+            {
+                GameUnloadScripts();
+            }
+            else
+            {
+                getGameState().editorStep = EditorStep::ScenarioDetails;
+            }
+        }
+
         void JumpForwardToSaveScenario() const
         {
             auto& gameState = getGameState();
+            gameState.editorStep = EditorStep::SaveScenario;
+            GfxInvalidateScreen();
+
             const auto savePrepareResult = ScenarioPrepareForSave(gameState);
             if (!savePrepareResult.Successful)
             {
                 ContextShowError(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
-                GfxInvalidateScreen();
                 return;
             }
 
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
+
             auto intent = Intent(WindowClass::Loadsave);
             intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
             intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::scenario);
             intent.PutExtra(INTENT_EXTRA_PATH, gameState.scenarioName);
             intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(SaveScenarioCallback));
             ContextOpenIntent(&intent);
-        }
-
-        static void SaveScenarioCallback(ModalResult result, const utf8* path)
-        {
-            if (result != ModalResult::ok)
-            {
-                return;
-            }
-
-            GameUnloadScripts();
         }
 
         void HidePreviousStepButton()

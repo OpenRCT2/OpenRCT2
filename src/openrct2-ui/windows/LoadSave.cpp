@@ -764,6 +764,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
+                    InvokeCallback(ModalResult::cancel, "");
                     Close();
                     break;
 

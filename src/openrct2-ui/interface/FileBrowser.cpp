@@ -196,7 +196,7 @@ namespace OpenRCT2::Ui::FileBrowser
         return result;
     }
 
-    void RegisterCallback(std::function<void(ModalResult result, std::string_view)> callback)
+    void RegisterCallback(LoadSaveCallback callback)
     {
         _loadSaveCallback = callback;
     }
