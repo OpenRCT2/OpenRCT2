@@ -271,9 +271,19 @@ namespace OpenRCT2::Ui::Windows
             GfxInvalidateScreen();
         }
 
+        static void SaveScenarioCallback(ModalResult result, const utf8* path)
+        {
+            if (result == ModalResult::cancel)
+            {
+                getGameState().editorStep = EditorStep::ScenarioDetails;
+            }
+        }
+
         void JumpForwardToSaveScenario() const
         {
             auto& gameState = getGameState();
+            gameState.editorStep = EditorStep::SaveScenario;
+
             const auto savePrepareResult = ScenarioPrepareForSave(gameState);
             if (!savePrepareResult.Successful)
             {
@@ -284,10 +294,12 @@ namespace OpenRCT2::Ui::Windows
 
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
+
             auto intent = Intent(WindowClass::Loadsave);
             intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
             intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::scenario);
             intent.PutExtra(INTENT_EXTRA_PATH, gameState.scenarioName);
+            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(SaveScenarioCallback));
             ContextOpenIntent(&intent);
         }
 
