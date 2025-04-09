@@ -1605,6 +1605,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 SetWidgetPressed(WIDX_NO_MONEY, false);
+
                 widgets[WIDX_GROUP_LOAN].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_INITIAL_LOAN_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_INITIAL_LOAN].type = WindowWidgetType::Spinner;
@@ -1614,10 +1615,25 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MAXIMUM_LOAN].type = WindowWidgetType::Spinner;
                 widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_INTEREST_RATE_LABEL].type = WindowWidgetType::Label;
-                widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
-                widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
-                widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
+
+                if (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
+                {
+                    widgets[WIDX_INTEREST_RATE_LABEL].type = WindowWidgetType::Empty;
+                    widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Checkbox;
+                    SetWidgetPressed(WIDX_RCT1_INTEREST, true);
+                }
+                else
+                {
+                    widgets[WIDX_INTEREST_RATE_LABEL].type = WindowWidgetType::Label;
+                    widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
+                    widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Empty;
+                }
+
                 widgets[WIDX_GROUP_BUSINESS_MODEL].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_INITIAL_CASH_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
@@ -1631,7 +1647,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
-                widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Checkbox;
 
                 if (!Park::EntranceFeeUnlocked())
                 {
@@ -1639,22 +1654,6 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
                     widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
                     widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Empty;
-                }
-
-                if (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
-                {
-                    widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Empty;
-                    widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Checkbox;
-                    SetWidgetPressed(WIDX_RCT1_INTEREST, true);
-                }
-                else
-                {
-                    widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
-                    widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
-                    widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
-                    widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Empty;
                 }
             }
 
