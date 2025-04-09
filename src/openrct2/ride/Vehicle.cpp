@@ -6658,15 +6658,23 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
                 continue;
 
             const CoordsXY directionVector = Math::Trigonometry::YawToDirectionVector[Entity::Yaw::YawTo64(Orientation)];
-            const CoordsXY vehicle2DirectionVector = { vehicle2->x - loc.x, vehicle2->y - loc.y };
 
-            const int dotProduct = (directionVector.x * vehicle2DirectionVector.x)
-                + (directionVector.y * vehicle2DirectionVector.y);
+            const CoordsXY directionVectorToVehicle2 = { vehicle2->x - loc.x, vehicle2->y - loc.y };
+            const int32_t directionVectorToVehicle2Length = (directionVectorToVehicle2.x * directionVectorToVehicle2.x)
+                + (directionVectorToVehicle2.y * directionVectorToVehicle2.y);
 
-            if (dotProduct > 0
-                && dotProduct * dotProduct > 8028
-                        * ((vehicle2DirectionVector.x * vehicle2DirectionVector.x)
-                           + (vehicle2DirectionVector.y * vehicle2DirectionVector.y)))
+            const int32_t dotProduct = (directionVector.x * directionVectorToVehicle2.x)
+                + (directionVector.y * directionVectorToVehicle2.y);
+
+            static constexpr int32_t threshold = []() consteval {
+                const constexpr float originalThreshold = 0.35f;
+                const constexpr float directionVectorLength = 256.0f;
+                const constexpr float thresholdLength = originalThreshold * directionVectorLength;
+                return static_cast<int32_t>(thresholdLength * thresholdLength);
+            }();
+            static_assert(threshold == 8028);
+
+            if (dotProduct > 0 && dotProduct * dotProduct > threshold * directionVectorToVehicle2Length)
             {
                 collideVehicle = vehicle2;
                 mayCollide = true;
