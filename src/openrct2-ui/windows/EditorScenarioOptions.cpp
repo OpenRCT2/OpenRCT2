@@ -660,6 +660,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             disabled_widgets = 0;
             hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
+            pressed_widgets = 0;
 
             SetWidgets(window_editor_scenario_options_widgets[page]);
             Invalidate();
