@@ -2132,11 +2132,12 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
             if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
             {
-                for (int32_t i = WIDX_LAND_COST; i <= WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE; i++)
+                for (int32_t i = WIDX_LAND_COST_LABEL; i <= WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE; i++)
                     widgets[i].type = WindowWidgetType::Empty;
             }
             else
             {
+                widgets[WIDX_LAND_COST_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_LAND_COST].type = WindowWidgetType::Spinner;
                 widgets[WIDX_LAND_COST_INCREASE].type = WindowWidgetType::Button;
                 widgets[WIDX_LAND_COST_DECREASE].type = WindowWidgetType::Button;
