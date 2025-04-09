@@ -2967,7 +2967,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* rideEntry = ride->getRideEntry();
 
             // Background
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, PALETTE_INDEX_12);
+            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, PaletteIndex::pi12);
 
             Widget* widget = &widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
             int32_t startX = std::max(2, (widget->width() - ((ride->numTrains - 1) * 36)) / 2 - 25);
@@ -4840,7 +4840,7 @@ namespace OpenRCT2::Ui::Windows
                     dpi,
                     { { windowPos + ScreenCoordsXY{ trackPreviewWidget.left + 1, trackPreviewWidget.top + 1 } },
                       { windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
-                    PALETTE_INDEX_12);
+                    PaletteIndex::pi12);
 
             auto trackColour = ride->trackColours[_rideColour];
 
@@ -4913,7 +4913,7 @@ namespace OpenRCT2::Ui::Windows
                         windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
                         entrancePreviewWidget.width(), entrancePreviewWidget.height()))
                 {
-                    GfxClear(clippedDpi, PALETTE_INDEX_12);
+                    GfxClear(clippedDpi, PaletteIndex::pi12);
 
                     auto stationObj = ride->getStationObject();
                     if (stationObj != nullptr && stationObj->BaseImageId != kImageIndexUndefined)
@@ -4953,7 +4953,7 @@ namespace OpenRCT2::Ui::Windows
             auto vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
             // Background colour
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, PALETTE_INDEX_12);
+            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, PaletteIndex::pi12);
 
             // ?
             auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
@@ -6214,12 +6214,13 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw the current line in grey.
                 GfxFillRect(
-                    dpi, { { x, firstPoint }, { x, secondPoint } }, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
+                    dpi, { { x, firstPoint }, { x, secondPoint } },
+                    previousMeasurement ? PaletteIndex::pi17 : PaletteIndex::pi21);
 
                 // Draw red over extreme values (if supported by graph type).
                 if (listType == GRAPH_VERTICAL || listType == GRAPH_LATERAL)
                 {
-                    const auto redLineColour = previousMeasurement ? PALETTE_INDEX_171 : PALETTE_INDEX_173;
+                    const auto redLineColour = previousMeasurement ? PaletteIndex::pi171 : PaletteIndex::pi173;
 
                     // Line exceeds negative threshold (at bottom of graph).
                     if (secondPoint >= intensityThresholdNegative)

@@ -100,7 +100,7 @@ void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
             if (mapColoursAreValid)
                 MapColours[i] = mapColours[i];
             else
-                MapColours[i] = PALETTE_INDEX_0;
+                MapColours[i] = PaletteIndex::pi0;
         }
 
         for (auto& el : properties["special"])

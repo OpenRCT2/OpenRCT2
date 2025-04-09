@@ -22,9 +22,9 @@ using OpenRCT2::Audio::SoundId;
 
 namespace OpenRCT2
 {
-    static constexpr PaletteIndex kBackgroundColourDark = PALETTE_INDEX_10;
-    static constexpr PaletteIndex kBackgroundColourLogo = PALETTE_INDEX_245;
-    static constexpr PaletteIndex kBorderColourPublisher = PALETTE_INDEX_129;
+    static constexpr PaletteIndex kBackgroundColourDark = PaletteIndex::pi10;
+    static constexpr PaletteIndex kBackgroundColourLogo = PaletteIndex::pi245;
+    static constexpr PaletteIndex kBorderColourPublisher = PaletteIndex::pi129;
 
     constexpr int32_t PALETTE_G1_IDX_DEVELOPER = 23217;
     constexpr int32_t PALETTE_G1_IDX_LOGO = 23224;

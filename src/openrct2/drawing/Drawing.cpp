@@ -1081,7 +1081,7 @@ void UpdatePaletteEffects()
             int32_t n = 3;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[PALETTE_INDEX_243 + i];
+                auto& vd = gGamePalette[PaletteIndex::pi243 + i];
                 vd.Blue = vs[0];
                 vd.Green = vs[1];
                 vd.Red = vs[2];
@@ -1124,14 +1124,14 @@ void DebugDPI(DrawPixelInfo& dpi)
     ScreenCoordsXY topRight = { dpi.x + dpi.width - 1, dpi.y };
     ScreenCoordsXY bottomLeft = { dpi.x, dpi.y + dpi.height - 1 };
 
-    GfxDrawLine(dpi, { topLeft, bottomRight }, PALETTE_INDEX_136);
-    GfxDrawLine(dpi, { bottomLeft, topRight }, PALETTE_INDEX_136);
-    GfxDrawLine(dpi, { topLeft, topRight }, PALETTE_INDEX_129);
-    GfxDrawLine(dpi, { topRight, bottomRight }, PALETTE_INDEX_129);
-    GfxDrawLine(dpi, { bottomLeft, bottomRight }, PALETTE_INDEX_129);
-    GfxDrawLine(dpi, { topLeft, bottomLeft }, PALETTE_INDEX_129);
+    GfxDrawLine(dpi, { topLeft, bottomRight }, PaletteIndex::pi136);
+    GfxDrawLine(dpi, { bottomLeft, topRight }, PaletteIndex::pi136);
+    GfxDrawLine(dpi, { topLeft, topRight }, PaletteIndex::pi129);
+    GfxDrawLine(dpi, { topRight, bottomRight }, PaletteIndex::pi129);
+    GfxDrawLine(dpi, { bottomLeft, bottomRight }, PaletteIndex::pi129);
+    GfxDrawLine(dpi, { topLeft, bottomLeft }, PaletteIndex::pi129);
 
-    GfxDrawLine(dpi, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PALETTE_INDEX_136);
+    GfxDrawLine(dpi, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PaletteIndex::pi136);
 
     const auto str = std::to_string(dpi.x);
     DrawText(dpi, ScreenCoordsXY{ dpi.x, dpi.y }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
