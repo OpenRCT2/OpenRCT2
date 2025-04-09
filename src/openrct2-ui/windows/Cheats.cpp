@@ -613,7 +613,10 @@ static StringId window_cheats_page_titles[] = {
                 {
                     colour.setFlag(ColourFlag::inset, true);
                 }
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
+
+                auto& widget = widgets[WIDX_MONEY_SPINNER];
+                DrawTextBasic(
+                    dpi, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
             }
             else if (page == WINDOW_CHEATS_PAGE_DATE)
             {

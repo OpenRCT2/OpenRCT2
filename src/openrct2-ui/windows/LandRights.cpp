@@ -29,12 +29,12 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr ScreenCoordsXY kInGameSize = { 94, 94 };
-    static constexpr ScreenCoordsXY kEditorSize = { 280, 104 };
+    static constexpr ScreenSize kInGameSize = { 94, 94 };
+    static constexpr ScreenSize kEditorSize = { 280, 104 };
 
     static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
-    static constexpr int32_t WW = kInGameSize.x;
-    static constexpr int32_t WH = kInGameSize.y;
+    static constexpr int32_t WW = kInGameSize.width;
+    static constexpr int32_t WH = kInGameSize.height;
 
     enum WindowLandRightsWidgetIdx
     {
@@ -348,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX].type = WindowWidgetType::Checkbox;
         }
 
-        ScreenCoordsXY GetModeDimensions() const
+        ScreenSize GetModeDimensions() const
         {
             if (IsOwnershipMode())
                 return kEditorSize;
@@ -361,7 +361,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_PREVIEW, true);
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
 
-            if (width != GetModeDimensions().x)
+            if (width != GetModeDimensions().width)
                 OnResize();
 
             if (IsOwnershipMode())
@@ -381,8 +381,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
 
             auto dimensions = GetModeDimensions();
-            width = dimensions.x;
-            height = dimensions.y;
+            WindowSetResize(*this, dimensions, dimensions);
 
             if (windowPos.x + width > ContextGetWidth())
                 windowPos.x = ContextGetWidth() - width;
