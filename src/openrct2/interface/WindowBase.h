@@ -17,6 +17,7 @@
 #include <list>
 #include <memory>
 #include <span>
+#include <variant>
 #include <vector>
 
 enum class TileInspectorPage : int16_t;
