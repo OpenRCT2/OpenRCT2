@@ -14,6 +14,7 @@
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../paint/track/Support.h"
 #include "../world/Map.h"
+#include "../world/tile_element/TrackElement.h"
 
 class StationObject;
 struct Ride;
@@ -553,6 +554,22 @@ void DrawSBendLeftSupports(
 void DrawSBendRightSupports(
     PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
     int32_t specialA, int32_t specialB);
+
+void trackPaintSprite(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteChain(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteBrake(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
 
 using TrackPaintFunction = void (&)(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,

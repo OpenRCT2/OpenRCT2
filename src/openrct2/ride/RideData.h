@@ -286,6 +286,13 @@ enum class RideConstructionWindowContext : uint8_t
     Maze,
 };
 
+struct TrackElementSprites
+{
+    const ImageIndex* imageIndexes;
+    const CoordsXYZ* offsets;
+    const BoundBoxXYZ* boundBoxes;
+};
+
 struct TrackDrawerEntry
 {
     TrackStyle trackStyle = TrackStyle::null;
@@ -295,6 +302,7 @@ struct TrackDrawerEntry
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
     RideTrackGroups extraTrackGroups{};
+    std::array<TrackElementSprites, EnumValue(OpenRCT2::TrackElemType::Count)> sprites{};
 
     ImageIndex icon = kSpriteIdNull;
     StringId tooltip = kStringIdNone;
