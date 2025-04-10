@@ -2124,8 +2124,8 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(window_options_page_widgets[page]);
 
             Invalidate();
-            OnResize();
             OnPrepareDraw();
+            OnResize();
             InitScrollWidgets();
             Invalidate();
         }
