@@ -326,6 +326,9 @@ static constexpr float kWindowScrollLocations[][2] = {
                     auto it = WindowGetIterator(&w);
                     for (; it != g_window_list.end(); it++)
                     {
+                        if ((*it)->flags & WF_DEAD)
+                            continue;
+
                         auto w2 = (*it).get();
                         auto x1 = w2->windowPos.x - 10;
                         auto y1 = w2->windowPos.y - 10;
@@ -498,11 +501,13 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             // Check if this window overlaps w
             auto topwindow = it->get();
+            if (topwindow->flags & WF_TRANSPARENT)
+                continue;
+            if (topwindow->flags & WF_DEAD)
+                continue;
             if (topwindow->windowPos.x >= right || topwindow->windowPos.y >= bottom)
                 continue;
             if (topwindow->windowPos.x + topwindow->width <= left || topwindow->windowPos.y + topwindow->height <= top)
-                continue;
-            if (topwindow->flags & WF_TRANSPARENT)
                 continue;
 
             // A window overlaps w, split up the draw into two regions where the window starts to overlap

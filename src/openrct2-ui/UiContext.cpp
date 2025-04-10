@@ -968,6 +968,12 @@ private:
             }
 
             w = it->get();
+
+            if (w->flags & WF_DEAD)
+            {
+                continue;
+            }
+
             if (right <= w->windowPos.x || bottom <= w->windowPos.y)
             {
                 continue;
