@@ -411,7 +411,6 @@ namespace OpenRCT2::Title
             windowMgr->CloseByClass(WindowClass::EditorInventionListDrag);
             windowMgr->CloseByClass(WindowClass::EditorInventionList);
             windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
-            windowMgr->CloseByClass(WindowClass::EditorObjectiveOptions);
             windowMgr->CloseByClass(WindowClass::EditorScenarioOptions);
             windowMgr->CloseByClass(WindowClass::Finances);
             windowMgr->CloseByClass(WindowClass::FirePrompt);

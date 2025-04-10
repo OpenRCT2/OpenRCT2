@@ -158,11 +158,10 @@ namespace OpenRCT2::Ui::Windows
         DDIDX_OBJECT_SELECTION = 2,
         DDIDX_INVENTIONS_LIST = 3,
         DDIDX_SCENARIO_OPTIONS = 4,
-        DDIDX_OBJECTIVE_OPTIONS = 5,
-        // 6 is a separator
-        DDIDX_ENABLE_SANDBOX_MODE = 7,
-        DDIDX_DISABLE_CLEARANCE_CHECKS = 8,
-        DDIDX_DISABLE_SUPPORT_LIMITS = 9,
+        // 5 is a separator
+        DDIDX_ENABLE_SANDBOX_MODE = 6,
+        DDIDX_DISABLE_CLEARANCE_CHECKS = 7,
+        DDIDX_DISABLE_SUPPORT_LIMITS = 8,
 
         TOP_TOOLBAR_CHEATS_COUNT,
     };
@@ -1388,7 +1387,6 @@ namespace OpenRCT2::Ui::Windows
             ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
             ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
             ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
-            ToggleOption(DDIDX_OBJECTIVE_OPTIONS, STR_CHEATS_MENU_OBJECTIVE_OPTIONS),
             Separator(),
             ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
             ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
@@ -1407,7 +1405,6 @@ namespace OpenRCT2::Ui::Windows
         {
             Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
             Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
-            Dropdown::SetDisabled(DDIDX_OBJECTIVE_OPTIONS, true);
         }
 
         if (isInEditorMode())
@@ -1415,7 +1412,6 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
             Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
             Dropdown::SetDisabled(DDIDX_SCENARIO_OPTIONS, true);
-            Dropdown::SetDisabled(DDIDX_OBJECTIVE_OPTIONS, true);
             Dropdown::SetDisabled(DDIDX_ENABLE_SANDBOX_MODE, true);
         }
 
@@ -1458,9 +1454,6 @@ namespace OpenRCT2::Ui::Windows
                 break;
             case DDIDX_SCENARIO_OPTIONS:
                 ContextOpenWindow(WindowClass::EditorScenarioOptions);
-                break;
-            case DDIDX_OBJECTIVE_OPTIONS:
-                ContextOpenWindow(WindowClass::EditorObjectiveOptions);
                 break;
             case DDIDX_ENABLE_SANDBOX_MODE:
                 CheatsSet(CheatType::SandboxMode, !getGameState().cheats.sandboxMode);
