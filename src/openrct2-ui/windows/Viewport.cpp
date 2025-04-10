@@ -183,11 +183,11 @@ namespace OpenRCT2::Ui::Windows
             min_height = WH;
 
             WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
+            ResizeFrameWithPage();
         }
 
         void OnPrepareDraw() override
         {
-            ResizeFrameWithPage();
             widgets[WIDX_ZOOM_IN].left = width - 27;
             widgets[WIDX_ZOOM_IN].right = width - 2;
             widgets[WIDX_ZOOM_OUT].left = width - 27;

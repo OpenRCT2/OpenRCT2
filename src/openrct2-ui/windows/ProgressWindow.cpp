@@ -123,8 +123,12 @@ namespace OpenRCT2::Ui::Windows
             else
                 widgets[WIDX_CLOSE].type = WindowWidgetType::Empty;
 
-            ResizeFrame();
             PrepareCaption();
+        }
+
+        void OnResize() override
+        {
+            ResizeFrame();
         }
 
         void ApplyStyle()

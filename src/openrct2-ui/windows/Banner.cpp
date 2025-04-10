@@ -280,8 +280,6 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            ResizeFrame();
-
             Widget& colourBtn = widgets[WIDX_MAIN_COLOUR];
             colourBtn.type = WindowWidgetType::Empty;
 

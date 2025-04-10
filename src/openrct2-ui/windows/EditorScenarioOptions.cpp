@@ -306,11 +306,6 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_TAB_1 + page, true);
         }
 
-        void AnchorBorderWidgets()
-        {
-            ResizeFrameWithPage();
-        }
-
         void DrawTabImages(DrawPixelInfo& dpi)
         {
             Widget* widget;
@@ -401,6 +396,7 @@ namespace OpenRCT2::Ui::Windows
         void FinancialResize()
         {
             WindowSetResize(*this, { 280, 149 }, { 280, 149 });
+            ResizeFrameWithPage();
         }
 
         void FinancialMouseDown(WidgetIndex widgetIndex)
@@ -575,8 +571,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
-
-            AnchorBorderWidgets();
         }
 
         void FinancialDraw(DrawPixelInfo& dpi)
@@ -661,6 +655,7 @@ namespace OpenRCT2::Ui::Windows
         void GuestsResize()
         {
             WindowSetResize(*this, { WW_GUESTS, WH_GUESTS }, { WW_GUESTS, WH_GUESTS });
+            ResizeFrameWithPage();
         }
 
         void GuestsMouseDown(WidgetIndex widgetIndex)
@@ -853,8 +848,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
-
-            AnchorBorderWidgets();
         }
 
         void GuestsDraw(DrawPixelInfo& dpi)
@@ -1001,6 +994,7 @@ namespace OpenRCT2::Ui::Windows
         void ParkResize()
         {
             WindowSetResize(*this, { 400, 200 }, { 400, 200 });
+            ResizeFrameWithPage();
         }
 
         void ParkMouseDown(WidgetIndex widgetIndex)
@@ -1183,8 +1177,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
-
-            AnchorBorderWidgets();
         }
 
         void ParkDraw(DrawPixelInfo& dpi)

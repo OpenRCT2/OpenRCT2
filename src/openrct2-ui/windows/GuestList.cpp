@@ -394,6 +394,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void OnResize() override
+        {
+            ResizeFrameWithPage();
+        }
+
         void OnPrepareDraw() override
         {
             SetWidgetPressed(WIDX_TAB_1, false);
@@ -405,7 +410,6 @@ namespace OpenRCT2::Ui::Windows
             if (_selectedTab == TabId::Individual && _selectedFilter)
                 widgets[WIDX_MAP].type = WindowWidgetType::FlatBtn;
 
-            ResizeFrameWithPage();
             widgets[WIDX_GUEST_LIST].right = width - 4;
             widgets[WIDX_GUEST_LIST].bottom = height - 15;
             widgets[WIDX_MAP].left = 273 - 350 + width;

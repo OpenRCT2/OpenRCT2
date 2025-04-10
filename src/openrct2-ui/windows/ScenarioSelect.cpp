@@ -350,6 +350,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void OnResize() override
+        {
+            ResizeFrameWithPage();
+        }
+
         void OnPrepareDraw() override
         {
             pressed_widgets &= ~(
@@ -359,7 +364,6 @@ namespace OpenRCT2::Ui::Windows
 
             pressed_widgets |= 1LL << (selected_tab + WIDX_TAB1);
 
-            ResizeFrameWithPage();
             const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
             widgets[WIDX_SCENARIOLIST].right = width - kPreviewPaneWidth;
             widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;

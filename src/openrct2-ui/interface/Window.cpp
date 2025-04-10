@@ -470,32 +470,102 @@ namespace OpenRCT2
             this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
     }
 
-    void Window::ResizeFrame()
+    static inline void repositionCloseButton(Widget& closeButton, int32_t windowWidth)
     {
-        // Frame
-        widgets[0].right = width - 1;
-        widgets[0].bottom = height - 1;
-        // Title
-        widgets[1].right = width - 2;
-        // Close button
+        auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
         {
-            widgets[2].left = 2;
-            widgets[2].right = 2 + kCloseButtonSize;
+            closeButton.left = 2;
+            closeButton.right = 2 + closeButtonSize;
         }
         else
         {
-            widgets[2].left = width - 3 - kCloseButtonSize;
-            widgets[2].right = width - 3;
+            closeButton.left = windowWidth - 3 - closeButtonSize;
+            closeButton.right = windowWidth - 3;
         }
+
+        // Set appropriate close button
+        bool useWhite = closeButton.string == kCloseBoxStringWhiteLarge || closeButton.string == kCloseBoxStringWhiteNormal;
+        if (closeButtonSize == kCloseButtonSizeTouch)
+            closeButton.string = !useWhite ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
+        else
+            closeButton.string = !useWhite ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
     }
 
-    void Window::ResizeFrameWithPage()
+    int32_t Window::ResizeFrame()
     {
-        ResizeFrame();
-        // Page background
-        widgets[3].right = width - 1;
-        widgets[3].bottom = height - 1;
+        if (widgets.size() < 3)
+            return 0;
+
+        // Frame
+        auto& frameWidget = widgets[0];
+        if (frameWidget.type == WindowWidgetType::Frame)
+        {
+            frameWidget.right = width - 1;
+            frameWidget.bottom = height - 1;
+        }
+
+        // Title
+        auto& titleWidget = widgets[1];
+        if (titleWidget.type == WindowWidgetType::Caption)
+            titleWidget.right = width - 2;
+
+        // Close button
+        auto& closeButton = widgets[2];
+        if (closeButton.type == WindowWidgetType::CloseBox || closeButton.type == WindowWidgetType::Empty)
+            repositionCloseButton(closeButton, width);
+
+        auto preferredHeight = getTitleBarHeight();
+        auto currentHeight = titleWidget.height();
+        auto heightDifference = preferredHeight - currentHeight;
+
+        if (heightDifference == 0)
+            return 0;
+
+        Invalidate();
+
+        // Offset title and close button
+        titleWidget.bottom += heightDifference;
+        closeButton.bottom += heightDifference;
+
+        height += heightDifference;
+        min_height += heightDifference;
+        max_height += heightDifference;
+
+        Invalidate();
+
+        // Resize frame again to match new height
+        frameWidget.bottom = height - 1;
+
+        // Offset body widgets
+        // NB: we're offsetting page widget as well!
+        for (WidgetIndex i = 3; i < widgets.size(); i++)
+        {
+            widgets[i].top += heightDifference;
+            widgets[i].bottom += heightDifference;
+        }
+
+        // Offset viewport
+        if (viewport != nullptr)
+            viewport->pos.y += heightDifference;
+
+        if (widgets.size() < 4)
+            return heightDifference;
+
+        // Page/resize widget
+        auto& pageWidget = widgets[3];
+        if (pageWidget.type == WindowWidgetType::Resize)
+        {
+            pageWidget.right = width - 1;
+            pageWidget.bottom = height - 1;
+        }
+
+        return heightDifference;
+    }
+
+    int32_t Window::ResizeFrameWithPage()
+    {
+        return ResizeFrame();
     }
 
     void Window::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
@@ -1002,18 +1072,22 @@ namespace OpenRCT2::Ui::Windows
         });
     }
 
-    bool WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize)
+    bool WindowSetResize(WindowBase& w, ScreenSize minSize, ScreenSize maxSize)
     {
-        w.min_width = minSize.width;
-        w.min_height = minSize.height;
-        w.max_width = maxSize.width;
-        w.max_height = maxSize.height;
+        w.min_width = std::min(minSize.width, maxSize.width);
+        w.min_height = std::min(minSize.height, maxSize.height);
+        w.max_width = std::max(minSize.width, maxSize.width);
+        w.max_height = std::max(minSize.height, maxSize.height);
+
+        if (Config::Get().interface.EnlargedUi)
+        {
+            w.min_height += getTitleHeightDiff();
+            w.max_height += getTitleHeightDiff();
+        }
 
         // Clamp width and height to minimum and maximum
-        int16_t width = std::clamp<int16_t>(
-            w.width, std::min(minSize.width, maxSize.width), std::max(minSize.width, maxSize.width));
-        int16_t height = std::clamp<int16_t>(
-            w.height, std::min(minSize.height, maxSize.height), std::max(minSize.height, maxSize.height));
+        int16_t width = std::clamp<int16_t>(w.width, w.min_width, w.max_width);
+        int16_t height = std::clamp<int16_t>(w.height, w.min_height, w.max_height);
 
         // Resize window if size has changed
         if (w.width != width || w.height != height)
@@ -1135,5 +1209,4 @@ namespace OpenRCT2::Ui::Windows
         else
             WindowZoomOut(*mainWindow, atCursor);
     }
-
 } // namespace OpenRCT2::Ui::Windows

@@ -141,6 +141,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResize() override
         {
             SetResizeDimensions();
+            ResizeFrameWithPage();
 
             auto download_button_width = widgets[WIDX_OPEN_URL].width();
             widgets[WIDX_OPEN_URL].left = (width - download_button_width) / 2;
@@ -149,7 +150,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            ResizeFrameWithPage();
             widgets[WIDX_SCROLL].right = width - 3;
             widgets[WIDX_SCROLL].bottom = height - 22;
             widgets[WIDX_OPEN_URL].bottom = height - 5;

@@ -58,6 +58,8 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(_waterWidgets);
+            ResizeFrame();
+
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);

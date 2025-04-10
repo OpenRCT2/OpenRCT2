@@ -327,9 +327,6 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_RESEARCH:
                     WindowResearchFundingPrepareDraw(this, WIDX_RESEARCH_FUNDING);
                     return;
-                default:
-                    return;
-
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = false;
@@ -345,6 +342,8 @@ namespace OpenRCT2::Ui::Windows
                     centredGraph = true;
                     _graphProps.series = getGameState().cashHistory;
                     break;
+                default:
+                    return;
             }
             OnPrepareDrawGraph(graphPageWidget, centredGraph);
         }
@@ -511,9 +510,12 @@ namespace OpenRCT2::Ui::Windows
                 || p == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH)
             {
                 flags |= WF_RESIZABLE;
-                WindowSetResize(
-                    *this, { WW_OTHER_TABS, kHeightOtherTabs },
-                    { std::numeric_limits<int16_t>::max(), std::numeric_limits<int16_t>::max() });
+
+                // We need to compensate for the enlarged title bar for windows that do not
+                // constrain the window height between tabs (e.g. chart tabs)
+                height -= getTitleHeightDiff();
+
+                WindowSetResize(*this, { WW_OTHER_TABS, kHeightOtherTabs }, kMaxWindowSize);
             }
             else
             {

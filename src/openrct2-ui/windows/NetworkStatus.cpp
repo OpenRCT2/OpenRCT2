@@ -88,7 +88,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
+        void OnResize() override
         {
             ResizeFrame();
         }

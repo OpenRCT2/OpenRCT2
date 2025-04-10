@@ -390,6 +390,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void OnResize() override
+        {
+            ResizeFrameWithPage();
+        }
+
         void OnPrepareDraw() override
         {
             SetPressedTab();
@@ -862,16 +867,12 @@ namespace OpenRCT2::Ui::Windows
             // Handle new window size
             if (width != newWidth || height != newHeight)
             {
-                Invalidate();
+                ScreenSize newSize = { newWidth, newHeight };
+                WindowSetResize(*this, newSize, newSize);
+                OnResize();
 
-                // Resize widgets to new window size
-                width = newWidth;
-                height = newHeight;
-                ResizeFrameWithPage();
                 widgets[WIDX_GROUP_BY_TRACK_TYPE].left = newWidth - 8 - GroupByTrackTypeWidth;
                 widgets[WIDX_GROUP_BY_TRACK_TYPE].right = newWidth - 8;
-
-                Invalidate();
             }
 
             InitScrollWidgets();

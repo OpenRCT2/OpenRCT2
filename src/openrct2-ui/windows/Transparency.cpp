@@ -91,6 +91,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(_transparancyWidgets);
+            ResizeFrame();
             WindowPushOthersBelow(*this);
 
             auto* w = WindowGetMain();

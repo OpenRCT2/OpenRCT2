@@ -128,7 +128,8 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             w = windowMgr->Create<MapTooltip>(
-                WindowClass::MapTooltip, pos, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
+                WindowClass::MapTooltip, pos, width, height,
+                WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

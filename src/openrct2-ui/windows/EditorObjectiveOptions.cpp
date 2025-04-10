@@ -348,11 +348,6 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
-        void AnchorBorderWidgets()
-        {
-            ResizeFrameWithPage();
-        }
-
         void DrawTabImages(DrawPixelInfo& dpi)
         {
             Widget* widget;
@@ -681,6 +676,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeMain()
         {
             WindowSetResize(*this, { 450, 229 }, { 450, 229 });
+            ResizeFrameWithPage();
         }
 
         /**
@@ -849,8 +845,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
-
-            AnchorBorderWidgets();
         }
 
         /**
@@ -1010,6 +1004,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeRides()
         {
             WindowSetResize(*this, { 380, 224 }, { 380, 224 });
+            ResizeFrameWithPage();
         }
 
         /**
@@ -1098,8 +1093,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
-
-            AnchorBorderWidgets();
         }
 
         /**

@@ -34,19 +34,17 @@ namespace OpenRCT2::Ui::Windows
     private:
         u8string _tooltipText;
         int16_t _tooltipNumLines = 1;
+        int32_t _textWidth;
+        int32_t _textHeight;
 
     public:
         TooltipWindow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
         {
-            int32_t textWidth = FormatTextForTooltip(message);
-            int32_t textHeight = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small));
+            _textWidth = FormatTextForTooltip(message);
+            _textHeight = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small));
 
-            width = textWidth + 5;
-            height = textHeight + 4;
-
-            SetWidgets(_tooltipWidgets);
-            widgets[WIDX_BACKGROUND].right = width;
-            widgets[WIDX_BACKGROUND].bottom = height;
+            width = _textWidth + 5;
+            height = _textHeight + 4;
 
             UpdatePosition(screenCoords);
         }
@@ -87,6 +85,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
+            SetWidgets(_tooltipWidgets);
+
+            width = _textWidth + 5;
+            height = _textHeight + 4;
+
+            widgets[WIDX_BACKGROUND].right = width;
+            widgets[WIDX_BACKGROUND].bottom = height;
+
             ResetTooltipNotShown();
         }
 

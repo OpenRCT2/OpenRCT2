@@ -340,6 +340,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeOverview()
         {
             WindowSetResize(*this, { 240, 170 }, { 500, 300 });
+            ResizeFrameWithPage();
         }
 
         void OnUpdateOverview()
@@ -379,7 +380,6 @@ namespace OpenRCT2::Ui::Windows
 
             UpdateTitle();
 
-            ResizeFrameWithPage();
             widgets[WIDX_LOCATE].right = width - 2;
             widgets[WIDX_LOCATE].left = width - 25;
             widgets[WIDX_KICK].right = width - 2;
@@ -571,6 +571,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeStatistics()
         {
             WindowSetResize(*this, { 210, 80 }, { 210, 80 });
+            ResizeFrameWithPage();
         }
 
         void OnUpdateStatistics()
@@ -591,8 +592,6 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
 
             UpdateTitle();
-
-            ResizeFrameWithPage();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_2);
         }
