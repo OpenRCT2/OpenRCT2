@@ -2,8 +2,11 @@
 ------------------------------------------------------------------------
 - Change: [#23803] Lightning strikes and thunder happen at the same frequency independently of the game speed.
 - Change: [#24135] Compress Emscripten js/wasm files.
+- Fix: [#19137] Corkscrew supports are offset incorrectly in certain views (original bug).
 - Fix: [#21919] Non-recolourable cars still show colour picker.
 - Fix: [#23108] Missing pieces on Hypercoaster and Hyper-Twister, even with the ‘all drawable track pieces’ cheat enabled.
+- Fix: [#23440] Quarter loops block metal supports incorrectly (original bug).
+- Fix: [#23741] Metal supports are blocked incorrectly on some LIM Launched, Wooden, Mine Train and Hybrid Coaster track pieces.
 - Fix: [#24013] Failure to load a scenario preview image (minimap) could lead to an uncaught exception error message.
 - Fix: [#24142] [Plugin] Track origin is miscalculated on downward slopes.
 
