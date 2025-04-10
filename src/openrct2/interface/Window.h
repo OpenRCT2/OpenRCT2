@@ -21,7 +21,6 @@
 #include <functional>
 #include <list>
 #include <memory>
-#include <variant>
 
 struct DrawPixelInfo;
 struct TrackDesignFileRef;
