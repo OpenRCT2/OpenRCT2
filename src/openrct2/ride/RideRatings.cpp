@@ -1028,7 +1028,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
         }
 
         // Requirements that may be ignored if the ride has inversions
-        if (ride.inversions == 0 || !rrd.RelaxRequirementsIfInversions)
+        if (ride.numInversions == 0 || !rrd.RelaxRequirementsIfInversions)
         {
             switch (modifier.type)
             {
@@ -1202,7 +1202,7 @@ static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride)
     auto upkeep = ride.getRideTypeDescriptor().UpkeepCosts.BaseCost;
 
     auto trackCost = ride.getRideTypeDescriptor().UpkeepCosts.CostPerTrackPiece;
-    upkeep += trackCost * ride.getNumPoweredLifts();
+    upkeep += trackCost * ride.numPoweredLifts;
 
     uint32_t totalLength = ToHumanReadableRideLength(ride.getTotalLength());
 
@@ -1590,7 +1590,7 @@ static RatingTuple GetSpecialTrackElementsRating(uint8_t type, const Ride& ride)
     const auto& rtd = ride.getRideTypeDescriptor();
     rtd.SpecialElementRatingAdjustment(ride, excitement, intensity, nausea);
 
-    uint8_t helixSections = RideGetHelixSections(ride);
+    auto helixSections = ride.numHelices;
 
     int32_t helixesUpTo9 = std::min<int32_t>(helixSections, 9);
     excitement += (helixesUpTo9 * 254862) >> 16;
@@ -1634,7 +1634,7 @@ static RatingTuple ride_ratings_get_turns_ratings(const Ride& ride)
     intensity += slopedTurnsRating.intensity;
     nausea += slopedTurnsRating.nausea;
 
-    auto inversions = ride.getRideTypeDescriptor().specialType == RtdSpecialType::miniGolf ? ride.holes : ride.inversions;
+    auto inversions = ride.getRideTypeDescriptor().specialType == RtdSpecialType::miniGolf ? ride.numHoles : ride.numInversions;
     RatingTuple inversionsRating = get_inversions_ratings(inversions);
     excitement += inversionsRating.excitement;
     intensity += inversionsRating.intensity;
@@ -1743,7 +1743,7 @@ static RatingTuple ride_ratings_get_drop_ratings(const Ride& ride)
     };
 
     // Apply number of drops factor
-    int32_t drops = ride.getNumDrops();
+    int32_t drops = ride.numDrops;
     result.excitement += (std::min(9, drops) * 728177) >> 16;
     result.intensity += (drops * 928426) >> 16;
     result.nausea += (drops * 655360) >> 16;
@@ -2040,7 +2040,8 @@ static void RideRatingsApplyBonusReversals(
 static void RideRatingsApplyBonusHoles(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(
-        ratings, (ride.holes) * modifier.excitement, (ride.holes) * modifier.intensity, (ride.holes) * modifier.nausea);
+        ratings, (ride.numHoles) * modifier.excitement, (ride.numHoles) * modifier.intensity,
+        (ride.numHoles) * modifier.nausea);
 }
 
 static void RideRatingsApplyBonusNumTrains(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
@@ -2136,7 +2137,7 @@ static void RideRatingsApplyRequirementMaxSpeed(RatingTuple& ratings, const Ride
 
 static void RideRatingsApplyRequirementNumDrops(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    if (ride.getNumDrops() < modifier.threshold)
+    if (ride.numDrops < modifier.threshold)
     {
         ratings.excitement /= modifier.excitement;
         ratings.intensity /= modifier.intensity;
@@ -2166,7 +2167,7 @@ static void RideRatingsApplyRequirementLateralGs(RatingTuple& ratings, const Rid
 
 static void RideRatingsApplyRequirementInversions(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    if (ride.inversions < modifier.threshold)
+    if (ride.numInversions < modifier.threshold)
     {
         ratings.excitement /= modifier.excitement;
         ratings.intensity /= modifier.intensity;
@@ -2198,7 +2199,7 @@ static void RideRatingsApplyRequirementReversals(
 
 static void RideRatingsApplyRequirementHoles(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    if (ride.holes < modifier.threshold)
+    if (ride.numHoles < modifier.threshold)
     {
         ratings.excitement /= modifier.excitement;
         ratings.intensity /= modifier.intensity;
@@ -2219,7 +2220,7 @@ static void RideRatingsApplyRequirementStations(RatingTuple& ratings, const Ride
 
 static void RideRatingsApplyRequirementSplashdown(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    if (!(ride.specialTrackElements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS))
+    if (!ride.specialTrackElements.has(SpecialElement::splash))
     {
         ratings.excitement /= modifier.excitement;
         ratings.intensity /= modifier.intensity;

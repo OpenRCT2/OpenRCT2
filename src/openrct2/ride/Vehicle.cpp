@@ -813,8 +813,8 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::T
     uint16_t trackFlags = ted.flags;
     if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
     {
-        if (ride.inversions < OpenRCT2::Limits::kMaxInversions)
-            ride.inversions++;
+        if (ride.numInversions < OpenRCT2::Limits::kMaxInversions)
+            ride.numInversions++;
     }
 }
 
@@ -824,8 +824,8 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::
     uint16_t trackFlags = ted.flags;
     if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
     {
-        if (ride.holes < OpenRCT2::Limits::kMaxGolfHoles)
-            ride.holes++;
+        if (ride.numHoles < OpenRCT2::Limits::kMaxGolfHoles)
+            ride.numHoles++;
     }
 }
 
@@ -833,7 +833,7 @@ void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const OpenRC
 {
     if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
     {
-        ride.specialTrackElements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+        ride.specialTrackElements.set(SpecialElement::splash);
     }
 }
 
@@ -932,11 +932,9 @@ void Vehicle::UpdateMeasurements()
             if (!(curRide->testingFlags.has(RideTestingFlag::poweredLift)))
             {
                 curRide->testingFlags.set(RideTestingFlag::poweredLift);
-                auto numPoweredLifts = curRide->getNumPoweredLifts();
-                if (numPoweredLifts < kRideMaxNumPoweredLiftsCount)
+                if (curRide->numPoweredLifts < kRideMaxNumPoweredLiftsCount)
                 {
-                    numPoweredLifts++;
-                    curRide->setPoweredLifts(numPoweredLifts);
+                    curRide->numPoweredLifts++;
                 }
             }
         }
@@ -951,20 +949,24 @@ void Vehicle::UpdateMeasurements()
         switch (trackElemType)
         {
             case TrackElemType::Rapids:
+                curRide->specialTrackElements.set(SpecialElement::rapids);
+                break;
             case TrackElemType::SpinningTunnel:
-                curRide->specialTrackElements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+                curRide->specialTrackElements.set(SpecialElement::spinningTunnel);
                 break;
             case TrackElemType::Waterfall:
+                curRide->specialTrackElements.set(SpecialElement::waterfall);
+                break;
             case TrackElemType::LogFlumeReverser:
-                curRide->specialTrackElements |= RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+                curRide->specialTrackElements.set(SpecialElement::reverser);
                 break;
             case TrackElemType::Whirlpool:
-                curRide->specialTrackElements |= RIDE_ELEMENT_WHIRLPOOL;
+                curRide->specialTrackElements.set(SpecialElement::whirlpool);
                 break;
             case TrackElemType::Watersplash:
                 if (velocity >= 11.0_mph)
                 {
-                    curRide->specialTrackElements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+                    curRide->specialTrackElements.set(SpecialElement::splash);
                 }
             default:
                 break;
@@ -1069,10 +1071,10 @@ void Vehicle::UpdateMeasurements()
             curRide->testingFlags.unset(RideTestingFlag::dropUp);
             curRide->testingFlags.set(RideTestingFlag::dropDown);
 
-            uint8_t drops = curRide->getNumDrops();
-            if (drops < kRideMaxDropsCount)
-                drops++;
-            curRide->setNumDrops(drops);
+            if (curRide->numDrops < kRideMaxDropsCount)
+            {
+                curRide->numDrops++;
+            }
 
             curRide->startDropHeight = z / kCoordsZStep;
             testingFlags.unset(RideTestingFlag::dropUp);
@@ -1100,22 +1102,21 @@ void Vehicle::UpdateMeasurements()
             curRide->testingFlags.unset(RideTestingFlag::dropDown);
             curRide->testingFlags.set(RideTestingFlag::dropUp);
 
-            auto drops = curRide->getNumDrops();
-            if (drops != kRideMaxDropsCount)
-                drops++;
-            curRide->setNumDrops(drops);
+            if (curRide->numDrops < kRideMaxDropsCount)
+            {
+                curRide->numDrops++;
+            }
 
             curRide->startDropHeight = z / kCoordsZStep;
         }
 
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
         {
-            uint8_t helixes = RideGetHelixSections(*curRide);
-            if (helixes != OpenRCT2::Limits::kMaxHelices)
+            auto helixes = curRide->numHelices;
+            if (helixes < OpenRCT2::Limits::kMaxHelices)
                 helixes++;
 
-            curRide->specialTrackElements &= ~0x1F;
-            curRide->specialTrackElements |= helixes;
+            curRide->numHelices = helixes;
         }
     }
 
@@ -2391,15 +2392,17 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.turnCountDefault = 0;
     ride.turnCountBanked = 0;
     ride.turnCountSloped = 0;
-    ride.inversions = 0;
-    ride.holes = 0;
+    ride.numInversions = 0;
+    ride.numHoles = 0;
     ride.shelteredEighths = 0;
-    ride.dropsPoweredLifts = 0;
+    ride.numDrops = 0;
+    ride.numPoweredLifts = 0;
     ride.shelteredLength = 0;
     ride.var11C = 0;
     ride.numShelteredSections = 0;
     ride.highestDropHeight = 0;
-    ride.specialTrackElements = 0;
+    ride.numHelices = 0;
+    ride.specialTrackElements.clearAll();
     for (auto& station : ride.getStations())
     {
         station.SegmentLength = 0;
