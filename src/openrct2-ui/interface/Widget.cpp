@@ -654,7 +654,7 @@ namespace OpenRCT2::Ui
             return;
 
         auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
-        GfxDrawStringLeftCentred(dpi, stringId, formatArgs, colour, { midLeft + ScreenCoordsXY{ 14, 0 } });
+        DrawTextEllipsised(dpi, midLeft + ScreenCoordsXY{ 14, 0 }, widget.width() - 14, stringId, {}, colour);
     }
 
     /**
