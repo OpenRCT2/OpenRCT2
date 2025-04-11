@@ -46,7 +46,7 @@ enum class SpecialFolder
     rct2Discord,
 };
 
-enum class RCT2Variant
+enum class RCT2Variant : uint8_t
 {
     rct2,
     rctClassicWindows,
