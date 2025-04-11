@@ -1710,6 +1710,7 @@ declare global {
         readonly year: number;
     }
 
+
     /**
      * APIs for the map.
      */
@@ -1731,11 +1732,15 @@ declare global {
         getAllEntities(type: "staff"): Staff[];
         getAllEntities(type: "car"): Car[];
         getAllEntities(type: "litter"): Litter[];
+        getAllEntities(type: "balloon"): Balloon[];
+        getAllEntities(type: "money_effect"): MoneyEffect[];
         getAllEntitiesOnTile(type: EntityType, tilePos: CoordsXY): Entity[];
         getAllEntitiesOnTile(type: "guest", tilePos: CoordsXY): Guest[];
         getAllEntitiesOnTile(type: "staff", tilePos: CoordsXY): Staff[];
         getAllEntitiesOnTile(type: "car", tilePos: CoordsXY): Car[];
         getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
+        getAllEntitiesOnTile(type: "balloon", tilePos: CoordsXY): Balloon[];
+        getAllEntitiesOnTile(type: "money_effect", tilePos: CoordsXY): MoneyEffect[];
         createEntity(type: EntityType, initializer: object): Entity;
 
         /**
@@ -1745,6 +1750,7 @@ declare global {
          * @param elementIndex The index of the track element on the tile.
          */
         getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
+		
     }
 
     type TileElementType =
@@ -3844,6 +3850,26 @@ declare global {
         "empty_juice_cup" |
         "empty_bowl_blue";
 
+	/**
+     * Represents balloon entity.
+     */
+    interface Balloon extends Entity {
+        /**
+         * The colour of the balloon.
+         */
+        colour: number;      
+	}
+	
+	/**
+     * Represents money_effect entity.
+     */
+    interface MoneyEffect extends Entity {
+        /**
+         * The value of the money effect.
+         */
+        value: number;  
+	}
+	
     /**
      * Network APIs
      * Use `network.mode` to determine whether the current game is a client, server or in single player mode.

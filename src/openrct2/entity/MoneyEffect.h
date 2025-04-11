@@ -33,6 +33,7 @@ struct MoneyEffect : EntityBase
 
     static void CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase);
     static void Create(money64 value, const CoordsXYZ& loc);
+    void SetValue(money64 value);
     void Update();
     std::pair<StringId, money64> GetStringId() const;
     void Serialise(DataSerialiser& stream);
