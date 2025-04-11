@@ -54,6 +54,13 @@ namespace OpenRCT2
             closeButton.left = windowWidth - 3 - closeButtonSize;
             closeButton.right = windowWidth - 3;
         }
+
+        // Set appropriate close button
+        bool useWhite = closeButton.string == kCloseBoxStringWhiteLarge || closeButton.string == kCloseBoxStringWhiteNormal;
+        if (closeButtonSize == kCloseButtonSizeTouch)
+            closeButton.string = !useWhite ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
+        else
+            closeButton.string = !useWhite ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
     }
 
     void WindowBase::ResizeFrame()

@@ -21,6 +21,7 @@
 
     #include <limits>
     #include <openrct2/SpriteIds.h>
+    #include <openrct2/config/Config.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/interface/Window.h>
     #include <openrct2/localisation/Formatter.h>
@@ -475,10 +476,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            // This has to be called to ensure the window frame is correctly initialised - not doing this will
-            // cause an assertion to be hit.
-            ResizeFrameWithPage();
-            widgets[WIDX_CLOSE].text = colours[0].hasFlag(ColourFlag::translucent) ? STR_CLOSE_X_WHITE : STR_CLOSE_X;
+            bool useWhite = colours[0].hasFlag(ColourFlag::translucent);
+            if (Config::Get().interface.EnlargedUi)
+                widgets[WIDX_CLOSE].string = !useWhite ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
+            else
+                widgets[WIDX_CLOSE].string = !useWhite ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
 
             // Having the content panel visible for transparent windows makes the borders darker than they should be
             // For now just hide it if there are no tabs and the window is not resizable
