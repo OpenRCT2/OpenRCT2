@@ -48,7 +48,7 @@ enum class SpecialFolder
 
 enum class RCT2Variant : uint8_t
 {
-    rct2,
+    rct2Original,
     rctClassicWindows,
     rctClassicMac,
 };

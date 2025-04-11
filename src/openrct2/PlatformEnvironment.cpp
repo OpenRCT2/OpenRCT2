@@ -84,7 +84,7 @@ class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
     u8string _basePath[kDirBaseCount];
-    RCT2Variant _rct2Variant = RCT2Variant::rct2;
+    RCT2Variant _rct2Variant = RCT2Variant::rct2Original;
 
 public:
     explicit PlatformEnvironment(DirBaseValues basePaths)
@@ -113,7 +113,7 @@ public:
             case DirBase::rct2:
                 switch (_rct2Variant)
                 {
-                    case RCT2Variant::rct2:
+                    case RCT2Variant::rct2Original:
                         directoryName = kDirectoryNamesRCT2[EnumValue(did)];
                         break;
                     case RCT2Variant::rctClassicWindows:
@@ -147,7 +147,7 @@ public:
         auto dataPath = GetDirectoryPath(base, did);
 
         std::string alternativeFilename;
-        if (_rct2Variant != RCT2Variant::rct2 && base == DirBase::rct2 && did == DirId::data)
+        if (_rct2Variant != RCT2Variant::rct2Original && base == DirBase::rct2 && did == DirId::data)
         {
             // Special case, handle RCT Classic css ogg files
             if (String::startsWith(fileName, "css", true) && String::endsWith(fileName, ".dat", true))
@@ -188,7 +188,7 @@ public:
 
     bool IsUsingClassic() const override
     {
-        return _rct2Variant != RCT2Variant::rct2;
+        return _rct2Variant != RCT2Variant::rct2Original;
     }
 
 private:

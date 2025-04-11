@@ -95,7 +95,7 @@ namespace OpenRCT2::Platform
     {
         auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
         if (File::Exists(combinedPath))
-            return std::make_optional<RCT2Variant>(RCT2Variant::rct2);
+            return std::make_optional<RCT2Variant>(RCT2Variant::rct2Original);
 
         combinedPath = Path::ResolveCasing(Path::Combine(path, OpenRCT2::Platform::kRCTClassicWindowsDataFolder, u8"g1.dat"));
         if (File::Exists(combinedPath))
