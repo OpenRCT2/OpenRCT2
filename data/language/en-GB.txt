@@ -3806,3 +3806,7 @@ STR_6748    :Only less intense rides
 STR_6749    :Only more intense rides
 STR_6750    :Select what kind of ride intensity newly spawned guests prefer.
 STR_6751    :Queue paths cannot be used for level crossings!
+STR_6752    :Time since last inspection
+STR_6753    :{COMMA16} minute
+STR_6754    :{COMMA16} minutes
+STR_6755    :more than 4 hours
