@@ -226,8 +226,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_AUTOSAVE_AMOUNT,
         WIDX_AUTOSAVE_AMOUNT_UP,
         WIDX_AUTOSAVE_AMOUNT_DOWN,
-        WIDX_PATH_TO_RCT1_TEXT,
-        WIDX_PATH_TO_RCT1_BUTTON,
+        WIDX_PATH_TO_RCT1_LABEL,
+        WIDX_PATH_TO_RCT1_PATH,
+        WIDX_PATH_TO_RCT1_BROWSE,
         WIDX_PATH_TO_RCT1_CLEAR,
         WIDX_ASSET_PACKS,
 #ifdef __EMSCRIPTEN__
@@ -416,9 +417,12 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({288, 114}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
         MakeWidget        ({ 23, 130}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
         MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
-        MakeWidget        ({ 23, 145}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
-        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path button
-        MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
+
+        MakeWidget        ({ 23, 146}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path label
+        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Label,        WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path path
+        MakeWidget        ({239, 145}, { 60, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
+        MakeWidget        ({249, 145}, { 50, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_SHORTCUT_CLEAR,                        STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
+
         MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
 #ifdef __EMSCRIPTEN__
         MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
@@ -1963,7 +1967,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     break;
-                case WIDX_PATH_TO_RCT1_BUTTON:
+                case WIDX_PATH_TO_RCT1_BROWSE:
                 {
                     auto rct1path = OpenRCT2::GetContext()->GetUiContext()->ShowDirectoryDialog(
                         LanguageGetString(STR_PATH_TO_RCT1_BROWSER));
@@ -2078,6 +2082,19 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
             SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, Config::Get().general.UseNativeBrowseDialog);
             widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[Config::Get().general.AutosaveFrequency];
+
+            if (!Config::Get().general.RCT1Path.empty())
+            {
+                widgets[WIDX_PATH_TO_RCT1_PATH].type = WindowWidgetType::Label;
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WindowWidgetType::Empty;
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WindowWidgetType::Button;
+            }
+            else
+            {
+                widgets[WIDX_PATH_TO_RCT1_PATH].type = WindowWidgetType::Empty;
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WindowWidgetType::Button;
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WindowWidgetType::Empty;
+            }
         }
 
         void AdvancedDraw(DrawPixelInfo& dpi)
@@ -2089,24 +2106,25 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
 
+            // Format RCT1 path
             const auto normalisedPath = Platform::StrDecompToPrecomp(Config::Get().general.RCT1Path);
             ft = Formatter();
             ft.Add<const utf8*>(normalisedPath.c_str());
 
-            Widget pathWidget = widgets[WIDX_PATH_TO_RCT1_BUTTON];
-
-            // Apply vertical alignment if appropriate.
+            auto& pathWidget = widgets[WIDX_PATH_TO_RCT1_PATH];
             int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
+
+            // Apply vertical alignment if font height requires it
             int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
-            uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
-            ScreenCoordsXY screenCoords = { windowPos.x + pathWidget.left + 1,
-                                            windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
+            int32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
+
+            auto screenCoords = windowPos + ScreenCoordsXY{ pathWidget.left + 1, pathWidget.top + padding };
             DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
         }
 
         OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
         {
-            if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
+            if (widgetIndex == WIDX_PATH_TO_RCT1_PATH)
             {
                 if (Config::Get().general.RCT1Path.empty())
                 {
