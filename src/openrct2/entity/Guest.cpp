@@ -4741,7 +4741,7 @@ void Guest::UpdateRideApproachSpiralSlide()
         // Actually increment the real peep waypoint
         Var37++;
 
-        CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
+        CoordsXY targetLoc = ride->getStation(CurrentRideStation).Start;
 
         assert(rtd.specialType == RtdSpecialType::spiralSlide);
         targetLoc += kSpiralSlideWalkingPath[Var37];
