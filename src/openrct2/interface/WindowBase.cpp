@@ -99,7 +99,7 @@ namespace OpenRCT2
         }
 
         // Figure out if we need to push the other widgets down to accommodate a resized title/caption
-        auto preferredHeight = getTitleBarHeight();
+        auto preferredHeight = getTitleBarTargetHeight();
         auto currentHeight = titleWidget.height();
         auto heightDifference = preferredHeight - currentHeight;
 
@@ -132,5 +132,28 @@ namespace OpenRCT2
         // Offset viewport
         if (viewport != nullptr)
             viewport->pos.y += heightDifference;
+    }
+
+    int16_t WindowBase::getTitleBarTargetHeight() const
+    {
+        return Config::Get().interface.EnlargedUi ? kTitleHeightLarge : kTitleHeightNormal;
+    }
+
+    int16_t WindowBase::getTitleBarCurrentHeight() const
+    {
+        if (!(flags & WF_NO_TITLE_BAR) && widgets.size() > 2)
+            return widgets[1].height();
+        else
+            return 0;
+    }
+
+    int16_t WindowBase::getTitleBarDiffTarget() const
+    {
+        return getTitleBarTargetHeight() - getTitleBarCurrentHeight();
+    }
+
+    int16_t WindowBase::getTitleBarDiffNormal() const
+    {
+        return getTitleBarCurrentHeight() - kTitleHeightNormal;
     }
 } // namespace OpenRCT2

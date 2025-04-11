@@ -439,6 +439,16 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
+            if (width < min_width)
+            {
+                Invalidate();
+                width = min_width;
+            }
+            if (height < min_height)
+            {
+                Invalidate();
+                height = min_height;
+            }
             UpdateViewport();
         }
 
@@ -747,6 +757,9 @@ namespace OpenRCT2::Ui::Windows
 
         void ChangeTab(size_t tabIndex)
         {
+            if (page == static_cast<int16_t>(tabIndex) && !widgets.empty())
+                return;
+
             page = static_cast<int16_t>(tabIndex);
             frame_no = 0;
             RefreshWidgets();

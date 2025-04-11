@@ -570,7 +570,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& config = Config::Get().general;
             config.FileBrowserWidth = width;
-            config.FileBrowserHeight = height - getTitleHeightDiff();
+            config.FileBrowserHeight = height - getTitleBarDiffNormal();
         }
 
         void OnUpdate() override

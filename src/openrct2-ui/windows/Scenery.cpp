@@ -71,8 +71,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195 - kTitleHeightNormal;
     constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
     constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
-    constexpr int32_t InitTabPosX = 3;
-    constexpr int32_t InitTabPosY = 17;
+    constexpr int32_t kTabMargin = 3;
     constexpr int32_t TabWidth = 31;
     constexpr int32_t TabHeight = 28;
     constexpr int32_t ReservedTabCount = 2;
@@ -637,7 +636,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT + getTitleBarHeight();
+            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT + getTitleBarTargetHeight();
 
             // Set the window title
             StringId titleStringId = STR_MISCELLANEOUS;
@@ -784,7 +783,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
                 windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
-                auto tabTop = widgets[WIDX_SCENERY_TITLE].bottom + 3;
+                auto tabTop = widgets[WIDX_SCENERY_TITLE].bottom + kTabMargin;
                 if (GetSceneryTabInfoForMisc() != nullptr)
                 {
                     auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
@@ -1376,7 +1375,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Add tabs
             int32_t tabsInThisRow = 0;
-            ScreenCoordsXY pos = { InitTabPosX, InitTabPosY + getTitleHeightDiff() };
+            ScreenCoordsXY pos = { kTabMargin, widgets[WIDX_SCENERY_TITLE].bottom + kTabMargin };
             for (const auto& tabInfo : _tabEntries)
             {
                 auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
@@ -1408,7 +1407,7 @@ namespace OpenRCT2::Ui::Windows
                 tabsInThisRow++;
                 if (tabsInThisRow >= maxTabsInThisRow)
                 {
-                    pos.x = InitTabPosX;
+                    pos.x = kTabMargin;
                     pos.y += TabHeight;
                     tabsInThisRow = 0;
                     _actualMinHeight += TabHeight;

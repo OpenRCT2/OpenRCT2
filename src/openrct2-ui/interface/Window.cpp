@@ -984,8 +984,18 @@ namespace OpenRCT2::Ui::Windows
 
         if (Config::Get().interface.EnlargedUi)
         {
-            w.min_height += getTitleHeightDiff();
-            w.max_height += getTitleHeightDiff();
+            // Not sure why plugin windows have to be treated differently,
+            // but they currently show a deviation if we don't.
+            if (w.classification == WindowClass::Custom)
+            {
+                w.min_height += w.getTitleBarDiffTarget();
+                w.max_height += w.getTitleBarDiffTarget();
+            }
+            else
+            {
+                w.min_height += w.getTitleBarDiffNormal();
+                w.max_height += w.getTitleBarDiffNormal();
+            }
         }
 
         // Clamp width and height to minimum and maximum
