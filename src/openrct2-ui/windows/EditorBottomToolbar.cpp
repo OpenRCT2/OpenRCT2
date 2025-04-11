@@ -22,6 +22,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/management/Research.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -263,13 +264,30 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+#ifdef ENABLE_SCRIPTING
+            // Clear the plugin storage before saving
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.ClearParkStorage();
+#endif
+
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
             auto intent = Intent(WindowClass::Loadsave);
             intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
             intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::scenario);
             intent.PutExtra(INTENT_EXTRA_PATH, gameState.scenarioName);
+            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(SaveScenarioCallback));
             ContextOpenIntent(&intent);
+        }
+
+        static void SaveScenarioCallback(ModalResult result, const utf8* path)
+        {
+            if (result != ModalResult::ok)
+            {
+                return;
+            }
+
+            GameUnloadScripts();
         }
 
         void HidePreviousStepButton()

@@ -38,6 +38,7 @@
 #include "object/ObjectRepository.h"
 #include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
+#include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
@@ -116,6 +117,9 @@ namespace OpenRCT2::Editor
         LoadPalette();
         gScreenAge = 0;
         gameState.scenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
 
     /**
@@ -154,6 +158,15 @@ namespace OpenRCT2::Editor
         OpenEditorWindows();
         FinaliseMainView();
         gScreenAge = 0;
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
+
+#ifdef ENABLE_SCRIPTING
+        // Clear the plugin storage before saving
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine.ClearParkStorage();
+#endif
     }
 
     /**
@@ -179,6 +192,9 @@ namespace OpenRCT2::Editor
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
 
     /**
@@ -204,6 +220,9 @@ namespace OpenRCT2::Editor
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
 
     /**
@@ -238,6 +257,9 @@ namespace OpenRCT2::Editor
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
+
+        GameLoadScripts();
+        GameNotifyMapChanged();
     }
 
     bool LoadLandscape(const utf8* path)
@@ -264,7 +286,6 @@ namespace OpenRCT2::Editor
 
         RideInitAll();
 
-        //
         for (auto* guest : EntityList<Guest>())
         {
             guest->SetName({});
