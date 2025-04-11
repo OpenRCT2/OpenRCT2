@@ -187,7 +187,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            ResizeFrameWithPage();
             widgets[WIDX_ZOOM_IN].left = width - 27;
             widgets[WIDX_ZOOM_IN].right = width - 2;
             widgets[WIDX_ZOOM_OUT].left = width - 27;

@@ -390,11 +390,6 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
         int16_t GetCampaignType() const
         {
             return Campaign.campaign_type;

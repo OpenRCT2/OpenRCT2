@@ -452,7 +452,6 @@ namespace OpenRCT2::Ui::Windows
             maxSize.width = std::max(minSize.width, maxSize.width);
 
             WindowSetResize(*this, minSize, maxSize);
-            ResizeFrameWithPage();
         }
 
         void OnPrepareDrawCommon()

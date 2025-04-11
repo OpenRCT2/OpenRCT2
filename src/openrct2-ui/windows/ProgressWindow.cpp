@@ -83,14 +83,14 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             Audio::StopSFX();
+
             SetWidgets(kProgressWindowWidgets);
-            WindowInitScrollWidgets(*this);
             WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, kWindowHeight });
 
             frame_no = 0;
 
             ApplyStyle();
-            OnResize();
+            ResizeFrame();
         }
 
         void OnClose() override
@@ -119,11 +119,10 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             if (_onClose != nullptr)
-                widgets[WIDX_CLOSE].type = WindowWidgetType::Button;
+                widgets[WIDX_CLOSE].type = WindowWidgetType::CloseBox;
             else
                 widgets[WIDX_CLOSE].type = WindowWidgetType::Empty;
 
-            ResizeFrame();
             PrepareCaption();
         }
 

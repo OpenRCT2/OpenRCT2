@@ -576,11 +576,6 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_TAB_1 + page, true);
         }
 
-        void AnchorBorderWidgets()
-        {
-            ResizeFrameWithPage();
-        }
-
         void DrawTabImages(DrawPixelInfo& dpi)
         {
             Widget* widget;
@@ -1086,8 +1081,6 @@ namespace OpenRCT2::Ui::Windows
                                                                                    : WindowWidgetType::CloseBox;
 
             SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
-
-            AnchorBorderWidgets();
         }
 
         /**
@@ -1255,7 +1248,6 @@ namespace OpenRCT2::Ui::Windows
         void ScenarioDetailsOnPrepareDraw()
         {
             SetPressedTab();
-            AnchorBorderWidgets();
         }
 
         void ScenarioDetailsOnDraw(DrawPixelInfo& dpi)
@@ -1662,8 +1654,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
-
-            AnchorBorderWidgets();
         }
 
         void FinancialDraw(DrawPixelInfo& dpi)
@@ -1951,8 +1941,6 @@ namespace OpenRCT2::Ui::Windows
                                                                                    : WindowWidgetType::CloseBox;
 
             SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
-
-            AnchorBorderWidgets();
         }
 
         void GuestsDraw(DrawPixelInfo& dpi)
@@ -2152,8 +2140,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
-
-            AnchorBorderWidgets();
         }
 
         void LandDraw(DrawPixelInfo& dpi)
@@ -2285,8 +2271,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
-
-            AnchorBorderWidgets();
         }
 
         /**

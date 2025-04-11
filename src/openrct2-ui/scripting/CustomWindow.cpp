@@ -425,8 +425,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 min_width = _info.Desc.MinWidth.value_or(0);
                 min_height = _info.Desc.MinHeight.value_or(0);
-                max_width = _info.Desc.MaxWidth.value_or(std::numeric_limits<int16_t>::max());
-                max_height = _info.Desc.MaxHeight.value_or(std::numeric_limits<int16_t>::max());
+                max_width = _info.Desc.MaxWidth.value_or(kMaxWindowSize.width);
+                max_height = _info.Desc.MaxHeight.value_or(kMaxWindowSize.height);
             }
             RefreshWidgets();
         }
@@ -438,16 +438,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            if (width < min_width)
-            {
-                Invalidate();
-                width = min_width;
-            }
-            if (height < min_height)
-            {
-                Invalidate();
-                height = min_height;
-            }
             UpdateViewport();
         }
 

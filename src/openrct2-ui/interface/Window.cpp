@@ -470,57 +470,6 @@ namespace OpenRCT2
             this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
     }
 
-    int32_t Window::ResizeFrame()
-    {
-        // Frame
-        widgets[0].right = width - 1;
-        widgets[0].bottom = height - 1;
-
-        // Title
-        widgets[1].right = width - 2;
-
-        // Close button
-        auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
-        if (Config::Get().interface.WindowButtonsOnTheLeft)
-        {
-            widgets[2].left = 2;
-            widgets[2].right = 2 + closeButtonSize;
-        }
-        else
-        {
-            widgets[2].left = width - 3 - closeButtonSize;
-            widgets[2].right = width - 3;
-        }
-
-        auto defaultHeight = OpenRCT2::Ui::Windows::GetTitleBarHeight();
-        auto currentHeight = widgets[1].height();
-        auto heightDifference = defaultHeight - currentHeight;
-        if (heightDifference != 0)
-        {
-            widgets[1].bottom += heightDifference;
-            widgets[2].bottom += heightDifference;
-
-            for (size_t i = 3; i < widgets.size(); i++)
-            {
-                widgets[i].top += heightDifference;
-                widgets[i].bottom += heightDifference;
-            }
-        }
-
-        return heightDifference;
-    }
-
-    int32_t Window::ResizeFrameWithPage()
-    {
-        auto heightDifference = ResizeFrame();
-
-        constexpr auto pageBackgroundOffset = 3;
-        widgets[pageBackgroundOffset].right = width - 1;
-        widgets[pageBackgroundOffset].bottom = height - 1;
-
-        return heightDifference;
-    }
-
     void Window::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
     {
         auto right = origin.x + size.width - 1;
@@ -714,6 +663,7 @@ namespace OpenRCT2::Ui::Windows
         w.height = std::clamp<int16_t>(w.height + dh, w.min_height, w.max_height);
 
         w.OnResize();
+        w.ResizeFrame();
         w.OnPrepareDraw();
 
         // Update scroll widgets
@@ -1025,18 +975,22 @@ namespace OpenRCT2::Ui::Windows
         });
     }
 
-    bool WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize)
+    bool WindowSetResize(WindowBase& w, ScreenSize minSize, ScreenSize maxSize)
     {
-        w.min_width = minSize.width;
-        w.min_height = minSize.height;
-        w.max_width = maxSize.width;
-        w.max_height = maxSize.height;
+        w.min_width = std::min(minSize.width, maxSize.width);
+        w.min_height = std::min(minSize.height, maxSize.height);
+        w.max_width = std::max(minSize.width, maxSize.width);
+        w.max_height = std::max(minSize.height, maxSize.height);
+
+        if (Config::Get().interface.EnlargedUi)
+        {
+            w.min_height += getTitleHeightDiff();
+            w.max_height += getTitleHeightDiff();
+        }
 
         // Clamp width and height to minimum and maximum
-        int16_t width = std::clamp<int16_t>(
-            w.width, std::min(minSize.width, maxSize.width), std::max(minSize.width, maxSize.width));
-        int16_t height = std::clamp<int16_t>(
-            w.height, std::min(minSize.height, maxSize.height), std::max(minSize.height, maxSize.height));
+        int16_t width = std::clamp<int16_t>(w.width, w.min_width, w.max_width);
+        int16_t height = std::clamp<int16_t>(w.height, w.min_height, w.max_height);
 
         // Resize window if size has changed
         if (w.width != width || w.height != height)
@@ -1044,6 +998,7 @@ namespace OpenRCT2::Ui::Windows
             w.Invalidate();
             w.width = width;
             w.height = height;
+            w.ResizeFrame();
             w.Invalidate();
             return true;
         }
@@ -1158,10 +1113,4 @@ namespace OpenRCT2::Ui::Windows
         else
             WindowZoomOut(*mainWindow, atCursor);
     }
-
-    int16_t GetTitleBarHeight()
-    {
-        return Config::Get().interface.EnlargedUi ? 24 : 12;
-    }
-
 } // namespace OpenRCT2::Ui::Windows

@@ -77,6 +77,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(window_clear_scenery_widgets);
+
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -205,11 +206,6 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y = widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
                 DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
-        }
-
-        void OnResize() override
-        {
-            ResizeFrame();
         }
 
         ClearAction GetClearAction()

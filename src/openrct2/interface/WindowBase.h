@@ -113,6 +113,7 @@ namespace OpenRCT2
         void Invalidate();
         void RemoveViewport();
         void SetWidgets(const std::span<const Widget> newWidgets);
+        void ResizeFrame();
 
         WindowBase() = default;
         WindowBase(WindowBase&) = delete;

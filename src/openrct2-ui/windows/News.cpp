@@ -315,11 +315,6 @@ namespace OpenRCT2::Ui::Windows
                 i++;
             }
         }
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     WindowBase* NewsOpen()

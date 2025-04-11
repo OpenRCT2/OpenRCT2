@@ -72,11 +72,6 @@ namespace OpenRCT2::Ui::Windows
         void OnMouseUp(WidgetIndex widgetIndex) override;
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override;
         void OnDraw(DrawPixelInfo& dpi) override;
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     class TrackDeletePromptWindow final : public Window
@@ -93,11 +88,6 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override;
         void OnMouseUp(WidgetIndex widgetIndex) override;
         void OnDraw(DrawPixelInfo& dpi) override;
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef);

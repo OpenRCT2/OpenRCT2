@@ -264,11 +264,6 @@ namespace OpenRCT2::Ui::Windows
             return configValue;
         }
 
-        void OnResize() override
-        {
-            ResizeFrameWithPage();
-        }
-
         static constexpr int32_t TabAnimationDivisor[3] = {
             1, // Park
             4, // Ride

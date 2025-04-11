@@ -355,8 +355,6 @@ namespace OpenRCT2::Ui::Windows
 
             auto ft = Formatter::Common();
             staff->FormatNameTo(ft);
-
-            ResizeFrameWithPage();
         }
 
         void CommonPrepareDrawAfter()

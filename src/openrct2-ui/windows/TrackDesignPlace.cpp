@@ -363,11 +363,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
         void ClearProvisionalTemporarily()
         {
             if (_hasPlacementGhost)

@@ -35,9 +35,8 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            SetWidgets(window_network_status_widgets);
-            WindowInitScrollWidgets(*this);
             WindowSetResize(*this, { 320, 90 }, { 320, 90 });
+            SetWidgets(window_network_status_widgets);
 
             frame_no = 0;
             page = 0;
@@ -86,18 +85,15 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnPrepareDraw() override
-        {
-            ResizeFrame();
-        }
-
         void OnDraw(DrawPixelInfo& dpi) override
         {
             WindowDrawWidgets(*this, dpi);
             thread_local std::string _buffer;
+
             _buffer.assign("{WHITE}");
             _buffer += _windowNetworkStatusText;
             GfxClipString(_buffer.data(), widgets[WIDX_BACKGROUND].right - 50, FontStyle::Medium);
+
             ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
             screenCoords.x -= GfxGetStringWidth(_buffer, FontStyle::Medium) / 2;
             DrawText(dpi, screenCoords, { COLOUR_BLACK }, _buffer.c_str());

@@ -166,7 +166,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            ResizeFrameWithPage();
             uint64_t disabledWidgets = 0;
             if (_rideConstructionState == RideConstructionState::Place)
             {

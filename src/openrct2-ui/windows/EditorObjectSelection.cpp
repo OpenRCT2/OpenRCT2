@@ -844,7 +844,6 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             // Resize widgets
-            ResizeFrameWithPage();
             widgets[WIDX_LIST].right = width - 309;
             widgets[WIDX_LIST].bottom = height - 14;
             widgets[WIDX_PREVIEW].left = width - 209;

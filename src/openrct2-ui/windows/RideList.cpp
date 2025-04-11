@@ -465,8 +465,6 @@ namespace OpenRCT2::Ui::Windows
             else
                 pressed_widgets &= ~(1uLL << WIDX_QUICK_DEMOLISH);
 
-            ResizeFrameWithPage();
-
             widgets[WIDX_LIST].right = width - 26;
             widgets[WIDX_LIST].bottom = height - 15;
             widgets[WIDX_OPEN_CLOSE_ALL].right = width - 2;

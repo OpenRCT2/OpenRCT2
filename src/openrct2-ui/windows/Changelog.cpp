@@ -149,7 +149,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            ResizeFrameWithPage();
             widgets[WIDX_SCROLL].right = width - 3;
             widgets[WIDX_SCROLL].bottom = height - 22;
             widgets[WIDX_OPEN_URL].bottom = height - 5;

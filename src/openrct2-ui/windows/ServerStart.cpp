@@ -248,11 +248,6 @@ namespace OpenRCT2::Ui::Windows
                 dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_MAXPLAYERS].top }, STR_MAX_PLAYERS, {}, { colours[1] });
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
     private:
         char _port[7];
         char _name[65];

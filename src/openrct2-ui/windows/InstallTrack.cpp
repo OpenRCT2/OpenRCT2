@@ -354,11 +354,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
     private:
         void UpdatePreview()
         {

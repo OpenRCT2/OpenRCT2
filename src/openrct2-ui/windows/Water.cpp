@@ -58,6 +58,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(_waterWidgets);
+
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -183,11 +184,6 @@ namespace OpenRCT2::Ui::Windows
                     DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
             }
-        }
-
-        void OnResize() override
-        {
-            ResizeFrame();
         }
 
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override

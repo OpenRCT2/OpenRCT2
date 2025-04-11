@@ -127,6 +127,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(window_land_rights_widgets);
+
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -386,7 +387,6 @@ namespace OpenRCT2::Ui::Windows
             if (windowPos.x + width > ContextGetWidth())
                 windowPos.x = ContextGetWidth() - width;
 
-            ResizeFrame();
             Invalidate();
         }
 

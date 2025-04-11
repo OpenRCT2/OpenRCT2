@@ -306,12 +306,10 @@ namespace OpenRCT2::Ui::Windows
             // String length needs to add 12 either side of box +13 for cursor when max length.
             int32_t numLines{};
             GfxWrapString(text, WW - (24 + 13), FontStyle::Medium, nullptr, &numLines);
-            return numLines * 10 + WH;
-        }
 
-        void OnResize() override
-        {
-            ResizeFrame();
+            const auto textHeight = numLines * 10;
+            const auto addedTitleHeight = getTitleBarHeight() - kTitleHeightNormal;
+            return WH + textHeight + addedTitleHeight;
         }
 
     private:

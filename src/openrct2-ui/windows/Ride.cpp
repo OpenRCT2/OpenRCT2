@@ -815,6 +815,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
+
         void OnUpdate() override
         {
             switch (page)
@@ -1471,11 +1472,6 @@ namespace OpenRCT2::Ui::Windows
             for (i = 0; i < WINDOW_RIDE_PAGE_COUNT; i++)
                 pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
             pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
-        }
-
-        void AnchorBorderWidgets()
-        {
-            ResizeFrameWithPage();
         }
 
 #pragma region Main
@@ -2368,8 +2364,6 @@ namespace OpenRCT2::Ui::Windows
                 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
-            AnchorBorderWidgets();
-
             const int32_t offset = gameState.cheats.allowArbitraryRideTypeChanges ? 15 : 0;
             // Anchor main page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
@@ -2660,7 +2654,7 @@ namespace OpenRCT2::Ui::Windows
 
         void VehicleResize()
         {
-            auto bottom = widgets[WIDX_VEHICLE_TRAINS].bottom + 6;
+            auto bottom = widgets[WIDX_VEHICLE_TRAINS].bottom + 6 - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -2858,7 +2852,6 @@ namespace OpenRCT2::Ui::Windows
 
             ride->formatNameTo(ft);
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
             if (abs(ride->numCarsPerTrain - rideEntry->zero_cars) == 1)
@@ -2942,7 +2935,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto heightIncrease = minimumPreviewStart - widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top;
                 height += heightIncrease;
-                ResizeFrameWithPage();
+                ResizeFrame();
 
                 for (auto i = EnumValue(WIDX_VEHICLE_TRAINS_PREVIEW); i <= WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE; i++)
                 {
@@ -3205,7 +3198,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OperatingResize()
         {
-            auto bottom = widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].bottom + 6;
+            auto bottom = widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].bottom + 6 - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -3686,7 +3679,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WindowWidgetType::Empty;
             }
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -3776,7 +3768,7 @@ namespace OpenRCT2::Ui::Windows
 
         void MaintenanceResize()
         {
-            auto bottom = widgets[WIDX_LOCATE_MECHANIC].bottom + 6;
+            auto bottom = widgets[WIDX_LOCATE_MECHANIC].bottom + 6 - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -4009,7 +4001,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames[ride->inspectionInterval];
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
             if (Config::Get().general.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
@@ -4307,7 +4298,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ColourResize()
         {
-            auto bottom = widgets[WIDX_VEHICLE_PREVIEW].bottom + 6;
+            auto bottom = widgets[WIDX_VEHICLE_PREVIEW].bottom + 6 - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -4817,7 +4808,6 @@ namespace OpenRCT2::Ui::Windows
             ft.Increment(14);
             ft.Add<StringId>(ColourSchemeNames[colourScheme]);
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -5243,7 +5233,6 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets |= (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA);
             }
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -5616,7 +5605,6 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -5910,7 +5898,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsResize()
         {
-            WindowSetResize(*this, { kMinimumWindowWidth, 182 }, { std::numeric_limits<int16_t>::max(), 450 });
+            WindowSetResize(*this, { kMinimumWindowWidth, 182 }, { kMaxWindowSize.width, 450 });
         }
 
         void GraphsOnMouseDown(WidgetIndex widgetIndex)
@@ -6061,7 +6049,6 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_GRAPH_VERTICAL].bottom = y;
             widgets[WIDX_GRAPH_LATERAL].bottom = y;
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -6623,7 +6610,6 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SECONDARY_PRICE].text = STR_FREE;
             }
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -6822,7 +6808,6 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SHOW_GUESTS_QUEUING].type = WindowWidgetType::FlatBtn;
                 }
 
-                AnchorBorderWidgets();
                 WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
             }
         }
