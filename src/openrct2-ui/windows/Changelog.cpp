@@ -287,7 +287,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t width = (ContextGetWidth() * 4) / 5;
             int32_t height = (ContextGetHeight() * 4) / 5;
             auto* newWindow = windowMgr->Create<ChangelogWindow>(
-                WindowClass::Changelog, pos, width, height, WF_CENTRE_SCREEN | WF_RESIZABLE);
+                WindowClass::Changelog, width, height, WF_CENTRE_SCREEN | WF_RESIZABLE);
             newWindow->SetPersonality(personality);
             return newWindow;
         }
