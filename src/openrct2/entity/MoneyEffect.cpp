@@ -53,8 +53,6 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guest
 
     moneyEffect->GuestPurchase = (guestPurchase ? 1 : 0);
     moneyEffect->MoveTo(effectPos);
-    moneyEffect->NumMovements = 0;
-    moneyEffect->MoveDelay = 0;
     moneyEffect->SetValue(value);
 }
 
@@ -100,6 +98,8 @@ void MoneyEffect::SetValue(money64 value)
     SpriteData.Width = 64;
     SpriteData.HeightMin = 20;
     SpriteData.HeightMax = 30;
+    MoveDelay = 0;
+    NumMovements = 0;
 
     int16_t offsetX = 0;
     if (!gOpenRCT2NoGraphics)
