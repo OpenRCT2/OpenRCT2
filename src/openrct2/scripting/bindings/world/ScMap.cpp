@@ -118,8 +118,22 @@ namespace OpenRCT2::Scripting
                 for (auto carId = trainHead->Id; !carId.IsNull();)
                 {
                     auto car = GetEntity<Vehicle>(carId);
+
+                    if (car == nullptr)
+                    {
+                        break;
+                    }
+
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
-                    carId = car->next_vehicle_on_train;
+
+                    // Prevent infinite loops: Ensure next_vehicle_on_train is valid and not self-referencing
+                    auto nextCarId = car->next_vehicle_on_train;
+                    if (nextCarId.IsNull() || nextCarId == carId)
+                    {
+                        break;
+                    }
+
+                    carId = nextCarId;
                 }
             }
         }
