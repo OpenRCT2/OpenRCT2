@@ -70,7 +70,7 @@ private:
 
     int32_t _drawCount = 0;
 
-    #ifndef NO_TTF
+    #ifndef DISABLE_TTF
     uint32_t _ttfGlId = 0;
     #endif
 
@@ -983,7 +983,7 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
 void OpenGLDrawingContext::DrawTTFBitmap(
     DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
-    #ifndef NO_TTF
+    #ifndef DISABLE_TTF
     auto baseId = static_cast<uint32_t>(0x7FFFF) - 1024;
     auto imageId = baseId + _ttfGlId;
     _engine.InvalidateImage(imageId);
@@ -1071,7 +1071,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
     command.zoom = 1.0f;
-    #endif // NO_TTF
+    #endif // DISABLE_TTF
 }
 
 void OpenGLDrawingContext::FlushCommandBuffers()

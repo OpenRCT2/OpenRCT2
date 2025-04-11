@@ -163,7 +163,7 @@ namespace OpenRCT2::Platform
         return {};
     }
 
-    #ifndef NO_TTF
+    #ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
         auto expectedPath = std::string("/system/fonts/") + std::string(font.filename);

@@ -78,7 +78,7 @@
 #include <thread>
 #include <vector>
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     #include "../drawing/TTF.h"
 #endif
 
@@ -722,7 +722,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         {
             console.WriteFormatLine("host_timescale %.02f", OpenRCT2::GetContext()->GetTimeScale());
         }
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
         else if (argv[0] == "enable_hinting")
         {
             console.WriteFormatLine("enable_hinting %d", Config::Get().fonts.EnableHinting);
@@ -1003,7 +1003,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
 
             console.Execute("get host_timescale");
         }
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
         else if (varName == "enable_hinting" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             Config::Get().fonts.EnableHinting = (int_val[0] != 0);

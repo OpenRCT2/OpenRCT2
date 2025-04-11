@@ -28,9 +28,9 @@
         // for PATH_MAX
         #include <linux/limits.h>
     #endif // __linux__
-    #ifndef NO_TTF
+    #ifndef DISABLE_TTF
         #include <fontconfig/fontconfig.h>
-    #endif // NO_TTF
+    #endif // DISABLE_TTF
 
     #include "../Date.h"
     #include "../OpenRCT2.h"
@@ -387,7 +387,7 @@ namespace OpenRCT2::Platform
         };
     }
 
-    #ifndef NO_TTF
+    #ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
         // set LANG to portable C.UTF-8 so font face names from fontconfig
@@ -448,7 +448,7 @@ namespace OpenRCT2::Platform
         FcFini();
         return path;
     }
-    #endif // NO_TTF
+    #endif // DISABLE_TTF
 } // namespace OpenRCT2::Platform
 
 #endif
