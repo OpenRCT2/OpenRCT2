@@ -5369,7 +5369,23 @@ void Guest::UpdateWalking()
 
     if (!GetNextIsSurface() && (0xFFFF & ScenarioRand()) <= 4096)
     {
-        if (HasEmptyContainer() && static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
+        if (PeepFlags & PEEP_FLAGS_LITTER)
+        {
+            static constexpr Litter::Type kLitterTypes[] = {
+                Litter::Type::EmptyCan,
+                Litter::Type::Rubbish,
+                Litter::Type::BurgerBox,
+                Litter::Type::EmptyCup,
+            };
+            auto litterType = kLitterTypes[ScenarioRand() & 0x3];
+            const auto loc = GetLocation();
+            int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
+            int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
+            Direction litterDirection = (ScenarioRand() & 0x3);
+
+            Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
+        }
+        else if (HasEmptyContainer() && static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
         {
             int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
             auto litterType = Litter::Type::Vomit;
@@ -5384,22 +5400,6 @@ void Guest::UpdateWalking()
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             UpdateAnimationGroup();
 
-            const auto loc = GetLocation();
-            int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
-            int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
-            Direction litterDirection = (ScenarioRand() & 0x3);
-
-            Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
-        }
-        else if (PeepFlags & PEEP_FLAGS_LITTER)
-        {
-            static constexpr Litter::Type kLitterTypes[] = {
-                Litter::Type::EmptyCan,
-                Litter::Type::Rubbish,
-                Litter::Type::BurgerBox,
-                Litter::Type::EmptyCup,
-            };
-            auto litterType = kLitterTypes[ScenarioRand() & 0x3];
             const auto loc = GetLocation();
             int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
             int32_t litterY = loc.y + (ScenarioRand() & 0x7) - 3;
