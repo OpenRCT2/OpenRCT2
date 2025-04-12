@@ -29,7 +29,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WINDOW_TRANSPARENCY_WIDGET_IDX
+    enum WindowTransparencyWidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -149,7 +149,7 @@ namespace OpenRCT2::Ui::Windows
             // Locate mechanic button image
             const auto& widget = widgets[WIDX_HIDE_STAFF];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-            auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, GetGameState().StaffMechanicColour);
+            auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, getGameState().staffMechanicColour);
             GfxDrawSprite(dpi, image, screenCoords);
         }
 

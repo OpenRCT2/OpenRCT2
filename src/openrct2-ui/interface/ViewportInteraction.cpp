@@ -30,6 +30,7 @@
 #include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/entity/Balloon.h>
 #include <openrct2/entity/Duck.h>
+#include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
@@ -44,12 +45,10 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/Vehicle.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Footpath.h>
-#include <openrct2/world/Map.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/BannerElement.h>
@@ -83,11 +82,11 @@ namespace OpenRCT2::Ui
     {
         InteractionInfo info{};
         // No click input for scenario editor or track manager
-        if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
+        if (gLegacyScene == LegacyScene::scenarioEditor || gLegacyScene == LegacyScene::trackDesignsManager)
             return info;
 
         //
-        if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
             return info;
 
         info = GetMapCoordinatesFromPos(
@@ -100,7 +99,7 @@ namespace OpenRCT2::Ui
         auto sprite = info.Entity;
 
         // Allows only balloons to be popped and ducks to be quacked in title screen
-        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        if (gLegacyScene == LegacyScene::titleSequence)
         {
             if (info.interactionType == ViewportInteractionItem::Entity && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
                 return info;
@@ -147,8 +146,8 @@ namespace OpenRCT2::Ui
                 break;
             case ViewportInteractionItem::ParkEntrance:
             {
-                auto& gameState = GetGameState();
-                auto parkName = gameState.Park.Name.c_str();
+                auto& gameState = getGameState();
+                auto parkName = gameState.park.Name.c_str();
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
@@ -270,11 +269,11 @@ namespace OpenRCT2::Ui
         int32_t i;
         InteractionInfo info{};
         // No click input for title screen or track manager
-        if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
+        if (gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesignsManager)
             return info;
 
         //
-        if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
             return info;
 
         constexpr auto flags = static_cast<int32_t>(
@@ -287,7 +286,7 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::Entity:
             {
                 auto sprite = info.Entity;
-                if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->Type != EntityType::Vehicle)
+                if (gLegacyScene == LegacyScene::scenarioEditor || sprite->Type != EntityType::Vehicle)
                 {
                     info.interactionType = ViewportInteractionItem::None;
                     return info;
@@ -300,18 +299,18 @@ namespace OpenRCT2::Ui
                     return info;
                 }
                 ride = GetRide(vehicle->ride);
-                if (ride != nullptr && ride->status == RideStatus::Closed)
+                if (ride != nullptr && ride->status == RideStatus::closed)
                 {
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                    ride->FormatNameTo(ft);
+                    ride->formatNameTo(ft);
                     SetMapTooltip(ft);
                 }
                 return info;
             }
             case ViewportInteractionItem::Ride:
             {
-                if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                if (gLegacyScene == LegacyScene::scenarioEditor)
                 {
                     info.interactionType = ViewportInteractionItem::None;
                     return info;
@@ -329,7 +328,7 @@ namespace OpenRCT2::Ui
                     return info;
                 }
 
-                if (ride->status != RideStatus::Closed)
+                if (ride->status != RideStatus::closed)
                     return info;
 
                 auto ft = Formatter();
@@ -340,7 +339,7 @@ namespace OpenRCT2::Ui
                     StringId stringId;
                     if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     {
-                        if (ride->num_stations > 1)
+                        if (ride->numStations > 1)
                         {
                             stringId = STR_RIDE_STATION_X_ENTRANCE;
                         }
@@ -351,7 +350,7 @@ namespace OpenRCT2::Ui
                     }
                     else
                     {
-                        if (ride->num_stations > 1)
+                        if (ride->numStations > 1)
                         {
                             stringId = STR_RIDE_STATION_X_EXIT;
                         }
@@ -365,7 +364,7 @@ namespace OpenRCT2::Ui
                 else if (tileElement->AsTrack()->IsStation())
                 {
                     StringId stringId;
-                    if (ride->num_stations > 1)
+                    if (ride->numStations > 1)
                     {
                         stringId = STR_RIDE_STATION_X;
                     }
@@ -378,19 +377,19 @@ namespace OpenRCT2::Ui
                 else
                 {
                     // FIXME: Why does it *2 the value?
-                    if (!GetGameState().Cheats.sandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
+                    if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                     {
                         info.interactionType = ViewportInteractionItem::None;
                         return info;
                     }
 
-                    ride->FormatNameTo(ft);
+                    ride->formatNameTo(ft);
                     return info;
                 }
 
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
 
-                const auto& rtd = ride->GetRideTypeDescriptor();
+                const auto& rtd = ride->getRideTypeDescriptor();
                 ft.Add<StringId>(GetRideComponentName(rtd.NameConvention.station).capitalised);
 
                 StationIndex::UnderlyingType stationIndex;
@@ -400,7 +399,7 @@ namespace OpenRCT2::Ui
                     stationIndex = tileElement->AsTrack()->GetStationIndex().ToUnderlying();
 
                 for (i = stationIndex; i >= 0; i--)
-                    if (ride->GetStations()[i].Start.IsNull())
+                    if (ride->getStations()[i].Start.IsNull())
                         stationIndex--;
                 stationIndex++;
                 ft.Add<uint16_t>(stationIndex);
@@ -466,7 +465,7 @@ namespace OpenRCT2::Ui
                 break;
         }
 
-        if (!(InputTestFlag(INPUT_FLAG_6)) || !(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!gInputFlags.has(InputFlag::unk6) || !gInputFlags.has(InputFlag::toolActive))
         {
             auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::RideConstruction) == nullptr
@@ -510,7 +509,7 @@ namespace OpenRCT2::Ui
                 return info;
             }
             case ViewportInteractionItem::ParkEntrance:
-                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                     break;
 
                 if (tileElement->GetType() != TileElementType::Entrance)

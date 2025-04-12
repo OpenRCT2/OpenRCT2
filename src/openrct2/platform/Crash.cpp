@@ -41,7 +41,6 @@
     #include "../interface/Screenshot.h"
     #include "../object/ObjectManager.h"
     #include "../park/ParkFile.h"
-    #include "../scenario/Scenario.h"
     #include "Platform.h"
 
     #define WSZ(x) L"" x
@@ -56,7 +55,7 @@ static const wchar_t* _wszCommitSha1Short = WSZ("");
 static const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static std::map<std::wstring, std::wstring> _uploadFiles;
 
-    #define BACKTRACE_TOKEN "15ddda0f56b2fb8889b789c12b17d5291dd4e5d99032bf9ec8a411dd74ae6b88"
+    #define BACKTRACE_TOKEN "ae764b66a394eea00f6722360a37c06ddb6f006866bca49fcf4b9afeb86c7146"
 
 using namespace OpenRCT2;
 
@@ -183,7 +182,7 @@ static bool OnCrash(
         auto& objManager = ctx->GetObjectManager();
         exporter->ExportObjectsList = objManager.GetPackableObjects();
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         exporter->Export(gameState, saveFilePathUTF8.c_str());
         savedGameDumped = true;
     }
@@ -318,7 +317,7 @@ static bool OnCrash(
 static std::wstring GetDumpDirectory()
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    auto crashPath = env->GetDirectoryPath(DIRBASE::USER, DIRID::CRASH);
+    auto crashPath = env->GetDirectoryPath(DirBase::user, DirId::crashDumps);
 
     auto result = String::toWideChar(crashPath);
     return result;

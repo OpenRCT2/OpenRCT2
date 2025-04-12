@@ -230,7 +230,7 @@ namespace OpenRCT2
         int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
 
         auto gameAction = RideCreateAction(
-            listItem.Type, listItem.EntryIndex, colour1, colour2, GetGameState().LastEntranceStyle);
+            listItem.Type, listItem.EntryIndex, colour1, colour2, getGameState().lastEntranceStyle);
 
         gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
@@ -278,7 +278,7 @@ namespace OpenRCT2
 
             // Additional tower bases can only be built if the ride allows for it (elevator)
             if (trackType == TrackElemType::TowerBase
-                && !currentRide.GetRideTypeDescriptor().HasFlag(RtdFlag::allowExtraTowerBases))
+                && !currentRide.getRideTypeDescriptor().HasFlag(RtdFlag::allowExtraTowerBases))
                 entryIsDisabled = true;
 
             // Check if a previous element exists, to collate entries if possible
@@ -365,7 +365,7 @@ namespace OpenRCT2
     CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords)
     {
         CoordsXYZD entranceExitCoords{};
-        gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
+        gRideEntranceExitPlaceDirection = kInvalidDirection;
         // determine if the mouse is hovering over a station - that's the station to add the entrance to
         auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
         if (info.interactionType != ViewportInteractionItem::None)
@@ -398,7 +398,7 @@ namespace OpenRCT2
             return entranceExitCoords;
         }
 
-        auto stationBaseZ = ride->GetStation(gRideEntranceExitPlaceStationIndex).GetBaseZ();
+        auto stationBaseZ = ride->getStation(gRideEntranceExitPlaceStationIndex).GetBaseZ();
 
         auto coordsAtHeight = ScreenGetMapXYWithZ(screenCoords, stationBaseZ);
         if (!coordsAtHeight.has_value())
@@ -407,7 +407,7 @@ namespace OpenRCT2
             return entranceExitCoords;
         }
 
-        entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
+        entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, kInvalidDirection };
 
         if (ride->type == kRideTypeNull)
         {
@@ -415,7 +415,7 @@ namespace OpenRCT2
             return entranceExitCoords;
         }
 
-        auto stationStart = ride->GetStation(gRideEntranceExitPlaceStationIndex).Start;
+        auto stationStart = ride->getStation(gRideEntranceExitPlaceStationIndex).Start;
         if (stationStart.IsNull())
         {
             entranceExitCoords.SetNull();
@@ -482,7 +482,7 @@ namespace OpenRCT2
                 } while (!(tileElement++)->IsLastForTile());
             }
         }
-        gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
+        gRideEntranceExitPlaceDirection = kInvalidDirection;
         return entranceExitCoords;
     }
 

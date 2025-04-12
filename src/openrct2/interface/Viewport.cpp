@@ -44,7 +44,7 @@
 #include "../world/tile_element/WallElement.h"
 #include "Colour.h"
 #include "Window.h"
-#include "Window_internal.h"
+#include "WindowBase.h"
 
 #include <cstring>
 #include <list>
@@ -102,7 +102,7 @@ namespace OpenRCT2
         WindowInitAll();
 
         // ?
-        InputResetFlags();
+        gInputFlags.clearAll();
         InputSetState(InputState::Reset);
         gPressedWidget.window_classification = WindowClass::Null;
         gPickupPeepImage = ImageId();
@@ -708,7 +708,7 @@ namespace OpenRCT2
                 return;
             }
 
-            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+            if (gLegacyScene != LegacyScene::titleSequence)
             {
                 int32_t height = (TileElementHeight({ sprite->x, sprite->y }))-16;
                 int32_t underground = sprite->z < height;
@@ -785,7 +785,7 @@ namespace OpenRCT2
             || (peep.State == PeepState::LeavingRide && peep.x == kLocationNull))
         {
             auto ride = GetRide(peep.CurrentRide);
-            if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+            if (ride != nullptr && (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 auto train = GetEntity<Vehicle>(ride->vehicles[peep.CurrentTrain]);
                 if (train != nullptr)
@@ -806,7 +806,7 @@ namespace OpenRCT2
             auto ride = GetRide(peep.CurrentRide);
             if (ride != nullptr)
             {
-                auto xy = ride->overall_view.ToTileCentre();
+                auto xy = ride->overallView.ToTileCentre();
                 CoordsXYZ coordFocus;
                 coordFocus.x = xy.x;
                 coordFocus.y = xy.y;
@@ -1009,7 +1009,7 @@ namespace OpenRCT2
         }
 
         bool useParallelDrawing = false;
-        if (useMultithreading && (dpi.DrawingEngine->GetFlags() & DEF_PARALLEL_DRAWING))
+        if (useMultithreading && dpi.DrawingEngine->GetFlags().has(DrawingEngineFlag::parallelDrawing))
         {
             useParallelDrawing = true;
         }
@@ -1084,7 +1084,7 @@ namespace OpenRCT2
 
     static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
     {
-        auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().WeatherCurrent);
+        auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
         if (paletteId != FilterPaletteID::PaletteNull)
         {
             auto x = dpi.x;
@@ -1438,7 +1438,7 @@ namespace OpenRCT2
                                     break;
 
                                 auto ride = vehicle->GetRide();
-                                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                                if (ride != nullptr && !ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                                 {
                                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden
                                                                                        : VisibilityKind::Partial;
@@ -1810,7 +1810,7 @@ namespace OpenRCT2
         PROFILED_FUNCTION();
 
         // if unknown viewport visibility, use the containing window to discover the status
-        if (viewport->visibility == VisibilityCache::Unknown)
+        if (viewport->visibility == VisibilityCache::unknown)
         {
             auto windowManager = Ui::GetWindowManager();
             auto owner = windowManager->GetOwner(viewport);
@@ -1824,7 +1824,7 @@ namespace OpenRCT2
             }
         }
 
-        if (viewport->visibility == VisibilityCache::Covered)
+        if (viewport->visibility == VisibilityCache::covered)
             return;
 
         auto zoom = viewport->zoom;
@@ -2044,12 +2044,12 @@ namespace OpenRCT2
         if (w != nullptr)
         {
             Viewport* viewport = w->viewport;
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
 
-            gameState.SavedView = ScreenCoordsXY{ viewport->ViewWidth() / 2, viewport->ViewHeight() / 2 } + viewport->viewPos;
+            gameState.savedView = ScreenCoordsXY{ viewport->ViewWidth() / 2, viewport->ViewHeight() / 2 } + viewport->viewPos;
 
-            gameState.SavedViewZoom = viewport->zoom;
-            gameState.SavedViewRotation = viewport->rotation;
+            gameState.savedViewZoom = viewport->zoom;
+            gameState.savedViewRotation = viewport->rotation;
         }
     }
 } // namespace OpenRCT2

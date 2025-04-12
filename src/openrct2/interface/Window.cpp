@@ -25,7 +25,7 @@
 #include "../ui/WindowManager.h"
 #include "Viewport.h"
 #include "Widget.h"
-#include "Window_internal.h"
+#include "WindowBase.h"
 
 #include <cassert>
 #include <cmath>
@@ -39,7 +39,7 @@ namespace OpenRCT2
     std::list<std::shared_ptr<WindowBase>> g_window_list;
     WindowBase* gWindowAudioExclusive;
 
-    WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::None };
+    WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::none };
 
     uint32_t gWindowUpdateTicks;
     colour_t gCurrentWindowColours[3];
@@ -315,7 +315,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
             int32_t i = 0;
-            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+            if (gLegacyScene != LegacyScene::titleSequence)
             {
                 bool found = false;
                 while (!found)
@@ -629,7 +629,7 @@ static constexpr float kWindowScrollLocations[][2] = {
 
     bool isToolActive(WindowClass cls)
     {
-        return InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == cls;
+        return gInputFlags.has(InputFlag::toolActive) && gCurrentToolWidget.window_classification == cls;
     }
 
     bool isToolActive(WindowClass cls, rct_windownumber number)
@@ -662,7 +662,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool)
     {
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+        if (gInputFlags.has(InputFlag::toolActive))
         {
             if (w.classification == gCurrentToolWidget.window_classification && w.number == gCurrentToolWidget.window_number
                 && widgetIndex == gCurrentToolWidget.widget_index)
@@ -674,9 +674,9 @@ static constexpr float kWindowScrollLocations[][2] = {
             ToolCancel();
         }
 
-        InputSetFlag(INPUT_FLAG_TOOL_ACTIVE, true);
-        InputSetFlag(INPUT_FLAG_4, false);
-        InputSetFlag(INPUT_FLAG_6, false);
+        gInputFlags.set(InputFlag::toolActive);
+        gInputFlags.unset(InputFlag::unk4);
+        gInputFlags.unset(InputFlag::unk6);
         gCurrentToolId = tool;
         gCurrentToolWidget.window_classification = w.classification;
         gCurrentToolWidget.window_number = w.number;
@@ -690,9 +690,9 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     void ToolCancel()
     {
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+        if (gInputFlags.has(InputFlag::toolActive))
         {
-            InputSetFlag(INPUT_FLAG_TOOL_ACTIVE, false);
+            gInputFlags.unset(InputFlag::toolActive);
 
             MapInvalidateSelectionRect();
             MapInvalidateMapSelectionTiles();
@@ -724,7 +724,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowResizeGui(int32_t width, int32_t height)
     {
         WindowResizeGuiScenarioEditor(width, height);
-        if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+        if (isInEditorMode())
             return;
 
         auto* windowMgr = Ui::GetWindowManager();
@@ -850,16 +850,16 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         // w->visibility is used to prevent repeat calculations within an iteration by caching the result
 
-        if (w.visibility == VisibilityCache::Visible)
+        if (w.visibility == VisibilityCache::visible)
             return true;
-        if (w.visibility == VisibilityCache::Covered)
+        if (w.visibility == VisibilityCache::covered)
             return false;
 
         // only consider viewports, consider the main window always visible
         if (w.viewport == nullptr || w.classification == WindowClass::MainWindow)
         {
             // default to previous behaviour
-            w.visibility = VisibilityCache::Visible;
+            w.visibility = VisibilityCache::visible;
             return true;
         }
 
@@ -876,15 +876,15 @@ static constexpr float kWindowScrollLocations[][2] = {
                 && w_other.windowPos.x + w_other.width >= w.windowPos.x + w.width
                 && w_other.windowPos.y + w_other.height >= w.windowPos.y + w.height)
             {
-                w.visibility = VisibilityCache::Covered;
-                w.viewport->visibility = VisibilityCache::Covered;
+                w.visibility = VisibilityCache::covered;
+                w.viewport->visibility = VisibilityCache::covered;
                 return false;
             }
         }
 
         // default to previous behaviour
-        w.visibility = VisibilityCache::Visible;
-        w.viewport->visibility = VisibilityCache::Visible;
+        w.visibility = VisibilityCache::visible;
+        w.viewport->visibility = VisibilityCache::visible;
         return true;
     }
 
@@ -937,10 +937,10 @@ static constexpr float kWindowScrollLocations[][2] = {
     {
         // reset window visibility status to unknown
         WindowVisitEach([](WindowBase* w) {
-            w->visibility = VisibilityCache::Unknown;
+            w->visibility = VisibilityCache::unknown;
             if (w->viewport != nullptr)
             {
-                w->viewport->visibility = VisibilityCache::Unknown;
+                w->viewport->visibility = VisibilityCache::unknown;
             }
         });
     }

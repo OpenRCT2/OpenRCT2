@@ -32,11 +32,9 @@
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
 #include <optional>
 
@@ -124,7 +122,7 @@ namespace OpenRCT2
             GameHandleInputMouse(screenCoords, state);
         }
 
-        if (_inputFlags & INPUT_FLAG_5)
+        if (gInputFlags.has(InputFlag::unk5))
         {
             GameHandleInputMouse(screenCoords, state);
         }
@@ -321,7 +319,8 @@ namespace OpenRCT2
                             switch (widget->type)
                             {
                                 case WindowWidgetType::Viewport:
-                                    if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
+                                    if (!(gLegacyScene == LegacyScene::trackDesignsManager
+                                          || gLegacyScene == LegacyScene::titleSequence))
                                     {
                                         InputViewportDragBegin(*w);
                                     }
@@ -393,11 +392,11 @@ namespace OpenRCT2
                             break;
                         }
 
-                        if (!InputTestFlag(INPUT_FLAG_4))
+                        if (!gInputFlags.has(InputFlag::unk4))
                             break;
 
                         if (w->classification != _dragWidget.window_classification || w->number != _dragWidget.window_number
-                            || !(_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
+                            || !(gInputFlags.has(InputFlag::toolActive)))
                         {
                             break;
                         }
@@ -414,7 +413,7 @@ namespace OpenRCT2
                         _inputState = InputState::Reset;
                         if (_dragWidget.window_number == w->number)
                         {
-                            if ((_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
+                            if (gInputFlags.has(InputFlag::toolActive))
                             {
                                 w = windowMgr->FindByNumber(
                                     gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
@@ -423,7 +422,7 @@ namespace OpenRCT2
                                     w->OnToolUp(gCurrentToolWidget.widget_index, screenCoords);
                                 }
                             }
-                            else if (!(_inputFlags & INPUT_FLAG_4))
+                            else if (!gInputFlags.has(InputFlag::unk4))
                             {
                                 ViewportInteractionLeftClick(screenCoords);
                             }
@@ -523,7 +522,7 @@ namespace OpenRCT2
             int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w.width;
             int32_t targetHeight = _originalWindowHeight + differentialCoords.y - w.height;
 
-            WindowResize(w, targetWidth, targetHeight);
+            WindowResizeByDelta(w, targetWidth, targetHeight);
         }
     }
 
@@ -553,7 +552,7 @@ namespace OpenRCT2
         }
 
         WindowUnfollowSprite(w);
-        // gInputFlags |= INPUT_FLAG_5;
+        // gInputFlags.set(InputFlag::unk5);
     }
 
     static void InputViewportDragContinue()
@@ -1085,12 +1084,12 @@ namespace OpenRCT2
                 gInputDragLast = screenCoords;
                 _dragWidget.window_classification = windowClass;
                 _dragWidget.window_number = windowNumber;
-                if (_inputFlags & INPUT_FLAG_TOOL_ACTIVE)
+                if (gInputFlags.has(InputFlag::toolActive))
                 {
                     w = windowMgr->FindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                     if (w != nullptr)
                     {
-                        InputSetFlag(INPUT_FLAG_4, true);
+                        gInputFlags.set(InputFlag::unk4);
                         w->OnToolDown(gCurrentToolWidget.widget_index, screenCoords);
                     }
                 }
@@ -1107,6 +1106,7 @@ namespace OpenRCT2
             case WindowWidgetType::Groupbox:
             case WindowWidgetType::ProgressBar:
             case WindowWidgetType::Placeholder:
+            case WindowWidgetType::HorizontalSeparator:
                 // Non-interactive widget type
                 break;
             case WindowWidgetType::ImgBtn:
@@ -1130,7 +1130,7 @@ namespace OpenRCT2
                     gPressedWidget.window_classification = windowClass;
                     gPressedWidget.window_number = windowNumber;
                     gPressedWidget.widget_index = widgetIndex;
-                    _inputFlags |= INPUT_FLAG_WIDGET_PRESSED;
+                    gInputFlags.set(InputFlag::widgetPressed);
                     _inputState = InputState::WidgetPressed;
                     _clickRepeatTicks = gCurrentRealTimeTicks;
 
@@ -1163,7 +1163,7 @@ namespace OpenRCT2
                 switch (window->widgets[widgetId].type)
                 {
                     case WindowWidgetType::Viewport:
-                        if (!(_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
+                        if (!gInputFlags.has(InputFlag::toolActive))
                         {
                             if (ViewportInteractionLeftOver(screenCoords))
                             {
@@ -1177,10 +1177,7 @@ namespace OpenRCT2
 
                     case WindowWidgetType::Frame:
                     case WindowWidgetType::Resize:
-                        if (!(window->flags & WF_RESIZABLE))
-                            break;
-
-                        if (window->min_width == window->max_width && window->min_height == window->max_height)
+                        if (!window->canBeResized())
                             break;
 
                         if (screenCoords.x < window->windowPos.x + window->width - 0x13)
@@ -1228,7 +1225,7 @@ namespace OpenRCT2
      */
     void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
     {
-        if (_inputFlags & INPUT_FLAG_TOOL_ACTIVE)
+        if (gInputFlags.has(InputFlag::toolActive))
         {
             auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
@@ -1239,65 +1236,6 @@ namespace OpenRCT2
                 w->OnToolUpdate(gCurrentToolWidget.widget_index, screenCoords);
         }
     }
-
-    const std::map<colour_t, StringId> kColourToTip = {
-        { COLOUR_BLACK, STR_COLOUR_BLACK_TIP },
-        { COLOUR_GREY, STR_COLOUR_GREY_TIP },
-        { COLOUR_WHITE, STR_COLOUR_WHITE_TIP },
-        { COLOUR_DARK_PURPLE, STR_COLOUR_DARK_PURPLE_TIP },
-        { COLOUR_LIGHT_PURPLE, STR_COLOUR_LIGHT_PURPLE_TIP },
-        { COLOUR_BRIGHT_PURPLE, STR_COLOUR_BRIGHT_PURPLE_TIP },
-        { COLOUR_DARK_BLUE, STR_COLOUR_DARK_BLUE_TIP },
-        { COLOUR_LIGHT_BLUE, STR_COLOUR_LIGHT_BLUE_TIP },
-        { COLOUR_ICY_BLUE, STR_COLOUR_ICY_BLUE_TIP },
-        { COLOUR_TEAL, STR_COLOUR_TEAL_TIP },
-        { COLOUR_AQUAMARINE, STR_COLOUR_AQUAMARINE_TIP },
-        { COLOUR_SATURATED_GREEN, STR_COLOUR_SATURATED_GREEN_TIP },
-        { COLOUR_DARK_GREEN, STR_COLOUR_DARK_GREEN_TIP },
-        { COLOUR_MOSS_GREEN, STR_COLOUR_MOSS_GREEN_TIP },
-        { COLOUR_BRIGHT_GREEN, STR_COLOUR_BRIGHT_GREEN_TIP },
-        { COLOUR_OLIVE_GREEN, STR_COLOUR_OLIVE_GREEN_TIP },
-        { COLOUR_DARK_OLIVE_GREEN, STR_COLOUR_DARK_OLIVE_GREEN_TIP },
-        { COLOUR_BRIGHT_YELLOW, STR_COLOUR_BRIGHT_YELLOW_TIP },
-        { COLOUR_YELLOW, STR_COLOUR_YELLOW_TIP },
-        { COLOUR_DARK_YELLOW, STR_COLOUR_DARK_YELLOW_TIP },
-        { COLOUR_LIGHT_ORANGE, STR_COLOUR_LIGHT_ORANGE_TIP },
-        { COLOUR_DARK_ORANGE, STR_COLOUR_DARK_ORANGE_TIP },
-        { COLOUR_LIGHT_BROWN, STR_COLOUR_LIGHT_BROWN_TIP },
-        { COLOUR_SATURATED_BROWN, STR_COLOUR_SATURATED_BROWN_TIP },
-        { COLOUR_DARK_BROWN, STR_COLOUR_DARK_BROWN_TIP },
-        { COLOUR_SALMON_PINK, STR_COLOUR_SALMON_PINK_TIP },
-        { COLOUR_BORDEAUX_RED, STR_COLOUR_BORDEAUX_RED_TIP },
-        { COLOUR_SATURATED_RED, STR_COLOUR_SATURATED_RED_TIP },
-        { COLOUR_BRIGHT_RED, STR_COLOUR_BRIGHT_RED_TIP },
-        { COLOUR_DARK_PINK, STR_COLOUR_DARK_PINK_TIP },
-        { COLOUR_BRIGHT_PINK, STR_COLOUR_BRIGHT_PINK_TIP },
-        { COLOUR_LIGHT_PINK, STR_COLOUR_LIGHT_PINK_TIP },
-        { COLOUR_DARK_OLIVE_DARK, STR_COLOUR_DARK_OLIVE_DARK_TIP },
-        { COLOUR_DARK_OLIVE_LIGHT, STR_COLOUR_DARK_OLIVE_LIGHT_TIP },
-        { COLOUR_SATURATED_BROWN_LIGHT, STR_COLOUR_SATURATED_BROWN_LIGHT_TIP },
-        { COLOUR_BORDEAUX_RED_DARK, STR_COLOUR_BORDEAUX_RED_DARK_TIP },
-        { COLOUR_BORDEAUX_RED_LIGHT, STR_COLOUR_BORDEAUX_RED_LIGHT_TIP },
-        { COLOUR_GRASS_GREEN_DARK, STR_COLOUR_GRASS_GREEN_DARK_TIP },
-        { COLOUR_GRASS_GREEN_LIGHT, STR_COLOUR_GRASS_GREEN_LIGHT_TIP },
-        { COLOUR_OLIVE_DARK, STR_COLOUR_OLIVE_DARK_TIP },
-        { COLOUR_OLIVE_LIGHT, STR_COLOUR_OLIVE_LIGHT_TIP },
-        { COLOUR_SATURATED_GREEN_LIGHT, STR_COLOUR_SATURATED_GREEN_LIGHT_TIP },
-        { COLOUR_TAN_DARK, STR_COLOUR_TAN_DARK_TIP },
-        { COLOUR_TAN_LIGHT, STR_COLOUR_TAN_LIGHT_TIP },
-        { COLOUR_DULL_PURPLE_LIGHT, STR_COLOUR_DULL_PURPLE_LIGHT_TIP },
-        { COLOUR_DULL_GREEN_DARK, STR_COLOUR_DULL_GREEN_DARK_TIP },
-        { COLOUR_DULL_GREEN_LIGHT, STR_COLOUR_DULL_GREEN_LIGHT_TIP },
-        { COLOUR_SATURATED_PURPLE_DARK, STR_COLOUR_SATURATED_PURPLE_DARK_TIP },
-        { COLOUR_SATURATED_PURPLE_LIGHT, STR_COLOUR_SATURATED_PURPLE_LIGHT_TIP },
-        { COLOUR_ORANGE_LIGHT, STR_COLOUR_ORANGE_LIGHT_TIP },
-        { COLOUR_AQUA_DARK, STR_COLOUR_AQUA_DARK_TIP },
-        { COLOUR_MAGENTA_LIGHT, STR_COLOUR_MAGENTA_LIGHT_TIP },
-        { COLOUR_DULL_BROWN_DARK, STR_COLOUR_DULL_BROWN_DARK_TIP },
-        { COLOUR_DULL_BROWN_LIGHT, STR_COLOUR_DULL_BROWN_LIGHT_TIP },
-        { COLOUR_INVISIBLE, STR_COLOUR_INVISIBLE_TIP },
-        { COLOUR_VOID, STR_COLOUR_VOID_TIP },
-    };
 
     /**
      *
@@ -1330,13 +1268,13 @@ namespace OpenRCT2
                 {
                     gLastCloseModifier.window.number = w->number;
                     gLastCloseModifier.window.classification = w->classification;
-                    gLastCloseModifier.modifier = CloseWindowModifier::Shift;
+                    gLastCloseModifier.modifier = CloseWindowModifier::shift;
                 }
                 else if (im.IsModifierKeyPressed(ModifierKey::ctrl))
                 {
                     gLastCloseModifier.window.number = w->number;
                     gLastCloseModifier.window.classification = w->classification;
-                    gLastCloseModifier.modifier = CloseWindowModifier::Control;
+                    gLastCloseModifier.modifier = CloseWindowModifier::control;
                 }
             }
         }
@@ -1376,7 +1314,7 @@ namespace OpenRCT2
                     }
                 }
 
-                if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
+                if (gInputFlags.has(InputFlag::widgetPressed))
                 {
                     if (_inputState == InputState::DropdownActive)
                     {
@@ -1386,7 +1324,7 @@ namespace OpenRCT2
                     return;
                 }
 
-                _inputFlags |= INPUT_FLAG_WIDGET_PRESSED;
+                gInputFlags.set(InputFlag::widgetPressed);
                 windowMgr->InvalidateWidgetByNumber(cursor_w_class, cursor_w_number, widgetIndex);
                 return;
             case MouseState::LeftRelease:
@@ -1418,11 +1356,11 @@ namespace OpenRCT2
                             else
                             {
                                 dropdown_index = -1;
-                                if (_inputFlags & INPUT_FLAG_DROPDOWN_STAY_OPEN)
+                                if (gInputFlags.has(InputFlag::dropdownStayOpen))
                                 {
-                                    if (!(_inputFlags & INPUT_FLAG_DROPDOWN_MOUSE_UP))
+                                    if (!gInputFlags.has(InputFlag::dropdownMouseUp))
                                     {
-                                        _inputFlags |= INPUT_FLAG_DROPDOWN_MOUSE_UP;
+                                        gInputFlags.set(InputFlag::dropdownMouseUp);
                                         return;
                                     }
                                 }
@@ -1439,9 +1377,9 @@ namespace OpenRCT2
                         else
                         {
                             cursor_w = windowMgr->FindByNumber(cursor_w_class, cursor_w_number);
-                            if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
+                            if (gInputFlags.has(InputFlag::widgetPressed))
                             {
-                                _inputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
+                                gInputFlags.unset(InputFlag::widgetPressed);
                                 windowMgr->InvalidateWidgetByNumber(cursor_w_class, cursor_w_number, cursor_widgetIndex);
                             }
 
@@ -1501,14 +1439,14 @@ namespace OpenRCT2
         if (_inputState != InputState::DropdownActive)
         {
             // Hold down widget and drag outside of area??
-            if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
+            if (gInputFlags.has(InputFlag::widgetPressed))
             {
-                _inputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
+                gInputFlags.unset(InputFlag::widgetPressed);
                 windowMgr->InvalidateWidgetByNumber(cursor_w_class, cursor_w_number, cursor_widgetIndex);
             }
             return;
         }
-        else if (gDropdownIsColour)
+        else if (gDropdownHasTooltips)
         {
             // This is ordinarily covered in InputWidgetOver but the dropdown with colours is a special case.
             InputUpdateTooltip(w, widgetIndex, screenCoords);
@@ -1529,13 +1467,12 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gDropdownIsColour && gDropdownLastColourHover != dropdown_index)
+            if (gDropdownHasTooltips && gDropdownLastTooltipHover != dropdown_index)
             {
-                gDropdownLastColourHover = dropdown_index;
+                gDropdownLastTooltipHover = dropdown_index;
                 WindowTooltipClose();
 
-                WindowTooltipShow(
-                    OpenRCT2String{ kColourToTip.at(ColourDropDownIndexToColour(dropdown_index)), {} }, screenCoords);
+                WindowTooltipShow(OpenRCT2String{ gDropdownTooltips[dropdown_index], {} }, screenCoords);
             }
 
             if (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
@@ -1553,7 +1490,7 @@ namespace OpenRCT2
         }
         else
         {
-            gDropdownLastColourHover = -1;
+            gDropdownLastTooltipHover = -1;
             WindowTooltipClose();
         }
     }
@@ -1659,7 +1596,8 @@ namespace OpenRCT2
         mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
             return;
-        if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
+        if ((mainWindow->flags & WF_NO_SCROLLING)
+            || (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::titleSequence))
             return;
         if (mainWindow->viewport == nullptr)
             return;
@@ -1743,12 +1681,12 @@ namespace OpenRCT2
             }
 
             mainWindow->savedViewPos.x += dx;
-            _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+            gInputFlags.set(InputFlag::viewportScrolling);
         }
         if (scrollScreenCoords.y != 0)
         {
             mainWindow->savedViewPos.y += dy;
-            _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+            gInputFlags.set(InputFlag::viewportScrolling);
         }
     }
 } // namespace OpenRCT2

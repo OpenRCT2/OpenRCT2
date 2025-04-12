@@ -98,13 +98,13 @@ static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex
 
 static void ride_remove_station(Ride& ride, const CoordsXYZ& location)
 {
-    for (auto& station : ride.GetStations())
+    for (auto& station : ride.getStations())
     {
         auto stationStart = station.GetStart();
         if (stationStart == location)
         {
             station.Start.SetNull();
-            ride.num_stations--;
+            ride.numStations--;
             break;
         }
     }
@@ -124,9 +124,9 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
     CoordsXY stationFrontLoc = loc;
     int32_t stationLength = 1;
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation))
+    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation))
     {
-        if (ride->num_stations >= Limits::kMaxStationsPerRide)
+        if (ride->numStations >= Limits::kMaxStationsPerRide)
         {
             return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
         }
@@ -135,13 +135,13 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
             auto stationIndex = RideGetFirstEmptyStationStart(*ride);
             assert(!stationIndex.IsNull());
 
-            auto& station = ride->GetStation(stationIndex);
+            auto& station = ride->getStation(stationIndex);
             station.Start.x = loc.x;
             station.Start.y = loc.y;
             station.Height = loc.z / kCoordsZStep;
             station.Depart = 1;
             station.Length = 0;
-            ride->num_stations++;
+            ride->numStations++;
         }
         return { true };
     }
@@ -195,7 +195,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
     // When attempting to place a track design, it sometimes happens that the front and back of station 0 are built,
     // but the middle is not. Allow this, so the track place function can actually finish building all 4 stations.
     // This _might_ cause issues if the track designs is bugged and actually has 5.
-    if (stationBackLoc == stationFrontLoc && ride->num_stations >= Limits::kMaxStationsPerRide && !fromTrackDesign)
+    if (stationBackLoc == stationFrontLoc && ride->numStations >= Limits::kMaxStationsPerRide && !fromTrackDesign)
     {
         return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
     }
@@ -227,12 +227,12 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
                     }
                     else
                     {
-                        auto& station = ride->GetStation(stationIndex);
+                        auto& station = ride->getStation(stationIndex);
                         station.Start = loc;
                         station.Height = loc.z / kCoordsZStep;
                         station.Depart = 1;
                         station.Length = stationLength;
-                        ride->num_stations++;
+                        ride->numStations++;
                     }
 
                     targetTrackType = TrackElemType::EndStation;
@@ -276,7 +276,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
     int32_t stationLength = 0;
     int32_t ByteF441D1 = -1;
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation))
+    if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation))
     {
         TileElement* tileElement = MapGetTrackElementAtWithDirectionFromRide(loc, rideIndex);
         if (tileElement != nullptr)
@@ -332,8 +332,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
     {
-        if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc)
-            && ride->num_stations >= Limits::kMaxStationsPerRide)
+        if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc) && ride->numStations >= Limits::kMaxStationsPerRide)
         {
             return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
         }
@@ -362,12 +361,12 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
                     }
                     else
                     {
-                        auto& station = ride->GetStation(stationIndex);
+                        auto& station = ride->getStation(stationIndex);
                         station.Start = currentLoc;
                         station.Height = currentLoc.z / kCoordsZStep;
                         station.Depart = 1;
                         station.Length = stationLength != 0 ? stationLength : ByteF441D1;
-                        ride->num_stations++;
+                        ride->numStations++;
                     }
 
                     stationLength = 0;
@@ -775,7 +774,7 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
     const auto& trackBlock = ted.sequences[sequenceIndex].clearance;
     CoordsXY trackBlockOffset = { trackBlock.x, trackBlock.y };
     coords += trackBlockOffset.Rotate(DirectionReverse(direction));
-    coords.z -= trackBlock.z;
+    coords.z += ted.sequences[0].clearance.z - trackBlock.z;
 
     return CoordsXYZD(coords, direction);
 }

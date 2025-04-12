@@ -66,8 +66,8 @@ DiscordService::~DiscordService()
 
 static std::string GetParkName()
 {
-    auto& gameState = GetGameState();
-    return gameState.Park.Name;
+    auto& gameState = getGameState();
+    return gameState.park.Name;
 }
 
 void DiscordService::Tick()
@@ -88,7 +88,7 @@ void DiscordService::RefreshPresence() const
 
     std::string state;
     std::string details;
-    switch (gScreenFlags)
+    switch (gLegacyScene)
     {
         default:
             details = GetParkName();
@@ -127,16 +127,16 @@ void DiscordService::RefreshPresence() const
                 discordPresence.instance = 1;
             }
             break;
-        case SCREEN_FLAGS_TITLE_DEMO:
+        case LegacyScene::titleSequence:
             details = "In Menus";
             break;
-        case SCREEN_FLAGS_SCENARIO_EDITOR:
+        case LegacyScene::scenarioEditor:
             details = "In Scenario Editor";
             break;
-        case SCREEN_FLAGS_TRACK_DESIGNER:
+        case LegacyScene::trackDesigner:
             details = "In Track Designer";
             break;
-        case SCREEN_FLAGS_TRACK_MANAGER:
+        case LegacyScene::trackDesignsManager:
             details = "In Track Designs Manager";
             break;
     }

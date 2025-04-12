@@ -33,5 +33,6 @@ constexpr uint16_t kMaxFootpathRailingsObjects = 255;
 constexpr uint16_t kMaxAudioObjects = 255;
 constexpr uint16_t kMaxPeepNamesObjects = 1;
 constexpr uint16_t kMaxPeepAnimationsObjects = 255;
+constexpr uint16_t kMaxClimateObjects = 1;
 
 constexpr uint8_t kDatNameLength = 8;

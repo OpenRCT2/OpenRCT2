@@ -257,14 +257,15 @@ public:
                     intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
             case WindowClass::Loadsave:
             {
-                uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
+                auto action = intent->GetEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION);
+                auto type = intent->GetEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE);
                 std::string defaultPath = intent->GetStringExtra(INTENT_EXTRA_PATH);
                 LoadSaveCallback callback = reinterpret_cast<LoadSaveCallback>(
                     intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK));
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
                 auto* w = FileBrowser::OpenPreferred(
-                    type, defaultPath,
-                    [callback](int32_t result, std::string_view path) {
+                    action, type, defaultPath,
+                    [callback](ModalResult result, std::string_view path) {
                         if (callback != nullptr)
                         {
                             callback(result, std::string(path).c_str());
@@ -585,6 +586,10 @@ public:
     {
         switch (windowClass)
         {
+            case WindowClass::EditorObjectSelection:
+                EditorObjectSelectionClose();
+                break;
+
             case WindowClass::NetworkStatus:
                 WindowNetworkStatusClose();
                 break;
@@ -687,7 +692,7 @@ public:
     {
         if (loc.x < 0)
             return false;
-        if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (loc.y <= kTopToolbarHeight && gLegacyScene != LegacyScene::titleSequence)
             return false;
         if (loc.x + width > ContextGetWidth())
             return false;
@@ -708,7 +713,7 @@ public:
         unk = screenWidth + (unk * 2);
         if (loc.x > unk)
             return false;
-        if (loc.y <= kTopToolbarHeight && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (loc.y <= kTopToolbarHeight && gLegacyScene != LegacyScene::titleSequence)
             return false;
         unk = screenHeight - (height / 4);
         if (loc.y > unk)
@@ -726,7 +731,7 @@ public:
         else if (screenPos.x + width > screenWidth)
             screenPos.x = screenWidth - width;
 
-        auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (kTopToolbarHeight + 1);
+        auto toolbarAllowance = gLegacyScene == LegacyScene::titleSequence ? 0 : (kTopToolbarHeight + 1);
         if (height - toolbarAllowance > screenHeight || screenPos.y < toolbarAllowance)
             screenPos.y = toolbarAllowance;
         else if (screenPos.y + height - toolbarAllowance > screenHeight)
@@ -930,6 +935,12 @@ public:
      */
     void Close(WindowBase& w) override
     {
+        if (!w.CanClose())
+        {
+            // Something's preventing this window from closing -- bail out early
+            return;
+        }
+
         w.OnClose();
 
         // Remove viewport
@@ -1025,9 +1036,9 @@ public:
     {
         CloseByClass(WindowClass::Dropdown);
 
-        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        if (gLegacyScene == LegacyScene::scenarioEditor)
         {
-            if (GetGameState().EditorStep != EditorStep::LandscapeEditor)
+            if (getGameState().editorStep != EditorStep::LandscapeEditor)
                 return;
         }
 

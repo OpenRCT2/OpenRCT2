@@ -65,7 +65,7 @@ static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo& dpi, cons
         image.Stride = dpi.LineStride();
         image.Palette = palette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
-        Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
+        Imaging::WriteToFile(path, image, ImageFormat::png);
         return true;
     }
     catch (const std::exception& e)
@@ -112,13 +112,13 @@ void ScreenshotCheck()
 
 static std::string ScreenshotGetParkName()
 {
-    return GetGameState().Park.Name;
+    return getGameState().park.Name;
 }
 
 static std::string ScreenshotGetDirectory()
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    return env->GetDirectoryPath(DIRBASE::USER, DIRID::SCREENSHOT);
+    return env->GetDirectoryPath(DirBase::user, DirId::screenshots);
 }
 
 static std::pair<RealWorldDate, RealWorldTime> ScreenshotGetDateTime()
@@ -240,7 +240,7 @@ static DrawPixelInfo CreateDPI(const Viewport& viewport)
 
     if (viewport.flags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND)
     {
-        std::memset(dpi.bits, PALETTE_INDEX_0, static_cast<size_t>(dpi.width) * dpi.height);
+        std::memset(dpi.bits, PaletteIndex::pi0, static_cast<size_t>(dpi.width) * dpi.height);
     }
 
     return dpi;
@@ -257,25 +257,25 @@ static void ReleaseDPI(DrawPixelInfo& dpi)
 
 static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // Get the tile coordinates of each corner
     const TileCoordsXY cornerCoords[2][4] = {
         {
             // Map corners
             { 1, 1 },
-            { gameState.MapSize.x - 2, gameState.MapSize.y - 2 },
-            { 1, gameState.MapSize.y - 2 },
-            { gameState.MapSize.x - 2, 1 },
+            { gameState.mapSize.x - 2, gameState.mapSize.y - 2 },
+            { 1, gameState.mapSize.y - 2 },
+            { gameState.mapSize.x - 2, 1 },
         },
         {
             // Horizontal view clipping corners
             TileCoordsXY{ CoordsXY{ std::max(gClipSelectionA.x, 32), std::max(gClipSelectionA.y, 32) } },
-            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gameState.MapSize.x - 2) * 32),
-                                    std::min(gClipSelectionB.y, (gameState.MapSize.y - 2) * 32) } },
+            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gameState.mapSize.x - 2) * 32),
+                                    std::min(gClipSelectionB.y, (gameState.mapSize.y - 2) * 32) } },
             TileCoordsXY{
-                CoordsXY{ std::max(gClipSelectionA.x, 32), std::min(gClipSelectionB.y, (gameState.MapSize.y - 2) * 32) } },
+                CoordsXY{ std::max(gClipSelectionA.x, 32), std::min(gClipSelectionB.y, (gameState.mapSize.y - 2) * 32) } },
             TileCoordsXY{
-                CoordsXY{ std::min(gClipSelectionB.x, (gameState.MapSize.x - 2) * 32), std::max(gClipSelectionA.y, 32) } },
+                CoordsXY{ std::min(gClipSelectionB.x, (gameState.mapSize.x - 2) * 32), std::max(gClipSelectionA.y, 32) } },
         },
     };
 
@@ -465,7 +465,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             throw std::runtime_error("Failed to load park.");
         }
 
-        gScreenFlags = SCREEN_FLAGS_PLAYING;
+        gLegacyScene = LegacyScene::playing;
 
         Viewport viewport{};
         if (giantScreenshot)
@@ -500,7 +500,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
                 customRotation = std::atoi(argv[7]) & 3;
             }
 
-            const auto& mapSize = GetGameState().MapSize;
+            const auto& mapSize = getGameState().mapSize;
             if (resolutionWidth == 0 || resolutionHeight == 0)
             {
                 resolutionWidth = (mapSize.x * kCoordsXYStep * 2) >> customZoom;
@@ -531,11 +531,11 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             }
             else
             {
-                auto& gameState = GetGameState();
-                viewport.viewPos = { gameState.SavedView
+                auto& gameState = getGameState();
+                viewport.viewPos = { gameState.savedView
                                      - ScreenCoordsXY{ (viewport.ViewWidth() / 2), (viewport.ViewHeight() / 2) } };
-                viewport.zoom = gameState.SavedViewZoom;
-                viewport.rotation = gameState.SavedViewRotation;
+                viewport.zoom = gameState.savedViewZoom;
+                viewport.rotation = gameState.savedViewRotation;
             }
         }
 

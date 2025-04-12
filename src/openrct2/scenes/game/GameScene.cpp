@@ -22,7 +22,7 @@ void GameScene::Load()
 {
     LOG_VERBOSE("GameScene::Load()");
 
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
+    gLegacyScene = LegacyScene::playing;
 
     LOG_VERBOSE("GameScene::Load() finished");
 }
@@ -35,4 +35,9 @@ void GameScene::Tick()
 void GameScene::Stop()
 {
     Audio::StopAll();
+
+    // Force closure of any object selection windows, regardless of valid state.
+    // NB: this is relevant for both in-game scenes and editors, as the window
+    // may be opened in-game using cheats.
+    ContextForceCloseWindowByClass(WindowClass::EditorObjectSelection);
 }

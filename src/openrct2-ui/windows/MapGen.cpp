@@ -112,19 +112,18 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    static constexpr int32_t WW = 300;
-    static constexpr int32_t WH = 220;
-
-#define SHARED_WIDGETS(PAGE_TITLE)                                                                                             \
-    WINDOW_SHIM(PAGE_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */                                             \
-        MakeWidget({ 0, 43 }, { WW, 177 }, WindowWidgetType::Resize, WindowColour::Secondary), /* WIDX_PAGE_BACKGROUND */      \
-        MakeTab({ 3, 17 }),                                                                    /* WIDX_TAB_1 */                \
-        MakeTab({ 34, 17 }),                                                                   /* WIDX_TAB_2 */                \
-        MakeTab({ 65, 17 }),                                                                   /* WIDX_TAB_3 */                \
-        MakeTab({ 96, 17 }),                                                                   /* WIDX_TAB_4 */                \
-        MakeWidget({ 185, 200 }, { 109, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE)
+    static constexpr ScreenSize kWindowSize = { 300, 220 };
 
     // clang-format off
+#define SHARED_WIDGETS(PAGE_TITLE) \
+    WINDOW_SHIM(PAGE_TITLE, kWindowSize.width, kWindowSize.height                                                          ), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
+        MakeWidget({   0, 43 }, { kWindowSize.width, 177 }, WindowWidgetType::Resize, WindowColour::Secondary              ), /* WIDX_PAGE_BACKGROUND */ \
+        MakeTab   ({   3, 17 }                                                                                             ), /* WIDX_TAB_1 */ \
+        MakeTab   ({  34, 17 }                                                                                             ), /* WIDX_TAB_2 */ \
+        MakeTab   ({  65, 17 }                                                                                             ), /* WIDX_TAB_3 */ \
+        MakeTab   ({  96, 17 }                                                                                             ), /* WIDX_TAB_4 */ \
+        MakeWidget({ 185, 200 }, { 109, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE)
+
     static constexpr Widget BaseWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_GENERATOR),
         MakeSpinnerWidgets ({165, 52}, { 50, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
@@ -156,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr Widget WaterWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_WATER),
         MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // NB: 3 widgets
-        MakeWidget        ({ 10,  70}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES),
+        MakeWidget        ({ 10,  70}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES),
     };
 
     static constexpr Widget ForestsWidgets[] = {
@@ -260,7 +259,7 @@ namespace OpenRCT2::Ui::Windows
         Y,
     };
 
-    static void HeightmapLoadsaveCallback(int32_t result, const utf8* path);
+    static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path);
 
     class MapGenWindow final : public Window
     {
@@ -274,6 +273,10 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t newPage)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
+
             page = newPage;
             frame_no = 0;
             RemoveViewport();
@@ -929,7 +932,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_HEIGHTMAP_BROWSE:
                 {
                     auto intent = Intent(WindowClass::Loadsave);
-                    intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
+                    intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+                    intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::heightmap);
                     intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(HeightmapLoadsaveCallback));
                     ContextOpenIntent(&intent);
                     return;
@@ -1180,8 +1184,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawDropdownButtons(DrawPixelInfo& dpi, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::terrainSurface, _settings.landTexture));
+            const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_settings.landTexture);
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -1193,8 +1196,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ImageId edgeImage;
-            const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::terrainEdge, _settings.edgeTexture));
+            const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_settings.edgeTexture);
             if (edgeObj != nullptr)
             {
                 edgeImage = ImageId(edgeObj->IconImageId);
@@ -1504,9 +1506,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void AfterLoadingHeightMap(int32_t result, const utf8* path)
+        void AfterLoadingHeightMap(ModalResult result, const utf8* path)
         {
-            if (result == MODAL_RESULT_OK)
+            if (result == ModalResult::ok)
             {
                 if (!MapGenerator::LoadHeightmapImage(path))
                 {
@@ -1531,10 +1533,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* MapgenOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<MapGenWindow>(WindowClass::Mapgen, WW, WH, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<MapGenWindow>(
+            WindowClass::Mapgen, kWindowSize.width, kWindowSize.height, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
     }
 
-    static void HeightmapLoadsaveCallback(int32_t result, const utf8* path)
+    static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path)
     {
         auto* w = static_cast<MapGenWindow*>(MapgenOpen());
         w->AfterLoadingHeightMap(result, path);

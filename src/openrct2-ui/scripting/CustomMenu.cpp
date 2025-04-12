@@ -18,7 +18,6 @@
     #include <openrct2/Input.h>
     #include <openrct2/ui/UiContext.h>
     #include <openrct2/ui/WindowManager.h>
-    #include <openrct2/world/Map.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;

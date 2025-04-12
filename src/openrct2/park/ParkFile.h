@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2025 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
 #pragma once
 
 #include <cstdint>
@@ -11,10 +20,10 @@ namespace OpenRCT2
     struct GameState_t;
 
     // Current version that is saved.
-    constexpr uint32_t kParkFileCurrentVersion = 51;
+    constexpr uint32_t kParkFileCurrentVersion = 53;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t kParkFileMinVersion = 51;
+    constexpr uint32_t kParkFileMinVersion = 53;
 
     // The minimum version that is backwards compatible with the current version.
     // If this is increased beyond 0, uncomment the checks in ParkFile.cpp and Context.cpp!
@@ -39,6 +48,8 @@ namespace OpenRCT2
     constexpr uint16_t kExtendedStandUpRollerCoasterVersion = 48;
     constexpr uint16_t kPeepAnimationObjectsVersion = 49;
     constexpr uint16_t kDiagonalLongFlatToSteepAndDiveLoopVersion = 50;
+    constexpr uint16_t kEmbeddedParkPreviewChunk = 52;
+    constexpr uint16_t kClimateObjectsVersion = 53;
 } // namespace OpenRCT2
 
 class ParkFileExporter

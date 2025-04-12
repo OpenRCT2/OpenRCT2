@@ -34,7 +34,7 @@ static void PaintFacility(
     bool hasSupports = DrawSupportForSequenceA<TrackElemType::FlatTrack1x1A>(
         session, supportType.wooden, trackSequence, direction, height, GetShopSupportColourScheme(session, trackElement));
 
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 

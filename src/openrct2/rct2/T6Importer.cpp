@@ -50,7 +50,7 @@ namespace OpenRCT2::RCT2
             if (String::iequals(extension, ".td6"))
             {
                 _name = GetNameFromTrackPath(path);
-                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
                 return LoadFromStream(&fs);
             }
 

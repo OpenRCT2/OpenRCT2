@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
 
-            ScreenCoordsXY stringCoords(windowPos.x + 125, windowPos.y + 30);
+            ScreenCoordsXY stringCoords(windowPos.x + 125, windowPos.y + widgets[WIDX_TITLE].bottom + 16);
 
             auto ft = Formatter();
             if (_shortcutCustomName.empty())
@@ -190,10 +190,7 @@ namespace OpenRCT2::Ui::Windows
             InitialiseWidgets();
             InitialiseList();
 
-            min_width = WW;
-            min_height = WH;
-            max_width = WW_SC_MAX;
-            max_height = WH_SC_MAX;
+            WindowSetResize(*this, { WW, WH }, { WW_SC_MAX, WH_SC_MAX });
         }
 
         void OnClose() override
@@ -204,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, min_width, min_height, max_width, max_height);
+            WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
         }
 
         void OnUpdate() override

@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor LaunchedFreefallRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::launchedFreefall,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
                      RtdFlag::hasDataLogging, RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::guestsWillRideAgain,
                      RtdFlag::hasVehicleColours, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::UpwardLaunch, RideMode::DownwardLaunch),
-    .DefaultMode = RideMode::UpwardLaunch,
+    .RideModes = EnumsToFlags(RideMode::upwardLaunch, RideMode::downwardLaunch),
+    .DefaultMode = RideMode::upwardLaunch,
     .OperatingSettings = { 10, 40 },
     .Naming = { STR_RIDE_NAME_LAUNCHED_FREEFALL, STR_RIDE_DESCRIPTION_LAUNCHED_FREEFALL },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },

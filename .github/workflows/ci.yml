@@ -34,7 +34,7 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.4.19.1
+  OPENRCT2_VERSION: 0.4.21
 
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
 concurrency:
@@ -498,7 +498,9 @@ jobs:
         with:
           key: linux-appimage
       - name: Install Clang 15
-        run: apt update && apt install -y clang-15
+        run: apt update && apt install -y clang-15 software-properties-common
+      - name: Install CMake 3.25
+        run: add-apt-repository -y ppa:ecal/cmake-3.25 && apt install -y cmake
       - name: Get pre-reqs
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2

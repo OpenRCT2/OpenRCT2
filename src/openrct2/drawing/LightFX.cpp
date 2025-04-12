@@ -16,7 +16,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
-#include "../interface/Window_internal.h"
+#include "../interface/WindowBase.h"
 #include "../paint/Paint.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -835,7 +835,7 @@ namespace OpenRCT2::Drawing::LightFx
 
     void ApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     {
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
         float night = static_cast<float>(pow(gDayNightCycle, 1.5));
 
@@ -866,9 +866,9 @@ namespace OpenRCT2::Drawing::LightFx
 
         //  overExpose += ((lightMax - lightAvg) / lightMax) * 0.01f;
 
-        if (gameState.WeatherCurrent.temperature > 20)
+        if (gameState.weatherCurrent.temperature > 20)
         {
-            float offset = (static_cast<float>(gameState.WeatherCurrent.temperature - 20)) * 0.04f;
+            float offset = (static_cast<float>(gameState.weatherCurrent.temperature - 20)) * 0.04f;
             offset *= 1.0f - night;
             lightAvg /= 1.0f + offset;
             //      overExpose += offset * 0.1f;
@@ -890,12 +890,12 @@ namespace OpenRCT2::Drawing::LightFx
         natLightB *= 1.0f + overExpose;
         overExpose *= 255.0f;
 
-        float targetFogginess = static_cast<float>(gameState.WeatherCurrent.level) / 8.0f;
+        float targetFogginess = static_cast<float>(gameState.weatherCurrent.level) / 8.0f;
         targetFogginess += (night * night) * 0.15f;
 
-        if (gameState.WeatherCurrent.temperature < 10)
+        if (gameState.weatherCurrent.temperature < 10)
         {
-            targetFogginess += (static_cast<float>(10 - gameState.WeatherCurrent.temperature)) * 0.01f;
+            targetFogginess += (static_cast<float>(10 - gameState.weatherCurrent.temperature)) * 0.01f;
         }
 
         fogginess -= (fogginess - targetFogginess) * 0.00001f;
@@ -933,7 +933,7 @@ namespace OpenRCT2::Drawing::LightFx
         natLightG /= 1.0f + lightPolution;
         natLightB /= 1.0f + lightPolution;
 
-        reduceColourLit += static_cast<float>(gameState.WeatherCurrent.level) / 2.0f;
+        reduceColourLit += static_cast<float>(gameState.weatherCurrent.level) / 2.0f;
 
         reduceColourNat /= 1.0f + fogginess;
         reduceColourLit /= 1.0f + fogginess;

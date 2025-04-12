@@ -75,12 +75,12 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
+    if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST, kStringIdNone);
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, kStringIdNone);
     }
@@ -124,7 +124,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     if (!isGhost)
     {
         RideClearForConstruction(*ride);
-        ride->RemovePeeps();
+        ride->removePeeps();
         InvalidateTestResults(*ride);
     }
 
@@ -157,7 +157,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
 
     TileElementRemove(entranceElement);
 
-    auto& station = ride->GetStation(_stationNum);
+    auto& station = ride->getStation(_stationNum);
     if (_isExit)
     {
         station.Exit.SetNull();

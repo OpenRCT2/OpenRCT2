@@ -112,6 +112,7 @@ namespace OpenRCT2::Ui
         GLuint colour;
         ivec4 bounds;
         GLint depth;
+        GLfloat zoom;
 
         enum
         {

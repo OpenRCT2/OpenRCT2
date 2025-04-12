@@ -380,7 +380,7 @@ std::vector<int32_t> ImageTable::ParseRange(std::string s)
 std::string ImageTable::FindLegacyObject(const std::string& name)
 {
     const auto env = GetContext()->GetPlatformEnvironment();
-    auto objectsPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+    auto objectsPath = env->GetDirectoryPath(DirBase::rct2, DirId::objects);
     auto objectPath = Path::Combine(objectsPath, name);
     if (File::Exists(objectPath))
     {
@@ -512,7 +512,7 @@ std::vector<std::pair<std::string, Image>> ImageTable::GetImageSources(IReadObje
             if (itSource == result.end())
             {
                 auto imageData = context->GetData(path);
-                auto imageFormat = keepPalette ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
+                auto imageFormat = keepPalette ? ImageFormat::png : ImageFormat::png32;
                 auto image = Imaging::ReadFromBuffer(imageData, imageFormat);
                 auto pair = std::make_pair<std::string, Image>(std::move(path), std::move(image));
                 result.push_back(std::move(pair));

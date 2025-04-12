@@ -47,6 +47,7 @@ namespace OpenRCT2
         ProgressBar = 29,
         Custom = 28,
         TextBox = 27,
+        HorizontalSeparator = 30,
     };
 
     using WidgetFlags = uint32_t;
@@ -150,7 +151,7 @@ namespace OpenRCT2
         }
     };
 
-    constexpr uint8_t kCloseButtonWidth = 10;
+    constexpr uint8_t kCloseButtonSize = 10;
 
     constexpr int32_t kScrollableRowHeight = 12;
     constexpr uint8_t kListRowHeight = 12;

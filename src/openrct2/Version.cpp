@@ -71,7 +71,7 @@ NewVersionInfo GetLatestVersion()
     // with invalid data.
     std::string tag = gVersionInfoTag;
     NewVersionInfo verinfo{ tag, "", "", "" };
-#ifndef DISABLE_HTTP
+#if !defined(DISABLE_HTTP) && !defined(DISABLE_VERSION_CHECKER)
     auto now = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     auto then = Config::Get().general.LastVersionCheckTime;
     using namespace std::chrono_literals;

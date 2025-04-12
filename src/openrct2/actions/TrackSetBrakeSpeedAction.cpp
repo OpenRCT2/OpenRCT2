@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../management/Finance.h"
+#include "../ride/RideConstruction.h"
 #include "../world/tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
@@ -82,7 +83,7 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
     {
         GetTrackElementOriginAndApplyChanges(
             { _loc, tileElement->GetDirection() }, tileElement->AsTrack()->GetTrackType(), _brakeSpeed, nullptr,
-            TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED);
+            { TrackElementSetFlag::brakeBoosterSpeed });
     }
     return res;
 }

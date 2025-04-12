@@ -98,10 +98,7 @@ namespace OpenRCT2::Ui::Windows
 
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
 
-            min_width = WW;
-            min_height = WH;
-            max_width = WW;
-            max_height = WH;
+            WindowSetResize(*this, { WW, WH }, { WW, WH });
         }
 
         void OnUpdate() override
@@ -185,13 +182,11 @@ namespace OpenRCT2::Ui::Windows
             min_width = WW;
             min_height = WH;
 
-            WindowSetResize(*this, min_width, min_height, max_width, max_height);
+            WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
         }
 
         void OnPrepareDraw() override
         {
-            Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
-
             ResizeFrameWithPage();
             widgets[WIDX_ZOOM_IN].left = width - 27;
             widgets[WIDX_ZOOM_IN].right = width - 2;
@@ -216,6 +211,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
+                Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
                 viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
                 viewport->height = widgets[WIDX_VIEWPORT].height() - 1;

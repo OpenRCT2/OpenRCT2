@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor FerrisWheelRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4C,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::ferrisWheel,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::ForwardRotation, RideMode::BackwardRotation),
-    .DefaultMode = RideMode::ForwardRotation,
+    .RideModes = EnumsToFlags(RideMode::forwardRotation, RideMode::backwardRotation),
+    .DefaultMode = RideMode::forwardRotation,
     .OperatingSettings = { 1, 3 },
     .Naming = { STR_RIDE_NAME_FERRIS_WHEEL, STR_RIDE_DESCRIPTION_FERRIS_WHEEL },
     .NameConvention = { RideComponentType::Wheel, RideComponentType::Structure, RideComponentType::Station },

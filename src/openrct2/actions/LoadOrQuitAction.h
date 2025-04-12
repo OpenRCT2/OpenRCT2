@@ -22,11 +22,11 @@ class LoadOrQuitAction final : public GameActionBase<GameCommand::LoadOrQuit>
 {
 private:
     LoadOrQuitModes _mode{};
-    PromptMode _savePromptMode{ PromptMode::SaveBeforeLoad };
+    PromptMode _savePromptMode{ PromptMode::saveBeforeLoad };
 
 public:
     LoadOrQuitAction() = default;
-    LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::SaveBeforeLoad);
+    LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::saveBeforeLoad);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

@@ -189,14 +189,12 @@ namespace OpenRCT2::Audio
         uint32_t sampleIndex = EnumValue(id);
         if (id >= SoundId::LiftRMC)
         {
-            audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::audio, _soundsAdditionalAudioObjectEntryIndex));
+            audioObject = objManager.GetLoadedObject<AudioObject>(_soundsAdditionalAudioObjectEntryIndex);
             sampleIndex -= EnumValue(SoundId::LiftRMC);
         }
         else
         {
-            audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::audio, _soundsAudioObjectEntryIndex));
+            audioObject = objManager.GetLoadedObject<AudioObject>(_soundsAudioObjectEntryIndex);
         }
         return std::make_tuple(audioObject, sampleIndex);
     }
@@ -255,7 +253,7 @@ namespace OpenRCT2::Audio
     static bool IsRCT1TitleMusicAvailable()
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto rct1path = env->GetDirectoryPath(DIRBASE::RCT1);
+        auto rct1path = env->GetDirectoryPath(DirBase::rct1);
         return !rct1path.empty();
     }
 
@@ -294,7 +292,7 @@ namespace OpenRCT2::Audio
 
     void PlayTitleMusic()
     {
-        if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || IntroIsPlaying())
+        if (gGameSoundsOff || gLegacyScene != LegacyScene::titleSequence || IntroIsPlaying())
         {
             StopTitleMusic();
             return;
@@ -322,13 +320,18 @@ namespace OpenRCT2::Audio
         }
     }
 
-    void StopAll()
+    void StopSFX()
     {
-        StopTitleMusic();
         StopVehicleSounds();
-        RideAudio::StopAllChannels();
         PeepStopCrowdNoise();
         ClimateStopWeatherSound();
+    }
+
+    void StopAll()
+    {
+        StopSFX();
+        StopTitleMusic();
+        RideAudio::StopAllChannels();
     }
 
     int32_t GetDeviceCount()
@@ -363,7 +366,7 @@ namespace OpenRCT2::Audio
         if (_titleAudioObjectEntryIndex != kObjectEntryIndexNull)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto* obj = objManager.GetLoadedObject(ObjectType::audio, _titleAudioObjectEntryIndex);
+            auto* obj = objManager.GetLoadedObject<AudioObject>(_titleAudioObjectEntryIndex);
             if (obj != nullptr)
             {
                 objManager.UnloadObjects({ obj->GetDescriptor() });
@@ -417,11 +420,7 @@ namespace OpenRCT2::Audio
     void Pause()
     {
         gGameSoundsOff = true;
-        StopVehicleSounds();
-        RideAudio::StopAllChannels();
-        PeepStopCrowdNoise();
-        ClimateStopWeatherSound();
-        StopTitleMusic();
+        StopAll();
     }
 
     void Resume()

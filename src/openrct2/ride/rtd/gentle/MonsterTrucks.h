@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor MonsterTrucksRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::carRide,
@@ -33,8 +33,8 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::showInTrackDesigner, 
                      RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = (1uLL << static_cast<uint8_t>(RideMode::ContinuousCircuit)),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = (1uLL << static_cast<uint8_t>(RideMode::continuousCircuit)),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MONSTER_TRUCKS, STR_RIDE_DESCRIPTION_MONSTER_TRUCKS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),

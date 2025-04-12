@@ -175,7 +175,7 @@ static constexpr WindowThemeDesc WindowThemeDescriptors[] =
     { WindowClass::Research,                    "WC_RESEARCH",                       STR_THEMES_WINDOW_RESEARCH,                       COLOURS_3(opaque(COLOUR_GREY),                     opaque(COLOUR_DARK_YELLOW),              opaque(COLOUR_DARK_YELLOW)                                 ) },
     { WindowClass::Viewport,                    "WC_VIEWPORT",                       STR_THEMES_WINDOW_VIEWPORT,                       COLOURS_3(opaque(COLOUR_DARK_BROWN),               opaque(COLOUR_DARK_BROWN),               opaque(COLOUR_DARK_BROWN)                                  ) },
     { WindowClass::Mapgen,                      "WC_MAPGEN",                         STR_THEMES_WINDOW_MAPGEN,                         COLOURS_3(opaque(COLOUR_DARK_GREEN),               opaque(COLOUR_DARK_BROWN),               opaque(COLOUR_DARK_BROWN)                                  ) },
-    { WindowClass::Loadsave,                    "WC_LOADSAVE",                       STR_THEMES_WINDOW_LOADSAVE,                       COLOURS_3(opaque(COLOUR_LIGHT_BLUE),               opaque(COLOUR_LIGHT_BLUE),               opaque(COLOUR_LIGHT_BLUE)                                  ) },
+    { WindowClass::Loadsave,                    "WC_LOADSAVE",                       STR_THEMES_WINDOW_LOADSAVE,                       COLOURS_3(opaque(COLOUR_DARK_GREEN),               opaque(COLOUR_DARK_GREEN),               opaque(COLOUR_DARK_GREEN)                                  ) },
     { WindowClass::LoadsaveOverwritePrompt,     "WC_LOADSAVE_OVERWRITE_PROMPT",      STR_THEMES_WINDOW_LOADSAVE_OVERWRITE_PROMPT,      COLOURS_1(translucent(COLOUR_BORDEAUX_RED)                                                                                                             ) },
     { WindowClass::TitleOptions,                "WC_TITLE_OPTIONS",                  STR_THEMES_WINDOW_TITLE_MENU_OPTIONS,             COLOURS_3(translucent(COLOUR_DARK_GREEN),          translucent(COLOUR_DARK_GREEN),          translucent(COLOUR_DARK_GREEN)                             ) },
     { WindowClass::LandRights,                  "WC_LAND_RIGHTS",                    STR_THEMES_WINDOW_LAND_RIGHTS,                    COLOURS_3(opaque(COLOUR_DARK_YELLOW),              opaque(COLOUR_DARK_YELLOW),              opaque(COLOUR_DARK_YELLOW)                                 ) },
@@ -688,7 +688,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
         {
             auto context = GetContext();
             auto env = context->GetPlatformEnvironment();
-            return env->GetDirectoryPath(DIRBASE::USER, DIRID::THEME);
+            return env->GetDirectoryPath(DirBase::user, DirId::themes);
         }
     } // namespace ThemeManager
 

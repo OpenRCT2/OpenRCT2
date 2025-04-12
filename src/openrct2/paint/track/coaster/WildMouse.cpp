@@ -199,32 +199,29 @@ static void WildMouseTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t baseImageIds[4] = {
-        SPR_STATION_BASE_B_SW_NE,
-        SPR_STATION_BASE_B_NW_SE,
-        SPR_STATION_BASE_B_SW_NE,
-        SPR_STATION_BASE_B_NW_SE,
-    };
-
     auto trackType = trackElement.GetTrackType();
-    PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(baseImageIds[direction]),
-        { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
     if (trackType == TrackElemType::EndStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
-        PaintAddImageAsChildRotated(
+        PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(_wild_mouse_block_brakes_image_ids[direction][isClosed]),
-            { 0, 0, height }, { { 0, 0, height }, { 32, 20, 2 } });
+            { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 2 } });
     }
     else
     {
-        PaintAddImageAsChildRotated(
+        PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(_wild_mouse_brakes_image_ids[direction]), { 0, 0, height },
-            { { 0, 0, height }, { 32, 20, 2 } });
+            { { 0, 6, height + 1 }, { 32, 20, 2 } });
     }
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+    }
+    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
+    }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -552,15 +549,15 @@ static void WildMouseTrackRightQuarterTurn3(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide);
+                PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide);
+                PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide);
+                PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -616,11 +613,11 @@ static void WildMouseTrackRightQuarterTurn325DegDown(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide);
+                PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide);
+                PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -697,11 +694,11 @@ static void WildMouseTrackRightQuarterTurn325DegUp(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomLeftSide);
+                PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide);
+                PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -760,9 +757,7 @@ static void WildMouseTrackLeftQuarterTurn1(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomLeftSide),
-            direction),
+            EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

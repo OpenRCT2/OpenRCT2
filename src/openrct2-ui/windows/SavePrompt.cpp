@@ -18,7 +18,6 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/network/Network.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 
@@ -74,9 +73,9 @@ namespace OpenRCT2::Ui::Windows
         { STR_NEW_GAME, STR_SAVE_BEFORE_QUITTING },
     };
 
-    static void WindowSavePromptCallback(int32_t result, const utf8* path)
+    static void WindowSavePromptCallback(ModalResult result, const utf8* path)
     {
-        if (result == MODAL_RESULT_OK)
+        if (result == ModalResult::ok)
         {
             GameLoadOrQuitNoSavePrompt();
         }
@@ -95,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            bool canSave = !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER));
+            bool canSave = !(isInTrackDesignerOrManager());
 
             if (canSave)
                 SetWidgets(_savePromptWidgets);
@@ -117,11 +116,11 @@ namespace OpenRCT2::Ui::Windows
             if (canSave)
             {
                 StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
-                if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gLegacyScene == LegacyScene::scenarioEditor)
                 {
                     stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
                 }
-                else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gLegacyScene == LegacyScene::scenarioEditor)
                 {
                     stringId = STR_QUIT_SCENARIO_EDITOR;
                 }
@@ -145,7 +144,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
-            if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+            if (gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
+                || gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 switch (widgetIndex)
                 {
@@ -166,11 +166,12 @@ namespace OpenRCT2::Ui::Windows
                 {
                     std::unique_ptr<Intent> intent;
 
-                    if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
+                    if (isInEditorMode())
                     {
                         intent = std::make_unique<Intent>(WindowClass::Loadsave);
-                        intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                        intent->PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
+                        intent->PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
+                        intent->PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
+                        intent->PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioName);
                     }
                     else
                     {
@@ -205,13 +206,13 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* SavePromptOpen()
     {
         PromptMode prompt_mode = gSavePromptMode;
-        if (prompt_mode == PromptMode::Quit)
+        if (prompt_mode == PromptMode::quit)
         {
-            prompt_mode = PromptMode::SaveBeforeQuit;
+            prompt_mode = PromptMode::saveBeforeQuit;
         }
 
         // do not show save prompt if we're in the title demo and click on load game
-        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        if (gLegacyScene == LegacyScene::titleSequence)
         {
             GameLoadOrQuitNoSavePrompt();
             return nullptr;
@@ -249,7 +250,7 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t width = WW_SAVE;
         int32_t height = WH_SAVE;
-        if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        if (isInTrackDesignerOrManager())
         {
             width = WW_QUIT;
             height = WH_QUIT;

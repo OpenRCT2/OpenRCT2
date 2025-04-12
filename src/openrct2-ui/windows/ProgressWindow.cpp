@@ -12,6 +12,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatting.h>
@@ -34,9 +35,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget kProgressWindowWidgets[] = {
-        MakeWidget({                0, 0}, {    kWindowWidth, kWindowHeight}, WindowWidgetType::Frame,    WindowColour::Primary                                     ), // panel / background
-        MakeWidget({                1, 1}, {kWindowWidth - 3,            14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_STRINGID,  STR_WINDOW_TITLE_TIP), // title bar
-        MakeWidget({kWindowWidth - 12, 2}, {              11,            12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,   STR_CLOSE_WINDOW_TIP), // close x button
+        WINDOW_SHIM(STR_STRINGID, kWindowWidth, kWindowHeight)
     };
 
     struct LoaderVehicleStyle
@@ -83,16 +82,15 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
+            Audio::StopSFX();
             SetWidgets(kProgressWindowWidgets);
             WindowInitScrollWidgets(*this);
+            WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, kWindowHeight });
 
             frame_no = 0;
-            min_width = kWindowWidth;
-            min_height = kWindowHeight;
-            max_width = min_width;
-            max_height = min_height;
 
             ApplyStyle();
+            OnResize();
         }
 
         void OnClose() override

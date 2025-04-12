@@ -32,7 +32,7 @@ bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result)
 {
     try
     {
-        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
         return TryClassifyFile(&fs, result);
     }
     catch (const std::exception&)
@@ -84,7 +84,7 @@ static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* res
         auto magic = stream->ReadValue<uint32_t>();
         if (magic == OpenRCT2::kParkFileMagic)
         {
-            result->Type = FILE_TYPE::PARK;
+            result->Type = FileType::park;
             result->Version = 0;
             success = true;
         }
@@ -108,11 +108,11 @@ static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
         auto s6Header = chunkReader.ReadChunkAs<RCT2::S6Header>();
         if (s6Header.Type == S6_TYPE_SAVEDGAME)
         {
-            result->Type = FILE_TYPE::SAVED_GAME;
+            result->Type = FileType::savedGame;
         }
         else if (s6Header.Type == S6_TYPE_SCENARIO)
         {
-            result->Type = FILE_TYPE::SCENARIO;
+            result->Type = FileType::scenario;
         }
         result->Version = s6Header.Version;
         success = true;
@@ -142,13 +142,13 @@ static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
 
         if (type == FILE_TYPE_SV4)
         {
-            result->Type = FILE_TYPE::SAVED_GAME;
+            result->Type = FileType::savedGame;
             result->Version = version;
             success = true;
         }
         else if (type == FILE_TYPE_SC4)
         {
-            result->Type = FILE_TYPE::SCENARIO;
+            result->Type = FileType::scenario;
             result->Version = version;
             success = true;
         }
@@ -183,7 +183,7 @@ static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* 
                 uint8_t version = (td6data.get()[7] >> 2) & 3;
                 if (version <= 2)
                 {
-                    result->Type = FILE_TYPE::TRACK_DESIGN;
+                    result->Type = FileType::trackDesign;
                     result->Version = version;
                     success = true;
                 }

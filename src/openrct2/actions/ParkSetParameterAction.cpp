@@ -57,27 +57,27 @@ GameActions::Result ParkSetParameterAction::Query() const
 
 GameActions::Result ParkSetParameterAction::Execute() const
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto* windowMgr = Ui::GetWindowManager();
 
     switch (_parameter)
     {
         case ParkParameter::Close:
-            if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
+            if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_PARK_OPEN;
+                gameState.park.Flags &= ~PARK_FLAGS_PARK_OPEN;
                 windowMgr->InvalidateByClass(WindowClass::ParkInformation);
             }
             break;
         case ParkParameter::Open:
-            if (!(gameState.Park.Flags & PARK_FLAGS_PARK_OPEN))
+            if (!(gameState.park.Flags & PARK_FLAGS_PARK_OPEN))
             {
-                gameState.Park.Flags |= PARK_FLAGS_PARK_OPEN;
+                gameState.park.Flags |= PARK_FLAGS_PARK_OPEN;
                 windowMgr->InvalidateByClass(WindowClass::ParkInformation);
             }
             break;
         case ParkParameter::SamePriceInPark:
-            gameState.SamePriceThroughoutPark = _value;
+            gameState.samePriceThroughoutPark = _value;
             windowMgr->InvalidateByClass(WindowClass::Ride);
             break;
         default:

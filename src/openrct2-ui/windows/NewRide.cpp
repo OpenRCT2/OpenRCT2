@@ -43,7 +43,8 @@ using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WindowTitle = kStringIdNone;
-    static constexpr int32_t WindowHeight = 382;
+    static constexpr int32_t kWindowHeight = 382;
+    static constexpr int32_t kWindowHeightResearch = 194;
     static constexpr int32_t WindowWidth = 601;
     static constexpr int32_t RideListItemsMax = 384;
     static constexpr int32_t RideTabCount = 6;
@@ -209,7 +210,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget window_new_ride_widgets[] = {
-        WINDOW_SHIM(WindowTitle, WindowWidth, WindowHeight),
+        WINDOW_SHIM(WindowTitle, WindowWidth, kWindowHeight),
         MakeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
         MakeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
         MakeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
@@ -280,9 +281,9 @@ namespace OpenRCT2::Ui::Windows
         RideSelection _windowNewRideListItems[RideListItemsMax]{};
         struct NewRideVariables
         {
-            RideSelection SelectedRide;
-            RideSelection HighlightedRide;
-            uint16_t SelectedRideCountdown;
+            RideSelection SelectedRide{};
+            RideSelection HighlightedRide{};
+            uint16_t SelectedRideCountdown{};
         } _newRideVars{};
 
     public:
@@ -402,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TAB_7].type = WindowWidgetType::Tab;
             widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
 
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+            if (gLegacyScene == LegacyScene::trackDesigner)
                 widgets[WIDX_TAB_7].type = WindowWidgetType::Empty;
 
             if (_currentTab == RESEARCH_TAB)
@@ -538,6 +539,10 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(NewRideTabId tab)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (_currentTab == tab && !widgets.empty())
+                return;
+
             _currentTab = tab;
             frame_no = 0;
             _newRideVars.HighlightedRide = { kRideTypeNull, kObjectEntryIndexNull };
@@ -619,7 +624,7 @@ namespace OpenRCT2::Ui::Windows
                 auto currentRideEntry = GetRideEntryByIndex(rideEntryIndex);
 
                 // Skip if vehicle type is not invented yet
-                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.ignoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !getGameState().cheats.ignoreResearchStatus)
                 {
                     continue;
                 }
@@ -658,7 +663,7 @@ namespace OpenRCT2::Ui::Windows
                 if (rideType == kRideTypeNull)
                     continue;
 
-                if (GetRideTypeDescriptor(rideType).Category != currentCategory)
+                if (EnumValue(GetRideTypeDescriptor(rideType).Category) != currentCategory)
                     continue;
 
                 nextListItem = IterateOverRideType(rideType, nextListItem, listEnd);
@@ -681,7 +686,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto rideEntryIndex : rideEntries)
             {
                 // Skip if vehicle type is not invented yet
-                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.ignoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !getGameState().cheats.ignoreResearchStatus)
                     continue;
 
                 // Ride entries
@@ -837,7 +842,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::Empty;
 
                 newWidth = WindowWidth;
-                newHeight = WindowHeight;
+                newHeight = kWindowHeight;
             }
             else
             {
@@ -847,11 +852,11 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-                if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+                if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
                     widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::FlatBtn;
 
                 newWidth = 300;
-                newHeight = 196;
+                newHeight = kWindowHeightResearch;
             }
 
             // Handle new window size
@@ -957,7 +962,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
             // Price
-            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // Get price of ride
                 auto startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
@@ -1055,7 +1060,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowNewRideInitVars()
     {
         // If we are in the track designer, default to the Roller Coaster tab
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+        if (gLegacyScene == LegacyScene::trackDesigner)
         {
             NewRideWindow::SetOpeningPage(ROLLER_COASTER_TAB);
         }
@@ -1083,7 +1088,7 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
 
         window = windowMgr->Create<NewRideWindow>(
-            WindowClass::ConstructRide, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);
+            WindowClass::ConstructRide, WindowWidth, kWindowHeight, WF_10 | WF_AUTO_POSITION);
         return window;
     }
 
@@ -1112,6 +1117,6 @@ namespace OpenRCT2::Ui::Windows
             return;
 
         auto rideTypeIndex = rideEntry->GetFirstNonNullRideType();
-        w->SetPage(GetRideTypeDescriptor(rideTypeIndex).Category);
+        w->SetPage(EnumValue(GetRideTypeDescriptor(rideTypeIndex).Category));
     }
 } // namespace OpenRCT2::Ui::Windows

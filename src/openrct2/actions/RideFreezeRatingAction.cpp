@@ -70,7 +70,7 @@ GameActions::Result RideFreezeRatingAction::Execute() const
             break;
     }
 
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_FIXED_RATINGS;
+    ride->lifecycleFlags |= RIDE_LIFECYCLE_FIXED_RATINGS;
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());

@@ -9,16 +9,10 @@
 
 #pragma once
 
-#include <cstdint>
+#include "../core/EnumUtils.hpp"
 
-enum class ClimateType : uint8_t
-{
-    CoolAndWet,
-    Warm,
-    HotAndDry,
-    Cold,
-    Count
-};
+#include <array>
+#include <cstdint>
 
 enum class WeatherType : uint8_t
 {
@@ -32,6 +26,29 @@ enum class WeatherType : uint8_t
     HeavySnow,
     Blizzard,
     Count
+};
+
+static constexpr auto kNumWeatherTypes = EnumValue(WeatherType::Count);
+static constexpr auto kNumClimateMonths = 8;
+static constexpr auto kWeatherDistSize = 23;
+
+struct WeatherPattern
+{
+    int8_t baseTemperature;
+    int8_t randomBias;
+    WeatherType distribution[kWeatherDistSize];
+};
+
+struct TemperatureThresholds
+{
+    int8_t cold;
+    int8_t warm;
+};
+
+struct Climate
+{
+    std::array<WeatherPattern, kNumClimateMonths> patterns;
+    TemperatureThresholds itemThresholds;
 };
 
 enum class WeatherEffectType : uint8_t
@@ -62,7 +79,7 @@ struct WeatherState
 extern uint16_t gClimateLightningFlash;
 
 int32_t ClimateCelsiusToFahrenheit(int32_t celsius);
-void ClimateReset(ClimateType climate);
+void ClimateReset();
 void ClimateUpdate();
 void ClimateUpdateSound();
 void ClimateStopWeatherSound();
@@ -71,8 +88,9 @@ void ClimateForceWeather(WeatherType weather);
 enum class FilterPaletteID : int32_t;
 
 bool ClimateIsRaining();
+bool ClimateTransitioningToSnow();
 bool ClimateIsSnowing();
 bool ClimateIsSnowingHeavily();
 bool WeatherIsDry(WeatherType);
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state);
-uint32_t ClimateGetWeatherSpriteId(const WeatherState& state);
+uint32_t ClimateGetWeatherSpriteId(const WeatherType weatherType);

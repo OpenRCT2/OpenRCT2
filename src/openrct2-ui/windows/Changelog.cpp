@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
         /**
          * @brief Retrieves the changelog contents.
          */
-        const std::string GetText(PATHID pathId)
+        const std::string GetText(PathId pathId)
         {
             auto env = GetContext()->GetPlatformEnvironment();
             auto path = env->GetFilePath(pathId);
@@ -99,7 +99,7 @@ namespace OpenRCT2::Ui::Windows
                     return true;
 
                 case WV_CHANGELOG:
-                    if (!ReadFile(PATHID::CHANGELOG))
+                    if (!ReadFile(PathId::changelog))
                     {
                         return false;
                     }
@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
                     return true;
 
                 case WV_CONTRIBUTORS:
-                    if (!ReadFile(PATHID::CONTRIBUTORS))
+                    if (!ReadFile(PathId::contributors))
                     {
                         return false;
                     }
@@ -122,42 +122,29 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void SetResizeDimensions()
+        {
+            int32_t screenWidth = ContextGetWidth();
+            int32_t screenHeight = ContextGetHeight();
+
+            WindowSetResize(*this, { MIN_WW, MIN_WH }, { (screenWidth * 4) / 5, (screenHeight * 4) / 5 });
+        }
+
         void OnOpen() override
         {
             SetWidgets(_windowChangelogWidgets);
 
             WindowInitScrollWidgets(*this);
-            min_width = MIN_WW;
-            min_height = MIN_WH;
-            max_width = MIN_WW;
-            max_height = MIN_WH;
+            SetResizeDimensions();
         }
 
         void OnResize() override
         {
-            int32_t screenWidth = ContextGetWidth();
-            int32_t screenHeight = ContextGetHeight();
-
-            max_width = (screenWidth * 4) / 5;
-            max_height = (screenHeight * 4) / 5;
-
-            min_width = MIN_WW;
-            min_height = MIN_WH;
+            SetResizeDimensions();
 
             auto download_button_width = widgets[WIDX_OPEN_URL].width();
             widgets[WIDX_OPEN_URL].left = (width - download_button_width) / 2;
             widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + download_button_width;
-
-            if (width < min_width)
-            {
-                Invalidate();
-                width = min_width;
-            }
-            if (height < min_height)
-            {
-                Invalidate();
-                height = min_height;
-            }
         }
 
         void OnPrepareDraw() override
@@ -259,14 +246,14 @@ namespace OpenRCT2::Ui::Windows
         std::string GetChangelogPath()
         {
             auto env = GetContext()->GetPlatformEnvironment();
-            return env->GetFilePath(PATHID::CHANGELOG);
+            return env->GetFilePath(PathId::changelog);
         }
 
         /**
          * @brief Attempts to read the changelog file, returns true on success
          *
          */
-        bool ReadFile(PATHID pathId)
+        bool ReadFile(PathId pathId)
         {
             std::string _text;
             try

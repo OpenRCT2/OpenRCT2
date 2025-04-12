@@ -62,7 +62,6 @@
 #include "rct2/RCT2.h"
 #include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
-#include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
 #include "scenes/intro/IntroScene.h"
@@ -73,6 +72,7 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
+#include "world/MapAnimation.h"
 #include "world/Park.h"
 
 #include <chrono>
@@ -159,6 +159,8 @@ namespace OpenRCT2
         // We keep track of this to perform certain operations differently.
         std::thread::id _mainThreadId{};
         Timer _forcedUpdateTimer;
+
+        BackgroundWorker _backgroundWorker;
 
     public:
         // Singleton of Context.
@@ -395,7 +397,7 @@ namespace OpenRCT2
 
         void Quit() override
         {
-            gSavePromptMode = PromptMode::Quit;
+            gSavePromptMode = PromptMode::quit;
             ContextOpenWindow(WindowClass::SavePrompt);
         }
 
@@ -459,7 +461,7 @@ namespace OpenRCT2
                 {
                     return false;
                 }
-                _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
+                _env->SetBasePath(DirBase::rct2, rct2InstallPath);
             }
 
             // The repositories are all dependent on the RCT2 path being set,
@@ -738,7 +740,7 @@ namespace OpenRCT2
                     return true;
                 }
 
-                auto fs = FileStream(path, FILE_MODE_OPEN);
+                auto fs = FileStream(path, FileMode::open);
                 if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail, asScenario))
                 {
                     return false;
@@ -770,13 +772,13 @@ namespace OpenRCT2
                     throw std::runtime_error("Unable to detect file type");
                 }
 
-                if (info.Type != FILE_TYPE::PARK && info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
+                if (info.Type != FileType::park && info.Type != FileType::savedGame && info.Type != FileType::scenario)
                 {
                     throw std::runtime_error("Invalid file type.");
                 }
 
                 std::unique_ptr<IParkImporter> parkImporter;
-                if (info.Type == FILE_TYPE::PARK)
+                if (info.Type == FileType::park)
                 {
                     parkImporter = ParkImporter::CreateParkFile(*_objectRepository);
                 }
@@ -797,7 +799,7 @@ namespace OpenRCT2
                 OpenProgress(asScenario ? STR_LOADING_SCENARIO : STR_LOADING_SAVED_GAME);
                 SetProgress(0, 100, STR_STRING_M_PERCENT);
 
-                auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                auto result = parkImporter->LoadFromStream(stream, info.Type == FileType::scenario, false, path.c_str());
                 SetProgress(10, 100, STR_STRING_M_PERCENT);
 
                 // From this point onwards the currently loaded park will be corrupted if loading fails
@@ -809,7 +811,7 @@ namespace OpenRCT2
                 SetProgress(90, 100, STR_STRING_M_PERCENT);
 
                 // TODO: Have a separate GameState and exchange once loaded.
-                auto& gameState = ::GetGameState();
+                auto& gameState = ::getGameState();
                 parkImporter->Import(gameState);
                 SetProgress(100, 100, STR_STRING_M_PERCENT);
 
@@ -828,7 +830,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 bool sendMap = false;
 #endif
-                if (!asScenario && (info.Type == FILE_TYPE::PARK || info.Type == FILE_TYPE::SAVED_GAME))
+                if (!asScenario && (info.Type == FileType::park || info.Type == FileType::savedGame))
                 {
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_CLIENT)
@@ -1333,6 +1335,8 @@ namespace OpenRCT2
                 _ticksAccumulator -= kGameUpdateTimeMS;
             }
 
+            _backgroundWorker.dispatchCompleted();
+
             ContextHandleInput();
             WindowUpdateAll();
 
@@ -1365,6 +1369,8 @@ namespace OpenRCT2
                 if (shouldDraw)
                     tweener.PostTick();
             }
+
+            _backgroundWorker.dispatchCompleted();
 
             ContextHandleInput();
             WindowUpdateAll();
@@ -1429,24 +1435,24 @@ namespace OpenRCT2
         void EnsureUserContentDirectoriesExist()
         {
             EnsureDirectoriesExist(
-                DIRBASE::USER,
+                DirBase::user,
                 {
-                    DIRID::OBJECT,
-                    DIRID::SAVE,
-                    DIRID::SCENARIO,
-                    DIRID::TRACK,
-                    DIRID::LANDSCAPE,
-                    DIRID::HEIGHTMAP,
-                    DIRID::PLUGIN,
-                    DIRID::THEME,
-                    DIRID::SEQUENCE,
-                    DIRID::REPLAY,
-                    DIRID::LOG_DESYNCS,
-                    DIRID::CRASH,
+                    DirId::objects,
+                    DirId::saves,
+                    DirId::scenarios,
+                    DirId::trackDesigns,
+                    DirId::landscapes,
+                    DirId::heightmaps,
+                    DirId::plugins,
+                    DirId::themes,
+                    DirId::sequences,
+                    DirId::replayRecordings,
+                    DirId::desyncLogs,
+                    DirId::crashDumps,
                 });
         }
 
-        void EnsureDirectoriesExist(const DIRBASE dirBase, const std::initializer_list<DIRID>& dirIds)
+        void EnsureDirectoriesExist(const DirBase dirBase, const std::initializer_list<DirId>& dirIds)
         {
             for (const auto& dirId : dirIds)
             {
@@ -1461,14 +1467,14 @@ namespace OpenRCT2
          */
         void CopyOriginalUserFilesOver()
         {
-            CopyOriginalUserFilesOver(DIRID::SAVE, "*.sv6");
-            CopyOriginalUserFilesOver(DIRID::LANDSCAPE, "*.sc6");
+            CopyOriginalUserFilesOver(DirId::saves, "*.sv6");
+            CopyOriginalUserFilesOver(DirId::landscapes, "*.sc6");
         }
 
-        void CopyOriginalUserFilesOver(DIRID dirid, const std::string& pattern)
+        void CopyOriginalUserFilesOver(DirId dirid, const std::string& pattern)
         {
-            auto src = _env->GetDirectoryPath(DIRBASE::RCT2, dirid);
-            auto dst = _env->GetDirectoryPath(DIRBASE::USER, dirid);
+            auto src = _env->GetDirectoryPath(DirBase::rct2, dirid);
+            auto dst = _env->GetDirectoryPath(DirBase::user, dirid);
             CopyOriginalUserFilesOver(src, dst, pattern);
         }
 
@@ -1549,6 +1555,11 @@ namespace OpenRCT2
         float GetTimeScale() const override
         {
             return _timeScale;
+        }
+
+        BackgroundWorker& GetBackgroundWorker() override
+        {
+            return _backgroundWorker;
         }
     };
 
@@ -1663,7 +1674,7 @@ void ContextTriggerResize()
 
 void ContextSetFullscreenMode(int32_t mode)
 {
-    return GetContext()->GetUiContext()->SetFullscreenMode(static_cast<FULLSCREEN_MODE>(mode));
+    return GetContext()->GetUiContext()->SetFullscreenMode(static_cast<FullscreenMode>(mode));
 }
 
 void ContextRecreateWindow()

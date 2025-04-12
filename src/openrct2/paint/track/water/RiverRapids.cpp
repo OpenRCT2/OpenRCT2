@@ -14,7 +14,6 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
-#include "../../../scenario/Scenario.h"
 #include "../../../world/Map.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -219,7 +218,7 @@ static void PaintRiverRapidsStation(
     const TrackElement& trackElement, SupportType supportType)
 {
     PaintRiverRapidsTrackFlat(session, ride, trackSequence, direction, height, trackElement, supportType);
-    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement);
+    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement, StationBaseType::none, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -527,7 +526,7 @@ static void PaintRiverRapidsTrackWaterfall(
 {
     ImageId imageId;
 
-    uint16_t frameNum = (GetGameState().CurrentTicks / 2) & 7;
+    uint16_t frameNum = (getGameState().currentTicks / 2) & 7;
 
     if (direction & 1)
     {
@@ -598,7 +597,7 @@ static void PaintRiverRapidsTrackRapids(
 {
     ImageId imageId;
 
-    uint16_t frameNum = (GetGameState().CurrentTicks / 2) & 7;
+    uint16_t frameNum = (getGameState().currentTicks / 2) & 7;
 
     if (direction & 1)
     {
@@ -650,7 +649,7 @@ static void PaintRiverRapidsTrackWhirlpool(
 {
     ImageId imageId;
 
-    uint8_t frameNum = (GetGameState().CurrentTicks / 4) % 16;
+    uint8_t frameNum = (getGameState().currentTicks / 4) % 16;
 
     if (direction & 1)
     {

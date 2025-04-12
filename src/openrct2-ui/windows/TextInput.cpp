@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t newHeight = CalculateWindowHeight(_buffer.data());
             if (newHeight != height)
             {
-                WindowSetResize(*this, WW, newHeight, WW, newHeight);
+                WindowSetResize(*this, { WW, newHeight }, { WW, newHeight });
             }
 
             widgets[WIDX_OKAY].top = newHeight - 22;
@@ -198,8 +198,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
 
-            ScreenCoordsXY screenCoords;
-            screenCoords.y = windowPos.y + 25;
+            auto screenCoords = windowPos + ScreenCoordsXY{ WW / 2, widgets[WIDX_TITLE].bottom + 13 };
 
             int32_t no_lines = 0;
 
@@ -207,14 +206,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(_description.c_str());
-                DrawTextWrapped(
-                    dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+                DrawTextWrapped(dpi, screenCoords, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
             }
             else
             {
                 DrawTextWrapped(
-                    dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, _descriptionArgs,
-                    { colours[1], TextAlignment::CENTRE });
+                    dpi, screenCoords, WW, _descriptionStringId, _descriptionArgs, { colours[1], TextAlignment::CENTRE });
             }
 
             screenCoords.y += 25;

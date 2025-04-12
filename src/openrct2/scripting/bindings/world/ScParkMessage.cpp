@@ -43,7 +43,7 @@ namespace OpenRCT2::Scripting
 
     News::Item* ScParkMessage::GetMessage() const
     {
-        return &GetGameState().NewsItems[_index];
+        return &getGameState().newsItems[_index];
     }
 
     bool ScParkMessage::isArchived_get() const

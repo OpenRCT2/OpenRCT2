@@ -64,11 +64,10 @@ bool SurfaceElement::CanGrassGrow() const
 {
     auto surfaceStyle = GetSurfaceObjectIndex();
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::terrainSurface, surfaceStyle);
-    if (obj != nullptr)
+    const auto* surfaceObject = objMgr.GetLoadedObject<TerrainSurfaceObject>(surfaceStyle);
+    if (surfaceObject != nullptr)
     {
-        const auto* surfaceObject = static_cast<TerrainSurfaceObject*>(obj);
-        if (surfaceObject->Flags & TERRAIN_SURFACE_FLAGS::CAN_GROW)
+        if (surfaceObject->Flags & TerrainSurfaceFlags::canGrow)
         {
             return true;
         }

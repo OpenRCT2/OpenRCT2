@@ -32,11 +32,11 @@ TEST(FetchAndApplyScenarioPatch, expected_json_format)
     ASSERT_TRUE(initialised);
 
     auto env = context->GetPlatformEnvironment();
-    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DIRBASE::OPENRCT2, OpenRCT2::DIRID::SCENARIO_PATCHES);
+    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DirId::scenarioPatches);
 
     std::error_code ec;
     OpenRCT2::RCT12::SetDryRun(true);
-    OpenRCT2::Guard::SetAssertBehaviour(ASSERT_BEHAVIOUR::ABORT);
+    OpenRCT2::Guard::SetAssertBehaviour(AssertBehaviour::abort);
     static const u8string dummySHA;
     for (const fs::directory_entry& entry : fs::directory_iterator(scenarioPatches, ec))
     {

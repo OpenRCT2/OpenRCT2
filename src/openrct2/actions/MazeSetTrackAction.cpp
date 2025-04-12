@@ -99,8 +99,8 @@ GameActions::Result MazeSetTrackAction::Query() const
         res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
-    auto& gameState = GetGameState();
-    if (!MapIsLocationOwned(_loc) && !gameState.Cheats.sandboxMode)
+    auto& gameState = getGameState();
+    if (!MapIsLocationOwned(_loc) && !gameState.cheats.sandboxMode)
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -125,12 +125,12 @@ GameActions::Result MazeSetTrackAction::Query() const
     auto clearanceHeight = _loc.z + 32;
 
     auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
-    if (heightDifference >= 0 && !gameState.Cheats.disableSupportLimits)
+    if (heightDifference >= 0 && !gameState.cheats.disableSupportLimits)
     {
         heightDifference /= kCoordsZPerTinyZ;
 
         auto* ride = GetRide(_rideIndex);
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
             res.Error = GameActions::Status::TooHigh;
@@ -232,13 +232,13 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
         MapInvalidateTileFull(startLoc);
 
-        ride->maze_tiles++;
-        ride->GetStation().SetBaseZ(tileElement->GetBaseZ());
-        ride->GetStation().Start = { 0, 0 };
+        ride->mazeTiles++;
+        ride->getStation().SetBaseZ(tileElement->GetBaseZ());
+        ride->getStation().Start = { 0, 0 };
 
         if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            ride->overall_view = startLoc;
+            ride->overallView = startLoc;
         }
     }
 
@@ -333,8 +333,8 @@ GameActions::Result MazeSetTrackAction::Execute() const
     if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
     {
         TileElementRemove(tileElement);
-        ride->ValidateStations();
-        ride->maze_tiles--;
+        ride->validateStations();
+        ride->mazeTiles--;
     }
 
     return res;

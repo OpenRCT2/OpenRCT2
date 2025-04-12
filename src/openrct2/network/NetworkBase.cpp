@@ -32,11 +32,11 @@
 #include "../localisation/LocalisationService.h"
 #include "../park/ParkFile.h"
 #include "../platform/Platform.h"
-#include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
+#include "../world/MapAnimation.h"
 #include "Network.h"
 
 #include <cassert>
@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kNetworkStreamVersion = 3;
+constexpr uint8_t kNetworkStreamVersion = 1;
 
 const std::string kNetworkStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kNetworkStreamVersion);
 
@@ -81,7 +81,6 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     #include "../localisation/Localisation.Date.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
-    #include "../scenario/Scenario.h"
     #include "../world/Park.h"
     #include "NetworkAction.h"
     #include "NetworkConnection.h"
@@ -303,7 +302,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 
         try
         {
-            auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+            auto fs = FileStream(keyPath, FileMode::write);
             _key.SavePrivate(&fs);
         }
         catch (const std::exception&)
@@ -319,7 +318,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 
         try
         {
-            auto fs = FileStream(keyPath, FILE_MODE_WRITE);
+            auto fs = FileStream(keyPath, FileMode::write);
             _key.SavePublic(&fs);
         }
         catch (const std::exception&)
@@ -335,7 +334,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         try
         {
             LOG_VERBOSE("Loading key from %s", keyPath.c_str());
-            auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+            auto fs = FileStream(keyPath, FileMode::open);
             ok = _key.LoadPrivate(&fs);
         }
         catch (const std::exception&)
@@ -842,7 +841,7 @@ bool NetworkBase::IsDesynchronised() const noexcept
 
 bool NetworkBase::CheckDesynchronizaton()
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     // Check synchronisation
     if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerStatus::Desynced
@@ -1020,7 +1019,7 @@ void NetworkBase::SaveGroups()
     if (GetMode() == NETWORK_MODE_SERVER)
     {
         auto env = GetContext().GetPlatformEnvironment();
-        auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"groups.json");
+        auto path = Path::Combine(env->GetDirectoryPath(DirBase::user), u8"groups.json");
 
         json_t jsonGroups = json_t::array();
         for (auto& group : group_list)
@@ -1080,7 +1079,7 @@ void NetworkBase::LoadGroups()
     group_list.clear();
 
     auto env = GetContext().GetPlatformEnvironment();
-    auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"groups.json");
+    auto path = Path::Combine(env->GetDirectoryPath(DirBase::user), u8"groups.json");
 
     json_t jsonGroupConfig;
     if (File::Exists(path))
@@ -1167,7 +1166,7 @@ void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
 void NetworkBase::BeginChatLog()
 {
     auto env = GetContext().GetPlatformEnvironment();
-    auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
+    auto directory = env->GetDirectoryPath(DirBase::user, DirId::chatLogs);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
     _chat_log_fs.open(fs::u8path(_chatLogPath), std::ios::out | std::ios::app);
 }
@@ -1188,7 +1187,7 @@ void NetworkBase::CloseChatLog()
 void NetworkBase::BeginServerLog()
 {
     auto env = GetContext().GetPlatformEnvironment();
-    auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
+    auto directory = env->GetDirectoryPath(DirBase::user, DirId::serverLogs);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
     _server_log_fs.open(fs::u8path(_serverLogPath), std::ios::out | std::ios::app | std::ios::binary);
 
@@ -1557,7 +1556,7 @@ void NetworkBase::Client_Send_GAME_ACTION(const GameAction* action)
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-    packet << GetGameState().CurrentTicks << action->GetType() << stream;
+    packet << getGameState().currentTicks << action->GetType() << stream;
     _serverConnection->QueuePacket(std::move(packet));
 }
 
@@ -1568,7 +1567,7 @@ void NetworkBase::ServerSendGameAction(const GameAction* action)
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-    packet << GetGameState().CurrentTicks << action->GetType() << stream;
+    packet << getGameState().currentTicks << action->GetType() << stream;
 
     SendPacketToClients(packet);
 }
@@ -1576,7 +1575,7 @@ void NetworkBase::ServerSendGameAction(const GameAction* action)
 void NetworkBase::ServerSendTick()
 {
     NetworkPacket packet(NetworkCommand::Tick);
-    packet << GetGameState().CurrentTicks << ScenarioRandState().s0;
+    packet << getGameState().currentTicks << ScenarioRandState().s0;
     uint32_t flags = 0;
     // Simple counter which limits how often a sprite checksum gets sent.
     // This can get somewhat expensive, so we don't want to push it every tick in release,
@@ -1603,7 +1602,7 @@ void NetworkBase::ServerSendTick()
 void NetworkBase::ServerSendPlayerInfo(int32_t playerId)
 {
     NetworkPacket packet(NetworkCommand::PlayerInfo);
-    packet << GetGameState().CurrentTicks;
+    packet << getGameState().currentTicks;
 
     auto* player = GetPlayerByID(playerId);
     if (player == nullptr)
@@ -1616,7 +1615,7 @@ void NetworkBase::ServerSendPlayerInfo(int32_t playerId)
 void NetworkBase::ServerSendPlayerList()
 {
     NetworkPacket packet(NetworkCommand::PlayerList);
-    packet << GetGameState().CurrentTicks << static_cast<uint8_t>(player_list.size());
+    packet << getGameState().currentTicks << static_cast<uint8_t>(player_list.size());
     for (auto& player : player_list)
     {
         player->Write(packet);
@@ -1824,7 +1823,7 @@ static bool ProcessPlayerAuthenticatePluginHooks(
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_AUTHENTICATE))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkAuthenticate))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1837,7 +1836,7 @@ static bool ProcessPlayerAuthenticatePluginHooks(
         auto e = eObj.Take();
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_AUTHENTICATE, e, false);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::networkAuthenticate, e, false);
 
         // Check if any hook has cancelled the join
         if (AsOrDefault(e["cancel"], false))
@@ -1855,7 +1854,7 @@ static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_JOIN))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkJoin))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1865,7 +1864,7 @@ static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
         auto e = eObj.Take();
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_JOIN, e, false);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::networkJoin, e, false);
     }
     #endif
 }
@@ -1876,7 +1875,7 @@ static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_LEAVE))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkLeave))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1886,7 +1885,7 @@ static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
         auto e = eObj.Take();
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_LEAVE, e, false);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::networkLeave, e, false);
     }
     #endif
 }
@@ -1910,7 +1909,7 @@ void NetworkBase::ProcessPlayerList()
         auto itPending = _pendingPlayerLists.begin();
         while (itPending != _pendingPlayerLists.end())
         {
-            if (itPending->first > GetGameState().CurrentTicks)
+            if (itPending->first > getGameState().currentTicks)
                 break;
 
             // List of active players found in the list.
@@ -1982,7 +1981,7 @@ void NetworkBase::ProcessPlayerList()
 
 void NetworkBase::ProcessPlayerInfo()
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     auto range = _pendingPlayerInfo.equal_range(currentTicks);
     for (auto it = range.first; it != range.second; it++)
@@ -2213,7 +2212,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
 
     try
     {
-        auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+        auto fs = FileStream(keyPath, FileMode::open);
         if (!_key.LoadPrivate(&fs))
         {
             throw std::runtime_error("Failed to load private key.");
@@ -2557,7 +2556,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
         {
             GameStateCompareData cmpData = snapshots->Compare(serverSnapshot, *desyncSnapshot);
 
-            std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_DESYNCS);
+            std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DirBase::user, DirId::desyncLogs);
 
             Path::CreateDirectory(outputPath);
 
@@ -2808,7 +2807,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
             GameLoadInit();
             GameLoadScripts();
             GameNotifyMapChanged();
-            _serverState.tick = GetGameState().CurrentTicks;
+            _serverState.tick = getGameState().currentTicks;
             // NetworkStatusOpen("Loaded new map from network");
             _serverState.state = NetworkServerStatus::Ok;
             _clientMapLoaded = true;
@@ -2828,7 +2827,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         else
         {
             // Something went wrong, game is not loaded. Return to main screen.
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
             GameActions::Execute(&loadOrQuitAction);
         }
         if (has_to_free)
@@ -2850,7 +2849,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         objManager.LoadObjects(loadResult.RequiredObjects);
 
         // TODO: Have a separate GameState and exchange once loaded.
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         importer->Import(gameState);
 
         EntityTweener::Get().Reset();
@@ -2875,7 +2874,7 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
         auto exporter = std::make_unique<ParkFileExporter>();
         exporter->ExportObjectsList = objects;
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         exporter->Export(gameState, *stream);
         result = true;
     }
@@ -2899,7 +2898,7 @@ static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 {
     #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkChat))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -2912,7 +2911,7 @@ static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
         auto e = DukValue::take_from_stack(ctx);
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, e, false);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::networkChat, e, false);
 
         // Update text from object if subscriptions changed it
         if (e["message"].type() != DukValue::Type::STRING)
@@ -3973,7 +3972,7 @@ void NetworkSendPassword(const std::string& password)
     }
     try
     {
-        auto fs = FileStream(keyPath, FILE_MODE_OPEN);
+        auto fs = FileStream(keyPath, FileMode::open);
         network._key.LoadPrivate(&fs);
     }
     catch (const std::exception&)
@@ -4012,7 +4011,7 @@ void NetworkAppendServerLog(const utf8* text)
 static u8string NetworkGetKeysDirectory()
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"keys");
+    return Path::Combine(env->GetDirectoryPath(DirBase::user), u8"keys");
 }
 
 static u8string NetworkGetPrivateKeyPath(u8string_view playerName)
@@ -4099,7 +4098,7 @@ NetworkAuth NetworkGetAuthstatus()
 }
 uint32_t NetworkGetServerTick()
 {
-    return GetGameState().CurrentTicks;
+    return getGameState().currentTicks;
 }
 void NetworkFlush()
 {

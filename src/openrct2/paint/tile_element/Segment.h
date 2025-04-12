@@ -14,20 +14,19 @@
 #include <cstdint>
 
 // This controls in which segment of a tile something is drawn.
-// This is from a screen perspective, e.g. topCorner will always represent the part of top of the screen.
+// This is from a screen perspective, e.g. top will always represent the part of top of the screen.
 enum class PaintSegment : uint16_t
 {
-    topCorner = 0,
-    topRightSide = 1,
-    rightCorner = 2,
-    bottomRightSide = 3,
-    bottomCorner = 4,
-    bottomLeftSide = 5,
-    leftCorner = 6,
-    topLeftSide = 7,
+    top = 0,
+    topRight = 1,
+    right = 2,
+    bottomRight = 3,
+    bottom = 4,
+    bottomLeft = 5,
+    left = 6,
+    topLeft = 7,
     centre = 8,
 };
 constexpr int32_t kSegmentsAll = EnumsToFlags(
-    PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::bottomCorner,
-    PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide,
-    PaintSegment::bottomRightSide);
+    PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
+    PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight);

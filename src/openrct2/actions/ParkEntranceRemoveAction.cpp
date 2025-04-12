@@ -43,7 +43,7 @@ void ParkEntranceRemoveAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkEntranceRemoveAction::Query() const
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
+    if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_REMOVE_THIS, kStringIdNone);
     }
@@ -79,8 +79,8 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
     }
 
-    auto& gameState = GetGameState();
-    auto direction = (gameState.Park.Entrances[entranceIndex].direction - 1) & 3;
+    auto& gameState = getGameState();
+    auto direction = (gameState.park.Entrances[entranceIndex].direction - 1) & 3;
 
     // Centre (sign)
     ParkEntranceRemoveSegment(_loc);
@@ -93,7 +93,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     ParkEntranceRemoveSegment(
         { _loc.x - CoordsDirectionDelta[direction].x, _loc.y - CoordsDirectionDelta[direction].y, _loc.z });
 
-    gameState.Park.Entrances.erase(gameState.Park.Entrances.begin() + entranceIndex);
+    gameState.park.Entrances.erase(gameState.park.Entrances.begin() + entranceIndex);
     return res;
 }
 

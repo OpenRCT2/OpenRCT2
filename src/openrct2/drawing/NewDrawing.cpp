@@ -128,7 +128,7 @@ bool DrawingEngineHasDirtyOptimisations()
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        result = (drawingEngine->GetFlags() & DEF_DIRTY_OPTIMISATIONS);
+        result = drawingEngine->GetFlags().has(DrawingEngineFlag::dirtyOptimisations);
     }
     return result;
 }

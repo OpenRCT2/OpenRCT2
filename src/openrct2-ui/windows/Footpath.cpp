@@ -221,8 +221,8 @@ namespace OpenRCT2::Ui::Windows
 
             ToolCancel();
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-            ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
-            InputSetFlag(INPUT_FLAG_6, true);
+            ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
+            gInputFlags.set(InputFlag::unk6);
             _footpathErrorOccured = false;
             WindowFootpathSetEnabledAndPressedWidgets();
 
@@ -332,8 +332,8 @@ namespace OpenRCT2::Ui::Windows
                     MapInvalidateMapSelectionTiles();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                     _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-                    ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
-                    InputSetFlag(INPUT_FLAG_6, true);
+                    ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
+                    gInputFlags.set(InputFlag::unk6);
                     _footpathErrorOccured = false;
                     WindowFootpathSetEnabledAndPressedWidgets();
                     break;
@@ -349,8 +349,8 @@ namespace OpenRCT2::Ui::Windows
                     MapInvalidateMapSelectionTiles();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                     _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
-                    ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::Crosshair);
-                    InputSetFlag(INPUT_FLAG_6, true);
+                    ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::crosshair);
+                    gInputFlags.set(InputFlag::unk6);
                     _footpathErrorOccured = false;
                     WindowFootpathSetEnabledAndPressedWidgets();
                     break;
@@ -499,8 +499,7 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-                    auto* pathObj = static_cast<FootpathObject*>(
-                        objManager.GetLoadedObject(ObjectType::paths, gFootpathSelection.LegacyPath));
+                    const auto* pathObj = objManager.GetLoadedObject<FootpathObject>(gFootpathSelection.LegacyPath);
                     if (pathObj != nullptr)
                     {
                         auto pathEntry = reinterpret_cast<const FootpathEntry*>(pathObj->GetLegacyData());
@@ -532,7 +531,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 12 };
             if (_windowFootpathCost != kMoney64Undefined)
             {
-                if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+                if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_windowFootpathCost);
@@ -640,11 +639,10 @@ namespace OpenRCT2::Ui::Windows
                 // Set footpath and queue type button images
                 auto pathImage = kSpriteIdNull;
                 auto queueImage = kSpriteIdNull;
-                auto pathObj = static_cast<FootpathObject*>(
-                    objManager.GetLoadedObject(ObjectType::paths, gFootpathSelection.LegacyPath));
+                const auto* pathObj = objManager.GetLoadedObject<FootpathObject>(gFootpathSelection.LegacyPath);
                 if (pathObj != nullptr)
                 {
-                    auto pathEntry = reinterpret_cast<FootpathEntry*>(pathObj->GetLegacyData());
+                    auto pathEntry = reinterpret_cast<const FootpathEntry*>(pathObj->GetLegacyData());
                     pathImage = pathEntry->GetPreviewImage();
                     queueImage = pathEntry->GetQueuePreviewImage();
                 }
@@ -670,14 +668,13 @@ namespace OpenRCT2::Ui::Windows
 
             uint32_t numPathTypes = 0;
             // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
-            bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode);
+            bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
 
             _dropdownEntries.clear();
             std::optional<size_t> defaultIndex;
             for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
             {
-                const auto* pathType = static_cast<FootpathSurfaceObject*>(
-                    objManager.GetLoadedObject(ObjectType::footpathSurface, i));
+                const auto* pathType = objManager.GetLoadedObject<FootpathSurfaceObject>(i);
                 if (pathType == nullptr)
                 {
                     continue;
@@ -688,14 +685,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 // If regular paths can be used as queue, only hide the path if we’re _not_ looking at a queue,
                 // but the path surface is one.
-                if (GetGameState().Cheats.allowRegularPathAsQueue && !showQueues
+                if (getGameState().cheats.allowRegularPathAsQueue && !showQueues
                     && ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
                 {
                     continue;
                 }
                 // If the cheat is disabled, hide queues from the regular path view and vice versa.
                 else if (
-                    !GetGameState().Cheats.allowRegularPathAsQueue
+                    !getGameState().cheats.allowRegularPathAsQueue
                     && showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
                 {
                     continue;
@@ -708,6 +705,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 gDropdownItems[numPathTypes].Format = kStringIdNone;
+                gDropdownTooltips[numPathTypes] = pathType->NameStringId;
                 Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::footpathSurface, i });
                 numPathTypes++;
@@ -733,6 +731,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 gDropdownItems[numPathTypes].Format = kStringIdNone;
+                gDropdownTooltips[numPathTypes] = pathEntry->string_idx;
                 Dropdown::SetImage(
                     numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
                 _dropdownEntries.push_back({ ObjectType::paths, i });
@@ -743,6 +742,9 @@ namespace OpenRCT2::Ui::Windows
             WindowDropdownShowImage(
                 windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numPathTypes, 47,
                 36, itemsPerRow);
+
+            gDropdownHasTooltips = true;
+
             if (defaultIndex)
                 gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
         }
@@ -767,6 +769,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 gDropdownItems[numRailingsTypes].Format = kStringIdNone;
+                gDropdownTooltips[numRailingsTypes] = railingsEntry->NameStringId;
                 Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::footpathRailings, i });
                 numRailingsTypes++;
@@ -776,6 +779,9 @@ namespace OpenRCT2::Ui::Windows
             WindowDropdownShowImage(
                 windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numRailingsTypes,
                 47, 36, itemsPerRow);
+
+            gDropdownHasTooltips = true;
+
             if (defaultIndex)
                 gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
         }
@@ -821,7 +827,7 @@ namespace OpenRCT2::Ui::Windows
                     auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                     if (info.interactionType != ViewportInteractionItem::None)
                     {
-                        const bool allowInvalidHeights = GetGameState().Cheats.allowTrackPlaceInvalidHeights;
+                        const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
                         const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
 
                         _footpathPlaceCtrlZ = floor2(info.Element->GetBaseZ(), heightStep);
@@ -854,7 +860,7 @@ namespace OpenRCT2::Ui::Windows
                     _footpathPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_footpathPlaceShiftZ);
                 }
 
-                const bool allowInvalidHeights = GetGameState().Cheats.allowTrackPlaceInvalidHeights;
+                const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
                 const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
                 _footpathPlaceShiftZ = floor2(_footpathPlaceShiftZ, heightStep);
 
@@ -1139,7 +1145,7 @@ namespace OpenRCT2::Ui::Windows
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
 
             auto footpathPlaceAction = FootpathPlaceAction(
-                { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, INVALID_DIRECTION, constructFlags);
+                { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, kInvalidDirection, constructFlags);
             footpathPlaceAction.SetCallback([this](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
@@ -1210,7 +1216,7 @@ namespace OpenRCT2::Ui::Windows
             _provisionalFootpath.flags.clearAll();
             gFootpathConstructSlope = 0;
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
-            _footpathConstructValidDirections = INVALID_DIRECTION;
+            _footpathConstructValidDirections = kInvalidDirection;
             WindowFootpathSetEnabledAndPressedWidgets();
         }
 
@@ -1250,7 +1256,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (gFootpathConstructSlope == 0)
                     {
-                        self->_footpathConstructValidDirections = INVALID_DIRECTION;
+                        self->_footpathConstructValidDirections = kInvalidDirection;
                     }
                     else
                     {
@@ -1322,7 +1328,7 @@ namespace OpenRCT2::Ui::Windows
             gFootpathConstructFromPosition.y -= CoordsDirectionDelta[edge].y;
             gFootpathConstructFromPosition.z = z;
             _footpathConstructDirection = edge;
-            _footpathConstructValidDirections = INVALID_DIRECTION;
+            _footpathConstructValidDirections = kInvalidDirection;
         }
 
         /**
@@ -1446,7 +1452,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Enable / disable directional widgets
                 direction = _footpathConstructValidDirections;
-                if (direction != INVALID_DIRECTION)
+                if (direction != kInvalidDirection)
                 {
                     disabledWidgets |= (1uLL << WIDX_DIRECTION_NW) | (1uLL << WIDX_DIRECTION_NE) | (1uLL << WIDX_DIRECTION_SW)
                         | (1uLL << WIDX_DIRECTION_SE);
@@ -1592,7 +1598,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutDemolishCurrent()
         {
             if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
-                || (!GetGameState().Cheats.buildInPauseMode && GameIsPaused()))
+                || (!getGameState().cheats.buildInPauseMode && GameIsPaused()))
             {
                 return;
             }
@@ -1754,7 +1760,7 @@ namespace OpenRCT2::Ui::Windows
         FootpathRemoveProvisional();
 
         auto footpathPlaceAction = FootpathPlaceAction(
-            footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
+            footpathLoc, slope, type, railingsType, kInvalidDirection, constructFlags);
         footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         auto res = GameActions::Execute(&footpathPlaceAction);
         cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;

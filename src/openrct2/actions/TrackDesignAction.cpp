@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../config/Config.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
@@ -65,21 +66,21 @@ GameActions::Result TrackDesignAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
     if (entryIndex == kObjectEntryIndexNull)
     {
         // Force a fallback if the entry is not invented yet a track design of it is selected,
         // which can happen in select-by-track-type mode
-        if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !gameState.cheats.ignoreResearchStatus)
         {
             entryIndex = kObjectEntryIndexNull;
         }
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.LastEntranceStyle);
+    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -111,7 +112,7 @@ GameActions::Result TrackDesignAction::Query() const
         queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     }
 
-    auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+    auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
     gameAction.SetFlags(GetFlags());
 
     GameActions::ExecuteNested(&gameAction);
@@ -139,21 +140,21 @@ GameActions::Result TrackDesignAction::Execute() const
     res.Position.z = _loc.z;
     res.Expenditure = ExpenditureType::RideConstruction;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto& objManager = GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
     if (entryIndex != kObjectEntryIndexNull)
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
         // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
-        if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !gameState.cheats.ignoreResearchStatus)
         {
             entryIndex = kObjectEntryIndexNull;
         }
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.LastEntranceStyle);
+    auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -184,7 +185,7 @@ GameActions::Result TrackDesignAction::Execute() const
 
     if (queryRes.Error != GameActions::Status::Ok)
     {
-        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
         gameAction.SetFlags(GetFlags());
         GameActions::ExecuteNested(&gameAction);
 
@@ -202,7 +203,7 @@ GameActions::Result TrackDesignAction::Execute() const
     auto execRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     if (execRes.Error != GameActions::Status::Ok)
     {
-        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
         gameAction.SetFlags(GetFlags());
         GameActions::ExecuteNested(&gameAction);
 
@@ -238,24 +239,28 @@ GameActions::Result TrackDesignAction::Execute() const
 
     auto numCircuits = std::max<uint8_t>(1, _td.operation.numCircuits);
     SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, numCircuits, flags);
-    ride->SetToDefaultInspectionInterval();
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
+
+    uint8_t defaultInspectionInterval = Config::Get().general.DefaultInspectionInterval;
+    if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
+        SetOperatingSettingNested(ride->id, RideSetSetting::InspectionInterval, defaultInspectionInterval, flags);
+
+    ride->lifecycleFlags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->vehicleColourSettings = _td.appearance.vehicleColourSettings;
 
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(_td.appearance.stationObjectIdentifier);
-    if (ride->entrance_style == kObjectEntryIndexNull)
+    ride->entranceStyle = objManager.GetLoadedObjectEntryIndex(_td.appearance.stationObjectIdentifier);
+    if (ride->entranceStyle == kObjectEntryIndexNull)
     {
-        ride->entrance_style = gameState.LastEntranceStyle;
+        ride->entranceStyle = gameState.lastEntranceStyle;
     }
 
-    for (size_t i = 0; i < std::min(std::size(ride->track_colour), std::size(_td.appearance.trackColours)); i++)
+    for (size_t i = 0; i < std::min(std::size(ride->trackColours), std::size(_td.appearance.trackColours)); i++)
     {
-        ride->track_colour[i] = _td.appearance.trackColours[i];
+        ride->trackColours[i] = _td.appearance.trackColours[i];
     }
 
     for (size_t i = 0; i < Limits::kMaxVehicleColours; i++)
     {
-        ride->vehicle_colours[i] = _td.appearance.vehicleColours[i];
+        ride->vehicleColours[i] = _td.appearance.vehicleColours[i];
     }
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)

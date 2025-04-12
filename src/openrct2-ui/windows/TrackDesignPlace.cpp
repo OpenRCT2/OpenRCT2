@@ -48,10 +48,10 @@ namespace OpenRCT2::Ui::Windows
     constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
     constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;
 
-    static constexpr uint8_t kPaletteIndexColourEntrance = PALETTE_INDEX_20; // White
-    static constexpr uint8_t kPaletteIndexColourExit = PALETTE_INDEX_10;     // Black
-    static constexpr uint8_t kPaletteIndexColourTrack = PALETTE_INDEX_248;   // Grey (dark)
-    static constexpr uint8_t kPaletteIndexColourStation = PALETTE_INDEX_252; // Grey (light)
+    static constexpr uint8_t kPaletteIndexColourEntrance = PaletteIndex::pi20; // White
+    static constexpr uint8_t kPaletteIndexColourExit = PaletteIndex::pi10;     // Black
+    static constexpr uint8_t kPaletteIndexColourTrack = PaletteIndex::pi248;   // Grey (dark)
+    static constexpr uint8_t kPaletteIndexColourStation = PaletteIndex::pi252; // Grey (light)
 
     enum
     {
@@ -103,8 +103,8 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_trackPlaceWidgets);
             WindowInitScrollWidgets(*this);
-            ToolSet(*this, WIDX_PRICE, Tool::Crosshair);
-            InputSetFlag(INPUT_FLAG_6, true);
+            ToolSet(*this, WIDX_PRICE, Tool::crosshair);
+            gInputFlags.set(InputFlag::unk6);
             WindowPushOthersRight(*this);
             ShowGridlines();
             _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
@@ -206,7 +206,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             money64 cost = kMoney64Undefined;
-            if (GameIsNotPaused() || GetGameState().Cheats.buildInPauseMode)
+            if (GameIsNotPaused() || getGameState().cheats.buildInPauseMode)
             {
                 ClearProvisional();
                 auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
@@ -355,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Price
-            if (_placementCost != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (_placementCost != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 ft = Formatter();
                 ft.Add<money64>(_placementCost);
@@ -430,7 +430,7 @@ namespace OpenRCT2::Ui::Windows
         void ClearMiniPreview()
         {
             // Fill with transparent colour.
-            std::fill(_miniPreview.begin(), _miniPreview.end(), PALETTE_INDEX_0);
+            std::fill(_miniPreview.begin(), _miniPreview.end(), PaletteIndex::pi0);
         }
 
     private:

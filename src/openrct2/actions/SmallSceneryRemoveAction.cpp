@@ -74,11 +74,11 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = _loc;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        && !GetGameState().Cheats.sandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        && !getGameState().cheats.sandboxMode)
     {
         // Check if allowed to remove item
-        if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (getGameState().park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             {

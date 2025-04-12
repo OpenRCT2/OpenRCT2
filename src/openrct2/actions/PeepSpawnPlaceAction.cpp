@@ -45,7 +45,7 @@ void PeepSpawnPlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result PeepSpawnPlaceAction::Query() const
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
+    if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, kStringIdNone);
     }
@@ -103,37 +103,37 @@ GameActions::Result PeepSpawnPlaceAction::Execute() const
     spawn.z = _location.z;
     spawn.direction = _location.direction;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // When attempting to place a peep spawn on a tile that already contains it,
     // remove that peep spawn instead.
-    if (!gameState.PeepSpawns.empty())
+    if (!gameState.peepSpawns.empty())
     {
         // When searching for existing spawns, ignore the direction.
         auto foundSpawn = std::find_if(
-            gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
+            gameState.peepSpawns.begin(), gameState.peepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
                 {
                     return existingSpawn.ToTileStart() == spawn.ToTileStart();
                 }
             });
 
-        if (foundSpawn != std::end(gameState.PeepSpawns))
+        if (foundSpawn != std::end(gameState.peepSpawns))
         {
-            gameState.PeepSpawns.erase(foundSpawn);
+            gameState.peepSpawns.erase(foundSpawn);
             MapInvalidateTileFull(spawn);
             return res;
         }
     }
 
     // If we have reached our max peep spawns, remove the oldest spawns
-    while (gameState.PeepSpawns.size() >= Limits::kMaxPeepSpawns)
+    while (gameState.peepSpawns.size() >= Limits::kMaxPeepSpawns)
     {
-        PeepSpawn oldestSpawn = *gameState.PeepSpawns.begin();
-        gameState.PeepSpawns.erase(gameState.PeepSpawns.begin());
+        PeepSpawn oldestSpawn = *gameState.peepSpawns.begin();
+        gameState.peepSpawns.erase(gameState.peepSpawns.begin());
         MapInvalidateTileFull(oldestSpawn);
     }
 
     // Set peep spawn
-    gameState.PeepSpawns.push_back(spawn);
+    gameState.peepSpawns.push_back(spawn);
 
     // Invalidate tile
     MapInvalidateTileFull(_location);

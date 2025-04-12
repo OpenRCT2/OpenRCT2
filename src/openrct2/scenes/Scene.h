@@ -21,7 +21,7 @@ namespace OpenRCT2
     public:
         virtual ~IScene() = default;
 
-        virtual GameState_t& GetGameState() = 0;
+        virtual GameState_t& getGameState() = 0;
         virtual IContext& GetContext() = 0;
 
         virtual void Load() = 0;
@@ -36,7 +36,7 @@ namespace OpenRCT2
     public:
         Scene(IContext& context);
 
-        GameState_t& GetGameState() override;
+        GameState_t& getGameState() override;
         IContext& GetContext() override;
 
         void SetOnComplete(std::function<void()>) override;

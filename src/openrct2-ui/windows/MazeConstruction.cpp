@@ -129,9 +129,9 @@ namespace OpenRCT2::Ui::Windows
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide != nullptr)
             {
-                if (currentRide->overall_view.IsNull())
+                if (currentRide->overallView.IsNull())
                 {
-                    auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+                    auto gameAction = RideDemolishAction(currentRide->id, RideModifyType::demolish);
                     gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
                     GameActions::Execute(&gameAction);
                 }
@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdate() override
         {
             auto currentRide = GetRide(_currentRideIndex);
-            if (currentRide == nullptr || currentRide->status != RideStatus::Closed)
+            if (currentRide == nullptr || currentRide->status != RideStatus::closed)
             {
                 Close();
                 return;
@@ -292,7 +292,7 @@ namespace OpenRCT2::Ui::Windows
             if (currentRide != nullptr)
             {
                 ft.Increment(4);
-                currentRide->FormatNameTo(ft);
+                currentRide->formatNameTo(ft);
             }
             else
             {
@@ -309,14 +309,14 @@ namespace OpenRCT2::Ui::Windows
     private:
         void WindowMazeConstructionEntranceMouseup(WidgetIndex widgetIndex)
         {
-            if (ToolSet(*this, widgetIndex, Tool::Crosshair))
+            if (ToolSet(*this, widgetIndex, Tool::crosshair))
                 return;
 
             gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE
                                                                            : ENTRANCE_TYPE_RIDE_EXIT;
             gRideEntranceExitPlaceRideIndex = rideId;
             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-            InputSetFlag(INPUT_FLAG_6, true);
+            gInputFlags.set(InputFlag::unk6);
 
             RideConstructionInvalidateCurrentTrack();
 
@@ -352,7 +352,7 @@ namespace OpenRCT2::Ui::Windows
             if (entranceOrExitCoords.IsNull())
                 return;
 
-            if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
+            if (gRideEntranceExitPlaceDirection == kInvalidDirection)
                 return;
 
             RideId rideIndex = gRideEntranceExitPlaceRideIndex;
@@ -373,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                 {
                     ToolCancel();
-                    if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                    if (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     {
                         windowMgr->CloseByClass(WindowClass::RideConstruction);
                     }
@@ -387,7 +387,7 @@ namespace OpenRCT2::Ui::Windows
                                                                                                           : WIDX_MAZE_EXIT;
 
                     ToolCancel();
-                    ToolSet(*this, newToolWidgetIndex, Tool::Crosshair);
+                    ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
 
                     WindowMazeConstructionUpdatePressedWidgets();
                 }
@@ -399,7 +399,7 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t x, y, z, actionFlags = 0, mode;
 
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             RideConstructionInvalidateCurrentTrack();

@@ -83,7 +83,7 @@ uint8_t RCT12SurfaceElement::GetSlope() const
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const
 {
     uint32_t retVal = (Terrain >> 5) & 7;
-    retVal |= (Type & RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK) << 3;
+    retVal |= (Type & kRCT12SurfaceElementTypeSurfaceMask) << 3;
     return retVal;
 }
 
@@ -107,7 +107,7 @@ uint8_t RCT12SurfaceElement::GetOwnership() const
 
 uint32_t RCT12SurfaceElement::GetWaterHeight() const
 {
-    return (Terrain & RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK) * kWaterHeightStep;
+    return (Terrain & kRCT12SurfaceElementWaterHeightMask) * kWaterHeightStep;
 }
 
 uint8_t RCT12SurfaceElement::GetParkFences() const
@@ -234,7 +234,7 @@ uint8_t RCT12TrackElement::GetStationIndex() const
 
 bool RCT12TrackElement::HasChain() const
 {
-    return Type & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    return Type & kRCT12TrackElementTypeFlagChainLift;
 }
 
 bool RCT12TrackElement::HasCableLift() const
@@ -260,7 +260,7 @@ bool RCT12TrackElement::HasGreenLight() const
 {
     if (TrackTypeIsStation(TrackType))
     {
-        return (Sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+        return (Sequence & kRCT12TrackElementSequenceGreenLight) != 0;
     }
     return false;
 }
@@ -316,22 +316,22 @@ uint8_t RCT12SmallSceneryElement::GetSceneryQuadrant() const
 
 colour_t RCT12SmallSceneryElement::GetPrimaryColour() const
 {
-    return Colour1 & RCT12_TILE_ELEMENT_COLOUR_MASK;
+    return Colour1 & kRCT12TileElementColourMask;
 }
 
 colour_t RCT12SmallSceneryElement::GetSecondaryColour() const
 {
-    return Colour2 & RCT12_TILE_ELEMENT_COLOUR_MASK;
+    return Colour2 & kRCT12TileElementColourMask;
 }
 
 bool RCT12SmallSceneryElement::NeedsSupports() const
 {
-    return Colour1 & RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG;
+    return Colour1 & kRCT12SmallSceneryElementNeedsSupportsFlag;
 }
 
 uint32_t RCT12LargeSceneryElement::GetEntryIndex() const
 {
-    return EntryIndex & RCT12_TILE_ELEMENT_LARGE_TYPE_MASK;
+    return EntryIndex & kRCT12TileElementLargeTypeMask;
 }
 
 uint16_t RCT12LargeSceneryElement::GetSequenceIndex() const
@@ -340,18 +340,18 @@ uint16_t RCT12LargeSceneryElement::GetSequenceIndex() const
 }
 colour_t RCT12LargeSceneryElement::GetPrimaryColour() const
 {
-    return Colour[0] & RCT12_TILE_ELEMENT_COLOUR_MASK;
+    return Colour[0] & kRCT12TileElementColourMask;
 }
 
 colour_t RCT12LargeSceneryElement::GetSecondaryColour() const
 {
-    return Colour[1] & RCT12_TILE_ELEMENT_COLOUR_MASK;
+    return Colour[1] & kRCT12TileElementColourMask;
 }
 
 uint8_t RCT12LargeSceneryElement::GetBannerIndex() const
 {
-    return (Type & 0xC0) | (((Colour[0]) & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 2)
-        | (((Colour[1]) & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 5);
+    return (Type & 0xC0) | (((Colour[0]) & ~kRCT12TileElementColourMask) >> 2)
+        | (((Colour[1]) & ~kRCT12TileElementColourMask) >> 5);
 }
 
 uint8_t RCT12WallElement::GetEntryIndex() const
@@ -366,19 +366,19 @@ uint8_t RCT12WallElement::GetSlope() const
 
 colour_t RCT12WallElement::GetPrimaryColour() const
 {
-    return Colour1 & RCT12_TILE_ELEMENT_COLOUR_MASK;
+    return Colour1 & kRCT12TileElementColourMask;
 }
 
 colour_t RCT12WallElement::GetSecondaryColour() const
 {
-    uint8_t secondaryColour = (Colour1 & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 5;
+    uint8_t secondaryColour = (Colour1 & ~kRCT12TileElementColourMask) >> 5;
     secondaryColour |= (Flags & 0x60) >> 2;
     return secondaryColour;
 }
 
 colour_t RCT12WallElement::GetTertiaryColour() const
 {
-    return Colour3 & RCT12_TILE_ELEMENT_COLOUR_MASK;
+    return Colour3 & kRCT12TileElementColourMask;
 }
 
 uint8_t RCT12WallElement::GetAnimationFrame() const
@@ -496,17 +496,17 @@ bool RCT12TrackElement::BlockBrakeClosed() const
 
 bool RCT12ResearchItem::IsInventedEndMarker() const
 {
-    return RawValue == RCT12_RESEARCHED_ITEMS_SEPARATOR;
+    return RawValue == kRCT12ResearchedItemsSeparator;
 }
 
 bool RCT12ResearchItem::IsUninventedEndMarker() const
 {
-    return RawValue == RCT12_RESEARCHED_ITEMS_END;
+    return RawValue == kRCT12ResearchedItemsEnd;
 }
 
 bool RCT12ResearchItem::IsRandomEndMarker() const
 {
-    return RawValue == RCT12_RESEARCHED_ITEMS_END_2;
+    return RawValue == kRCT12ResearchedItemsEnd2;
 }
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index)
@@ -519,7 +519,7 @@ ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex i
 
 RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId)
 {
-    if (rideId == RCT12_RIDE_ID_NULL)
+    if (rideId == kRCT12RideIdNull)
         return RideId::GetNull();
 
     return RideId::FromUnderlying(rideId);
@@ -527,11 +527,11 @@ RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId)
 
 static bool RCT12IsFormatChar(codepoint_t c)
 {
-    if (c >= RCT2_STRING_FORMAT_ARG_START && c <= RCT2_STRING_FORMAT_ARG_END)
+    if (c >= kRCT12StringFormatArgStart && c <= kRCT12StringFormatArgEnd)
     {
         return true;
     }
-    if (c >= RCT2_STRING_FORMAT_COLOUR_START && c <= RCT2_STRING_FORMAT_COLOUR_END)
+    if (c >= kRCT12StringFormatColourStart && c <= kRCT12StringFormatColourEnd)
     {
         return true;
     }

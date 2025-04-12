@@ -91,21 +91,26 @@ namespace OpenRCT2::Platform
         return outTime;
     }
 
-    bool IsRCT2Path(std::string_view path)
+    std::optional<RCT2Variant> classifyGamePath(std::string_view path)
     {
         auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
-        return File::Exists(combinedPath);
-    }
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rct2Original);
 
-    bool IsRCTClassicPath(std::string_view path)
-    {
-        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Assets", u8"g1.dat"));
-        return File::Exists(combinedPath);
+        combinedPath = Path::ResolveCasing(Path::Combine(path, OpenRCT2::Platform::kRCTClassicWindowsDataFolder, u8"g1.dat"));
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rctClassicWindows);
+
+        combinedPath = Path::ResolveCasing(Path::Combine(path, OpenRCT2::Platform::kRCTClassicMacOSDataFolder, u8"g1.dat"));
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rctClassicMac);
+
+        return std::nullopt;
     }
 
     bool OriginalGameDataExists(std::string_view path)
     {
-        return IsRCT2Path(path) || IsRCTClassicPath(path);
+        return classifyGamePath(path) != std::nullopt;
     }
 
     std::string SanitiseFilename(std::string_view originalName)

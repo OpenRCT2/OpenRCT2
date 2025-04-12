@@ -240,14 +240,14 @@ GameActions::Result TrackRemoveAction::Query() const
             _support_height = 10;
         }
 
-        supportCosts += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
+        supportCosts += (_support_height / 2) * ride->getRideTypeDescriptor().BuildCosts.SupportPrice;
     }
 
-    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    money64 price = ride->getRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= ted.priceModifier;
     price >>= 16;
     price = supportCosts + price;
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
     {
         // 70% modifier for opened rides
         price = (price * 45875) / 65536;
@@ -416,7 +416,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             _support_height = 10;
         }
 
-        supportCosts += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
+        supportCosts += (_support_height / 2) * ride->getRideTypeDescriptor().BuildCosts.SupportPrice;
 
         // If the removed tile is a station modify station properties.
         // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
@@ -433,22 +433,22 @@ GameActions::Result TrackRemoveAction::Execute() const
             }
         }
 
-        if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::trackMustBeOnWater))
+        if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::trackMustBeOnWater))
         {
             surfaceElement->SetHasTrackThatNeedsWater(false);
         }
 
         InvalidateTestResults(*ride);
         FootpathQueueChainReset();
-        if (!GetGameState().Cheats.disableClearanceChecks || !(tileElement->IsGhost()))
+        if (!getGameState().cheats.disableClearanceChecks || !(tileElement->IsGhost()))
         {
             FootpathRemoveEdgesAt(mapLoc, tileElement);
         }
         TileElementRemove(tileElement);
-        ride->ValidateStations();
+        ride->validateStations();
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            ride->UpdateMaxVehicles();
+            ride->updateMaxVehicles();
         }
     }
 
@@ -457,21 +457,21 @@ GameActions::Result TrackRemoveAction::Execute() const
         switch (trackType)
         {
             case TrackElemType::OnRidePhoto:
-                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+                ride->lifecycleFlags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                 break;
             case TrackElemType::CableLiftHill:
-                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
+                ride->lifecycleFlags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                 break;
             case TrackElemType::BlockBrakes:
             case TrackElemType::DiagBlockBrakes:
-                ride->num_block_brakes--;
-                if (ride->num_block_brakes == 0)
+                ride->numBlockBrakes--;
+                if (ride->numBlockBrakes == 0)
                 {
-                    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                    RideMode newMode = RideMode::ContinuousCircuit;
-                    if (ride->mode == RideMode::PoweredLaunchBlockSectioned)
+                    ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_OPERATING;
+                    RideMode newMode = RideMode::continuousCircuit;
+                    if (ride->mode == RideMode::poweredLaunchBlockSectioned)
                     {
-                        newMode = RideMode::PoweredLaunch;
+                        newMode = RideMode::poweredLaunch;
                     }
 
                     auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
@@ -493,18 +493,18 @@ GameActions::Result TrackRemoveAction::Execute() const
                     break;
                 [[fallthrough]];
             case TrackElemType::CableLiftHill:
-                ride->num_block_brakes--;
+                ride->numBlockBrakes--;
                 break;
             default:
                 break;
         }
     }
 
-    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    money64 price = ride->getRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= ted.priceModifier;
     price >>= 16;
     price = supportCosts + price;
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
     {
         // 70% modifier for opened rides
         price = (price * 45875) / 65536;

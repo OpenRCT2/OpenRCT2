@@ -190,11 +190,11 @@ add_dependencies(bz2 libs)
 
 
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include")
-include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/freetype2")
+include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/freetype")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/SDL2")
 
 # now build app's shared lib
-add_definitions(-DDISABLE_DISCORD_RPC -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
+add_definitions(-DDISABLE_DISCORD_RPC -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DSDL_MAIN_HANDLED)
 
 # Enable scripting
 add_definitions(-DENABLE_SCRIPTING)
@@ -250,7 +250,7 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${ORCT2_ROOT}/src/openrct2-cli/*.hpp")
 
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
-target_link_libraries(openrct2 android stdc++ log dl SDL2 png z icu icuuc icudata crypto ssl)
+target_link_libraries(openrct2 android stdc++ log dl SDL2 png z icu icuuc icudata crypto ssl freetype)
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
 target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main speexdsp brotlicommon brotlidec bz2 freetype ogg vorbis vorbisfile FLAC)

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <compare>
 #include <cstdint>
 #include <cstdio>
 
@@ -62,43 +63,5 @@ public:
         return _handle == ValueType::Null;
     }
 
-    constexpr bool operator==(const ValueType other) const noexcept
-    {
-        return _handle == other;
-    }
-
-    constexpr bool operator!=(const ValueType other) const noexcept
-    {
-        return _handle != other;
-    }
-
-    constexpr bool operator==(const TIdentifier& other) const noexcept
-    {
-        return _handle == other._handle;
-    }
-
-    constexpr bool operator!=(const TIdentifier& other) const noexcept
-    {
-        return _handle != other._handle;
-    }
-
-    constexpr bool operator<(const TIdentifier& other) const noexcept
-    {
-        return ToUnderlying() < other.ToUnderlying();
-    }
-
-    constexpr bool operator<=(const TIdentifier& other) const noexcept
-    {
-        return ToUnderlying() <= other.ToUnderlying();
-    }
-
-    constexpr bool operator>(const TIdentifier& other) const noexcept
-    {
-        return ToUnderlying() > other.ToUnderlying();
-    }
-
-    constexpr bool operator>=(const TIdentifier& other) const noexcept
-    {
-        return ToUnderlying() >= other.ToUnderlying();
-    }
+    auto operator<=>(const TIdentifier&) const = default;
 };

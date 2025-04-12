@@ -12,13 +12,10 @@
 #include "../Game.h"
 #include "../core/DataSerialiser.h"
 #include "../core/Identifier.hpp"
-#include "../localisation/StringIds.h"
 #include "GameActionResult.h"
 
-#include <array>
 #include <functional>
 #include <memory>
-#include <utility>
 
 namespace OpenRCT2::GameActions
 {

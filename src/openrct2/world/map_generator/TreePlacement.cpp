@@ -150,10 +150,10 @@ namespace OpenRCT2::World::MapGenerator
         // Randomise simplex noise
         NoiseRand();
 
-        auto& gameState = GetGameState();
-        for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
+        auto& gameState = getGameState();
+        for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
         {
-            for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
+            for (int32_t x = 1; x < gameState.mapSize.x - 1; x++)
             {
                 auto pos = CoordsXY{ x, y } * kCoordsXYStep;
                 auto* surfaceElement = MapGetSurfaceElementAt(pos);
@@ -185,9 +185,9 @@ namespace OpenRCT2::World::MapGenerator
                             const auto offset = CoordsXY{ offsetX * kCoordsXYStep, offsetY * kCoordsXYStep };
                             auto neighbourPos = pos + offset;
                             neighbourPos.x = std::clamp(
-                                neighbourPos.x, kCoordsXYStep, kCoordsXYStep * (gameState.MapSize.x - 1));
+                                neighbourPos.x, kCoordsXYStep, kCoordsXYStep * (gameState.mapSize.x - 1));
                             neighbourPos.y = std::clamp(
-                                neighbourPos.y, kCoordsXYStep, kCoordsXYStep * (gameState.MapSize.y - 1));
+                                neighbourPos.y, kCoordsXYStep, kCoordsXYStep * (gameState.mapSize.y - 1));
 
                             const auto neighboutSurface = MapGetSurfaceElementAt(neighbourPos);
                             if (neighboutSurface != nullptr && neighboutSurface->GetWaterHeight() > 0)

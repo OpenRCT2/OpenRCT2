@@ -21,7 +21,6 @@
 #include <openrct2/management/Finance.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -82,9 +81,10 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Measurements
 
-    static constexpr int32_t WH_SUMMARY = 309;
-    static constexpr int32_t WH_RESEARCH = 207;
-    static constexpr int32_t WH_OTHER_TABS = 257;
+    static constexpr int32_t kCostPerWeekOffset = 321;
+    static constexpr int32_t kHeightSummary = 309;
+    static constexpr int32_t kHeightResearch = 207;
+    static constexpr int32_t kHeightOtherTabs = 257;
     static constexpr int32_t WW_RESEARCH = 320;
     static constexpr int32_t WW_OTHER_TABS = 530;
     static constexpr int32_t RSH_SUMMARY = 266;
@@ -110,29 +110,29 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget _windowFinancesSummaryWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
+        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, kHeightSummary),
         MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
         MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
     };
 
     static constexpr Widget _windowFinancesCashWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kHeightOtherTabs),
     };
 
     static constexpr Widget _windowFinancesParkValueWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kHeightOtherTabs),
     };
 
     static constexpr Widget _windowFinancesProfitWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kHeightOtherTabs),
     };
 
     static constexpr Widget _windowFinancesMarketingWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kHeightOtherTabs),
         MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
         MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
         MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
@@ -145,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget _windowFinancesResearchWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, WH_RESEARCH),
+        MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, kHeightResearch),
         MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
         MakeWidget({  8,  59}, {             160,  14}, WindowWidgetType::DropdownMenu, WindowColour::Tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
         MakeWidget({156,  60}, {              11,  12}, WindowWidgetType::Button,   WindowColour::Tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
@@ -230,7 +230,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetDisabledTabs()
         {
-            disabled_widgets = (GetGameState().Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+            disabled_widgets = (getGameState().park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
         }
 
     public:
@@ -333,17 +333,17 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = false;
-                    _graphProps.series = GetGameState().Park.ValueHistory;
+                    _graphProps.series = getGameState().park.ValueHistory;
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = true;
-                    _graphProps.series = GetGameState().WeeklyProfitHistory;
+                    _graphProps.series = getGameState().weeklyProfitHistory;
                     break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = true;
-                    _graphProps.series = GetGameState().CashHistory;
+                    _graphProps.series = getGameState().cashHistory;
                     break;
             }
             OnPrepareDrawGraph(graphPageWidget, centredGraph);
@@ -361,22 +361,22 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                 {
-                    auto& gameState = GetGameState();
-                    const auto cashLessLoan = gameState.Cash - gameState.BankLoan;
+                    auto& gameState = getGameState();
+                    const auto cashLessLoan = gameState.cash - gameState.bankLoan;
                     const auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                                                        : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
                     OnDrawGraph(dpi, cashLessLoan, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                    OnDrawGraph(dpi, GetGameState().Park.Value, STR_FINANCES_PARK_VALUE);
+                    OnDrawGraph(dpi, getGameState().park.Value, STR_FINANCES_PARK_VALUE);
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                 {
-                    auto& gameState = GetGameState();
-                    const auto fmt = gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
+                    auto& gameState = getGameState();
+                    const auto fmt = gameState.currentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
                                                                   : STR_FINANCES_WEEKLY_PROFIT_LOSS;
-                    OnDrawGraph(dpi, gameState.CurrentProfit, fmt);
+                    OnDrawGraph(dpi, gameState.currentProfit, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_MARKETING:
@@ -405,7 +405,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = ScreenCoordsXY{ 0, kTableCellHeight + 2 };
 
-            Widget self = widgets[WIDX_SUMMARY_SCROLL];
+            auto& self = widgets[WIDX_SUMMARY_SCROLL];
             int32_t row_width = std::max<uint16_t>(scrolls[0].contentWidth, self.width());
 
             // Expenditure / Income row labels
@@ -422,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += kTableCellHeight;
             }
 
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             // Expenditure / Income values for each month
             auto currentMonthYear = GetDate().GetMonthsElapsed();
             for (int32_t i = SummaryMaxAvailableMonth(); i >= 0; i--)
@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
                 money64 profit = 0;
                 for (int32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
                 {
-                    auto expenditure = gameState.ExpenditureTable[i][j];
+                    auto expenditure = gameState.expenditureTable[i][j];
                     if (expenditure != 0)
                     {
                         profit += expenditure;
@@ -471,7 +471,7 @@ namespace OpenRCT2::Ui::Windows
                 GfxFillRect(
                     dpi,
                     { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
-                    PALETTE_INDEX_10);
+                    PaletteIndex::pi10);
 
                 screenCoords.x += EXPENDITURE_COLUMN_WIDTH;
             }
@@ -481,6 +481,10 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t p)
         {
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == p && !widgets.empty())
+                return;
+
             page = p;
             frame_no = 0;
 
@@ -493,13 +497,13 @@ namespace OpenRCT2::Ui::Windows
             if (p == WINDOW_FINANCES_PAGE_RESEARCH)
             {
                 width = WW_RESEARCH;
-                height = WH_RESEARCH;
+                height = kHeightResearch;
                 flags &= ~WF_RESIZABLE;
             }
             else if (p == WINDOW_FINANCES_PAGE_SUMMARY)
             {
                 width = WW_OTHER_TABS;
-                height = WH_SUMMARY;
+                height = kHeightSummary;
                 flags &= ~WF_RESIZABLE;
             }
             else if (
@@ -508,13 +512,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 flags |= WF_RESIZABLE;
                 WindowSetResize(
-                    *this, WW_OTHER_TABS, WH_OTHER_TABS, std::numeric_limits<int16_t>::max(),
-                    std::numeric_limits<int16_t>::max());
+                    *this, { WW_OTHER_TABS, kHeightOtherTabs },
+                    { std::numeric_limits<int16_t>::max(), std::numeric_limits<int16_t>::max() });
             }
             else
             {
                 width = WW_OTHER_TABS;
-                height = WH_OTHER_TABS;
+                height = kHeightOtherTabs;
                 flags &= ~WF_RESIZABLE;
             }
             OnResize();
@@ -532,17 +536,17 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseDownSummary(WidgetIndex widgetIndex)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_LOAN_INCREASE:
                 {
                     // If loan can be increased, do so.
                     // If not, action shows error message.
-                    auto newLoan = gameState.BankLoan + 1000.00_GBP;
-                    if (gameState.BankLoan < gameState.MaxBankLoan)
+                    auto newLoan = gameState.bankLoan + 1000.00_GBP;
+                    if (gameState.bankLoan < gameState.maxBankLoan)
                     {
-                        newLoan = std::min(gameState.MaxBankLoan, newLoan);
+                        newLoan = std::min(gameState.maxBankLoan, newLoan);
                     }
                     auto gameAction = ParkSetLoanAction(newLoan);
                     GameActions::Execute(&gameAction);
@@ -553,10 +557,10 @@ namespace OpenRCT2::Ui::Windows
                     // If loan is positive, decrease it.
                     // If loan is negative, action shows error message.
                     // If loan is exactly 0, prevent error message.
-                    if (gameState.BankLoan != 0)
+                    if (gameState.bankLoan != 0)
                     {
-                        auto newLoan = gameState.BankLoan - 1000.00_GBP;
-                        if (gameState.BankLoan > 0)
+                        auto newLoan = gameState.bankLoan - 1000.00_GBP;
+                        if (gameState.bankLoan > 0)
                         {
                             newLoan = std::max(static_cast<money64>(0LL), newLoan);
                         }
@@ -575,7 +579,7 @@ namespace OpenRCT2::Ui::Windows
             // drawing has completed.
             auto ft = Formatter::Common();
             ft.Increment(6);
-            ft.Add<money64>(GetGameState().BankLoan);
+            ft.Add<money64>(getGameState().bankLoan);
 
             // Keep up with new months being added in the first two years.
             if (GetDate().GetMonthsElapsed() != _lastPaintedMonth)
@@ -584,8 +588,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDrawSummary(DrawPixelInfo& dpi)
         {
-            auto screenCoords = windowPos + ScreenCoordsXY{ 8, 51 };
-            auto& gameState = GetGameState();
+            auto titleBarBottom = widgets[WIDX_TITLE].bottom;
+            auto screenCoords = windowPos + ScreenCoordsXY{ 8, titleBarBottom + 37 };
+            auto& gameState = getGameState();
 
             // Expenditure / Income heading
             DrawTextBasic(
@@ -609,43 +614,46 @@ namespace OpenRCT2::Ui::Windows
 
             // Horizontal rule below expenditure / income table
             GfxFillRectInset(
-                dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
+                dpi,
+                { windowPos + ScreenCoordsXY{ 8, titleBarBottom + 258 },
+                  windowPos + ScreenCoordsXY{ 8 + 513, titleBarBottom + 258 + 1 } },
+                colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
             // Loan and interest rate
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
-            if (!(gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST))
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
+            if (!(gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST))
             {
                 auto ft = Formatter();
-                ft.Add<uint16_t>(gameState.BankLoanInterestRate);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
+                ft.Add<uint16_t>(gameState.bankLoanInterestRate);
+                DrawTextBasic(
+                    dpi, windowPos + ScreenCoordsXY{ 167, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
             }
 
             // Current cash
             auto ft = Formatter();
-            ft.Add<money64>(gameState.Cash);
-            StringId stringId = gameState.Cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
+            ft.Add<money64>(gameState.cash);
+            StringId stringId = gameState.cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 280 }, stringId, ft);
 
             // Objective related financial information
-            if (gameState.ScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
+            if (gameState.scenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
             {
                 auto lastMonthProfit = FinanceGetLastMonthShopProfit();
                 ft = Formatter();
                 ft.Add<money64>(lastMonthProfit);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL,
-                    ft);
+                    dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 },
+                    STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, ft);
             }
             else
             {
                 // Park value and company value
                 ft = Formatter();
-                ft.Add<money64>(gameState.Park.Value);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
+                ft.Add<money64>(gameState.park.Value);
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 }, STR_PARK_VALUE_LABEL, ft);
                 ft = Formatter();
-                ft.Add<money64>(gameState.CompanyValue);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 294 }, STR_COMPANY_VALUE_LABEL, ft);
+                ft.Add<money64>(gameState.companyValue);
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 280 }, STR_COMPANY_VALUE_LABEL, ft);
             }
         }
 
@@ -669,8 +677,8 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDrawMarketing()
         {
             // Count number of active campaigns
-            int32_t numActiveCampaigns = static_cast<int32_t>(GetGameState().MarketingCampaigns.size());
-            int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
+            int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().marketingCampaigns.size());
+            int32_t y = widgets[WIDX_TAB_1].top + std::max(1, numActiveCampaigns) * kListRowHeight + 75;
 
             // Update group box positions
             widgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
@@ -698,7 +706,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDrawMarketing(DrawPixelInfo& dpi)
         {
-            auto screenCoords = windowPos + ScreenCoordsXY{ 8, 62 };
+            auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_TAB_1].top + 45 };
             int32_t noCampaignsActive = 1;
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
@@ -718,7 +726,7 @@ namespace OpenRCT2::Ui::Windows
                         auto campaignRide = GetRide(marketingCampaign->RideId);
                         if (campaignRide != nullptr)
                         {
-                            campaignRide->FormatNameTo(ft);
+                            campaignRide->formatNameTo(ft);
                         }
                         else
                         {
@@ -731,7 +739,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     default:
                     {
-                        auto parkName = GetGameState().Park.Name.c_str();
+                        auto parkName = getGameState().park.Name.c_str();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                     }
@@ -753,9 +761,7 @@ namespace OpenRCT2::Ui::Windows
             if (noCampaignsActive)
             {
                 DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
-                screenCoords.y += kListRowHeight;
             }
-            screenCoords.y += 34;
 
             // Draw campaign button text
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
@@ -764,12 +770,11 @@ namespace OpenRCT2::Ui::Windows
                 if (campaignButton->type != WindowWidgetType::Empty)
                 {
                     // Draw button text
+                    screenCoords = windowPos + ScreenCoordsXY{ campaignButton->left, campaignButton->textTop() };
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, kMarketingCampaignNames[i][0]);
                     auto ft = Formatter();
                     ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
-                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
-
-                    screenCoords.y += kButtonFaceHeight + 2;
+                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ kCostPerWeekOffset, 0 }, STR_MARKETING_PER_WEEK, ft);
                 }
             }
         }
@@ -880,7 +885,7 @@ namespace OpenRCT2::Ui::Windows
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, kHeightSummary, WF_10);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
             window->SetPage(page);
@@ -891,7 +896,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* FinancesOpen()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, kHeightSummary, WF_10);
     }
 
     WindowBase* FinancesResearchOpen()

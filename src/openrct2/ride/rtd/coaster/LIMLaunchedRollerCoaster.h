@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::limLaunchedRollerCoaster,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch, RideMode::PoweredLaunchBlockSectioned),
-    .DefaultMode = RideMode::PoweredLaunchPasstrough,
+    .RideModes = EnumsToFlags(RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch, RideMode::poweredLaunchBlockSectioned),
+    .DefaultMode = RideMode::poweredLaunchPasstrough,
     .OperatingSettings = { 10, 31 },
     .BoosterSettings = { 18, 52 },
     .LegacyBoosterSettings = { 18, 52 },

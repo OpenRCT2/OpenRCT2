@@ -17,6 +17,7 @@
 #include <list>
 #include <memory>
 #include <span>
+#include <variant>
 #include <vector>
 
 enum class TileInspectorPage : int16_t;
@@ -118,6 +119,11 @@ namespace OpenRCT2
         virtual ~WindowBase() = default;
 
         WindowBase& operator=(const WindowBase&) = delete;
+
+        constexpr bool canBeResized() const
+        {
+            return (flags & WF_RESIZABLE) && (min_width != max_width || min_height != max_height);
+        }
 
         // Events
         virtual void OnOpen()

@@ -262,7 +262,6 @@ const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> N
         "PERMISSION_EDIT_SCENARIO_OPTIONS",
         {
             GameCommand::EditScenarioOptions,
-            GameCommand::SetClimate,
         },
     },
 };

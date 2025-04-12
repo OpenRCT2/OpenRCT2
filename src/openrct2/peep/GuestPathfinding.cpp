@@ -18,7 +18,6 @@
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
-#include "../scenario/Scenario.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/tile_element/BannerElement.h"
@@ -423,7 +422,7 @@ namespace OpenRCT2::PathFinding
                         continue;
                     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                     auto ride = GetRide(rideIndex);
-                    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+                    if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
                     {
                         *outRideIndex = rideIndex;
                         return PathSearchResult::ShopEntrance;
@@ -792,7 +791,7 @@ namespace OpenRCT2::PathFinding
                      * tile. */
                     rideIndex = tileElement->AsTrack()->GetRideIndex();
                     auto ride = GetRide(rideIndex);
-                    if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
+                    if (ride == nullptr || !ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
                         continue;
 
                     found = true;
@@ -1298,7 +1297,7 @@ namespace OpenRCT2::PathFinding
         } while (!(destTileElement++)->IsLastForTile());
         // Peep is not on a path.
         if (!found)
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
 
         permittedEdges &= 0xF;
         uint32_t edges = permittedEdges;
@@ -1374,7 +1373,7 @@ namespace OpenRCT2::PathFinding
 
         // Peep has tried all edges.
         if (edges == 0)
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
 
         int32_t chosenEdge = Numerics::bitScanForward(edges);
 
@@ -1418,7 +1417,7 @@ namespace OpenRCT2::PathFinding
                 for (auto& entry : state.history)
                 {
                     entry.location.SetNull();
-                    entry.direction = INVALID_DIRECTION;
+                    entry.direction = kInvalidDirection;
                 }
 
                 /* The pathfinding will only use elements
@@ -1507,7 +1506,7 @@ namespace OpenRCT2::PathFinding
             if (bestScore == 0xFFFF)
             {
                 LogPathfinding(&peep, "Pathfind heuristic search failed.");
-                return INVALID_DIRECTION;
+                return kInvalidDirection;
             }
 
             if constexpr (kLogPathfinding)
@@ -1573,7 +1572,7 @@ namespace OpenRCT2::PathFinding
     {
         std::optional<CoordsXYZ> chosenEntrance = std::nullopt;
         uint16_t nearestDist = 0xFFFF;
-        for (const auto& parkEntrance : GetGameState().Park.Entrances)
+        for (const auto& parkEntrance : getGameState().park.Entrances)
         {
             auto dist = abs(parkEntrance.x - loc.x) + abs(parkEntrance.y - loc.y);
             if (dist < nearestDist)
@@ -1601,7 +1600,7 @@ namespace OpenRCT2::PathFinding
         const auto goalPos = TileCoordsXYZ(chosenEntrance.value());
         Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep, true, RideId::GetNull());
 
-        if (chosenDirection == INVALID_DIRECTION)
+        if (chosenDirection == kInvalidDirection)
             return GuestPathfindAimless(peep, edges);
 
         return PeepMoveOneTile(chosenDirection, peep);
@@ -1611,14 +1610,14 @@ namespace OpenRCT2::PathFinding
      * Gets the nearest peep spawn relative to point, by using Manhattan distance.
      * @param x x coordinate of location
      * @param y y coordinate of location
-     * @return Index of gameState.PeepSpawns (or 0xFF if no peep spawns exist).
+     * @return Index of gameState.peepSpawns (or 0xFF if no peep spawns exist).
      */
     static uint8_t GetNearestPeepSpawnIndex(uint16_t x, uint16_t y)
     {
         uint8_t chosenSpawn = 0xFF;
         uint16_t nearestDist = 0xFFFF;
         uint8_t i = 0;
-        for (const auto& spawn : GetGameState().PeepSpawns)
+        for (const auto& spawn : getGameState().peepSpawns)
         {
             uint16_t dist = abs(spawn.x - x) + abs(spawn.y - y);
             if (dist < nearestDist)
@@ -1644,7 +1643,7 @@ namespace OpenRCT2::PathFinding
         if (chosenSpawn == 0xFF)
             return GuestPathfindAimless(peep, edges);
 
-        const auto peepSpawnLoc = GetGameState().PeepSpawns[chosenSpawn].ToTileStart();
+        const auto peepSpawnLoc = getGameState().peepSpawns[chosenSpawn].ToTileStart();
         Direction direction = peepSpawnLoc.direction;
 
         if (peepSpawnLoc.x == peep.NextLoc.x && peepSpawnLoc.y == peep.NextLoc.y)
@@ -1654,7 +1653,7 @@ namespace OpenRCT2::PathFinding
 
         const auto goalPos = TileCoordsXYZ(peepSpawnLoc);
         direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep, true, RideId::GetNull());
-        if (direction == INVALID_DIRECTION)
+        if (direction == kInvalidDirection)
             return GuestPathfindAimless(peep, edges);
 
         return PeepMoveOneTile(direction, peep);
@@ -1690,7 +1689,7 @@ namespace OpenRCT2::PathFinding
         }
 
         Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, entranceGoal, peep, true, RideId::GetNull());
-        if (chosenDirection == INVALID_DIRECTION)
+        if (chosenDirection == kInvalidDirection)
             return GuestPathfindAimless(peep, edges);
 
         return PeepMoveOneTile(chosenDirection, peep);
@@ -2041,7 +2040,7 @@ namespace OpenRCT2::PathFinding
         // Peep is heading for a ride.
         RideId rideIndex = peep.GuestHeadingToRideId;
         auto ride = GetRide(rideIndex);
-        if (ride == nullptr || ride->status != RideStatus::Open)
+        if (ride == nullptr || ride->status != RideStatus::open)
         {
             LogPathfinding(&peep, "Completed CalculateNextDestination - peep is heading to closed ride == aimless.");
 
@@ -2057,13 +2056,13 @@ namespace OpenRCT2::PathFinding
         int32_t numEntranceStations = 0;
         BitSet<OpenRCT2::Limits::kMaxStationsPerRide> entranceStations = {};
 
-        for (const auto& station : ride->GetStations())
+        for (const auto& station : ride->getStations())
         {
             // Skip if stationNum has no entrance (so presumably an exit only station)
             if (station.Entrance.IsNull())
                 continue;
 
-            const auto stationIndex = ride->GetStationIndex(&station);
+            const auto stationIndex = ride->getStationIndex(&station);
 
             numEntranceStations++;
             entranceStations[stationIndex.ToUnderlying()] = true;
@@ -2082,7 +2081,7 @@ namespace OpenRCT2::PathFinding
         if (numEntranceStations == 0)
             closestStationNum = StationIndex::FromUnderlying(0);
 
-        if (numEntranceStations > 1 && (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
+        if (numEntranceStations > 1 && (ride->departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
         {
             closestStationNum = GuestPathfindingSelectRandomStation(peep, numEntranceStations, entranceStations);
         }
@@ -2090,7 +2089,7 @@ namespace OpenRCT2::PathFinding
         if (numEntranceStations == 0)
         {
             // closestStationNum is always 0 here.
-            const auto& closestStation = ride->GetStation(closestStationNum);
+            const auto& closestStation = ride->getStation(closestStationNum);
             auto entranceXY = TileCoordsXY(closestStation.Start);
             loc.x = entranceXY.x;
             loc.y = entranceXY.y;
@@ -2098,7 +2097,7 @@ namespace OpenRCT2::PathFinding
         }
         else
         {
-            TileCoordsXYZD entranceXYZD = ride->GetStation(closestStationNum).Entrance;
+            TileCoordsXYZD entranceXYZD = ride->getStation(closestStationNum).Entrance;
             loc.x = entranceXYZD.x;
             loc.y = entranceXYZD.y;
             loc.z = entranceXYZD.z;
@@ -2108,7 +2107,7 @@ namespace OpenRCT2::PathFinding
 
         direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, loc, peep, true, rideIndex);
 
-        if (direction == INVALID_DIRECTION)
+        if (direction == kInvalidDirection)
         {
             /* Heuristic search failed for all directions.
              * Reset the PathfindGoal - this means that the PathfindHistory

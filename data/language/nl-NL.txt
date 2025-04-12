@@ -445,9 +445,9 @@ STR_1050    :Kan dit niet laden…{NEWLINE}Bestand bevat ongeldige gegevens!
 STR_1051    :Onzichtbare ondersteuningen
 STR_1052    :Onzichtbare mensen
 STR_1053    :Attracties in park
-STR_1054    :Attractienaam
-STR_1055    :Persoonsnaam
-STR_1056    :Werknemersnaam
+STR_1054    :Attractienaam wijzigen
+STR_1055    :Naam wijzigen
+STR_1056    :Naam wijzigen
 STR_1057    :Attractienaam
 STR_1058    :Voer een nieuwe naam in voor deze attractie:
 STR_1059    :Kan deze attractie geen andere naam geven…
@@ -2128,7 +2128,7 @@ STR_3099    :Kleur selecteren
 STR_3100    :Tweede kleur selecteren
 STR_3101    :Derde kleur selecteren
 STR_3102    :Gekleurd decor opnieuw verven
-STR_3103    :Kan dit niet opnieuw verversen…
+STR_3103    :Kan dit niet opnieuw verven…
 STR_3104    :Toon een lijst van attracties
 STR_3105    :Toon een lijst van winkels en kraampjes
 STR_3106    :Toon een lijst van informatiekiosken en andere faciliteiten
@@ -2259,10 +2259,6 @@ STR_3252    :Kan de maximumlening niet verder verhogen!
 STR_3253    :Kan de maximumlening niet verder verlagen!
 STR_3254    :Kan de rente niet verder verhogen!
 STR_3255    :Kan de rente niet verder verlagen!
-STR_3256    :Bezoekers houden meer van rustigere attracties
-STR_3257    :Selecteer of bezoekers in het algemeen meer van rustigere attracties houden
-STR_3258    :Bezoekers houden meer van spannende attracties
-STR_3259    :Selecteer of bezoekers in het algemeen meer van spannende attracties houden
 STR_3260    :{WINDOW_COLOUR_2}Geld per bezoeker (gemiddeld):
 STR_3261    :{WINDOW_COLOUR_2}Aanvankelijke stemming bezoekers:
 STR_3262    :{WINDOW_COLOUR_2}Aanvankelijke honger bezoekers:
@@ -3737,10 +3733,10 @@ STR_6678    :Bronbestand:
 STR_6679    :Vlak land
 STR_6680    :Simplex-ruis
 STR_6681    :Hoogtekaart
-STR_6682    :Mapgenerator - Generator
-STR_6683    :Mapgenerator - Terrein
-STR_6684    :Mapgenerator - Water
-STR_6685    :Mapgenerator - Bossen
+STR_6682    :Kaartgenerator - Generator
+STR_6683    :Kaartgenerator - Terrein
+STR_6684    :Kaartgenerator - Water
+STR_6685    :Kaartgenerator - Bossen
 STR_6686    :Ratio bomen/land:
 STR_6687    :Minimale boomhoogte:
 STR_6688    :Maximale boomhoogte:
@@ -3791,3 +3787,10 @@ STR_6732    :Toon een knop in de werkbalk om het beeld tegen de klok in te draai
 STR_6733    :Doorzichtig
 STR_6734    :Maakt kaartelementen die hoger staan dan de ingestelde bovengrens doorzichtig.
 STR_6735    :Naar bovenliggende map navigeren
+STR_6736    :Preview
+STR_6737    :Geen preview beschikbaar.
+STR_6738    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Datum: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Geld: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Aantal bezoekers: {BLACK}{UINT16}

@@ -29,7 +29,7 @@
 #include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Viewport.h"
-#include "interface/Window_internal.h"
+#include "interface/WindowBase.h"
 #include "localisation/LocalisationService.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
@@ -38,7 +38,6 @@
 #include "object/ObjectRepository.h"
 #include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
-#include "scenario/Scenario.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
@@ -57,7 +56,7 @@ namespace OpenRCT2::Editor
 {
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::count)> _editorSelectedObjectFlags;
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
+    static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path);
     static void SetAllLandOwned();
     static void FinaliseMainView();
     static void ClearMapForEditing(bool fromSave);
@@ -79,7 +78,7 @@ namespace OpenRCT2::Editor
 
         // Reset loaded objects to just defaults
         // Load minimum required objects (like surface and edge)
-        for (const auto& entry : MinimumRequiredObjects)
+        for (const auto& entry : kMinimumRequiredObjects)
         {
             objectManager.LoadObject(entry);
         }
@@ -103,20 +102,20 @@ namespace OpenRCT2::Editor
         auto* context = GetContext();
         context->SetActiveScene(context->GetGameScene());
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         Audio::StopAll();
         ObjectListLoad();
         gameStateInitAll(gameState, kDefaultMapSize);
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gameState.EditorStep = EditorStep::ObjectSelection;
-        gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
+        gLegacyScene = LegacyScene::scenarioEditor;
+        gameState.editorStep = EditorStep::ObjectSelection;
+        gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.scenarioCategory = ScenarioCategory::other;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
         gScreenAge = 0;
-        gameState.ScenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
+        gameState.scenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
     }
 
     /**
@@ -127,14 +126,15 @@ namespace OpenRCT2::Editor
     {
         ToolCancel();
         auto intent = Intent(WindowClass::Loadsave);
-        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+        intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+        intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
         intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(ConvertSaveToScenarioCallback));
         ContextOpenIntent(&intent);
     }
 
-    static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path)
+    static void ConvertSaveToScenarioCallback(ModalResult result, const utf8* path)
     {
-        if (result != MODAL_RESULT_OK)
+        if (result != ModalResult::ok)
         {
             return;
         }
@@ -144,12 +144,12 @@ namespace OpenRCT2::Editor
             return;
         }
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         ScenarioReset(gameState);
 
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gameState.EditorStep = EditorStep::ObjectiveSelection;
-        gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
+        gLegacyScene = LegacyScene::scenarioEditor;
+        gameState.editorStep = EditorStep::ObjectiveSelection;
+        gameState.scenarioCategory = ScenarioCategory::other;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
@@ -167,14 +167,14 @@ namespace OpenRCT2::Editor
         context->SetActiveScene(context->GetGameScene());
 
         Audio::StopAll();
-        gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
+        gLegacyScene = LegacyScene::trackDesigner;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        gameStateInitAll(GetGameState(), kDefaultMapSize);
+        gameStateInitAll(getGameState(), kDefaultMapSize);
         SetAllLandOwned();
-        GetGameState().EditorStep = EditorStep::ObjectSelection;
+        getGameState().editorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -192,14 +192,14 @@ namespace OpenRCT2::Editor
         context->SetActiveScene(context->GetGameScene());
 
         Audio::StopAll();
-        gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
+        gLegacyScene = LegacyScene::trackDesignsManager;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        gameStateInitAll(GetGameState(), kDefaultMapSize);
+        gameStateInitAll(getGameState(), kDefaultMapSize);
         SetAllLandOwned();
-        GetGameState().EditorStep = EditorStep::ObjectSelection;
+        getGameState().editorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -212,9 +212,9 @@ namespace OpenRCT2::Editor
      */
     static void SetAllLandOwned()
     {
-        auto& gameState = GetGameState();
-        MapRange range = { 2 * kCoordsXYStep, 2 * kCoordsXYStep, (gameState.MapSize.x - 3) * kCoordsXYStep,
-                           (gameState.MapSize.y - 3) * kCoordsXYStep };
+        auto& gameState = getGameState();
+        MapRange range = { 2 * kCoordsXYStep, 2 * kCoordsXYStep, (gameState.mapSize.x - 3) * kCoordsXYStep,
+                           (gameState.mapSize.y - 3) * kCoordsXYStep };
         auto landSetRightsAction = LandSetRightsAction(range, LandSetRightSetting::SetForSale);
         landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
         GameActions::Execute(&landSetRightsAction);
@@ -232,9 +232,9 @@ namespace OpenRCT2::Editor
         auto* context = GetContext();
         context->SetActiveScene(context->GetGameScene());
 
-        GetGameState().EditorStep = EditorStep::LandscapeEditor;
+        getGameState().editorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
-        gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+        gLegacyScene = LegacyScene::scenarioEditor;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
@@ -274,44 +274,44 @@ namespace OpenRCT2::Editor
             staff->SetName({});
         }
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
 
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
-        gameState.NumGuestsInPark = 0;
-        gameState.NumGuestsHeadingForPark = 0;
-        gameState.NumGuestsInParkLastWeek = 0;
-        gameState.GuestChangeModifier = 0;
+        gameState.numGuestsInPark = 0;
+        gameState.numGuestsHeadingForPark = 0;
+        gameState.numGuestsInParkLastWeek = 0;
+        gameState.guestChangeModifier = 0;
         if (fromSave)
         {
-            gameState.Park.Flags |= PARK_FLAGS_NO_MONEY;
+            gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
 
-            if (gameState.Park.EntranceFee == 0)
+            if (gameState.park.EntranceFee == 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
             }
 
-            gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+            gameState.park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, kMaxEntranceFee);
+            gameState.guestInitialCash = std::clamp(gameState.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
 
-            gameState.InitialCash = std::min<money64>(gameState.InitialCash, 100000);
+            gameState.initialCash = std::min<money64>(gameState.initialCash, 100000);
             FinanceResetCashToInitial();
 
-            gameState.BankLoan = std::clamp<money64>(gameState.BankLoan, 0.00_GBP, 5000000.00_GBP);
+            gameState.bankLoan = std::clamp<money64>(gameState.bankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gameState.MaxBankLoan = std::clamp<money64>(gameState.MaxBankLoan, 0.00_GBP, 5000000.00_GBP);
+            gameState.maxBankLoan = std::clamp<money64>(gameState.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gameState.BankLoanInterestRate = std::clamp<uint8_t>(gameState.BankLoanInterestRate, 5, MaxBankLoanInterestRate);
+            gameState.bankLoanInterestRate = std::clamp<uint8_t>(gameState.bankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
-        ClimateReset(gameState.Climate);
+        ClimateReset();
 
-        News::InitQueue();
+        News::InitQueue(gameState);
     }
 
     /**
@@ -320,14 +320,14 @@ namespace OpenRCT2::Editor
      */
     void OpenWindowsForCurrentStep()
     {
-        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+        if (!isInEditorMode())
         {
             return;
         }
 
         auto* windowMgr = Ui::GetWindowManager();
 
-        switch (GetGameState().EditorStep)
+        switch (getGameState().editorStep)
         {
             case EditorStep::ObjectSelection:
                 if (windowMgr->FindByClass(WindowClass::EditorObjectSelection) != nullptr)
@@ -340,7 +340,7 @@ namespace OpenRCT2::Editor
                     return;
                 }
 
-                if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                if (gLegacyScene == LegacyScene::trackDesignsManager)
                 {
                     ObjectManagerUnloadAllObjects();
                 }
@@ -383,8 +383,8 @@ namespace OpenRCT2::Editor
     static void FinaliseMainView()
     {
         auto windowManager = Ui::GetWindowManager();
-        auto& gameState = GetGameState();
-        windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
+        auto& gameState = getGameState();
+        windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
 
         ResetAllSpriteQuadrantPlacements();
 
@@ -418,7 +418,7 @@ namespace OpenRCT2::Editor
         }
 
         // No checks beyond this point apply to the track designer or track designs manager.
-        const bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+        const bool isTrackDesignerManager = isInTrackDesignerOrManager();
         if (isTrackDesignerManager)
         {
             return { ObjectType::none, kStringIdNone };
@@ -474,19 +474,19 @@ namespace OpenRCT2::Editor
      */
     ResultWithMessage CheckPark()
     {
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         int32_t parkSize = Park::UpdateSize(gameState);
         if (parkSize == 0)
         {
             return { false, STR_PARK_MUST_OWN_SOME_LAND };
         }
 
-        if (gameState.Park.Entrances.empty())
+        if (gameState.park.Entrances.empty())
         {
             return { false, STR_NO_PARK_ENTRANCES };
         }
 
-        for (const auto& parkEntrance : gameState.Park.Entrances)
+        for (const auto& parkEntrance : gameState.park.Entrances)
         {
             int32_t direction = DirectionReverse(parkEntrance.direction);
 
@@ -504,7 +504,7 @@ namespace OpenRCT2::Editor
             }
         }
 
-        if (gameState.PeepSpawns.empty())
+        if (gameState.peepSpawns.empty())
         {
             return { false, STR_PEEP_SPAWNS_NOT_SET };
         }

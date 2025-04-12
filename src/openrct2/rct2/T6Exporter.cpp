@@ -39,7 +39,7 @@ namespace OpenRCT2::RCT2
     {
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::write);
             return SaveTrack(&fs);
         }
         catch (const std::exception& e)

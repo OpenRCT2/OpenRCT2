@@ -37,7 +37,6 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackPaint.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -56,7 +55,7 @@ using namespace OpenRCT2::Ui::Windows;
 
 static void OpenWindow(WindowClass wc)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gLegacyScene != LegacyScene::titleSequence)
     {
         ContextOpenWindow(wc);
     }
@@ -64,7 +63,7 @@ static void OpenWindow(WindowClass wc)
 
 static void RotateCamera(int32_t direction)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gLegacyScene != LegacyScene::titleSequence)
     {
         ViewportRotateAll(direction);
     }
@@ -72,7 +71,7 @@ static void RotateCamera(int32_t direction)
 
 static void ToggleViewFlag(int32_t viewportFlag)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (gLegacyScene != LegacyScene::titleSequence)
     {
         auto window = WindowGetMain();
         if (window != nullptr)
@@ -85,7 +84,7 @@ static void ToggleViewFlag(int32_t viewportFlag)
 
 static void ShortcutRotateConstructionObject()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -153,7 +152,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
 {
     auto* windowMgr = GetWindowManager();
 
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
     {
         if (windowMgr->FindByClass(WindowClass::TitleLogo) != nullptr)
         {
@@ -178,7 +177,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
         }
         else
         {
-            if (gScreenFlags == 0)
+            if (gLegacyScene == LegacyScene::playing)
             {
                 ContextOpenWindow(WindowClass::TopToolbar);
                 ContextOpenWindow(WindowClass::BottomToolbar);
@@ -195,13 +194,13 @@ static void ShortcutRemoveTopBottomToolbarToggle()
 
 static void ShortcutAdjustLand()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleLandWindow();
@@ -209,13 +208,13 @@ static void ShortcutAdjustLand()
 
 static void ShortcutAdjustWater()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleWaterWindow();
@@ -223,13 +222,13 @@ static void ShortcutAdjustWater()
 
 static void ShortcutBuildScenery()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleSceneryWindow();
@@ -237,13 +236,13 @@ static void ShortcutBuildScenery()
 
 static void ShortcutBuildPaths()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleFootpathWindow();
@@ -251,12 +250,12 @@ static void ShortcutBuildPaths()
 
 static void ShortcutBuildNewRide()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
+    if (gLegacyScene != LegacyScene::scenarioEditor)
     {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+        if (!(isInTrackDesignerOrManager()))
         {
             ContextOpenWindow(WindowClass::ConstructRide);
         }
@@ -265,20 +264,20 @@ static void ShortcutBuildNewRide()
 
 static void ShortcutShowFinancialInformation()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+    if (!(isInTrackDesignerOrManager()))
+        if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             ContextOpenWindow(WindowClass::Finances);
 }
 
 static void ShortcutShowResearchInformation()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
         ContextOpenWindowView(WV_RIDE_RESEARCH);
     }
@@ -286,10 +285,10 @@ static void ShortcutShowResearchInformation()
 
 static void ShortcutShowRidesList()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
         ContextOpenWindow(WindowClass::RideList);
     }
@@ -297,10 +296,10 @@ static void ShortcutShowRidesList()
 
 static void ShortcutShowParkInformation()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
         ContextOpenWindow(WindowClass::ParkInformation);
     }
@@ -308,10 +307,10 @@ static void ShortcutShowParkInformation()
 
 static void ShortcutShowGuestList()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
         ContextOpenWindow(WindowClass::GuestList);
     }
@@ -319,10 +318,10 @@ static void ShortcutShowGuestList()
 
 static void ShortcutShowStaffList()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
     {
         ContextOpenWindow(WindowClass::StaffList);
     }
@@ -330,26 +329,26 @@ static void ShortcutShowStaffList()
 
 static void ShortcutShowRecentMessages()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!isInEditorMode())
         ContextOpenWindow(WindowClass::RecentNews);
 }
 
 static void ShortcutShowMap()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == EditorStep::LandscapeEditor)
+        if (!(isInTrackDesignerOrManager()))
             ContextOpenWindow(WindowClass::Map);
 }
 
 static void ShortcutReduceGameSpeed()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     if (NetworkGetMode() == NETWORK_MODE_NONE)
@@ -358,7 +357,7 @@ static void ShortcutReduceGameSpeed()
 
 static void ShortcutIncreaseGameSpeed()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     if (NetworkGetMode() == NETWORK_MODE_NONE)
@@ -367,7 +366,7 @@ static void ShortcutIncreaseGameSpeed()
 
 static void ShortcutOpenCheatWindow()
 {
-    if (gScreenFlags != SCREEN_FLAGS_PLAYING)
+    if (gLegacyScene != LegacyScene::playing)
         return;
 
     // Check if window is already open
@@ -388,7 +387,7 @@ static void ShortcutOpenKeyboardShortcutsWindow()
 
 static void ShortcutOpenTransparencyWindow()
 {
-    if (gScreenFlags != SCREEN_FLAGS_PLAYING)
+    if (gLegacyScene != LegacyScene::playing)
         return;
 
     ContextOpenWindow(WindowClass::Transparency);
@@ -396,13 +395,13 @@ static void ShortcutOpenTransparencyWindow()
 
 static void ShortcutClearScenery()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor)
         return;
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
         return;
 
     ToggleClearSceneryWindow();
@@ -411,23 +410,24 @@ static void ShortcutClearScenery()
 static void ShortcutQuickSaveGame()
 {
     // Do a quick save in playing mode and a regular save in Scenario Editor mode. In other cases, don't do anything.
-    if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+    if (gLegacyScene == LegacyScene::playing)
     {
         ToolCancel();
         SaveGame();
     }
-    else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    else if (gLegacyScene == LegacyScene::scenarioEditor)
     {
         auto intent = Intent(WindowClass::Loadsave);
-        intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-        intent.PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
+        intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
+        intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::landscape);
+        intent.PutExtra(INTENT_EXTRA_PATH, getGameState().scenarioName);
         ContextOpenIntent(&intent);
     }
 }
 
 static void ShortcutLoadGame()
 {
-    if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(isInTrackDesignerOrManager()))
     {
         auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
         GameActions::Execute(&loadOrQuitAction);
@@ -436,8 +436,9 @@ static void ShortcutLoadGame()
 
 static void ShortcutOpenSceneryPicker()
 {
-    if ((gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-        || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor))
+    if ((gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
+         || gLegacyScene == LegacyScene::trackDesignsManager)
+        || (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::LandscapeEditor))
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -609,7 +610,7 @@ static void ShortcutDecreaseElementHeight()
 static void ShortcutToggleClearanceChecks()
 {
     auto cheatSetAction = CheatSetAction(
-        CheatType::DisableClearanceChecks, GetGameState().Cheats.disableClearanceChecks ? 0 : 1);
+        CheatType::DisableClearanceChecks, getGameState().cheats.disableClearanceChecks ? 0 : 1);
     GameActions::Execute(&cheatSetAction);
 }
 
@@ -629,7 +630,7 @@ static void ShortcutToggleConsole()
 
 static void ShortcutConstructionTurnLeft()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -646,7 +647,7 @@ static void ShortcutConstructionTurnLeft()
 
 static void ShortcutConstructionTurnRight()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -663,7 +664,7 @@ static void ShortcutConstructionTurnRight()
 
 static void ShortcutConstructionSlopeUp()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -680,7 +681,7 @@ static void ShortcutConstructionSlopeUp()
 
 static void ShortcutConstructionBuildCurrent()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -697,7 +698,7 @@ static void ShortcutConstructionBuildCurrent()
 
 static void ShortcutConstructionSlopeDown()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -714,7 +715,7 @@ static void ShortcutConstructionSlopeDown()
 
 static void ShortcutConstructionDemolishCurrent()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -731,7 +732,7 @@ static void ShortcutConstructionDemolishCurrent()
 
 static void ShortcutToggleTransparentWater()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     Config::Get().general.TransparentWater ^= 1;
@@ -753,18 +754,18 @@ void ShortcutManager::RegisterDefaultShortcuts()
     });
     RegisterShortcut(ShortcutId::kInterfaceCloseAll, STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS, "SHIFT+BACKSPACE", []() {
         auto* windowMgr = GetWindowManager();
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
+        if (gLegacyScene != LegacyScene::scenarioEditor)
         {
             windowMgr->CloseAll();
         }
-        else if (GetGameState().EditorStep == EditorStep::LandscapeEditor)
+        else if (getGameState().editorStep == EditorStep::LandscapeEditor)
         {
             windowMgr->CloseTop();
         }
     });
     RegisterShortcut(ShortcutId::kInterfaceRotateConstruction, STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT, "Z", ShortcutRotateConstructionObject);
     RegisterShortcut(ShortcutId::kInterfaceCancelConstruction, STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE, "ESCAPE", []() {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (gLegacyScene != LegacyScene::titleSequence)
         {
             auto* windowMgr = GetWindowManager();
             auto window = windowMgr->FindByClass(WindowClass::Error);
@@ -772,14 +773,14 @@ void ShortcutManager::RegisterDefaultShortcuts()
             {
                 windowMgr->Close(*window);
             }
-            else if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+            else if (gInputFlags.has(InputFlag::toolActive))
             {
                 ToolCancel();
             }
         }
     });
     RegisterShortcut(ShortcutId::kInterfacePause, STR_SHORTCUT_PAUSE_GAME, "PAUSE", []() {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
+        if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::scenarioEditor && gLegacyScene != LegacyScene::trackDesignsManager)
         {
             auto pauseToggleAction = PauseToggleAction();
             GameActions::Execute(&pauseToggleAction);
@@ -797,7 +798,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(
         ShortcutId::kInterfaceDisableClearance, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, ShortcutToggleClearanceChecks);
     RegisterShortcut(ShortcutId::kInterfaceMultiplayerChat, STR_SHORTCUT_SEND_MESSAGE, "C", []() {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && ChatAvailable())
+        if (gLegacyScene != LegacyScene::titleSequence && ChatAvailable())
         {
             ChatToggle();
         }
@@ -895,13 +896,13 @@ void ShortcutManager::RegisterDefaultShortcuts()
     // Debug
     RegisterShortcut(ShortcutId::kDebugToggleConsole, STR_CONSOLE, "`", ShortcutToggleConsole);
     RegisterShortcut(ShortcutId::kDebugAdvanceTick, STR_SHORTCUT_ADVANCE_TO_NEXT_TICK, []() {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
+        if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::scenarioEditor && gLegacyScene != LegacyScene::trackDesignsManager)
         {
             gDoSingleUpdate = true;
         }
     });
     RegisterShortcut(ShortcutId::kDebugTogglePaintDebugWindow, STR_SHORTCUT_DEBUG_PAINT_TOGGLE, []() {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (gLegacyScene != LegacyScene::titleSequence)
         {
             auto* windowMgr = GetWindowManager();
             auto window = windowMgr->FindByClass(WindowClass::DebugPaint);

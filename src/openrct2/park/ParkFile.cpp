@@ -47,7 +47,6 @@
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ride/Vehicle.h"
-#include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
@@ -60,6 +59,7 @@
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Legacy.h"
+#include "ParkPreview.h"
 
 #include <cassert>
 #include <cstdint>
@@ -95,6 +95,7 @@ namespace OpenRCT2
         constexpr uint32_t CHEATS               = 0x36;
         constexpr uint32_t RESTRICTED_OBJECTS   = 0x37;
         constexpr uint32_t PLUGIN_STORAGE       = 0x38;
+        constexpr uint32_t PREVIEW              = 0x39;
         constexpr uint32_t PACKED_OBJECTS       = 0x80;
         // clang-format on
     }; // namespace ParkFileChunkType
@@ -130,20 +131,23 @@ namespace OpenRCT2
             return targetVersion > kParkFileCurrentVersion;
         }
 
-        void Load(const std::string_view path)
+        void Load(const std::string_view path, const bool skipObjectCheck)
         {
-            FileStream fs(path, FILE_MODE_OPEN);
-            Load(fs);
+            FileStream fs(path, FileMode::open);
+            Load(fs, skipObjectCheck);
         }
 
-        void Load(IStream& stream)
+        void Load(IStream& stream, const bool skipObjectCheck)
         {
             _os = std::make_unique<OrcaStream>(stream, OrcaStream::Mode::READING);
             ThrowIfIncompatibleVersion();
 
             RequiredObjects = {};
-            ReadWriteObjectsChunk(*_os);
-            ReadWritePackedObjectsChunk(*_os);
+            if (!skipObjectCheck)
+            {
+                ReadWriteObjectsChunk(*_os);
+                ReadWritePackedObjectsChunk(*_os);
+            }
         }
 
         void Import(GameState_t& gameState)
@@ -169,7 +173,7 @@ namespace OpenRCT2
             }
 
             // Initial cash will eventually be removed
-            gameState.InitialCash = gameState.Cash;
+            gameState.initialCash = gameState.cash;
         }
 
         void Save(GameState_t& gameState, IStream& stream)
@@ -197,12 +201,13 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
+            ReadWritePreviewChunk(gameState, os);
             ReadWritePackedObjectsChunk(os);
         }
 
         void Save(GameState_t& gameState, const std::string_view path)
         {
-            FileStream fs(path, FILE_MODE_WRITE);
+            FileStream fs(path, FileMode::write);
             Save(gameState, fs);
         }
 
@@ -211,7 +216,7 @@ namespace OpenRCT2
             ScenarioIndexEntry entry{};
             auto& os = *_os;
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&entry](OrcaStream::ChunkStream& cs) {
-                entry.Category = cs.Read<uint8_t>();
+                entry.Category = cs.Read<ScenarioCategory>();
 
                 std::string name;
                 ReadWriteStringTable(cs, name, "en-GB");
@@ -225,14 +230,43 @@ namespace OpenRCT2
                 ReadWriteStringTable(cs, scenarioDetails, "en-GB");
                 entry.Details = scenarioDetails;
 
+                // wrong order is intentional here due to ReadWriteScenarioChunk writing guests first
                 entry.ObjectiveType = cs.Read<uint8_t>();
                 entry.ObjectiveArg1 = cs.Read<uint8_t>();
-                entry.ObjectiveArg3 = cs.Read<int16_t>();
+                entry.ObjectiveArg3 = cs.Read<uint16_t>();
                 entry.ObjectiveArg2 = cs.Read<int32_t>();
 
                 entry.SourceGame = ScenarioSource::Other;
             });
             return entry;
+        }
+
+        ParkPreview ReadPreviewChunk()
+        {
+            ParkPreview preview{};
+            auto& os = *_os;
+            os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&preview](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(preview.parkName);
+                cs.ReadWrite(preview.parkRating);
+                cs.ReadWrite(preview.year);
+                cs.ReadWrite(preview.month);
+                cs.ReadWrite(preview.day);
+                cs.ReadWrite(preview.parkUsesMoney);
+                cs.ReadWrite(preview.cash);
+                cs.ReadWrite(preview.numRides);
+                cs.ReadWrite(preview.numGuests);
+
+                cs.ReadWriteVector(preview.images, [&cs](PreviewImage& image) {
+                    cs.ReadWrite(image.type);
+                    cs.ReadWrite(image.width);
+                    cs.ReadWrite(image.height);
+                    cs.ReadWriteArray(image.pixels, [&cs](uint8_t& pixel) {
+                        cs.ReadWrite(pixel);
+                        return true;
+                    });
+                });
+            });
+            return preview;
         }
 
     private:
@@ -389,6 +423,17 @@ namespace OpenRCT2
                     AppendRequiredObjects(requiredObjects, ObjectType::peepAnimations, animObjects);
                 }
 
+                if (version < kClimateObjectsVersion)
+                {
+                    RCT12::ClimateType legacyClimate{};
+                    os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&legacyClimate](OrcaStream::ChunkStream& cs) {
+                        cs.ReadWrite(legacyClimate);
+                    });
+
+                    auto climateObjId = GetClimateObjectIdFromLegacyClimateType(legacyClimate);
+                    AppendRequiredObjects(requiredObjects, ObjectType::climate, std::vector({ climateObjId }));
+                }
+
                 RequiredObjects = std::move(requiredObjects);
             }
             else
@@ -434,27 +479,27 @@ namespace OpenRCT2
         void ReadWriteScenarioChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&gameState, &os](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gameState.ScenarioCategory);
-                ReadWriteStringTable(cs, gameState.ScenarioName, "en-GB");
-                ReadWriteStringTable(cs, gameState.Park.Name, "en-GB");
-                ReadWriteStringTable(cs, gameState.ScenarioDetails, "en-GB");
+                cs.ReadWrite(gameState.scenarioCategory);
+                ReadWriteStringTable(cs, gameState.scenarioName, "en-GB");
+                ReadWriteStringTable(cs, gameState.park.Name, "en-GB");
+                ReadWriteStringTable(cs, gameState.scenarioDetails, "en-GB");
 
-                cs.ReadWrite(gameState.ScenarioObjective.Type);
-                cs.ReadWrite(gameState.ScenarioObjective.Year);
-                cs.ReadWrite(gameState.ScenarioObjective.NumGuests);
-                cs.ReadWrite(gameState.ScenarioObjective.Currency);
+                cs.ReadWrite(gameState.scenarioObjective.Type);
+                cs.ReadWrite(gameState.scenarioObjective.Year);
+                cs.ReadWrite(gameState.scenarioObjective.NumGuests);
+                cs.ReadWrite(gameState.scenarioObjective.Currency);
 
-                cs.ReadWrite(gameState.ScenarioParkRatingWarningDays);
+                cs.ReadWrite(gameState.scenarioParkRatingWarningDays);
 
-                cs.ReadWrite(gameState.ScenarioCompletedCompanyValue);
-                if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined
-                    || gameState.ScenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
+                cs.ReadWrite(gameState.scenarioCompletedCompanyValue);
+                if (gameState.scenarioCompletedCompanyValue == kMoney64Undefined
+                    || gameState.scenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
                 {
                     cs.Write("");
                 }
                 else
                 {
-                    cs.ReadWrite(gameState.ScenarioCompletedBy);
+                    cs.ReadWrite(gameState.scenarioCompletedBy);
                 }
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)
@@ -472,8 +517,35 @@ namespace OpenRCT2
 
                 if (os.GetHeader().TargetVersion >= 1)
                 {
-                    cs.ReadWrite(gameState.ScenarioFileName);
+                    cs.ReadWrite(gameState.scenarioFileName);
                 }
+            });
+        }
+
+        void ReadWritePreviewChunk(GameState_t& gameState, OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::PREVIEW, [&gameState](OrcaStream::ChunkStream& cs) {
+                auto preview = OpenRCT2::generatePreviewFromGameState(gameState);
+
+                cs.ReadWrite(preview.parkName);
+                cs.ReadWrite(preview.parkRating);
+                cs.ReadWrite(preview.year);
+                cs.ReadWrite(preview.month);
+                cs.ReadWrite(preview.day);
+                cs.ReadWrite(preview.parkUsesMoney);
+                cs.ReadWrite(preview.cash);
+                cs.ReadWrite(preview.numRides);
+                cs.ReadWrite(preview.numGuests);
+
+                cs.ReadWriteVector(preview.images, [&cs](PreviewImage& image) {
+                    cs.ReadWrite(image.type);
+                    cs.ReadWrite(image.width);
+                    cs.ReadWrite(image.height);
+                    cs.ReadWriteArray(image.pixels, [&cs](uint8_t& pixel) {
+                        cs.ReadWrite(pixel);
+                        return true;
+                    });
+                });
             });
         }
 
@@ -493,14 +565,14 @@ namespace OpenRCT2
                     const uint8_t isPaused = (gGamePaused & GAME_PAUSED_NORMAL);
                     cs.Write(isPaused);
                 }
-                cs.ReadWrite(gameState.CurrentTicks);
+                cs.ReadWrite(gameState.currentTicks);
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     uint16_t monthTicks;
                     uint32_t monthsElapsed;
                     cs.ReadWrite(monthTicks);
                     cs.ReadWrite(monthsElapsed);
-                    gameState.Date = Date{ monthsElapsed, monthTicks };
+                    gameState.date = Date{ monthsElapsed, monthTicks };
                 }
                 else
                 {
@@ -515,31 +587,31 @@ namespace OpenRCT2
                     cs.ReadWrite(s0);
                     cs.ReadWrite(s1);
                     Random::RCT2::Seed s{ s0, s1 };
-                    gameState.ScenarioRand.seed(s);
+                    gameState.scenarioRand.seed(s);
                 }
                 else
                 {
-                    auto randState = gameState.ScenarioRand.state();
+                    auto randState = gameState.scenarioRand.state();
                     cs.Write(randState.s0);
                     cs.Write(randState.s1);
                 }
 
-                cs.ReadWrite(gameState.GuestInitialHappiness);
+                cs.ReadWrite(gameState.guestInitialHappiness);
                 if (version <= 18)
                 {
                     money16 tempGuestInitialCash{};
                     cs.ReadWrite(tempGuestInitialCash);
-                    gameState.GuestInitialCash = ToMoney64(tempGuestInitialCash);
+                    gameState.guestInitialCash = ToMoney64(tempGuestInitialCash);
                 }
                 else
                 {
-                    cs.ReadWrite(gameState.GuestInitialCash);
+                    cs.ReadWrite(gameState.guestInitialCash);
                 }
-                cs.ReadWrite(gameState.GuestInitialHunger);
-                cs.ReadWrite(gameState.GuestInitialThirst);
+                cs.ReadWrite(gameState.guestInitialHunger);
+                cs.ReadWrite(gameState.guestInitialThirst);
 
-                cs.ReadWrite(gameState.NextGuestNumber);
-                cs.ReadWriteVector(gameState.PeepSpawns, [&cs](PeepSpawn& spawn) {
+                cs.ReadWrite(gameState.nextGuestNumber);
+                cs.ReadWriteVector(gameState.peepSpawns, [&cs](PeepSpawn& spawn) {
                     cs.ReadWrite(spawn.x);
                     cs.ReadWrite(spawn.y);
                     cs.ReadWrite(spawn.z);
@@ -552,18 +624,18 @@ namespace OpenRCT2
                     money16 tempConstructionRightPrice{};
                     cs.ReadWrite(tempLandPrice);
                     cs.ReadWrite(tempConstructionRightPrice);
-                    gameState.LandPrice = ToMoney64(tempLandPrice);
-                    gameState.ConstructionRightsPrice = ToMoney64(tempConstructionRightPrice);
+                    gameState.landPrice = ToMoney64(tempLandPrice);
+                    gameState.constructionRightsPrice = ToMoney64(tempConstructionRightPrice);
                 }
                 else
                 {
-                    cs.ReadWrite(gameState.LandPrice);
-                    cs.ReadWrite(gameState.ConstructionRightsPrice);
+                    cs.ReadWrite(gameState.landPrice);
+                    cs.ReadWrite(gameState.constructionRightsPrice);
                 }
-                cs.ReadWrite(gameState.GrassSceneryTileLoopPosition);
-                cs.ReadWrite(gameState.WidePathTileLoopPosition);
+                cs.ReadWrite(gameState.grassSceneryTileLoopPosition);
+                cs.ReadWrite(gameState.widePathTileLoopPosition);
 
-                auto& rideRatings = gameState.RideRatingUpdateStates;
+                auto& rideRatings = gameState.rideRatingUpdateStates;
                 if (os.GetHeader().TargetVersion >= 21)
                 {
                     cs.ReadWriteArray(rideRatings, [this, &cs](RideRatingUpdateState& calcData) {
@@ -616,20 +688,20 @@ namespace OpenRCT2
         void ReadWriteInterfaceChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [&gameState](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gameState.SavedView.x);
-                cs.ReadWrite(gameState.SavedView.y);
+                cs.ReadWrite(gameState.savedView.x);
+                cs.ReadWrite(gameState.savedView.y);
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     auto savedZoomlevel = static_cast<ZoomLevel>(cs.Read<int8_t>());
-                    gameState.SavedViewZoom = std::clamp(savedZoomlevel, ZoomLevel::min(), ZoomLevel::max());
+                    gameState.savedViewZoom = std::clamp(savedZoomlevel, ZoomLevel::min(), ZoomLevel::max());
                 }
                 else
                 {
-                    cs.Write(static_cast<int8_t>(gameState.SavedViewZoom));
+                    cs.Write(static_cast<int8_t>(gameState.savedViewZoom));
                 }
-                cs.ReadWrite(gameState.SavedViewRotation);
-                cs.ReadWrite(gameState.LastEntranceStyle);
-                cs.ReadWrite(gameState.EditorStep);
+                cs.ReadWrite(gameState.savedViewRotation);
+                cs.ReadWrite(gameState.lastEntranceStyle);
+                cs.ReadWrite(gameState.editorStep);
             });
         }
 
@@ -670,9 +742,9 @@ namespace OpenRCT2
 #ifdef ENABLE_SCRIPTING
                 // Dump the plugin storage to JSON (stored in park)
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                gameState.PluginStorage = scriptEngine.GetParkStorageAsJSON();
+                gameState.pluginStorage = scriptEngine.GetParkStorageAsJSON();
 #endif
-                if (gameState.PluginStorage.empty() || gameState.PluginStorage == "{}")
+                if (gameState.pluginStorage.empty() || gameState.pluginStorage == "{}")
                 {
                     // Don't write the chunk if there is no plugin storage
                     return;
@@ -680,14 +752,14 @@ namespace OpenRCT2
             }
 
             os.ReadWriteChunk(ParkFileChunkType::PLUGIN_STORAGE, [&gameState](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gameState.PluginStorage);
+                cs.ReadWrite(gameState.pluginStorage);
             });
 
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
 #ifdef ENABLE_SCRIPTING
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                scriptEngine.SetParkStorageFromJSON(gameState.PluginStorage);
+                scriptEngine.SetParkStorageFromJSON(gameState.pluginStorage);
 #endif
             }
         }
@@ -790,11 +862,17 @@ namespace OpenRCT2
 
         void ReadWriteClimateChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&gameState](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gameState.Climate);
-                cs.ReadWrite(gameState.WeatherUpdateTimer);
+            os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&os, &gameState](OrcaStream::ChunkStream& cs) {
+                auto version = os.GetHeader().TargetVersion;
+                if (version < kClimateObjectsVersion)
+                {
+                    // Legacy climate is converted elsewhere, so we can skip it here.
+                    cs.Ignore<RCT12::ClimateType>();
+                }
 
-                for (auto* cl : { &gameState.WeatherCurrent, &gameState.WeatherNext })
+                cs.ReadWrite(gameState.weatherUpdateTimer);
+
+                for (auto* cl : { &gameState.weatherCurrent, &gameState.weatherNext })
                 {
                     cs.ReadWrite(cl->weatherType);
                     cs.ReadWrite(cl->temperature);
@@ -809,27 +887,27 @@ namespace OpenRCT2
         {
             os.ReadWriteChunk(
                 ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion, &gameState](OrcaStream::ChunkStream& cs) {
-                    cs.ReadWrite(gameState.Park.Name);
-                    cs.ReadWrite(gameState.Cash);
-                    cs.ReadWrite(gameState.BankLoan);
-                    cs.ReadWrite(gameState.MaxBankLoan);
-                    cs.ReadWrite(gameState.BankLoanInterestRate);
-                    cs.ReadWrite(gameState.Park.Flags);
+                    cs.ReadWrite(gameState.park.Name);
+                    cs.ReadWrite(gameState.cash);
+                    cs.ReadWrite(gameState.bankLoan);
+                    cs.ReadWrite(gameState.maxBankLoan);
+                    cs.ReadWrite(gameState.bankLoanInterestRate);
+                    cs.ReadWrite(gameState.park.Flags);
                     if (version <= 18)
                     {
                         money16 tempParkEntranceFee{};
                         cs.ReadWrite(tempParkEntranceFee);
-                        gameState.Park.EntranceFee = ToMoney64(tempParkEntranceFee);
+                        gameState.park.EntranceFee = ToMoney64(tempParkEntranceFee);
                     }
                     else
                     {
-                        cs.ReadWrite(gameState.Park.EntranceFee);
+                        cs.ReadWrite(gameState.park.EntranceFee);
                     }
 
-                    cs.ReadWrite(gameState.StaffHandymanColour);
-                    cs.ReadWrite(gameState.StaffMechanicColour);
-                    cs.ReadWrite(gameState.StaffSecurityColour);
-                    cs.ReadWrite(gameState.SamePriceThroughoutPark);
+                    cs.ReadWrite(gameState.staffHandymanColour);
+                    cs.ReadWrite(gameState.staffMechanicColour);
+                    cs.ReadWrite(gameState.staffSecurityColour);
+                    cs.ReadWrite(gameState.samePriceThroughoutPark);
 
                     // Finances
                     if (cs.GetMode() == OrcaStream::Mode::READING)
@@ -840,7 +918,7 @@ namespace OpenRCT2
                         {
                             for (uint32_t j = 0; j < numTypes; j++)
                             {
-                                gameState.ExpenditureTable[i][j] = cs.Read<money64>();
+                                gameState.expenditureTable[i][j] = cs.Read<money64>();
                             }
                         }
                     }
@@ -855,14 +933,14 @@ namespace OpenRCT2
                         {
                             for (uint32_t j = 0; j < numTypes; j++)
                             {
-                                cs.Write(gameState.ExpenditureTable[i][j]);
+                                cs.Write(gameState.expenditureTable[i][j]);
                             }
                         }
                     }
-                    cs.ReadWrite(gameState.HistoricalProfit);
+                    cs.ReadWrite(gameState.historicalProfit);
 
                     // Marketing
-                    cs.ReadWriteVector(gameState.MarketingCampaigns, [&cs](MarketingCampaign& campaign) {
+                    cs.ReadWriteVector(gameState.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
                         cs.ReadWrite(campaign.Type);
                         cs.ReadWrite(campaign.WeeksLeft);
                         cs.ReadWrite(campaign.Flags);
@@ -870,7 +948,7 @@ namespace OpenRCT2
                     });
 
                     // Awards
-                    auto& currentAwards = gameState.CurrentAwards;
+                    auto& currentAwards = gameState.currentAwards;
                     if (version <= 6)
                     {
                         Award awards[RCT2::Limits::kMaxAwards]{};
@@ -893,35 +971,35 @@ namespace OpenRCT2
                             cs.ReadWrite(award.Type);
                         });
                     }
-                    cs.ReadWrite(gameState.Park.Value);
-                    cs.ReadWrite(gameState.CompanyValue);
-                    cs.ReadWrite(gameState.Park.Size);
-                    cs.ReadWrite(gameState.NumGuestsInPark);
-                    cs.ReadWrite(gameState.NumGuestsHeadingForPark);
-                    cs.ReadWrite(gameState.Park.Rating);
-                    cs.ReadWrite(gameState.Park.RatingCasualtyPenalty);
-                    cs.ReadWrite(gameState.CurrentExpenditure);
-                    cs.ReadWrite(gameState.CurrentProfit);
-                    cs.ReadWrite(gameState.WeeklyProfitAverageDividend);
-                    cs.ReadWrite(gameState.WeeklyProfitAverageDivisor);
-                    cs.ReadWrite(gameState.TotalAdmissions);
-                    cs.ReadWrite(gameState.TotalIncomeFromAdmissions);
+                    cs.ReadWrite(gameState.park.Value);
+                    cs.ReadWrite(gameState.companyValue);
+                    cs.ReadWrite(gameState.park.Size);
+                    cs.ReadWrite(gameState.numGuestsInPark);
+                    cs.ReadWrite(gameState.numGuestsHeadingForPark);
+                    cs.ReadWrite(gameState.park.Rating);
+                    cs.ReadWrite(gameState.park.RatingCasualtyPenalty);
+                    cs.ReadWrite(gameState.currentExpenditure);
+                    cs.ReadWrite(gameState.currentProfit);
+                    cs.ReadWrite(gameState.weeklyProfitAverageDividend);
+                    cs.ReadWrite(gameState.weeklyProfitAverageDivisor);
+                    cs.ReadWrite(gameState.totalAdmissions);
+                    cs.ReadWrite(gameState.totalIncomeFromAdmissions);
                     if (version <= 16)
                     {
                         money16 legacyTotalRideValueForMoney = 0;
                         cs.ReadWrite(legacyTotalRideValueForMoney);
-                        gameState.TotalRideValueForMoney = legacyTotalRideValueForMoney;
+                        gameState.totalRideValueForMoney = legacyTotalRideValueForMoney;
                     }
                     else
                     {
-                        cs.ReadWrite(gameState.TotalRideValueForMoney);
+                        cs.ReadWrite(gameState.totalRideValueForMoney);
                     }
-                    cs.ReadWrite(gameState.NumGuestsInParkLastWeek);
-                    cs.ReadWrite(gameState.GuestChangeModifier);
-                    cs.ReadWrite(gameState.GuestGenerationProbability);
-                    cs.ReadWrite(gameState.SuggestedGuestMaximum);
+                    cs.ReadWrite(gameState.numGuestsInParkLastWeek);
+                    cs.ReadWrite(gameState.guestChangeModifier);
+                    cs.ReadWrite(gameState.guestGenerationProbability);
+                    cs.ReadWrite(gameState.suggestedGuestMaximum);
 
-                    cs.ReadWriteArray(gameState.PeepWarningThrottle, [&cs](uint8_t& value) {
+                    cs.ReadWriteArray(gameState.peepWarningThrottle, [&cs](uint8_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
@@ -937,12 +1015,12 @@ namespace OpenRCT2
                             });
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
-                                if (smallHistory[i] == RCT12ParkHistoryUndefined)
-                                    gameState.Park.RatingHistory[i] = kParkRatingHistoryUndefined;
+                                if (smallHistory[i] == kRCT12ParkHistoryUndefined)
+                                    gameState.park.RatingHistory[i] = kParkRatingHistoryUndefined;
                                 else
                                 {
-                                    gameState.Park.RatingHistory[i] = static_cast<uint16_t>(
-                                        smallHistory[i] * RCT12ParkRatingHistoryFactor);
+                                    gameState.park.RatingHistory[i] = static_cast<uint16_t>(
+                                        smallHistory[i] * kRCT12ParkRatingHistoryFactor);
                                 }
                             }
                         }
@@ -951,12 +1029,12 @@ namespace OpenRCT2
                             uint8_t smallHistory[kParkRatingHistorySize];
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
-                                if (gameState.Park.RatingHistory[i] == kParkRatingHistoryUndefined)
-                                    smallHistory[i] = RCT12ParkHistoryUndefined;
+                                if (gameState.park.RatingHistory[i] == kParkRatingHistoryUndefined)
+                                    smallHistory[i] = kRCT12ParkHistoryUndefined;
                                 else
                                 {
                                     smallHistory[i] = static_cast<uint8_t>(
-                                        gameState.Park.RatingHistory[i] / RCT12ParkRatingHistoryFactor);
+                                        gameState.park.RatingHistory[i] / kRCT12ParkRatingHistoryFactor);
                                 }
                             }
                             cs.ReadWriteArray(smallHistory, [&cs](uint8_t& value) {
@@ -967,26 +1045,26 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        cs.ReadWriteArray(gameState.Park.RatingHistory, [&cs](uint16_t& value) {
+                        cs.ReadWriteArray(gameState.park.RatingHistory, [&cs](uint16_t& value) {
                             cs.ReadWrite(value);
                             return true;
                         });
                     }
 
-                    cs.ReadWriteArray(gameState.GuestsInParkHistory, [&cs](uint32_t& value) {
+                    cs.ReadWriteArray(gameState.guestsInParkHistory, [&cs](uint32_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
 
-                    cs.ReadWriteArray(gameState.CashHistory, [&cs](money64& value) {
+                    cs.ReadWriteArray(gameState.cashHistory, [&cs](money64& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
-                    cs.ReadWriteArray(gameState.WeeklyProfitHistory, [&cs](money64& value) {
+                    cs.ReadWriteArray(gameState.weeklyProfitHistory, [&cs](money64& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
-                    cs.ReadWriteArray(gameState.Park.ValueHistory, [&cs](money64& value) {
+                    cs.ReadWriteArray(gameState.park.ValueHistory, [&cs](money64& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
@@ -997,20 +1075,20 @@ namespace OpenRCT2
         {
             os.ReadWriteChunk(ParkFileChunkType::RESEARCH, [&gameState](OrcaStream::ChunkStream& cs) {
                 // Research status
-                cs.ReadWrite(gameState.ResearchFundingLevel);
-                cs.ReadWrite(gameState.ResearchPriorities);
-                cs.ReadWrite(gameState.ResearchProgressStage);
-                cs.ReadWrite(gameState.ResearchProgress);
-                cs.ReadWrite(gameState.ResearchExpectedMonth);
-                cs.ReadWrite(gameState.ResearchExpectedDay);
-                ReadWriteResearchItem(cs, gameState.ResearchLastItem);
-                ReadWriteResearchItem(cs, gameState.ResearchNextItem);
+                cs.ReadWrite(gameState.researchFundingLevel);
+                cs.ReadWrite(gameState.researchPriorities);
+                cs.ReadWrite(gameState.researchProgressStage);
+                cs.ReadWrite(gameState.researchProgress);
+                cs.ReadWrite(gameState.researchExpectedMonth);
+                cs.ReadWrite(gameState.researchExpectedDay);
+                ReadWriteResearchItem(cs, gameState.researchLastItem);
+                ReadWriteResearchItem(cs, gameState.researchNextItem);
 
                 // Invention list
                 cs.ReadWriteVector(
-                    gameState.ResearchItemsUninvented, [&cs](ResearchItem& item) { ReadWriteResearchItem(cs, item); });
+                    gameState.researchItemsUninvented, [&cs](ResearchItem& item) { ReadWriteResearchItem(cs, item); });
                 cs.ReadWriteVector(
-                    gameState.ResearchItemsInvented, [&cs](ResearchItem& item) { ReadWriteResearchItem(cs, item); });
+                    gameState.researchItemsInvented, [&cs](ResearchItem& item) { ReadWriteResearchItem(cs, item); });
             });
         }
 
@@ -1054,35 +1132,22 @@ namespace OpenRCT2
             os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [&gameState](OrcaStream::ChunkStream& cs) {
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    gameState.NewsItems.Clear();
-
                     std::vector<News::Item> recent;
                     cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
-                    for (size_t i = 0; i < std::min<size_t>(recent.size(), News::ItemHistoryStart); i++)
-                    {
-                        gameState.NewsItems[i] = recent[i];
-                    }
 
                     std::vector<News::Item> archived;
                     cs.ReadWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
-                    size_t offset = News::ItemHistoryStart;
-                    for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
-                    {
-                        gameState.NewsItems[offset + i] = archived[i];
-                    }
 
-                    // Still need to set the correct type to properly terminate the queue
-                    if (archived.size() < News::MaxItemsArchive)
-                        gameState.NewsItems[offset + archived.size()].Type = News::ItemType::Null;
+                    News::importNewsItems(gameState, recent, archived);
                 }
                 else
                 {
                     std::vector<News::Item> recent(
-                        std::begin(gameState.NewsItems.GetRecent()), std::end(gameState.NewsItems.GetRecent()));
+                        std::begin(gameState.newsItems.GetRecent()), std::end(gameState.newsItems.GetRecent()));
                     cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
                     std::vector<News::Item> archived(
-                        std::begin(gameState.NewsItems.GetArchived()), std::end(gameState.NewsItems.GetArchived()));
+                        std::begin(gameState.newsItems.GetArchived()), std::end(gameState.newsItems.GetArchived()));
                     cs.ReadWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });
@@ -1116,12 +1181,12 @@ namespace OpenRCT2
             auto found = os.ReadWriteChunk(
                 ParkFileChunkType::TILES,
                 [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os, &gameState](OrcaStream::ChunkStream& cs) {
-                    cs.ReadWrite(gameState.MapSize.x);
-                    cs.ReadWrite(gameState.MapSize.y);
+                    cs.ReadWrite(gameState.mapSize.x);
+                    cs.ReadWrite(gameState.mapSize.y);
 
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
-                        gameStateInitAll(gameState, gameState.MapSize);
+                        gameStateInitAll(gameState, gameState.mapSize);
 
                         auto numElements = cs.Read<uint32_t>();
 
@@ -1175,12 +1240,11 @@ namespace OpenRCT2
                                     // Previous formats stored the needs supports flag in the primary colour
                                     // We have moved it into a flags field to support extended colour sets
                                     bool needsSupports = sceneryElement->GetPrimaryColour()
-                                        & RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG;
+                                        & kRCT12SmallSceneryElementNeedsSupportsFlag;
                                     if (needsSupports)
                                     {
                                         sceneryElement->SetPrimaryColour(
-                                            sceneryElement->GetPrimaryColour()
-                                            & ~RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG);
+                                            sceneryElement->GetPrimaryColour() & ~kRCT12SmallSceneryElementNeedsSupportsFlag);
                                         sceneryElement->SetNeedsSupports();
                                     }
                                 }
@@ -1203,10 +1267,10 @@ namespace OpenRCT2
 
         void UpdateTrackElementsRideType()
         {
-            auto& gameState = GetGameState();
-            for (int32_t y = 0; y < gameState.MapSize.y; y++)
+            auto& gameState = getGameState();
+            for (int32_t y = 0; y < gameState.mapSize.y; y++)
             {
-                for (int32_t x = 0; x < gameState.MapSize.x; x++)
+                for (int32_t x = 0; x < gameState.mapSize.x; x++)
                 {
                     TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
@@ -1353,12 +1417,12 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.subtype);
                     cs.ReadWrite(ride.mode);
                     cs.ReadWrite(ride.status);
-                    cs.ReadWrite(ride.depart_flags);
-                    cs.ReadWrite(ride.lifecycle_flags);
+                    cs.ReadWrite(ride.departFlags);
+                    cs.ReadWrite(ride.lifecycleFlags);
 
                     // Meta
-                    cs.ReadWrite(ride.custom_name);
-                    cs.ReadWrite(ride.default_name_number);
+                    cs.ReadWrite(ride.customName);
+                    cs.ReadWrite(ride.defaultNameNumber);
 
                     if (version <= 18)
                     {
@@ -1379,16 +1443,16 @@ namespace OpenRCT2
                     }
 
                     // Colours
-                    cs.ReadWrite(ride.entrance_style);
+                    cs.ReadWrite(ride.entranceStyle);
                     cs.ReadWrite(ride.vehicleColourSettings);
-                    cs.ReadWriteArray(ride.track_colour, [&cs](TrackColour& tc) {
+                    cs.ReadWriteArray(ride.trackColours, [&cs](TrackColour& tc) {
                         cs.ReadWrite(tc.main);
                         cs.ReadWrite(tc.additional);
                         cs.ReadWrite(tc.supports);
                         return true;
                     });
 
-                    cs.ReadWriteArray(ride.vehicle_colours, [&cs](VehicleColour& vc) {
+                    cs.ReadWriteArray(ride.vehicleColours, [&cs](VehicleColour& vc) {
                         cs.ReadWrite(vc.Body);
                         cs.ReadWrite(vc.Trim);
                         cs.ReadWrite(vc.Tertiary);
@@ -1396,8 +1460,8 @@ namespace OpenRCT2
                     });
 
                     // Stations
-                    cs.ReadWrite(ride.num_stations);
-                    cs.ReadWriteArray(ride.GetStations(), [&cs](RideStation& station) {
+                    cs.ReadWrite(ride.numStations);
+                    cs.ReadWriteArray(ride.getStations(), [&cs](RideStation& station) {
                         cs.ReadWrite(station.Start);
                         cs.ReadWrite(station.Height);
                         cs.ReadWrite(station.Length);
@@ -1413,53 +1477,53 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWrite(ride.overall_view.x);
-                    cs.ReadWrite(ride.overall_view.y);
+                    cs.ReadWrite(ride.overallView.x);
+                    cs.ReadWrite(ride.overallView.y);
 
                     // Vehicles
-                    cs.ReadWrite(ride.NumTrains);
-                    cs.ReadWrite(ride.num_cars_per_train);
-                    cs.ReadWrite(ride.ProposedNumTrains);
-                    cs.ReadWrite(ride.proposed_num_cars_per_train);
-                    cs.ReadWrite(ride.max_trains);
+                    cs.ReadWrite(ride.numTrains);
+                    cs.ReadWrite(ride.numCarsPerTrain);
+                    cs.ReadWrite(ride.proposedNumTrains);
+                    cs.ReadWrite(ride.proposedNumCarsPerTrain);
+                    cs.ReadWrite(ride.maxTrains);
                     if (version < 0x5)
                     {
                         uint8_t value;
                         cs.ReadWrite(value);
-                        ride.MinCarsPerTrain = GetMinCarsPerTrain(value);
-                        ride.MaxCarsPerTrain = GetMaxCarsPerTrain(value);
+                        ride.minCarsPerTrain = GetMinCarsPerTrain(value);
+                        ride.maxCarsPerTrain = GetMaxCarsPerTrain(value);
                     }
                     else
                     {
-                        cs.ReadWrite(ride.MinCarsPerTrain);
-                        cs.ReadWrite(ride.MaxCarsPerTrain);
+                        cs.ReadWrite(ride.minCarsPerTrain);
+                        cs.ReadWrite(ride.maxCarsPerTrain);
                     }
 
-                    cs.ReadWrite(ride.min_waiting_time);
-                    cs.ReadWrite(ride.max_waiting_time);
+                    cs.ReadWrite(ride.minWaitingTime);
+                    cs.ReadWrite(ride.maxWaitingTime);
                     cs.ReadWriteArray(ride.vehicles, [&cs](EntityId& v) {
                         cs.ReadWrite(v);
                         return true;
                     });
 
                     // Operation
-                    cs.ReadWrite(ride.operation_option);
-                    cs.ReadWrite(ride.lift_hill_speed);
-                    cs.ReadWrite(ride.num_circuits);
+                    cs.ReadWrite(ride.operationOption);
+                    cs.ReadWrite(ride.liftHillSpeed);
+                    cs.ReadWrite(ride.numCircuits);
 
                     // Special
-                    cs.ReadWrite(ride.boat_hire_return_direction);
-                    cs.ReadWrite(ride.boat_hire_return_position);
-                    cs.ReadWrite(ride.ChairliftBullwheelLocation[0]);
-                    cs.ReadWrite(ride.ChairliftBullwheelLocation[1]);
-                    cs.ReadWrite(ride.chairlift_bullwheel_rotation);
-                    cs.ReadWrite(ride.slide_in_use);
-                    cs.ReadWrite(ride.slide_peep);
-                    cs.ReadWrite(ride.slide_peep_t_shirt_colour);
-                    cs.ReadWrite(ride.spiral_slide_progress);
-                    cs.ReadWrite(ride.race_winner);
-                    cs.ReadWrite(ride.cable_lift);
-                    cs.ReadWrite(ride.CableLiftLoc);
+                    cs.ReadWrite(ride.boatHireReturnDirection);
+                    cs.ReadWrite(ride.boatHireReturnPosition);
+                    cs.ReadWrite(ride.chairliftBullwheelLocation[0]);
+                    cs.ReadWrite(ride.chairliftBullwheelLocation[1]);
+                    cs.ReadWrite(ride.chairliftBullwheelRotation);
+                    cs.ReadWrite(ride.slideInUse);
+                    cs.ReadWrite(ride.slidePeep);
+                    cs.ReadWrite(ride.slidePeepTShirtColour);
+                    cs.ReadWrite(ride.spiralSlideProgress);
+                    cs.ReadWrite(ride.raceWinner);
+                    cs.ReadWrite(ride.cableLift);
+                    cs.ReadWrite(ride.cableLiftLoc);
 
                     // Stats
                     if (cs.GetMode() == OrcaStream::Mode::READING)
@@ -1484,39 +1548,39 @@ namespace OpenRCT2
                         }
                     }
 
-                    cs.ReadWrite(ride.special_track_elements);
-                    cs.ReadWrite(ride.max_speed);
-                    cs.ReadWrite(ride.average_speed);
-                    cs.ReadWrite(ride.current_test_segment);
-                    cs.ReadWrite(ride.average_speed_test_timeout);
+                    cs.ReadWrite(ride.specialTrackElements);
+                    cs.ReadWrite(ride.maxSpeed);
+                    cs.ReadWrite(ride.averageSpeed);
+                    cs.ReadWrite(ride.currentTestSegment);
+                    cs.ReadWrite(ride.averageSpeedTestTimeout);
 
-                    cs.ReadWrite(ride.max_positive_vertical_g);
-                    cs.ReadWrite(ride.max_negative_vertical_g);
-                    cs.ReadWrite(ride.max_lateral_g);
-                    cs.ReadWrite(ride.previous_vertical_g);
-                    cs.ReadWrite(ride.previous_lateral_g);
+                    cs.ReadWrite(ride.maxPositiveVerticalG);
+                    cs.ReadWrite(ride.maxNegativeVerticalG);
+                    cs.ReadWrite(ride.maxLateralG);
+                    cs.ReadWrite(ride.previousVerticalG);
+                    cs.ReadWrite(ride.previousLateralG);
 
-                    cs.ReadWrite(ride.testing_flags);
-                    cs.ReadWrite(ride.CurTestTrackLocation);
+                    cs.ReadWrite(ride.testingFlags.holder);
+                    cs.ReadWrite(ride.curTestTrackLocation);
 
-                    cs.ReadWrite(ride.turn_count_default);
-                    cs.ReadWrite(ride.turn_count_banked);
-                    cs.ReadWrite(ride.turn_count_sloped);
+                    cs.ReadWrite(ride.turnCountDefault);
+                    cs.ReadWrite(ride.turnCountBanked);
+                    cs.ReadWrite(ride.turnCountSloped);
 
                     cs.ReadWrite(ride.inversions);
                     cs.ReadWrite(ride.dropsPoweredLifts);
-                    cs.ReadWrite(ride.start_drop_height);
-                    cs.ReadWrite(ride.highest_drop_height);
-                    cs.ReadWrite(ride.sheltered_length);
-                    cs.ReadWrite(ride.var_11C);
-                    cs.ReadWrite(ride.num_sheltered_sections);
+                    cs.ReadWrite(ride.startDropHeight);
+                    cs.ReadWrite(ride.highestDropHeight);
+                    cs.ReadWrite(ride.shelteredLength);
+                    cs.ReadWrite(ride.var11C);
+                    cs.ReadWrite(ride.numShelteredSections);
                     if (version > 5)
                     {
-                        cs.ReadWrite(ride.sheltered_eighths);
+                        cs.ReadWrite(ride.shelteredEighths);
                         cs.ReadWrite(ride.holes);
                     }
-                    cs.ReadWrite(ride.current_test_station);
-                    cs.ReadWrite(ride.num_block_brakes);
+                    cs.ReadWrite(ride.currentTestStation);
+                    cs.ReadWrite(ride.numBlockBrakes);
                     cs.ReadWrite(ride.totalAirTime);
 
                     cs.ReadWrite(ride.ratings.excitement);
@@ -1529,7 +1593,7 @@ namespace OpenRCT2
                         cs.ReadWrite(tempRideValue);
                         if (tempRideValue == 0xFFFFu)
                         {
-                            ride.value = RIDE_VALUE_UNDEFINED;
+                            ride.value = kRideValueUndefined;
                         }
                         else
                         {
@@ -1542,7 +1606,7 @@ namespace OpenRCT2
                         cs.ReadWrite(tempRideValue);
                         if (tempRideValue == 0xFFFFu)
                         {
-                            ride.value = RIDE_VALUE_UNDEFINED;
+                            ride.value = kRideValueUndefined;
                         }
                         else
                         {
@@ -1554,76 +1618,76 @@ namespace OpenRCT2
                         cs.ReadWrite(ride.value);
                     }
 
-                    cs.ReadWrite(ride.num_riders);
-                    cs.ReadWrite(ride.build_date);
+                    cs.ReadWrite(ride.numRiders);
+                    cs.ReadWrite(ride.buildDate);
 
                     if (version <= 18)
                     {
                         money16 tempUpkeepCost{};
                         cs.ReadWrite(tempUpkeepCost);
-                        ride.upkeep_cost = ToMoney64(tempUpkeepCost);
+                        ride.upkeepCost = ToMoney64(tempUpkeepCost);
                     }
                     else
                     {
-                        cs.ReadWrite(ride.upkeep_cost);
+                        cs.ReadWrite(ride.upkeepCost);
                     }
 
-                    cs.ReadWrite(ride.cur_num_customers);
-                    cs.ReadWrite(ride.num_customers_timeout);
+                    cs.ReadWrite(ride.curNumCustomers);
+                    cs.ReadWrite(ride.numCustomersTimeout);
 
-                    cs.ReadWriteArray(ride.num_customers, [&cs](uint16_t& v) {
+                    cs.ReadWriteArray(ride.numCustomers, [&cs](uint16_t& v) {
                         cs.ReadWrite(v);
                         return true;
                     });
 
-                    cs.ReadWrite(ride.total_customers);
-                    cs.ReadWrite(ride.total_profit);
+                    cs.ReadWrite(ride.totalCustomers);
+                    cs.ReadWrite(ride.totalProfit);
                     cs.ReadWrite(ride.popularity);
-                    cs.ReadWrite(ride.popularity_time_out);
-                    cs.ReadWrite(ride.popularity_next);
-                    cs.ReadWrite(ride.guests_favourite);
-                    cs.ReadWrite(ride.no_primary_items_sold);
-                    cs.ReadWrite(ride.no_secondary_items_sold);
-                    cs.ReadWrite(ride.income_per_hour);
+                    cs.ReadWrite(ride.popularityTimeout);
+                    cs.ReadWrite(ride.popularityNext);
+                    cs.ReadWrite(ride.guestsFavourite);
+                    cs.ReadWrite(ride.numPrimaryItemsSold);
+                    cs.ReadWrite(ride.numSecondaryItemsSold);
+                    cs.ReadWrite(ride.incomePerHour);
                     cs.ReadWrite(ride.profit);
                     cs.ReadWrite(ride.satisfaction);
-                    cs.ReadWrite(ride.satisfaction_time_out);
-                    cs.ReadWrite(ride.satisfaction_next);
+                    cs.ReadWrite(ride.satisfactionTimeout);
+                    cs.ReadWrite(ride.satisfactionNext);
 
                     // Breakdown
-                    cs.ReadWrite(ride.breakdown_reason_pending);
-                    cs.ReadWrite(ride.mechanic_status);
+                    cs.ReadWrite(ride.breakdownReasonPending);
+                    cs.ReadWrite(ride.mechanicStatus);
                     cs.ReadWrite(ride.mechanic);
-                    cs.ReadWrite(ride.inspection_station);
-                    cs.ReadWrite(ride.broken_vehicle);
-                    cs.ReadWrite(ride.broken_car);
-                    cs.ReadWrite(ride.breakdown_reason);
-                    cs.ReadWrite(ride.reliability_subvalue);
-                    cs.ReadWrite(ride.reliability_percentage);
-                    cs.ReadWrite(ride.unreliability_factor);
+                    cs.ReadWrite(ride.inspectionStation);
+                    cs.ReadWrite(ride.brokenTrain);
+                    cs.ReadWrite(ride.brokenCar);
+                    cs.ReadWrite(ride.breakdownReason);
+                    cs.ReadWrite(ride.reliabilitySubvalue);
+                    cs.ReadWrite(ride.reliabilityPercentage);
+                    cs.ReadWrite(ride.unreliabilityFactor);
                     cs.ReadWrite(ride.downtime);
-                    cs.ReadWrite(ride.inspection_interval);
-                    cs.ReadWrite(ride.last_inspection);
+                    cs.ReadWrite(ride.inspectionInterval);
+                    cs.ReadWrite(ride.lastInspection);
 
-                    cs.ReadWriteArray(ride.downtime_history, [&cs](uint8_t& v) {
+                    cs.ReadWriteArray(ride.downtimeHistory, [&cs](uint8_t& v) {
                         cs.ReadWrite(v);
                         return true;
                     });
 
-                    cs.ReadWrite(ride.breakdown_sound_modifier);
-                    cs.ReadWrite(ride.not_fixed_timeout);
-                    cs.ReadWrite(ride.last_crash_type);
-                    cs.ReadWrite(ride.connected_message_throttle);
+                    cs.ReadWrite(ride.breakdownSoundModifier);
+                    cs.ReadWrite(ride.notFixedTimeout);
+                    cs.ReadWrite(ride.lastCrashType);
+                    cs.ReadWrite(ride.connectedMessageThrottle);
 
-                    cs.ReadWrite(ride.vehicle_change_timeout);
+                    cs.ReadWrite(ride.vehicleChangeTimeout);
 
-                    cs.ReadWrite(ride.current_issues);
-                    cs.ReadWrite(ride.last_issue_time);
+                    cs.ReadWrite(ride.currentIssues);
+                    cs.ReadWrite(ride.lastIssueTime);
 
                     // Music
                     cs.ReadWrite(ride.music);
-                    cs.ReadWrite(ride.music_tune_id);
-                    cs.ReadWrite(ride.music_position);
+                    cs.ReadWrite(ride.musicTuneId);
+                    cs.ReadWrite(ride.musicPosition);
                     return true;
                 });
             });
@@ -2495,7 +2559,7 @@ namespace OpenRCT2
         ReadWriteEntityCommon(cs, fountain);
         cs.ReadWrite(fountain.NumTicksAlive);
         cs.ReadWrite(fountain.frame);
-        cs.ReadWrite(fountain.FountainFlags);
+        cs.ReadWrite(fountain.fountainFlags.holder);
         cs.ReadWrite(fountain.TargetX);
         cs.ReadWrite(fountain.TargetY);
         cs.ReadWrite(fountain.TargetY);
@@ -2702,10 +2766,10 @@ public:
     {
     }
 
-    ParkLoadResult Load(const u8string& path) override
+    ParkLoadResult Load(const u8string& path, const bool skipObjectCheck) override
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
-        _parkFile->Load(path);
+        _parkFile->Load(path, skipObjectCheck);
 
         auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
         result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);
@@ -2714,19 +2778,19 @@ public:
 
     ParkLoadResult LoadSavedGame(const u8string& path, bool skipObjectCheck = false) override
     {
-        return Load(path);
+        return Load(path, skipObjectCheck);
     }
 
     ParkLoadResult LoadScenario(const u8string& path, bool skipObjectCheck = false) override
     {
-        return Load(path);
+        return Load(path, skipObjectCheck);
     }
 
     ParkLoadResult LoadFromStream(
         OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const u8string& path = {}) override
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
-        _parkFile->Load(*stream);
+        _parkFile->Load(*stream, skipObjectCheck);
 
         auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
         result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);
@@ -2740,10 +2804,15 @@ public:
         GameFixSaveVars();
     }
 
-    bool GetDetails(ScenarioIndexEntry* dst) override
+    bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
     {
         *dst = _parkFile->ReadScenarioChunk();
         return true;
+    }
+
+    ParkPreview GetParkPreview() override
+    {
+        return _parkFile->ReadPreviewChunk();
     }
 };
 

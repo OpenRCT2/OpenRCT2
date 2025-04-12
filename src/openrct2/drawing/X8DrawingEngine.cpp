@@ -139,7 +139,7 @@ void X8DrawingEngine::Resize(uint32_t width, uint32_t height)
 {
     uint32_t pitch = width;
     ConfigureBits(width, height, pitch);
-    _drawingContext->Clear(_bitsDPI, PALETTE_INDEX_10);
+    _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
 }
 
 void X8DrawingEngine::SetPalette([[maybe_unused]] const GamePalette& palette)
@@ -273,9 +273,9 @@ DrawPixelInfo* X8DrawingEngine::GetDrawingPixelInfo()
     return &_bitsDPI;
 }
 
-DRAWING_ENGINE_FLAGS X8DrawingEngine::GetFlags()
+DrawingEngineFlags X8DrawingEngine::GetFlags()
 {
-    return static_cast<DRAWING_ENGINE_FLAGS>(DEF_DIRTY_OPTIMISATIONS | DEF_PARALLEL_DRAWING);
+    return { DrawingEngineFlag::dirtyOptimisations, DrawingEngineFlag::parallelDrawing };
 }
 
 void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)
@@ -740,7 +740,7 @@ void X8DrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_
     GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
 }
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 template<bool TUseHinting>
 static void DrawTTFBitmapInternal(
     DrawPixelInfo& dpi, uint8_t colour, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
@@ -810,12 +810,12 @@ static void DrawTTFBitmapInternal(
         dst += dstScanSkip;
     }
 }
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 void X8DrawingContext::DrawTTFBitmap(
     DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     const uint8_t fgColor = info->palette[1];
     const uint8_t bgColor = info->palette[3];
 
@@ -835,5 +835,5 @@ void X8DrawingContext::DrawTTFBitmap(
         DrawTTFBitmapInternal<true>(dpi, fgColor, surface, x, y, hintingThreshold);
     else
         DrawTTFBitmapInternal<false>(dpi, fgColor, surface, x, y, 0);
-#endif // NO_TTF
+#endif // DISABLE_TTF
 }

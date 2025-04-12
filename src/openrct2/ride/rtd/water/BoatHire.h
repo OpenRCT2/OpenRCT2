@@ -18,7 +18,7 @@
 // clang-format off
 constexpr RideTypeDescriptor BoatHireRTD =
 {
-    .Category = RIDE_CATEGORY_WATER,
+    .Category = RideCategory::water,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::boatHire,
@@ -29,8 +29,8 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::trackMustBeOnWater,
                      RtdFlag::noTestMode, RtdFlag::hasLoadOptions, RtdFlag::hasVehicleColours, RtdFlag::checkForStalling,
                      RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit),
-    .RideModes = EnumsToFlags(RideMode::BoatHire),
-    .DefaultMode = RideMode::BoatHire,
+    .RideModes = EnumsToFlags(RideMode::boatHire),
+    .DefaultMode = RideMode::boatHire,
     .Naming = { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform },
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),

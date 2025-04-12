@@ -50,7 +50,7 @@ GameActions::Result WallRemoveAction::Query() const
     }
 
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-    if (!isGhost && !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode
+    if (!isGhost && gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode
         && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);

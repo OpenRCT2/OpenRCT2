@@ -17,7 +17,7 @@
 // clang-format off
 constexpr RideTypeDescriptor FlyingSaucersRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::flyingSaucers,
@@ -30,8 +30,8 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::hasMusicByDefault, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::singleSession, RtdFlag::interestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::Dodgems),
-    .DefaultMode = RideMode::Dodgems,
+    .RideModes = EnumsToFlags(RideMode::dodgems),
+    .DefaultMode = RideMode::dodgems,
     .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_FLYING_SAUCERS, STR_RIDE_DESCRIPTION_FLYING_SAUCERS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },

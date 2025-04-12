@@ -10,19 +10,21 @@
 #pragma once
 
 #include "core/EnumUtils.hpp"
+#include "core/FlagHolder.hpp"
 #include "object/Object.h"
 
 #include <vector>
 
 struct ResultWithMessage;
 
-enum EDITOR_INPUT_FLAGS
+enum class EditorInputFlag : uint8_t
 {
-    INPUT_FLAG_EDITOR_OBJECT_SELECT = (1 << 0), // Set when you want to select an object, not set when you want to deselect it.
-    INPUT_FLAG_EDITOR_OBJECT_1 = (1 << 1),
-    INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP = (1 << 2),
-    INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED = (1 << 3)
+    select, // Set when you want to select an object, not set when you want to deselect it.
+    unk1,
+    selectObjectsInSceneryGroup,
+    objectAlwaysRequired,
 };
+using EditorInputFlags = FlagHolder<uint8_t, EditorInputFlag>;
 
 extern std::optional<StringId> _gSceneryGroupPartialSelectError;
 extern std::vector<uint8_t> _objectSelectionFlags;
@@ -31,15 +33,15 @@ extern uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
 bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType);
 bool EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType);
 bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue);
-void EditorObjectFlagsFree();
+void EditorObjectFlagsClear();
 void UnloadUnselectedObjects();
 void Sub6AB211();
 void ResetSelectedObjectCountAndSize();
 void FinishObjectSelection();
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
-    uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item);
+    uint8_t isMasterObject, EditorInputFlags flags, const ObjectRepositoryItem* item);
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
-    uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& entry);
+    uint8_t isMasterObject, EditorInputFlags flags, const ObjectEntryDescriptor& entry);
 
 /**
  * Removes all unused objects from the object selection.

@@ -391,7 +391,7 @@ namespace OpenRCT2::Ui::Windows
                         WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
                         }
                     });
                     GameActions::Execute(&pickupAction);
@@ -605,36 +605,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OverviewResize()
         {
-            min_width = WW;
-            max_width = 500;
-            min_height = WH;
-            max_height = 450;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { WW, WH }, { 500, 450 });
 
             if (viewport != nullptr)
             {
-                int32_t newWidth = width - 30;
-                int32_t newHeight = height - 62;
+                auto widget = widgets[WIDX_VIEWPORT];
+                auto newWidth = widget.width() - 1;
+                auto newHeight = widget.height() - 1;
+                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
 
                 // Update the viewport size
                 if (viewport->width != newWidth || viewport->height != newHeight)
@@ -932,31 +910,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OptionsResize()
         {
-            min_width = 190;
-            max_width = 190;
-            min_height = 126;
-            max_height = 126;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { 190, 126 }, { 190, 126 });
         }
 
         void OptionsUpdate()
@@ -977,7 +931,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_RESIZE].left + 4, widgets[WIDX_RESIZE].top + 4 };
 
-            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
@@ -1035,31 +989,7 @@ namespace OpenRCT2::Ui::Windows
 
         void StatsResize()
         {
-            min_width = 190;
-            max_width = 190;
-            min_height = 126;
-            max_height = 126;
-
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (width > max_width)
-            {
-                Invalidate();
-                width = max_width;
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
-            if (height > max_height)
-            {
-                Invalidate();
-                height = max_height;
-            }
+            WindowSetResize(*this, { 190, 126 }, { 190, 126 });
         }
 
         void StatsUpdate()
@@ -1119,18 +1049,22 @@ namespace OpenRCT2::Ui::Windows
                 ToolCancel();
         }
 
-        void SetPage(int32_t pageNum)
+        void SetPage(int32_t newPage)
         {
             CancelTools();
 
-            int32_t listen = 0;
-            if (page == WINDOW_STAFF_OVERVIEW && viewport != nullptr)
+            bool listen = false;
+            if (page == WINDOW_STAFF_OVERVIEW && newPage == WINDOW_STAFF_OVERVIEW && viewport != nullptr)
             {
-                if (!(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-                    listen = 1;
+                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
+                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
             }
 
-            page = pageNum;
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (newPage == page && !widgets.empty())
+                return;
+
+            page = newPage;
             frame_no = 0;
             pressed_widgets = 0;
             hold_down_widgets = 0;

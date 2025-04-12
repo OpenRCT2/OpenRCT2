@@ -47,7 +47,7 @@ namespace OpenRCT2::RCT1
             if (String::iequals(extension, ".td4"))
             {
                 _name = GetNameFromTrackPath(path);
-                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
                 return LoadFromStream(&fs);
             }
 
@@ -115,7 +115,7 @@ namespace OpenRCT2::RCT1
                 // Mazes were only hedges
                 if (td4.Type == RideType::HedgeMaze)
                 {
-                    td->appearance.trackColours[i].supports = MAZE_WALL_TYPE_HEDGE;
+                    td->appearance.trackColours[i].supports = MazeWallType::hedges;
                 }
                 else if (td4.Type == RideType::RiverRapids)
                 {
@@ -135,7 +135,7 @@ namespace OpenRCT2::RCT1
             td->operation.rideMode = static_cast<RideMode>(td4Base.Mode);
             if (td4Base.Mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
             {
-                td->operation.rideMode = RideMode::PoweredLaunch;
+                td->operation.rideMode = RideMode::poweredLaunch;
             }
 
             std::string_view vehicleObject;

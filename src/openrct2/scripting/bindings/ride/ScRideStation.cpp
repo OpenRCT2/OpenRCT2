@@ -120,9 +120,9 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide(_rideId);
         if (ride != nullptr)
         {
-            if (_stationIndex.ToUnderlying() < std::size(ride->GetStations()))
+            if (_stationIndex.ToUnderlying() < std::size(ride->getStations()))
             {
-                return &ride->GetStation(_stationIndex);
+                return &ride->getStation(_stationIndex);
             }
         }
         return nullptr;

@@ -124,6 +124,11 @@ namespace OpenRCT2::Config
         ConfigEnumEntry<VirtualFloorStyles>("GLASSY", VirtualFloorStyles::Glassy),
     });
 
+    static const auto Enum_ScenarioSelectMode = ConfigEnum<ScenarioSelectMode>({
+        ConfigEnumEntry<ScenarioSelectMode>("ORIGIN", ScenarioSelectMode::origin),
+        ConfigEnumEntry<ScenarioSelectMode>("DIFFICULTY", ScenarioSelectMode::difficulty),
+    });
+
     /**
      * Config enum wrapping LanguagesDescriptors.
      */
@@ -224,7 +229,8 @@ namespace OpenRCT2::Config
 #endif // _DEBUG
             model->TrapCursor = reader->GetBoolean("trap_cursor", false);
             model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
-            model->ScenarioSelectMode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
+            model->scenarioSelectMode = reader->GetEnum(
+                "scenario_select_mode", ScenarioSelectMode::origin, Enum_ScenarioSelectMode);
             model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
             model->LastSaveGameDirectory = reader->GetString("last_game_directory", "");
@@ -258,6 +264,7 @@ namespace OpenRCT2::Config
             model->FileBrowserHeight = reader->GetInt32("file_browser_height", 0);
             model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
             model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
+            model->FileBrowserShowPreviews = reader->GetBoolean("file_browser_show_previews", true);
         }
     }
 
@@ -316,7 +323,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("multithreading", model->MultiThreading);
         writer->WriteBoolean("trap_cursor", model->TrapCursor);
         writer->WriteBoolean("auto_open_shops", model->AutoOpenShops);
-        writer->WriteInt32("scenario_select_mode", model->ScenarioSelectMode);
+        writer->WriteEnum<ScenarioSelectMode>("scenario_select_mode", model->scenarioSelectMode, Enum_ScenarioSelectMode);
         writer->WriteBoolean("scenario_unlocking_enabled", model->ScenarioUnlockingEnabled);
         writer->WriteBoolean("scenario_hide_mega_park", model->ScenarioHideMegaPark);
         writer->WriteString("last_game_directory", model->LastSaveGameDirectory);
@@ -348,6 +355,7 @@ namespace OpenRCT2::Config
         writer->WriteInt32("file_browser_height", model->FileBrowserHeight);
         writer->WriteBoolean("file_browser_show_size_column", model->FileBrowserShowSizeColumn);
         writer->WriteBoolean("file_browser_show_date_column", model->FileBrowserShowDateColumn);
+        writer->WriteBoolean("file_browser_show_previews", model->FileBrowserShowPreviews);
     }
 
     static void ReadInterface(IIniReader* reader)
@@ -639,7 +647,7 @@ namespace OpenRCT2::Config
     {
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             auto reader = CreateIniReader(&fs);
             ReadGeneral(reader.get());
             ReadInterface(reader.get());
@@ -663,7 +671,7 @@ namespace OpenRCT2::Config
             auto directory = Path::GetDirectory(path);
             Path::CreateDirectory(directory);
 
-            auto fs = FileStream(path, FILE_MODE_WRITE);
+            auto fs = FileStream(path, FileMode::write);
             auto writer = CreateIniWriter(&fs);
             WriteGeneral(writer.get());
             WriteInterface(writer.get());
@@ -747,7 +755,7 @@ namespace OpenRCT2::Config
             }
         }
 
-        auto discordPath = Platform::GetFolderPath(SPECIAL_FOLDER::RCT2_DISCORD);
+        auto discordPath = Platform::GetFolderPath(SpecialFolder::rct2Discord);
         if (!discordPath.empty() && Platform::OriginalGameDataExists(discordPath))
         {
             return discordPath;
@@ -769,7 +777,7 @@ namespace OpenRCT2::Config
         desc.Filters.emplace_back(LanguageGetString(STR_GOG_INSTALLER), "*.exe");
         desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
-        const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+        const auto userHomePath = Platform::GetFolderPath(SpecialFolder::userHome);
         desc.InitialDirectory = userHomePath;
 
         return ContextOpenCommonFileDialog(desc);
@@ -811,7 +819,7 @@ namespace OpenRCT2::Config
     u8string GetDefaultPath()
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"config.ini");
+        return Path::Combine(env->GetDirectoryPath(DirBase::user), u8"config.ini");
     }
 
     bool SaveToPath(u8string_view path)
@@ -879,10 +887,10 @@ namespace OpenRCT2::Config
                         chosenOption = hdd;
                     }
 
-                    std::string installPath;
+                    std::vector<std::string> possibleInstallPaths{};
                     if (chosenOption == hdd)
                     {
-                        installPath = uiContext->ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR));
+                        possibleInstallPaths.emplace_back(uiContext->ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR)));
                     }
                     else if (chosenOption == gog)
                     {
@@ -895,7 +903,7 @@ namespace OpenRCT2::Config
                         }
 
                         const std::string dest = Path::Combine(
-                            GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::CONFIG), "rct2");
+                            GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DirBase::config), "rct2");
 
                         while (true)
                         {
@@ -915,17 +923,22 @@ namespace OpenRCT2::Config
                             uiContext->ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
                         }
 
-                        installPath = Path::Combine(dest, u8"app");
+                        // New installer extracts to ‘dest’, old installer installs in ‘dest/app’.
+                        possibleInstallPaths.emplace_back(dest);
+                        possibleInstallPaths.emplace_back(Path::Combine(dest, u8"app"));
                     }
-                    if (installPath.empty())
+                    if (possibleInstallPaths.empty())
                     {
                         return false;
                     }
-                    Get().general.RCT2Path = installPath;
 
-                    if (Platform::OriginalGameDataExists(installPath))
+                    for (const auto& possiblePath : possibleInstallPaths)
                     {
-                        return true;
+                        if (Platform::OriginalGameDataExists(possiblePath))
+                        {
+                            Get().general.RCT2Path = possiblePath;
+                            return true;
+                        }
                     }
 
                     uiContext->ShowMessageBox(FormatStringIDLegacy(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));

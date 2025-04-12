@@ -207,6 +207,7 @@ enum : StringId
     STR_QUEUE_EMPTY = 1201,
     STR_QUEUE_ONE_PERSON = 1202,
     STR_QUEUE_PEOPLE = 1203,
+    STR_QUEUE_PATHS_CANNOT_BE_USED_FOR_LEVEL_CROSSINGS = 6751,
 
     STR_RIDE_COMPONENT_TRAIN = 1229,
     STR_RIDE_COMPONENT_TRAIN_PLURAL = 1230,
@@ -1723,6 +1724,9 @@ enum : StringId
 
     STR_DIVE_LOOP_LEFT = 6727,
     STR_DIVE_LOOP_RIGHT = 6728,
+
+    STR_OBJECT_SELECTION_CLIMATE = 6743,
+    STR_CLIMATE_WEATHER_PERCENT = 6744,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

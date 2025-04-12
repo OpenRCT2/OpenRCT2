@@ -122,12 +122,9 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_staffListWidgets);
             WindowInitScrollWidgets(*this);
+            WindowSetResize(*this, { WW, WH }, { MAX_WW, MAX_WH });
 
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
-            min_width = WW;
-            min_height = WH;
-            max_width = MAX_WW;
-            max_height = MAX_WH;
 
             RefreshList();
         }
@@ -151,7 +148,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
-                    if (!ToolSet(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
+                    if (!ToolSet(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::crosshair))
                     {
                         ShowGridlines();
                         SetPatrolAreaToRender(GetSelectedStaffType());
@@ -170,18 +167,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            min_width = WW;
-            min_height = WH;
-            if (width < min_width)
-            {
-                width = min_width;
-                Invalidate();
-            }
-            if (height < min_height)
-            {
-                height = min_height;
-                Invalidate();
-            }
             ResizeFrameWithPage();
         }
 
@@ -296,11 +281,12 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ width - 155, 32 }, STR_COST_PER_MONTH, ft);
+                auto y = widgets[WIDX_STAFF_LIST_TITLE].bottom + 17;
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ width - 155, y }, STR_COST_PER_MONTH, ft);
             }
 
             if (GetSelectedStaffType() != StaffType::Entertainer)
@@ -584,7 +570,7 @@ namespace OpenRCT2::Ui::Windows
                         auto* wind = ContextOpenIntent(&intent);
                         if (wind != nullptr)
                         {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
                         }
                     });
                     GameActions::Execute(&pickupAction);
@@ -608,10 +594,10 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawTabImages(DrawPixelInfo& dpi) const
         {
-            const auto& gameState = GetGameState();
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.StaffHandymanColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.StaffMechanicColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.StaffSecurityColour);
+            const auto& gameState = getGameState();
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.staffHandymanColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.staffMechanicColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.staffSecurityColour);
             DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
         }
 

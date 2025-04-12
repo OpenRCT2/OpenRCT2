@@ -368,7 +368,7 @@ namespace OpenRCT2::Ui::Windows
         void InstallTrackDesign()
         {
             auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-            auto destPath = env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::TRACK);
+            auto destPath = env->GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::trackDesigns);
             if (!Path::CreateDirectory(destPath))
             {
                 LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
@@ -422,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+        windowMgr->ForceClose(WindowClass::EditorObjectSelection);
         windowMgr->CloseConstructionWindows();
 
         gTrackDesignSceneryToggle = false;

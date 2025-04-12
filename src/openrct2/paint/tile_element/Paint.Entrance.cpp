@@ -57,9 +57,9 @@ static void PaintRideEntranceExitScrollingText(
 
     auto ft = Formatter();
     ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
-    if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (ride->status == RideStatus::open && !(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        ride->FormatNameTo(ft);
+        ride->formatNameTo(ft);
     }
     else
     {
@@ -76,7 +76,7 @@ static void PaintRideEntranceExitScrollingText(
         FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
         session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
@@ -129,7 +129,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         return;
     }
 
-    auto stationObj = ride->GetStationObject();
+    auto stationObj = ride->getStationObject();
     if (stationObj == nullptr || stationObj->BaseImageId == kImageIndexUndefined)
     {
         return;
@@ -139,10 +139,9 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     PaintRideEntranceExitLightEffects(session, height, entranceEl);
 
-    auto hasGlass = (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT) != 0;
-    auto colourPrimary = ride->track_colour[0].main;
-    auto colourSecondary = ride->track_colour[0].additional;
-    auto imageTemplate = ImageId(0, colourPrimary, colourSecondary);
+    auto hasGlass = (stationObj->Flags & StationObjectFlags::isTransparent) != 0;
+    auto colourPrimary = ride->trackColours[0].main;
+    auto imageTemplate = ImageId(0);
     ImageId glassImageTemplate;
     if (hasGlass)
     {
@@ -157,6 +156,18 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+    }
+    else
+    {
+        if (stationObj->Flags & StationObjectFlags::hasPrimaryColour)
+        {
+            imageTemplate = imageTemplate.WithPrimary(colourPrimary);
+        }
+        if (stationObj->Flags & StationObjectFlags::hasSecondaryColour)
+        {
+            auto colourSecondary = ride->trackColours[0].additional;
+            imageTemplate = imageTemplate.WithSecondary(colourSecondary);
+        }
     }
 
     // Format modified to stop repeated code
@@ -222,10 +233,10 @@ static void PaintParkEntranceScrollingText(
         return;
 
     auto ft = Formatter();
-    auto& gameState = GetGameState();
-    if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
+    auto& gameState = getGameState();
+    if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
     {
-        const auto& park = gameState.Park;
+        const auto& park = gameState.park;
         auto name = park.Name.c_str();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);
@@ -247,7 +258,7 @@ static void PaintParkEntranceScrollingText(
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (gameState.CurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (gameState.currentTicks / 2) % stringWidth : 0;
     auto imageIndex = ScrollingTextSetup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
     auto textHeight = height + entrance.GetTextHeight();
@@ -287,8 +298,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     }
 
     auto& objManager = GetContext()->GetObjectManager();
-    auto entrance = reinterpret_cast<EntranceObject*>(
-        objManager.GetLoadedObject(ObjectType::parkEntrance, entranceEl.getEntryIndex()));
+    const auto* entrance = objManager.GetLoadedObject<EntranceObject>(entranceEl.getEntryIndex());
     auto sequence = entranceEl.GetSequenceIndex();
     switch (sequence)
     {

@@ -517,11 +517,11 @@ namespace OpenRCT2::Ui::Windows
 
             if (gWindowSceneryEyedropperEnabled)
             {
-                gCurrentToolId = Tool::Crosshair;
+                gCurrentToolId = Tool::crosshair;
             }
             else if (_sceneryPaintEnabled)
             {
-                gCurrentToolId = Tool::PaintDown;
+                gCurrentToolId = Tool::paintDown;
             }
             else
             {
@@ -531,7 +531,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
                     {
-                        gCurrentToolId = Tool::EntranceDown;
+                        gCurrentToolId = Tool::entranceDown;
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
                     {
@@ -556,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gCurrentToolId = Tool::Arrow;
+                    gCurrentToolId = Tool::arrow;
                 }
             }
         }
@@ -691,7 +691,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
                 }
 
-                if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode)
+                if (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode)
                 {
                     widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
                     if (IsSceneryItemRestricted(tabSelectedScenery))
@@ -782,13 +782,14 @@ namespace OpenRCT2::Ui::Windows
                 const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
                 windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
+                auto tabTop = widgets[WIDX_SCENERY_TITLE].bottom + 3;
                 if (GetSceneryTabInfoForMisc() != nullptr)
                 {
                     auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
                     miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
                     miscTabWidget->right = windowWidth - TabWidth - 7;
-                    miscTabWidget->top = InitTabPosY;
-                    miscTabWidget->bottom = InitTabPosY + TabHeight;
+                    miscTabWidget->top = tabTop;
+                    miscTabWidget->bottom = tabTop + TabHeight;
                 }
 
                 if (_tabEntries.back().IsAll())
@@ -796,8 +797,8 @@ namespace OpenRCT2::Ui::Windows
                     auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
                     allTabWidget->left = windowWidth - TabWidth - 6;
                     allTabWidget->right = windowWidth - 7;
-                    allTabWidget->top = InitTabPosY;
-                    allTabWidget->bottom = InitTabPosY + TabHeight;
+                    allTabWidget->top = tabTop;
+                    allTabWidget->bottom = tabTop + TabHeight;
                 }
             }
 
@@ -841,7 +842,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            if (price != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (price != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
@@ -2365,7 +2366,7 @@ namespace OpenRCT2::Ui::Windows
 
         void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, ScreenCoordsXY& screenPos)
         {
-            if (!canRaiseItem && !GetGameState().Cheats.disableSupportLimits)
+            if (!canRaiseItem && !getGameState().cheats.disableSupportLimits)
             {
                 gSceneryCtrlPressed = false;
                 gSceneryShiftPressed = false;
@@ -3298,8 +3299,8 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             auto* toolWindow = ContextOpenWindow(WindowClass::Scenery);
-            ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::Arrow);
-            InputSetFlag(INPUT_FLAG_6, true);
+            ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::arrow);
+            gInputFlags.set(InputFlag::unk6);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

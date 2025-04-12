@@ -75,19 +75,19 @@ using ObjectEntryMap = std::unordered_map<RCTObjectEntry, size_t, ObjectEntryHas
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
-    static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 30;
-    static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
+    static constexpr uint32_t kMagicNumber = 0x5844494F; // OIDX
+    static constexpr uint16_t kVersion = 31;
+    static constexpr auto kPattern = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
 
 public:
     explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env)
         : FileIndex(
-              "object index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_OBJECTS), std::string(PATTERN),
+              "object index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheObjects), std::string(kPattern),
               std::vector<std::string>{
-                  env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
-                  env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
+                  env.GetDirectoryPath(DirBase::openrct2, DirId::objects),
+                  env.GetDirectoryPath(DirBase::user, DirId::objects),
               })
         , _objectRepository(objectRepository)
     {
@@ -149,7 +149,6 @@ protected:
         {
             case ObjectType::ride:
                 ds << item.RideInfo.RideFlags;
-                ds << item.RideInfo.RideCategory;
                 ds << item.RideInfo.RideType;
                 break;
             case ObjectType::sceneryGroup:
@@ -541,7 +540,7 @@ private:
         // Save to file
         try
         {
-            auto fs = FileStream(std::string(path), FILE_MODE_WRITE);
+            auto fs = FileStream(std::string(path), FileMode::write);
             fs.Write(entry, sizeof(RCTObjectEntry));
             fs.Write(encodedDataBuffer, encodedDataSize);
 
@@ -587,7 +586,7 @@ private:
     std::string GetPathForNewObject(ObjectGeneration generation, std::string_view name)
     {
         // Get object directory and create it if it doesn't exist
-        auto userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        auto userObjPath = _env->GetDirectoryPath(DirBase::user, DirId::objects);
         Path::CreateDirectory(userObjPath);
 
         // Find a unique file name
@@ -642,7 +641,7 @@ private:
         }
 
         // Read object data from file
-        auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FileMode::open);
         auto fileEntry = fs.ReadValue<RCTObjectEntry>();
         if (*entry != fileEntry)
         {

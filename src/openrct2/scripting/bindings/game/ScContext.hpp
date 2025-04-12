@@ -16,7 +16,6 @@
     #include "../../../interface/Screenshot.h"
     #include "../../../localisation/Formatting.h"
     #include "../../../object/ObjectManager.h"
-    #include "../../../scenario/Scenario.h"
     #include "../../Duktape.hpp"
     #include "../../HookEngine.h"
     #include "../../IconNames.hpp"
@@ -115,13 +114,13 @@ namespace OpenRCT2::Scripting
 
         std::string mode_get()
         {
-            if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            if (gLegacyScene == LegacyScene::titleSequence)
                 return "title";
-            else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            else if (gLegacyScene == LegacyScene::scenarioEditor)
                 return "scenario_editor";
-            else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+            else if (gLegacyScene == LegacyScene::trackDesigner)
                 return "track_designer";
-            else if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            else if (gLegacyScene == LegacyScene::trackDesignsManager)
                 return "track_manager";
             return "normal";
         }
@@ -274,7 +273,7 @@ namespace OpenRCT2::Scripting
         __declspec(noinline)
     #endif
         std::shared_ptr<ScDisposable>
-            CreateSubscription(HOOK_TYPE hookType, const DukValue& callback)
+            CreateSubscription(HookType hookType, const DukValue& callback)
         {
             auto owner = _execInfo.GetCurrentPlugin();
             auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
@@ -287,7 +286,7 @@ namespace OpenRCT2::Scripting
             auto ctx = scriptEngine.GetContext();
 
             auto hookType = GetHookType(hook);
-            if (hookType == HOOK_TYPE::UNDEFINED)
+            if (hookType == HookType::notDefined)
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Unknown hook type");
             }

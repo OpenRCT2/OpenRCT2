@@ -71,7 +71,7 @@ GameActions::Result ParkSetDateAction::Query() const
 
 GameActions::Result ParkSetDateAction::Execute() const
 {
-    auto& gameState = GetGameState();
-    gameState.Date = OpenRCT2::Date::FromYMD(_year, _month, _day);
+    auto& gameState = getGameState();
+    gameState.date = OpenRCT2::Date::FromYMD(_year, _month, _day);
     return GameActions::Result();
 }
