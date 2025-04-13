@@ -22,8 +22,7 @@
 namespace OpenRCT2::Scripting
 {
     static const DukEnumMap<uint8_t> BreakdownMap // The types of breakdowns.
-        ({ { "none", BREAKDOWN_NONE },
-           { "safety_cut_out", BREAKDOWN_SAFETY_CUT_OUT },
+        ({ { "safety_cut_out", BREAKDOWN_SAFETY_CUT_OUT },
            { "restraints_stuck_closed", BREAKDOWN_RESTRAINTS_STUCK_CLOSED },
            { "restraints_stuck_open", BREAKDOWN_RESTRAINTS_STUCK_OPEN },
            { "doors_stuck_closed", BREAKDOWN_DOORS_STUCK_CLOSED },
@@ -500,7 +499,7 @@ namespace OpenRCT2::Scripting
         return ::GetRide(_rideId);
     }
 
-    void ScRide::SetBreakdown(const std::string& breakDown) const
+    void ScRide::SetBreakdown(const std::string& breakDown)
     {
         ThrowIfGameStateNotMutable();
         auto ride = GetRide();
@@ -509,10 +508,17 @@ namespace OpenRCT2::Scripting
             auto it = BreakdownMap.find(breakDown);
             if (it == BreakdownMap.end())
                 return;
-            if (it->second == BREAKDOWN_NONE)
-                RideFixBreakdown(*ride, 0);
-            else
-                RidePrepareBreakdown(*ride, it->second);
+            RidePrepareBreakdown(*ride, it->second);
+        }
+    }
+
+    void ScRide::FixBreakdown()
+    {
+        ThrowIfGameStateNotMutable();
+        auto ride = GetRide();
+        if (ride != nullptr && ride->canBreakDown() && ride->status == RideStatus::open)
+        {
+            RideFixBreakdown(*ride, 0);
         }
     }
 
@@ -670,6 +676,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::numLiftHills_get, nullptr, "numLiftHills");
         dukglue_register_property(ctx, &ScRide::highestDropHeight_get, nullptr, "highestDropHeight");
         dukglue_register_method(ctx, &ScRide::SetBreakdown, "setBreakdown");
+        dukglue_register_method(ctx, &ScRide::FixBreakdown, "fixBreakdown");
     }
 
 } // namespace OpenRCT2::Scripting

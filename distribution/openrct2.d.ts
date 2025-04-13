@@ -2498,9 +2498,14 @@ declare global {
 		
 		/**
          * Set a breakdown on a ride.
-         * @param breakdown The type of breakdown to set, "none" to fix the ride.
+         * @param breakdown The type of breakdown to set.
          */
         setBreakdown(BreakdownType: breakdown): void;
+		
+		/**
+         * Fix a ride / clear the breakdown.
+         */
+        setBreakdown(): void;
 		
     }
 
@@ -2508,7 +2513,7 @@ declare global {
 
     type RideStatus = "closed" | "open" | "testing" | "simulating";
 	
-	type BreakdownType =  "brakes_failure" | "control_failure" | "doors_stuck_closed" | "doors_stuck_open" | "none" | "restraints_stuck_closed" | "restraints_stuck_open"  | "safety_cut_out" | "vehicle_malfunction";
+	type BreakdownType =  "brakes_failure" | "control_failure" | "doors_stuck_closed" | "doors_stuck_open" | "restraints_stuck_closed" | "restraints_stuck_open"  | "safety_cut_out" | "vehicle_malfunction";
 
     interface TrackColour {
         main: number;
