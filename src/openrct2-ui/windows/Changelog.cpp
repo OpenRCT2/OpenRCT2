@@ -142,9 +142,9 @@ namespace OpenRCT2::Ui::Windows
         {
             SetResizeDimensions();
 
-            auto download_button_width = widgets[WIDX_OPEN_URL].width();
-            widgets[WIDX_OPEN_URL].left = (width - download_button_width) / 2;
-            widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + download_button_width;
+            auto downloadButtonWidth = widgets[WIDX_OPEN_URL].width();
+            widgets[WIDX_OPEN_URL].left = (width - downloadButtonWidth) / 2;
+            widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + downloadButtonWidth;
         }
 
         void OnPrepareDraw() override
@@ -198,20 +198,6 @@ namespace OpenRCT2::Ui::Windows
                 static_cast<int32_t>(_changelogLines.size()) * FontGetLineHeight(FontStyle::Medium));
         }
 
-        // TODO: This probably should be a utility function defined elsewhere for reusability
-        /**
-         * @brief Reimplementation of Window's GetCentrePositionForNewWindow for ChangelogWindow.
-         *
-         * @return ScreenCoordsXY
-         */
-        static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
-        {
-            auto uiContext = GetContext()->GetUiContext();
-            auto screenWidth = uiContext->GetWidth();
-            auto screenHeight = uiContext->GetHeight();
-            return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
-        }
-
     private:
         /**
          * @brief Converts NewVersionInfo into changelog lines
@@ -222,12 +208,12 @@ namespace OpenRCT2::Ui::Windows
             _newVersionInfo = GetContext()->GetNewVersionInfo();
             if (_newVersionInfo != nullptr)
             {
-                char version_info[256];
+                char versionInfo[256];
 
-                const char* version_info_ptr = _newVersionInfo->name.c_str();
-                FormatStringLegacy(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
+                const char* versionInfoPtr = _newVersionInfo->name.c_str();
+                FormatStringLegacy(versionInfo, 256, STR_NEW_RELEASE_VERSION_INFO, &versionInfoPtr);
 
-                _changelogLines.emplace_back(version_info);
+                _changelogLines.emplace_back(versionInfo);
                 _changelogLines.emplace_back("");
 
                 ProcessText(_newVersionInfo->changelog);
@@ -236,17 +222,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 LOG_ERROR("ChangelogWindow: Could not process NewVersionInfo, result was undefined");
             }
-        }
-
-        /**
-         * @brief Get the absolute path for the changelog file
-         *
-         * @return std::string
-         */
-        std::string GetChangelogPath()
-        {
-            auto env = GetContext()->GetPlatformEnvironment();
-            return env->GetFilePath(PathId::changelog);
         }
 
         /**
@@ -309,14 +284,10 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::Changelog);
         if (window == nullptr)
         {
-            // Create a new centred window
-            int32_t screenWidth = ContextGetWidth();
-            int32_t screenHeight = ContextGetHeight();
-            int32_t width = (screenWidth * 4) / 5;
-            int32_t height = (screenHeight * 4) / 5;
-
-            auto pos = ChangelogWindow::GetCentrePositionForNewWindow(width, height);
-            auto* newWindow = windowMgr->Create<ChangelogWindow>(WindowClass::Changelog, pos, width, height, WF_RESIZABLE);
+            int32_t width = (ContextGetWidth() * 4) / 5;
+            int32_t height = (ContextGetHeight() * 4) / 5;
+            auto* newWindow = windowMgr->Create<ChangelogWindow>(
+                WindowClass::Changelog, width, height, WF_CENTRE_SCREEN | WF_RESIZABLE);
             newWindow->SetPersonality(personality);
             return newWindow;
         }
