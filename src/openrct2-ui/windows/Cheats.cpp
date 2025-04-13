@@ -204,8 +204,8 @@ static constexpr ScreenSize CHEAT_CHECK = {221, 12};
 static constexpr ScreenSize CHEAT_SPINNER = {117, 14};
 static constexpr ScreenSize MINMAX_BUTTON = {55, 17};
 
-static constexpr int32_t TAB_WIDTH = 31;
-static constexpr int32_t TAB_START = 3;
+static constexpr int32_t kTabWidth = 31;
+static constexpr int32_t kTabStart = 3;
 
 #pragma endregion
 
@@ -519,6 +519,11 @@ static StringId window_cheats_page_titles[] = {
             {
                 case WINDOW_CHEATS_PAGE_MONEY:
                 {
+                    if (isInEditorMode())
+                    {
+                        SetWidgetDisabled(WIDX_NO_MONEY, true);
+                    }
+
                     auto moneyDisabled = (gameState.park.Flags & PARK_FLAGS_NO_MONEY) != 0;
                     SetCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
                     SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
@@ -591,13 +596,12 @@ static StringId window_cheats_page_titles[] = {
             {
                 SetWidgetDisabled(WIDX_TAB_2, true);
                 SetWidgetDisabled(WIDX_TAB_3, true);
-                SetWidgetDisabled(WIDX_NO_MONEY, true);
+                UpdateTabPositions();
             }
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            UpdateTabPositions();
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
@@ -768,17 +772,17 @@ static StringId window_cheats_page_titles[] = {
 
         void UpdateTabPositions()
         {
-            constexpr uint16_t tabs[] = {
-                WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6,
+            constexpr WidgetIndex tabs[] = {
+                WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6, WIDX_TAB_7,
             };
 
-            auto left = TAB_START;
+            auto left = kTabStart;
             for (auto tab : tabs)
             {
                 widgets[tab].left = left;
                 if (!IsWidgetDisabled(tab))
                 {
-                    left += TAB_WIDTH;
+                    left += kTabWidth;
                 }
             }
         }
