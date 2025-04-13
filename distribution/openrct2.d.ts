@@ -2505,7 +2505,7 @@ declare global {
 		/**
          * Fix a ride / clear the breakdown.
          */
-        setBreakdown(): void;
+        fixBreakdown(): void;
 		
     }
 
