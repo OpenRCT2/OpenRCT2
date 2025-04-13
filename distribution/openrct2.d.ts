@@ -2495,11 +2495,20 @@ declare global {
          * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
          */
         readonly highestDropHeight: number;
+		
+		/**
+         * Set a breakdown on a ride.
+         * @param breakdown The type of breakdown to set, "none" to fix the ride.
+         */
+        setBreakdown(BreakdownType: breakdown): void;
+		
     }
 
     type RideClassification = "ride" | "stall" | "facility";
 
     type RideStatus = "closed" | "open" | "testing" | "simulating";
+	
+	type BreakdownType =  "brakes_failure" | "control_failure" | "doors_stuck_closed" | "doors_stuck_open" | "none" | "restraints_stuck_closed" | "restraints_stuck_open"  | "safety_cut_out" | "vehicle_malfunction";
 
     interface TrackColour {
         main: number;
