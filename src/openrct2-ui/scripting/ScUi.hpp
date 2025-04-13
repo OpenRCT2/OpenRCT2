@@ -54,6 +54,9 @@ namespace OpenRCT2::Scripting
         { "real", ScenarioSource::Real }, { "extras", ScenarioSource::Extras },   { "other", ScenarioSource::Other },
     };
 
+    
+    static std::unordered_set<std::shared_ptr<Plugin>> _pluginsShowingGridlines;
+
     inline JSValue ScenarioCategoryToJS(JSContext* ctx, Scenario::Category value)
     {
         const auto& entry = ScenarioCategoryMap.find(value);
@@ -109,6 +112,19 @@ namespace OpenRCT2::Scripting
     class ScUi final : public ScBase
     {
     private:
+        static std::shared_ptr<Plugin> getCurrentPlugin(JSContext* ctx, JSValue thisVal)
+        {
+            ScriptEngine* scriptEngine = gScUi.GetOpaque<ScriptEngine*>(thisVal);
+            if (!scriptEngine)
+            {
+                JS_ThrowInternalError(ctx, "No script engine");
+                return nullptr;
+            }
+
+            auto& execInfo = scriptEngine->GetExecInfo();
+            return execInfo.GetCurrentPlugin();
+        }
+
         static JSValue width_get(JSContext* ctx, JSValue thisVal)
         {
             return JS_NewInt32(ctx, ContextGetWidth());
@@ -443,6 +459,44 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
+        static JSValue showCurrentPluginGridlines(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            auto plugin = getCurrentPlugin(ctx, thisVal);
+            if (!plugin)
+            {
+                return JS_EXCEPTION;
+            }
+
+            auto result = _pluginsShowingGridlines.insert(plugin);
+
+            if (result.second)
+            {
+                // Plugin was not yet in the set; increment internal counter
+                ShowGridlines();
+            }
+            return JS_UNDEFINED;
+        }
+
+        static JSValue hideCurrentPluginGridlines(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
+        {
+            auto plugin = getCurrentPlugin(ctx, thisVal);
+            hidePluginGridlines(plugin);
+            return JS_UNDEFINED;
+        }
+
+    public:
+        static void hidePluginGridlines(std::shared_ptr<Plugin> plugin)
+        {
+            auto result = _pluginsShowingGridlines.erase(plugin);
+
+            if (result == 1)
+            {
+                // Plugin was in the set before removal; decrement internal counter
+                HideGridlines();
+            }
+        }
+
+    private:
         static void Finalize(JSRuntime* rt, JSValue thisVal)
         {
             // Do nothing as we don't need to free the script engine.
@@ -477,6 +531,8 @@ namespace OpenRCT2::Scripting
                 JS_CFUNC_DEF("registerMenuItem", 2, ScUi::registerMenuItem),
                 JS_CFUNC_DEF("registerToolboxMenuItem", 2, ScUi::registerToolboxMenuItem),
                 JS_CFUNC_DEF("registerShortcut", 1, ScUi::registerShortcut),
+                JS_CFUNC_DEF("showGridlines", 0, ScUi::showCurrentPluginGridlines),
+                JS_CFUNC_DEF("hideGridlines", 0, ScUi::hideCurrentPluginGridlines),
             };
             RegisterBase(ctx, "Ui", Finalize, funcs);
         }
