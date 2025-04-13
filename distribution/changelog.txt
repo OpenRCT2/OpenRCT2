@@ -1,6 +1,6 @@
 0.4.22 (in development)
 ------------------------------------------------------------------------
-- Feature: [#24206] Add plugin handle for breaking down and fixing rides.
+- Feature: [#24206] [Plugin] Add APIs for breaking down rides, and one for fixing broken down rides.
 - Improved: [#21767] RCT Classic for macOS can now be used as the source game.
 - Improved: [#23590] Title bars are now drawn bigger when “Enlarged UI” is enabled.
 - Improved: [#23626] Add small, medium and large flat and sloped turns, S-bends and diagonal track to the Go-Karts.
