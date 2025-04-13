@@ -373,6 +373,16 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        void showGridlines()
+        {
+            ShowGridlines();
+        }
+
+        void hideGridlines()
+        {
+            HideGridlines();
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -395,6 +405,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
             dukglue_register_method(ctx, &ScUi::registerToolboxMenuItem, "registerToolboxMenuItem");
             dukglue_register_method(ctx, &ScUi::registerShortcut, "registerShortcut");
+            dukglue_register_method(ctx, &ScUi::showGridlines, "showGridlines");
+            dukglue_register_method(ctx, &ScUi::hideGridlines, "hideGridlines");
         }
 
     private:
