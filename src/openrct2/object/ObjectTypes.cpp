@@ -22,8 +22,8 @@ constexpr std::array kAllObjectTypes = {
     ObjectType::banners,
     ObjectType::paths,
     ObjectType::pathAdditions,
-    ObjectType::sceneryGroup,
-    ObjectType::parkEntrance,
+    ObjectType::scenery,
+    ObjectType::entrances,
     ObjectType::water,
     ObjectType::scenarioText,
     ObjectType::terrainSurface,
@@ -34,7 +34,7 @@ constexpr std::array kAllObjectTypes = {
     ObjectType::footpathRailings,
     ObjectType::audio,
     ObjectType::peepNames,
-    ObjectType::peepAnimations,
+    ObjectType::miscObjs,
     ObjectType::climate,
 };
 
@@ -43,10 +43,10 @@ static_assert(kAllObjectTypes.size() == EnumValue(ObjectType::count));
 // Object types that can be saved in a park file.
 static constexpr std::array<const ObjectType, kNumTransientObjectTypes> kTransientObjectTypes = {
     ObjectType::ride,         ObjectType::smallScenery,   ObjectType::largeScenery,    ObjectType::walls,
-    ObjectType::banners,      ObjectType::paths,          ObjectType::pathAdditions,   ObjectType::sceneryGroup,
-    ObjectType::parkEntrance, ObjectType::water,          ObjectType::terrainSurface,  ObjectType::terrainEdge,
+    ObjectType::banners,      ObjectType::paths,          ObjectType::pathAdditions,   ObjectType::scenery,
+    ObjectType::entrances, ObjectType::water,          ObjectType::terrainSurface,  ObjectType::terrainEdge,
     ObjectType::station,      ObjectType::music,          ObjectType::footpathSurface, ObjectType::footpathRailings,
-    ObjectType::peepNames,    ObjectType::peepAnimations, ObjectType::climate,
+    ObjectType::peepNames,    ObjectType::miscObjs, ObjectType::climate,
 };
 
 // Object types that cannot be saved in a park file.
