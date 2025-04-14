@@ -291,6 +291,7 @@ struct TrackElementSprites
     const ImageIndex* imageIndexes;
     const CoordsXYZ* offsets;
     const BoundBoxXYZ* boundBoxes;
+    bool isRotated; // temporary workaround for rotated track elements being handled by existing track paint functions
 };
 
 struct TrackDrawerEntry

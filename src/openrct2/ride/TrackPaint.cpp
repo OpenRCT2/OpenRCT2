@@ -1979,14 +1979,22 @@ void trackPaintSpriteCommon(
     const auto& rideTypeDescriptor = GetRideTypeDescriptor(trackElement.GetRideType());
     const bool isInverted = trackElement.IsInverted() && rideTypeDescriptor.HasFlag(RtdFlag::hasInvertedVariant);
     const auto& trackElementDescriptor = GetTrackElementDescriptor(trackElement.GetTrackType());
-    const auto trackElementSpriteType = trackElementDescriptor.spriteType;
     const auto trackDrawerEntry = getTrackDrawerEntry(
-        rideTypeDescriptor, isInverted, TrackElementIsCovered(trackElementSpriteType.elementType));
+        rideTypeDescriptor, isInverted, TrackElementIsCovered(trackElement.GetTrackType()));
 
-    // parent functions already modify the direction and track sequence
-    // direction = (direction + trackElementSpriteType.extraDirection) & 3;
+    // temporary workaround for rotated track elements being handled by existing track paint functions
+    const TrackElementSprites& spritesOriginal = trackDrawerEntry.sprites[EnumValue(trackElement.GetTrackType())];
+    const TrackElemType rotatedTrackElementType = spritesOriginal.isRotated ? trackElementDescriptor.rotatedType.elementType
+                                                                            : trackElement.GetTrackType();
+    const TrackElementSprites& sprites = trackDrawerEntry.sprites[EnumValue(rotatedTrackElementType)];
 
-    const TrackElementSprites& sprites = trackDrawerEntry.sprites[EnumValue(trackElementSpriteType.elementType)];
+    // existing parent track paint functions already modify the direction and track sequence
+    /*if (spritesOriginal.isRotated)
+    {
+        direction = (direction + trackElementRotatedType.extraDirection) & 3;
+        trackSequence = trackElementDescriptor.sequences[EnumValue(trackSequence)].rotatedSequence;
+    }*/
+
     const size_t spriteIndex = (direction * trackElementDescriptor.numSequences * TSpriteCount)
         + (trackSequence * TSpriteCount);
     const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex] : CoordsXYZ{ 0, 0, 0 };
@@ -2040,14 +2048,22 @@ void trackPaintSpriteTypeCommon(
     const auto& rideTypeDescriptor = GetRideTypeDescriptor(trackElement.GetRideType());
     const bool isInverted = trackElement.IsInverted() && rideTypeDescriptor.HasFlag(RtdFlag::hasInvertedVariant);
     const auto& trackElementDescriptor = GetTrackElementDescriptor(trackElement.GetTrackType());
-    const auto trackElementSpriteType = trackElementDescriptor.spriteType;
     const auto trackDrawerEntry = getTrackDrawerEntry(
-        rideTypeDescriptor, isInverted, TrackElementIsCovered(trackElementSpriteType.elementType));
+        rideTypeDescriptor, isInverted, TrackElementIsCovered(trackElement.GetTrackType()));
 
-    // parent functions already modify the direction and track sequence
-    // direction = (direction + trackElementSpriteType.extraDirection) & 3;
+    // temporary workaround for rotated track elements being handled by existing track paint functions
+    const TrackElementSprites& spritesOriginal = trackDrawerEntry.sprites[EnumValue(trackElement.GetTrackType())];
+    const TrackElemType rotatedTrackElementType = spritesOriginal.isRotated ? trackElementDescriptor.rotatedType.elementType
+                                                                            : trackElement.GetTrackType();
+    const TrackElementSprites& sprites = trackDrawerEntry.sprites[EnumValue(rotatedTrackElementType)];
 
-    const TrackElementSprites& sprites = trackDrawerEntry.sprites[EnumValue(trackElementSpriteType.elementType)];
+    // existing parent track paint functions already modify the direction and track sequence
+    /*if (spritesOriginal.isRotated)
+    {
+        direction = (direction + trackElementRotatedType.extraDirection) & 3;
+        trackSequence = trackElementDescriptor.sequences[EnumValue(trackSequence)].rotatedSequence;
+    }*/
+
     const size_t index = (direction * trackElementDescriptor.numSequences) + trackSequence;
     const size_t spriteIndex = ((trackElement.*TFunction)() * kNumOrthogonalDirections * trackElementDescriptor.numSequences)
         + index;

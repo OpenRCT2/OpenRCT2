@@ -3483,40 +3483,40 @@ namespace OpenRCT2::TrackMetaData
     };
     static_assert(std::size(kTrackTypeToSpinFunction) == EnumValue(TrackElemType::Count));
 
-    static constexpr TrackElementSpriteType kSpriteTrackTypes[] = {
+    static constexpr TrackElementRotatedType kRotatedTrackTypes[] = {
         { TrackElemType::Flat, 0 },                                    // Flat
         { TrackElemType::EndStation, 0 },                              // EndStation
         { TrackElemType::BeginStation, 0 },                            // BeginStation
         { TrackElemType::MiddleStation, 0 },                           // MiddleStation
-        { TrackElemType::Up25, 0 },                                    // Up25
-        { TrackElemType::Up60, 0 },                                    // Up60
-        { TrackElemType::FlatToUp25, 0 },                              // FlatToUp25
-        { TrackElemType::Up25ToUp60, 0 },                              // Up25ToUp60
-        { TrackElemType::Up60ToUp25, 0 },                              // Up60ToUp25
-        { TrackElemType::Up25ToFlat, 0 },                              // Up25ToFlat
+        { TrackElemType::Down25, 2 },                                  // Up25
+        { TrackElemType::Down60, 2 },                                  // Up60
+        { TrackElemType::Down25ToFlat, 2 },                            // FlatToUp25
+        { TrackElemType::Down60ToDown25, 2 },                          // Up25ToUp60
+        { TrackElemType::Down25ToDown60, 2 },                          // Up60ToUp25
+        { TrackElemType::FlatToDown25, 2 },                            // Up25ToFlat
         { TrackElemType::Up25, 2 },                                    // Down25
         { TrackElemType::Up60, 2 },                                    // Down60
         { TrackElemType::Up25ToFlat, 2 },                              // FlatToDown25
         { TrackElemType::Up60ToUp25, 2 },                              // Down25ToDown60
         { TrackElemType::Up25ToUp60, 2 },                              // Down60ToDown25
         { TrackElemType::FlatToUp25, 2 },                              // Down25ToFlat
-        { TrackElemType::LeftQuarterTurn5Tiles, 0 },                   // LeftQuarterTurn5Tiles
+        { TrackElemType::RightQuarterTurn5Tiles, 1 },                  // LeftQuarterTurn5Tiles
         { TrackElemType::LeftQuarterTurn5Tiles, -1 },                  // RightQuarterTurn5Tiles
-        { TrackElemType::FlatToLeftBank, 0 },                          // FlatToLeftBank
-        { TrackElemType::FlatToRightBank, 0 },                         // FlatToRightBank
+        { TrackElemType::RightBankToFlat, 2 },                         // FlatToLeftBank
+        { TrackElemType::LeftBankToFlat, 2 },                          // FlatToRightBank
         { TrackElemType::FlatToRightBank, 2 },                         // LeftBankToFlat
         { TrackElemType::FlatToLeftBank, 2 },                          // RightBankToFlat
-        { TrackElemType::BankedLeftQuarterTurn5Tiles, 0 },             // BankedLeftQuarterTurn5Tiles
+        { TrackElemType::BankedRightQuarterTurn5Tiles, 1 },            // BankedLeftQuarterTurn5Tiles
         { TrackElemType::BankedLeftQuarterTurn5Tiles, -1 },            // BankedRightQuarterTurn5Tiles
-        { TrackElemType::LeftBankToUp25, 0 },                          // LeftBankToUp25
-        { TrackElemType::RightBankToUp25, 0 },                         // RightBankToUp25
-        { TrackElemType::Up25ToLeftBank, 0 },                          // Up25ToLeftBank
-        { TrackElemType::Up25ToRightBank, 0 },                         // Up25ToRightBank
+        { TrackElemType::Down25ToRightBank, 2 },                       // LeftBankToUp25
+        { TrackElemType::Down25ToLeftBank, 2 },                        // RightBankToUp25
+        { TrackElemType::RightBankToDown25, 2 },                       // Up25ToLeftBank
+        { TrackElemType::LeftBankToDown25, 2 },                        // Up25ToRightBank
         { TrackElemType::Up25ToRightBank, 2 },                         // LeftBankToDown25
         { TrackElemType::Up25ToLeftBank, 2 },                          // RightBankToDown25
         { TrackElemType::RightBankToUp25, 2 },                         // Down25ToLeftBank
         { TrackElemType::LeftBankToUp25, 2 },                          // Down25ToRightBank
-        { TrackElemType::LeftBank, 0 },                                // LeftBank
+        { TrackElemType::RightBank, 2 },                               // LeftBank
         { TrackElemType::LeftBank, 2 },                                // RightBank
         { TrackElemType::LeftQuarterTurn5TilesUp25, 0 },               // LeftQuarterTurn5TilesUp25
         { TrackElemType::RightQuarterTurn5TilesUp25, 0 },              // RightQuarterTurn5TilesUp25
@@ -3526,30 +3526,30 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::SBendRight, 0 },                              // SBendRight
         { TrackElemType::LeftVerticalLoop, 0 },                        // LeftVerticalLoop
         { TrackElemType::RightVerticalLoop, 0 },                       // RightVerticalLoop
-        { TrackElemType::LeftQuarterTurn3Tiles, 0 },                   // LeftQuarterTurn3Tiles
+        { TrackElemType::RightQuarterTurn3Tiles, 1 },                  // LeftQuarterTurn3Tiles
         { TrackElemType::LeftQuarterTurn3Tiles, -1 },                  // RightQuarterTurn3Tiles
-        { TrackElemType::LeftBankedQuarterTurn3Tiles, 0 },             // LeftBankedQuarterTurn3Tiles
+        { TrackElemType::RightBankedQuarterTurn3Tiles, 1 },            // LeftBankedQuarterTurn3Tiles
         { TrackElemType::LeftBankedQuarterTurn3Tiles, -1 },            // RightBankedQuarterTurn3Tiles
         { TrackElemType::LeftQuarterTurn3TilesUp25, 0 },               // LeftQuarterTurn3TilesUp25
         { TrackElemType::RightQuarterTurn3TilesUp25, 0 },              // RightQuarterTurn3TilesUp25
         { TrackElemType::RightQuarterTurn3TilesUp25, 1 },              // LeftQuarterTurn3TilesDown25
         { TrackElemType::LeftQuarterTurn3TilesUp25, -1 },              // RightQuarterTurn3TilesDown25
-        { TrackElemType::LeftQuarterTurn1Tile, 0 },                    // LeftQuarterTurn1Tile
+        { TrackElemType::RightQuarterTurn1Tile, 1 },                   // LeftQuarterTurn1Tile
         { TrackElemType::LeftQuarterTurn1Tile, -1 },                   // RightQuarterTurn1Tile
-        { TrackElemType::LeftTwistDownToUp, 0 },                       // LeftTwistDownToUp
-        { TrackElemType::RightTwistDownToUp, 0 },                      // RightTwistDownToUp
-        { TrackElemType::LeftTwistUpToDown, 0 },                       // LeftTwistUpToDown
-        { TrackElemType::RightTwistUpToDown, 0 },                      // RightTwistUpToDown
-        { TrackElemType::HalfLoopUp, 0 },                              // HalfLoopUp
-        { TrackElemType::HalfLoopDown, 0 },                            // HalfLoopDown
-        { TrackElemType::LeftCorkscrewUp, 0 },                         // LeftCorkscrewUp
-        { TrackElemType::RightCorkscrewUp, 0 },                        // RightCorkscrewUp
-        { TrackElemType::LeftCorkscrewDown, 0 },                       // LeftCorkscrewDown
-        { TrackElemType::RightCorkscrewDown, 0 },                      // RightCorkscrewDown
-        { TrackElemType::FlatToUp60, 0 },                              // FlatToUp60
-        { TrackElemType::Up60ToFlat, 0 },                              // Up60ToFlat
-        { TrackElemType::FlatToDown60, 0 },                            // FlatToDown60
-        { TrackElemType::Down60ToFlat, 0 },                            // Down60ToFlat
+        { TrackElemType::RightTwistUpToDown, 2 },                      // LeftTwistDownToUp
+        { TrackElemType::LeftTwistUpToDown, 2 },                       // RightTwistDownToUp
+        { TrackElemType::RightTwistDownToUp, 2 },                      // LeftTwistUpToDown
+        { TrackElemType::LeftTwistDownToUp, 2 },                       // RightTwistUpToDown
+        { TrackElemType::HalfLoopDown, 0 },                            // HalfLoopUp
+        { TrackElemType::HalfLoopUp, 0 },                              // HalfLoopDown
+        { TrackElemType::RightCorkscrewDown, 2 },                      // LeftCorkscrewUp
+        { TrackElemType::LeftCorkscrewDown, 2 },                       // RightCorkscrewUp
+        { TrackElemType::RightCorkscrewUp, 2 },                        // LeftCorkscrewDown
+        { TrackElemType::LeftCorkscrewUp, 2 },                         // RightCorkscrewDown
+        { TrackElemType::Down60ToFlat, 2 },                            // FlatToUp60
+        { TrackElemType::FlatToDown60, 2 },                            // Up60ToFlat
+        { TrackElemType::Up60ToFlat, 2 },                              // FlatToDown60
+        { TrackElemType::FlatToUp60, 2 },                              // Down60ToFlat
         { TrackElemType::TowerBase, 0 },                               // TowerBase
         { TrackElemType::TowerSection, 0 },                            // TowerSection
         { TrackElemType::FlatCovered, 0 },                             // FlatCovered
@@ -3835,7 +3835,7 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::RightEighthDiveLoopDownToDiag, 0 },           // RightEighthDiveLoopDownToDiag
         { TrackElemType::DiagDown25Brakes, 0 },                        // DiagDown25Brakes
     };
-    static_assert(std::size(kSpriteTrackTypes) == EnumValue(TrackElemType::Count));
+    static_assert(std::size(kRotatedTrackTypes) == EnumValue(TrackElemType::Count));
 
 #pragma region GForces
 
@@ -13438,7 +13438,7 @@ namespace OpenRCT2::TrackMetaData
             desc.spinFunction = kTrackTypeToSpinFunction[i];
             desc.verticalFactor = GetVerticalFunction(static_cast<TrackElemType>(i));
             desc.lateralFactor = GetLateralFunction(static_cast<TrackElemType>(i));
-            desc.spriteType = kSpriteTrackTypes[i];
+            desc.rotatedType = kRotatedTrackTypes[i];
             desc.numSequences = kSequenceDescriptorsByElement[i].numSequences;
 
             for (uint8_t sequenceIndex = 0; sequenceIndex < kMaxSequencesPerPiece; sequenceIndex++)

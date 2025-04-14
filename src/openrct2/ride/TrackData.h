@@ -100,7 +100,7 @@ namespace OpenRCT2::TrackMetaData
         int8_t extraSupportRotation = 0;
     };
 
-    struct TrackElementSpriteType
+    struct TrackElementRotatedType
     {
         OpenRCT2::TrackElemType elementType;
         int8_t extraDirection;
@@ -131,7 +131,7 @@ namespace OpenRCT2::TrackMetaData
         TrackComputeFunction verticalFactor;
         TrackComputeFunction lateralFactor;
 
-        TrackElementSpriteType spriteType;
+        TrackElementRotatedType rotatedType;
     };
 
     const TrackElementDescriptor& GetTrackElementDescriptor(OpenRCT2::TrackElemType type);
