@@ -1969,7 +1969,7 @@ ImageId GetShopSupportColourScheme(PaintSession& session, const TrackElement& tr
     return ShopSupportColour;
 }
 
-template<size_t TSpriteCount>
+template<size_t TSpriteCount, bool TChildSprite>
 void trackPaintSpriteCommon(
     PaintSession& session, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement)
@@ -1996,9 +1996,18 @@ void trackPaintSpriteCommon(
     if constexpr (TSpriteCount >= 2)
     {
         const CoordsXYZ& offset2 = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 1] : CoordsXYZ{ 0, 0, 0 };
-        PaintAddImageAsParentHeight(
-            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, offset2,
-            sprites.boundBoxes[spriteIndex + 1]);
+        if constexpr (TChildSprite)
+        {
+            PaintAddImageAsChildHeight(
+                session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, offset2,
+                sprites.boundBoxes[spriteIndex + 1]);
+        }
+        else
+        {
+            PaintAddImageAsParentHeight(
+                session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, offset2,
+                sprites.boundBoxes[spriteIndex + 1]);
+        }
     }
 }
 
@@ -2006,14 +2015,21 @@ void trackPaintSprite(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    trackPaintSpriteCommon<1>(session, trackSequence, direction, height, trackElement);
+    trackPaintSpriteCommon<1, false>(session, trackSequence, direction, height, trackElement);
 }
 
 void trackPaintSprites2(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
 {
-    trackPaintSpriteCommon<2>(session, trackSequence, direction, height, trackElement);
+    trackPaintSpriteCommon<2, false>(session, trackSequence, direction, height, trackElement);
+}
+
+void trackPaintSpriteWithChild(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<2, true>(session, trackSequence, direction, height, trackElement);
 }
 
 template<auto TFunction>

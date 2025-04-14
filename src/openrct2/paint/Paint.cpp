@@ -974,6 +974,26 @@ PaintStruct* PaintAddImageAsParentHeight(
     return ps;
 }
 
+PaintStruct* PaintAddImageAsChildHeight(
+    PaintSession& session, const ImageId imageId, const int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+{
+    PaintStruct* parentPS = session.LastPS;
+    if (parentPS == nullptr)
+    {
+        return PaintAddImageAsParentHeight(session, imageId, height, offset, boundBox);
+    }
+
+    auto* const ps = CreateNormalPaintStructHeight(session, imageId, height, offset, boundBox);
+    if (ps == nullptr)
+    {
+        return nullptr;
+    }
+
+    parentPS->Children = ps;
+
+    return ps;
+}
+
 /**
  * rct2: 0x006881D0
  *
