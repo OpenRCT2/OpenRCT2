@@ -516,7 +516,7 @@ namespace OpenRCT2::Scripting
     {
         ThrowIfGameStateNotMutable();
         auto ride = GetRide();
-        if (ride != nullptr && ride->canBreakDown() && ride->status == RideStatus::open)
+        if (ride != nullptr && ride->canBreakDown())
         {
             RideFixBreakdown(*ride, 0);
         }
