@@ -7,6 +7,8 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
 
 add_executable(openrct2-cli ${OPENRCT2_CLI_SOURCES})
+add_executable(OpenRCT2::openrct2-cli ALIAS openrct2-cli)
+
 target_include_directories(openrct2-cli PRIVATE "${CMAKE_CURRENT_LIST_DIR}/..")
 ipo_set_target_properties(openrct2-cli)
 if (EMSCRIPTEN)

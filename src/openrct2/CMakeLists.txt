@@ -20,6 +20,8 @@ if (ENABLE_SCRIPTING)
 endif ()
 
 add_library(libopenrct2 ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
+add_library(OpenRCT2::libopenrct2 ALIAS libopenrct2)
+
 if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13")
 	message(WARNING "Buggy GCC 12 detected! Disabling some warnings")
 	set_source_files_properties("${CMAKE_CURRENT_LIST_DIR}/localisation/FormatCodes.cpp" PROPERTIES COMPILE_FLAGS "-Wno-restrict")
@@ -280,6 +282,22 @@ endif ()
 if (UNIX)
     add_definitions(-D_FILE_OFFSET_BITS=64)
 endif ()
+
+# Defines
+target_compile_definitions(libopenrct2 PUBLIC
+    $<$<BOOL:${USE_MMAP}>:USE_MMAP>
+    $<$<BOOL:${DISABLE_NETWORK}>:DISABLE_NETWORK>
+    $<$<BOOL:${DISABLE_HTTP}>:DISABLE_HTTP>
+    $<$<BOOL:${DISABLE_TTF}>:DISABLE_TTF>
+    $<$<BOOL:${DISABLE_VERSION_CHECKER}>:DISABLE_VERSION_CHECKER>
+    $<$<BOOL:${ENABLE_SCRIPTING}>:ENABLE_SCRIPTING>
+)
+
+target_compile_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_ASAN}>:-fsanitize=address>)
+target_link_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_ASAN}>:-fsanitize=address>)
+
+target_compile_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_UBSAN}>:-fsanitize=undefined>)
+target_link_options(libopenrct2 PUBLIC  $<$<BOOL:${ENABLE_UBSAN}>:-fsanitize=undefined>)
 
 if (CMAKE_LIBRARY_ARCHITECTURE MATCHES "arm-linux-gnueabihf")
     message(STATUS "Linking to armhf libs; adding libatomic")

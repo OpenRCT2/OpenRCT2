@@ -391,22 +391,6 @@ if(NOT DISABLE_GUI)
     include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 endif()
 
-# Defines
-target_compile_definitions(libopenrct2 PUBLIC
-    $<$<BOOL:${USE_MMAP}>:USE_MMAP>
-    $<$<BOOL:${DISABLE_NETWORK}>:DISABLE_NETWORK>
-    $<$<BOOL:${DISABLE_HTTP}>:DISABLE_HTTP>
-    $<$<BOOL:${DISABLE_TTF}>:DISABLE_TTF>
-    $<$<BOOL:${DISABLE_VERSION_CHECKER}>:DISABLE_VERSION_CHECKER>
-    $<$<BOOL:${ENABLE_SCRIPTING}>:ENABLE_SCRIPTING>
-)
-
-target_compile_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_ASAN}>:-fsanitize=address>)
-target_link_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_ASAN}>:-fsanitize=address>)
-
-target_compile_options(libopenrct2 PUBLIC $<$<BOOL:${ENABLE_UBSAN}>:-fsanitize=undefined>)
-target_link_options(libopenrct2 PUBLIC  $<$<BOOL:${ENABLE_UBSAN}>:-fsanitize=undefined>)
-
 # g2
 if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_ARCH}")))
     add_custom_command(
@@ -414,7 +398,7 @@ if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_A
         COMMAND ./openrct2-cli sprite build ${CMAKE_BINARY_DIR}/g2.dat ${ROOT_DIR}/resources/g2/sprites.json
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
-    add_custom_target(g2 DEPENDS openrct2 g2.dat)
+    add_custom_target(g2 DEPENDS OpenRCT2::openrct2-cli g2.dat)
 else ()
     message("Skipping g2.dat generation in macOS cross-compile")
 endif ()

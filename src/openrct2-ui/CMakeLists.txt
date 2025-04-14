@@ -59,6 +59,8 @@ endif ()
 
 # Outputs
 add_executable(openrct2 ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
+add_executable(OpenRCT2::openrct2 ALIAS openrct2)
+
 SET_CHECK_CXX_FLAGS(openrct2)
 ipo_set_target_properties(openrct2)
 
