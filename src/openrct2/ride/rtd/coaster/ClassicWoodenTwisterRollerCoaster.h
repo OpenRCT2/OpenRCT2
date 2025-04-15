@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/ClassicWoodenTwisterRollerCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -24,6 +25,7 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
        .supportType = WoodenSupportType::Truss,
        .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::slopeCurveSteep, TrackGroup::slopeCurveBanked },
        .extraTrackGroups = { TrackGroup::verticalLoop, TrackGroup::waterSplash, TrackGroup::booster, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge },
+        .sprites = OpenRCT2::ClassicWoodenTwisterRollerCoaster::kSprites,
    }),
    .InvertedTrackPaintFunctions = {},
    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
