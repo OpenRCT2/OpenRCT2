@@ -33,42 +33,7 @@ static void ReverserRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasChain())
-    {
-        switch (direction)
-        {
-            case 0:
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21520), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 1:
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21521), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-        }
-    }
-    else
-    {
-        switch (direction)
-        {
-            case 0:
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21504), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 1:
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21505), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-        }
-    }
+    trackPaintSpriteChain(session, ride, trackSequence, direction, height, trackElement, supportType);
     DrawSupportForSequenceA<TrackElemType::Flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -80,15 +45,7 @@ static void ReverserRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr ImageIndex imageIds[4] = {
-        21506,
-        21507,
-        21506,
-        21507,
-    };
-    PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
-        { { 0, 2, height + 1 }, { 32, 27, 2 } });
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     DrawSupportForSequenceA<TrackElemType::EndStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11);
@@ -102,58 +59,7 @@ static void ReverserRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasChain())
-    {
-        switch (direction)
-        {
-            case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21530), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21531), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21532), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21533), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-        }
-    }
-    else
-    {
-        switch (direction)
-        {
-            case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21516), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21517), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21518), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21519), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-        }
-    }
+    trackPaintSpriteChain(session, ride, trackSequence, direction, height, trackElement, supportType);
     DrawSupportForSequenceA<TrackElemType::Up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (direction == 0 || direction == 3)
@@ -173,58 +79,7 @@ static void ReverserRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasChain())
-    {
-        switch (direction)
-        {
-            case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21522), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21523), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21524), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21525), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-        }
-    }
-    else
-    {
-        switch (direction)
-        {
-            case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21508), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21509), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21510), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21511), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-        }
-    }
+    trackPaintSpriteChain(session, ride, trackSequence, direction, height, trackElement, supportType);
     DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (direction == 0 || direction == 3)
@@ -244,58 +99,7 @@ static void ReverserRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.HasChain())
-    {
-        switch (direction)
-        {
-            case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21526), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21527), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21528), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21529), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-        }
-    }
-    else
-    {
-        switch (direction)
-        {
-            case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21512), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 1:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21513), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21514), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours.WithIndex(21515), { 0, 0, height },
-                    { { 0, 2, height }, { 32, 27, 2 } });
-                break;
-        }
-    }
+    trackPaintSpriteChain(session, ride, trackSequence, direction, height, trackElement, supportType);
     DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     if (direction == 0 || direction == 3)
@@ -339,28 +143,10 @@ static void ReverserRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     switch (trackSequence)
     {
         case 0:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21543), { 0, 2, height }, { 32, 27, 2 });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21548), { 0, 2, height }, { 32, 27, 2 });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21553), { 0, 2, height }, { 32, 32, 2 });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21538), { 0, 2, height }, { 32, 32, 2 });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             if (direction == 0 || direction == 3)
@@ -379,25 +165,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21542), { 0, 0, height }, { 32, 16, 2 });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21547), { 0, 0, height }, { 32, 16, 2 });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21552), { 0, 16, height }, { 32, 16, 2 });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21537), { 0, 16, height }, { 32, 16, 2 });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
@@ -411,25 +178,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21541), { 0, 16, height }, { 16, 16, 2 });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21546), { 16, 16, height }, { 16, 16, 2 });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21551), { 16, 0, height }, { 16, 16, 2 });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21536), { 0, 0, height }, { 16, 16, 2 });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
@@ -451,25 +199,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21540), { 16, 0, height }, { 16, 34, 2 });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21545), { 0, 0, height }, { 16, 32, 2 });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21550), { 0, 0, height }, { 16, 32, 2 });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21535), { 16, 0, height }, { 16, 32, 2 });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
@@ -483,25 +212,6 @@ static void ReverserRCTrackLeftQuarterTurn5(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21539), { 2, 0, height }, { 32, 32, 2 });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21544), { 2, 0, height }, { 27, 32, 2 });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21549), { 2, 0, height }, { 27, 32, 2 });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21534), { 2, 0, height }, { 32, 32, 2 });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn5Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             switch (direction)
@@ -533,32 +243,10 @@ static void ReverserRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     switch (trackSequence)
     {
         case 0:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21566), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21570), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21569), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21573), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::SBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             if (direction == 0 || direction == 3)
@@ -569,29 +257,6 @@ static void ReverserRCTrackSBendLeft(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21567), { 0, 0, height },
-                        { { 0, 0, height }, { 32, 26, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21571), { 0, 0, height },
-                        { { 0, 0, height }, { 32, 26, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21568), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 26, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21572), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 26, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::SBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
@@ -605,29 +270,6 @@ static void ReverserRCTrackSBendLeft(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21568), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 26, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21572), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 26, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21567), { 0, 0, height },
-                        { { 0, 0, height }, { 32, 26, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21571), { 0, 0, height },
-                        { { 0, 0, height }, { 32, 26, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::SBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
@@ -641,29 +283,6 @@ static void ReverserRCTrackSBendLeft(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21569), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21573), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21566), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21570), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::SBendLeft>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             switch (direction)
@@ -686,32 +305,10 @@ static void ReverserRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     switch (trackSequence)
     {
         case 0:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21574), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21578), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21577), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21581), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::SBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             if (direction == 0 || direction == 3)
@@ -722,29 +319,6 @@ static void ReverserRCTrackSBendRight(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21575), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 26, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21579), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 26, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21576), { 0, 0, height },
-                        { { 0, 0, height }, { 32, 26, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21580), { 0, 0, height },
-                        { { 0, 0, height }, { 32, 26, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::SBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
@@ -758,29 +332,6 @@ static void ReverserRCTrackSBendRight(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21576), { 0, 0, height },
-                        { { 0, 0, height }, { 32, 26, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21580), { 0, 0, height },
-                        { { 0, 0, height }, { 32, 26, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21575), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 26, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21579), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 26, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::SBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
@@ -794,29 +345,6 @@ static void ReverserRCTrackSBendRight(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21577), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21581), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21574), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21578), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::SBendRight>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             switch (direction)
@@ -839,32 +367,10 @@ static void ReverserRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     switch (trackSequence)
     {
         case 0:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21559), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21562), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21565), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21556), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             if (direction == 0 || direction == 3)
@@ -878,29 +384,6 @@ static void ReverserRCTrackLeftQuarterTurn3(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21558), { 0, 0, height },
-                        { { 16, 0, height }, { 16, 16, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21561), { 0, 0, height },
-                        { { 0, 0, height }, { 16, 16, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21564), { 0, 0, height },
-                        { { 0, 16, height }, { 16, 16, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21555), { 0, 0, height },
-                        { { 16, 16, height }, { 16, 16, 2 } });
-                    break;
-            }
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -910,29 +393,6 @@ static void ReverserRCTrackLeftQuarterTurn3(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21557), { 0, 0, height },
-                        { { 6, 0, height }, { 20, 32, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21560), { 0, 0, height },
-                        { { 6, 0, height }, { 20, 32, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21563), { 0, 0, height },
-                        { { 6, 0, height }, { 20, 32, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21554), { 0, 0, height },
-                        { { 6, 0, height }, { 20, 32, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             switch (direction)
@@ -964,21 +424,7 @@ static void ReverserRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(21506), { 0, 0, height },
-                { { 0, 2, height }, { 32, 27, 2 } });
-            break;
-        case 1:
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(21507), { 0, 0, height },
-                { { 0, 2, height }, { 32, 27, 2 } });
-            break;
-    }
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     DrawSupportForSequenceA<TrackElemType::Brakes>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -991,32 +437,10 @@ static void ReverserRCTrackLeftReverser(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     switch (trackSequence)
     {
         case 0:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21582), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21588), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21594), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21600), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             if (direction == 0 || direction == 3)
@@ -1025,137 +449,22 @@ static void ReverserRCTrackLeftReverser(
             }
             break;
         case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21585), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21591), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21597), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21603), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 2:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21586), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21592), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21598), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21604), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 3:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21587), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21593), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21599), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21605), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 4:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21583), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21589), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21595), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21601), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             break;
         case 5:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21584), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21590), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21596), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21602), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
             DrawSupportForSequenceA<TrackElemType::LeftReverser>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             switch (direction)
@@ -1179,196 +488,9 @@ static void ReverserRCTrackRightReverser(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21596), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21602), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21584), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21590), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21599), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21605), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21587), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21593), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21598), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21604), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21586), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21592), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21597), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21603), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21585), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21591), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-            break;
-        case 4:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21595), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21601), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21583), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21589), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-            break;
-        case 5:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21594), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21600), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21582), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(21588), { 0, 0, height },
-                        { { 0, 2, height }, { 32, 27, 2 } });
-                    break;
-            }
-            DrawSupportForSequenceA<TrackElemType::RightReverser>(
-                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-            switch (direction)
-            {
-                case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-                case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-            break;
-    }
+    static constexpr std::array trackSequenceMap = { 5, 3, 2, 1, 4, 0 };
+    ReverserRCTrackLeftReverser(
+        session, ride, trackSequenceMap[trackSequence], DirectionReverse(direction), height, trackElement, supportType);
 }
 
 TrackPaintFunction GetTrackPaintFunctionReverserRC(OpenRCT2::TrackElemType trackType)

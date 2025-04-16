@@ -3695,8 +3695,8 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::InvertedFlatToDown90QuarterLoop, 0 },          // InvertedFlatToDown90QuarterLoop
         { TrackElemType::LeftCurvedLiftHill, 0 },                       // LeftCurvedLiftHill
         { TrackElemType::RightCurvedLiftHill, 0 },                      // RightCurvedLiftHill
-        { TrackElemType::LeftReverser, 0 },                             // LeftReverser
-        { TrackElemType::RightReverser, 0 },                            // RightReverser
+        { TrackElemType::RightReverser, 2 },                            // LeftReverser
+        { TrackElemType::LeftReverser, 2 },                             // RightReverser
         { TrackElemType::AirThrustTopCap, 0 },                          // AirThrustTopCap
         { TrackElemType::ReverseFreefallVertical, 2 },                  // AirThrustVerticalDown
         { TrackElemType::ReverseFreefallSlope, 2 },                     // AirThrustVerticalDownToLevel
