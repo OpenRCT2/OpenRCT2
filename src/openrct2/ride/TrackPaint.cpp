@@ -2267,6 +2267,48 @@ void trackPaintWatersplashSupportColoursWithChild(
         sprites.boundBoxes[spriteIndex + 0]);
 }
 
+// this should only be used by the original rollercoasters
+void trackPaintReverseFreefallSlope(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    const std::array colours = { session.SupportColours, session.TrackColours };
+    const bool reverseAngle = direction > 0 && direction < 3;
+
+    constexpr uint32_t spriteCount = 2;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    session.LastPS = nullptr;
+    session.LastAttachedPS = nullptr;
+
+    PaintAddImageAsParentHeight(
+        session, colours[reverseAngle].WithIndex(sprites.imageIndexes[spriteIndex + 0]), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex + 0]);
+    PaintAddImageAsChildHeight(
+        session, colours[(reverseAngle + 1) & 1].WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex + 0]);
+}
+
+// this should only be used by the original rollercoasters
+void trackPaintReverseFreefallVertical(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    const std::array colours = { session.SupportColours, session.TrackColours };
+
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences) + trackSequence;
+
+    PaintAddImageAsParentHeight(
+        session, colours[trackSequence].WithIndex(sprites.imageIndexes[spriteIndex]), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex]);
+}
+
 /**
  *
  *  rct2: 0x006C4794
