@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
+#include "../../../paint/track/water/SplashBoats.h"
 #include "../../../ride/RideStringIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
@@ -35,6 +36,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
             .supportType = WoodenSupportType::Truss,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend },
             .extraTrackGroups = {},
+            .sprites = OpenRCT2::SplashBoats::kSprites,
             .icon = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL,
             .tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP,
         }

@@ -404,6 +404,7 @@
     <ClInclude Include="paint\track\transport\Monorail.h" />
     <ClInclude Include="paint\track\transport\SuspendedMonorail.h" />
     <ClInclude Include="paint\track\water\BoatHire.h" />
+    <ClInclude Include="paint\track\water\SplashBoats.h" />
     <ClInclude Include="paint\track\water\SubmarineRide.h" />
     <ClInclude Include="paint\track\Segment.h" />
     <ClInclude Include="paint\track\Support.h" />
