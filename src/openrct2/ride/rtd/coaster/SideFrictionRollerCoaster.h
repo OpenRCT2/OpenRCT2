@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/SideFrictionRollerCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -24,6 +25,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
         .supportType = WoodenSupportType::Truss,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown},
         .extraTrackGroups = {},
+        .sprites = OpenRCT2::SideFrictionRollerCoaster::kSprites,
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 

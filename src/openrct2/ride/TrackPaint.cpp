@@ -2182,6 +2182,14 @@ void trackPaintSprites2Chain(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
+void trackPaintSprites2Platformless(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<2, &PaintSession::TrackColours, false, &PaintSession::TrackColours, nullptr, true>(
+        session, ride, trackSequence, direction, height, trackElement);
+}
+
 static constexpr std::array<std::array<std::array<ImageIndex, 2>, 5>, kNumOrthogonalDirections> kWatersplashSideSprites = { {
     { {
         { { 23997, 24863 } },
