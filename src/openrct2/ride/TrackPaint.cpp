@@ -1998,8 +1998,8 @@ static TrackSequenceSpriteDesc getTrackElementSpriteDesc(
     // TODO: make this templated
     /*if (spritesOriginal.isRotated)
     {
-        direction = (direction + trackElementRotatedType.extraDirection) & 3;
-        trackSequence = trackElementDescriptor.sequences[EnumValue(trackSequence)].rotatedSequence;
+        direction = (direction + trackElementDescriptor.rotatedType.extraDirection) & 3;
+        trackSequence = trackElementDescriptor.sequences[trackSequence].rotatedTrackSequence;
     }*/
 
     return { sprites, trackElementDescriptor.numSequences, trackSequence, direction };
@@ -2049,6 +2049,8 @@ void trackPaintSpriteCommon(
         }
         else
         {
+            // temporary workaround, does nothing when support is not steep
+            // prepending should be unnecessary eventually (see #23908)
             session.WoodenSupportsPrependTo = i == 0 ? paintStruct : nullptr;
         }
     }

@@ -24,406 +24,12 @@ using namespace OpenRCT2;
 
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
-enum
-{
-    SPR_MONORAIL_FLAT_SW_NE = 23231,
-    SPR_MONORAIL_FLAT_NW_SE = 23232,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_0 = 23233,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_1 = 23234,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_2 = 23235,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_3 = 23236,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_4 = 23237,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_0 = 23238,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_1 = 23239,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_2 = 23240,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_3 = 23241,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_4 = 23242,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_0 = 23243,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_1 = 23244,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_2 = 23245,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_3 = 23246,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_4 = 23247,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_0 = 23248,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_1 = 23249,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_2 = 23250,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_3 = 23251,
-    SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_4 = 23252,
-    SPR_MONORAIL_25_DEG_UP_SW_NE = 23253,
-    SPR_MONORAIL_FLAT_TO_25_DEG_UP_SW_NE = 23254,
-    SPR_MONORAIL_25_DEG_UP_NE_SW = 23255,
-    SPR_MONORAIL_FLAT_TO_25_DEG_UP_NE_SW = 23256,
-    SPR_MONORAIL_25_DEG_UP_TO_FLAT_NE_SW = 23257,
-    SPR_MONORAIL_25_DEG_UP_TO_FLAT_SW_NE = 23258,
-    SPR_MONORAIL_25_DEG_UP_NW_SE = 23259,
-    SPR_MONORAIL_25_DEG_UP_SE_NW = 23260,
-    SPR_MONORAIL_FLAT_TO_25_DEG_UP_NW_SE = 23261,
-    SPR_MONORAIL_FLAT_TO_25_DEG_UP_SE_NW = 23262,
-    SPR_MONORAIL_25_DEG_UP_TO_FLAT_SE_NW = 23263,
-    SPR_MONORAIL_25_DEG_UP_TO_FLAT_NW_SE = 23264,
-    SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_0 = 23265,
-    SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_1 = 23266,
-    SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_2 = 23267,
-    SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_3 = 23268,
-    SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_0 = 23269,
-    SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_1 = 23270,
-    SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_2 = 23271,
-    SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_3 = 23272,
-    SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_0 = 23273,
-    SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_1 = 23274,
-    SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_2 = 23275,
-    SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_3 = 23276,
-    SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_0 = 23277,
-    SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_1 = 23278,
-    SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_2 = 23279,
-    SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_3 = 23280,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_0 = 23281,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_1 = 23282,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_2 = 23283,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_0 = 23284,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_1 = 23285,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_2 = 23286,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_0 = 23287,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_1 = 23288,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_2 = 23289,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_0 = 23290,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_1 = 23291,
-    SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_2 = 23292,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_0 = 23293,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_1 = 23294,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_2 = 23295,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_3 = 23296,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NW_S_PART_0 = 23297,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NW_S_PART_1 = 23298,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NW_S_PART_2 = 23299,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NW_S_PART_3 = 23300,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NE_W_PART_0 = 23301,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NE_W_PART_1 = 23302,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NE_W_PART_2 = 23303,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NE_W_PART_3 = 23304,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SE_N_PART_0 = 23305,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SE_N_PART_1 = 23306,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SE_N_PART_2 = 23307,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SE_N_PART_3 = 23308,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_0 = 23309,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_1 = 23310,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_2 = 23311,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_3 = 23312,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NW_E_PART_0 = 23313,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NW_E_PART_1 = 23314,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NW_E_PART_2 = 23315,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NW_E_PART_3 = 23316,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NE_S_PART_0 = 23317,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NE_S_PART_1 = 23318,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NE_S_PART_2 = 23319,
-    SPR_MONORAIL_EIGHT_TO_DIAG_NE_S_PART_3 = 23320,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_0 = 23321,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_1 = 23322,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_2 = 23323,
-    SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_3 = 23324,
-    SPR_MONORAIL_DIAG_FLAT_W_E = 23325,
-    SPR_MONORAIL_DIAG_FLAT_N_S = 23326,
-    SPR_MONORAIL_DIAG_FLAT_E_W = 23327,
-    SPR_MONORAIL_DIAG_FLAT_S_N = 23328,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_W_E = 23329,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_N_S = 23330,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_E_W = 23331,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_S_N = 23332,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_W_E = 23333,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_N_S = 23334,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_E_W = 23335,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_S_N = 23336,
-    SPR_MONORAIL_DIAG_25_DEG_UP_W_E = 23337,
-    SPR_MONORAIL_DIAG_25_DEG_UP_N_S = 23338,
-    SPR_MONORAIL_DIAG_25_DEG_UP_E_W = 23339,
-    SPR_MONORAIL_DIAG_25_DEG_UP_S_N = 23340,
-};
-
-static constexpr uint32_t kTrackPiecesFlat[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_FLAT_SW_NE,
-    SPR_MONORAIL_FLAT_NW_SE,
-    SPR_MONORAIL_FLAT_SW_NE,
-    SPR_MONORAIL_FLAT_NW_SE,
-};
-
-static constexpr uint32_t monorail_track_pieces_flat_quarter_turn_5_tiles[kNumOrthogonalDirections][5] = {
-    {
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_0,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_1,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_2,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_3,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_4,
-    },
-    {
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_0,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_1,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_2,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_3,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_4,
-    },
-    {
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_0,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_1,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_2,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_3,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_4,
-    },
-    {
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_0,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_1,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_2,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_3,
-        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_4,
-    },
-};
-
-static constexpr uint32_t monorail_track_pieces_25_deg_up[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_25_DEG_UP_SW_NE,
-    SPR_MONORAIL_25_DEG_UP_NW_SE,
-    SPR_MONORAIL_25_DEG_UP_NE_SW,
-    SPR_MONORAIL_25_DEG_UP_SE_NW,
-};
-
-static constexpr uint32_t monorail_track_pieces_flat_to_25_deg_up[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_FLAT_TO_25_DEG_UP_SW_NE,
-    SPR_MONORAIL_FLAT_TO_25_DEG_UP_NW_SE,
-    SPR_MONORAIL_FLAT_TO_25_DEG_UP_NE_SW,
-    SPR_MONORAIL_FLAT_TO_25_DEG_UP_SE_NW,
-};
-
-static constexpr uint32_t monorail_track_pieces_25_deg_up_to_flat[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_25_DEG_UP_TO_FLAT_SW_NE,
-    SPR_MONORAIL_25_DEG_UP_TO_FLAT_NW_SE,
-    SPR_MONORAIL_25_DEG_UP_TO_FLAT_NE_SW,
-    SPR_MONORAIL_25_DEG_UP_TO_FLAT_SE_NW,
-};
-
-static constexpr uint32_t monorail_track_pieces_s_bend_left[2][kNumOrthogonalDirections] = {
-    {
-        SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_0,
-        SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_1,
-        SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_2,
-        SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_3,
-    },
-    {
-        SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_3,
-        SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_2,
-        SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_1,
-        SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_0,
-    },
-};
-
-static constexpr uint32_t monorail_track_pieces_s_bend_right[2][kNumOrthogonalDirections] = {
-    {
-        SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_0,
-        SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_1,
-        SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_2,
-        SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_3,
-    },
-    {
-        SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_3,
-        SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_2,
-        SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_1,
-        SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_0,
-    },
-};
-
-static constexpr uint32_t monorail_track_pieces_flat_quarter_turn_3_tiles[kNumOrthogonalDirections][3] = {
-    {
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_0,
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_2,
-    },
-    {
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_0,
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_2,
-    },
-    {
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_0,
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_2,
-    },
-    {
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_0,
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-        SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_2,
-    },
-};
-
-static constexpr uint32_t ghost_train_track_pieces_right_eight_to_diag[4][4] = {
-    {
-        SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_0,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_1,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_2,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_3,
-    },
-    {
-        SPR_MONORAIL_EIGHT_TO_DIAG_NW_S_PART_0,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NW_S_PART_1,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NW_S_PART_2,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NW_S_PART_3,
-    },
-    {
-        SPR_MONORAIL_EIGHT_TO_DIAG_NE_W_PART_0,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NE_W_PART_1,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NE_W_PART_2,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NE_W_PART_3,
-    },
-    {
-        SPR_MONORAIL_EIGHT_TO_DIAG_SE_N_PART_0,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SE_N_PART_1,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SE_N_PART_2,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SE_N_PART_3,
-    },
-};
-
-static constexpr BoundBoxXY GhostTrainTrackPiecesRightEightToDiagBoxes[4][4] = {
-    {
-        { { 0, 6 }, { 32, 20 } },
-        { { 0, 16 }, { 32, 16 } },
-        { { 0, 0 }, { 16, 16 } },
-        { { 16, 0 }, { 16, 16 } },
-    },
-    {
-        { { 6, 0 }, { 20, 32 } },
-        { { 16, 0 }, { 16, 32 } },
-        { { 0, 16 }, { 16, 16 } },
-        { { 0, 0 }, { 16, 16 } },
-    },
-    {
-
-        { { 0, 6 }, { 32, 20 } },
-        { { 0, 0 }, { 34, 16 } },
-        { { 16, 16 }, { 16, 16 } },
-        { { 0, 16 }, { 16, 18 } },
-    },
-    {
-
-        { { 6, 0 }, { 20, 32 } },
-        { { 0, 0 }, { 16, 32 } },
-        { { 16, 0 }, { 16, 16 } },
-        { { 16, 16 }, { 16, 16 } },
-    },
-};
-
-static constexpr uint32_t ghost_train_track_pieces_left_eight_to_diag[4][4] = {
-    {
-        SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_0,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_1,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_2,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SW_N_PART_3,
-    },
-    {
-        SPR_MONORAIL_EIGHT_TO_DIAG_NW_E_PART_0,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NW_E_PART_1,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NW_E_PART_2,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NW_E_PART_3,
-    },
-    {
-        SPR_MONORAIL_EIGHT_TO_DIAG_NE_S_PART_0,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NE_S_PART_1,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NE_S_PART_2,
-        SPR_MONORAIL_EIGHT_TO_DIAG_NE_S_PART_3,
-    },
-    {
-        SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_0,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_1,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_2,
-        SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_3,
-    },
-};
-
-static constexpr BoundBoxXY GhostTrainTrackPiecesLeftEightToDiagBoxes[4][4] = {
-    {
-        { { 0, 6 }, { 32, 20 } },
-        { { 0, 0 }, { 32, 16 } },
-        { { 0, 16 }, { 16, 16 } },
-        { { 16, 16 }, { 16, 16 } },
-    },
-    {
-        { { 6, 0 }, { 20, 32 } },
-        { { 0, 0 }, { 16, 34 } },
-        { { 16, 16 }, { 16, 16 } },
-        { { 16, 0 }, { 18, 16 } },
-    },
-    {
-        { { 0, 6 }, { 32, 20 } },
-        { { 0, 16 }, { 32, 16 } },
-        { { 16, 0 }, { 16, 16 } },
-        { { 0, 0 }, { 16, 16 } },
-    },
-    {
-        { { 6, 0 }, { 20, 32 } },
-        { { 16, 0 }, { 16, 32 } },
-        { { 0, 0 }, { 16, 16 } },
-        { { 0, 16 }, { 16, 16 } },
-    },
-};
-
-static constexpr uint32_t monorail_track_pieces_diag_flat[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_DIAG_FLAT_W_E,
-    SPR_MONORAIL_DIAG_FLAT_N_S,
-    SPR_MONORAIL_DIAG_FLAT_E_W,
-    SPR_MONORAIL_DIAG_FLAT_S_N,
-};
-
-static constexpr uint32_t monorail_track_pieces_diag_flat_to_25_deg_up[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_W_E,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_N_S,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_E_W,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_S_N,
-};
-
-static constexpr uint32_t monorail_track_pieces_diag_25_deg_down_to_flat[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_E_W,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_S_N,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_W_E,
-    SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_N_S,
-};
-
-static constexpr uint32_t monorail_track_pieces_diag_25_deg_up_to_flat[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_W_E,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_N_S,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_E_W,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_S_N,
-};
-
-static constexpr uint32_t monorail_track_pieces_diag_flat_to_25_deg_down[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_E_W,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_S_N,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_W_E,
-    SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_N_S,
-};
-
-static constexpr uint32_t monorail_track_pieces_diag_25_deg_up[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_DIAG_25_DEG_UP_W_E,
-    SPR_MONORAIL_DIAG_25_DEG_UP_N_S,
-    SPR_MONORAIL_DIAG_25_DEG_UP_E_W,
-    SPR_MONORAIL_DIAG_25_DEG_UP_S_N,
-};
-
-static constexpr uint32_t monorail_track_pieces_diag_25_deg_down[kNumOrthogonalDirections] = {
-    SPR_MONORAIL_DIAG_25_DEG_UP_E_W,
-    SPR_MONORAIL_DIAG_25_DEG_UP_S_N,
-    SPR_MONORAIL_DIAG_25_DEG_UP_W_E,
-    SPR_MONORAIL_DIAG_25_DEG_UP_N_S,
-};
-
 /** rct2: 0x008AE1AC */
 static void PaintMonorailTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(kTrackPiecesFlat[direction]);
-
-    if (direction == 0 || direction == 2)
-    {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
-    }
-    else
-    {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
-    }
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     if (direction == 0 || direction == 2)
     {
@@ -452,8 +58,7 @@ static void PaintMonorailStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const ImageId imageId = session.TrackColours.WithIndex(kTrackPiecesFlat[direction]);
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 1 }, { 32, 20, 2 } });
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     if (direction == 0 || direction == 2)
     {
@@ -483,16 +88,7 @@ static void PaintMonorailTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(monorail_track_pieces_25_deg_up[direction]);
-
-    if (direction == 0 || direction == 2)
-    {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
-    }
-    else
-    {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
-    }
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     switch (direction)
     {
@@ -528,16 +124,7 @@ static void PaintMonorailTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(monorail_track_pieces_flat_to_25_deg_up[direction]);
-
-    if (direction == 0 || direction == 2)
-    {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
-    }
-    else
-    {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
-    }
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     switch (direction)
     {
@@ -573,16 +160,7 @@ static void PaintMonorailTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(monorail_track_pieces_25_deg_up_to_flat[direction]);
-
-    if (direction == 0 || direction == 2)
-    {
-        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
-    }
-    else
-    {
-        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
-    }
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     switch (direction)
     {
@@ -642,9 +220,7 @@ static void PaintMonorailTrackRightQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilRightQuarterTurn5TilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, monorail_track_pieces_flat_quarter_turn_5_tiles,
-        kDefaultRightQuarterTurn5TilesOffsets, kDefaultRightQuarterTurn5TilesBoundLengths, nullptr);
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     switch (trackSequence)
     {
@@ -721,29 +297,11 @@ static void PaintMonorailTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     uint8_t originalTrackSequence = trackSequence;
     if (direction == 2 || direction == 3)
     {
         trackSequence = 3 - trackSequence;
-    }
-
-    static constexpr BoundBoxXY boxList[] = {
-        { { 0, 6 }, { 32, 20 } },
-        { { 0, 0 }, { 32, 26 } },
-        { { 0, 6 }, { 32, 26 } },
-        { { 0, 6 }, { 32, 20 } },
-    };
-
-    auto imageId = session.TrackColours.WithIndex(monorail_track_pieces_s_bend_left[direction & 1][trackSequence]);
-    const CoordsXY& offset = boxList[trackSequence].offset;
-    const CoordsXY& bounds = boxList[trackSequence].length;
-    if (direction == 0 || direction == 2)
-    {
-        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
-    }
-    else
-    {
-        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 3 });
     }
 
     if (direction == 0 || direction == 2)
@@ -794,26 +352,11 @@ static void PaintMonorailTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     uint8_t originalTrackSequence = trackSequence;
     if (direction == 2 || direction == 3)
     {
         trackSequence = 3 - trackSequence;
-    }
-
-    static constexpr BoundBoxXY boxList[] = {
-        { { 0, 6 }, { 32, 20 } }, { { 0, 6 }, { 32, 26 } }, { { 0, 0 }, { 32, 26 } }, { { 0, 6 }, { 32, 20 } }
-    };
-
-    auto imageId = session.TrackColours.WithIndex(monorail_track_pieces_s_bend_right[direction & 1][trackSequence]);
-    const CoordsXY& offset = boxList[trackSequence].offset;
-    const CoordsXY& bounds = boxList[trackSequence].length;
-    if (direction == 0 || direction == 2)
-    {
-        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
-    }
-    else
-    {
-        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 3 });
     }
 
     if (direction == 0 || direction == 2)
@@ -864,9 +407,7 @@ static void PaintMonorailTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilRightQuarterTurn3TilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, monorail_track_pieces_flat_quarter_turn_3_tiles,
-        defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
     TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
@@ -908,24 +449,12 @@ static void PaintMonorailTrackLeftQuarterTurn3Tiles(
         session, ride, trackSequence, (direction + 1) % 4, height, trackElement, supportType);
 }
 
-static constexpr int8_t paint_monorail_eighth_to_diag_index[] = {
-    0, 1, 2, -1, 3,
-};
-
 /** rct2: 0x008AE31C */
 static void PaintMonorailTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    int8_t index = paint_monorail_eighth_to_diag_index[trackSequence];
-    if (index >= 0)
-    {
-        auto imageId = session.TrackColours.WithIndex(ghost_train_track_pieces_left_eight_to_diag[direction][index]);
-        const CoordsXY& offset = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].offset;
-        const CoordsXY& bounds = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].length;
-        PaintAddImageAsParent(
-            session, imageId, { 0, 0, height }, { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
-    }
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     switch (trackSequence)
     {
@@ -993,15 +522,7 @@ static void PaintMonorailTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    int8_t index = paint_monorail_eighth_to_diag_index[trackSequence];
-    if (index >= 0)
-    {
-        auto imageId = session.TrackColours.WithIndex(ghost_train_track_pieces_right_eight_to_diag[direction][index]);
-        const CoordsXY offset = GhostTrainTrackPiecesRightEightToDiagBoxes[direction][index].offset;
-        const CoordsXY bounds = GhostTrainTrackPiecesRightEightToDiagBoxes[direction][index].length;
-        PaintAddImageAsParent(
-            session, imageId, { 0, 0, height }, { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
-    }
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     switch (trackSequence)
     {
@@ -1086,8 +607,17 @@ static void PaintMonorailTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilDiagTilesPaintExtra(
-        session, 2, height, direction, trackSequence, monorail_track_pieces_diag_flat, supportType.metal);
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    if (SupportedSequences::kDiagStraightFlat[trackSequence] != MetalSupportPlace::None)
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, SupportedSequences::kDiagStraightFlat[trackSequence], direction, 0, height,
+            session.SupportColours);
+    }
+
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AE2DC */
@@ -1095,9 +625,7 @@ static void PaintMonorailTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilDiagTilesPaint(
-        session, 2, height, direction, trackSequence, monorail_track_pieces_diag_25_deg_up, defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     if (trackSequence == 3)
     {
@@ -1115,9 +643,7 @@ static void PaintMonorailTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilDiagTilesPaint(
-        session, 2, height, direction, trackSequence, monorail_track_pieces_diag_flat_to_25_deg_up, defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     if (trackSequence == 3)
     {
@@ -1135,9 +661,7 @@ static void PaintMonorailTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilDiagTilesPaint(
-        session, 2, height, direction, trackSequence, monorail_track_pieces_diag_25_deg_up_to_flat, defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     if (trackSequence == 3)
     {
@@ -1155,19 +679,8 @@ static void PaintMonorailTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilDiagTilesPaint(
-        session, 2, height, direction, trackSequence, monorail_track_pieces_diag_25_deg_down, defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
-
-    if (trackSequence == 3)
-    {
-        MetalBSupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 8, height, session.SupportColours);
-    }
-
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    PaintMonorailTrackDiag25DegUp(
+        session, ride, 3 - trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
 /** rct2: 0x008AE2EC */
@@ -1175,19 +688,8 @@ static void PaintMonorailTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilDiagTilesPaint(
-        session, 2, height, direction, trackSequence, monorail_track_pieces_diag_flat_to_25_deg_down, defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
-
-    if (trackSequence == 3)
-    {
-        MetalBSupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 4, height, session.SupportColours);
-    }
-
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 56);
+    PaintMonorailTrackDiag25DegUpToFlat(
+        session, ride, 3 - trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
 /** rct2: 0x008AE2FC */
@@ -1195,19 +697,8 @@ static void PaintMonorailTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilDiagTilesPaint(
-        session, 2, height, direction, trackSequence, monorail_track_pieces_diag_25_deg_down_to_flat, defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
-
-    if (trackSequence == 3)
-    {
-        MetalBSupportsPaintSetup(
-            session, supportType.metal, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
-    }
-
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    PaintMonorailTrackDiagFlatTo25DegUp(
+        session, ride, 3 - trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
 /**
