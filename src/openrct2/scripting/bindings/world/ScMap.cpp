@@ -118,8 +118,22 @@ namespace OpenRCT2::Scripting
                 for (auto carId = trainHead->Id; !carId.IsNull();)
                 {
                     auto car = GetEntity<Vehicle>(carId);
+
+                    if (car == nullptr)
+                    {
+                        break;
+                    }
+
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
-                    carId = car->next_vehicle_on_train;
+
+                    // Prevent infinite loops: Ensure next_vehicle_on_train is valid and not self-referencing
+                    auto nextCarId = car->next_vehicle_on_train;
+                    if (nextCarId == carId)
+                    {
+                        break;
+                    }
+
+                    carId = nextCarId;
                 }
             }
         }
@@ -311,7 +325,31 @@ namespace OpenRCT2::Scripting
         DukValue res;
         if (type == "car")
         {
-            res = createEntityType<Vehicle, ScVehicle>(_context, initializer);
+            Vehicle* entity = CreateEntity<Vehicle>();
+            if (entity == nullptr)
+            {
+                // Probably no more space for entities for this specified entity type.
+                res = ToDuk(_context, undefined);
+            }
+            else
+            {
+                auto entityPos = CoordsXYZ{ AsOrDefault(initializer["x"], 0), AsOrDefault(initializer["y"], 0),
+                                            AsOrDefault(initializer["z"], 0) };
+                entity->MoveTo(entityPos);
+
+                // Reset some important vehicle vars to their null values
+                entity->sound1_id = OpenRCT2::Audio::SoundId::Null;
+                entity->sound2_id = OpenRCT2::Audio::SoundId::Null;
+                entity->next_vehicle_on_train = EntityId::GetNull();
+                entity->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+                for (size_t i = 0; i < std::size(entity->peep); i++)
+                {
+                    entity->peep[i] = EntityId::GetNull();
+                }
+                entity->BoatLocation.SetNull();
+
+                res = GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(entity->Id));
+            }
         }
         else if (type == "staff")
         {
