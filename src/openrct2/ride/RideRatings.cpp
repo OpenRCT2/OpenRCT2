@@ -1532,7 +1532,7 @@ static RatingTuple get_sloped_turns_rating(const Ride& ride)
  *
  *  rct2: 0x0065E0F2
  */
-static RatingTuple get_inversions_ratings(uint16_t inversions)
+static RatingTuple getInversionsRatings(uint16_t inversions)
 {
     RatingTuple rating;
 
@@ -1634,8 +1634,7 @@ static RatingTuple ride_ratings_get_turns_ratings(const Ride& ride)
     intensity += slopedTurnsRating.intensity;
     nausea += slopedTurnsRating.nausea;
 
-    auto inversions = ride.getRideTypeDescriptor().specialType == RtdSpecialType::miniGolf ? ride.numHoles : ride.numInversions;
-    RatingTuple inversionsRating = get_inversions_ratings(inversions);
+    RatingTuple inversionsRating = getInversionsRatings(ride.numInversions);
     excitement += inversionsRating.excitement;
     intensity += inversionsRating.intensity;
     nausea += inversionsRating.nausea;
@@ -2039,9 +2038,8 @@ static void RideRatingsApplyBonusReversals(
 
 static void RideRatingsApplyBonusHoles(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    RideRatingsAdd(
-        ratings, (ride.numHoles) * modifier.excitement, (ride.numHoles) * modifier.intensity,
-        (ride.numHoles) * modifier.nausea);
+    auto bonusHoles = std::min<uint8_t>(modifier.threshold, ride.numHoles);
+    RideRatingsAdd(ratings, bonusHoles * modifier.excitement, bonusHoles * modifier.intensity, bonusHoles * modifier.nausea);
 }
 
 static void RideRatingsApplyBonusNumTrains(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
