@@ -194,7 +194,6 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::EditorObjectSelection,
         WindowClass::EditorInventionList,
         WindowClass::EditorScenarioOptions,
-        WindowClass::EditorObjectiveOptions,
         WindowClass::Mapgen,
         WindowClass::ManageTrackDesign,
         WindowClass::InstallTrack,

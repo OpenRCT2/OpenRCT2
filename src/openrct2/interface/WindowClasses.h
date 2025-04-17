@@ -56,7 +56,6 @@ enum class WindowClass : uint8_t
     EditorInventionList = 43,
     EditorInventionListDrag = 44,
     EditorScenarioOptions = 45,
-    EditorObjectiveOptions = 46,
     ManageTrackDesign = 47,
     TrackDeletePrompt = 48,
     InstallTrack = 49,
