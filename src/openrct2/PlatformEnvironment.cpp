@@ -122,6 +122,9 @@ public:
                     case RCT2Variant::rctClassicMac:
                         directoryName = OpenRCT2::Platform::kRCTClassicMacOSDataFolder;
                         break;
+                    case RCT2Variant::rctClassicPlusMac:
+                        directoryName = OpenRCT2::Platform::kRCTClassicPlusMacOSDataFolder;
+                        break;
                 }
                 break;
             case DirBase::openrct2:

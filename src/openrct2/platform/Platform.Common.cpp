@@ -105,6 +105,10 @@ namespace OpenRCT2::Platform
         if (File::Exists(combinedPath))
             return std::make_optional<RCT2Variant>(RCT2Variant::rctClassicMac);
 
+        combinedPath = Path::ResolveCasing(Path::Combine(path, OpenRCT2::Platform::kRCTClassicPlusMacOSDataFolder, u8"g1.dat"));
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rctClassicPlusMac);
+
         return std::nullopt;
     }
 
