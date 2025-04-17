@@ -470,34 +470,6 @@ namespace OpenRCT2
             this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
     }
 
-    void Window::ResizeFrame()
-    {
-        // Frame
-        widgets[0].right = width - 1;
-        widgets[0].bottom = height - 1;
-        // Title
-        widgets[1].right = width - 2;
-        // Close button
-        if (Config::Get().interface.WindowButtonsOnTheLeft)
-        {
-            widgets[2].left = 2;
-            widgets[2].right = 2 + kCloseButtonSize;
-        }
-        else
-        {
-            widgets[2].left = width - 3 - kCloseButtonSize;
-            widgets[2].right = width - 3;
-        }
-    }
-
-    void Window::ResizeFrameWithPage()
-    {
-        ResizeFrame();
-        // Page background
-        widgets[3].right = width - 1;
-        widgets[3].bottom = height - 1;
-    }
-
     void Window::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
     {
         auto right = origin.x + size.width - 1;
@@ -691,6 +663,7 @@ namespace OpenRCT2::Ui::Windows
         w.height = std::clamp<int16_t>(w.height + dh, w.min_height, w.max_height);
 
         w.OnResize();
+        w.ResizeFrame();
         w.OnPrepareDraw();
 
         // Update scroll widgets
@@ -1002,18 +975,32 @@ namespace OpenRCT2::Ui::Windows
         });
     }
 
-    bool WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize)
+    bool WindowSetResize(WindowBase& w, ScreenSize minSize, ScreenSize maxSize)
     {
-        w.min_width = minSize.width;
-        w.min_height = minSize.height;
-        w.max_width = maxSize.width;
-        w.max_height = maxSize.height;
+        w.min_width = std::min(minSize.width, maxSize.width);
+        w.min_height = std::min(minSize.height, maxSize.height);
+        w.max_width = std::max(minSize.width, maxSize.width);
+        w.max_height = std::max(minSize.height, maxSize.height);
+
+        if (Config::Get().interface.EnlargedUi)
+        {
+            // Not sure why plugin windows have to be treated differently,
+            // but they currently show a deviation if we don't.
+            if (w.classification == WindowClass::Custom)
+            {
+                w.min_height += w.getTitleBarDiffTarget();
+                w.max_height += w.getTitleBarDiffTarget();
+            }
+            else
+            {
+                w.min_height += w.getTitleBarDiffNormal();
+                w.max_height += w.getTitleBarDiffNormal();
+            }
+        }
 
         // Clamp width and height to minimum and maximum
-        int16_t width = std::clamp<int16_t>(
-            w.width, std::min(minSize.width, maxSize.width), std::max(minSize.width, maxSize.width));
-        int16_t height = std::clamp<int16_t>(
-            w.height, std::min(minSize.height, maxSize.height), std::max(minSize.height, maxSize.height));
+        int16_t width = std::clamp<int16_t>(w.width, w.min_width, w.max_width);
+        int16_t height = std::clamp<int16_t>(w.height, w.min_height, w.max_height);
 
         // Resize window if size has changed
         if (w.width != width || w.height != height)
@@ -1021,6 +1008,7 @@ namespace OpenRCT2::Ui::Windows
             w.Invalidate();
             w.width = width;
             w.height = height;
+            w.ResizeFrame();
             w.Invalidate();
             return true;
         }
@@ -1135,5 +1123,4 @@ namespace OpenRCT2::Ui::Windows
         else
             WindowZoomOut(*mainWindow, atCursor);
     }
-
 } // namespace OpenRCT2::Ui::Windows

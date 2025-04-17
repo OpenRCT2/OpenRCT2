@@ -740,11 +740,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
         void SetIsBeingUpdated(const bool beingUpdated)
         {
             _selectedItemIsBeingUpdated = beingUpdated;

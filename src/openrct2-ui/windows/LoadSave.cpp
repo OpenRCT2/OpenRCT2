@@ -570,7 +570,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& config = Config::Get().general;
             config.FileBrowserWidth = width;
-            config.FileBrowserHeight = height;
+            config.FileBrowserHeight = height - getTitleBarDiffNormal();
         }
 
         void OnUpdate() override
@@ -584,8 +584,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            ResizeFrameWithPage();
-
             auto toolbarXPos = width - 5;
             for (auto widgetIndex = 3; widgetIndex >= 0; widgetIndex--)
             {

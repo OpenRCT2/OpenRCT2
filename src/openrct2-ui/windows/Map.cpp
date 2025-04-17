@@ -619,7 +619,6 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.mapSize.x != gameState.mapSize.y);
 
             // Resize widgets to window size
-            ResizeFrameWithPage();
             ResizeMiniMap();
 
             widgets[WIDX_MAP_SIZE_SPINNER_Y].top = height - 15;
@@ -1205,6 +1204,8 @@ namespace OpenRCT2::Ui::Windows
             height = std::min<int16_t>(height, maxWindowHeight);
 
             _adjustedForSandboxMode = isEditorOrSandbox();
+
+            ResizeFrame();
         }
 
         void ResetMaxWindowDimensions()

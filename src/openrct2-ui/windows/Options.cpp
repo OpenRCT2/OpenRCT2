@@ -675,13 +675,15 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[widgetIdx];
                 y = std::max<int32_t>(y, widget.bottom);
             }
-            height = y + 6;
-            ResizeFrameWithPage();
-        }
+            y += 6;
 
-        void OnResize() override
-        {
-            ResizeFrameWithPage();
+            if (height != y)
+            {
+                Invalidate();
+                height = y;
+                ResizeFrame();
+                Invalidate();
+            }
         }
 
         void CommonUpdate()
@@ -1618,6 +1620,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     windowMgr->InvalidateAll();
+                    WindowVisitEach([](WindowBase* w) { w->ResizeFrame(); });
                     break;
                 case WIDX_TOUCH_ENHANCEMENTS:
                     Config::Get().interface.TouchEnhancements ^= 1;
@@ -2117,8 +2120,8 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(window_options_page_widgets[page]);
 
             Invalidate();
-            OnResize();
             OnPrepareDraw();
+            OnResize();
             InitScrollWidgets();
             Invalidate();
         }

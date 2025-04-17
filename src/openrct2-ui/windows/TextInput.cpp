@@ -301,17 +301,14 @@ namespace OpenRCT2::Ui::Windows
             Close();
         }
 
-        static int32_t CalculateWindowHeight(std::string_view text)
+        int32_t CalculateWindowHeight(std::string_view text)
         {
             // String length needs to add 12 either side of box +13 for cursor when max length.
             int32_t numLines{};
             GfxWrapString(text, WW - (24 + 13), FontStyle::Medium, nullptr, &numLines);
-            return numLines * 10 + WH;
-        }
 
-        void OnResize() override
-        {
-            ResizeFrame();
+            const auto textHeight = numLines * 10;
+            return WH + textHeight + getTitleBarDiffNormal();
         }
 
     private:
@@ -373,8 +370,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::Textinput);
 
-        auto height = TextInputWindow::CalculateWindowHeight(existing_text);
-        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, WH + 10, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetParentWindow(call_w, call_widget);
@@ -388,8 +384,7 @@ namespace OpenRCT2::Ui::Windows
         std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
     {
         auto* windowMgr = GetWindowManager();
-        auto height = TextInputWindow::CalculateWindowHeight(initialValue);
-        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, WH + 10, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetTitle(title, description);

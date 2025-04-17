@@ -68,6 +68,11 @@ namespace OpenRCT2
         SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
     };
 
+    constexpr const char* kCloseBoxStringBlackNormal = u8"{BLACK}❌";
+    constexpr const char* kCloseBoxStringBlackLarge = u8"{BLACK}X";
+    constexpr const char* kCloseBoxStringWhiteNormal = u8"{WHITE}❌";
+    constexpr const char* kCloseBoxStringWhiteLarge = u8"{WHITE}X";
+
     struct Widget
     {
         WindowWidgetType type{};
@@ -81,7 +86,7 @@ namespace OpenRCT2
             uint32_t content;
             ImageId image{};
             StringId text;
-            utf8* string;
+            const utf8* string;
         };
         StringId tooltip{ kStringIdNone };
 
@@ -151,7 +156,11 @@ namespace OpenRCT2
         }
     };
 
+    constexpr uint8_t kTitleHeightNormal = 13;
+    constexpr uint8_t kTitleHeightLarge = 24;
+
     constexpr uint8_t kCloseButtonSize = 10;
+    constexpr uint8_t kCloseButtonSizeTouch = 20;
 
     constexpr int32_t kScrollableRowHeight = 12;
     constexpr uint8_t kListRowHeight = 12;

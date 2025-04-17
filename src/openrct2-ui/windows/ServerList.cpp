@@ -515,8 +515,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            ResizeFrame();
-
             int32_t margin = 6;
             int32_t buttonHeight = 13;
             int32_t buttonTop = height - margin - buttonHeight - 13;

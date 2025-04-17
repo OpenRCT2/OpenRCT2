@@ -68,11 +68,10 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = kStringIdNone;
     constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
-    constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;
+    constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195 - kTitleHeightNormal;
     constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
     constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
-    constexpr int32_t InitTabPosX = 3;
-    constexpr int32_t InitTabPosY = 17;
+    constexpr int32_t kTabMargin = 3;
     constexpr int32_t TabWidth = 31;
     constexpr int32_t TabHeight = 28;
     constexpr int32_t ReservedTabCount = 2;
@@ -370,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
                 ContentUpdateScroll();
             }
 
-            ResizeFrameWithPage();
+            ResizeFrame();
         }
 
         void OnMouseDown(WidgetIndex widgetIndex) override
@@ -637,6 +636,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
+            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT + getTitleBarTargetHeight();
+
             // Set the window title
             StringId titleStringId = STR_MISCELLANEOUS;
             const auto tabIndex = _activeTabIndex;
@@ -782,7 +783,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
                 windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
-                auto tabTop = widgets[WIDX_SCENERY_TITLE].bottom + 3;
+                auto tabTop = widgets[WIDX_SCENERY_TITLE].bottom + kTabMargin;
                 if (GetSceneryTabInfoForMisc() != nullptr)
                 {
                     auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
@@ -802,7 +803,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            ResizeFrameWithPage();
+            ResizeFrame();
             widgets[WIDX_SCENERY_LIST].right = windowWidth - 26;
             widgets[WIDX_SCENERY_LIST].bottom = height - 24;
 
@@ -1369,15 +1370,12 @@ namespace OpenRCT2::Ui::Windows
             // Add the base widgets
             SetWidgets(WindowSceneryBaseWidgets);
 
-            // Add tabs
-            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
-            int32_t xInit = InitTabPosX;
-            int32_t tabsInThisRow = 0;
-
             auto hasMisc = GetSceneryTabInfoForMisc() != nullptr;
             auto maxTabsInThisRow = MaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
 
-            ScreenCoordsXY pos = { xInit, InitTabPosY };
+            // Add tabs
+            int32_t tabsInThisRow = 0;
+            ScreenCoordsXY pos = { kTabMargin, widgets[WIDX_SCENERY_TITLE].bottom + kTabMargin };
             for (const auto& tabInfo : _tabEntries)
             {
                 auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
@@ -1409,7 +1407,7 @@ namespace OpenRCT2::Ui::Windows
                 tabsInThisRow++;
                 if (tabsInThisRow >= maxTabsInThisRow)
                 {
-                    pos.x = xInit;
+                    pos.x = kTabMargin;
                     pos.y += TabHeight;
                     tabsInThisRow = 0;
                     _actualMinHeight += TabHeight;

@@ -58,6 +58,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(PatrolAreaWidgets);
+
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -284,11 +285,6 @@ namespace OpenRCT2::Ui::Windows
         {
             auto coords = FootpathGetCoordinatesFromPos(pos, nullptr, nullptr);
             return coords.IsNull() ? std::nullopt : std::make_optional(coords);
-        }
-
-        void OnResize() override
-        {
-            ResizeFrame();
         }
     };
 

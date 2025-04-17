@@ -514,7 +514,6 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDrawEntrance()
         {
             const auto& gameState = getGameState();
-            SetWidgets(_pagedWidgets[page]);
             InitScrollWidgets();
 
             SetPressedTab();
@@ -548,7 +547,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
 
             // Anchor entrance page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
@@ -677,7 +675,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeRating()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
+            WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
         }
 
         void OnUpdateRating()
@@ -696,7 +694,6 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
 
             _ratingProps.min = 0;
             _ratingProps.max = 1000;
@@ -745,7 +742,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeGuests()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, { 268, 174 + 9 }, { 2000, 2000 });
+            WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
         }
 
         void OnUpdateGuests()
@@ -765,7 +762,6 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
 
             const auto& gameState = getGameState();
             _guestProps.series = gameState.guestsInParkHistory;
@@ -892,7 +888,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawPrice(DrawPixelInfo& dpi)
@@ -953,7 +948,6 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawStats(DrawPixelInfo& dpi)
@@ -1080,7 +1074,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawObjective(DrawPixelInfo& dpi)
@@ -1146,7 +1139,6 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawAwards(DrawPixelInfo& dpi)
@@ -1201,16 +1193,18 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
             InitScrollWidgets();
 
+            if (page == WINDOW_PARK_PAGE_GUESTS || WINDOW_PARK_PAGE_RATING)
+            {
+                // We need to compensate for the enlarged title bar for windows that do not
+                // constrain the window height between tabs (e.g. chart tabs)
+                height -= getTitleBarDiffNormal();
+            }
+
             OnResize();
             OnPrepareDraw();
             OnUpdate();
             if (listen && viewport != nullptr)
                 viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-        }
-
-        void AnchorBorderWidgets()
-        {
-            ResizeFrameWithPage();
         }
 
         void SetPressedTab()

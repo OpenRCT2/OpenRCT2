@@ -89,14 +89,12 @@ namespace OpenRCT2
         WF_10 = (1 << 10),
         WF_WHITE_BORDER_ONE = (1 << 12),
         WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
-
+        WF_NO_TITLE_BAR = (1 << 14),
         WF_NO_SNAPPING = (1 << 15),
 
-        // Create only flags
+        // *ONLY* create only flags below
         WF_AUTO_POSITION = (1 << 16),
         WF_CENTRE_SCREEN = (1 << 17),
-
-        WF_NO_TITLE_BAR = (1 << 18),
     };
 
     enum
@@ -350,5 +348,4 @@ namespace OpenRCT2
 
     void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);
     void WindowUnfollowSprite(WindowBase& w);
-
 } // namespace OpenRCT2

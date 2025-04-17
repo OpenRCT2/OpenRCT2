@@ -180,17 +180,17 @@ namespace OpenRCT2::Ui::Windows
             int32_t newHeight = 0;
             if (page == WINDOW_ABOUT_PAGE_OPENRCT2)
             {
-                newHeight = DrawOpenRCT2Info(dpi) + kPadding + 1;
+                newHeight = DrawOpenRCT2Info(dpi) + kPadding;
             }
             else if (page == WINDOW_ABOUT_PAGE_RCT2)
             {
-                newHeight = DrawRCT2Info(dpi) + kPadding + 1;
+                newHeight = DrawRCT2Info(dpi) + kPadding;
             }
 
             if (newHeight != height)
             {
                 Invalidate();
-                widgets[WIDX_PAGE_BACKGROUND].bottom = newHeight - 1;
+                widgets[WIDX_PAGE_BACKGROUND].bottom = newHeight;
                 widgets[WIDX_BACKGROUND].bottom = newHeight;
                 height = newHeight;
             }
@@ -206,8 +206,9 @@ namespace OpenRCT2::Ui::Windows
             page = p;
             frame_no = 0;
             pressed_widgets = 0;
-            SetWidgets(_windowAboutPageWidgets[p]);
+
             WindowSetResize(*this, { WW, WH }, { WW, WH });
+            SetWidgets(_windowAboutPageWidgets[p]);
 
             switch (p)
             {
@@ -218,9 +219,6 @@ namespace OpenRCT2::Ui::Windows
                     pressed_widgets |= (1uLL << WIDX_TAB_ABOUT_RCT2);
                     break;
             }
-
-            InitScrollWidgets();
-            Invalidate();
         }
 
         int32_t DrawOpenRCT2Info(DrawPixelInfo& dpi)
@@ -282,11 +280,6 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(dpi, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), imageCoords);
 
             return textCoords.y - windowPos.y;
-        }
-
-        void OnPrepareDraw() override
-        {
-            ResizeFrameWithPage();
         }
     };
 

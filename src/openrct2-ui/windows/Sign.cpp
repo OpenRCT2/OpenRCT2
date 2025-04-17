@@ -322,11 +322,6 @@ namespace OpenRCT2::Ui::Windows
                 viewport->flags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
             Invalidate();
         }
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     /**

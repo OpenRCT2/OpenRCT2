@@ -112,7 +112,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return w->height;
+                return w->height - w->getTitleBarDiffNormal();
             }
             return 0;
         }
@@ -121,6 +121,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
+                value += w->getTitleBarDiffNormal();
                 if (WindowCanResize(*w))
                 {
                     WindowResizeByDelta(*w, 0, value - w->height);
@@ -170,7 +171,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return w->min_height;
+                return w->min_height - w->getTitleBarDiffNormal();
             }
             return 0;
         }
@@ -179,6 +180,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
+                value += w->getTitleBarDiffNormal();
                 WindowSetResize(*w, { w->min_width, value }, { w->max_width, w->max_height });
             }
         }
@@ -187,7 +189,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return w->max_height;
+                return w->max_height - w->getTitleBarDiffNormal();
             }
             return 0;
         }
@@ -196,6 +198,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
+                value += w->getTitleBarDiffNormal();
                 WindowSetResize(*w, { w->min_width, w->min_height }, { w->max_width, value });
             }
         }

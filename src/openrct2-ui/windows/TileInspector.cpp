@@ -763,7 +763,6 @@ static uint64_t PageDisabledWidgets[] = {
                 Invalidate();
                 height = min_height;
             }
-            ResizeFrame();
         }
 
         void OnMouseDown(WidgetIndex widgetIndex) override

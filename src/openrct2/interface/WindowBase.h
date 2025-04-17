@@ -113,6 +113,12 @@ namespace OpenRCT2
         void Invalidate();
         void RemoveViewport();
         void SetWidgets(const std::span<const Widget> newWidgets);
+        void ResizeFrame();
+
+        int16_t getTitleBarTargetHeight() const;
+        int16_t getTitleBarCurrentHeight() const;
+        int16_t getTitleBarDiffTarget() const;
+        int16_t getTitleBarDiffNormal() const;
 
         WindowBase() = default;
         WindowBase(WindowBase&) = delete;

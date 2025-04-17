@@ -16,6 +16,8 @@ struct TextInputSession;
 
 namespace OpenRCT2
 {
+    constexpr ScreenSize kMaxWindowSize = { 5000, 5000 };
+
     struct Window : WindowBase
     {
         void OnDraw(DrawPixelInfo& dpi) override;
@@ -39,9 +41,6 @@ namespace OpenRCT2
         void TextInputOpen(
             WidgetIndex callWidget, StringId title, StringId description, const Formatter& descriptionArgs,
             StringId existingText, uintptr_t existingArgs, int32_t maxLength);
-
-        void ResizeFrame();
-        void ResizeFrameWithPage();
 
         void ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size);
         void ResizeDropdown(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size);
@@ -80,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
     void WindowRelocateWindows(int32_t width, int32_t height);
 
-    bool WindowSetResize(WindowBase& w, const ScreenSize minSize, const ScreenSize maxSize);
+    bool WindowSetResize(WindowBase& w, ScreenSize minSize, ScreenSize maxSize);
     bool WindowCanResize(const WindowBase& w);
 
     void InvalidateAllWindowsAfterInput();

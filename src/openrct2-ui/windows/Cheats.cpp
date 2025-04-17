@@ -763,11 +763,13 @@ static StringId window_cheats_page_titles[] = {
             }
             maxY += 6;
 
-            Invalidate();
-            WindowInitScrollWidgets(*this);
-            height = maxY;
-            ResizeFrameWithPage();
-            Invalidate();
+            if (maxY != height)
+            {
+                Invalidate();
+                height = maxY;
+                ResizeFrame();
+                Invalidate();
+            }
         }
 
         void UpdateTabPositions()
@@ -1348,11 +1350,6 @@ static StringId window_cheats_page_titles[] = {
                 }
                 break;
             }
-        }
-
-        void OnResize() override
-        {
-            ResizeFrameWithPage();
         }
     };
 

@@ -196,11 +196,6 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
         }
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     WindowBase* SavePromptOpen()

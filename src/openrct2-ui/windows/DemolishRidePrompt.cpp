@@ -92,11 +92,6 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
             }
         }
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     WindowBase* RideDemolishPromptOpen(const Ride& ride)
