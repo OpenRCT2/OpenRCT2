@@ -570,9 +570,9 @@ namespace OpenRCT2
             OpenProgress(STR_CHECKING_OBJECT_FILES);
             _objectRepository->LoadOrConstruct(currentLanguage);
 
-            OpenProgress(STR_LOADING_GENERIC);
-            Audio::LoadAudioObjects();
-
+            // Asset packs need to be loaded before any of the objects they may override are.
+            // This is especially important to keep in mind with intransient objects like Audio objects,
+            // which are only loaded once.
             if (!gOpenRCT2Headless)
             {
                 OpenProgress(STR_CHECKING_ASSET_PACKS);
@@ -580,6 +580,9 @@ namespace OpenRCT2
                 _assetPackManager->LoadEnabledAssetPacks();
                 _assetPackManager->Reload();
             }
+
+            OpenProgress(STR_LOADING_GENERIC);
+            Audio::LoadAudioObjects();
 
             OpenProgress(STR_CHECKING_TRACK_DESIGN_FILES);
             _trackDesignRepository->Scan(currentLanguage);
