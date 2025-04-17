@@ -2191,6 +2191,66 @@ void trackPaintSprites2Platformless(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
+void trackPaintSprites3(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<3, &PaintSession::TrackColours, false, &PaintSession::TrackColours, nullptr, false>(
+        session, ride, trackSequence, direction, height, trackElement);
+}
+
+void trackPaintWaterfall(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 5;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    const uint32_t frame = (getGameState().currentTicks / 2) & 7;
+
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex]);
+    PaintAddImageAsChildHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1] + frame), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex + 1]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 2] + frame), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex + 2]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 3]), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex + 3]);
+    PaintAddImageAsChildHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 4] + frame), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex + 4]);
+}
+
+void trackPaintRapidsSprites2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 2;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    const uint32_t frame = (getGameState().currentTicks / 2) & 7;
+
+    const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex] : CoordsXYZ{ 0, 0, 0 };
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex] + frame), height, offset,
+        sprites.boundBoxes[spriteIndex]);
+
+    const CoordsXYZ& offset2 = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 1] : CoordsXYZ{ 0, 0, 0 };
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, offset2,
+        sprites.boundBoxes[spriteIndex + 1]);
+}
+
 static constexpr std::array<std::array<std::array<ImageIndex, 2>, 5>, kNumOrthogonalDirections> kWatersplashSideSprites = { {
     { {
         { { 23997, 24863 } },
@@ -2266,6 +2326,34 @@ void trackPaintWatersplashSupportColoursWithChild(
     PaintAddImageAsChildHeight(
         session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 3]), height, offset8,
         sprites.boundBoxes[spriteIndex + 0]);
+}
+
+void trackPaintWhirlpoolSprites2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 3;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    const uint32_t frame = (getGameState().currentTicks / 4) % 16;
+
+    const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex] : CoordsXYZ{ 0, 0, 0 };
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, offset,
+        sprites.boundBoxes[spriteIndex]);
+
+    const CoordsXYZ& offset2 = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 1] : CoordsXYZ{ 0, 0, 0 };
+    PaintAddImageAsChildHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1] + frame), height, offset2,
+        sprites.boundBoxes[spriteIndex + 1]);
+
+    const CoordsXYZ& offset3 = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 2] : CoordsXYZ{ 0, 0, 0 };
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 2]), height, offset3,
+        sprites.boundBoxes[spriteIndex + 2]);
 }
 
 // this should only be used by the original rollercoasters

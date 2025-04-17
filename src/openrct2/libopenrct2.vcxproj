@@ -407,6 +407,7 @@
     <ClInclude Include="paint\track\water\DinghySlide.h" />
     <ClInclude Include="paint\track\water\DinghySlideCovered.h" />
     <ClInclude Include="paint\track\water\LogFlume.h" />
+    <ClInclude Include="paint\track\water\RiverRapids.h" />
     <ClInclude Include="paint\track\water\SplashBoats.h" />
     <ClInclude Include="paint\track\water\SubmarineRide.h" />
     <ClInclude Include="paint\track\Segment.h" />
