@@ -1984,14 +1984,15 @@ static TrackSequenceSpriteDesc getTrackElementSpriteDesc(
     // this should be simplified eventually
     const auto& rideTypeDescriptor = GetRideTypeDescriptor(trackElement.GetRideType());
     const bool isInverted = trackElement.IsInverted() && rideTypeDescriptor.HasFlag(RtdFlag::hasInvertedVariant);
-    const auto& trackElementDescriptor = GetTrackElementDescriptor(trackElement.GetTrackType());
+    const TrackElemType trackElementType = UncoverTrackElement(trackElement.GetTrackType());
+    const auto& trackElementDescriptor = GetTrackElementDescriptor(trackElementType);
     const auto trackDrawerEntry = getTrackDrawerEntry(
         rideTypeDescriptor, isInverted, TrackElementIsCovered(trackElement.GetTrackType()));
 
     // temporary workaround for rotated track elements being handled by existing track paint functions
-    const TrackElementSprites& spritesOriginal = trackDrawerEntry.sprites[EnumValue(trackElement.GetTrackType())];
+    const TrackElementSprites& spritesOriginal = trackDrawerEntry.sprites[EnumValue(trackElementType)];
     const TrackElemType rotatedTrackElementType = spritesOriginal.isRotated ? trackElementDescriptor.rotatedType.elementType
-                                                                            : trackElement.GetTrackType();
+                                                                            : trackElementType;
     const TrackElementSprites& sprites = trackDrawerEntry.sprites[EnumValue(rotatedTrackElementType)];
 
     // existing parent track paint functions already modify the direction and track sequence
