@@ -9559,27 +9559,9 @@
         "palette": "keep"
     },
     {
-        "path": "track/railway/grooved_nw_se_trans.png",
-        "x": -14,
-        "y": -2,
-        "palette": "keep"
-    },
-    {
         "path": "track/railway/grooved_end_ne_trans.png",
         "x": -28,
         "y": -1,
-        "palette": "keep"
-    },
-    {
-        "path": "track/railway/grooved_end_se_trans.png",
-        "x": -14,
-        "y": -2,
-        "palette": "keep"
-    },
-    {
-        "path": "track/railway/grooved_end_nw_trans.png",
-        "x": -14,
-        "y": -2,
         "palette": "keep"
     },
     {
@@ -9592,6 +9574,24 @@
         "path": "track/railway/grooved_end_sw_ne_trans.png",
         "x": -28,
         "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_nw_se_trans.png",
+        "x": -14,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_se_trans.png",
+        "x": -14,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_nw_trans.png",
+        "x": -14,
+        "y": -2,
         "palette": "keep"
     },
     {

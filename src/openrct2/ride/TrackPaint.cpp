@@ -28,6 +28,8 @@
 #include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
 #include "../world/Map.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideData.h"
 #include "Station.h"
@@ -2396,6 +2398,58 @@ void trackPaintReverseFreefallVertical(
     PaintAddImageAsParentHeight(
         session, colours[trackSequence].WithIndex(sprites.imageIndexes[spriteIndex]), height, { 0, 0, 0 },
         sprites.boundBoxes[spriteIndex]);
+}
+
+static uint32_t getRailwayCrossingIndentIndex(
+    const TileElement* const path, const Direction direction, const Direction rotation)
+{
+    uint8_t rotatedEdges = path->AsPath()->GetEdges();
+    rotatedEdges |= rotatedEdges << 4;
+    rotatedEdges >>= 4 - rotation;
+    rotatedEdges >>= direction & 1;
+    rotatedEdges &= 0x0F;
+
+    return (((rotatedEdges & 0x4) ? 0 : 1) * 2) + ((rotatedEdges & 0x1) ? 0 : 1);
+}
+
+void trackPaintFlatRailwayCrossing(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 4;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    if (session.PathElementOnSameHeight == nullptr)
+    {
+        const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, offset,
+            sprites.boundBoxes[spriteIndex]);
+    }
+    else
+    {
+        const CoordsXYZ& offset1 = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 1] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, offset1,
+            sprites.boundBoxes[spriteIndex + 1]);
+
+        const CoordsXYZ& offset2 = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 2] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 2]), height, offset2,
+            sprites.boundBoxes[spriteIndex + 2]);
+
+        const uint32_t indentIndex = getRailwayCrossingIndentIndex(
+            session.PathElementOnSameHeight, direction, session.CurrentRotation);
+        const CoordsXYZ& offset3 = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 3] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsChildHeight(
+            session,
+            session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 3] + indentIndex)
+                .WithTransparency(FilterPaletteID::PaletteDarken2),
+            height, offset3, sprites.boundBoxes[spriteIndex + 3]);
+    }
 }
 
 /**

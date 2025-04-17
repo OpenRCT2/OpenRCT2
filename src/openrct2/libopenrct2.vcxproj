@@ -401,6 +401,7 @@
     <ClInclude Include="paint\track\gentle\GhostTrain.h" />
     <ClInclude Include="paint\track\gentle\MiniHelicopters.h" />
     <ClInclude Include="paint\track\gentle\MonorailCycles.h" />
+    <ClInclude Include="paint\track\transport\MiniatureRailway.h" />
     <ClInclude Include="paint\track\transport\Monorail.h" />
     <ClInclude Include="paint\track\transport\SuspendedMonorail.h" />
     <ClInclude Include="paint\track\water\BoatHire.h" />
