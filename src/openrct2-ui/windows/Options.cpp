@@ -2094,12 +2094,26 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PATH_TO_RCT1_PATH].type = WindowWidgetType::Label;
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WindowWidgetType::Empty;
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WindowWidgetType::Button;
+
+                // Get 'Clear' button string width
+                auto clearLabel = LanguageGetString(STR_SHORTCUT_CLEAR);
+                auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::Medium) + 12;
+
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - clearLabelWidth;
             }
             else
             {
                 widgets[WIDX_PATH_TO_RCT1_PATH].type = WindowWidgetType::Empty;
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WindowWidgetType::Button;
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WindowWidgetType::Empty;
+
+                // Get 'Browse' button string width
+                auto browseLabel = LanguageGetString(STR_BROWSE);
+                auto browseLabelWidth = GfxGetStringWidth(browseLabel, FontStyle::Medium) + 12;
+
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - browseLabelWidth;
             }
 
             SetCheckboxValue(WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX, Config::Get().general.SavePluginData);
