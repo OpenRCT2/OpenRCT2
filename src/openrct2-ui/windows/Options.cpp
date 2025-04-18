@@ -216,7 +216,7 @@ namespace OpenRCT2::Ui::Windows
 
         // Advanced
         WIDX_DEBUGGING_TOOLS = WIDX_PAGE_START,
-        WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
+        WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX,
         WIDX_STAY_CONNECTED_AFTER_DESYNC,
         WIDX_ALWAYS_NATIVE_LOADSAVE,
         WIDX_AUTOSAVE_FREQUENCY_LABEL,
@@ -1952,7 +1952,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     GfxInvalidateScreen();
                     break;
-                case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
+                case WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX:
                     Config::Get().general.SavePluginData ^= 1;
                     Config::Save();
                     Invalidate();
@@ -2078,7 +2078,7 @@ namespace OpenRCT2::Ui::Windows
         void AdvancedPrepareDraw()
         {
             SetCheckboxValue(WIDX_DEBUGGING_TOOLS, Config::Get().general.DebuggingTools);
-            SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, Config::Get().general.SavePluginData);
+            SetCheckboxValue(WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX, Config::Get().general.SavePluginData);
             SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
             SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, Config::Get().general.UseNativeBrowseDialog);
             widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[Config::Get().general.AutosaveFrequency];
