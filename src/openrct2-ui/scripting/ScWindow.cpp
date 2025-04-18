@@ -13,7 +13,6 @@
 
     #include "ScWidget.hpp"
 
-    #include <openrct2/interface/Window_internal.h>
     #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Scripting

@@ -172,7 +172,7 @@ namespace OpenRCT2::Scripting
             if (widget != nullptr)
             {
                 auto w = GetWindow(thisVal);
-                return JS_NewInt32(ctx,widget->top - w->getTitleBarDiffNormal());
+                return JS_NewInt32(ctx, widget->top - w->getTitleBarDiffNormal());
             }
             return JS_NewInt32(ctx, 0);
         }
