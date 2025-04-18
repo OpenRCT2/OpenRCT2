@@ -1612,6 +1612,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     windowMgr->InvalidateAll();
+                    WindowVisitEach([](WindowBase* w) { w->ResizeFrame(); });
                     break;
                 case WIDX_ENLARGED_UI:
                     Config::Get().interface.EnlargedUi ^= 1;
