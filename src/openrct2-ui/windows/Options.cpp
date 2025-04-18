@@ -665,8 +665,8 @@ namespace OpenRCT2::Ui::Windows
 
             disabled_widgets = 0;
             auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
-            const bool controlsTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_CONTROLS_AND_INTERFACE;
-            if (!hasFilePicker && controlsTabSelected)
+            const bool advancedTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_ADVANCED;
+            if (!hasFilePicker && advancedTabSelected)
             {
                 disabled_widgets |= (1uLL << WIDX_ALWAYS_NATIVE_LOADSAVE);
                 widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;
