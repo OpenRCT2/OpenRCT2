@@ -388,6 +388,7 @@
     <ClInclude Include="paint\tile_element\Paint.Tunnel.h" />
     <ClInclude Include="paint\track\coaster\AirPoweredVerticalCoaster.h" />
     <ClInclude Include="paint\track\coaster\AlpineCoaster.h" />
+    <ClInclude Include="paint\track\coaster\BobsleighCoaster.h" />
     <ClInclude Include="paint\track\coaster\ClassicWoodenTwisterRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\InvertedImpulseCoaster.h" />
     <ClInclude Include="paint\track\coaster\MineTrainCoaster.h" />

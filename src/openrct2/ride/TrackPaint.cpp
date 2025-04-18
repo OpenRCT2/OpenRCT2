@@ -2196,6 +2196,15 @@ void trackPaintSprites2Chain(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
+void trackPaintSprites2Brakes(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<
+        2, &PaintSession::TrackColours, false, &PaintSession::TrackColours, &TrackElement::IsBrakeClosed, false>(
+        session, ride, trackSequence, direction, height, trackElement);
+}
+
 void trackPaintSprites2Platformless(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
