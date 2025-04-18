@@ -115,7 +115,9 @@ option(DISABLE_VERSION_CHECKER "Disable the check for newer versions.")
 option(DISABLE_FLAC     "Disable FLAC support.")
 option(DISABLE_VORBIS   "Disable OGG/VORBIS support.")
 option(DISABLE_OPENGL   "Disable OpenGL support.")
-option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
+# TODO (mber) scripting refactor for quickjs
+option(ENABLE_SCRIPTING "Enable script / plugin support." OFF)
+set(CMAKE_CXX_FLAGS -DENABLE_SCRIPTING_REFACTOR)
 option(ENABLE_ASAN "Enable the AddressSanitizer.")
 option(ENABLE_UBSAN "Enable the UndefinedBehaviourSanitizer.")
 option(ENABLE_HEADERS_CHECK "Check if include directives in header files are correct. Only works with clang" OFF)
@@ -390,9 +392,6 @@ include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
 if(NOT DISABLE_GUI)
     include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 endif()
-
-# TODO (mber) Temporary build for quickjs refactor. Revert.
-target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING_REFACTOR)
 
 # graphics files (g2.dat and font.dat)
 if (NOT CMAKE_CROSSCOMPILING)
