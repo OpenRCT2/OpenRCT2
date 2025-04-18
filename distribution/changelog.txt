@@ -12,6 +12,7 @@
 - Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
 - Change: [#24135] Compress Emscripten js/wasm files.
 - Change: [#24235] Small changes to RCT1 theme.
+- Change: [#24236] Controls and Interface options now both have their own tabs in the Options window.
 - Change: [#24308] “Software” and “Software (hardware display)” renderers have been merged into a single “Software” renderer.
 - Fix: [#19782] Game stops counting inversions and golf holes after 31 (original bug).
 - Fix: [#21207] Track List window gets positioned incorrectly.

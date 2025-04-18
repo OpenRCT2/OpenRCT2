@@ -2510,7 +2510,7 @@ STR_5265    :Select which content sources are visible
 STR_5266    :Display
 STR_5267    :Culture and Units
 STR_5268    :Audio
-STR_5269    :Controls and interface
+STR_5269    :Controls
 STR_5270    :Miscellaneous
 STR_5272    :Small Scenery
 STR_5273    :Large Scenery
@@ -3806,3 +3806,4 @@ STR_6758    :Loan options
 STR_6759    :Business model
 STR_6760    :Earnings:
 STR_6761    :Scenario Details
+STR_6762    :Interface
