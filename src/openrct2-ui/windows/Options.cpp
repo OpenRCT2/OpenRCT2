@@ -215,9 +215,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
 
         // Advanced
-        WIDX_DEBUGGING_TOOLS = WIDX_PAGE_START,
+        WIDX_GROUP_RCT1_PATH = WIDX_PAGE_START,
+        WIDX_PATH_TO_RCT1_LABEL,
+        WIDX_PATH_TO_RCT1_PATH,
+        WIDX_PATH_TO_RCT1_BROWSE,
+        WIDX_PATH_TO_RCT1_CLEAR,
+
+        WIDX_GROUP_SAVING,
         WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX,
-        WIDX_STAY_CONNECTED_AFTER_DESYNC,
         WIDX_ALWAYS_NATIVE_LOADSAVE,
         WIDX_AUTOSAVE_FREQUENCY_LABEL,
         WIDX_AUTOSAVE_FREQUENCY,
@@ -226,15 +231,15 @@ namespace OpenRCT2::Ui::Windows
         WIDX_AUTOSAVE_AMOUNT,
         WIDX_AUTOSAVE_AMOUNT_UP,
         WIDX_AUTOSAVE_AMOUNT_DOWN,
-        WIDX_PATH_TO_RCT1_LABEL,
-        WIDX_PATH_TO_RCT1_PATH,
-        WIDX_PATH_TO_RCT1_BROWSE,
-        WIDX_PATH_TO_RCT1_CLEAR,
-        WIDX_ASSET_PACKS,
+
+        WIDX_GROUP_ADVANCED,
+        WIDX_DEBUGGING_TOOLS,
+        WIDX_STAY_CONNECTED_AFTER_DESYNC,
 #ifdef __EMSCRIPTEN__
         WIDX_EXPORT_EMSCRIPTEN_DATA,
         WIDX_IMPORT_EMSCRIPTEN_DATA,
 #endif
+        WIDX_ASSET_PACKS,
     };
 
     // clang-format off
@@ -406,28 +411,35 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({288, kTweaksStart + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
     };
 
+    constexpr int32_t kRCT1Start = 53;
+    constexpr int32_t kSavingStart = kRCT1Start + 54;
+    constexpr int32_t kAdvancedStart = kSavingStart + 84;
+
     static constexpr Widget window_options_advanced_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
-        MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
-        MakeWidget        ({ 10,  69}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
-        MakeWidget        ({ 10,  84}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
-        MakeWidget        ({ 10,  99}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
-        MakeWidget        ({ 23, 114}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
-        MakeWidget        ({165, 113}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
-        MakeWidget        ({288, 114}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
-        MakeWidget        ({ 23, 130}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+        MakeWidget        ({  5, kRCT1Start +  0}, {300, 50}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_RCT1                                                                          ),
+        MakeWidget        ({ 10, kRCT1Start + 16}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path label
+        MakeWidget        ({ 10, kRCT1Start + 30}, {266, 14}, WindowWidgetType::Label,        WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path path
+        MakeWidget        ({239, kRCT1Start + 15}, { 60, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
+        MakeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_SHORTCUT_CLEAR,                        STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
 
-        MakeWidget        ({ 23, 146}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path label
-        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Label,        WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path path
-        MakeWidget        ({239, 145}, { 60, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
-        MakeWidget        ({249, 145}, { 50, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_SHORTCUT_CLEAR,                        STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
+        MakeWidget        ({  5, kSavingStart +  0}, {300, 80}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_SAVING                                                                        ),
+        MakeWidget        ({ 10, kSavingStart + 16}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
+        MakeWidget        ({ 10, kSavingStart + 30}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
+        MakeWidget        ({ 23, kSavingStart + 46}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
+        MakeWidget        ({165, kSavingStart + 45}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
+        MakeWidget        ({288, kSavingStart + 46}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
+        MakeWidget        ({ 23, kSavingStart + 60}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
+        MakeSpinnerWidgets({165, kSavingStart + 60}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
 
-        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
+        MakeWidget        ({  5, kAdvancedStart +  0}, {300, 97}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_ADVANCED                                                                      ),
+        MakeWidget        ({ 10, kAdvancedStart + 16}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
+        MakeWidget        ({ 10, kAdvancedStart + 30}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
 #ifdef __EMSCRIPTEN__
-        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
-        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
+        MakeWidget        ({  5, kAdvancedStart + 50}, {140, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
+        MakeWidget        ({150, kAdvancedStart + 50}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
 #endif
+        MakeWidget        ({150, kAdvancedStart + 70}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
     };
 
     static constexpr std::span<const Widget> window_options_page_widgets[] = {
@@ -2077,12 +2089,6 @@ namespace OpenRCT2::Ui::Windows
 
         void AdvancedPrepareDraw()
         {
-            SetCheckboxValue(WIDX_DEBUGGING_TOOLS, Config::Get().general.DebuggingTools);
-            SetCheckboxValue(WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX, Config::Get().general.SavePluginData);
-            SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
-            SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, Config::Get().general.UseNativeBrowseDialog);
-            widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[Config::Get().general.AutosaveFrequency];
-
             if (!Config::Get().general.RCT1Path.empty())
             {
                 widgets[WIDX_PATH_TO_RCT1_PATH].type = WindowWidgetType::Label;
@@ -2095,6 +2101,22 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WindowWidgetType::Button;
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WindowWidgetType::Empty;
             }
+
+            SetCheckboxValue(WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX, Config::Get().general.SavePluginData);
+            SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, Config::Get().general.UseNativeBrowseDialog);
+            widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[Config::Get().general.AutosaveFrequency];
+
+            SetCheckboxValue(WIDX_DEBUGGING_TOOLS, Config::Get().general.DebuggingTools);
+            SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
+
+#ifdef __EMSCRIPTEN__
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 97;
+#else
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 77;
+#endif
+
+            widgets[WIDX_ASSET_PACKS].top = widgets[WIDX_GROUP_ADVANCED].bottom - 20;
+            widgets[WIDX_ASSET_PACKS].bottom = widgets[WIDX_GROUP_ADVANCED].bottom - 6;
         }
 
         void AdvancedDraw(DrawPixelInfo& dpi)

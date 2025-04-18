@@ -3807,3 +3807,6 @@ STR_6759    :Business model
 STR_6760    :Earnings:
 STR_6761    :Scenario Details
 STR_6762    :Interface
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Saving and autosaves
+STR_6765    :Advanced
