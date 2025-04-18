@@ -19,7 +19,7 @@
     #include "ScTitleSequence.hpp"
     #include "ScUi.hpp"
     #include "ScWidget.hpp"
-    #include "ScWindow.hpp"
+    #include "ScWindow.h"
 
     #include <openrct2/scripting/ScriptEngine.h>
 
@@ -27,6 +27,9 @@ using namespace OpenRCT2::Scripting;
 
 ScTool OpenRCT2::Scripting::gScTool;
 ScUi OpenRCT2::Scripting::gScUi;
+
+ScWidget OpenRCT2::Scripting::gScWidget;
+
 ScWindow OpenRCT2::Scripting::gScWindow;
 
 static void InitialiseContext(JSContext* ctx)
@@ -49,7 +52,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     gScUi.Register(ctx);
     // ScViewport::Register(ctx);
 
-    // ScWidget::Register(ctx);
+    gScWidget.Register(ctx);
     // ScButtonWidget::Register(ctx);
     // ScColourPickerWidget::Register(ctx);
     // ScCheckBoxWidget::Register(ctx);
@@ -74,11 +77,6 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 
 // TODO (mber) widget
 /*
-std::shared_ptr<ScWindow> ScWidget::window_get() const
-{
-    return std::make_shared<ScWindow>(_class, _number);
-}
-
 void ScWidget::Register(duk_context* ctx)
 {
     dukglue_register_property(ctx, &ScWidget::window_get, nullptr, "window");

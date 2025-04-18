@@ -294,11 +294,11 @@ namespace OpenRCT2::Scripting
             }
             JS_FreeValue(ctx, filter);
 
-            customTool.onStart = GetCallbackProperty(ctx, value, "onStart");
-            customTool.onDown = GetCallbackProperty(ctx, value, "onDown");
-            customTool.onMove = GetCallbackProperty(ctx, value, "onMove");
-            customTool.onUp = GetCallbackProperty(ctx, value, "onUp");
-            customTool.onFinish = GetCallbackProperty(ctx, value, "onFinish");
+            customTool.onStart = JSToCallback(ctx, value, "onStart");
+            customTool.onDown = JSToCallback(ctx, value, "onDown");
+            customTool.onMove = JSToCallback(ctx, value, "onMove");
+            customTool.onUp = JSToCallback(ctx, value, "onUp");
+            customTool.onFinish = JSToCallback(ctx, value, "onFinish");
 
             auto* windowMgr = GetWindowManager();
             auto toolbarWindow = windowMgr->FindByClass(WindowClass::TopToolbar);

@@ -9,10 +9,13 @@
 
 #pragma once
 
-#include "../world/Location.hpp"
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
-#include <optional>
-#include <quickjs.h>
+    #include "../world/Location.hpp"
+
+    #include <optional>
+    #include <quickjs.h>
+    #include <string>
 
 namespace OpenRCT2::Scripting
 {
@@ -82,7 +85,7 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    inline JSCallback GetCallbackProperty(JSContext* ctx, JSValue obj, const char* name)
+    inline JSCallback JSToCallback(JSContext* ctx, JSValue obj, const char* name)
     {
         JSValue property = JS_GetPropertyStr(ctx, obj, name);
         JSCallback out(ctx, property);
@@ -90,7 +93,7 @@ namespace OpenRCT2::Scripting
         return out;
     }
 
-    inline std::string GetStdString(JSContext* ctx, JSValue obj)
+    inline std::string JSToStdString(JSContext* ctx, JSValue obj)
     {
         if (JS_IsString(obj))
         {
@@ -102,15 +105,20 @@ namespace OpenRCT2::Scripting
         return {};
     }
 
-    inline std::string GetStdString(JSContext* ctx, JSValue obj, const char* property)
+    inline JSValue JSFromStdString(JSContext* ctx, std::string str)
+    {
+        return JS_NewString(ctx, str.c_str());
+    }
+
+    inline std::string JSToStdString(JSContext* ctx, JSValue obj, const char* property)
     {
         JSValue val = JS_GetPropertyStr(ctx, obj, property);
-        std::string output = GetStdString(ctx, val);
+        std::string output = JSToStdString(ctx, val);
         JS_FreeValue(ctx, val);
         return output;
     }
 
-    inline std::optional<int32_t> GetOptionalInt(JSContext* ctx, JSValue obj, const char* property)
+    inline std::optional<int32_t> JSToOptionalInt(JSContext* ctx, JSValue obj, const char* property)
     {
         JSValue val = JS_GetPropertyStr(ctx, obj, property);
         std::optional<int32_t> output = std::nullopt;
@@ -126,7 +134,7 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
-    inline int32_t GetInt(JSContext* ctx, JSValue obj, const char* property)
+    inline int32_t JSToInt(JSContext* ctx, JSValue obj, const char* property)
     {
         JSValue val = JS_GetPropertyStr(ctx, obj, property);
         int32_t output = -1;
@@ -136,14 +144,6 @@ namespace OpenRCT2::Scripting
         }
         JS_FreeValue(ctx, val);
         return output;
-    }
-
-    inline JSCallback GetJSCallback(JSContext* ctx, JSValue obj, const char* property)
-    {
-        JSValue val = JS_GetPropertyStr(ctx, obj, property);
-        JSCallback out(ctx, val);
-        JS_FreeValue(ctx, val);
-        return out;
     }
 
     inline JSValue ToJSValue(JSContext* ctx, const CoordsXY& coords)
@@ -183,4 +183,52 @@ namespace OpenRCT2::Scripting
         JS_SetPropertyStr(ctx, obj, "z", JS_NewInt32(ctx, value.z));
         return obj;
     }
+
+    #define JS_UNPACK_INT32(var, ctx, val)                                                                                     \
+        int32_t var;                                                                                                           \
+        if (!JS_IsNumber(val))                                                                                                 \
+        {                                                                                                                      \
+            JS_ThrowTypeError(ctx, "Expected number");                                                                         \
+            return JS_EXCEPTION;                                                                                               \
+        }                                                                                                                      \
+        if (JS_ToInt32(ctx, &var, val) < 0)                                                                                    \
+        {                                                                                                                      \
+            return JS_EXCEPTION;                                                                                               \
+        }
+
+    #define JS_UNPACK_STR(var, ctx, val)                                                                                       \
+        std::string var;                                                                                                       \
+        if (!JS_IsString(val))                                                                                                 \
+        {                                                                                                                      \
+            JS_ThrowTypeError(ctx, "Expected string");                                                                         \
+            return JS_EXCEPTION;                                                                                               \
+        }                                                                                                                      \
+        if (const char* buf = JS_ToCString(ctx, val))                                                                          \
+        {                                                                                                                      \
+            var = std::string(buf);                                                                                            \
+            JS_FreeCString(ctx, buf);                                                                                          \
+        }                                                                                                                      \
+        else                                                                                                                   \
+        {                                                                                                                      \
+            return JS_EXCEPTION;                                                                                               \
+        }
+
+    #define JS_UNPACK_BOOL(var, ctx, val)                                                                                      \
+        bool var;                                                                                                              \
+        if (!JS_IsBool(val))                                                                                                   \
+        {                                                                                                                      \
+            JS_ThrowTypeError(ctx, "Expected boolean");                                                                        \
+            return JS_EXCEPTION;                                                                                               \
+        }                                                                                                                      \
+        {                                                                                                                      \
+            const int result = JS_ToBool(ctx, value);                                                                          \
+            if (result == -1)                                                                                                  \
+            {                                                                                                                  \
+                return JS_EXCEPTION;                                                                                           \
+            }                                                                                                                  \
+            var = result;                                                                                                      \
+        }
+
 } // namespace OpenRCT2::Scripting
+
+#endif

@@ -17,7 +17,7 @@
     #include "ScImageManager.hpp"
     #include "ScTileSelection.hpp"
     #include "ScViewport.hpp"
-    #include "ScWindow.hpp"
+    #include "ScWindow.h"
 
     #include <algorithm>
     #include <memory>
@@ -234,7 +234,7 @@ namespace OpenRCT2::Scripting
             }
             else if (JS_IsString(argv[0]))
             {
-                std::string classification = GetStdString(ctx, argv[0]);
+                std::string classification = JSToStdString(ctx, argv[0]);
                 // TODO (mber)
                 // auto w = FindCustomWindowByClassification(classification);
                 // if (w != nullptr)
