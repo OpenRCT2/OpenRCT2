@@ -3612,10 +3612,10 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::AirThrustVerticalDown, 2 },                    // ReverseFreefallVertical
         { TrackElemType::Down90, 2 },                                   // Up90
         { TrackElemType::Up90, 2 },                                     // Down90
-        { TrackElemType::Down90ToDown60, 2 },                           // Up60ToUp90
-        { TrackElemType::Up60ToUp90, 2 },                               // Down90ToDown60
-        { TrackElemType::Down60ToDown90, 2 },                           // Up90ToUp60
-        { TrackElemType::Up90ToUp60, 2 },                               // Down60ToDown90
+        { TrackElemType::Up60ToUp90, 0 },                               // Up60ToUp90
+        { TrackElemType::Down90ToDown60, 0 },                           // Down90ToDown60
+        { TrackElemType::Up90ToUp60, 0 },                               // Up90ToUp60
+        { TrackElemType::Down60ToDown90, 0 },                           // Down60ToDown90
         { TrackElemType::BrakeForDrop, 0 },                             // BrakeForDrop
         { TrackElemType::RightEighthToOrthogonal, 3 },                  // LeftEighthToDiag
         { TrackElemType::LeftEighthToOrthogonal, 2 },                   // RightEighthToDiag
