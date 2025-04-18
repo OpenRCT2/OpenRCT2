@@ -8,6 +8,7 @@
 - Change: [#23857] Replace display options tab with custom sprites.
 - Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
 - Change: [#24135] Compress Emscripten js/wasm files.
+- Change: [#24235] Small changes to RCT1 theme.
 - Fix: [#21919] Non-recolourable cars still show colour picker.
 - Fix: [#22182] [Plugin] Crash when using map.getAllEntities("car").
 - Fix: [#22634] Asset packs with sound effect overrides are not loaded correctly at startup.

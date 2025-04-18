@@ -207,7 +207,7 @@ static constexpr WindowThemeDesc WindowThemeDescriptors[] =
 static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
 {
     { WindowClass::TopToolbar,             COLOURS_RCT1(opaque(COLOUR_GREY),             opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_GREY),     opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
-    { WindowClass::BottomToolbar,          COLOURS_RCT1(translucent(COLOUR_GREY),        translucent(COLOUR_GREY),        opaque(COLOUR_BLACK),               opaque(COLOUR_YELLOW),   opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
+    { WindowClass::BottomToolbar,          COLOURS_RCT1(translucent(COLOUR_GREY),        translucent(COLOUR_GREY),        opaque(COLOUR_VOID),                opaque(COLOUR_YELLOW),   opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
     { WindowClass::Ride,                   COLOURS_RCT1(opaque(COLOUR_BORDEAUX_RED),     opaque(COLOUR_GREY),             opaque(COLOUR_SATURATED_GREEN),     opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
     { WindowClass::RideList,               COLOURS_RCT1(opaque(COLOUR_BORDEAUX_RED),     opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
     { WindowClass::ConstructRide,          COLOURS_RCT1(opaque(COLOUR_BORDEAUX_RED),     opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
@@ -222,7 +222,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
     { WindowClass::Staff,                  COLOURS_RCT1(opaque(COLOUR_DARK_GREEN),       opaque(COLOUR_LIGHT_PURPLE),     opaque(COLOUR_LIGHT_PURPLE),        opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
     { WindowClass::Options,                COLOURS_RCT1(opaque(COLOUR_GREY),             opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),          opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
     { WindowClass::AssetPacks,             COLOURS_RCT1(opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),          opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
-    { WindowClass::KeyboardShortcutList,   COLOURS_RCT1(opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),          opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
+    { WindowClass::KeyboardShortcutList,   COLOURS_RCT1(opaque(COLOUR_GREY),             opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),          opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
     { WindowClass::ChangeKeyboardShortcut, COLOURS_RCT1(opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),          opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
     { WindowClass::TrackDesignList,        COLOURS_RCT1(opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_DARK_BROWN),          opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
     { WindowClass::Map,                    COLOURS_RCT1(opaque(COLOUR_DARK_BROWN),       opaque(COLOUR_GREY),             opaque(COLOUR_GREY),                opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK),    opaque(COLOUR_BLACK))    },
