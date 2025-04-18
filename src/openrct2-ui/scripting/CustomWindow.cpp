@@ -17,7 +17,7 @@
     #include "../windows/Windows.h"
     #include "CustomListView.h"
     #include "ScUi.hpp"
-    #include "ScWindow.hpp"
+    #include "ScWindow.h"
 
     #include <limits>
     #include <openrct2/SpriteIds.h>
@@ -288,18 +288,18 @@ namespace OpenRCT2::Ui::Windows
         static CustomWindowDesc FromJSValue(JSContext* ctx, JSValue desc)
         {
             CustomWindowDesc result;
-            result.Classification = GetStdString(ctx, desc, "classification");
-            result.X = GetOptionalInt(ctx, desc, "x");
-            result.Y = GetOptionalInt(ctx, desc, "y");
-            result.Width = GetInt(ctx, desc, "width");
-            result.Height = GetInt(ctx, desc, "height");
-            result.MinWidth = GetOptionalInt(ctx, desc, "minWidth");
-            result.MaxWidth = GetOptionalInt(ctx, desc, "maxWidth");
-            result.MinHeight = GetOptionalInt(ctx, desc, "minHeight");
-            result.MaxHeight = GetOptionalInt(ctx, desc, "maxHeight");
-            result.Title = GetStdString(ctx, desc, "title");
-            result.Id = GetOptionalInt(ctx, desc, "id");
-            result.TabIndex = GetOptionalInt(ctx, desc, "tabIndex");
+            result.Classification = JSToStdString(ctx, desc, "classification");
+            result.X = JSToOptionalInt(ctx, desc, "x");
+            result.Y = JSToOptionalInt(ctx, desc, "y");
+            result.Width = JSToInt(ctx, desc, "width");
+            result.Height = JSToInt(ctx, desc, "height");
+            result.MinWidth = JSToOptionalInt(ctx, desc, "minWidth");
+            result.MaxWidth = JSToOptionalInt(ctx, desc, "maxWidth");
+            result.MinHeight = JSToOptionalInt(ctx, desc, "minHeight");
+            result.MaxHeight = JSToOptionalInt(ctx, desc, "maxHeight");
+            result.Title = JSToStdString(ctx, desc, "title");
+            result.Id = JSToOptionalInt(ctx, desc, "id");
+            result.TabIndex = JSToOptionalInt(ctx, desc, "tabIndex");
 
             /* TODO (mber)
             if (desc["widgets"].is_array())
@@ -335,9 +335,9 @@ namespace OpenRCT2::Ui::Windows
             }
             */
 
-            result.OnClose = GetJSCallback(ctx, desc, "onClose");
-            result.OnUpdate = GetJSCallback(ctx, desc, "onUpdate");
-            result.OnTabChange = GetJSCallback(ctx, desc, "onTabChange");
+            result.OnClose = JSToCallback(ctx, desc, "onClose");
+            result.OnUpdate = JSToCallback(ctx, desc, "onUpdate");
+            result.OnTabChange = JSToCallback(ctx, desc, "onTabChange");
 
             return result;
         }

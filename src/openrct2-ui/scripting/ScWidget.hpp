@@ -9,136 +9,139 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../interface/Widget.h"
     #include "CustomListView.h"
     #include "CustomWindow.h"
     #include "ScViewport.hpp"
+    #include "ScWindow.h"
 
     #include <memory>
     #include <openrct2/Context.h>
-    #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/IconNames.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Scripting
 {
-    class ScWindow;
-    class ScWidget
+    class ScWidget;
+    extern ScWidget gScWidget;
+
+    struct WidgetData
     {
-    protected:
         WindowClass _class{};
         rct_windownumber _number{};
         WidgetIndex _widgetIndex{};
+    };
 
-    public:
-        ScWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
-            : _class(c)
-            , _number(n)
-            , _widgetIndex(widgetIndex)
-        {
-        }
-
-        static DukValue ToDukValue(duk_context* ctx, WindowBase* w, WidgetIndex widgetIndex);
-
+    class ScWidget : public ScBase
+    {
     private:
-        std::shared_ptr<ScWindow> window_get() const;
-
-        std::string name_get() const
+        static JSValue window_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
-            if (w != nullptr && IsCustomWindow())
-            {
-                return OpenRCT2::Ui::Windows::GetWidgetName(w, _widgetIndex);
-            }
-            return {};
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            return gScWindow.New(ctx, data->_class, data->_number);
         }
 
-        void name_set(const std::string& value)
+        static JSValue name_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
-            if (w != nullptr && IsCustomWindow())
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
+            if (w != nullptr && IsCustomWindow(w))
             {
-                OpenRCT2::Ui::Windows::SetWidgetName(w, _widgetIndex, value);
+                return JS_NewString(ctx, OpenRCT2::Ui::Windows::GetWidgetName(w, data->_widgetIndex).c_str());
             }
+            return JS_NewString(ctx, std::string().c_str());
         }
 
-        std::string type_get() const
+        static JSValue name_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto widget = GetWidget();
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
+            if (w != nullptr && IsCustomWindow(w))
+            {
+                OpenRCT2::Ui::Windows::SetWidgetName(w, data->_widgetIndex, JSToStdString(ctx, value));
+            }
+            return JS_UNDEFINED;
+        }
+
+        static JSValue type_get(JSContext* ctx, JSValue thisVal)
+        {
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
                 switch (widget->type)
                 {
                     case WidgetType::frame:
-                        return "frame";
+                        return JSFromStdString(ctx, "frame");
                     case WidgetType::resize:
-                        return "resize";
+                        return JSFromStdString(ctx, "resize");
                     case WidgetType::imgBtn:
                     case WidgetType::trnBtn:
                     case WidgetType::flatBtn:
                     case WidgetType::button:
                     case WidgetType::closeBox:
-                        return "button";
+                        return JSFromStdString(ctx, "button");
                     case WidgetType::colourBtn:
-                        return "colourpicker";
+                        return JSFromStdString(ctx, "colourpicker");
                     case WidgetType::tab:
-                        return "tab";
+                        return JSFromStdString(ctx, "tab");
                     case WidgetType::labelCentred:
                     case WidgetType::label:
-                        return "label";
+                        return JSFromStdString(ctx, "label");
                     case WidgetType::tableHeader:
-                        return "table_header";
+                        return JSFromStdString(ctx, "table_header");
                     case WidgetType::spinner:
-                        return "spinner";
+                        return JSFromStdString(ctx, "spinner");
                     case WidgetType::dropdownMenu:
-                        return "dropdown";
+                        return JSFromStdString(ctx, "dropdown");
                     case WidgetType::viewport:
-                        return "viewport";
+                        return JSFromStdString(ctx, "viewport");
                     case WidgetType::groupbox:
-                        return "groupbox";
+                        return JSFromStdString(ctx, "groupbox");
                     case WidgetType::caption:
-                        return "caption";
+                        return JSFromStdString(ctx, "caption");
                     case WidgetType::scroll:
-                        return "listview";
+                        return JSFromStdString(ctx, "listview");
                     case WidgetType::checkbox:
-                        return "checkbox";
+                        return JSFromStdString(ctx, "checkbox");
                     case WidgetType::textBox:
-                        return "textbox";
+                        return JSFromStdString(ctx, "textbox");
                     case WidgetType::empty:
-                        return "empty";
+                        return JSFromStdString(ctx, "empty");
                     case WidgetType::placeholder:
-                        return "placeholder";
+                        return JSFromStdString(ctx, "placeholder");
                     case WidgetType::progressBar:
-                        return "progress_bar";
+                        return JSFromStdString(ctx, "progress_bar");
                     case WidgetType::horizontalSeparator:
-                        return "horizontal_separator";
+                        return JSFromStdString(ctx, "horizontal_separator");
                     case WidgetType::custom:
-                        return "custom";
+                        return JSFromStdString(ctx, "custom");
                 }
             }
-            return "unknown";
+            return JSFromStdString(ctx, "unknown");
         }
 
-        int32_t x_get() const
+        static JSValue x_get(JSContext* ctx, JSValue thisVal)
         {
-            auto widget = GetWidget();
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
-                return widget->left;
+                return JS_NewInt32(ctx, widget->left);
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void x_set(int32_t value)
+        static JSValue x_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto widget = GetWidget();
+            JS_UNPACK_INT32(valueInt, ctx, value);
+
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
-                auto delta = value - widget->left;
+                auto delta = valueInt - widget->left;
 
-                Invalidate();
+                Invalidate(thisVal);
                 widget->left += delta;
                 widget->right += delta;
 
@@ -158,30 +161,33 @@ namespace OpenRCT2::Scripting
                     downWidget->right += delta;
                 }
 
-                Invalidate(widget);
+                Invalidate(thisVal, widget);
             }
+            return JS_UNDEFINED;
         }
 
-        int32_t y_get() const
+        static JSValue y_get(JSContext* ctx, JSValue thisVal)
         {
-            auto widget = GetWidget();
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
-                auto w = GetWindow();
-                return widget->top - w->getTitleBarDiffNormal();
+                auto w = GetWindow(thisVal);
+                return JS_NewInt32(ctx,widget->top - w->getTitleBarDiffNormal());
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void y_set(int32_t value)
+        static JSValue y_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto widget = GetWidget();
+            JS_UNPACK_INT32(valueInt, ctx, value);
+
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
-                auto w = GetWindow();
-                value += w->getTitleBarDiffNormal();
-                auto delta = value - widget->top;
+                auto w = GetWindow(thisVal);
+                valueInt += w->getTitleBarDiffNormal();
+                auto delta = valueInt - widget->top;
 
-                Invalidate();
+                Invalidate(thisVal);
                 widget->top += delta;
                 widget->bottom += delta;
 
@@ -201,27 +207,30 @@ namespace OpenRCT2::Scripting
                     downWidget->bottom += delta;
                 }
 
-                Invalidate(widget);
+                Invalidate(thisVal, widget);
             }
+            return JS_UNDEFINED;
         }
 
-        int32_t width_get() const
+        static JSValue width_get(JSContext* ctx, JSValue thisVal)
         {
-            auto widget = GetWidget();
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
-                return widget->width() + 1;
+                return JS_NewInt32(ctx, widget->width() + 1);
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void width_set(int32_t value)
+        static JSValue width_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto widget = GetWidget();
+            JS_UNPACK_INT32(valueInt, ctx, value);
+
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
-                auto delta = widget->left + value - (widget->right + 1);
+                auto delta = widget->left + valueInt - (widget->right + 1);
 
-                Invalidate();
+                Invalidate(thisVal);
                 widget->right += delta;
 
                 if (widget->type == WidgetType::dropdownMenu)
@@ -240,27 +249,30 @@ namespace OpenRCT2::Scripting
                     downWidget->right += delta;
                 }
 
-                Invalidate(widget);
+                Invalidate(thisVal, widget);
             }
+            return JS_UNDEFINED;
         }
 
-        int32_t height_get() const
+        static JSValue height_get(JSContext* ctx, JSValue thisVal)
         {
-            auto widget = GetWidget();
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
-                return widget->height() + 1;
+                return JS_NewInt32(ctx, widget->height() + 1);
             }
-            return 0;
+            return JS_NewInt32(ctx, 0);
         }
-        void height_set(int32_t value)
+        static JSValue height_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto widget = GetWidget();
+            JS_UNPACK_INT32(valueInt, ctx, value);
+
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
-                auto delta = widget->top + value - (widget->bottom + 1);
+                auto delta = widget->top + valueInt - (widget->bottom + 1);
 
-                Invalidate();
+                Invalidate(thisVal);
                 widget->bottom += delta;
 
                 if (widget->type == WidgetType::dropdownMenu)
@@ -276,143 +288,233 @@ namespace OpenRCT2::Scripting
                     downWidget->bottom += delta;
                 }
 
-                Invalidate(widget);
+                Invalidate(thisVal, widget);
             }
+            return JS_UNDEFINED;
         }
 
-        std::string tooltip_get() const
+        static JSValue tooltip_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
-            if (w != nullptr && IsCustomWindow())
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
+            if (w != nullptr && IsCustomWindow(w))
             {
-                return OpenRCT2::Ui::Windows::GetWidgetTooltip(w, _widgetIndex);
+                return JSFromStdString(ctx, OpenRCT2::Ui::Windows::GetWidgetTooltip(w, data->_widgetIndex));
             }
-            return {};
+            return JSFromStdString(ctx, {});
         }
-        void tooltip_set(const std::string& value)
+        static JSValue tooltip_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
-            if (w != nullptr && IsCustomWindow())
+            JS_UNPACK_STR(valueStr, ctx, value);
+
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
+            if (w != nullptr && IsCustomWindow(w))
             {
-                OpenRCT2::Ui::Windows::SetWidgetTooltip(w, _widgetIndex, value);
+                OpenRCT2::Ui::Windows::SetWidgetTooltip(w, data->_widgetIndex, valueStr);
             }
+            return JS_UNDEFINED;
         }
 
-        bool isDisabled_get() const
+        static JSValue isDisabled_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
             if (w != nullptr)
             {
-                return Ui::widgetIsDisabled(*w, _widgetIndex);
+                return JS_NewBool(ctx, Ui::widgetIsDisabled(*w, data->_widgetIndex));
             }
-            return false;
+            return JS_NewBool(ctx, false);
         }
-        void isDisabled_set(bool value)
+        static JSValue isDisabled_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
             if (w != nullptr)
             {
-                Ui::widgetSetDisabled(*w, _widgetIndex, value);
+                Ui::widgetSetDisabled(*w, data->_widgetIndex, valueBool);
 
-                auto widget = GetWidget();
+                auto widget = GetWidget(w, data->_widgetIndex);
                 if (widget != nullptr)
                 {
                     if (widget->type == WidgetType::dropdownMenu)
                     {
-                        Ui::widgetSetDisabled(*w, _widgetIndex + 1, value);
+                        Ui::widgetSetDisabled(*w, data->_widgetIndex + 1, valueBool);
                     }
                     else if (widget->type == WidgetType::spinner)
                     {
-                        Ui::widgetSetDisabled(*w, _widgetIndex + 1, value);
-                        Ui::widgetSetDisabled(*w, _widgetIndex + 2, value);
+                        Ui::widgetSetDisabled(*w, data->_widgetIndex + 1, valueBool);
+                        Ui::widgetSetDisabled(*w, data->_widgetIndex + 2, valueBool);
                     }
                 }
-                Invalidate(widget);
+                Invalidate(thisVal, widget);
             }
+            return JS_UNDEFINED;
         }
 
-        bool isVisible_get() const
+        static JSValue isVisible_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
             if (w != nullptr)
             {
-                return Ui::widgetIsVisible(*w, _widgetIndex);
+                return JS_NewBool(ctx, Ui::widgetIsVisible(*w, data->_widgetIndex));
             }
-            return false;
+            return JS_NewBool(ctx, false);
         }
-        void isVisible_set(bool value)
+        static JSValue isVisible_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
             if (w != nullptr)
             {
-                Ui::widgetSetVisible(*w, _widgetIndex, value);
+                Ui::widgetSetVisible(*w, data->_widgetIndex, valueBool);
 
-                auto widget = GetWidget();
+                auto widget = GetWidget(w, data->_widgetIndex);
                 if (widget != nullptr)
                 {
                     if (widget->type == WidgetType::dropdownMenu)
                     {
-                        Ui::widgetSetVisible(*w, _widgetIndex + 1, value);
+                        Ui::widgetSetVisible(*w, data->_widgetIndex + 1, valueBool);
                     }
                     else if (widget->type == WidgetType::spinner)
                     {
-                        Ui::widgetSetVisible(*w, _widgetIndex + 1, value);
-                        Ui::widgetSetVisible(*w, _widgetIndex + 2, value);
+                        Ui::widgetSetVisible(*w, data->_widgetIndex + 1, valueBool);
+                        Ui::widgetSetVisible(*w, data->_widgetIndex + 2, valueBool);
                     }
                 }
-                Invalidate(widget);
+                Invalidate(thisVal, widget);
             }
+            return JS_UNDEFINED;
         }
 
-    protected:
-        std::string text_get() const
+        static JSValue text_get(JSContext* ctx, JSValue thisVal)
         {
-            if (IsCustomWindow())
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
+            if (IsCustomWindow(w))
             {
-                auto widget = GetWidget();
+                auto widget = GetWidget(w, data->_widgetIndex);
                 if (widget != nullptr && (widget->flags.has(WidgetFlag::textIsString)) && widget->string != nullptr)
                 {
-                    return widget->string;
+                    return JSFromStdString(ctx, widget->string);
                 }
             }
-            return "";
+            return JSFromStdString(ctx, "");
         }
 
-        void text_set(std::string value)
+        static JSValue text_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
-            if (w != nullptr && IsCustomWindow())
+            JS_UNPACK_STR(valueStr, ctx, value);
+
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
+            if (w != nullptr && IsCustomWindow(w))
             {
-                OpenRCT2::Ui::Windows::UpdateWidgetText(w, _widgetIndex, value);
+                OpenRCT2::Ui::Windows::UpdateWidgetText(w, data->_widgetIndex, valueStr);
             }
+            return JS_UNDEFINED;
         }
+
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("window", ScWidget::window_get, nullptr),
+            JS_CGETSET_DEF("name", ScWidget::name_get, ScWidget::name_set),
+            JS_CGETSET_DEF("type", ScWidget::type_get, nullptr),
+            JS_CGETSET_DEF("x", ScWidget::x_get, ScWidget::x_set),
+            JS_CGETSET_DEF("y", ScWidget::y_get, ScWidget::y_set),
+            JS_CGETSET_DEF("width", ScWidget::width_get, ScWidget::width_set),
+            JS_CGETSET_DEF("height", ScWidget::height_get, &ScWidget::height_set),
+            JS_CGETSET_DEF("tooltip", ScWidget::tooltip_get, &ScWidget::tooltip_set),
+            JS_CGETSET_DEF("isDisabled", ScWidget::isDisabled_get, &ScWidget::isDisabled_set),
+            JS_CGETSET_DEF("isVisible", ScWidget::isVisible_get, &ScWidget::isVisible_set),
+        };
 
     public:
-        static void Register(duk_context* ctx);
-
-    protected:
-        WindowBase* GetWindow() const
+        JSValue New(JSContext* ctx, WindowBase* w, WidgetIndex widgetIndex)
         {
-            if (_class == WindowClass::MainWindow)
+            JSValue newObj = MakeWithOpaque(ctx, funcs, new WidgetData{ w->classification, w->number, widgetIndex });
+            /* TODO (mber) add the extra functions depending on type...
+            switch (w->widgets[widgetIndex])
+            {
+                case WindowWidgetType::Button:
+                case WindowWidgetType::FlatBtn:
+                case WindowWidgetType::ImgBtn:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScButtonWidget>(c, n, widgetIndex));
+                case WindowWidgetType::Checkbox:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScCheckBoxWidget>(c, n, widgetIndex));
+                case WindowWidgetType::ColourBtn:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScColourPickerWidget>(c, n, widgetIndex));
+                case WindowWidgetType::DropdownMenu:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScDropdownWidget>(c, n, widgetIndex));
+                case WindowWidgetType::Groupbox:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScGroupBoxWidget>(c, n, widgetIndex));
+                case WindowWidgetType::Label:
+                case WindowWidgetType::LabelCentred:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScLabelWidget>(c, n, widgetIndex));
+                case WindowWidgetType::Scroll:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));
+                case WindowWidgetType::Spinner:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScSpinnerWidget>(c, n, widgetIndex));
+                case WindowWidgetType::TextBox:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScTextBoxWidget>(c, n, widgetIndex));
+                case WindowWidgetType::Viewport:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScViewportWidget>(c, n, widgetIndex));
+                default:
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScWidget>(c, n, widgetIndex));
+            }
+            */
+            return newObj;
+        }
+
+        void Register(JSContext* ctx)
+        {
+            RegisterBaseStr(ctx, "Window", Finalize);
+        }
+
+    private:
+        static void Finalize(JSRuntime* rt, JSValue thisVal)
+        {
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            if (data)
+                delete data;
+        }
+
+        static WindowBase* GetWindow(const WindowClass wClass, const rct_windownumber number)
+        {
+            if (wClass == WindowClass::MainWindow)
                 return WindowGetMain();
 
             auto* windowMgr = Ui::GetWindowManager();
-            return windowMgr->FindByNumber(_class, _number);
+            return windowMgr->FindByNumber(wClass, number);
         }
 
-        Widget* GetWidget() const
+        static WindowBase* GetWindow(JSValue thisVal)
         {
-            auto w = GetWindow();
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            return GetWindow(data->_class, data->_number);
+        }
+
+        static Widget* GetWidget(WindowBase* w, const WidgetIndex wIdx)
+        {
             if (w != nullptr)
             {
-                return &w->widgets[_widgetIndex];
+                return &w->widgets[wIdx];
             }
             return nullptr;
         }
-
-        bool IsCustomWindow() const
+        static Widget* GetWidget(JSValue thisVal)
         {
-            auto w = GetWindow();
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto w = GetWindow(data->_class, data->_number);
+            return GetWidget(w, data->_widgetIndex);
+        }
+
+        static bool IsCustomWindow(WindowBase* w)
+        {
             if (w != nullptr)
             {
                 return w->classification == WindowClass::Custom;
@@ -420,31 +522,34 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        void Invalidate(const Widget* widget)
+        static void Invalidate(JSValue thisVal, const Widget* widget)
         {
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
+            auto* windowMgr = Ui::GetWindowManager();
             if (widget != nullptr)
             {
-                auto* windowMgr = Ui::GetWindowManager();
                 if (widget->type == WidgetType::dropdownMenu)
                 {
-                    windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex + 1);
+                    windowMgr->InvalidateWidgetByNumber(data->_class, data->_number, data->_widgetIndex + 1);
                 }
                 else if (widget->type == WidgetType::spinner)
                 {
-                    windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex + 1);
-                    windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex + 2);
+                    windowMgr->InvalidateWidgetByNumber(data->_class, data->_number, data->_widgetIndex + 1);
+                    windowMgr->InvalidateWidgetByNumber(data->_class, data->_number, data->_widgetIndex + 2);
                 }
             }
-            Invalidate();
+            windowMgr->InvalidateWidgetByNumber(data->_class, data->_number, data->_widgetIndex);
         }
 
-        void Invalidate()
+        static void Invalidate(JSValue thisVal)
         {
+            WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex);
+            windowMgr->InvalidateWidgetByNumber(data->_class, data->_number, data->_widgetIndex);
         }
     };
 
+    /* TODO (mber)
     class ScButtonWidget : public ScWidget
     {
     public:
@@ -1008,42 +1113,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
     };
-
-    inline DukValue ScWidget::ToDukValue(duk_context* ctx, WindowBase* w, WidgetIndex widgetIndex)
-    {
-        const auto& widget = w->widgets[widgetIndex];
-        auto c = w->classification;
-        auto n = w->number;
-        switch (widget.type)
-        {
-            case WidgetType::button:
-            case WidgetType::flatBtn:
-            case WidgetType::imgBtn:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScButtonWidget>(c, n, widgetIndex));
-            case WidgetType::checkbox:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScCheckBoxWidget>(c, n, widgetIndex));
-            case WidgetType::colourBtn:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScColourPickerWidget>(c, n, widgetIndex));
-            case WidgetType::dropdownMenu:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScDropdownWidget>(c, n, widgetIndex));
-            case WidgetType::groupbox:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScGroupBoxWidget>(c, n, widgetIndex));
-            case WidgetType::label:
-            case WidgetType::labelCentred:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScLabelWidget>(c, n, widgetIndex));
-            case WidgetType::scroll:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));
-            case WidgetType::spinner:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScSpinnerWidget>(c, n, widgetIndex));
-            case WidgetType::textBox:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScTextBoxWidget>(c, n, widgetIndex));
-            case WidgetType::viewport:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScViewportWidget>(c, n, widgetIndex));
-            default:
-                return GetObjectAsDukValue(ctx, std::make_shared<ScWidget>(c, n, widgetIndex));
-        }
-    }
-
+    */
 } // namespace OpenRCT2::Scripting
 
 #endif

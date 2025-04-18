@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../Context.h"
 #ifdef ENABLE_SCRIPTING_REFACTOR
 
+    #include "Plugin.h"
+
+    #include "../Context.h"
     #include "../Diagnostic.h"
     #include "../OpenRCT2.h"
     #include "../core/File.h"
-    #include "Plugin.h"
     #include "ScriptEngine.h"
 
     #include <fstream>
@@ -220,7 +221,7 @@ void Plugin::SetMetadata(const JSValue obj)
         }
         JS_FreeValue(_context, authors);
 
-        metadata.Main = GetCallbackProperty(_context, obj, "main");
+        metadata.Main = JSToCallback(_context, obj, "main");
     }
     _metadata = metadata;
 }
