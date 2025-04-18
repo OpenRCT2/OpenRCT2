@@ -2037,26 +2037,37 @@ void trackPaintSpriteCommon(
             + spriteIndex;
     }
 
+    // clear the last paint structs so that child sprites don't get added to random sprites if the parent isn't painted
+    session.LastPS = nullptr;
+    session.LastAttachedPS = nullptr;
+
     for (uint32_t i = 0; i < spriteCount; i += (TChildSprite + 1))
     {
-        // TODO: make offsets part of the template
-        const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[index + i] : CoordsXYZ{ 0, 0, 0 };
-        PaintStruct* const paintStruct = PaintAddImageAsParentHeight(
-            session, (session.*TParentColours).WithIndex(sprites.imageIndexes[spriteIndex + i]), height, offset,
-            sprites.boundBoxes[index + i]);
+        const ImageIndex imageIndex = sprites.imageIndexes[spriteIndex + i];
+        if (imageIndex != kImageIndexUndefined)
+        {
+            // TODO: make offsets part of the template
+            const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[index + i] : CoordsXYZ{ 0, 0, 0 };
+            PaintStruct* const paintStruct = PaintAddImageAsParentHeight(
+                session, (session.*TParentColours).WithIndex(imageIndex), height, offset, sprites.boundBoxes[index + i]);
+            if constexpr (!TChildSprite)
+            {
+                // temporary workaround, does nothing when support is not steep
+                // prepending should be unnecessary eventually (see #23908)
+                session.WoodenSupportsPrependTo = i == 0 ? paintStruct : nullptr;
+            }
+        }
         if constexpr (TChildSprite)
         {
-            const CoordsXYZ& offset2 = sprites.offsets != nullptr ? sprites.offsets[index + i + 1] : CoordsXYZ{ 0, 0, 0 };
-            PaintStruct* const childPaintStruct = PaintAddImageAsChildHeight(
-                session, (session.*TChildColours).WithIndex(sprites.imageIndexes[spriteIndex + i + 1]), height, offset2,
-                sprites.boundBoxes[index + i + 1]);
-            session.WoodenSupportsPrependTo = i == 0 ? childPaintStruct : nullptr;
-        }
-        else
-        {
-            // temporary workaround, does nothing when support is not steep
-            // prepending should be unnecessary eventually (see #23908)
-            session.WoodenSupportsPrependTo = i == 0 ? paintStruct : nullptr;
+            const ImageIndex childImageIndex = sprites.imageIndexes[spriteIndex + i + 1];
+            if (childImageIndex != kImageIndexUndefined)
+            {
+                const CoordsXYZ& offset2 = sprites.offsets != nullptr ? sprites.offsets[index + i + 1] : CoordsXYZ{ 0, 0, 0 };
+                PaintStruct* const childPaintStruct = PaintAddImageAsChildHeight(
+                    session, (session.*TChildColours).WithIndex(childImageIndex), height, offset2,
+                    sprites.boundBoxes[index + i + 1]);
+                session.WoodenSupportsPrependTo = i == 0 ? childPaintStruct : nullptr;
+            }
         }
     }
 }
