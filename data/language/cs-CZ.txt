@@ -2238,10 +2238,8 @@ STR_3230    :Brzdící bloky nelze použít v řadě za sebou
 STR_3231    :Brzdící bloky nelze použít hned za řetězovým výtahem
 STR_3232    :Nastavení - Finance
 STR_3233    :Nastavení - Návštěvníci
-STR_3234    :Nastavení - Park
 STR_3235    :Zobrazit nastavení financí
 STR_3236    :Zobrazit nastavení návštěvníků
-STR_3237    :Zobrazit nastavení parku
 STR_3238    :Bez peněz
 STR_3239    :Nebrat ohled na peníze - bez finančních omezení
 STR_3240    :{WINDOW_COLOUR_2}Počáteční kapitál:
@@ -2282,18 +2280,10 @@ STR_3278    :{WINDOW_COLOUR_2}Cena zakoupení staveních práv:
 STR_3279    :Vstup zdarma / placené atrakce
 STR_3280    :Placený vstup / atrakce zdarma
 STR_3281    :{WINDOW_COLOUR_2}Cena za vstup:
-STR_3282    :Vyberte cíl a název parku
 STR_3283    :Vyberte atrakce, které zůstanou zachovány
-STR_3284    :Výběr cílů
 STR_3285    :Zachované atrakce
 STR_3286    :Vývěr cíle scénáře
 STR_3287    :{WINDOW_COLOUR_2}Cíl:
-STR_3288    :Výběr klimatu
-STR_3289    :{WINDOW_COLOUR_2}Klima:
-STR_3290    :Chladno a mokro
-STR_3291    :Teplo
-STR_3292    :Horko a sucho
-STR_3293    :Chladno
 STR_3294    :Změnit…
 STR_3295    :Změnit název parku
 STR_3296    :Změnit název scénáře

@@ -2240,10 +2240,8 @@ STR_3230    :El bloque de frenado no debe ser usado después de otro.
 STR_3231    :El bloque de frenado no debe ser usado después del final de la cadena de elevación.
 STR_3232    :Opciones - Finanzas
 STR_3233    :Opciones - Visitantes
-STR_3234    :Opciones - Parque
 STR_3235    :Opciones de finanzas
 STR_3236    :Opciones de visitantes
-STR_3237    :Opciones del parque
 STR_3238    :Sin dinero
 STR_3239    :Elimina las restricciones financieras de este parque
 STR_3240    :{WINDOW_COLOUR_2}Efectivo inicial:
@@ -2284,18 +2282,10 @@ STR_3278    :{WINDOW_COLOUR_2}Coste derechos de construcción:
 STR_3279    :Entrada libre / Atracciones de pago
 STR_3280    :Pagar por entrar / Atracciones gratis
 STR_3281    :{WINDOW_COLOUR_2}Precio de entrada:
-STR_3282    :Seleccionar objetivo y nombre del parque
 STR_3283    :Seleccionar atracciones a preservar
-STR_3284    :Elección de objetivos
 STR_3285    :Atracciones preservadas
 STR_3286    :Seleccionar objetivos para este escenario
 STR_3287    :{WINDOW_COLOUR_2}Objetivo:
-STR_3288    :Seleccionar clima
-STR_3289    :{WINDOW_COLOUR_2}Clima:
-STR_3290    :Frío y húmedo
-STR_3291    :Cálido
-STR_3292    :Caliente y seco
-STR_3293    :Frío
 STR_3294    :Cambiar…
 STR_3295    :Cambiar nombre del parque
 STR_3296    :Cambiar nombre del escenario

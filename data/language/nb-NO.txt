@@ -2233,10 +2233,8 @@ STR_3230    :Blokkbremser kan ikke brukes rett etter hverandre
 STR_3231    :Blokkbremser kan ikke brukes rett etter toppen på dette trekket
 STR_3232    :Alternativer - Økonomisk
 STR_3233    :Alternativer - Gjester
-STR_3234    :Alternativer - Park
 STR_3235    :Vis økonomiske alternativer
 STR_3236    :Vis gjestalternativer
-STR_3237    :Vis parkalternativer
 STR_3238    :Ingen Penger
 STR_3239    :Lag denne parken som en 'ingen penger' park uten økonomiske begrensninger
 STR_3240    :{WINDOW_COLOUR_2}Innledende penger:
@@ -2277,18 +2275,10 @@ STR_3278    :{WINDOW_COLOUR_2}Kostnad for å kjøpe byggerettigheter:
 STR_3279    :Gratis parkinngang / Betal for tur
 STR_3280    :Betal for parkinngang / Gratis tur
 STR_3281    :{WINDOW_COLOUR_2}Inngangspris:
-STR_3282    :Velg oppdrag og park navn
 STR_3283    :Velg attraksjoner som er bevart
-STR_3284    :Valg av oppdrag
 STR_3285    :Bevarte Attraksjoner
 STR_3286    :Velg oppdrag for dette scenariet
 STR_3287    :{WINDOW_COLOUR_2}Oppdrag:
-STR_3288    :Velg klima
-STR_3289    :{WINDOW_COLOUR_2}Klima:
-STR_3290    :Kjølig og vått
-STR_3291    :Varmt
-STR_3292    :Varmt og tørt
-STR_3293    :Kaldt
 STR_3294    :Endre…
 STR_3295    :Endre parknavn
 STR_3296    :Endre navn på scenariet

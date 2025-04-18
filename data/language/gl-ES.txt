@@ -2239,10 +2239,8 @@ STR_3230    :O bloque de freado non debe usarse despois do outro
 STR_3231    :O bloque de freo non debe usarse despois do final da cadea de elevación.
 STR_3232    :Opcións - Finanzas
 STR_3233    :Opcións - Visitantes
-STR_3234    :Opcións - Aparcar
 STR_3235    :Opcións de financiamento
 STR_3236    :Opcións de visitante
-STR_3237    :Opcións de estacionamento
 STR_3238    :Sen cartos
 STR_3239    :Eliminar as restricións financeiras deste parque
 STR_3240    :{WINDOW_COLOUR_2}Efectivo inicial:
@@ -2283,18 +2281,10 @@ STR_3278    :{WINDOW_COLOUR_2}Custo dos dereitos de construción:
 STR_3279    :Entrada gratuíta / Atraccións de pago
 STR_3280    :Pagar para entrar / Atraccións gratuítas
 STR_3281    :{WINDOW_COLOUR_2}Prezo de entrada:
-STR_3282    :Seleccione o nome do destino e do parque
 STR_3283    :Selecciona as atraccións para conservar
-STR_3284    :Selección de destino
 STR_3285    :Atraccións preservadas
 STR_3286    :Seleccione obxectivos para este escenario
 STR_3287    :{WINDOW_COLOUR_2}Obxecto:
-STR_3288    :Selecciona o tempo
-STR_3289    :{WINDOW_COLOUR_2}O tempo:
-STR_3290    :Frío e húmido
-STR_3291    :Quente
-STR_3292    :Quente e seco
-STR_3293    :Frío
 STR_3294    :Cambiar...
 STR_3295    :Cambiar o nome do parque
 STR_3296    :Cambiar o nome do escenario

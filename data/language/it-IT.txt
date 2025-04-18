@@ -2239,10 +2239,8 @@ STR_3230    :I freni di blocco non possono essere usati l’uno immediatamente d
 STR_3231    :I freni di blocco non possono essere usati immediatamente dopo la cima di questa salita di traino
 STR_3232    :Opzioni - Finanze
 STR_3233    :Opzioni - Visitatori
-STR_3234    :Opzioni - Parco
 STR_3235    :Mostra le opzioni sulle finanze
 STR_3236    :Mostra le opzioni sui visitatori
-STR_3237    :Mostra le opzioni sul parco
 STR_3238    :Niente denaro
 STR_3239    :Rendi questo parco un parco “senza denaro” e senza restrizioni finanziarie
 STR_3240    :{WINDOW_COLOUR_2}Denaro iniziale:
@@ -2283,18 +2281,10 @@ STR_3278    :{WINDOW_COLOUR_2}Costo dei diritti di costruzione:
 STR_3279    :Ingresso gratis / Paga attrazioni
 STR_3280    :Paga ingresso / Attrazioni gratis
 STR_3281    :{WINDOW_COLOUR_2}Prezzo d’ingresso:
-STR_3282    :Seleziona gli obiettivi e il nome del parco
 STR_3283    :Seleziona le attrazioni da proteggere
-STR_3284    :Selezione degli obiettivi
 STR_3285    :Attrazioni protette
 STR_3286    :Seleziona l’obiettivo di questo scenario
 STR_3287    :{WINDOW_COLOUR_2}Obiettivo:
-STR_3288    :Scegli il clima
-STR_3289    :{WINDOW_COLOUR_2}Clima:
-STR_3290    :Freddo e umido
-STR_3291    :Temperato
-STR_3292    :Caldo e secco
-STR_3293    :Freddo
 STR_3294    :Modifica…
 STR_3295    :Rinomina il parco
 STR_3296    :Modifica il nome dello scenario

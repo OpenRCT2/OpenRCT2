@@ -2238,10 +2238,8 @@ STR_3230    :Bremsojn de Blokparto ne uzeblas rekte post unu la alian
 STR_3231    :Bremsojn de Blokparto ne uzeblas rekte post la supro de ĉi tiu liftmonteto
 STR_3232    :Agordoj - Financiaj
 STR_3233    :Agordoj - Gastoj
-STR_3234    :Agordoj - Parko
 STR_3235    :Montri financiajn agordojn
 STR_3236    :Montri agordojn de gastoj
-STR_3237    :Montri agordojn de parko
 STR_3238    :Neniu Mono
 STR_3239    :Agordi ĉi tiun parkon kiel parko de ‘neniu mono’, kun neniuj limoj financaj
 STR_3240    :{WINDOW_COLOUR_2}Komenca mono:
@@ -2282,18 +2280,10 @@ STR_3278    :{WINDOW_COLOUR_2}Kosto por aĉeti konstruado-rajtojn:
 STR_3279    :Senpaga parkeniro / Pagi po atrakcio
 STR_3280    :Pagi po parkeniro / Senpagaj atrakcioj
 STR_3281    :{WINDOW_COLOUR_2}Kosto de parkeniro:
-STR_3282    :Elekti celon kaj nomon de parko
 STR_3283    :Elekti atrakciojn neŝanĝeblajn
-STR_3284    :Elektaro de Celo
 STR_3285    :Atrakcioj Neŝanĝeblaj
 STR_3286    :Elekti celon de ĉi tiu scenaro
 STR_3287    :{WINDOW_COLOUR_2}Celo:
-STR_3288    :Elekti klimaton
-STR_3289    :{WINDOW_COLOUR_2}Klimato:
-STR_3290    :Malvarmeta kaj malseka
-STR_3291    :Varmeta
-STR_3292    :Varma kaj seka
-STR_3293    :Malvarma
 STR_3294    :Ŝanĝi…
 STR_3295    :Ŝanĝi nomon de parko
 STR_3296    :Ŝanĝi nomon de scenaro

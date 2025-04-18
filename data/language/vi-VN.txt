@@ -2231,10 +2231,8 @@ STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
 STR_3232    :Options - Financial
 STR_3233    :Options - Guests
-STR_3234    :Options - Park
 STR_3235    :Tài chính
 STR_3236    :Show guest options
-STR_3237    :Show park options
 STR_3238    :No Money
 STR_3239    :Make this park a ‘no money’ park with no financial restrictions
 STR_3240    :{WINDOW_COLOUR_2}Initial cash:
@@ -2275,18 +2273,10 @@ STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
 STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
 STR_3281    :{WINDOW_COLOUR_2}Entry price:
-STR_3282    :Select objective and park name
 STR_3283    :Select rides to be preserved
-STR_3284    :Objective Selection
 STR_3285    :Preserved Rides
 STR_3286    :Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Objective:
-STR_3288    :Select climate
-STR_3289    :{WINDOW_COLOUR_2}Climate:
-STR_3290    :Cool and wet
-STR_3291    :Warm
-STR_3292    :Hot and dry
-STR_3293    :Cold
 STR_3294    :Change…
 STR_3295    :Change name of park
 STR_3296    :Change name of scenario

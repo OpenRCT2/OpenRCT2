@@ -2237,10 +2237,8 @@ STR_3230    :Blokremmen kunnen niet direct achter elkaar gebruikt worden
 STR_3231    :Blokremmen kunnen niet direct achter de top van een kettingheuvel geplaatst worden
 STR_3232    :Opties - Financiën
 STR_3233    :Opties - Bezoekers
-STR_3234    :Opties - Park
 STR_3235    :Toon financiële opties
 STR_3236    :Toon bezoekersopties
-STR_3237    :Toon parkopties
 STR_3238    :Zonder geld
 STR_3239    :Schakel geld compleet uit, zodat het park geen financiële beperkingen heeft
 STR_3240    :{WINDOW_COLOUR_2}Startsaldo:
@@ -2281,18 +2279,10 @@ STR_3278    :{WINDOW_COLOUR_2}Prijs bouwrechten:
 STR_3279    :Gratis entree / Per rit betalen
 STR_3280    :Betaalde entree / Attracties gratis
 STR_3281    :{WINDOW_COLOUR_2}Entreeprijs:
-STR_3282    :Doelstelling en parknaam selecteren
 STR_3283    :Beschermde attracties selecteren
-STR_3284    :Doelselectie
 STR_3285    :Beschermde attracties
 STR_3286    :Selecteer doelstelling voor dit scenario
 STR_3287    :{WINDOW_COLOUR_2}Doelstelling:
-STR_3288    :Selecteer klimaat:
-STR_3289    :{WINDOW_COLOUR_2}Klimaat:
-STR_3290    :Koel en nat
-STR_3291    :Warm
-STR_3292    :Heet en droog
-STR_3293    :Koud
 STR_3294    :Aanpassen…
 STR_3295    :Parknaam veranderen
 STR_3296    :Scenarionaam veranderen

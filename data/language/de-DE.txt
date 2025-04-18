@@ -2240,10 +2240,8 @@ STR_3230    :Blockbremsen können nicht unmittelbar hintereinander eingesetzt we
 STR_3231    :Blockbremsen können nicht unmittelbar nach der Anstiegsspitze eingesetzt werden
 STR_3232    :Optionen - Finanzen
 STR_3233    :Optionen - Besucher
-STR_3234    :Optionen - Park
 STR_3235    :Finanzoptionen anzeigen
 STR_3236    :Besucheroptionen anzeigen
-STR_3237    :Parkoptionen anzeigen
 STR_3238    :Kein Geld
 STR_3239    :Machen Sie diesen Park zu einem Park, bei dem keine finanziellen Einschränkungen gelten
 STR_3240    :{WINDOW_COLOUR_2}Kontostand zu Beginn:
@@ -2284,18 +2282,10 @@ STR_3278    :{WINDOW_COLOUR_2}Kosten für Erwerb v. Baurechten:
 STR_3279    :Freier Eintritt/Pro Fahrt bezahlen
 STR_3280    :Für Eintritt bezahlen/Gratis fahren
 STR_3281    :{WINDOW_COLOUR_2}Eintrittspreis:
-STR_3282    :Ziel und Parkname auswählen
 STR_3283    :Bahnen auswählen, die beibehalten werden sollen
-STR_3284    :Zielauswahl
 STR_3285    :Beibehaltene Bahnen
 STR_3286    :Ziel für dieses Szenario auswählen
 STR_3287    :{WINDOW_COLOUR_2}Ziel:
-STR_3288    :Klima auswählen
-STR_3289    :{WINDOW_COLOUR_2}Klima:
-STR_3290    :Kühl und feucht
-STR_3291    :Warm
-STR_3292    :Heiß und trocken
-STR_3293    :Kalt
 STR_3294    :Ändern …
 STR_3295    :Namen des Parks ändern
 STR_3296    :Namen des Szenarios ändern

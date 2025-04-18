@@ -2238,10 +2238,8 @@ STR_3230    :Freios Bloqueadores não podem ser usados diretamente um após o ou
 STR_3231    :Freios Bloqueadores não podem ser usados diretamente após a corrente de elevação
 STR_3232    :Opções - Financeiro
 STR_3233    :Opções - Visitantes
-STR_3234    :Opções - Parque
 STR_3235    :Mostrar opções financeiras
 STR_3236    :Mostrar opções de visitante
-STR_3237    :Mostrar opções do parque
 STR_3238    :Não necessita dinheiro
 STR_3239    :Fazer este parque sem restrições financeiras
 STR_3240    :{WINDOW_COLOUR_2}Dinheiro inicial:
@@ -2282,18 +2280,10 @@ STR_3278    :{WINDOW_COLOUR_2}Custo para comprar direitos:
 STR_3279    :Entrada gratuita / Atrações pagas
 STR_3280    :Entrada paga / Atrações gratuitas
 STR_3281    :{WINDOW_COLOUR_2}Preço de entrada:
-STR_3282    :Selecione o objetivo e nome do parque
 STR_3283    :Selecione as atrações a serem preservadas
-STR_3284    :Seleção de Objetivo
 STR_3285    :Atrações Preservadas
 STR_3286    :Selecione o objetivo para este cenário
 STR_3287    :{WINDOW_COLOUR_2}Objetivo:
-STR_3288    :Selecione o clima
-STR_3289    :{WINDOW_COLOUR_2}Clima:
-STR_3290    :Frio e úmido
-STR_3291    :Morno
-STR_3292    :Quente e seco
-STR_3293    :Frio
 STR_3294    :Mudar…
 STR_3295    :Mudar nome do parque
 STR_3296    :Mudar nome do cenário
