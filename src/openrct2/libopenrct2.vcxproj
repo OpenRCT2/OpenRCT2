@@ -400,6 +400,7 @@
     <ClInclude Include="paint\track\coaster\SideFrictionRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\SteelWildMouse.h" />
     <ClInclude Include="paint\track\coaster\Steeplechase.h" />
+    <ClInclude Include="paint\track\coaster\SuspendedSwingingCoaster.h" />
     <ClInclude Include="paint\track\coaster\VirginiaReel.h" />
     <ClInclude Include="paint\track\coaster\WoodenRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\WoodenWildMouse.h" />
