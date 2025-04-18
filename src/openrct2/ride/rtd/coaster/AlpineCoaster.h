@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/AlpineCoaster.h"
 #include "../../RideData.h"
 #include "../../Track.h"
 
@@ -23,6 +24,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
         .supportType = MetalSupportType::Fork,
         .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf},
         .extraTrackGroups =  {TrackGroup::helixUpBankedHalf},
+        .sprites = OpenRCT2::AlpineCoaster::kSprites,
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,
