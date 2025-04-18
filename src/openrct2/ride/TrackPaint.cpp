@@ -2188,6 +2188,14 @@ void trackPaintSprites2SupportColoursWithChildBrake(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
+void trackPaintSprites2WithChild(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<2, &PaintSession::TrackColours, true, &PaintSession::TrackColours, nullptr, false>(
+        session, ride, trackSequence, direction, height, trackElement);
+}
+
 void trackPaintSprites2Chain(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)

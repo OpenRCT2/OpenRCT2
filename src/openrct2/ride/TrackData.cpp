@@ -3681,8 +3681,8 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::LeftFlyerCorkscrewDown, 2 },                   // RightFlyerCorkscrewUp
         { TrackElemType::RightFlyerCorkscrewUp, 2 },                    // LeftFlyerCorkscrewDown
         { TrackElemType::LeftFlyerCorkscrewUp, 2 },                     // RightFlyerCorkscrewDown
-        { TrackElemType::HeartLineTransferUp, 0 },                      // HeartLineTransferUp
-        { TrackElemType::HeartLineTransferDown, 0 },                    // HeartLineTransferDown
+        { TrackElemType::HeartLineTransferDown, 2 },                    // HeartLineTransferUp
+        { TrackElemType::HeartLineTransferUp, 2 },                      // HeartLineTransferDown
         { TrackElemType::LeftHeartLineRoll, 0 },                        // LeftHeartLineRoll
         { TrackElemType::RightHeartLineRoll, 0 },                       // RightHeartLineRoll
         { TrackElemType::MinigolfHoleA, 0 },                            // MinigolfHoleA
