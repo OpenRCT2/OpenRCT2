@@ -2109,6 +2109,7 @@ namespace OpenRCT2::Ui::Windows
             // Format RCT1 path
             const auto normalisedPath = Platform::StrDecompToPrecomp(Config::Get().general.RCT1Path);
             ft = Formatter();
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const utf8*>(normalisedPath.c_str());
 
             auto& pathWidget = widgets[WIDX_PATH_TO_RCT1_PATH];
@@ -2119,7 +2120,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
 
             auto screenCoords = windowPos + ScreenCoordsXY{ pathWidget.left + 1, pathWidget.top + padding };
-            DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
+            DrawTextEllipsised(dpi, screenCoords, 277, STR_BLACK_STRING, ft);
         }
 
         OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
