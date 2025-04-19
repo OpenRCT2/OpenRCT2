@@ -196,6 +196,8 @@ namespace OpenRCT2::Scripting
 
         void FixBreakdown();
 
+        std::string getBreakdown() const;
+
     public:
         static void Register(duk_context* ctx);
     };

@@ -2496,6 +2496,11 @@ declare global {
          */
         readonly highestDropHeight: number;
 		
+		 /**
+         * The current breakdown of the ride.
+         */
+        readonly breakdown: BreakdownType;
+		 
 		/**
          * Set a breakdown on a ride.
          * @param breakdown The type of breakdown to set.
