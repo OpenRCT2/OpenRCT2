@@ -43,7 +43,6 @@ static void InitialiseContext(JSContext* ctx)
 void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 {
     JSContext* ctx = scriptEngine.GetContext();
-    scriptEngine.RegisterExtension(InitialiseContext);
 
     // ScGraphicsContext::Register(ctx);
     // ScImageManager::Register(ctx);
@@ -73,6 +72,8 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     InitialiseCustomMenuItems(scriptEngine);
     scriptEngine.SubscribeToPluginStoppedEvent(
         [](std::shared_ptr<Plugin> plugin) -> void { Ui::Windows::CloseWindowsOwnedByPlugin(plugin); });
+
+    scriptEngine.RegisterExtension(InitialiseContext);
 }
 
 #endif
