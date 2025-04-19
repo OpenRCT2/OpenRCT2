@@ -91,109 +91,102 @@ namespace OpenRCT2::Ui::Windows
 
         static CustomWidgetDesc FromJSValue(JSContext* ctx, JSValue desc)
         {
-            return CustomWidgetDesc();
-            /* TODO (mber)
             CustomWidgetDesc result;
-            result.Type = GetStdString(ctx, desc, "type");
-            result.X = desc["x"].as_int();
-            result.Y = desc["y"].as_int();
-            result.Width = desc["width"].as_int();
-            result.Height = desc["height"].as_int();
-            result.IsDisabled = AsOrDefault(desc["isDisabled"], false);
-            result.IsVisible = AsOrDefault(desc["isVisible"], true);
-            result.Name = AsOrDefault(desc["name"], "");
-            result.Tooltip = AsOrDefault(desc["tooltip"], "");
+            result.Type = JSToStdString(ctx, desc, "type");
+            result.X = JSToInt(ctx, desc, "x");
+            result.Y = JSToInt(ctx, desc, "y");
+            result.Width = JSToInt(ctx, desc, "width");
+            result.Height = JSToInt(ctx, desc, "height");
+            result.IsDisabled = AsOrDefault(ctx, desc, "isDisabled", false);
+            result.IsVisible = AsOrDefault(ctx, desc, "isVisible", true);
+            result.Name = JSToStdString(ctx, desc, "name");
+            result.Tooltip = JSToStdString(ctx, desc, "tooltip");
             if (result.Type == "button")
             {
-                auto dukImage = desc["image"];
-                if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
+                // TODO (mber)
+                // auto dukImage = desc["image"];
+                // if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
+                // {
+                //     result.Image = ImageId(ImageFromDuk(dukImage));
+                //     result.HasBorder = false;
+                // }
+                // else
                 {
-                    result.Image = ImageId(ImageFromDuk(dukImage));
-                    result.HasBorder = false;
-                }
-                else
-                {
-                    result.Text = ProcessString(desc["text"]);
+                    result.Text = JSToStdString(ctx, desc, "text");
                     result.HasBorder = true;
                 }
-                result.IsPressed = AsOrDefault(desc["isPressed"], false);
-                result.OnClick = desc["onClick"];
+                result.IsPressed = AsOrDefault(ctx, desc, "isPressed", false);
+                result.OnClick = JSToCallback(ctx, desc, "onClick");
             }
             else if (result.Type == "checkbox")
             {
-                result.Text = ProcessString(desc["text"]);
-                result.IsChecked = AsOrDefault(desc["isChecked"], false);
-                result.OnChange = desc["onChange"];
+                result.Text = JSToStdString(ctx, desc, "text");
+                result.IsChecked = AsOrDefault(ctx, desc, "isChecked", false);
+                result.OnChange = JSToCallback(ctx, desc, "onChange");
             }
             else if (result.Type == "colourpicker")
             {
-                auto colour = AsOrDefault(desc["colour"], 0);
+                auto colour = AsOrDefault(ctx, desc, "colour", 0);
                 if (colour < COLOUR_COUNT)
                 {
                     result.Colour = colour;
                 }
-                result.OnChange = desc["onChange"];
+                result.OnChange = JSToCallback(ctx, desc, "onChange");
             }
             else if (result.Type == "custom")
             {
-                result.OnDraw = desc["onDraw"];
+                result.OnDraw = JSToCallback(ctx, desc, "onDraw");
             }
             else if (result.Type == "dropdown")
             {
-                if (desc["items"].is_array())
-                {
-                    auto dukItems = desc["items"].as_array();
-                    for (const auto& dukItem : dukItems)
-                    {
-                        result.Items.push_back(ProcessString(dukItem));
-                    }
-                }
-                result.SelectedIndex = AsOrDefault(desc["selectedIndex"], 0);
-                result.OnChange = desc["onChange"];
+                JSIterateArray(
+                    ctx, desc, "items", [&result, ctx](JSValue val) { result.Items.push_back(JSToStdString(ctx, val)); });
+                result.SelectedIndex = AsOrDefault(ctx, desc, "selectedIndex", 0);
+                result.OnChange = JSToCallback(ctx, desc, "onChange");
             }
             else if (result.Type == "groupbox")
             {
-                result.Text = ProcessString(desc["text"]);
+                result.Text = JSToStdString(ctx, desc, "text");
             }
             else if (result.Type == "label")
             {
-                result.Text = ProcessString(desc["text"]);
-                if (ProcessString(desc["textAlign"]) == "centred")
+                result.Text = JSToStdString(ctx, desc, "text");
+                if (JSToStdString(ctx, desc, "textAlign") == "centred")
                 {
                     result.TextAlign = TextAlignment::CENTRE;
                 }
             }
-            else if (result.Type == "listview")
-            {
-                result.ListViewColumns = FromDuk<std::vector<ListViewColumn>>(desc["columns"]);
-                result.ListViewItems = FromDuk<std::vector<ListViewItem>>(desc["items"]);
-                result.SelectedCell = FromDuk<std::optional<RowColumn>>(desc["selectedCell"]);
-                result.ShowColumnHeaders = AsOrDefault(desc["showColumnHeaders"], false);
-                result.IsStriped = AsOrDefault(desc["isStriped"], false);
-                result.OnClick = desc["onClick"];
-                result.OnHighlight = desc["onHighlight"];
-                result.CanSelect = AsOrDefault(desc["canSelect"], false);
-                if (desc["scrollbars"].type() == DukValue::UNDEFINED)
-                    result.Scrollbars = ScrollbarType::Vertical;
-                else
-                    result.Scrollbars = FromDuk<ScrollbarType>(desc["scrollbars"]);
-            }
+            // TODO (mber)
+            // else if (result.Type == "listview")
+            // {
+            //     result.ListViewColumns = FromDuk<std::vector<ListViewColumn>>(desc["columns"]);
+            //     result.ListViewItems = FromDuk<std::vector<ListViewItem>>(desc["items"]);
+            //     result.SelectedCell = FromDuk<std::optional<RowColumn>>(desc["selectedCell"]);
+            //     result.ShowColumnHeaders = AsOrDefault(desc["showColumnHeaders"], false);
+            //     result.IsStriped = AsOrDefault(desc["isStriped"], false);
+            //     result.OnClick = desc["onClick"];
+            //     result.OnHighlight = desc["onHighlight"];
+            //     result.CanSelect = AsOrDefault(desc["canSelect"], false);
+            //     if (desc["scrollbars"].type() == DukValue::UNDEFINED)
+            //         result.Scrollbars = ScrollbarType::Vertical;
+            //     else
+            //         result.Scrollbars = FromDuk<ScrollbarType>(desc["scrollbars"]);
+            // }
             else if (result.Type == "spinner")
             {
-                result.Text = ProcessString(desc["text"]);
-                result.OnIncrement = desc["onIncrement"];
-                result.OnDecrement = desc["onDecrement"];
-                result.OnClick = desc["onClick"];
+                result.Text = JSToStdString(ctx, desc, "text");
+                result.OnIncrement = JSToCallback(ctx, desc, "onIncrement");
+                result.OnDecrement = JSToCallback(ctx, desc, "onDecrement");
+                result.OnClick = JSToCallback(ctx, desc, "onClick");
             }
             else if (result.Type == "textbox")
             {
-                result.Text = ProcessString(desc["text"]);
-                result.MaxLength = AsOrDefault(desc["maxLength"], 32);
-                result.OnChange = desc["onChange"];
+                result.Text = JSToStdString(ctx, desc, "text");
+                result.MaxLength = AsOrDefault(ctx, desc, "maxLength", 32);
+                result.OnChange = JSToCallback(ctx, desc, "onChange");
             }
-            result.HasBorder = AsOrDefault(desc["border"], result.HasBorder);
+            result.HasBorder = AsOrDefault(ctx, desc, "border", result.HasBorder);
             return result;
-        */
         }
     };
 
@@ -301,15 +294,11 @@ namespace OpenRCT2::Ui::Windows
             result.Id = JSToOptionalInt(ctx, desc, "id");
             result.TabIndex = JSToOptionalInt(ctx, desc, "tabIndex");
 
-            /* TODO (mber)
-            if (desc["widgets"].is_array())
-            {
-                auto dukWidgets = desc["widgets"].as_array();
-                std::transform(dukWidgets.begin(), dukWidgets.end(), std::back_inserter(result.Widgets), [](const DukValue& w) {
-                    return CustomWidgetDesc::FromDukValue(w);
-                });
-            }
+            JSIterateArray(ctx, desc, "widgets", [&result, ctx](JSValue val) {
+                result.Widgets.push_back(CustomWidgetDesc::FromJSValue(ctx, val));
+            });
 
+            /* TODO (mber)
             if (desc["tabs"].is_array())
             {
                 auto dukTabs = desc["tabs"].as_array();
