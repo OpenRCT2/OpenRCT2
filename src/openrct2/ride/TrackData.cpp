@@ -3536,10 +3536,10 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::LeftQuarterTurn3TilesUp25, -1 },               // RightQuarterTurn3TilesDown25
         { TrackElemType::RightQuarterTurn1Tile, 1 },                    // LeftQuarterTurn1Tile
         { TrackElemType::LeftQuarterTurn1Tile, -1 },                    // RightQuarterTurn1Tile
-        { TrackElemType::RightTwistUpToDown, 2 },                       // LeftTwistDownToUp
-        { TrackElemType::LeftTwistUpToDown, 2 },                        // RightTwistDownToUp
-        { TrackElemType::RightTwistDownToUp, 2 },                       // LeftTwistUpToDown
-        { TrackElemType::LeftTwistDownToUp, 2 },                        // RightTwistUpToDown
+        { TrackElemType::LeftTwistUpToDown, 2 },                        // LeftTwistDownToUp
+        { TrackElemType::RightTwistUpToDown, 2 },                       // RightTwistDownToUp
+        { TrackElemType::LeftTwistDownToUp, 2 },                        // LeftTwistUpToDown
+        { TrackElemType::RightTwistDownToUp, 2 },                       // RightTwistUpToDown
         { TrackElemType::HalfLoopDown, 0 },                             // HalfLoopUp
         { TrackElemType::HalfLoopUp, 0 },                               // HalfLoopDown
         { TrackElemType::RightCorkscrewDown, 2 },                       // LeftCorkscrewUp
