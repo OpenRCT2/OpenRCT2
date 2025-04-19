@@ -406,6 +406,7 @@
     <ClInclude Include="paint\track\coaster\WoodenWildMouse.h" />
     <ClInclude Include="paint\track\gentle\CarRide.h" />
     <ClInclude Include="paint\track\gentle\GhostTrain.h" />
+    <ClInclude Include="paint\track\gentle\MiniGolf.h" />
     <ClInclude Include="paint\track\gentle\MiniHelicopters.h" />
     <ClInclude Include="paint\track\gentle\MonorailCycles.h" />
     <ClInclude Include="paint\track\transport\MiniatureRailway.h" />

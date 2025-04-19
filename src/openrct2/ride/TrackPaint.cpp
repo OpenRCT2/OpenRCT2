@@ -29,6 +29,8 @@
 #include "../paint/track/Support.h"
 #include "../world/Map.h"
 #include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideData.h"
@@ -2155,6 +2157,79 @@ void trackPaintSpriteBrake(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
+static bool paintUtilShouldDrawFence(PaintSession& session, const TrackElement& trackElement)
+{
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    {
+        // Should be above ground (have passed surface rendering)
+        return false;
+    }
+
+    const SurfaceElement* const surfaceElement = session.Surface;
+    if (surfaceElement->BaseHeight != trackElement.BaseHeight)
+    {
+        return true;
+    }
+
+    if (surfaceElement->GetSlope() != kTileSlopeFlat)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void trackPaintSpriteFence2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 3;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex]);
+    if (paintUtilShouldDrawFence(session, trackElement))
+    {
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 1]);
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 2]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 2]);
+    }
+}
+
+void trackPaintSpriteFence3(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 4;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex]);
+    if (paintUtilShouldDrawFence(session, trackElement))
+    {
+        PaintAddImageAsChildHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 1]);
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 2]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 2]);
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 3]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 3]);
+    }
+}
+
 void trackPaintSprites2(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
@@ -2227,6 +2302,49 @@ void trackPaintSprites3(
 {
     trackPaintSpriteCommon<3, &PaintSession::TrackColours, false, &PaintSession::TrackColours, nullptr, false>(
         session, ride, trackSequence, direction, height, trackElement);
+}
+
+void trackPaintStation1SpriteFences(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 3;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex] : CoordsXYZ{ 0, 0, 0 };
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, offset,
+        sprites.boundBoxes[spriteIndex]);
+
+    constexpr std::array backEdges = { EDGE_NW, EDGE_NE };
+    constexpr std::array frontEdges = { EDGE_SE, EDGE_SW };
+    const bool hasBackFence = TrackPaintUtilHasFence(
+        backEdges[direction & 1], session.MapPosition, trackElement, ride, session.CurrentRotation);
+    const bool hasFrontFence = TrackPaintUtilHasFence(
+        frontEdges[direction & 1], session.MapPosition, trackElement, ride, session.CurrentRotation);
+
+    if (hasBackFence)
+    {
+        const CoordsXYZ& fenceOffset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 1] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, fenceOffset,
+            sprites.boundBoxes[spriteIndex + 1]);
+    }
+    if (hasFrontFence)
+    {
+        const CoordsXYZ& fenceOffset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 2] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 2]), height, fenceOffset,
+            sprites.boundBoxes[spriteIndex + 2]);
+    }
+
+    const auto* const stationObject = ride.getStationObject();
+    const auto stationColour = GetStationColourScheme(session, trackElement);
+    TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasBackFence, stationObject, height, stationColour);
+    TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFrontFence, stationObject, height, stationColour);
 }
 
 void trackPaintWaterfall(
