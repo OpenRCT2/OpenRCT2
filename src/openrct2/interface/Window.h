@@ -96,6 +96,7 @@ namespace OpenRCT2
         WF_AUTO_POSITION = (1 << 16),
         WF_CENTRE_SCREEN = (1 << 17),
     };
+    using WindowFlags = uint32_t;
 
     enum
     {

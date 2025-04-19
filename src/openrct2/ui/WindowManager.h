@@ -44,26 +44,27 @@ namespace OpenRCT2::Ui
         virtual WindowBase* GetOwner(const Viewport* viewport) = 0;
 
         virtual WindowBase* Create(
-            std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
+            std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
+            WindowFlags flags)
             = 0;
 
         template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
         T* Create(
-            WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0,
+            WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, WindowFlags flags = 0,
             TArgs&&... args)
         {
             return static_cast<T*>(Create(std::make_unique<T>(std::forward<TArgs>(args)...), cls, pos, width, height, flags));
         }
 
         template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-        T* Create(WindowClass cls, int32_t width, int32_t height, uint32_t flags, TArgs&&... args)
+        T* Create(WindowClass cls, int32_t width, int32_t height, WindowFlags flags, TArgs&&... args)
         {
             return static_cast<T*>(
                 Create(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, width, height, flags | WF_AUTO_POSITION));
         }
 
         template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-        T* FocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+        T* FocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, WindowFlags flags = 0)
         {
             auto* w = BringToFrontByClass(cls);
             if (w == nullptr)
@@ -74,7 +75,7 @@ namespace OpenRCT2::Ui
         }
 
         template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-        T* FocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
+        T* FocusOrCreate(WindowClass cls, int32_t width, int32_t height, WindowFlags flags = 0)
         {
             auto* w = BringToFrontByClass(cls);
             if (w == nullptr)
@@ -92,7 +93,7 @@ namespace OpenRCT2::Ui
         virtual void CloseTop() = 0;
         virtual void CloseAll() = 0;
         virtual void CloseAllExceptClass(WindowClass cls) = 0;
-        virtual void CloseAllExceptFlags(uint16_t flags) = 0;
+        virtual void CloseAllExceptFlags(WindowFlags flags) = 0;
         virtual void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) = 0;
         virtual void CloseConstructionWindows() = 0;
 
@@ -112,7 +113,7 @@ namespace OpenRCT2::Ui
 
         virtual WindowBase* BringToFront(WindowBase& w) = 0;
         virtual WindowBase* BringToFrontByClass(WindowClass cls) = 0;
-        virtual WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) = 0;
+        virtual WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) = 0;
         virtual WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) = 0;
     };
 
