@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui
 
         WindowBase* Create(
             std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
-            uint32_t flags) override
+            WindowFlags flags) override
         {
             return nullptr;
         }
@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui
         void CloseTop() override {};
         void CloseAll() override {};
         void CloseAllExceptClass(WindowClass cls) override {};
-        void CloseAllExceptFlags(uint16_t flags) override {};
+        void CloseAllExceptFlags(WindowFlags flags) override {};
         void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override {};
         void CloseConstructionWindows() override {};
 
@@ -127,7 +127,7 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) override
+        WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) override
         {
             return nullptr;
         }

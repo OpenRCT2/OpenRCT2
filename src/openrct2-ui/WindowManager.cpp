@@ -838,7 +838,7 @@ public:
 
     WindowBase* Create(
         std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
-        uint32_t flags) override
+        WindowFlags flags) override
     {
         height += wp->getTitleBarDiffTarget();
 
@@ -1070,7 +1070,7 @@ public:
     /**
      * Closes all windows, save for those having any of the passed flags.
      */
-    void CloseAllExceptFlags(uint16_t flags) override
+    void CloseAllExceptFlags(WindowFlags flags) override
     {
         CloseByCondition([flags](WindowBase* w) -> bool { return !(w->flags & flags); });
     }
@@ -1347,7 +1347,7 @@ public:
         return &w;
     }
 
-    WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) override
+    WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) override
     {
         WindowBase* w = FindByClass(cls);
         if (w != nullptr)

@@ -88,7 +88,7 @@ namespace OpenRCT2
             rct_windownumber number{};
             RideId rideId;
         };
-        uint16_t flags{};
+        WindowFlags flags{};
         OpenRCT2::ScrollArea scrolls[3];
         uint16_t no_list_items{};     // 0 for no items
         int16_t selected_list_item{}; // -1 for none selected
