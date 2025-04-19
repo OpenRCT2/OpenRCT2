@@ -2433,8 +2433,9 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SIMULATE_LIGHT].type = WindowWidgetType::Empty;
                 widgets[WIDX_TEST_LIGHT].type = WindowWidgetType::Empty;
                 widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
-                widgetHeight = 46;
+                widgetHeight = widgets[WIDX_PAGE_BACKGROUND].top + 3;
             }
+
             for (i = WIDX_CLOSE_LIGHT; i <= WIDX_OPEN_LIGHT; i++)
             {
                 widgets[i].left = width - 20;
