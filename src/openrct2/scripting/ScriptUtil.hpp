@@ -13,6 +13,7 @@
 
     #include "../world/Location.hpp"
 
+    #include <functional>
     #include <optional>
     #include <quickjs.h>
     #include <string>
@@ -105,17 +106,17 @@ namespace OpenRCT2::Scripting
         return {};
     }
 
-    inline JSValue JSFromStdString(JSContext* ctx, std::string str)
-    {
-        return JS_NewString(ctx, str.c_str());
-    }
-
     inline std::string JSToStdString(JSContext* ctx, JSValue obj, const char* property)
     {
         JSValue val = JS_GetPropertyStr(ctx, obj, property);
         std::string output = JSToStdString(ctx, val);
         JS_FreeValue(ctx, val);
         return output;
+    }
+
+    inline JSValue JSFromStdString(JSContext* ctx, std::string str)
+    {
+        return JS_NewString(ctx, str.c_str());
     }
 
     inline std::optional<int32_t> JSToOptionalInt(JSContext* ctx, JSValue obj, const char* property)
@@ -132,6 +133,56 @@ namespace OpenRCT2::Scripting
         }
         JS_FreeValue(ctx, val);
         return output;
+    }
+
+    inline bool AsOrDefault(JSContext* ctx, JSValue obj, const char* property, bool def)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        bool output;
+        if (JS_IsBool(val))
+        {
+            int result = JS_ToBool(ctx, val);
+            output = result >= 0 ? result : def;
+        }
+        else
+        {
+            output = def;
+        }
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
+    inline int32_t AsOrDefault(JSContext* ctx, JSValue obj, const char* property, int32_t def)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        int32_t output;
+        if (!JS_IsNumber(val))
+        {
+            output = def;
+        }
+        if (JS_ToInt32(ctx, &output, val) < 0)
+        {
+            output = def;
+        }
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
+    inline void JSIterateArray(JSContext* ctx, JSValue obj, const char* property, const std::function<void(JSValue)>& callback)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        if (JS_IsArray(val))
+        {
+            int64_t arrayLen = -1;
+            JS_GetLength(ctx, val, &arrayLen);
+            for (int64_t i = 0; i < arrayLen; i++)
+            {
+                JSValue elem = JS_GetPropertyInt64(ctx, val, i);
+                callback(elem);
+                JS_FreeValue(ctx, elem);
+            }
+        }
+        JS_FreeValue(ctx, val);
     }
 
     inline int32_t JSToInt(JSContext* ctx, JSValue obj, const char* property)

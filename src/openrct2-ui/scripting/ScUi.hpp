@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING_REFACTOR
 
+    #include "../interface/Window.h"
     #include "../windows/Windows.h"
     #include "CustomMenu.h"
     #include "CustomWindow.h"
