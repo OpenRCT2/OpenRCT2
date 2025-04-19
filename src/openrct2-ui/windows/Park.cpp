@@ -576,7 +576,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::FlatBtn;
                 widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
                 widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
-                y = 49;
+                y = widgets[WIDX_PAGE_BACKGROUND].top + 6;
             }
 
             for (int32_t i = WIDX_CLOSE_LIGHT; i <= WIDX_OPEN_LIGHT; i++)
