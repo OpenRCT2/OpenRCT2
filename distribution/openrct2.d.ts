@@ -1644,7 +1644,7 @@ declare global {
 
 	interface RideBreakdownArgs {
 		readonly rideId: number;
-		breakdownReason: number;
+		breakdownReason: string;
 	}
  
     interface RideRatingsCalculateArgs {
