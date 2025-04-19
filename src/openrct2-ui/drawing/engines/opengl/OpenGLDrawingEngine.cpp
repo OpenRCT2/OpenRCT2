@@ -255,8 +255,11 @@ public:
         ConfigureBits(width, height, width);
         ConfigureCanvas();
         ConfigureDirtyGrid();
+
         _drawingContext->Resize(width, height);
+        _drawingContext->StartNewDraw();
         _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
+        _drawingContext->FlushCommandBuffers();
     }
 
     void ConfigureDirtyGrid()
