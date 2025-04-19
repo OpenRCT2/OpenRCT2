@@ -3571,12 +3571,12 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::SBendRightCovered, 0 },                        // SBendRightCovered
         { TrackElemType::LeftQuarterTurn3TilesCovered, 0 },             // LeftQuarterTurn3TilesCovered
         { TrackElemType::RightQuarterTurn3TilesCovered, 0 },            // RightQuarterTurn3TilesCovered
-        { TrackElemType::LeftHalfBankedHelixUpSmall, 0 },               // LeftHalfBankedHelixUpSmall
-        { TrackElemType::RightHalfBankedHelixUpSmall, 0 },              // RightHalfBankedHelixUpSmall
+        { TrackElemType::RightHalfBankedHelixDownSmall, 0 },            // LeftHalfBankedHelixUpSmall
+        { TrackElemType::LeftHalfBankedHelixDownSmall, 0 },             // RightHalfBankedHelixUpSmall
         { TrackElemType::RightHalfBankedHelixUpSmall, 0 },              // LeftHalfBankedHelixDownSmall
         { TrackElemType::LeftHalfBankedHelixUpSmall, 0 },               // RightHalfBankedHelixDownSmall
-        { TrackElemType::LeftHalfBankedHelixUpLarge, 0 },               // LeftHalfBankedHelixUpLarge
-        { TrackElemType::RightHalfBankedHelixUpLarge, 0 },              // RightHalfBankedHelixUpLarge
+        { TrackElemType::RightHalfBankedHelixDownLarge, 0 },            // LeftHalfBankedHelixUpLarge
+        { TrackElemType::LeftHalfBankedHelixDownLarge, 0 },             // RightHalfBankedHelixUpLarge
         { TrackElemType::RightHalfBankedHelixUpLarge, 0 },              // LeftHalfBankedHelixDownLarge
         { TrackElemType::LeftHalfBankedHelixUpLarge, 0 },               // RightHalfBankedHelixDownLarge
         { TrackElemType::RightQuarterTurn1TileDown60, 1 },              // LeftQuarterTurn1TileUp60

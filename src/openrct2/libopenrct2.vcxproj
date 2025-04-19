@@ -393,6 +393,7 @@
     <ClInclude Include="paint\track\coaster\HeartlineTwisterCoaster.h" />
     <ClInclude Include="paint\track\coaster\InvertedHairpinCoaster.h" />
     <ClInclude Include="paint\track\coaster\InvertedImpulseCoaster.h" />
+    <ClInclude Include="paint\track\coaster\JuniorRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\MineTrainCoaster.h" />
     <ClInclude Include="paint\track\coaster\MiniSuspendedCoaster.h" />
     <ClInclude Include="paint\track\coaster\ReverseFreefallCoaster.h" />
@@ -402,6 +403,7 @@
     <ClInclude Include="paint\track\coaster\Steeplechase.h" />
     <ClInclude Include="paint\track\coaster\SuspendedSwingingCoaster.h" />
     <ClInclude Include="paint\track\coaster\VirginiaReel.h" />
+    <ClInclude Include="paint\track\coaster\WaterCoaster.h" />
     <ClInclude Include="paint\track\coaster\WoodenRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\WoodenWildMouse.h" />
     <ClInclude Include="paint\track\gentle\CarRide.h" />
