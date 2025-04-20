@@ -2304,6 +2304,15 @@ void trackPaintSprites3(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
+void trackPaintSprites4GreenLight(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<
+        4, &PaintSession::TrackColours, false, &PaintSession::TrackColours, &TrackElement::HasGreenLight, false>(
+        session, ride, trackSequence, direction, height, trackElement);
+}
+
 void trackPaintStation1SpriteFences(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
