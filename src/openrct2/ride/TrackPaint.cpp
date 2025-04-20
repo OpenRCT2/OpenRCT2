@@ -2513,7 +2513,6 @@ void trackPaintWhirlpoolSprites2(
         sprites.boundBoxes[spriteIndex + 2]);
 }
 
-// this should only be used by the original rollercoasters
 void trackPaintReverseFreefallSlope(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
@@ -2521,7 +2520,14 @@ void trackPaintReverseFreefallSlope(
     const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
     const auto& sprites = spriteDesc.sprites;
 
-    const std::array colours = { session.SupportColours, session.TrackColours };
+    auto supportColours = session.SupportColours;
+
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+    {
+        supportColours = supportColours.WithTransparency(FilterPaletteID::PaletteDarken1);
+    }
+
+    const std::array colours = { supportColours, session.TrackColours };
     const bool reverseAngle = direction > 0 && direction < 3;
 
     constexpr uint32_t spriteCount = 2;
@@ -2530,15 +2536,26 @@ void trackPaintReverseFreefallSlope(
     session.LastPS = nullptr;
     session.LastAttachedPS = nullptr;
 
-    PaintAddImageAsParentHeight(
-        session, colours[reverseAngle].WithIndex(sprites.imageIndexes[spriteIndex + 0]), height, { 0, 0, 0 },
-        sprites.boundBoxes[spriteIndex + 0]);
-    PaintAddImageAsChildHeight(
-        session, colours[(reverseAngle + 1) & 1].WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, { 0, 0, 0 },
-        sprites.boundBoxes[spriteIndex + 0]);
+    uint32_t colourIndex = reverseAngle;
+    if (colourIndex == 1
+        || (colourIndex == 0 && !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+            && (session.Flags & PaintSessionFlags::PassedSurface)))
+    {
+        PaintAddImageAsParentHeight(
+            session, colours[colourIndex].WithIndex(sprites.imageIndexes[spriteIndex + 0]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 0]);
+    }
+    colourIndex = (reverseAngle + 1) & 1;
+    if (colourIndex == 1
+        || (colourIndex == 0 && !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+            && (session.Flags & PaintSessionFlags::PassedSurface)))
+    {
+        PaintAddImageAsChildHeight(
+            session, colours[colourIndex].WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 0]);
+    }
 }
 
-// this should only be used by the original rollercoasters
 void trackPaintReverseFreefallVertical(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
@@ -2546,13 +2563,26 @@ void trackPaintReverseFreefallVertical(
     const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
     const auto& sprites = spriteDesc.sprites;
 
-    const std::array colours = { session.SupportColours, session.TrackColours };
+    auto supportColours = session.SupportColours;
+
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+    {
+        supportColours = supportColours.WithTransparency(FilterPaletteID::PaletteDarken1);
+    }
+
+    const std::array colours = { supportColours, session.TrackColours };
 
     const uint32_t spriteIndex = (direction * spriteDesc.numSequences) + trackSequence;
 
-    PaintAddImageAsParentHeight(
-        session, colours[trackSequence].WithIndex(sprites.imageIndexes[spriteIndex]), height, { 0, 0, 0 },
-        sprites.boundBoxes[spriteIndex]);
+    uint32_t colourIndex = trackSequence;
+    if (colourIndex == 1
+        || (colourIndex == 0 && !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+            && (session.Flags & PaintSessionFlags::PassedSurface)))
+    {
+        PaintAddImageAsParentHeight(
+            session, colours[colourIndex].WithIndex(sprites.imageIndexes[spriteIndex]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex]);
+    }
 }
 
 static uint32_t getRailwayCrossingIndentIndex(
