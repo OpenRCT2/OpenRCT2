@@ -2623,6 +2623,8 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
 
     auto hasEntrance = false;
     auto hasExit = false;
+    auto entranceZ = -1;
+    auto lowestExitZ = -1;
     for (const auto& station : ride->getStations())
     {
         if (station.Start.IsNull())
@@ -2630,11 +2632,20 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
 
         if (!station.Entrance.IsNull())
         {
+            if (hasEntrance && ride->mode == RideMode::waterSlide)
+            {
+                return { false, STR_ONLY_ONE_ENTRANCE_ALLOWED_IN_THIS_MODE };
+            }
+            entranceZ = station.Entrance.z;
             hasEntrance = true;
         }
 
         if (!station.Exit.IsNull())
         {
+            // Water slide mode allows for two exits (to make the entrance station easier to access for mechanics).
+            if (lowestExitZ < 0 || lowestExitZ > station.Exit.z)
+                lowestExitZ = station.Exit.z;
+
             hasExit = true;
         }
 
@@ -2656,6 +2667,9 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
     {
         return { false, STR_EXIT_NOT_YET_BUILT };
     }
+
+    if (ride->mode == RideMode::waterSlide && entranceZ <= lowestExitZ)
+        return { false, STR_ENTRANCE_MUST_BE_HIGHER_THAN_EXIT_IN_THIS_MODE };
 
     return { true };
 }

@@ -3836,3 +3836,5 @@ STR_6794    :Scenery and Themes
 STR_6795    :Water slide mode
 STR_6796    :Waiting
 STR_6797    :Unable to operate without exactly two stations in this mode
+STR_6798    :Only one entrance is allowed in this mode
+STR_6799    :Entrance must be higher than exit in this mode
