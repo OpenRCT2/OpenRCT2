@@ -2276,7 +2276,7 @@ void UpdateFootpathsFromMapping(
     pathToRailingsMap[entryIndex] = railingIndex;
 }
 
-const std::vector<std::string_view> peepAnimObjects = {
+static constexpr auto kPeepAnimObjects = std::to_array<std::string_view>({
     "rct2.peep_animations.guest",
     "rct2.peep_animations.handyman",
     "rct2.peep_animations.mechanic",
@@ -2292,11 +2292,11 @@ const std::vector<std::string_view> peepAnimObjects = {
     "rct2.peep_animations.entertainer_roman",
     "rct2.peep_animations.entertainer_sheriff",
     "rct2.peep_animations.entertainer_snowman",
-};
+});
 
-const std::vector<std::string_view>& GetLegacyPeepAnimationObjects()
+std::span<const std::string_view> GetLegacyPeepAnimationObjects()
 {
-    return peepAnimObjects;
+    return kPeepAnimObjects;
 }
 
 using AnimObjectConversionTable = std::map<RCT12PeepAnimationGroup, std::pair<ObjectEntryIndex, PeepAnimationGroup>>;

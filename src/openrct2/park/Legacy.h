@@ -14,8 +14,8 @@
 
 #include <cstdint>
 #include <optional>
+#include <span>
 #include <string_view>
-#include <vector>
 
 namespace OpenRCT2
 {
@@ -48,7 +48,7 @@ void UpdateFootpathsFromMapping(
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
     const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
 
-const std::vector<std::string_view>& GetLegacyPeepAnimationObjects();
+std::span<const std::string_view> GetLegacyPeepAnimationObjects();
 void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState);
 
 std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::ClimateType);
