@@ -3809,3 +3809,5 @@ STR_6761    :Scenario Details
 STR_6762    :Water slide mode
 STR_6763    :Waiting
 STR_6764    :Unable to operate without exactly two stations in this mode
+STR_6765    :Only one entrance is allowed in this mode
+STR_6766    :Entrance must be higher than exit in this mode

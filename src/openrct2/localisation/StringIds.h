@@ -1731,6 +1731,8 @@ enum : StringId
 
     STR_STATUS_WAITING = 6763,
     STR_UNABLE_TO_OPERATE_WITHOUT_TWO_STATIONS_IN_THIS_MODE = 6764,
+    STR_ONLY_ONE_ENTRANCE_ALLOWED_IN_THIS_MODE = 6765,
+    STR_ENTRANCE_MUST_BE_HIGHER_THAN_EXIT_IN_THIS_MODE = 6766,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
