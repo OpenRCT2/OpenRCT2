@@ -2379,12 +2379,12 @@ void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState)
     LOG_INFO("Converted %d peep entities", numConverted);
 }
 
-static constexpr std::array kClimateObjectIdsByLegacyClimateType = {
+static constexpr auto kClimateObjectIdsByLegacyClimateType = std::to_array<std::string_view>({
     "rct2.climate.cool_and_wet",
     "rct2.climate.warm",
     "rct2.climate.hot_and_dry",
     "rct2.climate.cold",
-};
+});
 
 std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::ClimateType climate)
 {
