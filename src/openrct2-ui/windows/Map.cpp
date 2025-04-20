@@ -240,7 +240,6 @@ namespace OpenRCT2::Ui::Windows
 
             flags |= WF_RESIZABLE;
 
-            WindowSetResize(*this, { WW, WH }, { WW, WH });
             SetInitialWindowDimensions();
             ResetMaxWindowDimensions();
             ResizeMiniMap();
@@ -1210,13 +1209,15 @@ namespace OpenRCT2::Ui::Windows
 
         void ResetMaxWindowDimensions()
         {
-            max_width = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), WW, ContextGetWidth());
-            max_height = std::clamp(
+            auto newMaxWidth = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), WW, ContextGetWidth());
+            auto newMaxHeight = std::clamp(
                 getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
 
             auto scrollbarSize = getMiniMapWidth() + GetReservedRightSpace() > ContextGetWidth() ? kScrollBarWidth : 2;
-            max_width += scrollbarSize;
-            max_height += scrollbarSize;
+            newMaxWidth += scrollbarSize;
+            newMaxHeight += scrollbarSize;
+
+            WindowSetResize(*this, { WW, WH }, { newMaxWidth, newMaxHeight });
         }
 
         void ResizeMiniMap()
