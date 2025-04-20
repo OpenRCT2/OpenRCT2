@@ -27,6 +27,7 @@
 #include <openrct2/actions/FootpathPlaceAction.h>
 #include <openrct2/actions/FootpathRemoveAction.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/FootpathObject.h>
@@ -437,9 +438,12 @@ namespace OpenRCT2::Ui::Windows
 
         void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
+            if (!Config::Get().interface.TouchEnhancements)
             {
-                WindowFootpathPlacePathAtPoint(screenCoords);
+                if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
+                {
+                    WindowFootpathPlacePathAtPoint(screenCoords);
+                }
             }
         }
 

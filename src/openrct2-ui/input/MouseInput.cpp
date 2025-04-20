@@ -30,6 +30,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Cursors.h>
+#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ui/UiContext.h>
@@ -64,6 +65,9 @@ namespace OpenRCT2
     static uint8_t _currentScrollArea;
 
     ScreenCoordsXY gInputDragLast;
+    static ScreenCoordsXY gTouchDragLast;
+    static int32_t s_touchScope;
+    static bool _moveViewport = true;
 
     uint32_t gTooltipCloseTimeout;
     WidgetRef gTooltipWidget;
@@ -267,8 +271,15 @@ namespace OpenRCT2
                 _inputState = InputState::Reset;
                 ContextShowCursor();
                 break;
-            case MouseState::LeftPress:
             case MouseState::LeftRelease:
+                if (Config::Get().interface.TouchEnhancements)
+                {
+                    _inputState = InputState::Reset;
+                    ContextShowCursor();
+                    gTouchDragLast = screenCoords;
+                }
+                break;
+            case MouseState::LeftPress:
             case MouseState::RightPress:
                 // Function only handles right button, so it's the only one relevant
                 break;
@@ -296,6 +307,7 @@ namespace OpenRCT2
         {
             case InputState::Reset:
                 WindowTooltipReset(screenCoords);
+                _moveViewport = true;
                 // fall-through
             case InputState::Normal:
                 switch (state)
@@ -305,6 +317,50 @@ namespace OpenRCT2
                         break;
                     case MouseState::LeftPress:
                         InputWidgetLeft(screenCoords, w, widgetIndex);
+                        //                        If Touchscreen Option is True,(ex> Android or Tablet) don't break
+                        //                        Next case running too.
+                        if (!Config::Get().interface.TouchEnhancements)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            auto window_loadsave = windowMgr->FindByClass(WindowClass::Loadsave);
+                            if (window_loadsave != nullptr)
+                            {
+                                // If LoadSave window is Opened, Don't Move Viewport.
+                                break;
+                            }
+
+                            // Copy from Right Press
+                            windowMgr->CloseByClass(WindowClass::Tooltip);
+
+                            if (w != nullptr)
+                            {
+                                w = windowMgr->BringToFront(*w);
+                            }
+
+                            if (widgetIndex != kWidgetIndexNull)
+                            {
+                                switch (widget->type)
+                                {
+                                    case WindowWidgetType::Viewport:
+                                        if (!(gLegacyScene == LegacyScene::trackDesignsManager
+                                              || gLegacyScene == LegacyScene::titleSequence))
+                                        {
+                                            if (_moveViewport)
+                                                InputViewportDragBegin(*w);
+                                        }
+                                        break;
+                                    // Scroll can some of control bug. ex)Scenary Window. So This is Remove.
+                                    // case WindowWidgetType::Scroll:
+                                    // InputScrollDragBegin(screenCoords, w, widgetIndex);
+                                    // break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
                         break;
                     case MouseState::RightPress:
                         windowMgr->CloseByClass(WindowClass::Tooltip);
@@ -383,6 +439,18 @@ namespace OpenRCT2
                     break;
                 }
 
+                if (Config::Get().interface.TouchEnhancements)
+                {
+                    if (state == MouseState::Released)
+                    {
+                        InputViewportDragContinue();
+                    }
+                    else if (state == MouseState::LeftRelease)
+                    {
+                        InputViewportDragEnd();
+                    }
+                }
+
                 switch (state)
                 {
                     case MouseState::Released:
@@ -406,6 +474,14 @@ namespace OpenRCT2
                         {
                             break;
                         }
+                        if (w == windowMgr->FindByClass(WindowClass::Land) || w == windowMgr->FindByClass(WindowClass::Water))
+                        {
+                            if (_moveViewport)
+                            {
+                                break;
+                                // this code is fir blocking viewport jumping.
+                            }
+                        }
 
                         w->OnToolDrag(gCurrentToolWidget.widget_index, screenCoords);
                         break;
@@ -417,6 +493,14 @@ namespace OpenRCT2
                             {
                                 w = windowMgr->FindByNumber(
                                     gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+                                if (Config::Get().interface.TouchEnhancements)
+                                {
+                                    if (widget->type == WindowWidgetType::Viewport)
+                                    {
+                                        gTouchDragLast = screenCoords;
+                                    }
+                                }
+
                                 if (w != nullptr)
                                 {
                                     w->OnToolUp(gCurrentToolWidget.widget_index, screenCoords);
@@ -424,7 +508,24 @@ namespace OpenRCT2
                             }
                             else if (!gInputFlags.has(InputFlag::unk4))
                             {
-                                ViewportInteractionLeftClick(screenCoords);
+                                if (Config::Get().interface.TouchEnhancements)
+                                {
+                                    if (!(gLegacyScene == LegacyScene::trackDesignsManager
+                                          || gLegacyScene == LegacyScene::titleSequence))
+                                    {
+                                        InputViewportDragEnd();
+                                        if (_ticksSinceDragStart.has_value()
+                                            && gCurrentRealTimeTicks - _ticksSinceDragStart.value() < 500)
+                                        {
+                                            ViewportInteractionLeftClick(screenCoords);
+                                        }
+                                        // If title Sequence, hang on in Some of device.
+                                    }
+                                }
+                                else
+                                {
+                                    ViewportInteractionLeftClick(screenCoords);
+                                }
                             }
                         }
                         break;
@@ -540,7 +641,14 @@ namespace OpenRCT2
     static void InputViewportDragBegin(WindowBase& w)
     {
         w.flags &= ~WF_SCROLLING_TO_LOCATION;
-        _inputState = InputState::ViewportRight;
+        if (!Config::Get().interface.TouchEnhancements)
+        {
+            _inputState = InputState::ViewportRight;
+        }
+        else
+        {
+            _inputState = InputState::ViewportLeft;
+        }
         _dragWidget.window_classification = w.classification;
         _dragWidget.window_number = w.number;
         _ticksSinceDragStart = gCurrentRealTimeTicks;
@@ -587,6 +695,14 @@ namespace OpenRCT2
         {
             if (!(w->flags & WF_NO_SCROLLING))
             {
+                if (Config::Get().interface.TouchEnhancements)
+                {
+                    if (std::abs(differentialCoords.x) > 80 || std::abs(differentialCoords.y) > 80)
+                    {
+                        return;
+                        // Drag coordinate over 80 by 1 tick, it's ignore. Prevent Viewport jumping
+                    }
+                }
                 // User dragged a scrollable viewport
 
                 // If the drag time is less than 500 the "drag" is usually interpreted as a right click.
@@ -615,7 +731,7 @@ namespace OpenRCT2
 
 #ifndef __EMSCRIPTEN__
         const CursorState* cursorState = ContextGetCursorState();
-        if (cursorState->touch || Config::Get().general.InvertViewportDrag)
+        if (cursorState->touch || Config::Get().general.InvertViewportDrag || Config::Get().interface.TouchEnhancements)
         {
             gInputDragLast = newDragCoords;
         }
@@ -1041,6 +1157,7 @@ namespace OpenRCT2
      */
     static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex)
     {
+        static bool s_touchover = false;
         WindowClass windowClass = WindowClass::Null;
         rct_windownumber windowNumber = 0;
 
@@ -1090,7 +1207,51 @@ namespace OpenRCT2
                     if (w != nullptr)
                     {
                         gInputFlags.set(InputFlag::unk4);
-                        w->OnToolDown(gCurrentToolWidget.widget_index, screenCoords);
+
+                        if (!Config::Get().interface.TouchEnhancements)
+                        {
+                            w->OnToolDown(gCurrentToolWidget.widget_index, screenCoords);
+                        }
+                        else
+                        {
+                            if (s_touchover)
+                            {
+                                s_touchScope = std::ceil(40 * Config::Get().general.WindowScale);
+                                if (gTouchDragLast.x >= screenCoords.x - s_touchScope
+                                    && gTouchDragLast.x <= screenCoords.x + s_touchScope
+                                    && gTouchDragLast.y >= screenCoords.y - s_touchScope
+                                    && gTouchDragLast.y <= screenCoords.y + s_touchScope)
+                                {
+                                    s_touchover = false;
+                                    w->OnToolDown(gCurrentToolWidget.widget_index, gTouchDragLast);
+                                    if (w != windowMgr->FindByClass(WindowClass::RideConstruction))
+                                    {
+                                        gTouchDragLast.x = -2;
+                                        gTouchDragLast.y = -2;
+                                    }
+                                    // This is Bypass gTouchDrag bug.
+                                    // Land or Water can jumping viewport. So, If land tool or water up and down, lock viewport
+                                    // moving.
+                                    if (w == windowMgr->FindByClass(WindowClass::Land)
+                                        || w == windowMgr->FindByClass(WindowClass::Water))
+                                    {
+                                        _moveViewport = false;
+                                    }
+                                }
+                                else
+                                {
+                                    // gTouchDragLast = screenCoords;
+                                    s_touchover = false;
+                                }
+                            }
+                            else
+                            {
+                                s_touchover = true;
+                                // gTouchDragLast = screenCoords;
+                                // LeftDown's Coordinate -> LeftRelease's Coordinate using
+                                w->OnToolUpdate(gCurrentToolWidget.widget_index, screenCoords);
+                            }
+                        }
                     }
                 }
                 break;
@@ -1098,7 +1259,75 @@ namespace OpenRCT2
                 InputWindowPositionBegin(*w, widgetIndex, screenCoords);
                 break;
             case WindowWidgetType::Scroll:
-                InputScrollBegin(*w, widgetIndex, screenCoords);
+                if (!Config::Get().interface.TouchEnhancements)
+                {
+                    InputScrollBegin(*w, widgetIndex, screenCoords);
+                }
+                else
+                {
+                    bool ScrollSelected = false;
+                    if (w == windowMgr->FindByClass(WindowClass::Scenery))
+                    {
+                        InputScrollBegin(*w, widgetIndex, screenCoords);
+                    }
+                    else if (w == windowMgr->FindByClass(WindowClass::ConstructRide))
+                    {
+                        InputScrollBegin(*w, widgetIndex, screenCoords);
+                        // NewRide is Modded for TouchInterface.
+                    }
+                    else if (w == windowMgr->FindByClass(WindowClass::Map))
+                    {
+                        InputScrollBegin(*w, widgetIndex, screenCoords);
+                        break;
+                    }
+                    else if (w == windowMgr->FindByClass(WindowClass::ScenarioSelect))
+                    {
+                        // This method if copy from ScenarioSelect.cpp's GetScenarioListItemSize()...
+                        if (!LocalisationService_UseTrueTypeFont())
+                        {
+                            s_touchScope = 24;
+                            // ScenarioSlect.cpp's kTrueFontSize
+                        }
+                        else
+                        {
+                            // Scenario title
+                            s_touchScope = FontGetLineHeight(FontStyle::Medium);
+                            // 'Completed by' line
+                            s_touchScope += FontGetLineHeight(FontStyle::Small);
+                        }
+                        s_touchScope = std::ceil(s_touchScope);
+
+                        // if (gTouchDragLast.y >= screenCoords.y - s_touchScope/2 && gTouchDragLast.y <= screenCoords.y +
+                        // s_touchScope/2)
+                        if (gTouchDragLast.y / s_touchScope == screenCoords.y / s_touchScope)
+                        {
+                            ScrollSelected = true;
+                        }
+                    }
+                    else
+                    {
+                        s_touchScope = std::ceil(kScrollableRowHeight);
+                        if (gTouchDragLast.y / s_touchScope == screenCoords.y / s_touchScope)
+                        {
+                            ScrollSelected = true;
+                        }
+                    }
+
+                    // if (gTouchDragLast.x >= screenCoords.x - s_touchScope && gTouchDragLast.x <= screenCoords.x +
+                    // s_touchScope
+                    // && gTouchDragLast.y >= screenCoords.y - s_touchScope && gTouchDragLast.y <= screenCoords.y +
+                    // s_touchScope)
+                    if (ScrollSelected)
+                    {
+                        InputScrollBegin(*w, widgetIndex, gTouchDragLast);
+                        gTouchDragLast.x = -2;
+                        gTouchDragLast.y = -2;
+                    }
+                    else
+                    {
+                        InputScrollDragBegin(screenCoords, w, widgetIndex);
+                    }
+                }
                 break;
             case WindowWidgetType::Empty:
             case WindowWidgetType::LabelCentred:
@@ -1122,6 +1351,14 @@ namespace OpenRCT2
             case WindowWidgetType::Checkbox:
             case WindowWidgetType::TextBox:
             case WindowWidgetType::Custom:
+                if (Config::Get().interface.TouchEnhancements)
+                {
+                    if (w != windowMgr->FindByClass(WindowClass::RideConstruction))
+                    {
+                        gTouchDragLast.x = -2;
+                        gTouchDragLast.y = -2;
+                    }
+                }
                 if (!WidgetIsDisabled(*w, widgetIndex))
                 {
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget.midX());
@@ -1233,7 +1470,25 @@ namespace OpenRCT2
             if (w == nullptr)
                 ToolCancel();
             else if (InputGetState() != InputState::ViewportRight)
-                w->OnToolUpdate(gCurrentToolWidget.widget_index, screenCoords);
+            {
+                // Touch Interface's Move Viewport is using ViewportLeft.
+                if (!Config::Get().interface.TouchEnhancements)
+                {
+                    w->OnToolUpdate(gCurrentToolWidget.widget_index, screenCoords);
+                }
+                else
+                {
+                    // This Code block is preview on Viewport by ride construction.
+                    // If not viewport touch. It is not follow cursor.
+                    WindowBase* window = windowMgr->FindFromPoint(screenCoords);
+                    WidgetIndex widgetId = windowMgr->FindWidgetFromPoint(*window, screenCoords);
+                    if (window->widgets[widgetId].type == WindowWidgetType::Viewport)
+                        w->OnToolUpdate(gCurrentToolWidget.widget_index, screenCoords);
+                    else
+                        w->OnToolUpdate(gCurrentToolWidget.widget_index, gTouchDragLast);
+                    // This is When ride Construct for See Ride's height or opposite on last LeftRelease Coord.
+                }
+            }
         }
     }
 
