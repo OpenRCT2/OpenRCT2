@@ -2163,7 +2163,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_INTERFACE, SPR_TAB_PAINT_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CONTROLS, SPR_TAB_GEARS_0);
+            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CONTROLS, SPR_G2_CONTROLS_TAB_START);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
         }
@@ -2259,7 +2259,7 @@ namespace OpenRCT2::Ui::Windows
             8, // WINDOW_OPTIONS_PAGE_CULTURE,
             2, // WINDOW_OPTIONS_PAGE_AUDIO,
             4, // WINDOW_OPTIONS_PAGE_INTERFACE,
-            2, // WINDOW_OPTIONS_PAGE_CONTROLS,
+            8, // WINDOW_OPTIONS_PAGE_CONTROLS,
             4, // WINDOW_OPTIONS_PAGE_MISC,
             2, // WINDOW_OPTIONS_PAGE_ADVANCED,
         };
@@ -2270,7 +2270,7 @@ namespace OpenRCT2::Ui::Windows
             8,                                                 // WINDOW_OPTIONS_PAGE_CULTURE,
             16,                                                // WINDOW_OPTIONS_PAGE_AUDIO,
             8,                                                 // WINDOW_OPTIONS_PAGE_INTERFACE,
-            4,                                                 // WINDOW_OPTIONS_PAGE_CONTROLS,
+            8,                                                 // WINDOW_OPTIONS_PAGE_CONTROLS,
             16,                                                // WINDOW_OPTIONS_PAGE_MISC,
             16,                                                // WINDOW_OPTIONS_PAGE_ADVANCED,
         };
