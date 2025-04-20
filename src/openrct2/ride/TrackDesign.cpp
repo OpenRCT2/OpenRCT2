@@ -157,9 +157,9 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     statistics.maxPositiveVerticalG = ride.maxPositiveVerticalG;
     statistics.maxNegativeVerticalG = ride.maxNegativeVerticalG;
     statistics.maxLateralG = ride.maxLateralG;
-    statistics.inversions = ride.inversions;
-    statistics.holes = ride.holes;
-    statistics.drops = ride.getNumDrops();
+    statistics.inversions = ride.numInversions;
+    statistics.holes = ride.numHoles;
+    statistics.drops = ride.numDrops;
     statistics.highestDropHeight = ride.highestDropHeight;
     statistics.totalAirTime = ride.totalAirTime;
 

@@ -969,7 +969,9 @@ namespace OpenRCT2::RCT1
             dst->proposedNumTrains = src->numTrains;
             dst->maxTrains = src->maxTrains;
             dst->proposedNumCarsPerTrain = src->numCarsPerTrain + rideEntry->zero_cars;
-            dst->specialTrackElements = src->specialTrackElements;
+            auto split = splitCombinedHelicesAndSpecialElements(src->specialTrackElements);
+            dst->numHelices = split.first;
+            dst->specialTrackElements = split.second;
             dst->numShelteredSections = src->numShelteredSections;
             dst->shelteredLength = src->shelteredLength;
 
@@ -1055,13 +1057,17 @@ namespace OpenRCT2::RCT1
             dst->turnCountBanked = src->turnCountBanked;
             dst->turnCountDefault = src->turnCountDefault;
             dst->turnCountSloped = src->turnCountSloped;
-            dst->dropsPoweredLifts = src->numDrops;
+
+            auto splitDropsLifts = splitCombinedNumDropsPoweredLifts(src->numDrops);
+            dst->numDrops = splitDropsLifts.first;
+            dst->numPoweredLifts = splitDropsLifts.second;
+
             dst->startDropHeight = src->startDropHeight / 2;
             dst->highestDropHeight = src->highestDropHeight / 2;
             if (src->type == RideType::MiniatureGolf)
-                dst->holes = src->numInversions & kRCT12InversionAndHoleMask;
+                dst->numHoles = src->numInversions & kRCT12InversionAndHoleMask;
             else
-                dst->inversions = src->numInversions & kRCT12InversionAndHoleMask;
+                dst->numInversions = src->numInversions & kRCT12InversionAndHoleMask;
             dst->shelteredEighths = src->numInversions >> 5;
             dst->boatHireReturnDirection = src->boatHireReturnDirection;
             dst->boatHireReturnPosition = { src->boatHireReturnPosition.x, src->boatHireReturnPosition.y };

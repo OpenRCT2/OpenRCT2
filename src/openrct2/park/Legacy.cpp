@@ -2987,3 +2987,19 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
 
     return false;
 }
+
+std::pair<uint8_t, SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue)
+{
+    uint8_t numHelices = combinedValue & 0b00011111;
+    auto specialElements = SpecialElements(static_cast<uint8_t>(combinedValue & ~0b00011111));
+
+    return std::make_pair(numHelices, specialElements);
+}
+
+std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedValue)
+{
+    uint8_t numDrops = combinedValue & 0b00111111;
+    uint8_t numPoweredLifts = combinedValue >> 6;
+
+    return std::make_pair(numDrops, numPoweredLifts);
+}

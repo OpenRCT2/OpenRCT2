@@ -84,11 +84,17 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.maxLateralG / kTD46GForcesMultiplier);
 
         if (rtd.specialType == RtdSpecialType::miniGolf)
-            tempStream.WriteValue<uint8_t>(_trackDesign.statistics.holes & kRCT12InversionAndHoleMask);
+        {
+            auto numHoles = std::min<uint8_t>(31, _trackDesign.statistics.holes);
+            tempStream.WriteValue<uint8_t>(numHoles & kRCT12InversionAndHoleMask);
+        }
         else
-            tempStream.WriteValue<uint8_t>(_trackDesign.statistics.inversions & kRCT12InversionAndHoleMask);
+        {
+            auto numInversions = std::min<uint8_t>(31, _trackDesign.statistics.inversions);
+            tempStream.WriteValue<uint8_t>(numInversions & kRCT12InversionAndHoleMask);
+        }
 
-        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.drops & kRCT12RideNumDropsMask);
+        tempStream.WriteValue<uint8_t>(std::min<uint8_t>(63, _trackDesign.statistics.drops) & kRCT12RideNumDropsMask);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.highestDropHeight);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.ratings.excitement / kTD46RatingsMultiplier);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.ratings.intensity / kTD46RatingsMultiplier);
@@ -114,7 +120,9 @@ namespace OpenRCT2::RCT2
         {
             tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Tertiary);
         }
-        tempStream.WriteValue<uint8_t>(_trackDesign.operation.liftHillSpeed | (_trackDesign.operation.numCircuits << 5));
+        auto liftSpeed = std::min<uint8_t>(31, _trackDesign.operation.liftHillSpeed);
+        auto numCircuits = std::min<uint8_t>(7, _trackDesign.operation.numCircuits);
+        tempStream.WriteValue<uint8_t>(liftSpeed | (numCircuits << 5));
 
         if (rtd.specialType == RtdSpecialType::maze)
         {
