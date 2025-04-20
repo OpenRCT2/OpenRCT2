@@ -24,11 +24,12 @@
 #include "../ride/Track.h"
 #include "ParkFile.h"
 
-#include <map>
+#include <array>
+#include <unordered_map>
 
 using namespace OpenRCT2;
 
-static std::map<std::string_view, std::string_view> oldObjectIds = {
+static const std::unordered_map<std::string_view, std::string_view> oldObjectIds = {
     { "official.scgpanda", "rct2dlc.scenery_group.scgpanda" },
     { "official.wtrpink", "rct2dlc.water.wtrpink" },
     { "official.ttrftl07", "toontowner.scenery_small.ttrftl07" },
@@ -2194,7 +2195,7 @@ std::string_view MapToNewObjectIdentifier(std::string_view s)
     return "";
 }
 
-static std::map<std::string_view, std::string_view> DATPathNames = {
+static const std::unordered_map<std::string_view, std::string_view> DATPathNames = {
     { "rct2.pathash", "PATHASH " },  { "rct2.pathcrzy", "PATHCRZY" }, { "rct2.pathdirt", "PATHDIRT" },
     { "rct2.pathspce", "PATHSPCE" }, { "rct2.road", "ROAD    " },     { "rct2.tarmacb", "TARMACB " },
     { "rct2.tarmacg", "TARMACG " },  { "rct2.tarmac", "TARMAC  " },   { "rct2.1920path", "1920PATH" },
@@ -2212,9 +2213,9 @@ std::optional<std::string_view> GetDATPathName(std::string_view newPathName)
     return std::nullopt;
 }
 
-static RCT2::FootpathMapping _extendedFootpathMappings[] = {
+static constexpr auto _extendedFootpathMappings = std::to_array<RCT2::FootpathMapping>({
     { "rct1.path.tarmac", "rct1.footpath_surface.tarmac", "rct1.footpath_surface.queue_blue", "rct2.footpath_railings.wood" },
-};
+});
 
 const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc)
 {
