@@ -19,6 +19,24 @@
 
 namespace OpenRCT2::String
 {
+    struct Hash
+    {
+        using is_transparent = void;
+
+        size_t operator()(const char* txt) const
+        {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(std::string_view txt) const
+        {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(const std::string& txt) const
+        {
+            return std::hash<std::string>{}(txt);
+        }
+    };
+
     std::string toStd(const utf8* str);
     std::string toUtf8(std::wstring_view src);
     std::wstring toWideChar(std::string_view src);
