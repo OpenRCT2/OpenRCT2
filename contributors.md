@@ -13,6 +13,7 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Michael Bernardi (mrmbernardi) - Programming
 * Michael Steenbeek (Gymnasiast) - Lead Localisation - Programming
 * Aaron van Geffen (AaronVanGeffen) - Programming
+* Joshua Jacobs (leicestersquare) - Graphic Artist
 
 ## Support team
 * Kenton Boadway (Krutonium) - Lead OpenScenarios
