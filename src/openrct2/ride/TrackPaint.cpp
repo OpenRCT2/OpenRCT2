@@ -2230,6 +2230,65 @@ void trackPaintSpriteFence3(
     }
 }
 
+void trackPaintSpriteSupport(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 2;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex]);
+
+    auto supportColours = session.SupportColours;
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+    {
+        supportColours = supportColours.WithTransparency(FilterPaletteID::PaletteDarken1);
+    }
+
+    if (!(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) && (session.Flags & PaintSessionFlags::PassedSurface))
+    {
+        PaintAddImageAsParentHeight(
+            session, supportColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 1]);
+    }
+}
+
+void trackPaintSpriteSupports2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 3;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, { 0, 0, 0 },
+        sprites.boundBoxes[spriteIndex]);
+
+    auto supportColours = session.SupportColours;
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+    {
+        supportColours = supportColours.WithTransparency(FilterPaletteID::PaletteDarken1);
+    }
+
+    if (!(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) && (session.Flags & PaintSessionFlags::PassedSurface))
+    {
+        PaintAddImageAsParentHeight(
+            session, supportColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 1]);
+        PaintAddImageAsParentHeight(
+            session, supportColours.WithIndex(sprites.imageIndexes[spriteIndex + 2]), height, { 0, 0, 0 },
+            sprites.boundBoxes[spriteIndex + 2]);
+    }
+}
+
 void trackPaintSprites2(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
@@ -2313,6 +2372,210 @@ void trackPaintSprites4GreenLight(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
+static const TrackElement* paintUtilMapGetTrackElementAtFromRideFuzzy(
+    const int32_t x, const int32_t y, const int32_t z, const Ride& ride)
+{
+    const TileElement* tileElement = MapGetFirstElementAt(CoordsXY{ x, y });
+    if (tileElement == nullptr)
+    {
+        return nullptr;
+    }
+
+    do
+    {
+        if (tileElement->GetType() != TileElementType::Track)
+            continue;
+        if (tileElement->GetRideIndex() != ride.id)
+            continue;
+        if (tileElement->BaseHeight != z && tileElement->BaseHeight != z - 1)
+            continue;
+
+        return tileElement->AsTrack();
+    } while (!(tileElement++)->IsLastForTile());
+
+    return nullptr;
+};
+
+static bool paintUtilIsStationFirstPiece(
+    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, const OpenRCT2::TrackElemType trackType)
+{
+    if (trackElement.GetTrackType() != TrackElemType::BeginStation)
+    {
+        return false;
+    }
+
+    CoordsXY delta = CoordsDirectionDelta[trackElement.GetDirection()];
+    CoordsXY newPos = {
+        static_cast<int32_t>(pos.x - delta.x),
+        static_cast<int32_t>(pos.y - delta.y),
+    };
+
+    const TrackElement* nextTrack = paintUtilMapGetTrackElementAtFromRideFuzzy(
+        newPos.x, newPos.y, trackElement.BaseHeight, ride);
+
+    return nextTrack == nullptr;
+}
+
+static bool paintUtilIsStationLastPiece(
+    const Ride& ride, const TrackElement& trackElement, const CoordsXY& pos, const OpenRCT2::TrackElemType trackType)
+{
+    if (trackElement.GetTrackType() != TrackElemType::EndStation)
+    {
+        return false;
+    }
+
+    CoordsXY delta = CoordsDirectionDelta[trackElement.GetDirection()];
+    CoordsXY newPos = {
+        static_cast<int32_t>(pos.x + delta.x),
+        static_cast<int32_t>(pos.y + delta.y),
+    };
+
+    const TrackElement* nextTrack = paintUtilMapGetTrackElementAtFromRideFuzzy(
+        newPos.x, newPos.y, trackElement.BaseHeight, ride);
+
+    return nextTrack == nullptr;
+}
+
+void trackPaintStationChairlift(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto trackType = trackElement.GetTrackType();
+
+    bool isStart = paintUtilIsStationFirstPiece(ride, trackElement, session.MapPosition, trackType);
+    bool isEnd = paintUtilIsStationLastPiece(ride, trackElement, session.MapPosition, trackType);
+
+    const auto* stationObj = ride.getStationObject();
+    auto stationColour = GetStationColourScheme(session, trackElement);
+
+    PaintAddImageAsParent(
+        session, session.SupportColours.WithIndex(SPR_FLOOR_METAL), { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
+
+    constexpr std::array backEdges = { EDGE_NW, EDGE_NE };
+    constexpr std::array frontEdges = { EDGE_SE, EDGE_SW };
+    const bool hasBackFence = TrackPaintUtilHasFence(
+        backEdges[direction & 1], session.MapPosition, trackElement, ride, session.CurrentRotation);
+    const bool hasFrontFence = TrackPaintUtilHasFence(
+        frontEdges[direction & 1], session.MapPosition, trackElement, ride, session.CurrentRotation);
+
+    if (hasBackFence)
+    {
+        if (direction & 1)
+        {
+            PaintAddImageAsChild(
+                session, session.TrackColours.WithIndex(SPR_FENCE_METAL_NE), { 0, 0, height },
+                { { 2, 0, height + 2 }, { 1, 32, 7 } });
+        }
+        else
+        {
+            PaintAddImageAsChild(
+                session, session.TrackColours.WithIndex(SPR_FENCE_METAL_NW), { 0, 0, height },
+                { { 0, 2, height + 2 }, { 32, 1, 7 } });
+        }
+    }
+    TrackPaintUtilDrawStationCovers(session, backEdges[direction & 1], hasBackFence, stationObj, height, stationColour);
+
+    bool drawFrontColumn = true;
+    bool drawBackColumn = true;
+    if (direction & 1)
+    {
+        if ((direction == 1 && isStart) || (direction == 3 && isEnd))
+        {
+            drawBackColumn = false;
+            PaintAddImageAsChild(
+                session, session.TrackColours.WithIndex(SPR_FENCE_METAL_NW), { 0, 0, height },
+                { { 2, 2, height + 4 }, { 28, 1, 7 } });
+        }
+        else if ((direction == 3 && isStart) || (direction == 1 && isEnd))
+        {
+            drawFrontColumn = false;
+            PaintAddImageAsParent(
+                session, session.TrackColours.WithIndex(SPR_FENCE_METAL_SE), { 0, 0, height },
+                { { 2, 30, height + 4 }, { 28, 1, 27 } });
+        }
+    }
+    else
+    {
+        if ((direction == 2 && isStart) || (direction == 0 && isEnd))
+        {
+            drawBackColumn = false;
+            PaintAddImageAsChild(
+                session, session.TrackColours.WithIndex(SPR_FENCE_METAL_NE), { 0, 0, height },
+                { { 2, 2, height + 4 }, { 1, 28, 7 } });
+        }
+        else if ((direction == 0 && isStart) || (direction == 2 && isEnd))
+        {
+            drawFrontColumn = false;
+            PaintAddImageAsParent(
+                session, session.TrackColours.WithIndex(SPR_FENCE_METAL_SW), { 0, 0, height },
+                { { 30, 2, height + 4 }, { 1, 28, 27 } });
+        }
+    }
+
+    if (hasFrontFence)
+    {
+        if (direction & 1)
+        {
+            PaintAddImageAsParent(
+                session, session.TrackColours.WithIndex(SPR_FENCE_METAL_SW), { 0, 0, height },
+                { { 30, 0, height + 2 }, { 1, 32, 20 } });
+        }
+        else
+        {
+            PaintAddImageAsParent(
+                session, session.TrackColours.WithIndex(SPR_FENCE_METAL_SE), { 0, 0, height },
+                { { 0, 30, height + 2 }, { 32, 1, 20 } });
+        }
+    }
+    TrackPaintUtilDrawStationCovers(session, frontEdges[direction & 1], hasFrontFence, stationObj, height, stationColour);
+
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 5;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    if (isStart || isEnd)
+    {
+        const Direction endDirection = isStart ? DirectionReverse(direction) : direction;
+        const uint32_t endSpriteIndex = (endDirection * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+        const uint32_t bullwheelFrame = ride.chairliftBullwheelRotation / 16384;
+
+        const CoordsXYZ& offset1 = sprites.offsets != nullptr ? sprites.offsets[endSpriteIndex + 3] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[endSpriteIndex + 3] + bullwheelFrame), height, offset1,
+            sprites.boundBoxes[endSpriteIndex + 3]);
+
+        const CoordsXYZ& offset2 = sprites.offsets != nullptr ? sprites.offsets[endSpriteIndex + 4] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsChildHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[endSpriteIndex + 4]), height, offset2,
+            sprites.boundBoxes[endSpriteIndex + 4]);
+    }
+    else
+    {
+        const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, offset,
+            sprites.boundBoxes[spriteIndex]);
+    }
+
+    if (drawBackColumn)
+    {
+        const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 1] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, offset,
+            sprites.boundBoxes[spriteIndex + 1]);
+    }
+
+    if (drawFrontColumn)
+    {
+        const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 2] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsParentHeight(
+            session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex + 2]), height, offset,
+            sprites.boundBoxes[spriteIndex + 2]);
+    }
+}
+
 void trackPaintStation1SpriteFences(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
@@ -2352,8 +2615,8 @@ void trackPaintStation1SpriteFences(
 
     const auto* const stationObject = ride.getStationObject();
     const auto stationColour = GetStationColourScheme(session, trackElement);
-    TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasBackFence, stationObject, height, stationColour);
-    TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFrontFence, stationObject, height, stationColour);
+    TrackPaintUtilDrawStationCovers(session, backEdges[direction & 1], hasBackFence, stationObject, height, stationColour);
+    TrackPaintUtilDrawStationCovers(session, frontEdges[direction & 1], hasFrontFence, stationObject, height, stationColour);
 }
 
 void trackPaintWaterfall(
