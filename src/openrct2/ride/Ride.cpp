@@ -2621,8 +2621,8 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
     if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         return { true };
 
-    uint8_t entrance = 0;
-    uint8_t exit = 0;
+    auto hasEntrance = false;
+    auto hasExit = false;
     for (const auto& station : ride->getStations())
     {
         if (station.Start.IsNull())
@@ -2630,29 +2630,29 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
 
         if (!station.Entrance.IsNull())
         {
-            entrance = 1;
+            hasEntrance = true;
         }
 
         if (!station.Exit.IsNull())
         {
-            exit = 1;
+            hasExit = true;
         }
 
         // If station start and no entrance/exit
         // Sets same error message as no entrance
         if (station.Exit.IsNull() && station.Entrance.IsNull())
         {
-            entrance = 0;
+            hasEntrance = false;
             break;
         }
     }
 
-    if (entrance == 0)
+    if (!hasEntrance)
     {
         return { false, STR_ENTRANCE_NOT_YET_BUILT };
     }
 
-    if (exit == 0)
+    if (!hasExit)
     {
         return { false, STR_EXIT_NOT_YET_BUILT };
     }
