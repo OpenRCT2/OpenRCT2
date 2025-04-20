@@ -3658,10 +3658,10 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::DiagLeftBank, 2 },                             // DiagRightBank
         { TrackElemType::LogFlumeReverser, 0 },                         // LogFlumeReverser
         { TrackElemType::SpinningTunnel, 0 },                           // SpinningTunnel
-        { TrackElemType::RightBarrelRollDownToUp, 2 },                  // LeftBarrelRollUpToDown
-        { TrackElemType::LeftBarrelRollDownToUp, 2 },                   // RightBarrelRollUpToDown
-        { TrackElemType::RightBarrelRollUpToDown, 2 },                  // LeftBarrelRollDownToUp
-        { TrackElemType::LeftBarrelRollUpToDown, 2 },                   // RightBarrelRollDownToUp
+        { TrackElemType::LeftBarrelRollDownToUp, 2 },                   // LeftBarrelRollUpToDown
+        { TrackElemType::RightBarrelRollDownToUp, 2 },                  // RightBarrelRollUpToDown
+        { TrackElemType::LeftBarrelRollUpToDown, 2 },                   // LeftBarrelRollDownToUp
+        { TrackElemType::RightBarrelRollUpToDown, 2 },                  // RightBarrelRollDownToUp
         { TrackElemType::RightQuarterTurn3TilesDown25ToRightBank, -1 }, // LeftBankToLeftQuarterTurn3TilesUp25
         { TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank, 1 },    // RightBankToRightQuarterTurn3TilesUp25
         { TrackElemType::RightBankToRightQuarterTurn3TilesUp25, 1 },    // LeftQuarterTurn3TilesDown25ToLeftBank
@@ -3759,14 +3759,14 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::LeftMediumHalfLoopDown, 2 },                   // RightMediumHalfLoopUp
         { TrackElemType::RightMediumHalfLoopUp, 2 },                    // LeftMediumHalfLoopDown
         { TrackElemType::LeftMediumHalfLoopUp, 2 },                     // RightMediumHalfLoopDown
-        { TrackElemType::RightZeroGRollDown, 2 },                       // LeftZeroGRollUp
-        { TrackElemType::LeftZeroGRollDown, 2 },                        // RightZeroGRollUp
-        { TrackElemType::RightZeroGRollUp, 2 },                         // LeftZeroGRollDown
-        { TrackElemType::LeftZeroGRollUp, 2 },                          // RightZeroGRollDown
-        { TrackElemType::RightLargeZeroGRollDown, 2 },                  // LeftLargeZeroGRollUp
-        { TrackElemType::LeftLargeZeroGRollDown, 2 },                   // RightLargeZeroGRollUp
-        { TrackElemType::RightLargeZeroGRollUp, 2 },                    // LeftLargeZeroGRollDown
-        { TrackElemType::LeftLargeZeroGRollUp, 2 },                     // RightLargeZeroGRollDown
+        { TrackElemType::LeftZeroGRollDown, 2 },                        // LeftZeroGRollUp
+        { TrackElemType::RightZeroGRollDown, 2 },                       // RightZeroGRollUp
+        { TrackElemType::LeftZeroGRollUp, 2 },                          // LeftZeroGRollDown
+        { TrackElemType::RightZeroGRollUp, 2 },                         // RightZeroGRollDown
+        { TrackElemType::LeftLargeZeroGRollDown, 2 },                   // LeftLargeZeroGRollUp
+        { TrackElemType::RightLargeZeroGRollDown, 2 },                  // RightLargeZeroGRollUp
+        { TrackElemType::LeftLargeZeroGRollUp, 2 },                     // LeftLargeZeroGRollDown
+        { TrackElemType::RightLargeZeroGRollUp, 2 },                    // RightLargeZeroGRollDown
         { TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp, 0 },       // LeftFlyerLargeHalfLoopUninvertedUp
         { TrackElemType::RightFlyerLargeHalfLoopUninvertedUp, 0 },      // RightFlyerLargeHalfLoopUninvertedUp
         { TrackElemType::LeftFlyerLargeHalfLoopInvertedDown, 0 },       // LeftFlyerLargeHalfLoopInvertedDown
@@ -3777,14 +3777,14 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::RightFlyerLargeHalfLoopUninvertedDown, 0 },    // RightFlyerLargeHalfLoopUninvertedDown
         { TrackElemType::FlyerHalfLoopInvertedUp, 0 },                  // FlyerHalfLoopInvertedUp
         { TrackElemType::FlyerHalfLoopUninvertedDown, 0 },              // FlyerHalfLoopUninvertedDown
-        { TrackElemType::LeftEighthToDiagUp25, 0 },                     // LeftEighthToDiagUp25
-        { TrackElemType::RightEighthToDiagUp25, 0 },                    // RightEighthToDiagUp25
-        { TrackElemType::LeftEighthToDiagDown25, 0 },                   // LeftEighthToDiagDown25
-        { TrackElemType::RightEighthToDiagDown25, 0 },                  // RightEighthToDiagDown25
-        { TrackElemType::LeftEighthToOrthogonalUp25, 0 },               // LeftEighthToOrthogonalUp25
-        { TrackElemType::RightEighthToOrthogonalUp25, 0 },              // RightEighthToOrthogonalUp25
-        { TrackElemType::LeftEighthToOrthogonalDown25, 0 },             // LeftEighthToOrthogonalDown25
-        { TrackElemType::RightEighthToOrthogonalDown25, 0 },            // RightEighthToOrthogonalDown25
+        { TrackElemType::RightEighthToOrthogonalDown25, 3 },            // LeftEighthToDiagUp25
+        { TrackElemType::LeftEighthToOrthogonalDown25, 2 },             // RightEighthToDiagUp25
+        { TrackElemType::RightEighthToOrthogonalUp25, 1 },              // LeftEighthToDiagDown25
+        { TrackElemType::LeftEighthToOrthogonalUp25, 2 },               // RightEighthToDiagDown25
+        { TrackElemType::RightEighthToDiagDown25, 2 },                  // LeftEighthToOrthogonalUp25
+        { TrackElemType::LeftEighthToDiagDown25, 1 },                   // RightEighthToOrthogonalUp25
+        { TrackElemType::RightEighthToDiagUp25, 2 },                    // LeftEighthToOrthogonalDown25
+        { TrackElemType::LeftEighthToDiagUp25, 3 },                     // RightEighthToOrthogonalDown25
         { TrackElemType::DiagUp25ToLeftBankedUp25, 0 },                 // DiagUp25ToLeftBankedUp25
         { TrackElemType::DiagUp25ToRightBankedUp25, 0 },                // DiagUp25ToRightBankedUp25
         { TrackElemType::DiagLeftBankedUp25ToUp25, 0 },                 // DiagLeftBankedUp25ToUp25
@@ -3813,26 +3813,26 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::DiagUp25RightBanked, 0 },                      // DiagUp25RightBanked
         { TrackElemType::DiagDown25LeftBanked, 0 },                     // DiagDown25LeftBanked
         { TrackElemType::DiagDown25RightBanked, 0 },                    // DiagDown25RightBanked
-        { TrackElemType::LeftEighthBankToDiagUp25, 0 },                 // LeftEighthBankToDiagUp25
-        { TrackElemType::RightEighthBankToDiagUp25, 0 },                // RightEighthBankToDiagUp25
-        { TrackElemType::LeftEighthBankToDiagDown25, 0 },               // LeftEighthBankToDiagDown25
-        { TrackElemType::RightEighthBankToDiagDown25, 0 },              // RightEighthBankToDiagDown25
-        { TrackElemType::LeftEighthBankToOrthogonalUp25, 0 },           // LeftEighthBankToOrthogonalUp25
-        { TrackElemType::RightEighthBankToOrthogonalUp25, 0 },          // RightEighthBankToOrthogonalUp25
-        { TrackElemType::LeftEighthBankToOrthogonalDown25, 0 },         // LeftEighthBankToOrthogonalDown25
-        { TrackElemType::RightEighthBankToOrthogonalDown25, 0 },        // RightEighthBankToOrthogonalDown25
+        { TrackElemType::RightEighthBankToOrthogonalDown25, 3 },        // LeftEighthBankToDiagUp25
+        { TrackElemType::LeftEighthBankToOrthogonalDown25, 2 },         // RightEighthBankToDiagUp25
+        { TrackElemType::RightEighthBankToOrthogonalUp25, 1 },          // LeftEighthBankToDiagDown25
+        { TrackElemType::LeftEighthBankToOrthogonalUp25, 2 },           // RightEighthBankToDiagDown25
+        { TrackElemType::RightEighthBankToDiagDown25, 2 },              // LeftEighthBankToOrthogonalUp25
+        { TrackElemType::LeftEighthBankToDiagDown25, 1 },               // RightEighthBankToOrthogonalUp25
+        { TrackElemType::RightEighthBankToDiagUp25, 2 },                // LeftEighthBankToOrthogonalDown25
+        { TrackElemType::LeftEighthBankToDiagUp25, 3 },                 // RightEighthBankToOrthogonalDown25
         { TrackElemType::DiagBrakes, 0 },                               // DiagBrakes
         { TrackElemType::DiagBlockBrakes, 0 },                          // DiagBlockBrakes
         { TrackElemType::Down25Brakes, 0 },                             // Down25Brakes
         { TrackElemType::DiagBooster, 0 },                              // DiagBooster
-        { TrackElemType::DiagFlatToUp60LongBase, 0 },                   // DiagFlatToUp60LongBase
-        { TrackElemType::DiagUp60ToFlatLongBase, 0 },                   // DiagUp60ToFlatLongBase
-        { TrackElemType::DiagFlatToDown60LongBase, 0 },                 // DiagFlatToDown60LongBase
-        { TrackElemType::DiagDown60ToFlatLongBase, 0 },                 // DiagDown60ToFlatLongBase
-        { TrackElemType::LeftEighthDiveLoopUpToOrthogonal, 0 },         // LeftEighthDiveLoopUpToOrthogonal
-        { TrackElemType::RightEighthDiveLoopUpToOrthogonal, 0 },        // RightEighthDiveLoopUpToOrthogonal
-        { TrackElemType::LeftEighthDiveLoopDownToDiag, 0 },             // LeftEighthDiveLoopDownToDiag
-        { TrackElemType::RightEighthDiveLoopDownToDiag, 0 },            // RightEighthDiveLoopDownToDiag
+        { TrackElemType::DiagDown60ToFlatLongBase, 0 },                 // DiagFlatToUp60LongBase
+        { TrackElemType::DiagFlatToDown60LongBase, 0 },                 // DiagUp60ToFlatLongBase
+        { TrackElemType::DiagUp60ToFlatLongBase, 2 },                   // DiagFlatToDown60LongBase
+        { TrackElemType::DiagFlatToUp60LongBase, 2 },                   // DiagDown60ToFlatLongBase
+        { TrackElemType::RightEighthDiveLoopDownToDiag, 1 },            // LeftEighthDiveLoopUpToOrthogonal
+        { TrackElemType::LeftEighthDiveLoopDownToDiag, 2 },             // RightEighthDiveLoopUpToOrthogonal
+        { TrackElemType::RightEighthDiveLoopUpToOrthogonal, 1 },        // LeftEighthDiveLoopDownToDiag
+        { TrackElemType::LeftEighthDiveLoopUpToOrthogonal, 2 },         // RightEighthDiveLoopDownToDiag
         { TrackElemType::DiagDown25Brakes, 0 },                         // DiagDown25Brakes
     };
     static_assert(std::size(kRotatedTrackTypes) == EnumValue(TrackElemType::Count));
