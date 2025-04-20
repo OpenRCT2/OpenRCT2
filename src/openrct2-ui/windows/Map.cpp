@@ -1190,13 +1190,14 @@ namespace OpenRCT2::Ui::Windows
         void SetInitialWindowDimensions()
         {
             // The initial mini map size should be able to show a reasonably sized map
-            auto initSize = std::clamp(getPracticalMapSize(), 100, 254) * 2;
-            width = initSize + GetReservedRightSpace();
-            height = initSize + kReservedTopSpace + GetReservedBottomSpace();
+            auto initWidth = std::clamp(getPracticalMapSize(), 100, 254) * 2;
+            width = initWidth + GetReservedRightSpace();
 
-            auto scrollbarSize = getPracticalMapSize() > 254 ? kScrollBarWidth : 2;
-            width += scrollbarSize;
-            height += scrollbarSize;
+            auto initHeight = std::clamp(getMiniMapWidth(), 100, 254) * 2;
+            height = initHeight + kReservedTopSpace + GetReservedBottomSpace();
+
+            width += getPracticalMapSize() > initWidth ? kScrollBarWidth : 2;
+            height += getMiniMapWidth() > initHeight ? kScrollBarWidth : 2;
 
             auto maxWindowHeight = ContextGetHeight() - 68;
             width = std::min<int16_t>(width, ContextGetWidth());
