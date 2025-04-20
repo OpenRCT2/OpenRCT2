@@ -1659,32 +1659,38 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     GiveItem(shopItem);
     const auto hasRandomShopColour = ride.hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
-    if (shopItem == ShopItem::TShirt)
-        TshirtColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
-
-    if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
-
-    if (shopItem == ShopItem::Balloon)
-        BalloonColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
-
-    if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
-
-    if (shopItem == ShopItem::Map)
-        ResetPathfindGoal();
-
-    if (shopItem == ShopItem::Photo)
-        Photo1RideRef = ride.id;
-
-    if (shopItem == ShopItem::Photo2)
-        Photo2RideRef = ride.id;
-
-    if (shopItem == ShopItem::Photo3)
-        Photo3RideRef = ride.id;
-
-    if (shopItem == ShopItem::Photo4)
-        Photo4RideRef = ride.id;
+    switch (shopItem)
+    {
+        case ShopItem::TShirt:
+            TshirtColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            break;
+        case ShopItem::Hat:
+            HatColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            break;
+        case ShopItem::Balloon:
+            BalloonColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            break;
+        case ShopItem::Umbrella:
+            UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+            break;
+        case ShopItem::Map:
+            ResetPathfindGoal();
+            break;
+        case ShopItem::Photo:
+            Photo1RideRef = ride.id;
+            break;
+        case ShopItem::Photo2:
+            Photo2RideRef = ride.id;
+            break;
+        case ShopItem::Photo3:
+            Photo3RideRef = ride.id;
+            break;
+        case ShopItem::Photo4:
+            Photo4RideRef = ride.id;
+            break;
+        default:
+            break;
+    }
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     UpdateAnimationGroup();
@@ -1699,29 +1705,22 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         }
     }
 
-    if (shopItemDescriptor.IsFood())
-        AmountOfFood++;
-
-    if (shopItemDescriptor.IsDrink())
-        AmountOfDrinks++;
-
-    if (shopItemDescriptor.IsSouvenir())
-        AmountOfSouvenirs++;
-
-    money64* expend_type = &PaidOnSouvenirs;
+    money64* expendType = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
-
     if (shopItemDescriptor.IsFood())
     {
-        expend_type = &PaidOnFood;
+        AmountOfFood = AddClamp<uint16_t>(AmountOfFood, 1);
+        expendType = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
-
-    if (shopItemDescriptor.IsDrink())
+    else if (shopItemDescriptor.IsDrink())
     {
-        expend_type = &PaidOnDrink;
+        AmountOfDrinks = AddClamp<uint16_t>(AmountOfDrinks, 1);
+        expendType = &PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
+    else if (shopItemDescriptor.IsSouvenir())
+        AmountOfSouvenirs = AddClamp<uint16_t>(AmountOfSouvenirs, 1);
 
     if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
         FinancePayment(shopItemDescriptor.Cost, expenditure);
@@ -1735,7 +1734,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     }
     else if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
     {
-        SpendMoney(*expend_type, price, expenditure);
+        SpendMoney(*expendType, price, expenditure);
     }
     ride.totalProfit += (price - shopItemDescriptor.Cost);
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
@@ -1768,8 +1767,7 @@ void Guest::OnEnterRide(Ride& ride)
     ride.updateSatisfaction(rideSatisfaction);
 
     // Update various peep stats.
-    if (GuestNumRides < 255)
-        GuestNumRides++;
+    GuestNumRides = AddClamp<uint16_t>(GuestNumRides, 1);
 
     SetHasRidden(ride);
     GuestUpdateFavouriteRide(*this, ride, satisfaction);
