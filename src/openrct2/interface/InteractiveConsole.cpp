@@ -904,7 +904,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "game_speed" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            ConsoleSetVariableAction<GameSetSpeedAction>(console, varName, std::clamp(int_val[0], 1, 8));
+            ConsoleSetVariableAction<GameSetSpeedAction>(console, varName, int_val[0]);
         }
         else if (varName == "console_small_font" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
