@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|arm64">
+      <Configuration>Debug</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|arm64">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|Win32">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|x64">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|arm64">
+      <Configuration>Release</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{70eeed2d-2344-4f28-87b7-3efc4e78b923}</ProjectGuid>
+    <RootNamespace>openrct2-data</RootNamespace>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+  </PropertyGroup>
+
+  <Import Project="..\..\openrct2.common.props" />
+
+  <PropertyGroup>
+    <TargetName>openrct2-data</TargetName>
+    <LibraryPath>$(SolutionDir)bin;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+
+  <!-- Asset Definitions -->
+  <ItemGroup>
+    <!-- G2 Input (single file) -->
+    <G2Input Include="$(SolutionDir)resources\g2\sprites.json" />
+
+    <!-- Language Files -->
+    <LanguageFiles Include="$(SolutionDir)data\language\**\*"
+      Exclude="$(SolutionDir)data\language\*.bak;
+                             $(SolutionDir)data\language\*.tmp" />
+
+    <!-- Shader Files -->
+    <ShaderFiles Include="$(SolutionDir)data\shaders\**\*"
+      Exclude="$(SolutionDir)data\shaders\*.bak;
+                           $(SolutionDir)data\shaders\*.tmp" />
+
+    <!-- Scenario Patches -->
+    <ScenarioPatchFiles Include="$(SolutionDir)data\scenario_patches\**\*"
+      Exclude="$(SolutionDir)data\scenario_patches\*.bak;
+                                  $(SolutionDir)data\scenario_patches\*.tmp" />
+  </ItemGroup>
+
+  <!-- Language Files -->
+  <Target Name="CopyLanguageFiles"
+    AfterTargets="Build"
+    BeforeTargets="CopyShaders;CopyScenarioPatches;BuildG2"
+    Inputs="@(LanguageFiles)"
+    Outputs="@(LanguageFiles->'$(OutDir)data\language\%(RecursiveDir)%(Filename)%(Extension)')">
+
+    <MakeDir Directories="@(LanguageFiles->'$(OutDir)data\language\%(RecursiveDir)')" />
+
+    <Copy SourceFiles="@(LanguageFiles)"
+      DestinationFiles="@(LanguageFiles->'$(OutDir)data\language\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true"
+      OverwriteReadOnlyFiles="true"
+      Retries="3">
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedLangFiles" />
+    </Copy>
+
+    <Message
+      Text="Copied: %(CopiedLangFiles.RecursiveDir)%(CopiedLangFiles.Filename)%(CopiedLangFiles.Extension)"
+      Importance="high"
+      Condition="'@(CopiedLangFiles)' != ''" />
+  </Target>
+
+  <!-- Shader Files -->
+  <Target Name="CopyShaders"
+    AfterTargets="CopyLanguageFiles"
+    BeforeTargets="CopyScenarioPatches;BuildG2"
+    Inputs="@(ShaderFiles)"
+    Outputs="@(ShaderFiles->'$(OutDir)data\shaders\%(RecursiveDir)%(Filename)%(Extension)')">
+
+    <MakeDir Directories="@(ShaderFiles->'$(OutDir)data\shaders\%(RecursiveDir)')" />
+
+    <Copy SourceFiles="@(ShaderFiles)"
+      DestinationFiles="@(ShaderFiles->'$(OutDir)data\shaders\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true"
+      OverwriteReadOnlyFiles="true"
+      Retries="3">
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedShaderFiles" />
+    </Copy>
+
+    <Message
+      Text="Copied: %(CopiedShaderFiles.RecursiveDir)%(CopiedShaderFiles.Filename)%(CopiedShaderFiles.Extension)"
+      Importance="high"
+      Condition="'@(CopiedShaderFiles)' != ''" />
+  </Target>
+
+  <!-- Scenario Patches -->
+  <Target Name="CopyScenarioPatches"
+    AfterTargets="CopyShaders"
+    BeforeTargets="BuildG2"
+    Inputs="@(ScenarioPatchFiles)"
+    Outputs="@(ScenarioPatchFiles->'$(OutDir)data\scenario_patches\%(RecursiveDir)%(Filename)%(Extension)')">
+
+    <MakeDir Directories="@(ScenarioPatchFiles->'$(OutDir)data\scenario_patches\%(RecursiveDir)')" />
+
+    <Copy SourceFiles="@(ScenarioPatchFiles)"
+      DestinationFiles="@(ScenarioPatchFiles->'$(OutDir)data\scenario_patches\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true"
+      OverwriteReadOnlyFiles="true"
+      Retries="3">
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedScenarioFiles" />
+    </Copy>
+
+    <Message
+      Text="Copied: %(CopiedScenarioFiles.RecursiveDir)%(CopiedScenarioFiles.Filename)%(CopiedScenarioFiles.Extension)"
+      Importance="high"
+      Condition="'@(CopiedScenarioFiles)' != ''" />
+  </Target>
+
+  <!-- G2 Build -->
+  <Target Name="BuildG2"
+    AfterTargets="CopyScenarioPatches"
+    Inputs="@(G2Input)"
+    Outputs="$(OutDir)data\g2.dat">
+
+    <MakeDir Directories="$(OutDir)data" />
+
+    <Exec
+      Command="&quot;$(OutDir)openrct2-cli.exe&quot; sprite build &quot;$(OutDir)data\g2.dat&quot; &quot;%(G2Input.FullPath)&quot;"
+      ConsoleToMSBuild="true"
+      IgnoreExitCode="false">
+      <Output TaskParameter="ConsoleOutput" PropertyName="G2BuildOutput" />
+    </Exec>
+
+    <Touch Files="$(OutDir)data\g2.dat"
+      ForceTouch="true"
+      AlwaysCreate="true" />
+  </Target>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
