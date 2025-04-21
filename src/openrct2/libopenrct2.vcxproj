@@ -391,6 +391,7 @@
     <ClInclude Include="paint\track\coaster\BobsleighCoaster.h" />
     <ClInclude Include="paint\track\coaster\ClassicWoodenTwisterRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\CompactInvertedCoaster.h" />
+    <ClInclude Include="paint\track\coaster\CorkscrewRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\HeartlineTwisterCoaster.h" />
     <ClInclude Include="paint\track\coaster\InvertedHairpinCoaster.h" />
     <ClInclude Include="paint\track\coaster\InvertedImpulseCoaster.h" />
