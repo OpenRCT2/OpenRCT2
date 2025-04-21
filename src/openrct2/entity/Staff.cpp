@@ -58,9 +58,6 @@
 
 using namespace OpenRCT2;
 
-// Maximum manhattan distance that litter can be for a handyman to seek to it
-const uint16_t MAX_LITTER_DISTANCE = 3 * kCoordsXYStep;
-
 template<>
 bool EntityBase::Is<Staff>() const
 {
@@ -323,20 +320,32 @@ bool Staff::HasPatrolArea() const
  */
 Direction Staff::HandymanDirectionToNearestLitter() const
 {
-    uint16_t nearestLitterDist = 0xFFFF;
-    Litter* nearestLitter = nullptr;
-    for (auto litter : EntityList<Litter>())
-    {
-        uint16_t distance = abs(litter->x - x) + abs(litter->y - y) + abs(litter->z - z) * 4;
+    // Maximum manhattan distance that litter can be for a handyman to seek to it
+    constexpr auto kTileRadius = 3;
+    constexpr auto kLookupRadius = kCoordsXYStep * kTileRadius;
 
-        if (distance < nearestLitterDist)
+    auto nearestLitterDist = std::numeric_limits<int32_t>::max();
+    Litter* nearestLitter = nullptr;
+
+    for (int32_t tileX = x - kLookupRadius; tileX <= x + kLookupRadius; tileX += kCoordsXYStep)
+    {
+        for (int32_t tileY = y - kLookupRadius; tileY <= y + kLookupRadius; tileY += kCoordsXYStep)
         {
-            nearestLitterDist = distance;
-            nearestLitter = litter;
+            for (auto* litter : EntityTileList<Litter>({ tileX, tileY }))
+            {
+                // Calculate Manhattan distance with z-weighting
+                uint16_t distance = std::abs(litter->x - x) + std::abs(litter->y - y) + std::abs(litter->z - z) * 4;
+
+                if (distance < nearestLitterDist)
+                {
+                    nearestLitterDist = distance;
+                    nearestLitter = litter;
+                }
+            }
         }
     }
 
-    if (nearestLitterDist > MAX_LITTER_DISTANCE)
+    if (nearestLitterDist > kLookupRadius || nearestLitter == nullptr)
     {
         return kInvalidDirection;
     }
