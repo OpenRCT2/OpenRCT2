@@ -528,7 +528,7 @@ namespace OpenRCT2::Scripting
 
         if (ride != nullptr)
         {
-            if (ride->breakdownReason == BREAKDOWN_NONE)
+            if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
                 return "none";
             }
