@@ -2505,7 +2505,7 @@ declare global {
          * Set a breakdown on a ride.
          * @param breakdown The type of breakdown to set.
          */
-        setBreakdown(BreakdownType: breakdown): void;
+        setBreakdown(breakdown: BreakdownType): void;
 		
 		/**
          * Fix a ride / clear the breakdown.
