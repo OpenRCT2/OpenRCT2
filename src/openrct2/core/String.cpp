@@ -172,11 +172,6 @@ namespace OpenRCT2::String
         return equalsImpl(a, b, false);
     }
 
-    bool equals(const u8string& a, const u8string& b)
-    {
-        return equalsImpl(a, b, false);
-    }
-
     bool equals(const utf8* a, const utf8* b, bool ignoreCase)
     {
         if (a == b)
@@ -193,11 +188,6 @@ namespace OpenRCT2::String
     }
 
     bool iequals(u8string_view a, u8string_view b)
-    {
-        return equalsImpl(a, b, true);
-    }
-
-    bool iequals(const u8string& a, const u8string& b)
     {
         return equalsImpl(a, b, true);
     }

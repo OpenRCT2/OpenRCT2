@@ -69,7 +69,7 @@ struct ObjectEntryEqual
     }
 };
 
-using ObjectIdentifierMap = std::unordered_map<std::string, size_t>;
+using ObjectIdentifierMap = std::unordered_map<std::string, size_t, String::Hash, std::equal_to<>>;
 using ObjectEntryMap = std::unordered_map<RCTObjectEntry, size_t, ObjectEntryHash, ObjectEntryEqual>;
 
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
@@ -235,7 +235,7 @@ public:
 
     const ObjectRepositoryItem* FindObject(std::string_view identifier) const override final
     {
-        auto kvp = _newItemMap.find(std::string(identifier));
+        auto kvp = _newItemMap.find(identifier);
         if (kvp != _newItemMap.end())
         {
             return &_items[kvp->second];

@@ -23,7 +23,7 @@
 #include <chrono>
 #include <list>
 #include <string>
-#include <tuple>
+#include <utility>
 #include <vector>
 
 template<typename TItem>
@@ -210,7 +210,7 @@ private:
         return allItems;
     }
 
-    std::tuple<bool, std::vector<TItem>> ReadIndexFile(int32_t language, const DirectoryStats& stats) const
+    std::pair<bool, std::vector<TItem>> ReadIndexFile(int32_t language, const DirectoryStats& stats) const
     {
         bool loadedItems = false;
         std::vector<TItem> items;
@@ -251,7 +251,7 @@ private:
                 OpenRCT2::Console::Error::WriteLine("%s", e.what());
             }
         }
-        return std::make_tuple(loadedItems, std::move(items));
+        return { loadedItems, std::move(items) };
     }
 
     void WriteIndexFile(int32_t language, const DirectoryStats& stats, const std::vector<TItem>& items) const

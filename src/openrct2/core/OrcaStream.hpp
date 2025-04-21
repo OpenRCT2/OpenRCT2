@@ -20,6 +20,7 @@
 #include <array>
 #include <cstdint>
 #include <optional>
+#include <sfl/small_vector.hpp>
 #include <span>
 #include <stack>
 #include <type_traits>
@@ -69,7 +70,7 @@ namespace OpenRCT2
         IStream* _stream;
         Mode _mode;
         Header _header;
-        std::vector<ChunkEntry> _chunks;
+        sfl::small_vector<ChunkEntry, 32> _chunks;
         MemoryStream _buffer;
         ChunkEntry _currentChunk;
 
