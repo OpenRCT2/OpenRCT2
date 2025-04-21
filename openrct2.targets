@@ -371,7 +371,6 @@
   <!-- Target Implementations -->
   <Target Name="CopyLanguageFiles"
           AfterTargets="Build"
-          BeforeTargets="CopyShaders;CopyScenarioPatches;BuildG2"
           Inputs="@(LanguageFiles)"
           Outputs="@(LanguageFiles->'$(DataOutputPath)language\%(RecursiveDir)%(Filename)%(Extension)')">
 
@@ -391,8 +390,7 @@
   </Target>
 
   <Target Name="CopyShaders"
-          AfterTargets="CopyLanguageFiles"
-          BeforeTargets="CopyScenarioPatches;BuildG2"
+          AfterTargets="Build"
           Inputs="@(ShaderFiles)"
           Outputs="@(ShaderFiles->'$(DataOutputPath)shaders\%(RecursiveDir)%(Filename)%(Extension)')">
 
@@ -412,8 +410,7 @@
   </Target>
 
   <Target Name="CopyScenarioPatches"
-          AfterTargets="CopyShaders"
-          BeforeTargets="BuildG2"
+          AfterTargets="Build"
           Inputs="@(ScenarioPatchFiles)"
           Outputs="@(ScenarioPatchFiles->'$(DataOutputPath)scenario_patches\%(RecursiveDir)%(Filename)%(Extension)')">
 
@@ -432,8 +429,8 @@
              Condition="'@(CopiedScenarioFiles)' != ''" />
   </Target>
 
-  <Target Name="g2"
-          AfterTargets="CopyScenarioPatches"
+  <Target Name="BuildG2"
+          AfterTargets="Build"
           Inputs="@(G2Input)"
           Outputs="$(DataOutputPath)g2.dat"
           Condition="'$(TestConfig)' != 'true' and ('$(Platform)' != 'ARM64' or '$(PROCESSOR_ARCHITECTURE)' == 'ARM64')">
@@ -450,4 +447,6 @@
            ForceTouch="true"
            AlwaysCreate="true" />
   </Target>
+  
+  <Target Name="g2" DependsOnTargets="BuildG2" />
 </Project>
