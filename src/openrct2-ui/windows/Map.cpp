@@ -240,7 +240,6 @@ namespace OpenRCT2::Ui::Windows
 
             flags |= WF_RESIZABLE;
 
-            WindowSetResize(*this, { WW, WH }, { WW, WH });
             SetInitialWindowDimensions();
             ResetMaxWindowDimensions();
             ResizeMiniMap();
@@ -1191,13 +1190,14 @@ namespace OpenRCT2::Ui::Windows
         void SetInitialWindowDimensions()
         {
             // The initial mini map size should be able to show a reasonably sized map
-            auto initSize = std::clamp(getPracticalMapSize(), 100, 254) * 2;
-            width = initSize + GetReservedRightSpace();
-            height = initSize + kReservedTopSpace + GetReservedBottomSpace();
+            auto initWidth = std::clamp(getPracticalMapSize(), 100, 254) * 2;
+            width = initWidth + GetReservedRightSpace();
 
-            auto scrollbarSize = getPracticalMapSize() > 254 ? kScrollBarWidth : 2;
-            width += scrollbarSize;
-            height += scrollbarSize;
+            auto initHeight = std::clamp(getMiniMapWidth(), 100, 254) * 2;
+            height = initHeight + kReservedTopSpace + GetReservedBottomSpace();
+
+            width += getPracticalMapSize() > initWidth ? kScrollBarWidth : 2;
+            height += getMiniMapWidth() > initHeight ? kScrollBarWidth : 2;
 
             auto maxWindowHeight = ContextGetHeight() - 68;
             width = std::min<int16_t>(width, ContextGetWidth());
@@ -1210,13 +1210,15 @@ namespace OpenRCT2::Ui::Windows
 
         void ResetMaxWindowDimensions()
         {
-            max_width = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), WW, ContextGetWidth());
-            max_height = std::clamp(
+            auto newMaxWidth = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), WW, ContextGetWidth());
+            auto newMaxHeight = std::clamp(
                 getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
 
             auto scrollbarSize = getMiniMapWidth() + GetReservedRightSpace() > ContextGetWidth() ? kScrollBarWidth : 2;
-            max_width += scrollbarSize;
-            max_height += scrollbarSize;
+            newMaxWidth += scrollbarSize;
+            newMaxHeight += scrollbarSize;
+
+            WindowSetResize(*this, { WW, WH }, { newMaxWidth, newMaxHeight });
         }
 
         void ResizeMiniMap()
