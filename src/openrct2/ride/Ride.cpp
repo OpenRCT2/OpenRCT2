@@ -1606,13 +1606,13 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto obj = DukObject(ctx);
-        obj.Set("ride", ride.id.ToUnderlying());
+        obj.Set("rideId", ride.id.ToUnderlying());
 
         auto it = BreakdownMap.find(breakdownReason);
         if (it != BreakdownMap.end())
             obj.Set("breakdownReason", it->first);
         else
-            obj.Set("breadownReason", "None");
+            obj.Set("breadownReason", "none");
 
         auto e = obj.Take();
         hookEngine.Call(HookType::rideBreakDown, e, true);
