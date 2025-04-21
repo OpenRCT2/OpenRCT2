@@ -4,6 +4,7 @@
 - Improved: [#23590] Title bars are now drawn bigger when “Enlarged UI” is enabled.
 - Improved: [#23626] Add small, medium and large flat and sloped turns, S-bends and diagonal track to the Go-Karts.
 - Improved: [#23982] The scenario objective window has been merged into the scenario options window.
+- Improved: [#24260] Better performance on parks that have a lot of Guests and Entertainers.
 - Change: [#23803] Lightning strikes and thunder happen at the same frequency independently of the game speed.
 - Change: [#23857] Replace display options tab with custom sprites.
 - Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
