@@ -275,7 +275,14 @@ static void AddToEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
     // Entity list must be in sprite_index order to prevent desync issues
-    list.insert(std::lower_bound(std::begin(list), std::end(list), entity->Id), entity->Id);
+    if (!list.empty() && list.back() < entity->Id)
+    {
+        list.push_back(entity->Id);
+    }
+    else
+    {
+        list.insert(std::lower_bound(std::begin(list), std::end(list), entity->Id), entity->Id);
+    }
 }
 
 static void AddToFreeList(EntityId index)
