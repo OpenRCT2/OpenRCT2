@@ -29,7 +29,7 @@
 
 using namespace OpenRCT2;
 
-static const std::unordered_map<std::string_view, std::string_view> oldObjectIds = {
+static const std::unordered_map<std::string_view, std::string_view> kOldObjectIds = {
     { "official.scgpanda", "rct2dlc.scenery_group.scgpanda" },
     { "official.wtrpink", "rct2dlc.water.wtrpink" },
     { "official.ttrftl07", "toontowner.scenery_small.ttrftl07" },
@@ -2187,15 +2187,15 @@ static const std::unordered_map<std::string_view, std::string_view> oldObjectIds
 
 std::string_view MapToNewObjectIdentifier(std::string_view s)
 {
-    auto it = oldObjectIds.find(s);
-    if (it != oldObjectIds.end())
+    auto it = kOldObjectIds.find(s);
+    if (it != kOldObjectIds.end())
     {
         return it->second;
     }
     return "";
 }
 
-static const std::unordered_map<std::string_view, std::string_view> DATPathNames = {
+static const std::unordered_map<std::string_view, std::string_view> kDATPathNames = {
     { "rct2.pathash", "PATHASH " },  { "rct2.pathcrzy", "PATHCRZY" }, { "rct2.pathdirt", "PATHDIRT" },
     { "rct2.pathspce", "PATHSPCE" }, { "rct2.road", "ROAD    " },     { "rct2.tarmacb", "TARMACB " },
     { "rct2.tarmacg", "TARMACG " },  { "rct2.tarmac", "TARMAC  " },   { "rct2.1920path", "1920PATH" },
@@ -2205,21 +2205,21 @@ static const std::unordered_map<std::string_view, std::string_view> DATPathNames
 
 std::optional<std::string_view> GetDATPathName(std::string_view newPathName)
 {
-    auto it = DATPathNames.find(newPathName);
-    if (it != DATPathNames.end())
+    auto it = kDATPathNames.find(newPathName);
+    if (it != kDATPathNames.end())
     {
         return it->second;
     }
     return std::nullopt;
 }
 
-static constexpr auto _extendedFootpathMappings = std::to_array<RCT2::FootpathMapping>({
+static constexpr auto kExtendedFootpathMappings = std::to_array<RCT2::FootpathMapping>({
     { "rct1.path.tarmac", "rct1.footpath_surface.tarmac", "rct1.footpath_surface.queue_blue", "rct2.footpath_railings.wood" },
 });
 
 const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc)
 {
-    for (const auto& mapping : _extendedFootpathMappings)
+    for (const auto& mapping : kExtendedFootpathMappings)
     {
         if (mapping.Original == desc.GetName())
         {
