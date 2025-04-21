@@ -191,7 +191,7 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         }
                     }
                     break;
-                case TileElementType::kSceneryLarge:
+                case TileElementType::LargeScenery:
                     if (_itemsToClear & CLEARABLE_ITEMS::kSceneryLarge)
                     {
                         auto removeSceneryAction = LargeSceneryRemoveAction(
@@ -231,7 +231,7 @@ void ClearAction::ResetClearLargeSceneryFlag()
             {
                 if (tileElement == nullptr)
                     break;
-                if (tileElement->GetType() == TileElementType::kSceneryLarge)
+                if (tileElement->GetType() == TileElementType::LargeScenery)
                 {
                     tileElement->AsLargeScenery()->SetIsAccounted(false);
                 }
