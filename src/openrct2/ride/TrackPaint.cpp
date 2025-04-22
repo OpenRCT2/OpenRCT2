@@ -2316,6 +2316,36 @@ void trackPaintSpriteSupports2(
     }
 }
 
+void trackPaintSpriteSupportChildTrackColours(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    const auto spriteDesc = getTrackElementSpriteDesc(trackElement, trackSequence, direction);
+    const auto& sprites = spriteDesc.sprites;
+
+    constexpr uint32_t spriteCount = 2;
+    const uint32_t spriteIndex = (direction * spriteDesc.numSequences * spriteCount) + (trackSequence * spriteCount);
+
+    const CoordsXYZ& offset = sprites.offsets != nullptr ? sprites.offsets[spriteIndex] : CoordsXYZ{ 0, 0, 0 };
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(sprites.imageIndexes[spriteIndex]), height, offset,
+        sprites.boundBoxes[spriteIndex]);
+
+    auto supportColours = session.TrackColours;
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+    {
+        supportColours = supportColours.WithTransparency(FilterPaletteID::PaletteDarken1);
+    }
+
+    if (!(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) && (session.Flags & PaintSessionFlags::PassedSurface))
+    {
+        const CoordsXYZ& offsetChild = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 1] : CoordsXYZ{ 0, 0, 0 };
+        PaintAddImageAsChildHeight(
+            session, supportColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, offsetChild,
+            sprites.boundBoxes[spriteIndex + 1]);
+    }
+}
+
 void trackPaintSprites2(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
