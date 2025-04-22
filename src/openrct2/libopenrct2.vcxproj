@@ -405,6 +405,7 @@
     <ClInclude Include="paint\track\coaster\ReverseFreefallCoaster.h" />
     <ClInclude Include="paint\track\coaster\ReverserRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\SideFrictionRollerCoaster.h" />
+    <ClInclude Include="paint\track\coaster\SingleRailRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\SteelWildMouse.h" />
     <ClInclude Include="paint\track\coaster\Steeplechase.h" />
     <ClInclude Include="paint\track\coaster\SuspendedSwingingCoaster.h" />
