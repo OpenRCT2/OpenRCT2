@@ -71,6 +71,16 @@ namespace OpenRCT2::Scripting
         { "rides_water", SPR_TAB_RIDES_WATER_0 },
         { "rides_thrill", SPR_TAB_RIDES_THRILL_0 },
         { "pause", SPR_TOOLBAR_PAUSE },
+        { "land_tool_decrease", SPR_LAND_TOOL_DECREASE },
+        { "land_tool_increase", SPR_LAND_TOOL_INCREASE },
+        { "land_tool_size_0", SPR_LAND_TOOL_SIZE_0 },
+        { "land_tool_size_1", SPR_LAND_TOOL_SIZE_1 },
+        { "land_tool_size_2", SPR_LAND_TOOL_SIZE_2 },
+        { "land_tool_size_3", SPR_LAND_TOOL_SIZE_3 },
+        { "land_tool_size_4", SPR_LAND_TOOL_SIZE_4 },
+        { "land_tool_size_5", SPR_LAND_TOOL_SIZE_5 },
+        { "land_tool_size_6", SPR_LAND_TOOL_SIZE_6 },
+        { "land_tool_size_7", SPR_LAND_TOOL_SIZE_7 },
 
         // G2 Icons
         { "empty", SPR_G2_EMPTY },

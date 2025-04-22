@@ -75,6 +75,7 @@ namespace OpenRCT2::Ui::Windows
         bool IsDisabled{};
         bool IsVisible{};
         bool IsPressed{};
+        bool Transparent{};
         bool HasBorder{};
         bool ShowColumnHeaders{};
         bool IsStriped{};
@@ -114,6 +115,7 @@ namespace OpenRCT2::Ui::Windows
                     result.HasBorder = true;
                 }
                 result.IsPressed = AsOrDefault(desc["isPressed"], false);
+                result.Transparent = AsOrDefault(desc["transparent"], false);
                 result.OnClick = desc["onClick"];
             }
             else if (result.Type == "checkbox")
@@ -976,7 +978,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (desc.Image.HasValue())
                 {
-                    widget.type = desc.HasBorder ? WindowWidgetType::ImgBtn : WindowWidgetType::FlatBtn;
+                    widget.type = desc.Transparent ? WindowWidgetType::TrnBtn
+                        : desc.HasBorder           ? WindowWidgetType::ImgBtn
+                                                   : WindowWidgetType::FlatBtn;
                     widget.image = desc.Image;
                 }
                 else

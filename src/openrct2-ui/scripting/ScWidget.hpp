@@ -459,6 +459,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScButtonWidget::border_get, &ScButtonWidget::border_set, "border");
             dukglue_register_property(ctx, &ScButtonWidget::isPressed_get, &ScButtonWidget::isPressed_set, "isPressed");
             dukglue_register_property(ctx, &ScButtonWidget::image_get, &ScButtonWidget::image_set, "image");
+            dukglue_register_property(ctx, &ScButtonWidget::transparent_get, nullptr, "transparent");
             // Explicit template due to text being a base method
             dukglue_register_property<ScButtonWidget, std::string, std::string>(
                 ctx, &ScButtonWidget::text_get, &ScButtonWidget::text_set, "text");
@@ -528,6 +529,12 @@ namespace OpenRCT2::Scripting
                 widget->image = ImageId(ImageFromDuk(value));
                 Invalidate();
             }
+        }
+
+        bool transparent_get() const
+        {
+            auto widget = GetWidget();
+            return widget != nullptr && widget->type == WindowWidgetType::TrnBtn;
         }
     };
 

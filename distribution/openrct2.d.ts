@@ -4879,7 +4879,9 @@ declare global {
         "search" | "selection_edge_ne" | "selection_edge_nw" | "selection_edge_se" | "selection_edge_sw" | "server_password" |
         "shops_and_stalls" | "sideways_tab" | "sideways_tab_active" | "simulate" | "small_scenery" | "sort" | "stats" | "testing" |
         "terrain_edges" | "title_play" | "title_restart" | "title_skip" | "title_stop" | "unmute" | "unmute_pressed" | "view" |
-        "water" | "zoom_in" | "zoom_in_background" | "zoom_out" | "zoom_out_background";
+        "water" | "zoom_in" | "zoom_in_background" | "zoom_out" | "zoom_out_background" | "land_tool_size_0" | "land_tool_size_1" |
+        "land_tool_size_2" | "land_tool_size_3" | "land_tool_size_4" | "land_tool_size_5" | "land_tool_size_6" | "land_tool_size_7" |
+        "land_tool_decrease" | "land_tool_increase";
 
     interface WidgetBase {
         readonly window: Window;
@@ -4901,6 +4903,7 @@ declare global {
          * By default, text buttons have borders and image buttons do not but it can be overridden.
          */
         border: boolean;
+        readonly transparent: boolean;
         image: number | IconName;
         isPressed: boolean;
         text: string;
@@ -5048,6 +5051,13 @@ declare global {
          */
         border?: boolean;
         image?: number | IconName;
+        /**
+         * Whether the button is transparent.
+         * By default, a rect is drawn around the button sprite. With transparent set to true,
+         * the rect will not be drawn. Instead, the button sprite will be drawn directly, and
+         * the button sprite id + 1 will be used for the pressed state.
+         */
+        transparent?: boolean;
         isPressed?: boolean;
         text?: string;
         onClick?: () => void;
