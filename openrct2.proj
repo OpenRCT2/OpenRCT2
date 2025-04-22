@@ -8,9 +8,6 @@
        - OPENRCT2_DESCRIBE
   -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
-  <!-- Import custom build tasks -->
-  <Import Project="openrct2.targets" />
-
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
     <Platform Condition="'$(Platform)'==''">x64</Platform>
@@ -27,7 +24,6 @@
     <TargetDir>$(RootDir)bin\</TargetDir>
 
     <OutputExe>$(TargetDir)openrct2.exe</OutputExe>
-    <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
     <!-- Set openrct2.sln properties -->
     <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
@@ -55,10 +51,6 @@
     <ReplaysSha1>6061B53DE346BD853BB997E635AC7374B1A7D2F0</ReplaysSha1>
   </PropertyGroup>
 
-  <ItemGroup>
-    <g2Inputs Include="$(RootDir)resources\g2\*" />
-  </ItemGroup>
-
   <Target Name="DownloadLibs">
     <!-- libs -->
     <DownloadDependency Name="Libs"
@@ -75,7 +67,7 @@
     <Delete Files="@(CleanItems)" />
     <Delete Files="$(DependenciesCheckFile)" />
     <RemoveDir Directories="$(TargetDir)data" />
-    <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
+    <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties);IsSolutionBuild=true" />
   </Target>
 
   <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadLibs">
@@ -84,12 +76,7 @@
       <BuildString Condition="'$(OPENRCT2_BRANCH)'!=''">$(BuildString) ($(OPENRCT2_BRANCH))</BuildString>
       <BuildString Condition="'$(OPENRCT2_DESCRIBE)'!=''">$(BuildString) ($(OPENRCT2_DESCRIBE))</BuildString>
     </PropertyGroup>
-    <ItemGroup>
-      <DataItems Include="$(RootDir)data\**\*" />
-    </ItemGroup>
     <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
-    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(DataItems)" DestinationFolder="$(TargetDir)data\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 
   <Target Name="Build">
@@ -97,24 +84,14 @@
       <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
     </PropertyGroup>
     <Message Text="SlnProperties: $(SlnProperties)" />
-    <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
+    <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties);IsSolutionBuild=true" />
   </Target>
   <Target Name="Rebuild">
     <PropertyGroup>
       <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
     </PropertyGroup>
     <Message Text="SlnProperties: $(SlnProperties)" />
-    <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
-  </Target>
-
-  <!-- Target to build g2.dat containing OpenRCT2 sprites -->
-  <!-- Only Arm64 machines will build g2.dat for Arm64 -->
-  <!-- Note: Arm64 machines can build for x86, x64 and Arm64 -->
-  <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
-          Condition="'$(TestConfig)'!='true' and ('$(Platform)'!='ARM64' or '$(PROCESSOR_ARCHITECTURE)'=='ARM64')">
-    <Message Text="Building g2.dat..." Importance="high" />
-    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
-          StandardOutputImportance="normal" />
+    <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties);IsSolutionBuild=true" />
   </Target>
 
   <!-- Target to download the title sequences -->
@@ -161,4 +138,8 @@
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)testdata\replays" />
   </Target>
+    
+  <!-- Import custom build tasks -->
+  <Import Project="openrct2.targets" />
+  
 </Project>

@@ -329,4 +329,124 @@
       </Code>
     </Task>
   </UsingTask>
+  
+  <!-- Property Definitions with Default Values -->
+  <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)</SolutionDir>
+    <OutDir Condition="'$(OutDir)' == ''">$(SolutionDir)bin\</OutDir>
+    
+    <!-- CLI Configuration -->
+    <CLIProjectName Condition="'$(CLIProjectName)' == ''">openrct2-cli</CLIProjectName>
+    <CLIProjectPath Condition="'$(CLIProjectPath)' == ''">$(SolutionDir)src\$(CLIProjectName)\$(CLIProjectName).vcxproj</CLIProjectPath>
+    <G2CLIPath Condition="'$(G2CLIPath)' == ''">$(OutDir)$(CLIProjectName).exe</G2CLIPath>
+
+    <!-- Data Configuration -->
+    <DataOutputPath Condition="'$(DataOutputPath)' == ''">$(OutDir)data\</DataOutputPath>
+    
+    <DataLanguagePath Condition="'$(DataLanguagePath)' == ''">$(SolutionDir)data\language\</DataLanguagePath>
+    <DataShadersPath Condition="'$(DataShadersPath)' == ''">$(SolutionDir)data\shaders\</DataShadersPath>
+    <DataScenarioPath Condition="'$(DataScenarioPath)' == ''">$(SolutionDir)data\scenario_patches\</DataScenarioPath>
+    <ResourcesG2Path Condition="'$(ResourcesG2Path)' == ''">$(SolutionDir)resources\g2\</ResourcesG2Path>
+    <G2InputFile Condition="'$(G2InputFile)' == ''">$(ResourcesG2Path)sprites.json</G2InputFile>
+    <DataOutputPath Condition="'$(DataOutputPath)' == ''">$(OutDir)data\</DataOutputPath>
+  </PropertyGroup>
+
+  <!-- File Group Definitions -->
+  <ItemGroup>
+    <G2Input Include="$(G2InputFile)" />
+    
+    <LanguageFiles Include="$(DataLanguagePath)**\*"
+                   Exclude="$(DataLanguagePath)*.bak;
+                             $(DataLanguagePath)*.tmp" />
+    
+    <ShaderFiles Include="$(DataShadersPath)**\*"
+                 Exclude="$(DataShadersPath)*.bak;
+                           $(DataShadersPath)*.tmp" />
+    
+    <ScenarioPatchFiles Include="$(DataScenarioPath)**\*"
+                        Exclude="$(DataScenarioPath)*.bak;
+                                  $(DataScenarioPath)*.tmp" />
+  </ItemGroup>
+
+  <!-- Target Implementations -->
+  <Target Name="CopyLanguageFiles"
+          AfterTargets="Build"
+          Inputs="@(LanguageFiles)"
+          Outputs="@(LanguageFiles->'$(DataOutputPath)language\%(RecursiveDir)%(Filename)%(Extension)')">
+
+    <MakeDir Directories="@(LanguageFiles->'$(DataOutputPath)language\%(RecursiveDir)')" />
+    
+    <Copy SourceFiles="@(LanguageFiles)"
+          DestinationFiles="@(LanguageFiles->'$(DataOutputPath)language\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true"
+          OverwriteReadOnlyFiles="true"
+          Retries="3">
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedLangFiles" />
+    </Copy>
+
+    <Message Text="Copied language file: %(CopiedLangFiles.RecursiveDir)%(CopiedLangFiles.Filename)%(CopiedLangFiles.Extension)"
+             Importance="high"
+             Condition="'@(CopiedLangFiles)' != ''" />
+  </Target>
+
+  <Target Name="CopyShaders"
+          AfterTargets="Build"
+          Inputs="@(ShaderFiles)"
+          Outputs="@(ShaderFiles->'$(DataOutputPath)shaders\%(RecursiveDir)%(Filename)%(Extension)')">
+
+    <MakeDir Directories="@(ShaderFiles->'$(DataOutputPath)shaders\%(RecursiveDir)')" />
+    
+    <Copy SourceFiles="@(ShaderFiles)"
+          DestinationFiles="@(ShaderFiles->'$(DataOutputPath)shaders\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true"
+          OverwriteReadOnlyFiles="true"
+          Retries="3">
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedShaderFiles" />
+    </Copy>
+
+    <Message Text="Copied shader: %(CopiedShaderFiles.RecursiveDir)%(CopiedShaderFiles.Filename)%(CopiedShaderFiles.Extension)"
+             Importance="high"
+             Condition="'@(CopiedShaderFiles)' != ''" />
+  </Target>
+
+  <Target Name="CopyScenarioPatches"
+          AfterTargets="Build"
+          Inputs="@(ScenarioPatchFiles)"
+          Outputs="@(ScenarioPatchFiles->'$(DataOutputPath)scenario_patches\%(RecursiveDir)%(Filename)%(Extension)')">
+
+    <MakeDir Directories="@(ScenarioPatchFiles->'$(DataOutputPath)scenario_patches\%(RecursiveDir)')" />
+    
+    <Copy SourceFiles="@(ScenarioPatchFiles)"
+          DestinationFiles="@(ScenarioPatchFiles->'$(DataOutputPath)scenario_patches\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true"
+          OverwriteReadOnlyFiles="true"
+          Retries="3">
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedScenarioFiles" />
+    </Copy>
+
+    <Message Text="Copied scenario patch: %(CopiedScenarioFiles.RecursiveDir)%(CopiedScenarioFiles.Filename)%(CopiedScenarioFiles.Extension)"
+             Importance="high"
+             Condition="'@(CopiedScenarioFiles)' != ''" />
+  </Target>
+
+  <Target Name="BuildG2"
+          AfterTargets="Build"
+          Inputs="@(G2Input)"
+          Outputs="$(DataOutputPath)g2.dat"
+          Condition="'$(TestConfig)' != 'true' and ('$(Platform)' != 'ARM64' or '$(PROCESSOR_ARCHITECTURE)' == 'ARM64')">
+
+    <MakeDir Directories="$(DataOutputPath)" />
+    
+    <Exec Command="&quot;$(G2CLIPath)&quot; sprite build &quot;$(DataOutputPath)g2.dat&quot; &quot;%(G2Input.FullPath)&quot;"
+          ConsoleToMSBuild="true"
+          IgnoreExitCode="false">
+      <Output TaskParameter="ConsoleOutput" PropertyName="G2BuildOutput" />
+    </Exec>
+
+    <Touch Files="$(DataOutputPath)g2.dat"
+           ForceTouch="true"
+           AlwaysCreate="true" />
+  </Target>
+  
+  <Target Name="g2" DependsOnTargets="BuildG2" />
 </Project>
