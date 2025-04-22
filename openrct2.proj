@@ -76,12 +76,7 @@
       <BuildString Condition="'$(OPENRCT2_BRANCH)'!=''">$(BuildString) ($(OPENRCT2_BRANCH))</BuildString>
       <BuildString Condition="'$(OPENRCT2_DESCRIBE)'!=''">$(BuildString) ($(OPENRCT2_DESCRIBE))</BuildString>
     </PropertyGroup>
-    <ItemGroup>
-      <DataItems Include="$(RootDir)data\**\*" />
-    </ItemGroup>
     <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
-    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(DataItems)" DestinationFolder="$(TargetDir)data\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 
   <Target Name="Build">
