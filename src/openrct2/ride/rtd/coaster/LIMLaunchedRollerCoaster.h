@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
-#include "../../../paint/track/coaster/LoopingRollerCoaster.h"
+#include "../../../paint/track/coaster/LimLaunchedRollerCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -25,7 +25,7 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
         .supportType = MetalSupportType::Tubes,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::twist, TrackGroup::corkscrew, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::curveVertical, TrackGroup::quarterLoop,  TrackGroup::barrelRoll, TrackGroup::slopeCurveBanked, TrackGroup::slopeSteepLong, TrackGroup::halfLoop, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge, TrackGroup::corkscrewLarge},
         .extraTrackGroups = {TrackGroup::flatToSteepSlope, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge},
-        .sprites = OpenRCT2::LoopingRollerCoaster::kSprites,
+        .sprites = OpenRCT2::LimLaunchedRollerCoaster::kSprites,
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
