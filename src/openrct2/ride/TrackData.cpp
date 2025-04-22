@@ -3677,10 +3677,10 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::LeftFlyerTwistUp, 2 },                         // RightFlyerTwistDown
         { TrackElemType::FlyerHalfLoopInvertedDown, 0 },                // FlyerHalfLoopUninvertedUp
         { TrackElemType::FlyerHalfLoopUninvertedUp, 0 },                // FlyerHalfLoopInvertedDown
-        { TrackElemType::RightFlyerCorkscrewDown, 2 },                  // LeftFlyerCorkscrewUp
-        { TrackElemType::LeftFlyerCorkscrewDown, 2 },                   // RightFlyerCorkscrewUp
-        { TrackElemType::RightFlyerCorkscrewUp, 2 },                    // LeftFlyerCorkscrewDown
-        { TrackElemType::LeftFlyerCorkscrewUp, 2 },                     // RightFlyerCorkscrewDown
+        { TrackElemType::LeftFlyerCorkscrewUp, 0 },                     // LeftFlyerCorkscrewUp
+        { TrackElemType::RightFlyerCorkscrewUp, 0 },                    // RightFlyerCorkscrewUp
+        { TrackElemType::LeftFlyerCorkscrewDown, 0 },                   // LeftFlyerCorkscrewDown
+        { TrackElemType::RightFlyerCorkscrewDown, 0 },                  // RightFlyerCorkscrewDown
         { TrackElemType::HeartLineTransferDown, 2 },                    // HeartLineTransferUp
         { TrackElemType::HeartLineTransferUp, 2 },                      // HeartLineTransferDown
         { TrackElemType::LeftHeartLineRoll, 0 },                        // LeftHeartLineRoll

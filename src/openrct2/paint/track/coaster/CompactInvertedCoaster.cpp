@@ -3979,6 +3979,320 @@ static void CompactInvertedRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
+/** rct2: 0x00824FCC */
+static void LayDownRCTrackLeftFlyerTwistDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    switch (trackSequence)
+    {
+        case 0:
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    direction),
+                0xFFFF, 0);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            break;
+        case 1:
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            break;
+        case 2:
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            switch (direction)
+            {
+                case 1:
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    break;
+                case 2:
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            break;
+    }
+}
+
+/** rct2: 0x00824FDC */
+static void LayDownRCTrackRightFlyerTwistDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    switch (trackSequence)
+    {
+        case 0:
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    direction),
+                0xFFFF, 0);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + kSupportHeight, session.SupportColours);
+
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            break;
+        case 1:
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            break;
+        case 2:
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            switch (direction)
+            {
+                case 1:
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    break;
+                case 2:
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            break;
+    }
+}
+
+/** rct2: 0x00824C4C */
+static void LayDownRCTrackFlyerHalfLoopDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    switch (trackSequence)
+    {
+        case 0:
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 1:
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                    break;
+                case 1:
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
+                    break;
+                case 2:
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                    break;
+                case 3:
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            break;
+        case 3:
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+    }
+}
+
+/** rct2: 0x00824C7C */
+static void LayDownRCTrackLeftFlyerCorkscrewDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    switch (trackSequence)
+    {
+        case 0:
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                        PaintSegment::bottomLeft),
+                    direction),
+                0xFFFF, 0);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 35, session.SupportColours);
+
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 1:
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            break;
+        case 2:
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            switch (direction)
+            {
+                case 2:
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    break;
+                case 3:
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+    }
+}
+
+/** rct2: 0x00824C8C */
+static void LayDownRCTrackRightFlyerCorkscrewDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    /*auto function = GetTrackPaintFunctionCorkscrewRC(TrackElemType::LeftFlyerCorkscrewUp);
+    function(session, ride, 2 - trackSequence, (direction + 3) % 4, height, trackElement, supportType);
+    return;*/
+}
+
+static void LayDownRCTrackHalfLoopInvertedUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    switch (trackSequence)
+    {
+        case 0:
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            switch (direction)
+            {
+                case 0:
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 56, session.SupportColours);
+                    break;
+                case 1:
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 56, session.SupportColours);
+                    break;
+                case 2:
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 56, session.SupportColours);
+                    break;
+                case 3:
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 56, session.SupportColours);
+                    break;
+            }
+
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            }
+            PaintUtilSetGeneralSupportHeight(session, height + 72);
+            break;
+        case 1:
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            break;
+        case 2:
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 168);
+            break;
+        case 3:
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Flat);
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            break;
+    }
+}
+
 TrackPaintFunction GetTrackPaintFunctionCompactInvertedRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
@@ -4209,6 +4523,20 @@ TrackPaintFunction GetTrackPaintFunctionCompactInvertedRC(OpenRCT2::TrackElemTyp
             return CompactInvertedRCTrackDiagBrakes;
         case TrackElemType::DiagBlockBrakes:
             return CompactInvertedRCTrackDiagBlockBrakes;
+
+        case TrackElemType::LeftFlyerTwistDown:
+            return LayDownRCTrackLeftFlyerTwistDown;
+        case TrackElemType::RightFlyerTwistDown:
+            return LayDownRCTrackRightFlyerTwistDown;
+        case TrackElemType::FlyerHalfLoopInvertedDown:
+            return LayDownRCTrackFlyerHalfLoopDown;
+        case TrackElemType::LeftFlyerCorkscrewDown:
+            return LayDownRCTrackLeftFlyerCorkscrewDown;
+        case TrackElemType::RightFlyerCorkscrewDown:
+            return LayDownRCTrackRightFlyerCorkscrewDown;
+        case TrackElemType::FlyerHalfLoopInvertedUp:
+            return LayDownRCTrackHalfLoopInvertedUp;
+
         default:
             return TrackPaintFunctionDummy;
     }

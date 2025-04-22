@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/CompactInvertedCoaster.h"
 #include "../../../paint/track/coaster/CorkscrewRollerCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
@@ -31,10 +32,11 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     ),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor(
         {
-            .trackStyle = TrackStyle::layDownRollerCoasterInverted,
+            .trackStyle = TrackStyle::compactInvertedCoaster,
             .supportType = MetalSupportType::TubesInverted,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::corkscrewInverted, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes },
             .extraTrackGroups = { TrackGroup::flyingHalfLoopInvertedUp, TrackGroup::stationEnd, TrackGroup::liftHill },
+            .sprites = OpenRCT2::CompactInvertedCoaster::kSprites,
         }
     ),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
