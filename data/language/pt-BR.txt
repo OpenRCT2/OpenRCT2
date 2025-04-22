@@ -2236,8 +2236,8 @@ STR_3228    :Definir posição inicial para pessoas
 STR_3229    :Freios Bloqueadores não podem ser usados diretamente depois da estação
 STR_3230    :Freios Bloqueadores não podem ser usados diretamente um após o outro
 STR_3231    :Freios Bloqueadores não podem ser usados diretamente após a corrente de elevação
-STR_3232    :Opções - Financeiro
-STR_3233    :Opções - Visitantes
+STR_3232    :Opções de cenário - Financeiro
+STR_3233    :Opções de cenário - Visitantes
 STR_3235    :Mostrar opções financeiras
 STR_3236    :Mostrar opções de visitante
 STR_3238    :Não necessita dinheiro
@@ -2281,7 +2281,7 @@ STR_3279    :Entrada gratuita / Atrações pagas
 STR_3280    :Entrada paga / Atrações gratuitas
 STR_3281    :{WINDOW_COLOUR_2}Preço de entrada:
 STR_3283    :Selecione as atrações a serem preservadas
-STR_3285    :Atrações Preservadas
+STR_3285    :Opções de cenário - Atrações Preservadas
 STR_3286    :Selecione o objetivo para este cenário
 STR_3287    :{WINDOW_COLOUR_2}Objetivo:
 STR_3294    :Mudar…
@@ -3793,3 +3793,14 @@ STR_6747    :Preferências variam (padrão)
 STR_6748    :Apenas atrações menos intensas
 STR_6749    :Apenas atrações mais intensas
 STR_6750    :Selecionar que tipo de intensidade de atração visitantes recém criados preferem.
+STR_6751    :Filas de espera não podem ser usadas em passagens de níveis!
+STR_6752    :Opções de cenário - Objetivo
+STR_6753    :Opções de cenário - Detalhes do Cenário
+STR_6754    :Opções de cenário - Restrições de Terreno
+STR_6755    :Mostrar opções de objetivo
+STR_6756    :Mostrar opções de detalhes do cenário
+STR_6757    :Mostrar opções de restrições de terreno
+STR_6758    :Opções de empréstimo
+STR_6759    :Modelo de negócios
+STR_6760    :Proventos:
+STR_6761    :Detalhes do cenário

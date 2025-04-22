@@ -3803,6 +3803,7 @@ STR_6747    :Diverses préférences (défaut)
 STR_6748    :Que des attractions calmes
 STR_6749    :Que des attractions intenses
 STR_6750    :Détermine quelle intensité d’attraction les nouveaux visiteurs préfèrent
+STR_6751    :Les files d’attente ne peuvent pas être utilisées comme passage à niveau !
 STR_6752    :Options du scénario — Objectif
 STR_6753    :Options du scénario — Détails du scénario
 STR_6754    :Options du scénario — Restrictions du paysage
