@@ -10,7 +10,8 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
-#include "../../../paint/track/coaster/TwisterRollerCoasterSprites.h"
+#include "../../../paint/track/coaster/InvertedRollerCoaster.h"
+#include "../../../paint/track/coaster/TwisterRollerCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -29,10 +30,11 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
         .sprites = OpenRCT2::TwisterRollerCoaster::kSprites,
     }),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
-        .trackStyle = TrackStyle::flyingRollerCoasterInverted,
+        .trackStyle = TrackStyle::invertedRollerCoaster,
         .supportType = MetalSupportType::TubesInverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::quarterLoopInvertedDown, TrackGroup::flyingLargeHalfLoopInvertedDown, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
         .extraTrackGroups = {TrackGroup::flyingLargeHalfLoopInvertedUp, TrackGroup::flyingHalfLoopInvertedUp},
+        .sprites = OpenRCT2::InvertedRollerCoaster::kSprites,
     }),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant, 

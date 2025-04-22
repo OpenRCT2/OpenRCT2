@@ -3952,6 +3952,90 @@ namespace OpenRCT2::InvertedRollerCoaster
     
     static constexpr std::array<std::array<BoundBoxXYZ, 7>, kNumOrthogonalDirections>
     kRightLargeHalfLoopUpBoundBoxes = flipTrackSequenceBoundBoxesXAxis(kLeftLargeHalfLoopUpBoundBoxes);
+
+    static constexpr std::array<std::array<ImageIndex, 4>, kNumOrthogonalDirections>
+    kFlyerHalfLoopInvertedDownSprites = {{
+        {{
+            17629,
+            17628,
+            17627,
+            17626,
+        }},
+        {{
+            17637,
+            17636,
+            17635,
+            17634,
+        }},
+        {{
+            17630,
+            17631,
+            17632,
+            17633,
+        }},
+        {{
+            17638,
+            17639,
+            17640,
+            17641,
+        }},
+    }};
+
+    static constexpr std::array<std::array<CoordsXYZ, 4>, kNumOrthogonalDirections>
+    kFlyerHalfLoopInvertedDownOffsets = {{
+        {{
+            { 0, 0, 32 },
+            { 16, 0, 0 },
+            { 0, 0, 0 },
+            { 0, 6, 0 },
+        }},
+        {{
+            { 0, 0, 32 },
+            { 0, 12, 0 },
+            { 14, 0, 0 },
+            { 6, 0, 0 },
+        }},
+        {{
+            { 0, 16, 32 },
+            { 10, 16, 0 },
+            { 0, 6, 0 },
+            { 0, 6, 0 },
+        }},
+        {{
+            { 16, 0, 32 },
+            { 16, 16, 0 },
+            { 6, 0, 0 },
+            { 6, 0, 0 },
+        }},
+    }};
+
+    static constexpr std::array<std::array<BoundBoxXYZ, 4>, kNumOrthogonalDirections>
+    kFlyerHalfLoopInvertedDownBoundBoxes = {{
+        {{
+            { { 0, 0, 32 }, { 32, 16, 3 } },
+            { { 16, 0, 0 }, { 2, 16, 119 } },
+            { { 0, 6, 0 }, { 32, 20, 3 } },
+            { { 0, 6, 0 }, { 32, 20, 3 } },
+        }},
+        {{
+            { { 0, 0, 32 }, { 16, 32, 3 } },
+            { { 0, 12, 0 }, { 16, 3, 119 } },
+            { { 6, 28, 0 }, { 20, 3, 63 } },
+            { { 6, 0, 0 }, { 20, 32, 11 } },
+        }},
+        {{
+            { { 0, 16, 32 }, { 32, 12, 3 } },
+            { { 10, 16, 0 }, { 4, 12, 119 } },
+            { { 28, 6, 0 }, { 3, 20, 63 } },
+            { { 0, 6, 0 }, { 32, 20, 9 } },
+        }},
+        {{
+            { { 16, 0, 32 }, { 12, 32, 3 } },
+            { { 6, 15, 0 }, { 16, 2, 119 } },
+            { { 6, 0, 0 }, { 20, 32, 3 } },
+            { { 6, 0, 0 }, { 20, 32, 7 } },
+        }},
+    }};
     
     static constexpr std::array<ImageIndex, kNumOrthogonalDirections>
     kBlockBrakesSprites = {{
@@ -4580,6 +4664,166 @@ namespace OpenRCT2::InvertedRollerCoaster
     
     static constexpr std::array<BoundBoxXYZ, kNumOrthogonalDirections>
     kRightBankedUp25ToFlatBoundBoxes = flipTrackSequenceBoundBoxesXAxis(kLeftBankedUp25ToFlatBoundBoxes);
+
+    static constexpr std::array<std::array<ImageIndex, 7>, kNumOrthogonalDirections>
+    kLeftFlyerLargeHalfLoopInvertedDownSprites = {{
+        {{
+            17787,
+            17786,
+            17785,
+            17784,
+            17783,
+            17782,
+            17781,
+        }},
+        {{
+            17780,
+            17779,
+            17778,
+            17777,
+            17776,
+            17775,
+            17774,
+        }},
+        {{
+            17773,
+            17772,
+            17771,
+            17770,
+            17769,
+            17768,
+            17767,
+        }},
+        {{
+            17766,
+            17765,
+            17764,
+            17763,
+            17762,
+            17761,
+            17760,
+        }},
+    }};
+
+    static constexpr std::array<std::array<BoundBoxXYZ, 7>, kNumOrthogonalDirections>
+    kLeftFlyerLargeHalfLoopInvertedDownBoundBoxes = {{
+        {{
+            { { 0, 0, 32 }, { 32, 16, 0 } },
+            { { 0, 0, 0 }, { 32, 16, 3 } },
+            { { 16, 0, 0 }, { 16, 16, 3 } },
+            { { 0, 16, 0 }, { 32, 16, 3 } },
+            { { 0, 16, 0 }, { 32, 16, 3 } },
+            { { 0, 6, 0 }, { 32, 20, 3 } },
+            { { 0, 6, 0 }, { 32, 20, 3 } },
+        }},
+        {{
+            { { 0, 0, 32 }, { 16, 32, 0 } },
+            { { 0, 0, 200 }, { 16, 32, 0 } },
+            { { 0, 0, 100 }, { 16, 16, 0 } },
+            { { 16, 0, 200 }, { 16, 32, 0 } },
+            { { 16, 0, 70 }, { 16, 32, 0 } },
+            { { 6, 0, 0 }, { 20, 32, 3 } },
+            { { 6, 0, 0 }, { 20, 32, 3 } },
+        }},
+        {{
+            { { 0, 16, 32 }, { 32, 16, 0 } },
+            { { 0, 16, 200 }, { 32, 16, 0 } },
+            { { 0, 16, 110 }, { 16, 16, 0 } },
+            { { 0, 0, 200 }, { 32, 16, 0 } },
+            { { 0, 0, 70 }, { 32, 16, 0 } },
+            { { 0, 6, 0 }, { 32, 20, 9 } },
+            { { 0, 6, 0 }, { 32, 20, 3 } },
+        }},
+        {{
+            { { 16, 0, 32 }, { 16, 32, 0 } },
+            { { 16, 0, 0 }, { 16, 32, 3 } },
+            { { 16, 16, 0 }, { 16, 16, 3 } },
+            { { 0, 0, 0 }, { 16, 32, 3 } },
+            { { 0, 0, 0 }, { 16, 32, 3 } },
+            { { 6, 0, 0 }, { 20, 32, 3 } },
+            { { 6, 0, 0 }, { 20, 32, 3 } },
+        }},
+    }};
+
+    static constexpr std::array<std::array<ImageIndex, 7>, kNumOrthogonalDirections>
+    kRightFlyerLargeHalfLoopInvertedDownSprites = {{
+        {{
+            17738,
+            17737,
+            17736,
+            17735,
+            17734,
+            17733,
+            17732,
+        }},
+        {{
+            17745,
+            17744,
+            17743,
+            17742,
+            17741,
+            17740,
+            17739,
+        }},
+        {{
+            17752,
+            17751,
+            17750,
+            17749,
+            17748,
+            17747,
+            17746,
+        }},
+        {{
+            17759,
+            17758,
+            17757,
+            17756,
+            17755,
+            17754,
+            17753,
+        }},
+    }};
+
+    static constexpr std::array<std::array<BoundBoxXYZ, 7>, kNumOrthogonalDirections>
+    kRightFlyerLargeHalfLoopInvertedDownBoundBoxes = {{
+        {{
+            { { 0, 16, 32 }, { 32, 16, 0 } },
+            { { 0, 16, 0 }, { 32, 16, 3 } },
+            { { 16, 16, 0 }, { 16, 16, 3 } },
+            { { 0, 0, 0 }, { 32, 16, 3 } },
+            { { 0, 0, 0 }, { 32, 16, 3 } },
+            { { 0, 6, 0 }, { 32, 20, 3 } },
+            { { 0, 6, 0 }, { 32, 20, 3 } },
+        }},
+        {{
+            { { 16, 0, 32 }, { 16, 32, 0 } },
+            { { 16, 0, 200 }, { 16, 32, 0 } },
+            { { 16, 0, 110 }, { 16, 16, 0 } },
+            { { 0, 0, 200 }, { 16, 32, 0 } },
+            { { 0, 0, 70 }, { 16, 32, 0 } },
+            { { 6, 0, 0 }, { 20, 32, 9 } },
+            { { 6, 0, 0 }, { 20, 32, 3 } },
+        }},
+        {{
+            { { 0, 0, 32 }, { 32, 16, 0 } },
+            { { 0, 0, 200 }, { 32, 16, 0 } },
+            { { 0, 0, 100 }, { 16, 16, 0 } },
+            { { 0, 16, 200 }, { 32, 16, 0 } },
+            { { 0, 16, 70 }, { 32, 16, 0 } },
+            { { 0, 6, 0 }, { 32, 20, 3 } },
+            { { 0, 6, 0 }, { 32, 20, 3 } },
+        }},
+        {{
+            { { 0, 0, 32 }, { 16, 32, 0 } },
+            { { 0, 0, 0 }, { 16, 32, 3 } },
+            { { 0, 16, 0 }, { 16, 16, 3 } },
+            { { 16, 0, 0 }, { 16, 32, 3 } },
+            { { 16, 0, 0 }, { 16, 32, 3 } },
+            { { 6, 0, 0 }, { 20, 32, 3 } },
+            { { 6, 0, 0 }, { 20, 32, 3 } },
+        }},
+    }};
     
     static constexpr std::array<std::array<ImageIndex, 4>, kNumOrthogonalDirections>
     kDiagBrakesSprites = {{
@@ -4939,10 +5183,10 @@ namespace OpenRCT2::InvertedRollerCoaster
         { nullptr, nullptr, nullptr, true }, // RightLargeHalfLoopDown
         { nullptr, nullptr, nullptr, false }, // LeftFlyerTwistUp
         { nullptr, nullptr, nullptr, false }, // RightFlyerTwistUp
-        { nullptr, nullptr, nullptr, true }, // LeftFlyerTwistDown
-        { nullptr, nullptr, nullptr, true }, // RightFlyerTwistDown
+        { &kLeftTwistDownToUpSprites[0][0], &kLeftTwistDownToUpOffsets[0][0], &kLeftTwistDownToUpBoundBoxes[0][0], false }, // LeftFlyerTwistDown
+        { &kRightTwistDownToUpSprites[0][0], &kRightTwistDownToUpOffsets[0][0], &kRightTwistDownToUpBoundBoxes[0][0], false }, // RightFlyerTwistDown
         { nullptr, nullptr, nullptr, false }, // FlyerHalfLoopUninvertedUp
-        { nullptr, nullptr, nullptr, false }, // FlyerHalfLoopInvertedDown
+        { &kFlyerHalfLoopInvertedDownSprites[0][0], &kFlyerHalfLoopInvertedDownOffsets[0][0], &kFlyerHalfLoopInvertedDownBoundBoxes[0][0], false }, // FlyerHalfLoopInvertedDown
         { nullptr, nullptr, nullptr, true }, // LeftFlyerCorkscrewUp
         { nullptr, nullptr, nullptr, true }, // RightFlyerCorkscrewUp
         { nullptr, nullptr, nullptr, false }, // LeftFlyerCorkscrewDown
@@ -5035,13 +5279,13 @@ namespace OpenRCT2::InvertedRollerCoaster
         { nullptr, nullptr, nullptr, true }, // RightLargeZeroGRollDown
         { nullptr, nullptr, nullptr, false }, // LeftFlyerLargeHalfLoopUninvertedUp
         { nullptr, nullptr, nullptr, false }, // RightFlyerLargeHalfLoopUninvertedUp
-        { nullptr, nullptr, nullptr, false }, // LeftFlyerLargeHalfLoopInvertedDown
-        { nullptr, nullptr, nullptr, false }, // RightFlyerLargeHalfLoopInvertedDown
-        { nullptr, nullptr, nullptr, false }, // LeftFlyerLargeHalfLoopInvertedUp
-        { nullptr, nullptr, nullptr, false }, // RightFlyerLargeHalfLoopInvertedUp
+        { &kLeftFlyerLargeHalfLoopInvertedDownSprites[0][0], nullptr, &kLeftFlyerLargeHalfLoopInvertedDownBoundBoxes[0][0], false }, // LeftFlyerLargeHalfLoopInvertedDown
+        { &kRightFlyerLargeHalfLoopInvertedDownSprites[0][0], nullptr, &kRightFlyerLargeHalfLoopInvertedDownBoundBoxes[0][0], false }, // RightFlyerLargeHalfLoopInvertedDown
+        { &kLeftLargeHalfLoopUpSprites[0][0], nullptr, &kLeftLargeHalfLoopUpBoundBoxes[0][0], false }, // LeftFlyerLargeHalfLoopInvertedUp
+        { &kRightLargeHalfLoopUpSprites[0][0], nullptr, &kRightLargeHalfLoopUpBoundBoxes[0][0], false }, // RightFlyerLargeHalfLoopInvertedUp
         { nullptr, nullptr, nullptr, false }, // LeftFlyerLargeHalfLoopUninvertedDown
         { nullptr, nullptr, nullptr, false }, // RightFlyerLargeHalfLoopUninvertedDown
-        { nullptr, nullptr, nullptr, false }, // FlyerHalfLoopInvertedUp
+        { &kHalfLoopUpSprites[0][0], &kHalfLoopUpOffsets[0][0], &kHalfLoopUpBoundBoxes[0][0], false }, // FlyerHalfLoopInvertedUp
         { nullptr, nullptr, nullptr, false }, // FlyerHalfLoopUninvertedDown
         { nullptr, nullptr, nullptr, false }, // LeftEighthToDiagUp25
         { nullptr, nullptr, nullptr, false }, // RightEighthToDiagUp25

@@ -5419,6 +5419,25 @@ TrackPaintFunction GetTrackPaintFunctionInvertedRC(OpenRCT2::TrackElemType track
 
         case TrackElemType::Booster:
             return InvertedRCTrackBooster;
+
+        case TrackElemType::LeftFlyerTwistDown:
+            return trackPaintSprite;
+        case TrackElemType::RightFlyerTwistDown:
+            return trackPaintSprite;
+        case TrackElemType::FlyerHalfLoopInvertedDown:
+            return trackPaintSprite;
+
+        case TrackElemType::LeftFlyerLargeHalfLoopInvertedUp:
+            return trackPaintSprite;
+        case TrackElemType::RightFlyerLargeHalfLoopInvertedUp:
+            return trackPaintSprite;
+        case TrackElemType::LeftFlyerLargeHalfLoopInvertedDown:
+            return trackPaintSprite;
+        case TrackElemType::RightFlyerLargeHalfLoopInvertedDown:
+            return trackPaintSprite;
+        case TrackElemType::FlyerHalfLoopInvertedUp:
+            return trackPaintSprite;
+
         default:
             return TrackPaintFunctionDummy;
     }

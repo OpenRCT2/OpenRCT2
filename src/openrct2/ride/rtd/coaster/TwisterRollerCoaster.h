@@ -11,7 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../paint/support/MetalSupports.h"
-#include "../../../paint/track/coaster/TwisterRollerCoasterSprites.h"
+#include "../../../paint/track/coaster/TwisterRollerCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"

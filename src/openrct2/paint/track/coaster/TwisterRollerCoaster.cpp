@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "TwisterRollerCoaster.h"
-
 #include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
@@ -5088,7 +5086,7 @@ static void TwisterRCTrackRightCorkscrewDown(
     TwisterRCTrackLeftCorkscrewUp(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
-void TwisterRCTrackFlatTo60DegUpLongBase(
+static void TwisterRCTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
@@ -5152,7 +5150,7 @@ void TwisterRCTrackFlatTo60DegUpLongBase(
 }
 
 /** rct2: 0x008AC104 */
-void TwisterRCTrack60DegUpToFlatLongBase(
+static void TwisterRCTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
@@ -5415,7 +5413,7 @@ static void TwisterRCTrackPoweredLift(
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
-void TwisterRCTrackLeftLargeHalfLoopUp(
+static void TwisterRCTrackLeftLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
@@ -5518,7 +5516,7 @@ void TwisterRCTrackLeftLargeHalfLoopUp(
     }
 }
 
-void TwisterRCTrackRightLargeHalfLoopUp(
+static void TwisterRCTrackRightLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
@@ -5620,14 +5618,14 @@ void TwisterRCTrackRightLargeHalfLoopUp(
     }
 }
 
-void TwisterRCTrackLeftLargeHalfLoopDown(
+static void TwisterRCTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
     TwisterRCTrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement, supportType);
 }
 
-void TwisterRCTrackRightLargeHalfLoopDown(
+static void TwisterRCTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
@@ -5679,7 +5677,7 @@ static void TwisterRCTrackInvertedFlatTo90DegQuarterLoopDown(
     trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
 }
 
-void TwisterRCTrackBooster(
+static void TwisterRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
@@ -5831,7 +5829,7 @@ static void TwisterRCTrackRightTwistUpToDown(
         session, ride, 2 - trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
-void TwisterRCTrackDiagBrakes(
+static void TwisterRCTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
@@ -5848,7 +5846,7 @@ void TwisterRCTrackDiagBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-void TwisterRCTrackDiagBlockBrakes(
+static void TwisterRCTrackDiagBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
@@ -9775,6 +9773,19 @@ TrackPaintFunction GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trackT
             return TwisterRCTrackLeftEighthDiveLoopDownToDiag;
         case TrackElemType::RightEighthDiveLoopDownToDiag:
             return TwisterRCTrackRightEighthDiveLoopToDownOrthogonal;
+
+        case TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop:
+            return TwisterRCTrack90DegToInvertedFlatQuarterLoopUp;
+        case TrackElemType::FlyerHalfLoopUninvertedDown:
+            return trackPaintSprite;
+        case TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp:
+            return TwisterRCTrackLeftLargeHalfLoopUp;
+        case TrackElemType::RightFlyerLargeHalfLoopUninvertedUp:
+            return TwisterRCTrackRightLargeHalfLoopUp;
+        case TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown:
+            return trackPaintSprite;
+        case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
+            return trackPaintSprite;
 
         default:
             return TrackPaintFunctionDummy;
