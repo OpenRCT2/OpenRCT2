@@ -3785,34 +3785,34 @@ namespace OpenRCT2::TrackMetaData
         { TrackElemType::LeftEighthToDiagDown25, 1 },                   // RightEighthToOrthogonalUp25
         { TrackElemType::RightEighthToDiagUp25, 2 },                    // LeftEighthToOrthogonalDown25
         { TrackElemType::LeftEighthToDiagUp25, 3 },                     // RightEighthToOrthogonalDown25
-        { TrackElemType::DiagUp25ToLeftBankedUp25, 0 },                 // DiagUp25ToLeftBankedUp25
-        { TrackElemType::DiagUp25ToRightBankedUp25, 0 },                // DiagUp25ToRightBankedUp25
-        { TrackElemType::DiagLeftBankedUp25ToUp25, 0 },                 // DiagLeftBankedUp25ToUp25
-        { TrackElemType::DiagRightBankedUp25ToUp25, 0 },                // DiagRightBankedUp25ToUp25
-        { TrackElemType::DiagDown25ToLeftBankedDown25, 0 },             // DiagDown25ToLeftBankedDown25
-        { TrackElemType::DiagDown25ToRightBankedDown25, 0 },            // DiagDown25ToRightBankedDown25
-        { TrackElemType::DiagLeftBankedDown25ToDown25, 0 },             // DiagLeftBankedDown25ToDown25
-        { TrackElemType::DiagRightBankedDown25ToDown25, 0 },            // DiagRightBankedDown25ToDown25
-        { TrackElemType::DiagLeftBankedFlatToLeftBankedUp25, 0 },       // DiagLeftBankedFlatToLeftBankedUp25
-        { TrackElemType::DiagRightBankedFlatToRightBankedUp25, 0 },     // DiagRightBankedFlatToRightBankedUp25
-        { TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat, 0 },       // DiagLeftBankedUp25ToLeftBankedFlat
-        { TrackElemType::DiagRightBankedUp25ToRightBankedFlat, 0 },     // DiagRightBankedUp25ToRightBankedFlat
-        { TrackElemType::DiagLeftBankedFlatToLeftBankedDown25, 0 },     // DiagLeftBankedFlatToLeftBankedDown25
-        { TrackElemType::DiagRightBankedFlatToRightBankedDown25, 0 },   // DiagRightBankedFlatToRightBankedDown25
-        { TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat, 0 },     // DiagLeftBankedDown25ToLeftBankedFlat
-        { TrackElemType::DiagRightBankedDown25ToRightBankedFlat, 0 },   // DiagRightBankedDown25ToRightBankedFlat
-        { TrackElemType::DiagFlatToLeftBankedUp25, 0 },                 // DiagFlatToLeftBankedUp25
-        { TrackElemType::DiagFlatToRightBankedUp25, 0 },                // DiagFlatToRightBankedUp25
-        { TrackElemType::DiagLeftBankedUp25ToFlat, 0 },                 // DiagLeftBankedUp25ToFlat
-        { TrackElemType::DiagRightBankedUp25ToFlat, 0 },                // DiagRightBankedUp25ToFlat
-        { TrackElemType::DiagFlatToLeftBankedDown25, 0 },               // DiagFlatToLeftBankedDown25
-        { TrackElemType::DiagFlatToRightBankedDown25, 0 },              // DiagFlatToRightBankedDown25
-        { TrackElemType::DiagLeftBankedDown25ToFlat, 0 },               // DiagLeftBankedDown25ToFlat
-        { TrackElemType::DiagRightBankedDown25ToFlat, 0 },              // DiagRightBankedDown25ToFlat
-        { TrackElemType::DiagUp25LeftBanked, 0 },                       // DiagUp25LeftBanked
-        { TrackElemType::DiagUp25RightBanked, 0 },                      // DiagUp25RightBanked
-        { TrackElemType::DiagDown25LeftBanked, 0 },                     // DiagDown25LeftBanked
-        { TrackElemType::DiagDown25RightBanked, 0 },                    // DiagDown25RightBanked
+        { TrackElemType::DiagRightBankedDown25ToDown25, 2 },            // DiagUp25ToLeftBankedUp25
+        { TrackElemType::DiagLeftBankedDown25ToDown25, 2 },             // DiagUp25ToRightBankedUp25
+        { TrackElemType::DiagDown25ToRightBankedDown25, 2 },            // DiagLeftBankedUp25ToUp25
+        { TrackElemType::DiagDown25ToLeftBankedDown25, 2 },             // DiagRightBankedUp25ToUp25
+        { TrackElemType::DiagRightBankedUp25ToUp25, 2 },                // DiagDown25ToLeftBankedDown25
+        { TrackElemType::DiagLeftBankedUp25ToUp25, 2 },                 // DiagDown25ToRightBankedDown25
+        { TrackElemType::DiagUp25ToRightBankedUp25, 2 },                // DiagLeftBankedDown25ToDown25
+        { TrackElemType::DiagUp25ToLeftBankedUp25, 2 },                 // DiagRightBankedDown25ToDown25
+        { TrackElemType::DiagRightBankedDown25ToRightBankedFlat, 2 },   // DiagLeftBankedFlatToLeftBankedUp25
+        { TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat, 2 },     // DiagRightBankedFlatToRightBankedUp25
+        { TrackElemType::DiagRightBankedFlatToRightBankedDown25, 2 },   // DiagLeftBankedUp25ToLeftBankedFlat
+        { TrackElemType::DiagLeftBankedFlatToLeftBankedDown25, 2 },     // DiagRightBankedUp25ToRightBankedFlat
+        { TrackElemType::DiagRightBankedUp25ToRightBankedFlat, 2 },     // DiagLeftBankedFlatToLeftBankedDown25
+        { TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat, 2 },       // DiagRightBankedFlatToRightBankedDown25
+        { TrackElemType::DiagRightBankedFlatToRightBankedUp25, 2 },     // DiagLeftBankedDown25ToLeftBankedFlat
+        { TrackElemType::DiagLeftBankedFlatToLeftBankedUp25, 2 },       // DiagRightBankedDown25ToRightBankedFlat
+        { TrackElemType::DiagRightBankedDown25ToFlat, 2 },              // DiagFlatToLeftBankedUp25
+        { TrackElemType::DiagLeftBankedDown25ToFlat, 2 },               // DiagFlatToRightBankedUp25
+        { TrackElemType::DiagFlatToRightBankedDown25, 2 },              // DiagLeftBankedUp25ToFlat
+        { TrackElemType::DiagFlatToLeftBankedDown25, 2 },               // DiagRightBankedUp25ToFlat
+        { TrackElemType::DiagRightBankedUp25ToFlat, 2 },                // DiagFlatToLeftBankedDown25
+        { TrackElemType::DiagLeftBankedUp25ToFlat, 2 },                 // DiagFlatToRightBankedDown25
+        { TrackElemType::DiagFlatToRightBankedUp25, 2 },                // DiagLeftBankedDown25ToFlat
+        { TrackElemType::DiagFlatToLeftBankedUp25, 2 },                 // DiagRightBankedDown25ToFlat
+        { TrackElemType::DiagDown25RightBanked, 2 },                    // DiagUp25LeftBanked
+        { TrackElemType::DiagDown25LeftBanked, 2 },                     // DiagUp25RightBanked
+        { TrackElemType::DiagUp25RightBanked, 2 },                      // DiagDown25LeftBanked
+        { TrackElemType::DiagUp25LeftBanked, 2 },                       // DiagDown25RightBanked
         { TrackElemType::RightEighthBankToOrthogonalDown25, 3 },        // LeftEighthBankToDiagUp25
         { TrackElemType::LeftEighthBankToOrthogonalDown25, 2 },         // RightEighthBankToDiagUp25
         { TrackElemType::RightEighthBankToOrthogonalUp25, 1 },          // LeftEighthBankToDiagDown25
