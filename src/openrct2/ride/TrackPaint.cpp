@@ -2124,6 +2124,33 @@ void trackPaintSpriteSupportColoursPlatformless(
         session, ride, trackSequence, direction, height, trackElement);
 }
 
+void trackPaintSpriteTrackSupportColours(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<
+        1, &PaintSession::TrackPrimarySupportSecondaryColours, false, &PaintSession::TrackColours, nullptr, false>(
+        session, ride, trackSequence, direction, height, trackElement);
+}
+
+void trackPaintSpriteTrackSupportColoursChain(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<
+        1, &PaintSession::TrackPrimarySupportSecondaryColours, false, &PaintSession::TrackColours, &TrackElement::HasChain,
+        false>(session, ride, trackSequence, direction, height, trackElement);
+}
+
+void trackPaintSpriteTrackSupportColoursBrake(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<
+        1, &PaintSession::TrackPrimarySupportSecondaryColours, false, &PaintSession::TrackColours, &TrackElement::IsBrakeClosed,
+        false>(session, ride, trackSequence, direction, height, trackElement);
+}
+
 void trackPaintSpriteWithChild(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
@@ -2320,6 +2347,24 @@ void trackPaintSprites2SupportColoursWithChildBrake(
     trackPaintSpriteCommon<
         2, &PaintSession::SupportColours, true, &PaintSession::TrackColours, &TrackElement::IsBrakeClosed, false>(
         session, ride, trackSequence, direction, height, trackElement);
+}
+
+void trackPaintSprites2TrackSupportColours(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<
+        2, &PaintSession::TrackPrimarySupportSecondaryColours, false, &PaintSession::TrackColours, nullptr, false>(
+        session, ride, trackSequence, direction, height, trackElement);
+}
+
+void trackPaintSprites2TrackSupportColoursChain(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    trackPaintSpriteCommon<
+        2, &PaintSession::TrackPrimarySupportSecondaryColours, false, &PaintSession::TrackColours, &TrackElement::HasChain,
+        false>(session, ride, trackSequence, direction, height, trackElement);
 }
 
 void trackPaintSprites2WithChild(
@@ -2957,16 +3002,20 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             0, ride->trackColours[trackColourScheme].main, ride->trackColours[trackColourScheme].additional);
         session.SupportColours = ImageId(
             0, ride->trackColours[trackColourScheme].supports, ride->trackColours[trackColourScheme].additional);
+        session.TrackPrimarySupportSecondaryColours = ImageId(
+            0, ride->trackColours[trackColourScheme].main, ride->trackColours[trackColourScheme].supports);
         if (trackElement.IsHighlighted() || session.SelectedElement == reinterpret_cast<const TileElement*>(&trackElement))
         {
             session.TrackColours = HighlightMarker;
             session.SupportColours = HighlightMarker;
+            session.TrackPrimarySupportSecondaryColours = HighlightMarker;
         }
         if (trackElement.IsGhost())
         {
             session.InteractionType = ViewportInteractionItem::None;
             session.TrackColours = ConstructionMarker;
             session.SupportColours = ConstructionMarker;
+            session.TrackPrimarySupportSecondaryColours = ConstructionMarker;
         }
 
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());

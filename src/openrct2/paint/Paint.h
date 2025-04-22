@@ -146,6 +146,7 @@ struct PaintSessionCore
     uint32_t QuadrantFrontIndex;
     ImageId TrackColours;
     ImageId SupportColours;
+    ImageId TrackPrimarySupportSecondaryColours;
     SupportHeight SupportSegments[9];
     SupportHeight Support;
     uint16_t WaterHeight;
