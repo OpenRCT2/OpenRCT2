@@ -826,9 +826,12 @@ private:
 
     void OnResize(int32_t width, int32_t height)
     {
-        // Scale the native window size to the game's canvas size
-        _width = static_cast<int32_t>(width / Config::Get().general.WindowScale);
-        _height = static_cast<int32_t>(height / Config::Get().general.WindowScale);
+        
+        int drawableWidth, drawableHeight;
+        SDL_GL_GetDrawableSize(_window, &drawableWidth, &drawableHeight);
+    
+        _width = drawableWidth;
+        _height = drawableHeight;
 
         DrawingEngineResize();
 
