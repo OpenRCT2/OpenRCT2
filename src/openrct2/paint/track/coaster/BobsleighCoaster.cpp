@@ -1406,7 +1406,7 @@ static void BobsleighRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprites2Brakes(session, ride, trackSequence, direction, height, trackElement, supportType);
+    trackPaintSprites2Brake(session, ride, trackSequence, direction, height, trackElement, supportType);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);

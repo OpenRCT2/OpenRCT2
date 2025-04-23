@@ -399,6 +399,8 @@
     <ClInclude Include="paint\track\coaster\InvertedImpulseCoaster.h" />
     <ClInclude Include="paint\track\coaster\InvertedRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\JuniorRollerCoaster.h" />
+    <ClInclude Include="paint\track\coaster\LatticeTriangle.h" />
+    <ClInclude Include="paint\track\coaster\LatticeTriangleAlt.h" />
     <ClInclude Include="paint\track\coaster\LimLaunchedRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\LimLaunchedRollerCoasterShared.h" />
     <ClInclude Include="paint\track\coaster\LoopingRollerCoaster.h" />
