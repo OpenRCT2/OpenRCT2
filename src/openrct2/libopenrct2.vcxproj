@@ -389,6 +389,7 @@
     <ClInclude Include="paint\track\coaster\AirPoweredVerticalCoaster.h" />
     <ClInclude Include="paint\track\coaster\AlpineCoaster.h" />
     <ClInclude Include="paint\track\coaster\BobsleighCoaster.h" />
+    <ClInclude Include="paint\track\coaster\ClassicStandUpRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\ClassicWoodenTwisterRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\CompactInvertedCoaster.h" />
     <ClInclude Include="paint\track\coaster\CorkscrewRollerCoaster.h" />
@@ -409,6 +410,7 @@
     <ClInclude Include="paint\track\coaster\ReverserRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\SideFrictionRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\SingleRailRollerCoaster.h" />
+    <ClInclude Include="paint\track\coaster\StandUpRollerCoaster.h" />
     <ClInclude Include="paint\track\coaster\SteelWildMouse.h" />
     <ClInclude Include="paint\track\coaster\Steeplechase.h" />
     <ClInclude Include="paint\track\coaster\SuspendedSwingingCoaster.h" />
