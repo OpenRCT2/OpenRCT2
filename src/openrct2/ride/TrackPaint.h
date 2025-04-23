@@ -611,11 +611,19 @@ void trackPaintSpriteBrake(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType);
 
+void trackPaintSpriteBrakePlatformless(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
 void trackPaintSpriteBrakePoweredLaunch(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType);
 
 void trackPaintSpriteCableLift(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpritePlatformless(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType);
 
