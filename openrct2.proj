@@ -40,7 +40,7 @@
     <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties);IsSolutionBuild=true" />
   </Target>
 
-  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadLibs">
+  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadAllDependencies">
     <PropertyGroup>
       <BuildString Condition="'$(OPENRCT2_SHA1_SHORT)'!=''">$(OPENRCT2_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(OPENRCT2_BRANCH)'!=''">$(BuildString) ($(OPENRCT2_BRANCH))</BuildString>
