@@ -1006,6 +1006,7 @@
     <ClCompile Include="paint\track\coaster\MiniRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\MiniSuspendedCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\MultiDimensionRollerCoaster.cpp" />
+    <ClCompile Include="paint\track\coaster\MultiDimensionRollerCoasterInverted.cpp" />
     <ClCompile Include="paint\track\coaster\ReverseFreefallCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\ReverserRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\SideFrictionRollerCoaster.cpp" />

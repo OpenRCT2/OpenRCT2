@@ -784,6 +784,7 @@ TrackPaintFunction GetTrackPaintFunctionSideFrictionRC(OpenRCT2::TrackElemType t
 TrackPaintFunction GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionWildMouse(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionMultiDimensionRC(OpenRCT2::TrackElemType trackType);
+TrackPaintFunction GetTrackPaintFunctionMultiDimensionRCInverted(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionFlyingRCInverted(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionVirginiaReel(OpenRCT2::TrackElemType trackType);
