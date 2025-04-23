@@ -40,7 +40,7 @@
               try
               {
                   // Download the file
-                  Log.LogMessage(MessageImportance.Normal, String.Format("Downloading '{0}'.", Url));
+                  Log.LogMessage(MessageImportance.High, String.Format("Downloading '{0}'.", Url));
                   var client = new WebClient();
                   client.DownloadFile(Url, tempFile);
 
@@ -53,7 +53,7 @@
                   }
 
                   // Extract contents
-                  Log.LogMessage(MessageImportance.Normal, String.Format("Extracting to '{0}'.", OutputDirectory));
+                  Log.LogMessage(MessageImportance.High, String.Format("Extracting to '{0}'.", OutputDirectory));
                   if (!Directory.Exists(OutputDirectory))
                   {
                       Directory.CreateDirectory(OutputDirectory);
