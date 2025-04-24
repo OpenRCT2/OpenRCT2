@@ -75,6 +75,8 @@ private:
     uint32_t _ttfGlId = 0;
     #endif
 
+    bool _inDraw = false;
+
     struct
     {
         LineCommandBatch lines;
@@ -109,6 +111,7 @@ public:
     void Resize(int32_t width, int32_t height);
     void ResetPalette();
     void StartNewDraw();
+    void FinishDraw();
 
     void Clear(DrawPixelInfo& dpi, uint8_t paletteIndex) override;
     void FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
@@ -125,6 +128,7 @@ public:
 
     void FlushCommandBuffers();
 
+private:
     void FlushLines();
     void FlushRectangles();
     void HandleTransparency();
@@ -257,9 +261,11 @@ public:
         ConfigureDirtyGrid();
 
         _drawingContext->Resize(width, height);
+
         _drawingContext->StartNewDraw();
         _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
         _drawingContext->FlushCommandBuffers();
+        _drawingContext->FinishDraw();
     }
 
     void ConfigureDirtyGrid()
@@ -341,6 +347,9 @@ public:
         }
 
         CheckGLError();
+
+        _drawingContext->FinishDraw();
+
         Display();
     }
 
@@ -449,7 +458,7 @@ public:
 
     DrawingEngineFlags GetFlags() override
     {
-        return {};
+        return DrawingEngineFlag::dirtyOptimisations;
     }
 
     void InvalidateImage(uint32_t image) override
@@ -592,18 +601,32 @@ void OpenGLDrawingContext::ResetPalette()
 
 void OpenGLDrawingContext::StartNewDraw()
 {
+    Guard::Assert(_inDraw == false);
+
     _drawCount = 0;
     _swapFramebuffer->Clear();
+    _inDraw = true;
+}
+
+void OpenGLDrawingContext::FinishDraw()
+{
+    Guard::Assert(_inDraw == true);
+
+    _inDraw = false;
 }
 
 void OpenGLDrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
 {
+    Guard::Assert(_inDraw == true);
+
     FillRect(dpi, paletteIndex, dpi.x, dpi.y, dpi.x + dpi.width, dpi.y + dpi.height);
 }
 
 void OpenGLDrawingContext::FillRect(
     DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
+    Guard::Assert(_inDraw == true);
+
     const ScreenRect clip = CalculateClipping(dpi);
 
     left += clip.GetLeft() - dpi.x;
@@ -640,6 +663,8 @@ void OpenGLDrawingContext::FillRect(
 void OpenGLDrawingContext::FilterRect(
     DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
+    Guard::Assert(_inDraw == true);
+
     const ScreenRect clip = CalculateClipping(dpi);
 
     left += clip.GetLeft() - dpi.x;
@@ -748,6 +773,8 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawP
 
 void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
 {
+    Guard::Assert(_inDraw == true);
+
     const ZoomLevel zoom = dpi.zoom_level;
     ScreenLine trimmedLine = { { zoom.ApplyInversedTo(line.GetX1()), zoom.ApplyInversedTo(line.GetY1()) },
                                { zoom.ApplyInversedTo(line.GetX2()), zoom.ApplyInversedTo(line.GetY2()) } };
@@ -775,6 +802,8 @@ static auto EuclideanRemainder(const auto a, const auto b)
 
 void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, const int32_t x, const int32_t y)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1Element = GfxGetG1Element(imageId);
     if (g1Element == nullptr)
     {
@@ -908,6 +937,8 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
 void OpenGLDrawingContext::DrawSpriteRawMasked(
     DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1ElementMask = GfxGetG1Element(maskImage);
     auto g1ElementColour = GfxGetG1Element(colourImage);
     if (g1ElementMask == nullptr || g1ElementColour == nullptr)
@@ -968,6 +999,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
 
 void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
@@ -1018,6 +1051,8 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId ima
 
 void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
@@ -1072,6 +1107,8 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
 void OpenGLDrawingContext::DrawTTFBitmap(
     DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
+    Guard::Assert(_inDraw == true);
+
     #ifndef DISABLE_TTF
     auto baseId = static_cast<uint32_t>(0x7FFFF) - 1024;
     auto imageId = baseId + _ttfGlId;
@@ -1165,6 +1202,8 @@ void OpenGLDrawingContext::DrawTTFBitmap(
 
 void OpenGLDrawingContext::FlushCommandBuffers()
 {
+    Guard::Assert(_inDraw == true);
+
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
