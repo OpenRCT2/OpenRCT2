@@ -30,8 +30,6 @@ namespace OpenRCT2::Title
             gLegacyScene = LegacyScene::titleSequence;
             w->SetLocation({ loc, z });
             gLegacyScene = oldLegacyScene;
-
-            //ViewportUpdatePosition(w);
         }
 
         return 0;
