@@ -177,9 +177,7 @@ public:
         SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
         _screenTextureFormat = SDL_AllocFormat(format);
 
-        ConfigureBits(width, height, width);
-
-        _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
+        X8DrawingEngine::Resize(width, height);
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -205,6 +203,8 @@ public:
 
     void EndDraw() override
     {
+        X8DrawingEngine::EndDraw();
+
         Display();
         if (gShowDirtyVisuals)
         {

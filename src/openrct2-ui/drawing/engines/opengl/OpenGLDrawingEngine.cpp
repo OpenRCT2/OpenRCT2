@@ -128,6 +128,11 @@ public:
 
     void FlushCommandBuffers();
 
+    bool IsActive() const
+    {
+        return _inDraw;
+    }
+
 private:
     void FlushLines();
     void FlushRectangles();
@@ -448,6 +453,11 @@ public:
 
     IDrawingContext* GetDrawingContext() override
     {
+        if (!_drawingContext->IsActive())
+        {
+            Guard::Fail("Drawing context is not active.");
+            return nullptr;
+        }
         return _drawingContext.get();
     }
 

@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
 #include "../interface/Screenshot.h"
 #include "../interface/Viewport.h"
@@ -140,7 +141,10 @@ void X8DrawingEngine::Resize(uint32_t width, uint32_t height)
 {
     uint32_t pitch = width;
     ConfigureBits(width, height, pitch);
+
+    _drawingContext->BeginDraw();
     _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
+    _drawingContext->EndDraw();
 }
 
 void X8DrawingEngine::SetPalette([[maybe_unused]] const GamePalette& palette)
@@ -159,6 +163,8 @@ void X8DrawingEngine::Invalidate(int32_t left, int32_t top, int32_t right, int32
 
 void X8DrawingEngine::BeginDraw()
 {
+    _drawingContext->BeginDraw();
+
     if (!IntroIsPlaying())
     {
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
@@ -174,6 +180,7 @@ void X8DrawingEngine::BeginDraw()
 
 void X8DrawingEngine::EndDraw()
 {
+    _drawingContext->EndDraw();
 }
 
 void X8DrawingEngine::PaintWindows()
@@ -239,6 +246,11 @@ std::string X8DrawingEngine::Screenshot()
 
 IDrawingContext* X8DrawingEngine::GetDrawingContext()
 {
+    if (!_drawingContext->IsActive())
+    {
+        Guard::Fail("Drawing context is not active.");
+        return nullptr;
+    }
     return _drawingContext;
 }
 
@@ -357,6 +369,8 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine* engine)
 
 void X8DrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
 {
+    Guard::Assert(_isDrawing == true);
+
     int32_t w = dpi.width;
     int32_t h = dpi.height;
     uint8_t* ptr = dpi.bits;
@@ -418,6 +432,8 @@ static constexpr const uint16_t* kPatterns[] = {
 
 void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
+    Guard::Assert(_isDrawing == true);
+
     assert(dpi.zoom_level == ZoomLevel{ 0 });
     if (left > right)
         return;
@@ -539,6 +555,8 @@ void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t lef
 void X8DrawingContext::FilterRect(
     DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
+    Guard::Assert(_isDrawing == true);
+
     if (left > right)
         return;
     if (top > bottom)
@@ -605,22 +623,30 @@ void X8DrawingContext::FilterRect(
 
 void X8DrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
 {
+    Guard::Assert(_isDrawing == true);
+
     GfxDrawLineSoftware(dpi, line, colour);
 }
 
 void X8DrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, int32_t x, int32_t y)
 {
+    Guard::Assert(_isDrawing == true);
+
     GfxDrawSpriteSoftware(dpi, imageId, { x, y });
 }
 
 void X8DrawingContext::DrawSpriteRawMasked(
     DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
+    Guard::Assert(_isDrawing == true);
+
     GfxDrawSpriteRawMaskedSoftware(dpi, { x, y }, maskImage, colourImage);
 }
 
 void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
+    Guard::Assert(_isDrawing == true);
+
     uint8_t palette[256];
     std::fill_n(palette, sizeof(palette), colour);
     palette[0] = 0;
@@ -631,6 +657,8 @@ void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, 
 
 void X8DrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
+    Guard::Assert(_isDrawing == true);
+
     GfxDrawSpritePaletteSetSoftware(dpi, image, { x, y }, paletteMap);
 }
 
@@ -730,4 +758,18 @@ void X8DrawingContext::DrawTTFBitmap(
     else
         DrawTTFBitmapInternal<false>(dpi, fgColor, surface, x, y, 0);
 #endif // DISABLE_TTF
+}
+
+void X8DrawingContext::BeginDraw()
+{
+    Guard::Assert(_isDrawing == false);
+
+    _isDrawing = true;
+}
+
+void X8DrawingContext::EndDraw()
+{
+    Guard::Assert(_isDrawing == true);
+
+    _isDrawing = false;
 }

@@ -96,6 +96,8 @@ public:
 
     void EndDraw() override
     {
+        X8DrawingEngine::EndDraw();
+
         Display();
     }
 

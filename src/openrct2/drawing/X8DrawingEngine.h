@@ -132,10 +132,13 @@ namespace OpenRCT2
         {
         private:
             X8DrawingEngine* _engine = nullptr;
+            bool _isDrawing = false;
 
         public:
             explicit X8DrawingContext(X8DrawingEngine* engine);
 
+            void BeginDraw();
+            void EndDraw();
             void Clear(DrawPixelInfo& dpi, uint8_t paletteIndex) override;
             void FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
             void FilterRect(
@@ -150,6 +153,11 @@ namespace OpenRCT2
             void DrawTTFBitmap(
                 DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,
                 uint8_t hintingThreshold) override;
+
+            bool IsActive() const noexcept
+            {
+                return _isDrawing;
+            }
         };
     } // namespace Drawing
 } // namespace OpenRCT2

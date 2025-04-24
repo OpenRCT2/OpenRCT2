@@ -615,6 +615,10 @@ namespace OpenRCT2
      */
     void ViewportUpdatePosition(WindowBase* window)
     {
+        // Guard against any code attempting to call this at the wrong time.
+        Guard::Assert(
+            GetContext()->GetDrawingEngine()->GetDrawingContext() != nullptr, "We must be in a valid drawing context.");
+
         window->OnResize();
 
         Viewport* viewport = window->viewport;
