@@ -275,8 +275,8 @@ public:
 
     void ConfigureDirtyGrid()
     {
-        const auto blockWidth = 1u << 7;
-        const auto blockHeight = 1u << 5;
+        const auto blockWidth = 1u << 8;
+        const auto blockHeight = 1u << 8;
 
         _invalidationGrid.reset(_width, _height, blockWidth, blockHeight);
     }
