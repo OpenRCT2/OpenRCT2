@@ -11,6 +11,8 @@
 
 #include "../Location.hpp"
 
+#include <functional>
+
 namespace OpenRCT2::World::MapGenerator
 {
     enum
@@ -21,6 +23,10 @@ namespace OpenRCT2::World::MapGenerator
         SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
     };
 
-    int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b);
-    int32_t TileSmooth(const TileCoordsXY& tileCoords);
+    using SmoothFunction = std::function<int32_t(const TileCoordsXY)>;
+
+    int32_t smoothTileStrong(TileCoordsXY tileCoord);
+    int32_t smoothTileWeak(TileCoordsXY tileCoord);
+
+    void smoothMap(TileCoordsXY mapSize, SmoothFunction smoothFunc);
 } // namespace OpenRCT2::World::MapGenerator
