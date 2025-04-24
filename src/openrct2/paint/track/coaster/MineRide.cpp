@@ -48,7 +48,7 @@ static void MineRideTrackStation(
     const TrackElement& trackElement, SupportType supportType)
 {
     trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
-    if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11))
+    if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9))
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
     }

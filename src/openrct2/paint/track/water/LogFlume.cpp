@@ -43,7 +43,7 @@ static void PaintLogFlumeTrackStation(
 {
     trackPaintSprites2Platformless(session, ride, trackSequence, direction, height, trackElement, supportType);
 
-    if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::b, 0, 7, 9))
+    if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::b, 0, 7))
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     }

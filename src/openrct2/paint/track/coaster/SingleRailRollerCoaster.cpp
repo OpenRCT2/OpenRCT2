@@ -47,7 +47,7 @@ namespace OpenRCT2::SingleRailRC
         const TrackElement& trackElement, SupportType supportType)
     {
         trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
-        if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::b, -2, 4, 7))
+        if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::b, -2, 4))
         {
             DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
         }

@@ -437,7 +437,7 @@ bool TrackPaintUtilDrawStation(
     const StationBaseType baseType, const int32_t baseOffsetZ);
 bool TrackPaintUtilDrawStation2(
     PaintSession& session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement,
-    const StationBaseType baseType, const int32_t baseOffsetZ, int32_t fenceOffsetA, int32_t fenceOffsetB);
+    const StationBaseType baseType, const int32_t baseOffsetZ, int32_t fenceOffset);
 bool TrackPaintUtilDrawStationInverted(
     PaintSession& session, const Ride& ride, Direction direction, int32_t height, const TrackElement& trackElement,
     uint8_t stationVariant);

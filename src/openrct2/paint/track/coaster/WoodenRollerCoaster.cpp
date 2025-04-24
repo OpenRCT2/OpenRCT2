@@ -1645,7 +1645,7 @@ static void WoodenRCTrackStation(
     {
         trackPaintSpriteSupportColoursPlatformless(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
-    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::none, 0, 9, 11);
+    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::none, 0, 9);
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
