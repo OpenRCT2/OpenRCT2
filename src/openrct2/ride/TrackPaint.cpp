@@ -2347,7 +2347,8 @@ void trackPaintSpriteSupport(
         supportColours = supportColours.WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    if (!(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) && (session.Flags & PaintSessionFlags::PassedSurface))
+    if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS && session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        && (session.Flags & PaintSessionFlags::PassedSurface))
     {
         PaintAddImageAsParentHeight(
             session, supportColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, { 0, 0, 0 },
@@ -2375,7 +2376,8 @@ void trackPaintSpriteSupports2(
         supportColours = supportColours.WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    if (!(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) && (session.Flags & PaintSessionFlags::PassedSurface))
+    if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS && session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        && (session.Flags & PaintSessionFlags::PassedSurface))
     {
         PaintAddImageAsParentHeight(
             session, supportColours.WithIndex(sprites.imageIndexes[spriteIndex + 1]), height, { 0, 0, 0 },
@@ -2407,7 +2409,8 @@ void trackPaintSpriteSupportChildTrackColours(
         supportColours = supportColours.WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    if (!(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) && (session.Flags & PaintSessionFlags::PassedSurface))
+    if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS && session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        && (session.Flags & PaintSessionFlags::PassedSurface))
     {
         const CoordsXYZ& offsetChild = sprites.offsets != nullptr ? sprites.offsets[spriteIndex + 1] : CoordsXYZ{ 0, 0, 0 };
         PaintAddImageAsChildHeight(
@@ -2957,7 +2960,8 @@ void trackPaintReverseFreefallSlope(
 
     uint32_t colourIndex = reverseAngle;
     if (colourIndex == 1
-        || (colourIndex == 0 && !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        || (colourIndex == 0
+            && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS && session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
             && (session.Flags & PaintSessionFlags::PassedSurface)))
     {
         PaintAddImageAsParentHeight(
@@ -2966,7 +2970,8 @@ void trackPaintReverseFreefallSlope(
     }
     colourIndex = (reverseAngle + 1) & 1;
     if (colourIndex == 1
-        || (colourIndex == 0 && !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        || (colourIndex == 0
+            && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS && session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
             && (session.Flags & PaintSessionFlags::PassedSurface)))
     {
         PaintAddImageAsChildHeight(
@@ -2995,7 +3000,8 @@ void trackPaintReverseFreefallVertical(
 
     uint32_t colourIndex = trackSequence;
     if (colourIndex == 1
-        || (colourIndex == 0 && !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        || (colourIndex == 0
+            && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS && session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
             && (session.Flags & PaintSessionFlags::PassedSurface)))
     {
         PaintAddImageAsParentHeight(
