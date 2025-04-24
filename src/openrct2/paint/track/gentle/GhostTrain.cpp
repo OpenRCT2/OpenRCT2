@@ -390,9 +390,7 @@ static void PaintGhostTrainTrackSpinningTunnel(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
-
-    TrackPaintUtilSpinningTunnelPaint(session, 3, height, direction);
+    trackPaintSpriteSpinningTunnel(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
     PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);

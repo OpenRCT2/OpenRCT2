@@ -291,8 +291,7 @@ static void PaintMiniHelicoptersTrackSpinningTunnel(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSpriteWithChild(session, ride, trackSequence, direction, height, trackElement, supportType);
-    TrackPaintUtilSpinningTunnelPaint(session, 1, height, direction);
+    trackPaintSpriteWithChildSpinningTunnel(session, ride, trackSequence, direction, height, trackElement, supportType);
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
     WoodenASupportsPaintSetupRotated(
