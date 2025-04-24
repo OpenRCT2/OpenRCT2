@@ -30,36 +30,6 @@
     <SlnProperties Condition="'$(OPENRCT2_BUILD_SERVER)'!=''">$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
   </PropertyGroup>
 
-  <!-- 3rd party libraries / dependencies -->
-  <PropertyGroup>
-    <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-arm64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='ARM64'">508bbd39b9be3d746ed8e17b6c0e7a79f6fa13c8</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-x64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">28fabdb3fe8ddb7c73cd1c5e57ec8df5bd6232e5</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-x86-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">9984c1e317dcfb3aaf8e17f1db2ebb0f771e2373</LibsSha1>
-    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.14/title-sequences.zip</TitleSequencesUrl>
-    <TitleSequencesSha1>6c04781b959b468e1f65ec2d2f21f5aaa5e5724d</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.6.1/objects.zip</ObjectsUrl>
-    <ObjectsSha1>749a9df9ed728676ef7c3b87c8a6b813069476d3</ObjectsSha1>
-    <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.5/opensound.zip</OpenSFXUrl>
-    <OpenSFXSha1>b1b1f1b241d2cbff63a1889c4dc5a09bdf769bfb</OpenSFXSha1>
-    <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6/openmusic.zip</OpenMSXUrl>
-    <OpenMSXSha1>ba170fa6d777b309c15420f4b6eb3fa25082a9d1</OpenMSXSha1>
-    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.87/replays.zip</ReplaysUrl>
-    <ReplaysSha1>6061B53DE346BD853BB997E635AC7374B1A7D2F0</ReplaysSha1>
-  </PropertyGroup>
-
-  <Target Name="DownloadLibs">
-    <!-- libs -->
-    <DownloadDependency Name="Libs"
-                        Url="$(LibsUrl)"
-                        Sha1="$(LibsSha1)"
-                        CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(RootDir)lib\$(Platform)" />
-  </Target>
-
   <Target Name="Clean">
     <PropertyGroup>
       <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
@@ -70,7 +40,7 @@
     <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties);IsSolutionBuild=true" />
   </Target>
 
-  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadLibs">
+  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadAllDependencies">
     <PropertyGroup>
       <BuildString Condition="'$(OPENRCT2_SHA1_SHORT)'!=''">$(OPENRCT2_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(OPENRCT2_BRANCH)'!=''">$(BuildString) ($(OPENRCT2_BRANCH))</BuildString>
@@ -93,53 +63,9 @@
     <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties);IsSolutionBuild=true" />
   </Target>
-
-  <!-- Target to download the title sequences -->
-  <Target Name="DownloadTitleSequences" AfterTargets="Build">
-    <DownloadDependency Name="TitleSequences"
-                        Url="$(TitleSequencesUrl)"
-                        Sha1="$(TitleSequencesSha1)"
-                        CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(TargetDir)data\sequence" />
-  </Target>
-
-  <!-- Target to download the objects -->
-  <Target Name="DownloadObjects" AfterTargets="Build">
-    <DownloadDependency Name="Objects"
-                        Url="$(ObjectsUrl)"
-                        Sha1="$(ObjectsSha1)"
-                        CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(TargetDir)data\object" />
-  </Target>
-
-  <!-- Target to download OpenSFX -->
-  <Target Name="DownloadOpenSFX" AfterTargets="Build">
-    <DownloadDependency Name="OpenSFX"
-                        Url="$(OpenSFXUrl)"
-                        Sha1="$(OpenSFXSha1)"
-                        CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(TargetDir)data" />
-  </Target>
-
-  <!-- Target to download OpenMSX -->
-  <Target Name="DownloadOpenMSX" AfterTargets="Build">
-    <DownloadDependency Name="OpenMSX"
-                        Url="$(OpenMSXUrl)"
-                        Sha1="$(OpenMSXSha1)"
-                        CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(TargetDir)data" />
-  </Target>
-
-  <!-- Target to download replays -->
-  <Target Name="DownloadReplays" AfterTargets="Build">
-    <DownloadDependency Name="Replays"
-                        Url="$(ReplaysUrl)"
-                        Sha1="$(ReplaysSha1)"
-                        CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(TargetDir)testdata\replays" />
-  </Target>
     
   <!-- Import custom build tasks -->
+  <Import Project="openrct2.deps.targets" />
   <Import Project="openrct2.targets" />
   
 </Project>

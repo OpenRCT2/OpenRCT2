@@ -38,24 +38,24 @@
       <Platform>arm64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\openrct2-cli\openrct2-cli.vcxproj">
-      <Project>{b6808f71-30b4-4499-8ff6-0b1c86391842}</Project>
-    </ProjectReference>
-  </ItemGroup>
+
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{70eeed2d-2344-4f28-87b7-3efc4e78b923}</ProjectGuid>
-    <RootNamespace>openrct2-data</RootNamespace>
+    <ProjectGuid>{c453da76-44b3-4ac8-aaa2-2b64a76993a5}</ProjectGuid>
+    <RootNamespace>openrct2-deps</RootNamespace>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
+
   <PropertyGroup Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
   </PropertyGroup>
+
   <Import Project="..\..\openrct2.common.props" />
+
   <PropertyGroup>
-    <TargetName>openrct2-data</TargetName>
+    <TargetName>openrct2-deps</TargetName>
     <LibraryPath>$(SolutionDir)bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <Import Project="..\..\openrct2.targets" Condition="'$(IsSolutionBuild)' != 'true'" />
+
+  <Import Project="..\..\openrct2.deps.targets" Condition="'$(IsSolutionBuild)' != 'true'" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

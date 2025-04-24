@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
@@ -44,11 +45,13 @@
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
     <RootNamespace>openrct2-lib</RootNamespace>
     <ProjectName>libopenrct2</ProjectName>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <Import Project="..\..\openrct2.common.props" />
+  <Import Project="..\..\openrct2.deps.targets" Condition="'$(IsSolutionBuild)' != 'true'" />
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_DISCORD__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -1157,6 +1160,11 @@
       </ForcedIncludeFiles>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\openrct2-deps\openrct2-deps.vcxproj">
+      <Project>{c453da76-44b3-4ac8-aaa2-2b64a76993a5}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

@@ -238,6 +238,11 @@
     <ClCompile Include="windows\Viewport.cpp" />
     <ClCompile Include="windows\Water.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\openrct2-deps\openrct2-deps.vcxproj">
+      <Project>{c453da76-44b3-4ac8-aaa2-2b64a76993a5}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8DD8AB7D-2EA6-44E3-8265-BAF08E832951}</ProjectGuid>
     <RootNamespace>openrct2-ui</RootNamespace>
