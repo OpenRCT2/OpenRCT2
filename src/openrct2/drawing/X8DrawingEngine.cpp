@@ -129,7 +129,6 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
 X8DrawingEngine::~X8DrawingEngine()
 {
     delete _drawingContext;
-    delete[] _dirtyGrid.Blocks;
     delete[] _bits;
 }
 
