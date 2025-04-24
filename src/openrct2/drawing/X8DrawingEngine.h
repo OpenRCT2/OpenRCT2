@@ -89,8 +89,16 @@ namespace OpenRCT2
             void SetPalette(const GamePalette& palette) override;
             void SetVSync(bool vsync) override;
             void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
             void BeginDraw() override;
             void EndDraw() override;
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic pop
+#endif
             void PaintWindows() override;
             void PaintWeather() override;
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;

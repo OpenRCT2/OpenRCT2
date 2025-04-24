@@ -201,6 +201,11 @@ public:
         }
     }
 
+    void BeginDraw() override
+    {
+        X8DrawingEngine::BeginDraw();
+    }
+
     void EndDraw() override
     {
         X8DrawingEngine::EndDraw();
