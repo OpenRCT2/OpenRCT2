@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::onridePhoto, TrackGroup::logFlumeReverser, TrackGroup::slopeSteepDown},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::LogFlume::kSprites,
+        .onRidePhotoType = { true, 3, OnRidePhotoSize::normal },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,

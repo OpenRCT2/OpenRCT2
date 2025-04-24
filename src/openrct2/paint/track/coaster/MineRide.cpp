@@ -1485,9 +1485,7 @@ static void MineRideTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
-    TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, supportType.metal);
-    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
+    trackPaintSpriteOnRidePhoto(session, ride, trackSequence, direction, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0B90 */

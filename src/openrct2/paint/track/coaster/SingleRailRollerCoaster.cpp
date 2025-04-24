@@ -4513,9 +4513,7 @@ namespace OpenRCT2::SingleRailRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, supportType.metal);
-        trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
-        TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
+        trackPaintSpriteOnRidePhoto(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
     static void TrackFlatTo60DegUpLongBase(

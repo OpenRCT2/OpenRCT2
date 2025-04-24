@@ -378,12 +378,10 @@ static void AirPoweredVerticalRCTrackOnridePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    trackPaintSpriteOnRidePhoto(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     DrawSupportForSequenceA<TrackElemType::OnRidePhoto>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
 TrackPaintFunction GetTrackPaintFunctionAirPoweredVerticalRC(OpenRCT2::TrackElemType trackType)

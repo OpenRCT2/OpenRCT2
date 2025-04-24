@@ -2727,12 +2727,8 @@ static void JuniorRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
-    PaintAddImageAsParentRotated(
-        session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+    trackPaintSpriteOnRidePhoto(session, ride, trackSequence, direction, height, trackElement, supportType);
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal, 6);
-
-    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
 /* 0x008AAA0C */

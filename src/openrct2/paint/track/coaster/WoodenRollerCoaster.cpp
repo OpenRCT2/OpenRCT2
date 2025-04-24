@@ -3080,10 +3080,10 @@ static void WoodenRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSpriteSupportColoursWithChild(session, ride, trackSequence, direction, height, trackElement, supportType);
+    trackPaintSpriteSupportColoursWithChildOnRidePhoto(
+        session, ride, trackSequence, direction, height, trackElement, supportType);
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-    TrackPaintUtilOnridePhotoSmallPaint(session, direction, height + 16, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);

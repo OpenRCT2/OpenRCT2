@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curve},
         .extraTrackGroups = {TrackGroup::slope, TrackGroup::slopeSteepDown, TrackGroup::onridePhoto},
         .sprites = OpenRCT2::SplashBoats::kSprites,
+        .onRidePhotoType = { false, 7, OnRidePhotoSize::small },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,

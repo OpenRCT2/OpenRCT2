@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHillSteep, TrackGroup::reverseFreefall, TrackGroup::onridePhoto},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::ReverseFreefallCoaster::kSprites,
+        .onRidePhotoType = { false, 3, OnRidePhotoSize::normal },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt

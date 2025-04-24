@@ -1420,9 +1420,7 @@ static void BobsleighRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprites2(session, ride, trackSequence, direction, height, trackElement, supportType);
-    TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, supportType.metal);
-    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
+    trackPaintSprites2OnRidePhoto(session, ride, trackSequence, direction, height, trackElement, supportType);
 }
 
 TrackPaintFunction GetTrackPaintFunctionBobsleighRC(OpenRCT2::TrackElemType trackType)

@@ -257,8 +257,7 @@ static void PaintRiverRapidsTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprites2(session, ride, trackSequence, direction, height, trackElement, supportType);
-    TrackPaintUtilOnridePhotoPaint(session, direction, height + 13, trackElement);
+    trackPaintSprites2OnRidePhoto(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     DrawSupportForSequenceA<TrackElemType::Flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);

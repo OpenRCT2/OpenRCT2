@@ -5665,12 +5665,10 @@ namespace OpenRCT2::HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        PaintAddImageAsParentRotated(
-            session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-        trackPaintSpriteTrackSupportColours(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSpriteTrackSupportColoursOnRidePhoto(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-        TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
     }
 
     static void TrackFlatTo60DegUpLongBase(

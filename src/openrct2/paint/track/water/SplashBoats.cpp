@@ -574,28 +574,7 @@ static void PaintSplashBoatsTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprites2(session, ride, trackSequence, direction, height, trackElement, supportType);
-    switch (direction)
-    {
-        case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
-            break;
-        case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
-            break;
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
-            break;
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 0, 1 });
-            break;
-    }
-
-    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
+    trackPaintSprites2OnRidePhoto(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     DrawSupportForSequenceA<TrackElemType::Flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);

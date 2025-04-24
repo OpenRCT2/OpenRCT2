@@ -30,6 +30,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
             .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
             .extraTrackGroups = {TrackGroup::flatToSteepSlope},
             .sprites = OpenRCT2::WaterCoaster::kSprites,
+            .onRidePhotoType = { true, 3, OnRidePhotoSize::normal },
             .icon = SPR_RIDE_CONSTRUCTION_RC_TRACK,
             .tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP,
         },
@@ -39,6 +40,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend },
             .extraTrackGroups = {},
             .sprites = OpenRCT2::SplashBoats::kSprites,
+            .onRidePhotoType = { false, 7, OnRidePhotoSize::small },
             .icon = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL,
             .tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP,
         }

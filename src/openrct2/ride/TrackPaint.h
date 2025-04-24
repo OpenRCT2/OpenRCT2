@@ -493,27 +493,6 @@ void TrackPaintUtilLeftQuarterTurn1TilePaint(
     const ImageId colourFlags, const uint32_t* sprites);
 void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, int16_t height, Direction direction);
 
-/**
- * Renders the black metal platform and the supports of the on-ride photo section.
- *
- * @param session
- * @param direction
- * @param height
- * @param supportType
- */
-void TrackPaintUtilOnridePhotoPlatformPaint(
-    PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType);
-
-void TrackPaintUtilOnridePhotoSmallPaint(
-    PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement);
-void TrackPaintUtilOnridePhotoPaint(
-    PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement);
-void TrackPaintUtilOnridePhotoPaint2(
-    PaintSession& session, Direction direction, int32_t height, int32_t trackHeightOffset, int32_t supportsAboveHeightOffset,
-    const TrackElement& trackElement);
-void TrackPaintUtilOnridePhotoPaint2(
-    PaintSession& session, Direction direction, const TrackElement& trackElement, int32_t height,
-    int32_t supportsAboveHeightOffset = kGeneralSupportHeightOnRidePhoto, int32_t trackHeightOffset = 3);
 void TrackPaintUtilRightHelixUpSmallQuarterTilesPaint(
     PaintSession& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3][2], const CoordsXY offsets[4][3][2],
@@ -571,6 +550,10 @@ void trackPaintSpriteSupportColoursWithChildBrake(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType);
 
+void trackPaintSpriteSupportColoursWithChildOnRidePhoto(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
 void trackPaintSpriteSupportColoursBrakePlatformless(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType);
@@ -588,6 +571,10 @@ void trackPaintSpriteTrackSupportColoursChain(
     const TrackElement& trackElement, const SupportType supportType);
 
 void trackPaintSpriteTrackSupportColoursBrake(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteTrackSupportColoursOnRidePhoto(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType);
 
@@ -651,6 +638,10 @@ void trackPaintSpriteSupportChildTrackColours(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType);
 
+void trackPaintSpriteOnRidePhoto(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
 void trackPaintSpriteSpinningTunnel(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType);
@@ -700,6 +691,10 @@ void trackPaintSprites2CableLift(
     const TrackElement& trackElement, const SupportType supportType);
 
 void trackPaintSprites2Platformless(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2OnRidePhoto(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType);
 
