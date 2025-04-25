@@ -18,6 +18,8 @@ namespace OpenRCT2
         {
             viewport->viewPos = savedViewPos;
         }
+
+        Invalidate();
     }
 
     void WindowBase::Invalidate()
