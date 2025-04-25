@@ -103,43 +103,6 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
-static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
-{
-    int32_t left = imagePos.x + g1.x_offset;
-    int32_t bottom = imagePos.y + g1.y_offset;
-
-    int32_t right = left + g1.width;
-    int32_t top = bottom + g1.height;
-
-    // mber: It is possible to use only the bottom else block here if you change <= and >= to simply < and >.
-    // However, since this is used to cull paint structs, I'd prefer to keep the condition strict and calculate
-    // the culling differently for minifying and magnifying.
-    auto zoom = dpi.zoom_level;
-    if (zoom > ZoomLevel{ 0 })
-    {
-        if (right <= dpi.WorldX())
-            return false;
-        if (top <= dpi.WorldY())
-            return false;
-        if (left >= dpi.WorldX() + dpi.WorldWidth())
-            return false;
-        if (bottom >= dpi.WorldY() + dpi.WorldHeight())
-            return false;
-    }
-    else
-    {
-        if (zoom.ApplyInversedTo(right) <= dpi.x)
-            return false;
-        if (zoom.ApplyInversedTo(top) <= dpi.y)
-            return false;
-        if (zoom.ApplyInversedTo(left) >= dpi.x + dpi.width)
-            return false;
-        if (zoom.ApplyInversedTo(bottom) >= dpi.y + dpi.height)
-            return false;
-    }
-    return true;
-}
-
 static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uint8_t rotation)
 {
     auto output = bbSize;
@@ -183,12 +146,6 @@ static PaintStruct* CreateNormalPaintStruct(
     swappedRotCoord += session.SpritePosition;
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
-
-    if (!ImageWithinDPI(imagePos, *g1, session.DPI))
-    {
-        return nullptr;
-    }
-
     const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.Rotate(swappedRotation), boundBox.offset.z };
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBox.length, session.CurrentRotation);
 
@@ -231,12 +188,6 @@ static PaintStruct* CreateNormalPaintStructHeight(
     swappedRotCoord += session.SpritePosition;
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
-
-    if (!ImageWithinDPI(imagePos, *g1, session.DPI))
-    {
-        return nullptr;
-    }
-
     const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.Rotate(swappedRotation), boundBox.offset.z + height };
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBox.length, session.CurrentRotation);
 
