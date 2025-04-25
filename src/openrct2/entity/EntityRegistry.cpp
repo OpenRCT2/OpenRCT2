@@ -40,6 +40,7 @@
 #include <vector>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Core;
 
 static std::array<std::list<EntityId>, EnumValue(EntityType::Count)> gEntityLists;
 static std::vector<EntityId> _freeIdList;
@@ -274,15 +275,9 @@ static constexpr uint16_t kMaxMiscEntities = 1600;
 static void AddToEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
-    // Entity list must be in sprite_index order to prevent desync issues
-    if (!list.empty() && list.back() < entity->Id)
-    {
-        list.push_back(entity->Id);
-    }
-    else
-    {
-        list.insert(std::lower_bound(std::begin(list), std::end(list), entity->Id), entity->Id);
-    }
+
+    // Entity list is sorted by Id to prevent desyncs.
+    Algorithm::sortedInsert(list, entity->Id);
 }
 
 static void AddToFreeList(EntityId index)
@@ -294,7 +289,7 @@ static void AddToFreeList(EntityId index)
 static void RemoveFromEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
-    auto ptr = BinaryFind(std::begin(list), std::end(list), entity->Id);
+    auto ptr = Algorithm::binaryFind(std::begin(list), std::end(list), entity->Id);
     if (ptr != std::end(list))
     {
         list.erase(ptr);
@@ -371,7 +366,7 @@ EntityBase* CreateEntity(EntityType type)
 
 EntityBase* CreateEntityAt(const EntityId index, const EntityType type)
 {
-    auto id = BinaryFind(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
+    auto id = Algorithm::binaryFind(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
     if (id == std::rend(_freeIdList))
     {
         return nullptr;
@@ -428,8 +423,8 @@ static void EntitySpatialInsert(EntityBase* entity, const CoordsXY& newLoc)
     const auto newIndex = ComputeSpatialIndex(newLoc);
 
     auto& spatialVector = gEntitySpatialIndex[newIndex];
-    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), entity->Id);
-    spatialVector.insert(index, entity->Id);
+
+    Algorithm::sortedInsert(spatialVector, entity->Id);
 
     entity->SpatialIndex = newIndex;
 }
@@ -439,7 +434,7 @@ static void EntitySpatialRemove(EntityBase* entity)
     const auto currentIndex = GetSpatialIndex(entity);
 
     auto& spatialVector = gEntitySpatialIndex[currentIndex];
-    auto index = BinaryFind(std::begin(spatialVector), std::end(spatialVector), entity->Id);
+    auto index = Algorithm::binaryFind(std::begin(spatialVector), std::end(spatialVector), entity->Id);
     if (index != std::end(spatialVector))
     {
         spatialVector.erase(index, index + 1);

@@ -12,9 +12,28 @@
 #include <algorithm>
 #include <functional>
 
-template<class ForwardIt, class T, class Compare = std::less<>>
-ForwardIt BinaryFind(ForwardIt first, ForwardIt last, const T& value, Compare comp = {})
+namespace OpenRCT2::Core::Algorithm
 {
-    first = std::lower_bound(first, last, value, comp);
-    return first != last && !comp(value, *first) ? first : last;
-}
+
+    template<class ForwardIt, class T, class Compare = std::less<>>
+    ForwardIt binaryFind(ForwardIt first, ForwardIt last, const T& value, Compare comp = {})
+    {
+        first = std::lower_bound(first, last, value, comp);
+        return first != last && !comp(value, *first) ? first : last;
+    }
+
+    template<typename Container, typename T, class Compare = std::less<>>
+    auto sortedInsert(Container& cont, const T& value, Compare comp = {})
+    {
+        if (cont.empty() || value < cont.front())
+        {
+            return cont.insert(cont.begin(), value);
+        }
+        if (value > cont.back())
+        {
+            return cont.insert(cont.end(), value);
+        }
+        return cont.insert(std::lower_bound(cont.begin(), cont.end(), value, comp), value);
+    }
+
+} // namespace OpenRCT2::Core::Algorithm
