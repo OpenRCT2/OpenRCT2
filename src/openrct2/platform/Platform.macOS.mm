@@ -244,7 +244,7 @@ namespace OpenRCT2::Platform
         }
 
         auto steamPath = Path::Combine(
-            homeDir, "Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/steamapps");
+            homeDir, "Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/steamapps/content");
         if (Path::DirectoryExists(steamPath))
         {
             return steamPath;
