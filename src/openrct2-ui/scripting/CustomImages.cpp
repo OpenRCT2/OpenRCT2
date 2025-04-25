@@ -452,8 +452,12 @@ namespace OpenRCT2::Scripting
             dpi.bits = new uint8_t[bufferSize];
             std::memset(dpi.bits, 0, bufferSize);
 
+            drawingEngine->BeginDraw();
+
             // Draw the original image if we are creating a new one
             GfxDrawSprite(dpi, ImageId(id), { 0, 0 });
+
+            drawingEngine->EndDraw();
         }
         else
         {

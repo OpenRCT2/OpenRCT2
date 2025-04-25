@@ -31,6 +31,7 @@
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/IDrawingContext.h>
     #include <openrct2/drawing/IDrawingEngine.h>
+    #include <openrct2/drawing/InvalidationGrid.h>
     #include <openrct2/drawing/LightFX.h>
     #include <openrct2/drawing/Weather.h>
     #include <openrct2/interface/Screenshot.h>
@@ -74,6 +75,8 @@ private:
     uint32_t _ttfGlId = 0;
     #endif
 
+    bool _inDraw = false;
+
     struct
     {
         LineCommandBatch lines;
@@ -93,7 +96,13 @@ public:
     {
         return _textureCache.get();
     }
+
     const OpenGLFramebuffer& GetFinalFramebuffer() const
+    {
+        return _swapFramebuffer->GetFinalFramebuffer();
+    }
+
+    OpenGLFramebuffer& GetFinalFramebuffer()
     {
         return _swapFramebuffer->GetFinalFramebuffer();
     }
@@ -102,6 +111,7 @@ public:
     void Resize(int32_t width, int32_t height);
     void ResetPalette();
     void StartNewDraw();
+    void FinishDraw();
 
     void Clear(DrawPixelInfo& dpi, uint8_t paletteIndex) override;
     void FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
@@ -118,6 +128,12 @@ public:
 
     void FlushCommandBuffers();
 
+    bool IsActive() const
+    {
+        return _inDraw;
+    }
+
+private:
     void FlushLines();
     void FlushRectangles();
     void HandleTransparency();
@@ -196,6 +212,7 @@ private:
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
     OpenGLWeatherDrawer _weatherDrawer;
+    InvalidationGrid _invalidationGrid;
 
 public:
     SDL_Color Palette[256];
@@ -246,8 +263,22 @@ public:
     {
         ConfigureBits(width, height, width);
         ConfigureCanvas();
+        ConfigureDirtyGrid();
+
         _drawingContext->Resize(width, height);
+
+        _drawingContext->StartNewDraw();
         _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
+        _drawingContext->FlushCommandBuffers();
+        _drawingContext->FinishDraw();
+    }
+
+    void ConfigureDirtyGrid()
+    {
+        const auto blockWidth = 1u << 8;
+        const auto blockHeight = 1u << 8;
+
+        _invalidationGrid.reset(_width, _height, blockWidth, blockHeight);
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -281,6 +312,7 @@ public:
 
     void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override
     {
+        _invalidationGrid.invalidate(left, top, right, bottom);
     }
 
     void BeginDraw() override
@@ -320,13 +352,45 @@ public:
         }
 
         CheckGLError();
+
+        _drawingContext->FinishDraw();
+
         Display();
     }
 
     void PaintWindows() override
     {
-        WindowUpdateAllViewports();
-        WindowDrawAll(_bitsDPI, 0, 0, _width, _height);
+        WindowResetVisibilities();
+
+        if (ClimateIsRaining() || ClimateIsSnowing() || ClimateIsSnowingHeavily())
+        {
+            WindowUpdateAllViewports();
+            // OpenGL doesn't support restoring pixels, always redraw.
+            // TODO: Render the weather to a texture and use that instead.
+            WindowDrawAll(_bitsDPI, 0, 0, static_cast<int32_t>(_width), static_cast<int32_t>(_height));
+        }
+        else
+        {
+            // Redraw dirty regions before updating the viewports, otherwise
+            // when viewports get panned, they copy dirty pixels
+            DrawAllDirtyBlocks();
+            WindowUpdateAllViewports();
+            DrawAllDirtyBlocks();
+        }
+    }
+
+    void DrawAllDirtyBlocks()
+    {
+        _invalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+            // Draw region
+            DrawDirtyBlocks(left, top, right, bottom);
+        });
+    }
+
+    void DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
+    {
+        // Draw region
+        WindowDrawAll(_bitsDPI, left, top, right, bottom);
     }
 
     void PaintWeather() override
@@ -345,11 +409,59 @@ public:
 
     void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override
     {
-        // Not applicable for this engine
+        if (dx == 0 && dy == 0)
+            return;
+
+        _drawingContext->FlushCommandBuffers();
+
+        OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
+        framebuffer.Bind();
+        framebuffer.GetPixels(_bitsDPI);
+
+        // Originally 0x00683359
+        // Adjust for move off screen
+        // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
+        // screen; hence the checks. This code should ultimately not be called when
+        // zooming because this function is specific to updating the screen on move
+        int32_t lmargin = std::min(x - dx, 0);
+        int32_t rmargin = std::min(static_cast<int32_t>(_width) - (x - dx + width), 0);
+        int32_t tmargin = std::min(y - dy, 0);
+        int32_t bmargin = std::min(static_cast<int32_t>(_height) - (y - dy + height), 0);
+        x -= lmargin;
+        y -= tmargin;
+        width += lmargin + rmargin;
+        height += tmargin + bmargin;
+
+        int32_t stride = _bitsDPI.LineStride();
+        uint8_t* to = _bitsDPI.bits + y * stride + x;
+        uint8_t* from = _bitsDPI.bits + (y - dy) * stride + x - dx;
+
+        if (dy > 0)
+        {
+            // If positive dy, reverse directions
+            to += (height - 1) * stride;
+            from += (height - 1) * stride;
+            stride = -stride;
+        }
+
+        // Move bytes
+        for (int32_t i = 0; i < height; i++)
+        {
+            memmove(to, from, width);
+            to += stride;
+            from += stride;
+        }
+
+        framebuffer.SetPixels(_bitsDPI);
     }
 
     IDrawingContext* GetDrawingContext() override
     {
+        if (!_drawingContext->IsActive())
+        {
+            Guard::Fail("Drawing context is not active.");
+            return nullptr;
+        }
         return _drawingContext.get();
     }
 
@@ -360,7 +472,7 @@ public:
 
     DrawingEngineFlags GetFlags() override
     {
-        return {};
+        return DrawingEngineFlag::dirtyOptimisations;
     }
 
     void InvalidateImage(uint32_t image) override
@@ -503,18 +615,32 @@ void OpenGLDrawingContext::ResetPalette()
 
 void OpenGLDrawingContext::StartNewDraw()
 {
+    Guard::Assert(_inDraw == false);
+
     _drawCount = 0;
     _swapFramebuffer->Clear();
+    _inDraw = true;
+}
+
+void OpenGLDrawingContext::FinishDraw()
+{
+    Guard::Assert(_inDraw == true);
+
+    _inDraw = false;
 }
 
 void OpenGLDrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
 {
+    Guard::Assert(_inDraw == true);
+
     FillRect(dpi, paletteIndex, dpi.x, dpi.y, dpi.x + dpi.width, dpi.y + dpi.height);
 }
 
 void OpenGLDrawingContext::FillRect(
     DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
+    Guard::Assert(_inDraw == true);
+
     const ScreenRect clip = CalculateClipping(dpi);
 
     left += clip.GetLeft() - dpi.x;
@@ -551,6 +677,8 @@ void OpenGLDrawingContext::FillRect(
 void OpenGLDrawingContext::FilterRect(
     DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
+    Guard::Assert(_inDraw == true);
+
     const ScreenRect clip = CalculateClipping(dpi);
 
     left += clip.GetLeft() - dpi.x;
@@ -659,6 +787,8 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawP
 
 void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
 {
+    Guard::Assert(_inDraw == true);
+
     const ZoomLevel zoom = dpi.zoom_level;
     ScreenLine trimmedLine = { { zoom.ApplyInversedTo(line.GetX1()), zoom.ApplyInversedTo(line.GetY1()) },
                                { zoom.ApplyInversedTo(line.GetX2()), zoom.ApplyInversedTo(line.GetY2()) } };
@@ -686,6 +816,8 @@ static auto EuclideanRemainder(const auto a, const auto b)
 
 void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, const int32_t x, const int32_t y)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1Element = GfxGetG1Element(imageId);
     if (g1Element == nullptr)
     {
@@ -819,6 +951,8 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
 void OpenGLDrawingContext::DrawSpriteRawMasked(
     DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1ElementMask = GfxGetG1Element(maskImage);
     auto g1ElementColour = GfxGetG1Element(colourImage);
     if (g1ElementMask == nullptr || g1ElementColour == nullptr)
@@ -879,6 +1013,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
 
 void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
@@ -929,6 +1065,8 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId ima
 
 void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
 {
+    Guard::Assert(_inDraw == true);
+
     auto g1Element = GfxGetG1Element(image);
     if (g1Element == nullptr)
     {
@@ -983,6 +1121,8 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
 void OpenGLDrawingContext::DrawTTFBitmap(
     DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
+    Guard::Assert(_inDraw == true);
+
     #ifndef DISABLE_TTF
     auto baseId = static_cast<uint32_t>(0x7FFFF) - 1024;
     auto imageId = baseId + _ttfGlId;
@@ -1076,6 +1216,8 @@ void OpenGLDrawingContext::DrawTTFBitmap(
 
 void OpenGLDrawingContext::FlushCommandBuffers()
 {
+    Guard::Assert(_inDraw == true);
+
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 

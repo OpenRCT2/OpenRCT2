@@ -316,8 +316,13 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const Viewport& viewpo
         tempDrawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
         drawingEngine = tempDrawingEngine.get();
     }
+
+    tempDrawingEngine->BeginDraw();
+
     dpi.DrawingEngine = drawingEngine;
     ViewportRender(dpi, &viewport);
+
+    tempDrawingEngine->EndDraw();
 }
 
 void ScreenshotGiant()

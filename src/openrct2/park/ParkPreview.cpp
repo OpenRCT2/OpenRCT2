@@ -222,6 +222,8 @@ namespace OpenRCT2
         if (!drawingEngine)
             return std::nullopt;
 
+        drawingEngine->BeginDraw();
+
         DrawPixelInfo dpi{
             .bits = static_cast<uint8_t*>(image.pixels),
             .x = 0,
@@ -234,6 +236,8 @@ namespace OpenRCT2
         };
 
         ViewportRender(dpi, &saveVp);
+
+        drawingEngine->EndDraw();
 
         return image;
     }

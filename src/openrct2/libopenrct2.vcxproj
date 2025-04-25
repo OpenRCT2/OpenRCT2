@@ -249,6 +249,7 @@
     <ClInclude Include="drawing\Image.h" />
     <ClInclude Include="drawing\ImageId.hpp" />
     <ClInclude Include="drawing\ImageImporter.h" />
+    <ClInclude Include="drawing\InvalidationGrid.h" />
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
     <ClInclude Include="drawing\ScrollingText.h" />
@@ -805,6 +806,7 @@
     <ClCompile Include="drawing\Font.cpp" />
     <ClCompile Include="drawing\Image.cpp" />
     <ClCompile Include="drawing\ImageImporter.cpp" />
+    <ClCompile Include="drawing\InvalidationGrid.cpp" />
     <ClCompile Include="drawing\LightFX.cpp" />
     <ClCompile Include="drawing\Line.cpp" />
     <ClCompile Include="drawing\NewDrawing.cpp" />
