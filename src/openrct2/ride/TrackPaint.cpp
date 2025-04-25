@@ -841,7 +841,7 @@ const uint8_t kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
     0,
 };
 
-void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, int16_t height, Direction direction)
+static void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, int16_t height, Direction direction)
 {
     int32_t frame = (getGameState().currentTicks >> 2) & 3;
     auto colourFlags = session.SupportColours;
