@@ -12,6 +12,12 @@ namespace OpenRCT2
     {
         WindowScrollToLocation(*this, coords);
         flags &= ~WF_SCROLLING_TO_LOCATION;
+
+        // Immediately update the viewport position since we are not scrolling.
+        if (viewport != nullptr)
+        {
+            viewport->viewPos = savedViewPos;
+        }
     }
 
     void WindowBase::Invalidate()
