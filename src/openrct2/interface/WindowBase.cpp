@@ -8,7 +8,7 @@
 
 namespace OpenRCT2
 {
-    void WindowBase::SetLocation(const CoordsXYZ& coords)
+    void WindowBase::SetViewportLocation(const CoordsXYZ& coords)
     {
         WindowScrollToLocation(*this, coords);
         flags &= ~WF_SCROLLING_TO_LOCATION;

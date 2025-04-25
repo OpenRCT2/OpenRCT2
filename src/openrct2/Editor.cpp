@@ -112,7 +112,7 @@ namespace OpenRCT2::Editor
         gameState.scenarioCategory = ScenarioCategory::other;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
-        mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+        mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
         gScreenAge = 0;
         gameState.scenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
@@ -183,7 +183,7 @@ namespace OpenRCT2::Editor
         getGameState().editorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
-        mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+        mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
 
         GameLoadScripts();
@@ -211,7 +211,7 @@ namespace OpenRCT2::Editor
         getGameState().editorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
-        mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+        mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
 
         GameLoadScripts();

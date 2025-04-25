@@ -109,7 +109,7 @@ namespace OpenRCT2
         VisibilityCache visibility{};
         EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
-        void SetLocation(const CoordsXYZ& coords);
+        void SetViewportLocation(const CoordsXYZ& coords);
         void Invalidate();
         void RemoveViewport();
         void SetWidgets(const std::span<const Widget> newWidgets);

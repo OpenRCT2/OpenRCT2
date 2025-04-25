@@ -28,7 +28,7 @@ namespace OpenRCT2::Title
             // Prevent scroll adjustment due to window placement when in-game
             auto oldLegacyScene = gLegacyScene;
             gLegacyScene = LegacyScene::titleSequence;
-            w->SetLocation({ loc, z });
+            w->SetViewportLocation({ loc, z });
             gLegacyScene = oldLegacyScene;
         }
 
