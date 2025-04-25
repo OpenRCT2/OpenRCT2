@@ -27,6 +27,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curve, TrackGroup::onridePhoto},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::SplashBoats::kSprites,
+        .stationDesc = { 7, StationType::narrow, StationBaseType::b, 0 },
         .onRidePhotoType = { false, 7, OnRidePhotoSize::small },
     }),
     .InvertedTrackPaintFunctions = {},

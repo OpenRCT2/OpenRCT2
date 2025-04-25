@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownUnbankedQuarter, TrackGroup::helixUpUnbankedQuarter, TrackGroup::brakes, TrackGroup::blockBrakes},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::SuspendedSwingingCoaster::kSprites,
+        .stationDesc = { 6, StationType::invertedWide40, StationBaseType::c, 0 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 

@@ -47,12 +47,9 @@ static void SuspendedSwingingRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSpriteWithChildSupportColoursPlatformless(
+    trackPaintSpriteWithChildSupportColoursPlatformlessStation(
         session, ride, trackSequence, direction, height, trackElement, supportType);
-    if (TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL))
-    {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-    }
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     TrackPaintUtilDrawStationTunnelTall(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);

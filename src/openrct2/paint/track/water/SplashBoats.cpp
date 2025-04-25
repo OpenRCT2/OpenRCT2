@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../../interface/Viewport.h"
+#include "../../../ride/RideData.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
@@ -261,12 +262,10 @@ static void PaintSplashBoatsStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprites2Platformless(session, ride, trackSequence, direction, height, trackElement, supportType);
+    trackPaintSprites2PlatformlessStation(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     DrawSupportForSequenceA<TrackElemType::EndStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 7, trackElement, StationBaseType::b, 0);
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 

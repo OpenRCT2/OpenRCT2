@@ -11,6 +11,7 @@
 #include "../../../GameState.h"
 #include "../../../config/Config.h"
 #include "../../../interface/Viewport.h"
+#include "../../../ride/RideData.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
@@ -54,8 +55,7 @@ static void PaintRiverRapidsStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprites2(session, ride, trackSequence, direction, height, trackElement, supportType);
-    TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 12, trackElement, StationBaseType::none, 0);
+    trackPaintSprites2Station(session, ride, trackSequence, direction, height, trackElement, supportType);
     DrawSupportForSequenceA<TrackElemType::Flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 

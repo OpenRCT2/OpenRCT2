@@ -27,6 +27,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::SubmarineRide::kSprites,
+        .stationDesc = { 0, StationType::pier, StationBaseType::none, 0 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,

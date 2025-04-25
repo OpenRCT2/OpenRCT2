@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
        .enabledTrackGroups = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::waterSplash, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge},
        .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeCurveSteep},
        .sprites = OpenRCT2::WoodenRollerCoaster::kSprites,
+        .stationDesc = { 9, StationType::wide, StationBaseType::none, 0 },
         .onRidePhotoType = { false, 16, OnRidePhotoSize::small },
    }),
    .InvertedTrackPaintFunctions = {},

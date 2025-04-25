@@ -27,6 +27,7 @@ constexpr RideTypeDescriptor CarRideRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::spinningTunnel},
         .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::rapids},
         .sprites = OpenRCT2::CarRide::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::canSynchroniseWithAdjacentStations,

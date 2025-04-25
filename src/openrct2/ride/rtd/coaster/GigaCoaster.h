@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::slopeSteepLong, TrackGroup::liftHillCable, TrackGroup::slopeCurveBanked, TrackGroup::slopeCurveLarge, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeVertical, TrackGroup::curveVertical, TrackGroup::diagSlopeSteepLong},
         .extraTrackGroups = {TrackGroup::barrelRoll, TrackGroup::quarterLoop, TrackGroup::halfLoop, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge, TrackGroup::verticalLoop, TrackGroup::corkscrew, TrackGroup::corkscrewLarge, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge, TrackGroup::booster, TrackGroup::diagBooster, TrackGroup::diveLoop, TrackGroup::poweredLift},
         .sprites = OpenRCT2::LatticeTriangle::kSprites,
+        .stationDesc = { 9, StationType::wide, StationBaseType::a, 0 },
         .onRidePhotoType = { true, 3, OnRidePhotoSize::normal },
     }),
     .InvertedTrackPaintFunctions = {},

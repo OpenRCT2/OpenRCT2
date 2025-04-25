@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeVertical, TrackGroup::curveVertical},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::InvertedImpulseCoaster::kSprites,
+        .stationDesc = { 6, StationType::invertedWide40, StationBaseType::c, 0 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |

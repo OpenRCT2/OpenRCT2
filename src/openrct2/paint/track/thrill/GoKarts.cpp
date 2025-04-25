@@ -170,36 +170,11 @@ static void PaintGoKartsStation(
 {
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        trackPaintSprites4GreenLight(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSprites4GreenLightStationCovers(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
     else
     {
-        trackPaintSprites2(session, ride, trackSequence, direction, height, trackElement, supportType);
-    }
-
-    const auto* stationObj = ride.getStationObject();
-
-    auto stationColour = GetStationColourScheme(session, trackElement);
-    if (direction == 0 || direction == 2)
-    {
-        const bool hasFence = TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
-    }
-    else
-    {
-        const bool hasFence = TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height, stationColour);
-    }
-
-    if (direction == 0 || direction == 2)
-    {
-        const bool hasFence = TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
-    }
-    else
-    {
-        const bool hasFence = TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
+        trackPaintSprites2StationCovers(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
     if (direction == 0 || direction == 2)

@@ -47,16 +47,8 @@ namespace OpenRCT2::AlpineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
-        if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::b, -2, 4))
-        {
-            DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
-        }
-        else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-        {
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-        }
+        trackPaintSpriteStation(session, ride, trackSequence, direction, height, trackElement, supportType);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
         TrackPaintUtilDrawStationTunnel(session, direction, height);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

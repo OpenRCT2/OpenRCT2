@@ -47,11 +47,9 @@ static void PaintMiniatureRailwayStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    trackPaintSpriteStation(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
-
-    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, -2, 7);
 
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);

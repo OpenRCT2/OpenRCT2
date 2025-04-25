@@ -27,6 +27,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::brakes, TrackGroup::spinningTunnel},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::GhostTrain::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::canSynchroniseWithAdjacentStations,

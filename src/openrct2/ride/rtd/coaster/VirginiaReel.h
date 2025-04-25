@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::VirginiaReel::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |

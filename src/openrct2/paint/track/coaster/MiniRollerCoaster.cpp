@@ -48,21 +48,13 @@ static void MiniRCTrackStation(
 {
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        trackPaintSpriteBrake(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSpriteBrakeStation(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
     else
     {
-        trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSpriteStation(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
-    if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9))
-    {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
-    }
-    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
-    }
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

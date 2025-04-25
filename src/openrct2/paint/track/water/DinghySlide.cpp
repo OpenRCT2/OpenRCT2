@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../../interface/Viewport.h"
+#include "../../../ride/RideData.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/tile_element/TrackElement.h"
@@ -46,17 +47,9 @@ static void DinghySlideTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprites2Platformless(session, ride, trackSequence, direction, height, trackElement, supportType);
+    trackPaintSprites2PlatformlessStation(session, ride, trackSequence, direction, height, trackElement, supportType);
 
-    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, 0))
-    {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-    }
-    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-    }
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 

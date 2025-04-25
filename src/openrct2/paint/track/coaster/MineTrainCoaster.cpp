@@ -47,21 +47,13 @@ static void MineTrainRCTrackStation(
 {
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        trackPaintSpriteBrake(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSpriteBrakeStation(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
     else
     {
-        trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSpriteStation(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
-    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
-    {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
-    }
-    else
-    {
-        DrawSupportForSequenceA<TrackElemType::Flat>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    }
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

@@ -49,47 +49,15 @@ static void MultiDimensionRCTrackStation(
 {
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        trackPaintSpriteBrakePlatformless(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSpriteBrakePlatformlessStationCovers(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
     else
     {
-        trackPaintSpritePlatformless(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSpritePlatformlessStationCovers(session, ride, trackSequence, direction, height, trackElement, supportType);
     }
 
-    const auto* const stationObj = ride.getStationObject();
-
-    if (stationObj != nullptr && !(stationObj->Flags & StationObjectFlags::noPlatforms))
-    {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-
-        auto stationColour = GetStationColourScheme(session, trackElement);
-        bool hasFence;
-        if (direction == 0 || direction == 2)
-        {
-            hasFence = TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-            TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
-        }
-        else
-        {
-            hasFence = TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-            TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height, stationColour);
-        }
-
-        if (direction == 0 || direction == 2)
-        {
-            hasFence = TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-            TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
-        }
-        else
-        {
-            hasFence = TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-            TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
-        }
-    }
-    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-    }
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);

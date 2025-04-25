@@ -294,6 +294,32 @@ struct TrackElementSprites
     bool isRotated; // temporary workaround for rotated track elements being handled by existing track paint functions
 };
 
+enum class StationType
+{
+    narrow,
+    wide,
+    invertedWide24,
+    invertedWide40,
+    pier,
+};
+
+enum class StationBaseType
+{
+    none,
+    a,
+    b,
+    c,
+};
+constexpr uint32_t kStationBaseTypeCount = 4;
+
+struct StationDesc
+{
+    int8_t platformHeight = 0;
+    StationType stationType = StationType::narrow;
+    StationBaseType baseType = StationBaseType::none;
+    int8_t baseHeight = 0;
+};
+
 enum class OnRidePhotoSize
 {
     normal,
@@ -317,6 +343,7 @@ struct TrackDrawerEntry
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
     RideTrackGroups extraTrackGroups{};
     std::array<TrackElementSprites, EnumValue(OpenRCT2::TrackElemType::Count)> sprites{};
+    StationDesc stationDesc{};
     OnRidePhotoType onRidePhotoType{};
 
     ImageIndex icon = kSpriteIdNull;

@@ -45,8 +45,7 @@ static void SideFrictionRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprites2Platformless(session, ride, trackSequence, direction, height, trackElement, supportType);
-    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::none, 0, 9);
+    trackPaintSprites2PlatformlessStation(session, ride, trackSequence, direction, height, trackElement, supportType);
     DrawSupportForSequenceA<TrackElemType::EndStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilDrawStationTunnel(session, direction, height);

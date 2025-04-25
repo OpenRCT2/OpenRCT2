@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::sBend},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::BoatHire::kSprites,
+        .stationDesc = { 0, StationType::pier, StationBaseType::none, 0 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::trackMustBeOnWater,

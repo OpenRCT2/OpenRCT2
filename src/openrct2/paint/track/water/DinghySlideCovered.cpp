@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../../interface/Viewport.h"
+#include "../../../ride/RideData.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../Paint.h"

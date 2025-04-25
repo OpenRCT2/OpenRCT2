@@ -58,7 +58,7 @@ static void PaintMonorailStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
+    trackPaintSpriteStation(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     if (direction == 0 || direction == 2)
     {
@@ -69,15 +69,7 @@ static void PaintMonorailStation(
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
-    {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-    }
-    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
-    }
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

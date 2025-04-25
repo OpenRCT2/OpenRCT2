@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::SuspendedMonorail::kSprites,
+        .stationDesc = { 6, StationType::invertedWide40, StationBaseType::c, 0 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::canSynchroniseWithAdjacentStations,

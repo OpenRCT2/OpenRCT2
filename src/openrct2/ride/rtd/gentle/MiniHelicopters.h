@@ -27,6 +27,7 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .extraTrackGroups = {TrackGroup::spinningTunnel},
         .sprites = OpenRCT2::MiniHelicopters::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::canSynchroniseWithAdjacentStations,

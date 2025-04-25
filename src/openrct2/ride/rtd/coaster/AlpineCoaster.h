@@ -25,6 +25,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
         .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf},
         .extraTrackGroups =  {TrackGroup::helixUpBankedHalf},
         .sprites = OpenRCT2::AlpineCoaster::kSprites,
+        .stationDesc = { 4, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,

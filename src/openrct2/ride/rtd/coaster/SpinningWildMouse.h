@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor SpinningWildMouseRTD =
         .enabledTrackGroups = {TrackGroup::straight,TrackGroup::stationEnd,TrackGroup::liftHill,  TrackGroup::slope,TrackGroup::flatToSteepSlope,TrackGroup::curveVerySmall,TrackGroup::curveSmall, TrackGroup::brakes,TrackGroup::blockBrakes,TrackGroup::rotationControlToggle},
         .extraTrackGroups = {TrackGroup::liftHillSteep, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve},
         .sprites = OpenRCT2::SteelWildMouse::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |

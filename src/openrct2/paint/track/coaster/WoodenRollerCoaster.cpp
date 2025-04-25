@@ -1638,14 +1638,14 @@ static void WoodenRCTrackStation(
 {
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        trackPaintSpriteSupportColoursBrakePlatformless(
+        trackPaintSpriteSupportColoursBrakePlatformlessStation(
             session, ride, trackSequence, direction, height, trackElement, supportType);
     }
     else
     {
-        trackPaintSpriteSupportColoursPlatformless(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSpriteSupportColoursPlatformlessStation(
+            session, ride, trackSequence, direction, height, trackElement, supportType);
     }
-    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::none, 0, 9);
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
     TrackPaintUtilDrawStationTunnel(session, direction, height);

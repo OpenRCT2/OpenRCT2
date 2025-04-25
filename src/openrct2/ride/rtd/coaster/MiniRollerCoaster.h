@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor MiniRollerCoasterRTD =
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::liftHill},
         .extraTrackGroups = {TrackGroup::booster, TrackGroup::liftHillCurved},
         .sprites = OpenRCT2::MiniRollerCoaster::kSprites,
+        .stationDesc = { 9, StationType::wide, StationBaseType::a, 0 },
         .onRidePhotoType = { true, 3, OnRidePhotoSize::normal },
     }),
     .InvertedTrackPaintFunctions = {},

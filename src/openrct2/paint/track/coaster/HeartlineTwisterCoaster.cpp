@@ -46,16 +46,8 @@ static void HeartlineTwisterRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprites2Platformless(session, ride, trackSequence, direction, height, trackElement, supportType);
-    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, 0))
-    {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
-    }
-    else
-    {
-        DrawSupportForSequenceA<TrackElemType::Flat>(
-            session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    }
+    trackPaintSprites2PlatformlessStation(session, ride, trackSequence, direction, height, trackElement, supportType);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

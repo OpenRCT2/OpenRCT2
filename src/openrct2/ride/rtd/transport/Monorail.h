@@ -27,6 +27,7 @@ constexpr RideTypeDescriptor MonorailRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::Monorail::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::canSynchroniseWithAdjacentStations,

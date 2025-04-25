@@ -28,12 +28,8 @@ static void SubmarineRidePaintTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    trackPaintSprite(session, ride, trackSequence, direction, height, trackElement, supportType);
-    const auto* stationObj = ride.getStationObject();
+    trackPaintSpriteStation(session, ride, trackSequence, direction, height, trackElement, supportType);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
-    TrackPaintUtilDrawPier(
-        session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

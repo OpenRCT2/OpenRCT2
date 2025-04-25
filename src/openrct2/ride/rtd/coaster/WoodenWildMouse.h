@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::flatToSteepSlope, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::WoodenWildMouse::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 

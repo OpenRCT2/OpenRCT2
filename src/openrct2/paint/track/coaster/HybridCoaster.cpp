@@ -41,12 +41,10 @@ namespace OpenRCT2::HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        trackPaintSpriteTrackSupportColours(session, ride, trackSequence, direction, height, trackElement, supportType);
+        trackPaintSpriteTrackSupportColoursStation(session, ride, trackSequence, direction, height, trackElement, supportType);
 
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-
-        TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 10, trackElement, StationBaseType::none, 0);
 
         TrackPaintUtilDrawStationTunnel(session, direction, height);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);

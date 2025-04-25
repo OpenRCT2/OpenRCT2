@@ -26,6 +26,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curve},
         .extraTrackGroups = {TrackGroup::slope, TrackGroup::slopeSteepDown, TrackGroup::onridePhoto},
         .sprites = OpenRCT2::SplashBoats::kSprites,
+        .stationDesc = { 7, StationType::narrow, StationBaseType::b, 0 },
         .onRidePhotoType = { false, 7, OnRidePhotoSize::small },
     }),
     .InvertedTrackPaintFunctions = {},

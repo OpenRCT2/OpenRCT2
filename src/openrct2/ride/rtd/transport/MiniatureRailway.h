@@ -27,6 +27,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
         .extraTrackGroups = {},
         .sprites = OpenRCT2::MiniatureRailway::kSprites,
+        .stationDesc = { 7, StationType::wide, StationBaseType::a, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourSupports, RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::canSynchroniseWithAdjacentStations,
