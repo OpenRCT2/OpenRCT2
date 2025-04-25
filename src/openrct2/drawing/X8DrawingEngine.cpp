@@ -337,7 +337,7 @@ void X8DrawingEngine::OnDrawDirtyBlock(int32_t, int32_t, int32_t, int32_t)
 void X8DrawingEngine::ConfigureDirtyGrid()
 {
     const auto blockWidth = 1u << 7;
-    const auto blockHeight = 1u << 5;
+    const auto blockHeight = 1u << 7;
 
     _invalidationGrid.reset(_width, _height, blockWidth, blockHeight);
 }
