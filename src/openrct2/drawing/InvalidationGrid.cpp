@@ -37,42 +37,55 @@ namespace OpenRCT2::Drawing
         _blocks.resize(_columnCount * _rowCount);
         _blocks.shrink_to_fit();
 
+        _lowestRow = std::numeric_limits<uint32_t>::max();
+        _highestRow = 0;
+        _lowestColumn = std::numeric_limits<uint32_t>::max();
+        _highestColumn = 0;
+
         std::fill(_blocks.begin(), _blocks.end(), 0);
     }
 
     void InvalidationGrid::invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) noexcept
     {
+        // Clamp to screen bounds
         left = std::max(left, 0);
         top = std::max(top, 0);
         right = std::min(right, static_cast<int32_t>(_screenWidth));
         bottom = std::min(bottom, static_cast<int32_t>(_screenHeight));
 
-        if (left >= right)
-        {
+        if (left >= right || top >= bottom)
             return;
-        }
-        if (top >= bottom)
-        {
+
+        // Calculate block indices
+        const int32_t blockWidth = static_cast<int32_t>(_blockWidth);
+        const int32_t blockHeight = static_cast<int32_t>(_blockHeight);
+
+        const int32_t startCol = left / blockWidth;
+        const int32_t endCol = (right - 1) / blockWidth;
+        const int32_t startRow = top / blockHeight;
+        const int32_t endRow = (bottom - 1) / blockHeight;
+
+        // Clamp to grid dimensions
+        const int32_t clampedStartCol = std::max(startCol, 0);
+        const int32_t clampedEndCol = std::min(endCol, static_cast<int32_t>(_columnCount) - 1);
+        const int32_t clampedStartRow = std::max(startRow, 0);
+        const int32_t clampedEndRow = std::min(endRow, static_cast<int32_t>(_rowCount) - 1);
+
+        if (clampedStartCol > clampedEndCol || clampedStartRow > clampedEndRow)
             return;
-        }
 
-        left /= _blockWidth;
-        right /= _blockWidth;
+        // Update tracked regions
+        _lowestRow = std::min(_lowestRow, static_cast<uint32_t>(clampedStartRow));
+        _highestRow = std::max(_highestRow, static_cast<uint32_t>(clampedEndRow));
+        _lowestColumn = std::min(_lowestColumn, static_cast<uint32_t>(clampedStartCol));
+        _highestColumn = std::max(_highestColumn, static_cast<uint32_t>(clampedEndCol));
 
-        top /= _blockHeight;
-        bottom /= _blockHeight;
-
-        // TODO: Remove this once _blocks is no longer interop wrapper.
-        auto* blocks = _blocks.data();
-
-        const auto columnSize = right - left + 1;
-
-        for (int16_t y = top; y <= bottom; y++)
+        // Mark blocks
+        const size_t columnsToMark = clampedEndCol - clampedStartCol + 1;
+        for (int32_t row = clampedStartRow; row <= clampedEndRow; ++row)
         {
-            const auto yOffset = y * _columnCount;
-
-            // Mark row by column size as invalidated.
-            std::memset(blocks + yOffset + left, 0xFF, columnSize);
+            std::memset(
+                &_blocks[row * _columnCount + clampedStartCol], 0xFF, columnsToMark * sizeof(decltype(_blocks)::value_type));
         }
     }
 
