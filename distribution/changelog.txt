@@ -11,12 +11,15 @@
 - Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
 - Change: [#24135] Compress Emscripten js/wasm files.
 - Change: [#24235] Small changes to RCT1 theme.
+- Fix: [#19137] Corkscrew supports are offset incorrectly in certain views (original bug).
 - Fix: [#19782] Game stops counting inversions and golf holes after 31.
 - Fix: [#21207] Track List window gets positioned incorrectly.
 - Fix: [#21919] Non-recolourable cars still show colour picker.
 - Fix: [#22182] [Plugin] Crash when using map.getAllEntities("car").
 - Fix: [#22634] Asset packs with sound effect overrides are not loaded correctly at startup.
 - Fix: [#23108] Missing pieces on Hypercoaster and Hyper-Twister, even with the ‘all drawable track pieces’ cheat enabled.
+- Fix: [#23440] Quarter loops block metal supports incorrectly (original bug).
+- Fix: [#23741] Metal supports are blocked incorrectly on some LIM Launched, Wooden, Mine Train and Hybrid Coaster track pieces.
 - Fix: [#24013] Failure to load a scenario preview image (minimap) could lead to an uncaught exception error message.
 - Fix: [#24121] Checkbox labels run beyond the edge of the window if they’re too long to fit.
 - Fix: [#24142] [Plugin] Track origin is miscalculated on downward slopes.
