@@ -288,6 +288,13 @@ bool WeatherIsDry(WeatherType weather)
     return weather == WeatherType::Sunny || weather == WeatherType::PartiallyCloudy || weather == WeatherType::Cloudy;
 }
 
+bool ClimateHasWeatherEffect()
+{
+    const auto& weatherCurrent = getGameState().weatherCurrent;
+    // The game starts drawing rain whenever this level is not none.
+    return weatherCurrent.level != WeatherLevel::None;
+}
+
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state)
 {
     auto paletteId = FilterPaletteID::PaletteNull;

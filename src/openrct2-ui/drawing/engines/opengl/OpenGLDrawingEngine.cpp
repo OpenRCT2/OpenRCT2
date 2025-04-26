@@ -362,7 +362,7 @@ public:
     {
         WindowResetVisibilities();
 
-        if (ClimateIsRaining() || ClimateIsSnowing() || ClimateIsSnowingHeavily())
+        if (ClimateHasWeatherEffect())
         {
             WindowUpdateAllViewports();
             // OpenGL doesn't support restoring pixels, always redraw.
