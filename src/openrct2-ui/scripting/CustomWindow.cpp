@@ -486,11 +486,12 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            bool useWhite = colours[0].hasFlag(ColourFlag::translucent);
+            auto& closeButton = widgets[WIDX_CLOSE];
+            bool translucent = colours[closeButton.colour].hasFlag(ColourFlag::translucent);
             if (Config::Get().interface.EnlargedUi)
-                widgets[WIDX_CLOSE].string = !useWhite ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
+                closeButton.string = !translucent ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
             else
-                widgets[WIDX_CLOSE].string = !useWhite ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
+                closeButton.string = !translucent ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
 
             // Having the content panel visible for transparent windows makes the borders darker than they should be
             // For now just hide it if there are no tabs and the window is not resizable
