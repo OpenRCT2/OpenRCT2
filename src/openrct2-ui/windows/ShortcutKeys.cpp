@@ -574,7 +574,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget WindowResetShortcutKeysPromptWidgets[] = {
-        WINDOW_SHIM_WHITE(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
+        WINDOW_SHIM(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
         MakeWidget(
             { 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary,
             STR_RESET_SHORTCUT_KEYS_PROMPT),
