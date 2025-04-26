@@ -24,7 +24,13 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .trackStyle = TrackStyle::waterCoaster,
-            .supportType = MetalSupportType::Fork,
+            .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
+            .trackGroupSupportTypes = []() consteval {
+                std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+                array.fill(NewSupportType(MetalSupportType::Fork));
+                array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(MetalSupportType::Boxed);
+                return array;
+            }(),
             .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
             .extraTrackGroups = {TrackGroup::flatToSteepSlope},
             .icon = SPR_RIDE_CONSTRUCTION_RC_TRACK,
@@ -32,7 +38,12 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         },
         {
             .trackStyle = TrackStyle::splashBoats,
-            .supportType = WoodenSupportType::Truss,
+            .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsWide,
+            .trackGroupSupportTypes = []() consteval {
+                std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+                array.fill(NewSupportType(WoodenSupportType::Truss));
+                return array;
+            }(),
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend },
             .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL,

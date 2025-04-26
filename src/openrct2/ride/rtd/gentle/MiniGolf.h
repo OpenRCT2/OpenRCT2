@@ -21,7 +21,14 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniGolf,
-        .supportType = MetalSupportType::Boxed,
+        .trackGroupBlockedSegmentTypes = OpenRCT2::BlockedSegments::kTrackGroupBlockedSegmentsNarrow,
+        .trackGroupSupportTypes = []() consteval {
+            std::array<NewSupportType, EnumValue(TrackGroup::count)> array{};
+            array.fill(NewSupportType(MetalSupportType::Boxed));
+            array[EnumValue(TrackGroup::stationEnd)] = NewSupportType(WoodenSupportType::Truss);
+            array[EnumValue(TrackGroup::miniGolfHole)] = NewSupportType(WoodenSupportTypeCovered(WoodenSupportType::Truss, true));
+            return array;
+        }(),
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::miniGolfHole},
         .extraTrackGroups = {},
     }),

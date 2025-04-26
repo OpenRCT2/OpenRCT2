@@ -14,8 +14,7 @@
 #include "../../../world/Location.hpp"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
+#include "../../support/TrackStyleSupports.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 
@@ -123,10 +122,8 @@ void WoodenRCTrackFlatToBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -137,9 +134,7 @@ static void WoodenRCTrack25DegUpToBank(
     const TrackElement& trackElement, SupportType supportType)
 {
     WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25DegToFlat);
+
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
@@ -148,7 +143,6 @@ static void WoodenRCTrack25DegUpToBank(
     {
         PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
@@ -159,9 +153,7 @@ static void WoodenRCTrackBankTo25DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::FlatToUp25Deg);
+
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -170,7 +162,6 @@ static void WoodenRCTrackBankTo25DegUp(
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -296,16 +287,6 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
 
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
-    static constexpr int blockedSegments[4] = {
-        kSegmentsAll,
-        kSegmentsAll,
-        EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-        kSegmentsAll,
-    };
-
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftBankedQuarterTurn3Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -505,25 +486,6 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
 
     TrackPaintUtilRightQuarterTurn5TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
-    static constexpr int blockedSegments[7] = {
-        kSegmentsAll,
-        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
-        EnumsToFlags(
-            PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-            PaintSegment::bottomRight),
-        EnumsToFlags(
-            PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
-            PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
-        EnumsToFlags(
-            PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-            PaintSegment::bottomRight),
-        kSegmentsAll,
-    };
-
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::BankedRightQuarterTurn5Tiles>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -542,8 +504,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -555,15 +516,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -575,48 +534,29 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::bottomRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 2:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -657,12 +597,6 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     }
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
@@ -672,8 +606,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -685,15 +618,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
                             { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -705,8 +636,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
                             { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -718,20 +648,6 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::topRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
@@ -747,15 +663,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                             session, direction, imageIds[0][3].frontTrack, imageIds[0][3].frontHandrail, { 0, 0, height },
                             { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][0].track, imageIds[0][0].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -767,15 +681,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                             session, direction, imageIds[0][1].frontTrack, imageIds[0][1].frontHandrail, { 0, 0, height },
                             { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][2].track, imageIds[0][2].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -787,40 +699,22 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::topRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 2:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -861,13 +755,6 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                         { { 16, 0, height }, { 16, 16, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
@@ -883,15 +770,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                             session, direction, imageIds[2][3].frontTrack, imageIds[2][3].frontHandrail, { 0, 0, height },
                             { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][0].track, imageIds[2][0].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -903,35 +788,19 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
                             session, direction, imageIds[2][1].frontTrack, imageIds[2][1].frontHandrail, { 0, 0, height },
                             { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][2].track, imageIds[2][2].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::bottom, PaintSegment::topLeft),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -958,15 +827,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -978,55 +845,35 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::bottom, PaintSegment::topLeft),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
             switch (direction)
             {
                 case 0:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 2:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1067,13 +914,6 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                         { { 16, 0, height }, { 16, 16, 2 } });
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
@@ -1089,15 +929,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
                             { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -1109,15 +947,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
                             { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -1129,20 +965,6 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::topRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
@@ -1152,8 +974,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][1].track, imageIds[0][1].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -1165,15 +986,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                             session, direction, imageIds[0][2].frontTrack, imageIds[0][2].frontHandrail, { 0, 0, height },
                             { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][3].track, imageIds[0][3].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -1185,8 +1004,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                             session, direction, imageIds[0][0].frontTrack, imageIds[0][0].frontHandrail, { 0, 0, height },
                             { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -1198,40 +1016,22 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::topRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
             switch (direction)
             {
                 case 0:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 2:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1272,12 +1072,6 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     }
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
@@ -1287,8 +1081,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][1].track, imageIds[2][1].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -1300,15 +1093,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                             session, direction, imageIds[2][2].frontTrack, imageIds[2][2].frontHandrail, { 0, 0, height },
                             { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][3].track, imageIds[2][3].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -1320,28 +1111,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
                             session, direction, imageIds[2][0].frontTrack, imageIds[2][0].frontHandrail, { 0, 0, height },
                             { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::bottomRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -1362,8 +1138,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -1375,15 +1150,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -1395,36 +1168,16 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::bottomRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
-                48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
@@ -1434,8 +1187,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -1447,15 +1199,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 0, height + 27 }, { 32, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -1467,18 +1217,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 32, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
@@ -1488,8 +1229,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -1501,15 +1241,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
                             { 0, 0, height }, { { 16, 16, height + 29 }, { 16, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -1521,30 +1259,12 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 0, height + 27 }, { 16, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::bottom, PaintSegment::topLeft, PaintSegment::bottomLeft),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
-                48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
@@ -1554,8 +1274,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -1567,15 +1286,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 0, height + 33 }, { 16, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -1587,18 +1304,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
                             { 0, 0, height }, { { 16, 0, height + 27 }, { 16, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
@@ -1608,8 +1316,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -1621,15 +1328,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
                             { 0, 0, height }, { { 2, 0, height + 33 }, { 27, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -1641,8 +1346,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
                             { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -1654,20 +1358,6 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::topRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
@@ -1683,15 +1373,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[0][3].frontTrack, imageIds[0][3].frontHandrail, { 0, 0, height },
                             { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][0].track, imageIds[0][0].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -1703,15 +1391,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[0][1].frontTrack, imageIds[0][1].frontHandrail, { 0, 0, height },
                             { { 2, 0, height + 27 }, { 27, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][2].track, imageIds[0][2].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -1723,28 +1409,9 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::topRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 8:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
-                48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 9:
@@ -1760,15 +1427,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[1][3].frontTrack, imageIds[1][3].frontHandrail, { 0, 0, height },
                             { { 16, 0, height + 27 }, { 16, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][0].track, imageIds[1][0].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -1780,25 +1445,15 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[1][1].frontTrack, imageIds[1][1].frontHandrail, { 0, 0, height },
                             { { 0, 0, height + 27 }, { 16, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][2].track, imageIds[1][2].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 10:
@@ -1814,15 +1469,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[2][3].frontTrack, imageIds[2][3].frontHandrail, { 0, 0, height },
                             { { 0, 0, height + 27 }, { 16, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][0].track, imageIds[2][0].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -1834,37 +1487,18 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[2][1].frontTrack, imageIds[2][1].frontHandrail, { 0, 0, height },
                             { { 16, 16, height + 29 }, { 16, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][2].track, imageIds[2][2].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 11:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
-                48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 12:
@@ -1880,15 +1514,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[3][3].frontTrack, imageIds[3][3].frontHandrail, { 0, 0, height },
                             { { 0, 16, height + 27 }, { 32, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][0].track, imageIds[3][0].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -1900,25 +1532,15 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[3][1].frontTrack, imageIds[3][1].frontHandrail, { 0, 0, height },
                             { { 0, 0, height + 33 }, { 32, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][2].track, imageIds[3][2].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 13:
@@ -1934,15 +1556,13 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[4][3].frontTrack, imageIds[4][3].frontHandrail, { 0, 0, height },
                             { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][0].track, imageIds[4][0].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -1954,35 +1574,19 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
                             session, direction, imageIds[4][1].frontTrack, imageIds[4][1].frontHandrail, { 0, 0, height },
                             { { 0, 2, height + 33 }, { 32, 27, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][2].track, imageIds[4][2].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::bottom, PaintSegment::topLeft),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -2009,15 +1613,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -2029,43 +1631,22 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::bottom, PaintSegment::topLeft),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 1:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
-                48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 2:
@@ -2081,15 +1662,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 32, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -2101,25 +1680,15 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 0, height + 27 }, { 32, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
@@ -2135,15 +1704,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 0, height + 27 }, { 16, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -2155,37 +1722,18 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
                             { 0, 0, height }, { { 16, 16, height + 29 }, { 16, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 4:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
-                48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 5:
@@ -2201,15 +1749,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
                             { 0, 0, height }, { { 16, 0, height + 27 }, { 16, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -2221,25 +1767,15 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[3][direction].frontTrack, imageIds[3][direction].frontHandrail,
                             { 0, 0, height }, { { 0, 0, height + 33 }, { 16, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][direction].track, imageIds[3][direction].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
@@ -2255,15 +1791,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
                             { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -2275,15 +1809,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[4][direction].frontTrack, imageIds[4][direction].frontHandrail,
                             { 0, 0, height }, { { 2, 0, height + 33 }, { 27, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][direction].track, imageIds[4][direction].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -2295,20 +1827,6 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::topRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
@@ -2318,8 +1836,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][1].track, imageIds[0][1].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -2331,15 +1848,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[0][2].frontTrack, imageIds[0][2].frontHandrail, { 0, 0, height },
                             { { 2, 0, height + 27 }, { 27, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][3].track, imageIds[0][3].handrail, { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -2351,8 +1866,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[0][0].frontTrack, imageIds[0][0].frontHandrail, { 0, 0, height },
                             { { 6, 0, height + 27 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -2364,28 +1878,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::topRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-                        PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 8:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
-                48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 9:
@@ -2395,8 +1890,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][1].track, imageIds[1][1].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -2408,15 +1902,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[1][2].frontTrack, imageIds[1][2].frontHandrail, { 0, 0, height },
                             { { 0, 0, height + 27 }, { 16, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][3].track, imageIds[1][3].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 16, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -2428,18 +1920,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[1][0].frontTrack, imageIds[1][0].frontHandrail, { 0, 0, height },
                             { { 16, 0, height + 27 }, { 16, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 10:
@@ -2449,8 +1932,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][1].track, imageIds[2][1].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 16, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -2462,15 +1944,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[2][2].frontTrack, imageIds[2][2].frontHandrail, { 0, 0, height },
                             { { 16, 16, height + 29 }, { 16, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[2][3].track, imageIds[2][3].handrail, { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -2482,30 +1962,12 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[2][0].frontTrack, imageIds[2][0].frontHandrail, { 0, 0, height },
                             { { 0, 0, height + 27 }, { 16, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::bottom, PaintSegment::topLeft, PaintSegment::bottomLeft),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 11:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
-                48, 0x20);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 12:
@@ -2515,8 +1977,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][1].track, imageIds[3][1].handrail, { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -2528,15 +1989,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[3][2].frontTrack, imageIds[3][2].frontHandrail, { 0, 0, height },
                             { { 0, 0, height + 33 }, { 32, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[3][3].track, imageIds[3][3].handrail, { 0, 0, height },
                         { { 0, 16, height }, { 32, 16, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -2548,18 +2007,9 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[3][0].frontTrack, imageIds[3][0].frontHandrail, { 0, 0, height },
                             { { 0, 16, height + 27 }, { 32, 16, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 13:
@@ -2569,8 +2019,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][1].track, imageIds[4][1].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -2582,15 +2031,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[4][2].frontTrack, imageIds[4][2].frontHandrail, { 0, 0, height },
                             { { 0, 2, height + 33 }, { 32, 27, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[4][3].track, imageIds[4][3].handrail, { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NeSw, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -2602,28 +2049,13 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
                             session, direction, imageIds[4][0].frontTrack, imageIds[4][0].frontHandrail, { 0, 0, height },
                             { { 0, 6, height + 27 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::NwSe, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::bottomRight),
-                    direction),
-                48, 0x20);
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                        PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
     }
@@ -2644,8 +2076,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -2657,15 +2088,13 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -2677,27 +2106,19 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
@@ -2707,8 +2128,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -2720,8 +2140,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -2733,8 +2152,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
@@ -2746,8 +2164,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -2759,7 +2176,6 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
@@ -2786,15 +2202,13 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -2806,35 +2220,25 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                             session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
                             { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 2:
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-                    direction),
-                0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
         case 3:
@@ -2850,8 +2254,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
+
                     break;
                 case 1:
                     WoodenRCTrackPaint<isClassic>(
@@ -2863,8 +2266,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
+
                     break;
                 case 2:
                     WoodenRCTrackPaint<isClassic>(
@@ -2876,15 +2278,13 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                             session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
                             { 6, 0, height }, { { 6, 0, height + 67 }, { 20, 32, 0 } });
                     }
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
+
                     break;
                 case 3:
                     WoodenRCTrackPaint<isClassic>(
                         session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 6, 0, height },
                         { { 6, 0, height }, { 20, 32, 2 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
+
                     break;
             }
             switch (direction)
@@ -2896,7 +2296,6 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
                     PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
     }
@@ -2964,9 +2363,6 @@ static void WoodenRCTrackDiagFlatToBank(
             break;
     }
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagFlat>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -3032,9 +2428,6 @@ static void WoodenRCTrackDiagBankTo25DegUp(
             break;
     }
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagFlatToUp25>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -3100,9 +2493,6 @@ static void WoodenRCTrackDiagUp25ToBank(
             break;
     }
 
-    DrawSupportForSequenceB<OpenRCT2::TrackElemType::DiagUp25ToFlat>(
-        session, supportType.wooden, trackSequence, direction, height + 16, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
@@ -3168,9 +2558,6 @@ static void WoodenRCTrackDiagLeftBank(
             break;
     }
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagLeftBank>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -3336,9 +2723,6 @@ static void WoodenRCTrackLeftEighthBankToDiag(
             break;
     }
 
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftEighthBankToDiag>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -3503,10 +2887,6 @@ static void WoodenRCTrackRightEighthBankToDiag(
             }
             break;
     }
-
-    DrawSupportForSequenceA<OpenRCT2::TrackElemType::RightEighthBankToDiag>(
-        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 

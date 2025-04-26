@@ -9,11 +9,13 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
 #include "../paint/Paint.h"
 #include "../paint/support/MetalSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../paint/track/Support.h"
 #include "../world/Map.h"
+#include "TrackData.h"
 
 class StationObject;
 struct Ride;
@@ -542,17 +544,6 @@ inline void TrackPaintUtilDiagTilesPaint(
 void TrackPaintUtilDiagTilesPaintExtra(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const uint32_t sprites[4], MetalSupportType supportType);
-
-void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence);
-
-void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction direction, uint16_t height);
-
-void DrawSBendLeftSupports(
-    PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
-    int32_t specialA, int32_t specialB);
-void DrawSBendRightSupports(
-    PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
-    int32_t specialA, int32_t specialB);
 
 using TrackPaintFunction = void (&)(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,

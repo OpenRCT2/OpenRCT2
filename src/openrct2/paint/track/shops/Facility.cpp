@@ -18,7 +18,6 @@
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
-#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
@@ -31,8 +30,9 @@ static void PaintFacility(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool hasSupports = DrawSupportForSequenceA<TrackElemType::FlatTrack1x1A>(
-        session, supportType.wooden, trackSequence, direction, height, GetShopSupportColourScheme(session, trackElement));
+    bool hasSupports = WoodenASupportsPaintSetupRotated(
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height,
+        GetShopSupportColourScheme(session, trackElement), WoodenSupportTransitionType::None);
 
     auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)

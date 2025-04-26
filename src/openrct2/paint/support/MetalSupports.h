@@ -89,20 +89,14 @@ enum class MetalSupportPlace : uint8_t
 struct FootpathPaintInfo;
 struct PaintSession;
 
-/** @deprecated */
-bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
-    ImageId imageTemplate);
 bool MetalASupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
-    int32_t height, ImageId imageTemplate);
-/** @deprecated */
-bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
-    ImageId imageTemplate);
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction,
+    const Direction extraSupportRotation, int32_t special, int32_t height, ImageId imageTemplate,
+    const bool fallbackToGeneralSupportHeight);
 bool MetalBSupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
-    int32_t height, ImageId imageTemplate);
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction,
+    const Direction extraSupportRotation, int32_t special, int32_t height, ImageId imageTemplate,
+    const bool fallbackToGeneralSupportHeight);
 void DrawSupportsSideBySide(
     PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
 bool PathPoleSupportsPaintSetup(

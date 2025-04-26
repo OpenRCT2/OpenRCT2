@@ -9,17 +9,89 @@
 
 #pragma once
 
+#include "../../ride/Track.h"
+#include "../../world/tile_element/TrackElement.h"
+#include "../Paint.h"
 #include "../tile_element/Segment.h"
 
 #include <cstdint>
 
 namespace OpenRCT2::BlockedSegments
 {
-    constexpr uint16_t kStraightFlat = EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft);
-    constexpr uint16_t kDiagStraightFlat[] = {
-        EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
-        EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft, PaintSegment::top),
-        EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
-        EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft),
+    enum class BlockedSegmentsType : uint8_t
+    {
+        narrow = 0,
+        inverted = 1,
+        wide = 2,
+        suspendedSwingingTrain = 3,
+        wideTrain = 4,
+
+        count = 5,
     };
+
+    static constexpr bool kBlockedSegmentsTypeIsInverted[] = {
+        false, // narrow
+        true,  // inverted
+        false, // wide
+        true,  // suspendedSwingingTrain
+        false, // wideTrain
+    };
+    static_assert(std::size(kBlockedSegmentsTypeIsInverted) == EnumValue(BlockedSegmentsType::count));
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsNarrow =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::narrow);
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsInverted =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::inverted);
+            array[EnumValue(TrackGroup::stationEnd)] = BlockedSegments::BlockedSegmentsType::wide;
+            array[EnumValue(TrackGroup::onridePhoto)] = BlockedSegments::BlockedSegmentsType::wide;
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsWide =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::wide);
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)>
+        kTrackGroupBlockedSegmentsSuspendedSwingingTrain = []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::suspendedSwingingTrain);
+            array[EnumValue(TrackGroup::stationEnd)] = BlockedSegments::BlockedSegmentsType::wide;
+            array[EnumValue(TrackGroup::onridePhoto)] = BlockedSegments::BlockedSegmentsType::wide;
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> kTrackGroupBlockedSegmentsWideTrain =
+        []() consteval {
+            std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(BlockedSegmentsType::wideTrain);
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)>
+        kTrackGroupBlockedSegmentsWoodenRollerCoaster = []() consteval {
+            std::array<OpenRCT2::BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(OpenRCT2::BlockedSegments::BlockedSegmentsType::wide);
+            array[EnumValue(TrackGroup::verticalLoop)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopMedium)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow;
+            array[EnumValue(TrackGroup::halfLoopLarge)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow;
+            return array;
+        }();
+
+    static constexpr const std::array<BlockedSegmentsType, EnumValue(TrackGroup::count)>
+        kTrackGroupBlockedSegmentsCarRideGhostTrain = []() consteval {
+            std::array<OpenRCT2::BlockedSegments::BlockedSegmentsType, EnumValue(TrackGroup::count)> array{};
+            array.fill(OpenRCT2::BlockedSegments::BlockedSegmentsType::narrow);
+            array[EnumValue(TrackGroup::curveVerySmall)] = OpenRCT2::BlockedSegments::BlockedSegmentsType::wide;
+            return array;
+        }();
 } // namespace OpenRCT2::BlockedSegments

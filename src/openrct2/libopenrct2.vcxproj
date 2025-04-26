@@ -381,6 +381,7 @@
     <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\support\MetalSupports.h" />
+    <ClInclude Include="paint\support\TrackStyleSupports.h" />
     <ClInclude Include="paint\support\WoodenSupports.h" />
     <ClInclude Include="paint\tile_element\Paint.PathAddition.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
@@ -920,6 +921,7 @@
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />
     <ClCompile Include="paint\support\MetalSupports.cpp" />
+    <ClCompile Include="paint\support\TrackStyleSupports.cpp" />
     <ClCompile Include="paint\support\WoodenSupports.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Banner.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Entrance.cpp" />
