@@ -103,6 +103,26 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
+static constexpr bool imageWithinColumn(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
+{
+    const int32_t left = imagePos.x + g1.x_offset;
+    const int32_t right = left + g1.width;
+
+    const int32_t columnWidth = dpi.zoom_level.ApplyInversedTo(kCoordsXYStep);
+    const int32_t alignedX = floor2(dpi.x, columnWidth);
+
+    // check if a sprite is within the full unclipped column width
+    // culling sprites outside the clipped column causes sorting differences between invalidation blocks
+    // not culling sprites outside the full column width also causes a different kind of glitching
+
+    if (dpi.zoom_level.ApplyInversedTo(right) <= alignedX)
+        return false;
+    if (dpi.zoom_level.ApplyInversedTo(left) >= alignedX + columnWidth)
+        return false;
+
+    return true;
+}
+
 static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uint8_t rotation)
 {
     auto output = bbSize;
@@ -146,6 +166,12 @@ static PaintStruct* CreateNormalPaintStruct(
     swappedRotCoord += session.SpritePosition;
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
+
+    if (!imageWithinColumn(imagePos, *g1, session.DPI))
+    {
+        return nullptr;
+    }
+
     const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.Rotate(swappedRotation), boundBox.offset.z };
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBox.length, session.CurrentRotation);
 
@@ -188,6 +214,12 @@ static PaintStruct* CreateNormalPaintStructHeight(
     swappedRotCoord += session.SpritePosition;
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
+
+    if (!imageWithinColumn(imagePos, *g1, session.DPI))
+    {
+        return nullptr;
+    }
+
     const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.Rotate(swappedRotation), boundBox.offset.z + height };
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBox.length, session.CurrentRotation);
 
