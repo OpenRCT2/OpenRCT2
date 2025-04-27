@@ -46,6 +46,8 @@ void Painter::Paint(IDrawingEngine& de)
     }
     else
     {
+        de.PaintViewport();
+        de.PaintWeather();
         de.PaintWindows();
 
         UpdatePaletteEffects();
@@ -53,8 +55,6 @@ void Painter::Paint(IDrawingEngine& de)
 
         GfxDrawPickedUpPeep(*dpi);
         GfxInvalidatePickedUpPeep();
-
-        de.PaintWeather();
     }
 
     auto* replayManager = GetContext()->GetReplayManager();

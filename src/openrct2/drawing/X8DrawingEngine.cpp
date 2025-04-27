@@ -182,7 +182,7 @@ void X8DrawingEngine::EndDraw()
     _drawingContext->EndDraw();
 }
 
-void X8DrawingEngine::PaintWindows()
+void X8DrawingEngine::PaintViewport()
 {
     WindowResetVisibilities();
 
@@ -193,9 +193,29 @@ void X8DrawingEngine::PaintWindows()
     DrawAllDirtyBlocks();
 }
 
+void X8DrawingEngine::PaintWindows()
+{
+    WindowDrawAll(_bitsDPI, 0, 0, static_cast<int32_t>(_width), static_cast<int32_t>(_height));
+}
+
 void X8DrawingEngine::PaintWeather()
 {
     DrawWeather(_bitsDPI, &_weatherDrawer);
+}
+
+void X8DrawingEngine::DrawAllDirtyBlocks()
+{
+    _invalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+        // Draw region
+        DrawDirtyBlocks(left, top, right, bottom);
+    });
+}
+
+void X8DrawingEngine::DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
+{
+    // Draw region
+    OnDrawDirtyBlock(left, top, right, bottom);
+    ViewportRenderPrimary(_bitsDPI);
 }
 
 void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
@@ -340,21 +360,6 @@ void X8DrawingEngine::ConfigureDirtyGrid()
     const auto blockHeight = 1u << 7;
 
     _invalidationGrid.reset(_width, _height, blockWidth, blockHeight);
-}
-
-void X8DrawingEngine::DrawAllDirtyBlocks()
-{
-    _invalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
-        // Draw region
-        DrawDirtyBlocks(left, top, right, bottom);
-    });
-}
-
-void X8DrawingEngine::DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
-{
-    // Draw region
-    OnDrawDirtyBlock(left, top, right, bottom);
-    WindowDrawAll(_bitsDPI, left, top, right, bottom);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

@@ -99,6 +99,7 @@ namespace OpenRCT2
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
     #pragma GCC diagnostic pop
 #endif
+            void PaintViewport() override;
             void PaintWindows() override;
             void PaintWeather() override;
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;

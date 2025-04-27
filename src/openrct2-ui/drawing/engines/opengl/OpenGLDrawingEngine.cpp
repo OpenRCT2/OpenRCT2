@@ -35,6 +35,7 @@
     #include <openrct2/drawing/LightFX.h>
     #include <openrct2/drawing/Weather.h>
     #include <openrct2/interface/Screenshot.h>
+    #include <openrct2/interface/Viewport.h>
     #include <openrct2/ui/UiContext.h>
     #include <openrct2/world/Climate.h>
 
@@ -212,7 +213,8 @@ private:
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
     OpenGLWeatherDrawer _weatherDrawer;
-    InvalidationGrid _invalidationGrid;
+    InvalidationGrid _viewportInvalidationGrid;
+    InvalidationGrid _uiInvalidationGrid;
 
 public:
     SDL_Color Palette[256];
@@ -278,7 +280,8 @@ public:
         const auto blockWidth = 1u << 8;
         const auto blockHeight = 1u << 8;
 
-        _invalidationGrid.reset(_width, _height, blockWidth, blockHeight);
+        _viewportInvalidationGrid.reset(_width, _height, blockWidth, blockHeight);
+        _uiInvalidationGrid.reset(_width, _height, blockWidth, blockHeight);
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -312,7 +315,10 @@ public:
 
     void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override
     {
-        _invalidationGrid.invalidate(left, top, right, bottom);
+        _viewportInvalidationGrid.invalidate(left, top, right, bottom);
+
+        // TODO: Separate UI and viewport invalidation.
+        _uiInvalidationGrid.invalidate(left, top, right, bottom);
     }
 
     void BeginDraw() override
@@ -358,39 +364,42 @@ public:
         Display();
     }
 
-    void PaintWindows() override
+    void PaintViewport() override
     {
         WindowResetVisibilities();
 
-        if (ClimateHasWeatherEffect())
-        {
-            WindowUpdateAllViewports();
-            // OpenGL doesn't support restoring pixels, always redraw.
-            // TODO: Render the weather to a texture and use that instead.
-            WindowDrawAll(_bitsDPI, 0, 0, static_cast<int32_t>(_width), static_cast<int32_t>(_height));
-        }
-        else
-        {
-            // Redraw dirty regions before updating the viewports, otherwise
-            // when viewports get panned, they copy dirty pixels
-            DrawAllDirtyBlocks();
-            WindowUpdateAllViewports();
-            DrawAllDirtyBlocks();
-        }
+        // Redraw dirty regions before updating the viewports, otherwise
+        // when viewports get panned, they copy dirty pixels
+        DrawDirtyViewpointRegions();
+        WindowUpdateAllViewports();
+        DrawDirtyViewpointRegions();
+
+        _drawingContext->FlushCommandBuffers();
     }
 
-    void DrawAllDirtyBlocks()
+    void PaintWindows() override
     {
-        _invalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+        DrawDirtyUIRegions();
+
+        _drawingContext->FlushCommandBuffers();
+    }
+
+    void DrawDirtyViewpointRegions()
+    {
+        _viewportInvalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
             // Draw region
-            DrawDirtyBlocks(left, top, right, bottom);
+            auto vpDPI = _bitsDPI.Crop({ left, top }, { right - left, bottom - top });
+
+            ViewportRenderPrimary(vpDPI);
         });
     }
 
-    void DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
+    void DrawDirtyUIRegions()
     {
-        // Draw region
-        WindowDrawAll(_bitsDPI, left, top, right, bottom);
+        _uiInvalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+            // Draw region
+            WindowDrawAll(_bitsDPI, left, top, right, bottom);
+        });
     }
 
     void PaintWeather() override

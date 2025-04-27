@@ -333,162 +333,65 @@ namespace OpenRCT2
      *  rct2: 0x006E7FF3
      */
     static void ViewportRedrawAfterShift(
-        DrawPixelInfo& dpi, WindowBase* window, const WindowBase* originalWindow, const ScreenCoordsXY shift,
+        DrawPixelInfo& dpi, Viewport* vp, const WindowBase* originalWindow, const ScreenCoordsXY shift,
         const ScreenRect& drawRect)
     {
-        // sub-divide by intersecting windows
-        if (window != nullptr)
+   
+        auto left = drawRect.GetLeft();
+        auto right = drawRect.GetRight();
+        auto top = drawRect.GetTop();
+        auto bottom = drawRect.GetBottom();
+
+        // if moved more than the draw rectangle size
+        if (abs(shift.x) < drawRect.GetWidth() && abs(shift.y) < drawRect.GetHeight())
         {
-            // skip current window and non-intersecting windows
-            if (window == originalWindow || drawRect.GetRight() <= window->windowPos.x
-                || drawRect.GetLeft() >= window->windowPos.x + window->width || drawRect.GetBottom() <= window->windowPos.y
-                || drawRect.GetTop() >= window->windowPos.y + window->height)
+            // update whole block ?
+            DrawingEngineCopyRect(
+                drawRect.GetLeft(), drawRect.GetTop(), drawRect.GetWidth(), drawRect.GetHeight(), shift.x, shift.y);
+
+            if (shift.x > 0)
             {
-                auto itWindowPos = WindowGetIterator(window);
-                // Get next valid window after.
-                auto itNextWindow = [&]() {
-                    auto itNext = std::next(itWindowPos);
-                    while (itNext != g_window_list.end() && (itNext->get()->flags & WF_DEAD))
-                    {
-                        ++itNext;
-                    }
-                    return itNext;
-                }();
-                ViewportRedrawAfterShift(
-                    dpi, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
-                return;
+                // draw left
+                auto _right = left + shift.x;
+                auto clipped = dpi.Crop({ left, top }, { _right - left, bottom - top });
+                ViewportRender(dpi, vp);
+                left += shift.x;
+            }
+            else if (shift.x < 0)
+            {
+                // draw right
+                auto _left = right + shift.x;
+                auto clipped = dpi.Crop({ _left, top }, { right - _left, bottom - top });
+                ViewportRender(dpi, vp);
+                right += shift.x;
             }
 
-            if (drawRect.GetLeft() < window->windowPos.x)
+            if (shift.y > 0)
             {
-                ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x, drawRect.GetBottom() } };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, leftRect);
-
-                ScreenRect rightRect = { { window->windowPos.x, drawRect.GetTop() }, drawRect.Point2 };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, rightRect);
+                // draw top
+                bottom = top + shift.y;
+                auto clipped = dpi.Crop({ left, top }, { right - left, bottom - top });
+                ViewportRender(dpi, vp);
             }
-            else if (drawRect.GetRight() > window->windowPos.x + window->width)
+            else if (shift.y < 0)
             {
-                ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x + window->width, drawRect.GetBottom() } };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, leftRect);
-
-                ScreenRect rightRect = { { window->windowPos.x + window->width, drawRect.GetTop() }, drawRect.Point2 };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, rightRect);
-            }
-            else if (drawRect.GetTop() < window->windowPos.y)
-            {
-                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y } };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, topRect);
-
-                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y }, drawRect.Point2 };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, bottomRect);
-            }
-            else if (drawRect.GetBottom() > window->windowPos.y + window->height)
-            {
-                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y + window->height } };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, topRect);
-
-                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y + window->height }, drawRect.Point2 };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, bottomRect);
+                // draw bottom
+                top = bottom + shift.y;
+                auto clipped = dpi.Crop({ left, top }, { right - left, bottom - top });
+                ViewportRender(dpi, vp);
             }
         }
         else
         {
-            auto left = drawRect.GetLeft();
-            auto right = drawRect.GetRight();
-            auto top = drawRect.GetTop();
-            auto bottom = drawRect.GetBottom();
-
-            // if moved more than the draw rectangle size
-            if (abs(shift.x) < drawRect.GetWidth() && abs(shift.y) < drawRect.GetHeight())
-            {
-                // update whole block ?
-                DrawingEngineCopyRect(
-                    drawRect.GetLeft(), drawRect.GetTop(), drawRect.GetWidth(), drawRect.GetHeight(), shift.x, shift.y);
-
-                if (shift.x > 0)
-                {
-                    // draw left
-                    auto _right = left + shift.x;
-                    WindowDrawAll(dpi, left, top, _right, bottom);
-                    left += shift.x;
-                }
-                else if (shift.x < 0)
-                {
-                    // draw right
-                    auto _left = right + shift.x;
-                    WindowDrawAll(dpi, _left, top, right, bottom);
-                    right += shift.x;
-                }
-
-                if (shift.y > 0)
-                {
-                    // draw top
-                    bottom = top + shift.y;
-                    WindowDrawAll(dpi, left, top, right, bottom);
-                }
-                else if (shift.y < 0)
-                {
-                    // draw bottom
-                    top = bottom + shift.y;
-                    WindowDrawAll(dpi, left, top, right, bottom);
-                }
-            }
-            else
-            {
-                // redraw whole draw rectangle
-                WindowDrawAll(dpi, left, top, right, bottom);
-            }
+            // redraw whole draw rectangle
+            ViewportRender(dpi, vp);
         }
     }
 
     static void ViewportShiftPixels(DrawPixelInfo& dpi, WindowBase* window, Viewport* viewport, int32_t x_diff, int32_t y_diff)
     {
-        // This loop redraws all parts covered by transparent windows.
-        auto it = WindowGetIterator(window);
-        for (; it != g_window_list.end(); it++)
-        {
-            auto w = it->get();
-            if (!(w->flags & WF_TRANSPARENT) || (w->flags & WF_DEAD))
-                continue;
-            if (w->viewport == viewport)
-                continue;
-
-            if (viewport->pos.x + viewport->width <= w->windowPos.x)
-                continue;
-            if (w->windowPos.x + w->width <= viewport->pos.x)
-                continue;
-
-            if (viewport->pos.y + viewport->height <= w->windowPos.y)
-                continue;
-            if (w->windowPos.y + w->height <= viewport->pos.y)
-                continue;
-
-            auto left = w->windowPos.x;
-            auto right = w->windowPos.x + w->width;
-            auto top = w->windowPos.y;
-            auto bottom = w->windowPos.y + w->height;
-
-            if (left < viewport->pos.x)
-                left = viewport->pos.x;
-            if (right > viewport->pos.x + viewport->width)
-                right = viewport->pos.x + viewport->width;
-
-            if (top < viewport->pos.y)
-                top = viewport->pos.y;
-            if (bottom > viewport->pos.y + viewport->height)
-                bottom = viewport->pos.y + viewport->height;
-
-            if (left >= right)
-                continue;
-            if (top >= bottom)
-                continue;
-
-            WindowDrawAll(dpi, left, top, right, bottom);
-        }
-
         ViewportRedrawAfterShift(
-            dpi, window, window, { x_diff, y_diff },
+            dpi, viewport, window, { x_diff, y_diff },
             { viewport->pos, { viewport->pos.x + viewport->width, viewport->pos.y + viewport->height } });
     }
 
@@ -507,30 +410,6 @@ namespace OpenRCT2
         // If no change in viewing area
         if ((!x_diff) && (!y_diff))
             return;
-
-        if (w->flags & WF_7)
-        {
-            int32_t left = std::max<int32_t>(viewport->pos.x, 0);
-            int32_t top = std::max<int32_t>(viewport->pos.y, 0);
-            int32_t right = std::min<int32_t>(viewport->pos.x + viewport->width, ContextGetWidth());
-            int32_t bottom = std::min<int32_t>(viewport->pos.y + viewport->height, ContextGetHeight());
-
-            if (left >= right)
-                return;
-            if (top >= bottom)
-                return;
-
-            if (DrawingEngineHasDirtyOptimisations())
-            {
-                DrawPixelInfo& dpi = DrawingEngineGetDpi();
-                WindowDrawAll(dpi, left, top, right, bottom);
-                return;
-            }
-            else
-            {
-                GfxInvalidateScreen();
-            }
-        }
 
         Viewport view_copy = *viewport;
 
@@ -943,6 +822,14 @@ namespace OpenRCT2
             return;
 
         ViewportPaint(viewport, dpi);
+    }
+
+    void ViewportRenderPrimary(DrawPixelInfo& dpi)
+    {
+        auto* viewport = ViewportGetMain();
+        if (viewport == nullptr)
+            return;
+        ViewportRender(dpi, viewport);
     }
 
     static void ViewportFillColumn(PaintSession& session)
