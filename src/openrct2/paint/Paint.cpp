@@ -103,38 +103,40 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
-static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
+static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
 {
-    int32_t left = imagePos.x + g1.x_offset;
-    int32_t bottom = imagePos.y + g1.y_offset;
+    const int32_t left = imagePos.x + g1.x_offset;
+    const int32_t bottom = imagePos.y + g1.y_offset;
 
-    int32_t right = left + g1.width;
-    int32_t top = bottom + g1.height;
+    const int32_t right = left + g1.width;
+    const int32_t top = bottom + g1.height;
 
     // mber: It is possible to use only the bottom else block here if you change <= and >= to simply < and >.
     // However, since this is used to cull paint structs, I'd prefer to keep the condition strict and calculate
     // the culling differently for minifying and magnifying.
-    auto zoom = dpi.zoom_level;
+    const auto zoom = dpi.zoom_level;
     if (zoom > ZoomLevel{ 0 })
     {
-        if (right <= dpi.WorldX())
+        const int32_t x = zoom.ApplyTo(dpi.cullingX);
+        const int32_t y = zoom.ApplyTo(dpi.cullingY);
+        if (right <= x)
             return false;
-        if (top <= dpi.WorldY())
+        if (top <= y)
             return false;
-        if (left >= dpi.WorldX() + dpi.WorldWidth())
+        if (left >= x + zoom.ApplyTo(dpi.cullingWidth))
             return false;
-        if (bottom >= dpi.WorldY() + dpi.WorldHeight())
+        if (bottom >= y + zoom.ApplyTo(dpi.cullingHeight))
             return false;
     }
     else
     {
-        if (zoom.ApplyInversedTo(right) <= dpi.x)
+        if (zoom.ApplyInversedTo(right) <= dpi.cullingX)
             return false;
-        if (zoom.ApplyInversedTo(top) <= dpi.y)
+        if (zoom.ApplyInversedTo(top) <= dpi.cullingY)
             return false;
-        if (zoom.ApplyInversedTo(left) >= dpi.x + dpi.width)
+        if (zoom.ApplyInversedTo(left) >= dpi.cullingX + dpi.cullingWidth)
             return false;
-        if (zoom.ApplyInversedTo(bottom) >= dpi.y + dpi.height)
+        if (zoom.ApplyInversedTo(bottom) >= dpi.cullingY + dpi.cullingHeight)
             return false;
     }
     return true;
@@ -184,7 +186,7 @@ static PaintStruct* CreateNormalPaintStruct(
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
 
-    if (!ImageWithinDPI(imagePos, *g1, session.DPI))
+    if (!imageWithinDPI(imagePos, *g1, session.DPI))
     {
         return nullptr;
     }
@@ -232,7 +234,7 @@ static PaintStruct* CreateNormalPaintStructHeight(
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
 
-    if (!ImageWithinDPI(imagePos, *g1, session.DPI))
+    if (!imageWithinDPI(imagePos, *g1, session.DPI))
     {
         return nullptr;
     }

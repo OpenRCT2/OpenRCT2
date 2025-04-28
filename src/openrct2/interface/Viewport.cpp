@@ -1063,6 +1063,15 @@ namespace OpenRCT2
             }
             columnDpi.width = paintRight - columnDpi.x;
 
+            // culling sprites outside the clipped column causes sorting differences between invalidation blocks
+            // not culling sprites outside the full column width also causes a different kind of glitching
+            constexpr int32_t cullingY = ZoomLevel::max().ApplyInversedTo(std::numeric_limits<int32_t>::max()) / 2;
+
+            columnDpi.cullingX = floor2(columnDpi.x, columnWidth);
+            columnDpi.cullingY = -cullingY;
+            columnDpi.cullingWidth = columnWidth;
+            columnDpi.cullingHeight = cullingY * 2;
+
             if (useMultithreading)
             {
                 _paintJobs->AddTask([session]() -> void { ViewportFillColumn(*session); });
@@ -1812,6 +1821,11 @@ namespace OpenRCT2
             dpi.y = viewport->zoom.ApplyInversedTo(viewLoc.y);
             dpi.height = 1;
             dpi.width = 1;
+
+            dpi.cullingX = dpi.x;
+            dpi.cullingY = dpi.y;
+            dpi.cullingWidth = dpi.width;
+            dpi.cullingHeight = dpi.height;
 
             PaintSession* session = PaintSessionAlloc(dpi, viewport->flags, viewport->rotation);
             PaintSessionGenerate(*session);

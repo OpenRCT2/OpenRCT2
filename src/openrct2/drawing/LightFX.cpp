@@ -305,6 +305,11 @@ namespace OpenRCT2::Drawing::LightFx
                         dpi.height = 1;
                         dpi.width = 1;
 
+                        dpi.cullingX = dpi.x;
+                        dpi.cullingY = dpi.y;
+                        dpi.cullingWidth = dpi.width;
+                        dpi.cullingHeight = dpi.height;
+
                         PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags, w->viewport->rotation);
                         PaintSessionGenerate(*session);
                         PaintSessionArrange(*session);
