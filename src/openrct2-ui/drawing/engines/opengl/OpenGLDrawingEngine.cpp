@@ -66,7 +66,10 @@ private:
     std::unique_ptr<ApplyTransparencyShader> _applyTransparencyShader;
     std::unique_ptr<DrawLineShader> _drawLineShader;
     std::unique_ptr<DrawRectShader> _drawRectShader;
-    std::unique_ptr<SwapFramebuffer> _swapFramebuffer;
+
+    std::unique_ptr<SwapFramebuffer> _vpFramebuffer;
+    std::unique_ptr<SwapFramebuffer> _uiFramebuffer;
+    SwapFramebuffer* _currentFramebuffer{};
 
     std::unique_ptr<TextureCache> _textureCache;
 
@@ -100,12 +103,22 @@ public:
 
     const OpenGLFramebuffer& GetFinalFramebuffer() const
     {
-        return _swapFramebuffer->GetFinalFramebuffer();
+        return _currentFramebuffer->GetFinalFramebuffer();
     }
 
     OpenGLFramebuffer& GetFinalFramebuffer()
     {
-        return _swapFramebuffer->GetFinalFramebuffer();
+        return _currentFramebuffer->GetFinalFramebuffer();
+    }
+
+    void SetViewportFrameBuffer()
+    {
+        _currentFramebuffer = _vpFramebuffer.get();
+    }
+
+    void SetUiFrameBuffer()
+    {
+        _currentFramebuffer = _uiFramebuffer.get();
     }
 
     void Initialise();
@@ -207,10 +220,11 @@ private:
     DrawPixelInfo _bitsDPI = {};
 
     std::unique_ptr<OpenGLDrawingContext> _drawingContext;
-
     std::unique_ptr<ApplyPaletteShader> _applyPaletteShader;
+
     std::unique_ptr<OpenGLFramebuffer> _screenFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
+
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
     OpenGLWeatherDrawer _weatherDrawer;
     InvalidationGrid _viewportInvalidationGrid;
@@ -270,8 +284,15 @@ public:
         _drawingContext->Resize(width, height);
 
         _drawingContext->StartNewDraw();
+
+        _drawingContext->SetViewportFrameBuffer();
         _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
         _drawingContext->FlushCommandBuffers();
+
+        _drawingContext->SetUiFrameBuffer();
+        _drawingContext->Clear(_bitsDPI, PaletteIndex::pi0);
+        _drawingContext->FlushCommandBuffers();
+
         _drawingContext->FinishDraw();
     }
 
@@ -330,12 +351,10 @@ public:
 
     void EndDraw() override
     {
-        _drawingContext->FlushCommandBuffers();
-
         glDisable(GL_DEPTH_TEST);
+
         if (_scaleFramebuffer != nullptr)
         {
-            // Render to intermediary RGB buffer for GL_LINEAR
             _scaleFramebuffer->Bind();
         }
         else
@@ -343,9 +362,29 @@ public:
             _screenFramebuffer->Bind();
         }
 
-        _applyPaletteShader->Use();
-        _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
-        _applyPaletteShader->Draw();
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Transparent clear
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        // Viewport to screen buffer.
+        {
+            _drawingContext->SetViewportFrameBuffer();
+
+            _applyPaletteShader->Use();
+            _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
+            _applyPaletteShader->Draw();
+        }
+
+        // UI to screen buffer.
+        {
+            _drawingContext->SetUiFrameBuffer();
+
+            _applyPaletteShader->Use();
+            _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
+            _applyPaletteShader->Draw();
+        }
 
         if (_smoothScaleFramebuffer != nullptr)
         {
@@ -357,6 +396,15 @@ public:
             _screenFramebuffer->Copy(*_scaleFramebuffer, GL_LINEAR);
         }
 
+        // Clear the UI frame buffer.
+        {
+            _drawingContext->SetUiFrameBuffer();
+            _drawingContext->GetFinalFramebuffer().Bind();
+
+            glClearColor(0, 0, 0, 0);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
+
         CheckGLError();
 
         _drawingContext->FinishDraw();
@@ -366,6 +414,8 @@ public:
 
     void PaintViewport() override
     {
+        _drawingContext->SetViewportFrameBuffer();
+
         WindowResetVisibilities();
 
         // Redraw dirty regions before updating the viewports, otherwise
@@ -379,7 +429,13 @@ public:
 
     void PaintWindows() override
     {
-        DrawDirtyUIRegions();
+        _drawingContext->SetUiFrameBuffer();
+
+        _drawingContext->FlushCommandBuffers();
+
+        // DrawDirtyUIRegions();
+        //  Draw all windows for now.
+        WindowDrawAll(_bitsDPI, 0, 0, _width, _height);
 
         _drawingContext->FlushCommandBuffers();
     }
@@ -614,7 +670,9 @@ void OpenGLDrawingContext::Resize(int32_t width, int32_t height)
     _drawLineShader->SetScreenSize(width, height);
 
     // Re-create canvas framebuffer
-    _swapFramebuffer = std::make_unique<SwapFramebuffer>(width, height);
+    _vpFramebuffer = std::make_unique<SwapFramebuffer>(width, height);
+    _uiFramebuffer = std::make_unique<SwapFramebuffer>(width, height);
+    _currentFramebuffer = _vpFramebuffer.get();
 }
 
 void OpenGLDrawingContext::ResetPalette()
@@ -627,7 +685,8 @@ void OpenGLDrawingContext::StartNewDraw()
     Guard::Assert(_inDraw == false);
 
     _drawCount = 0;
-    _swapFramebuffer->Clear();
+    _vpFramebuffer->Clear();
+    _uiFramebuffer->Clear();
     _inDraw = true;
 }
 
@@ -1230,7 +1289,7 @@ void OpenGLDrawingContext::FlushCommandBuffers()
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    _swapFramebuffer->BindOpaque();
+    _currentFramebuffer->BindOpaque();
     _drawRectShader->Use();
     _drawRectShader->DisablePeeling();
 
@@ -1279,7 +1338,7 @@ void OpenGLDrawingContext::HandleTransparency()
     int32_t max_depth = MaxTransparencyDepth(_commandBuffers.transparent);
     for (int32_t i = 0; i < max_depth; ++i)
     {
-        _swapFramebuffer->BindTransparent();
+        _currentFramebuffer->BindTransparent();
 
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_GREATER);
@@ -1287,7 +1346,7 @@ void OpenGLDrawingContext::HandleTransparency()
 
         if (i > 0)
         {
-            _drawRectShader->EnablePeeling(_swapFramebuffer->GetBackDepthTexture());
+            _drawRectShader->EnablePeeling(_currentFramebuffer->GetBackDepthTexture());
         }
 
         OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());
@@ -1295,7 +1354,8 @@ void OpenGLDrawingContext::HandleTransparency()
 
         _drawRectShader->Use();
         _drawRectShader->DrawInstances();
-        _swapFramebuffer->ApplyTransparency(
+
+        _currentFramebuffer->ApplyTransparency(
             *_applyTransparencyShader, _textureCache->GetPaletteTexture(), _textureCache->GetBlendPaletteTexture());
     }
 
