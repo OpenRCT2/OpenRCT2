@@ -453,7 +453,7 @@ namespace OpenRCT2
 
         if (DrawingEngineHasDirtyOptimisations())
         {
-            DrawPixelInfo& dpi = DrawingEngineGetDpi();
+            DrawPixelInfo dpi = GetContext()->GetDrawingEngine()->GetDrawingPixelInfo();
             ViewportShiftPixels(dpi, w, viewport, x_diff, y_diff);
         }
         else

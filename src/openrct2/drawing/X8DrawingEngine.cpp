@@ -120,7 +120,7 @@ void X8WeatherDrawer::Restore(DrawPixelInfo& dpi)
 
 X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiContext>& uiContext)
 {
-    _drawingContext = new X8DrawingContext(this);
+    _drawingContext = std::make_unique<X8DrawingContext>(this);
     _bitsDPI.DrawingEngine = this;
     LightFx::SetAvailable(true);
     _lastLightFXenabled = Config::Get().general.EnableLightFx;
@@ -128,7 +128,6 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
 
 X8DrawingEngine::~X8DrawingEngine()
 {
-    delete _drawingContext;
     delete[] _bits;
 }
 
@@ -270,12 +269,12 @@ IDrawingContext* X8DrawingEngine::GetDrawingContext()
         Guard::Fail("Drawing context is not active.");
         return nullptr;
     }
-    return _drawingContext;
+    return _drawingContext.get();
 }
 
-DrawPixelInfo* X8DrawingEngine::GetDrawingPixelInfo()
+DrawPixelInfo X8DrawingEngine::GetDrawingPixelInfo()
 {
-    return &_bitsDPI;
+    return _bitsDPI;
 }
 
 DrawingEngineFlags X8DrawingEngine::GetFlags()
@@ -286,11 +285,6 @@ DrawingEngineFlags X8DrawingEngine::GetFlags()
 void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)
 {
     // Not applicable for this engine
-}
-
-DrawPixelInfo* X8DrawingEngine::GetDPI()
-{
-    return &_bitsDPI;
 }
 
 void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch)

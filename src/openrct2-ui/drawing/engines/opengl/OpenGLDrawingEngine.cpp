@@ -561,9 +561,9 @@ public:
         return _drawingContext.get();
     }
 
-    DrawPixelInfo* GetDrawingPixelInfo() override
+    DrawPixelInfo GetDrawingPixelInfo() override
     {
-        return &_bitsDPI;
+        return _bitsDPI;
     }
 
     DrawingEngineFlags GetFlags() override

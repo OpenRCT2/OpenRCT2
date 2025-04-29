@@ -68,7 +68,7 @@ namespace OpenRCT2
             bool _lastLightFXenabled = false;
 
             X8WeatherDrawer _weatherDrawer;
-            X8DrawingContext* _drawingContext;
+            std::unique_ptr<X8DrawingContext> _drawingContext;
             InvalidationGrid _invalidationGrid;
 
         public:
@@ -105,11 +105,9 @@ namespace OpenRCT2
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
             std::string Screenshot() override;
             IDrawingContext* GetDrawingContext() override;
-            DrawPixelInfo* GetDrawingPixelInfo() override;
+            DrawPixelInfo GetDrawingPixelInfo() override;
             DrawingEngineFlags GetFlags() override;
             void InvalidateImage(uint32_t image) override;
-
-            DrawPixelInfo* GetDPI();
 
         protected:
             void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch);
@@ -155,5 +153,6 @@ namespace OpenRCT2
                 return _isDrawing;
             }
         };
+
     } // namespace Drawing
 } // namespace OpenRCT2

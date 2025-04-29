@@ -42,7 +42,7 @@ void Painter::Paint(IDrawingEngine& de)
 
     if (IntroIsPlaying())
     {
-        IntroDraw(*dpi);
+        IntroDraw(dpi);
     }
     else
     {
@@ -51,9 +51,9 @@ void Painter::Paint(IDrawingEngine& de)
         de.PaintWindows();
 
         UpdatePaletteEffects();
-        _uiContext->Draw(*dpi);
+        _uiContext->Draw(dpi);
 
-        GfxDrawPickedUpPeep(*dpi);
+        GfxDrawPickedUpPeep(dpi);
         GfxInvalidatePickedUpPeep();
     }
 
@@ -68,11 +68,11 @@ void Painter::Paint(IDrawingEngine& de)
         text = "Normalising...";
 
     if (text != nullptr)
-        PaintReplayNotice(*dpi, text);
+        PaintReplayNotice(dpi, text);
 
     if (Config::Get().general.ShowFPS)
     {
-        PaintFPS(*dpi);
+        PaintFPS(dpi);
     }
     gCurrentDrawCount++;
 }
