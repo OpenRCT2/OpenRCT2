@@ -11,6 +11,7 @@
 - Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
 - Change: [#24135] Compress Emscripten js/wasm files.
 - Change: [#24235] Small changes to RCT1 theme.
+- Fix: [#18479] Tile elements ordered beneath water do not draw correctly.
 - Fix: [#19782] Game stops counting inversions and golf holes after 31 (original bug).
 - Fix: [#21207] Track List window gets positioned incorrectly.
 - Fix: [#21919] Non-recolourable cars still show colour picker (original bug).
