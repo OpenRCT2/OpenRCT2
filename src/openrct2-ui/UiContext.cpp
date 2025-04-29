@@ -309,10 +309,7 @@ public:
         int32_t top = dpi.y;
         int32_t bottom = top + dpi.height;
 
-        for (auto& w : g_window_list)
-        {
-            DrawWeatherWindow(dpi, weatherDrawer, w.get(), left, right, top, bottom, drawFunc);
-        }
+        DrawWeatherWindow(dpi, weatherDrawer, left, right, top, bottom, drawFunc);
     }
 
     // Text input
@@ -940,90 +937,12 @@ private:
     }
 
     static void DrawWeatherWindow(
-        DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, WindowBase* original_w, int16_t left, int16_t right, int16_t top,
+        DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int16_t left, int16_t right, int16_t top,
         int16_t bottom, DrawWeatherFunc drawFunc)
     {
-        WindowBase* w{};
-        auto itStart = WindowGetIterator(original_w);
-        for (auto it = std::next(itStart);; it++)
-        {
-            if (it == g_window_list.end())
-            {
-                // Loop ended, draw weather for original_w
-                auto vp = original_w->viewport;
-                if (vp != nullptr)
-                {
-                    left = std::max<int16_t>(left, vp->pos.x);
-                    right = std::min<int16_t>(right, vp->pos.x + vp->width);
-                    top = std::max<int16_t>(top, vp->pos.y);
-                    bottom = std::min<int16_t>(bottom, vp->pos.y + vp->height);
-                    if (left < right && top < bottom)
-                    {
-                        auto width = right - left;
-                        auto height = bottom - top;
-                        drawFunc(dpi, weatherDrawer, left, top, width, height);
-                    }
-                }
-                return;
-            }
-
-            w = it->get();
-
-            if (w->flags & WF_DEAD)
-            {
-                continue;
-            }
-
-            if (right <= w->windowPos.x || bottom <= w->windowPos.y)
-            {
-                continue;
-            }
-
-            if (RCT_WINDOW_RIGHT(w) <= left || RCT_WINDOW_BOTTOM(w) <= top)
-            {
-                continue;
-            }
-
-            if (left >= w->windowPos.x)
-            {
-                break;
-            }
-
-            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
-
-            left = w->windowPos.x;
-            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
-            return;
-        }
-
-        int16_t w_right = RCT_WINDOW_RIGHT(w);
-        if (right > w_right)
-        {
-            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, w_right, top, bottom, drawFunc);
-
-            left = w_right;
-            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
-            return;
-        }
-
-        if (top < w->windowPos.y)
-        {
-            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
-
-            top = w->windowPos.y;
-            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
-            return;
-        }
-
-        int16_t w_bottom = RCT_WINDOW_BOTTOM(w);
-        if (bottom > w_bottom)
-        {
-            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, w_bottom, drawFunc);
-
-            top = w_bottom;
-            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
-            return;
-        }
+        auto width = right - left;
+        auto height = bottom - top;
+        drawFunc(dpi, weatherDrawer, left, top, width, height);
     }
 
     InputEvent GetInputEventFromSDLEvent(const SDL_Event& e)

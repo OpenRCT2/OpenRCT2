@@ -917,7 +917,7 @@ void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int3
         gPalette[i].Blue = b;
         gPalette[i].Green = g;
         gPalette[i].Red = r;
-        gPalette[i].Alpha = 0;
+        gPalette[i].Alpha = colour.Alpha;
     }
 
     // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.

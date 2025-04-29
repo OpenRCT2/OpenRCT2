@@ -146,7 +146,7 @@ void X8DrawingEngine::Resize(uint32_t width, uint32_t height)
     _drawingContext->EndDraw();
 }
 
-void X8DrawingEngine::SetPalette([[maybe_unused]] const GamePalette& palette)
+void X8DrawingEngine::SetPrimaryPalette([[maybe_unused]] const GamePalette& palette)
 {
 }
 

@@ -86,7 +86,7 @@ namespace OpenRCT2
 
             void Initialise() override;
             void Resize(uint32_t width, uint32_t height) override;
-            void SetPalette(const GamePalette& palette) override;
+            void SetPrimaryPalette(const GamePalette& palette) override;
             void SetVSync(bool vsync) override;
             void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override;
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

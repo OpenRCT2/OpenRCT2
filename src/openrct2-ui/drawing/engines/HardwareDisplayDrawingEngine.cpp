@@ -180,7 +180,7 @@ public:
         X8DrawingEngine::Resize(width, height);
     }
 
-    void SetPalette(const GamePalette& palette) override
+    void SetPrimaryPalette(const GamePalette& palette) override
     {
         if (_screenTextureFormat != nullptr)
         {

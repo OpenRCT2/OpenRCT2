@@ -57,7 +57,7 @@ namespace OpenRCT2::Drawing
 
         virtual void Initialise() = 0;
         virtual void Resize(uint32_t width, uint32_t height) = 0;
-        virtual void SetPalette(const GamePalette& colours) = 0;
+        virtual void SetPrimaryPalette(const GamePalette& colours) = 0;
 
         virtual void SetVSync(bool vsync) = 0;
 

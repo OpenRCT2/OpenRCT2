@@ -68,6 +68,7 @@ private:
     std::unique_ptr<DrawRectShader> _drawRectShader;
 
     std::unique_ptr<SwapFramebuffer> _vpFramebuffer;
+    std::unique_ptr<SwapFramebuffer> _effectsFramebuffer;
     std::unique_ptr<SwapFramebuffer> _uiFramebuffer;
     SwapFramebuffer* _currentFramebuffer{};
 
@@ -114,6 +115,11 @@ public:
     void SetViewportFrameBuffer()
     {
         _currentFramebuffer = _vpFramebuffer.get();
+    }
+
+    void SetEffectsFrameBuffer()
+    {
+        _currentFramebuffer = _effectsFramebuffer.get();
     }
 
     void SetUiFrameBuffer()
@@ -231,8 +237,8 @@ private:
     InvalidationGrid _uiInvalidationGrid;
 
 public:
-    SDL_Color Palette[256];
-    vec4 GLPalette[256];
+    vec4 PrimaryPalette[256];
+    vec4 SecondaryPalette[256];
 
     explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
@@ -305,28 +311,32 @@ public:
         _uiInvalidationGrid.reset(_width, _height, blockWidth, blockHeight);
     }
 
-    void SetPalette(const GamePalette& palette) override
+    void SetPrimaryPalette(const GamePalette& palette) override
     {
         for (int32_t i = 0; i < 256; i++)
         {
-            SDL_Color colour;
-            colour.r = palette[i].Red;
-            colour.g = palette[i].Green;
-            colour.b = palette[i].Blue;
-            colour.a = i == 0 ? 0 : 255;
+            const auto alpha = i == 0 ? 0 : 255;
 
-            Palette[i] = colour;
-            GLPalette[i] = {
-                colour.r / 255.0f,
-                colour.g / 255.0f,
-                colour.b / 255.0f,
-                colour.a / 255.0f,
+            PrimaryPalette[i] = {
+                palette[i].Red / 255.0f,
+                palette[i].Green / 255.0f,
+                palette[i].Blue / 255.0f,
+                alpha / 255.0f,
             };
         }
 
-        _applyPaletteShader->Use();
-        _applyPaletteShader->SetPalette(GLPalette);
-        _drawingContext->ResetPalette();
+        // Copy that for now as secondary with alpha
+        for (int32_t i = 0; i < 256; i++)
+        {
+            const auto alpha = i == 0 ? 0 : 230;
+
+            SecondaryPalette[i] = {
+                palette[i].Red / 255.0f,
+                palette[i].Green / 255.0f,
+                palette[i].Blue / 255.0f,
+                alpha / 255.0f,
+            };
+        }
     }
 
     void SetVSync(bool vsync) override
@@ -373,6 +383,16 @@ public:
             _drawingContext->SetViewportFrameBuffer();
 
             _applyPaletteShader->Use();
+            _applyPaletteShader->SetPalette(PrimaryPalette);
+            _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
+            _applyPaletteShader->Draw();
+        }
+
+        // Effects to screen buffer.
+        {
+            _drawingContext->SetEffectsFrameBuffer();
+
+            _applyPaletteShader->Use();
             _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
             _applyPaletteShader->Draw();
         }
@@ -382,6 +402,7 @@ public:
             _drawingContext->SetUiFrameBuffer();
 
             _applyPaletteShader->Use();
+            _applyPaletteShader->SetPalette(SecondaryPalette);
             _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
             _applyPaletteShader->Draw();
         }
@@ -394,6 +415,14 @@ public:
         else if (_scaleFramebuffer != nullptr)
         {
             _screenFramebuffer->Copy(*_scaleFramebuffer, GL_LINEAR);
+        }
+
+        // Clear the effects frame buffer.
+        {
+            _drawingContext->SetEffectsFrameBuffer();
+            _drawingContext->GetFinalFramebuffer().Bind();
+            glClearColor(0, 0, 0, 0);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
 
         // Clear the UI frame buffer.
@@ -427,11 +456,18 @@ public:
         _drawingContext->FlushCommandBuffers();
     }
 
+    void PaintWeather() override
+    {
+        _drawingContext->SetEffectsFrameBuffer();
+
+        DrawWeather(_bitsDPI, &_weatherDrawer);
+
+        _drawingContext->FlushCommandBuffers();
+    }
+
     void PaintWindows() override
     {
         _drawingContext->SetUiFrameBuffer();
-
-        _drawingContext->FlushCommandBuffers();
 
         // DrawDirtyUIRegions();
         //  Draw all windows for now.
@@ -456,11 +492,6 @@ public:
             // Draw region
             WindowDrawAll(_bitsDPI, left, top, right, bottom);
         });
-    }
-
-    void PaintWeather() override
-    {
-        DrawWeather(_bitsDPI, &_weatherDrawer);
     }
 
     std::string Screenshot() override
@@ -671,6 +702,7 @@ void OpenGLDrawingContext::Resize(int32_t width, int32_t height)
 
     // Re-create canvas framebuffer
     _vpFramebuffer = std::make_unique<SwapFramebuffer>(width, height);
+    _effectsFramebuffer = std::make_unique<SwapFramebuffer>(width, height);
     _uiFramebuffer = std::make_unique<SwapFramebuffer>(width, height);
     _currentFramebuffer = _vpFramebuffer.get();
 }
@@ -686,6 +718,7 @@ void OpenGLDrawingContext::StartNewDraw()
 
     _drawCount = 0;
     _vpFramebuffer->Clear();
+    _effectsFramebuffer->Clear();
     _uiFramebuffer->Clear();
     _inDraw = true;
 }

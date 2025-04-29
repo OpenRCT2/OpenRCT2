@@ -82,7 +82,7 @@ void DrawingEngineSetPalette(const GamePalette& colours)
         auto drawingEngine = context->GetDrawingEngine();
         if (drawingEngine != nullptr)
         {
-            drawingEngine->SetPalette(colours);
+            drawingEngine->SetPrimaryPalette(colours);
         }
     }
 }
