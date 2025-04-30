@@ -138,20 +138,20 @@ static void SpiralSlidePaintTileFront(
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 8, 0, height + 3 }, { 8, 16, 108 } });
     }
 
-    if (session.DPI.zoom_level <= ZoomLevel{ 0 } && ride.slideInUse != 0)
+    if (session.DPI.zoom_level <= ZoomLevel{ 0 } && ride.slideInUse)
     {
-        uint8_t slide_progress = ride.spiralSlideProgress;
-        if (slide_progress != 0)
+        uint8_t slideProgress = ride.spiralSlideProgress;
+        if (slideProgress != 0)
         {
-            slide_progress--;
+            slideProgress--;
         }
 
-        if (slide_progress == 46)
+        if (slideProgress == 46)
         {
-            slide_progress--;
+            slideProgress--;
         }
 
-        if (slide_progress < 46)
+        if (slideProgress < 46)
         {
             int32_t offset = rideEntry->Cars[0].base_image_id + SpiralSlidePeep + 46 * direction;
             CoordsXYZ boundingBox = { 0, 0, 108 };
@@ -186,7 +186,7 @@ static void SpiralSlidePaintTileFront(
                 boundingBox.x = 8;
             }
 
-            imageId = ImageId(offset + slide_progress, ride.slidePeepTShirtColour, COLOUR_GREY);
+            imageId = ImageId(offset + slideProgress, ride.slidePeepTShirtColour, COLOUR_GREY);
 
             PaintAddImageAsChild(session, imageId, { 16, 16, height }, { boundingBoxOffset, boundingBox });
         }
@@ -222,7 +222,7 @@ static void PaintSpiralSlide(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
     }
 
-    const uint32_t spiral_slide_fence_sprites[] = {
+    const uint32_t spiralSlideFenceSprites[] = {
         rideEntry->Cars[0].base_image_id + SpiralSlideFenceTopRight,
         rideEntry->Cars[0].base_image_id + SpiralSlideFenceBottomRight,
         rideEntry->Cars[0].base_image_id + SpiralSlideFenceBottomLeft,
@@ -230,7 +230,7 @@ static void PaintSpiralSlide(
     };
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, spiral_slide_fence_sprites,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, spiralSlideFenceSprites,
         session.CurrentRotation);
 
     switch (trackSequence)
