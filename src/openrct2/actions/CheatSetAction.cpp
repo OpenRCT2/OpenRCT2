@@ -614,7 +614,7 @@ void CheatSetAction::SetMoney(money64 amount) const
 void CheatSetAction::AddMoney(money64 amount) const
 {
     auto& gameState = getGameState();
-    gameState.cash = AddClamp<money64>(gameState.cash, amount);
+    gameState.cash = AddClamp(gameState.cash, amount);
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Finances);

@@ -1005,7 +1005,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
 
     if (State == PeepState::OnRide || State == PeepState::EnteringRide)
     {
-        GuestTimeOnRide = std::min(255, GuestTimeOnRide + 1);
+        GuestTimeOnRide = AddClamp<uint8_t>(GuestTimeOnRide, 1);
 
         if (PeepFlags & PEEP_FLAGS_WOW)
         {
@@ -1021,11 +1021,11 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                 auto ride = GetRide(CurrentRide);
                 if (ride != nullptr)
                 {
-                    PeepThoughtType thought_type = ride->getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
+                    PeepThoughtType thoughtType = ride->getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
                         ? PeepThoughtType::GetOut
                         : PeepThoughtType::GetOff;
 
-                    InsertNewThought(thought_type, CurrentRide);
+                    InsertNewThought(thoughtType, CurrentRide);
                 }
             }
         }
@@ -1737,10 +1737,10 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     {
         SpendMoney(*expend_type, price, expenditure);
     }
-    ride.totalProfit += (price - shopItemDescriptor.Cost);
+    ride.totalProfit = AddClamp(ride.totalProfit, price - shopItemDescriptor.Cost);
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride.curNumCustomers++;
-    ride.totalCustomers++;
+    ride.totalCustomers = AddClamp(ride.totalCustomers, 1u);
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
     return true;
@@ -1829,7 +1829,7 @@ void Guest::OnExitRide(Ride& ride)
         }
     }
 
-    ride.totalCustomers++;
+    ride.totalCustomers = AddClamp(ride.totalCustomers, 1u);
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 }
 
@@ -2328,14 +2328,14 @@ void Guest::SpendMoney(money64 amount, ExpenditureType expenditure)
  *  rct2: 0x0069926C
  * Expend type was previously an offset saved in 0x00F1AEC0
  */
-void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
+void Guest::SpendMoney(money64& peepExpendType, money64 amount, ExpenditureType expenditure)
 {
     assert(!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY));
 
     CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - amount);
-    CashSpent += amount;
+    CashSpent = AddClamp(CashSpent, amount);
 
-    peep_expend_type += amount;
+    peepExpendType = AddClamp(peepExpendType, amount);
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByNumber(WindowClass::Peep, Id);
@@ -3354,7 +3354,7 @@ static bool PeepShouldUseCashMachine(Guest* peep, RideId rideIndex)
     {
         ride->updateSatisfaction(peep->Happiness >> 6);
         ride->curNumCustomers++;
-        ride->totalCustomers++;
+        ride->totalCustomers = AddClamp(ride->totalCustomers, 1u);
         ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
     }
     return true;
@@ -3405,15 +3405,15 @@ void Guest::UpdateBuying()
         return;
     }
 
-    bool item_bought = false;
+    bool itemBought = false;
 
     if (CurrentRide != PreviousRide)
     {
         const auto& rtd = GetRideTypeDescriptor(ride->type);
         if (rtd.specialType == RtdSpecialType::cashMachine)
         {
-            item_bought = PeepShouldUseCashMachine(this, CurrentRide);
-            if (!item_bought)
+            itemBought = PeepShouldUseCashMachine(this, CurrentRide);
+            if (!itemBought)
             {
                 PreviousRide = CurrentRide;
                 PreviousRideTimeOut = 0;
@@ -3426,41 +3426,41 @@ void Guest::UpdateBuying()
 
                 UpdateCurrentAnimationType();
 
-                ride->numPrimaryItemsSold++;
+                ride->numPrimaryItemsSold = AddClamp(ride->numPrimaryItemsSold, 1u);
             }
         }
         else
         {
-            const auto* ride_type = GetRideEntryByIndex(ride->subtype);
-            if (ride_type == nullptr)
+            const auto* rideType = GetRideEntryByIndex(ride->subtype);
+            if (rideType == nullptr)
             {
                 return;
             }
-            if (ride_type->shop_item[1] != ShopItem::None)
+            if (rideType->shop_item[1] != ShopItem::None)
             {
                 auto price = ride->price[1];
 
-                item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[1], price);
-                if (item_bought)
+                itemBought = DecideAndBuyItem(*ride, rideType->shop_item[1], price);
+                if (itemBought)
                 {
-                    ride->numSecondaryItemsSold++;
+                    ride->numSecondaryItemsSold = AddClamp(ride->numSecondaryItemsSold, 1u);
                 }
             }
 
-            if (!item_bought && ride_type->shop_item[0] != ShopItem::None)
+            if (!itemBought && rideType->shop_item[0] != ShopItem::None)
             {
                 auto price = ride->price[0];
 
-                item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[0], price);
-                if (item_bought)
+                itemBought = DecideAndBuyItem(*ride, rideType->shop_item[0], price);
+                if (itemBought)
                 {
-                    ride->numPrimaryItemsSold++;
+                    ride->numPrimaryItemsSold = AddClamp(ride->numPrimaryItemsSold, 1u);
                 }
             }
         }
     }
 
-    if (item_bought)
+    if (itemBought)
     {
         ride->updatePopularity(1);
 
@@ -3891,7 +3891,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         }
         else
         {
-            ride.totalProfit = AddClamp<money64>(ride.totalProfit, ridePrice);
+            ride.totalProfit = AddClamp(ride.totalProfit, ridePrice);
             ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
             SpendMoney(PaidOnRides, ridePrice, ExpenditureType::ParkRideTickets);
         }
@@ -4463,7 +4463,7 @@ void Guest::UpdateRideInExit()
         ShopItem secondaryItem = ride->getRideTypeDescriptor().PhotoItem;
         if (DecideAndBuyItem(*ride, secondaryItem, ride->price[1]))
         {
-            ride->numSecondaryItemsSold++;
+            ride->numSecondaryItemsSold = AddClamp(ride->numSecondaryItemsSold, 1u);
         }
     }
     RideSubState = PeepRideSubState::LeaveExit;
@@ -5196,7 +5196,7 @@ void Guest::UpdateRideShopLeave()
     auto ride = GetRide(CurrentRide);
     if (ride != nullptr)
     {
-        ride->totalCustomers++;
+        ride->totalCustomers = AddClamp(ride->totalCustomers, 1u);
         ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
         ride->updateSatisfaction(Happiness / 64);
     }

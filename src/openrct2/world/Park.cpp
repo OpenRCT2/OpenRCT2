@@ -529,10 +529,10 @@ namespace OpenRCT2::Park
     {
         const auto& gameState = getGameState();
 
-        auto result = gameState.park.Value - gameState.bankLoan;
+        money64 result = gameState.park.Value - gameState.bankLoan;
 
         // Clamp addition to prevent overflow
-        result = AddClamp<money64>(result, FinanceGetCurrentCash());
+        result = AddClamp(result, FinanceGetCurrentCash());
 
         return result;
     }
