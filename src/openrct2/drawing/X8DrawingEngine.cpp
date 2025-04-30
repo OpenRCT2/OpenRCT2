@@ -33,14 +33,9 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
-X8WeatherDrawer::X8WeatherDrawer()
+X8WeatherDrawer::X8WeatherDrawer(IDrawingContext& drawingCtx)
+    : _drawingContext{ &drawingCtx }
 {
-    _weatherPixels = new WeatherPixel[_weatherPixelsCapacity];
-}
-
-X8WeatherDrawer::~X8WeatherDrawer()
-{
-    delete[] _weatherPixels;
 }
 
 void X8WeatherDrawer::Draw(
@@ -57,59 +52,29 @@ void X8WeatherDrawer::Draw(
     uint32_t pixelOffset = dpi.LineStride() * y + x;
     uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
-    uint8_t* screenBits = dpi.bits;
-
-    // Stores the colours of changed pixels
-    WeatherPixel* newPixels = &_weatherPixels[_weatherPixelsCount];
     for (; height != 0; height--)
     {
         auto patternX = pattern[patternYPos * 2];
         if (patternX != 0xFF)
         {
-            if (_weatherPixelsCount < (_weatherPixelsCapacity - static_cast<uint32_t>(width)))
+            uint32_t finalPixelOffset = width + pixelOffset;
+
+            uint32_t xPixelOffset = pixelOffset;
+            xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
+
+            auto patternPixel = pattern[patternYPos * 2 + 1];
+            for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
             {
-                uint32_t finalPixelOffset = width + pixelOffset;
+                int32_t pixelX = xPixelOffset % dpi.width;
+                int32_t pixelY = (xPixelOffset / dpi.width) % dpi.height;
 
-                uint32_t xPixelOffset = pixelOffset;
-                xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
-
-                auto patternPixel = pattern[patternYPos * 2 + 1];
-                for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
-                {
-                    uint8_t current_pixel = screenBits[xPixelOffset];
-                    screenBits[xPixelOffset] = patternPixel;
-                    _weatherPixelsCount++;
-
-                    // Store colour and position
-                    *newPixels++ = { xPixelOffset, current_pixel };
-                }
+                _drawingContext->DrawLine(dpi, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
             }
         }
 
         pixelOffset += dpi.LineStride();
         patternYPos++;
         patternYPos %= patternYSpace;
-    }
-}
-
-void X8WeatherDrawer::Restore(DrawPixelInfo& dpi)
-{
-    if (_weatherPixelsCount > 0)
-    {
-        uint32_t numPixels = dpi.LineStride() * dpi.height;
-        uint8_t* bits = dpi.bits;
-        for (uint32_t i = 0; i < _weatherPixelsCount; i++)
-        {
-            WeatherPixel weatherPixel = _weatherPixels[i];
-            if (weatherPixel.Position >= numPixels)
-            {
-                // Pixel out of bounds, bail
-                break;
-            }
-
-            bits[weatherPixel.Position] = weatherPixel.Colour;
-        }
-        _weatherPixelsCount = 0;
     }
 }
 
@@ -120,8 +85,11 @@ void X8WeatherDrawer::Restore(DrawPixelInfo& dpi)
 
 X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiContext>& uiContext)
 {
-    _drawingContext = std::make_unique<X8DrawingContext>(this);
     _bitsDPI.DrawingEngine = this;
+
+    _drawingContext = std::make_unique<X8DrawingContext>(this);
+    _weatherDrawer = std::make_unique<X8WeatherDrawer>(*_drawingContext);
+
     LightFx::SetAvailable(true);
     _lastLightFXenabled = Config::Get().general.EnableLightFx;
 }
@@ -170,7 +138,6 @@ void X8DrawingEngine::BeginDraw()
             GfxInvalidateScreen();
             _lastLightFXenabled = Config::Get().general.EnableLightFx;
         }
-        _weatherDrawer.Restore(_bitsDPI);
     }
 
     _drawingContext->BeginDraw();
@@ -199,7 +166,7 @@ void X8DrawingEngine::PaintWindows()
 
 void X8DrawingEngine::PaintWeather()
 {
-    DrawWeather(_bitsDPI, &_weatherDrawer);
+    DrawWeather(_bitsDPI, _weatherDrawer.get());
 }
 
 void X8DrawingEngine::DrawAllDirtyBlocks()

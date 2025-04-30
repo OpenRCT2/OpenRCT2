@@ -28,26 +28,14 @@ namespace OpenRCT2
 
         class X8WeatherDrawer final : public IWeatherDrawer
         {
-        private:
-            struct WeatherPixel
-            {
-                uint32_t Position;
-                uint8_t Colour;
-            };
-
-            static constexpr uint32_t kMaxWeatherPixels = 0xFFFE;
-
-            size_t _weatherPixelsCapacity = kMaxWeatherPixels;
-            uint32_t _weatherPixelsCount = 0;
-            WeatherPixel* _weatherPixels = nullptr;
+            IDrawingContext* _drawingContext = nullptr;
 
         public:
-            X8WeatherDrawer();
-            ~X8WeatherDrawer();
+            X8WeatherDrawer(IDrawingContext& drawingCtx);
+
             void Draw(
                 DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
                 const uint8_t* weatherpattern) override;
-            void Restore(DrawPixelInfo& dpi);
         };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
@@ -67,7 +55,7 @@ namespace OpenRCT2
 
             bool _lastLightFXenabled = false;
 
-            X8WeatherDrawer _weatherDrawer;
+            std::unique_ptr<X8WeatherDrawer> _weatherDrawer;
             std::unique_ptr<X8DrawingContext> _drawingContext;
             InvalidationGrid _invalidationGrid;
 
